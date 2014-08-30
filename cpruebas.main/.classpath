@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.fx.ide.jdt.core.JAVAFX_CONTAINER"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/kernel.space"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.alumnos"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/kernel.api.imp.fx"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/kernel.api"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.cursos"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.asignaturas"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.colegios"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.ejestematicos"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.habilidades"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.profesores"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
