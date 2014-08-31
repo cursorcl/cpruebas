@@ -23,10 +23,15 @@ public class Prueba implements IEntity {
 	private TipoPrueba tipoPrueba;
 	private Curso curso;
 	private Asignatura asignatura;
+	
+	
 	private Date fecha;
 	private Integer nroPreguntas;
 	private Integer formas;
 	private Integer alternativas;
+	
+	private String responses;
+	
 	public TipoPrueba getTipoPrueba() {
 		return tipoPrueba;
 	}
@@ -129,6 +134,14 @@ public class Prueba implements IEntity {
 	public boolean validate() {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	public String getResponses() {
+		return responses;
+	}
+
+	public void setResponses(String responses) {
+		this.responses = responses;
 	}
 
 }
