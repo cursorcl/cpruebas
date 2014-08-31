@@ -7,7 +7,7 @@ import javax.persistence.Id;
 
 import cl.eos.interfaces.entity.IEntity;
 
-@Entity(name = "asignatura")
+@Entity(name = "habilidad")
 public class Habilidad  implements IEntity  {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
