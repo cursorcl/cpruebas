@@ -20,7 +20,7 @@ public interface IModel {
 
 	void update(IEntity entity);
 
-	List<IEntity> getAll();
+	List<IEntity> getAll(IEntity entity);
 
 	IEntity get(IEntity entity);
 

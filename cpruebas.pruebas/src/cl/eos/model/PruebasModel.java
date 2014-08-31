@@ -4,4 +4,6 @@ import cl.eos.imp.model.AModel;
 
 public class PruebasModel extends AModel{
 
+	
+	
 }

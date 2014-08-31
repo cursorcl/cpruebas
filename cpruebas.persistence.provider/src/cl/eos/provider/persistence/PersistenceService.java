@@ -2,6 +2,10 @@ package cl.eos.provider.persistence;
 
 import java.util.List;
 
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.EventHandler;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -76,16 +80,43 @@ public class PersistenceService implements IPersistenceService {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<IEntity> getAll(IEntity entity) {
+	public List<IEntity> getAll(final IEntity entity) {
+		
+//		List<IEntity> results = null;
+//		
+//		final Task<List<IEntity>> task = new Task<List<IEntity>>() {
+//		    @Override protected List<IEntity> call() throws Exception {
+//		    	List<IEntity> results = null;
+//		    	String findAll = entity.getClass().getSimpleName() + ".findAll";
+//
+//				Query query = eManager.createNamedQuery(findAll);
+//
+//				if (query != null) {
+//					results = (List<IEntity>) query.getResultList();
+//				}
+//		        return results;
+//		    }
+//		};
+//		
+//		task.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED, 
+//		        new EventHandler<WorkerStateEvent>() {
+//		    @Override
+//		    public void handle(WorkerStateEvent t) {
+//		    	results = task.getValue();
+//		    }
+//		});
+//		return results;
+		
 		List<IEntity> results = null;
-		String findAll = entity.getClass().getSimpleName() + ".findAll";
+    	String findAll = entity.getClass().getSimpleName() + ".findAll";
 
 		Query query = eManager.createNamedQuery(findAll);
 
 		if (query != null) {
 			results = (List<IEntity>) query.getResultList();
 		}
-		return results;
+        return results;
+		
 	}
 
 }
