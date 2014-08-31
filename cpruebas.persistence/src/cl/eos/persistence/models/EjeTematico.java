@@ -10,7 +10,7 @@ import javax.persistence.NamedQuery;
 import cl.eos.interfaces.entity.IEntity;
 
 @Entity(name = "ejetematico")
-@NamedQueries({ @NamedQuery(name = "EjeTematico.findAll", query = "SELECT e FROM ejectematico e") })
+@NamedQueries({ @NamedQuery(name = "EjeTematico.findAll", query = "SELECT e FROM ejetematico e") })
 public class EjeTematico implements IEntity {
 
 	@Id
