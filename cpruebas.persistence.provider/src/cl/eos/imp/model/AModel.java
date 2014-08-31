@@ -29,13 +29,13 @@ public abstract class AModel implements IModel {
 		entities.remove(entity);
 		entities.add(entity);
 	}
-	
+
 	@Override
-	public List<IEntity> getAll(){
-		return null;
+	public List<IEntity> getAll(Class<? extends IEntity> entityClazz) {
+		entities = PersistenceServiceFactory.getPersistenceService().getAll(entityClazz);
+		return entities;
 	}
-	
-	
+
 	@Override
 	public IEntity get(Long id) {
 		IEntity result = null;

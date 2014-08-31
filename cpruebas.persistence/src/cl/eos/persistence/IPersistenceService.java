@@ -11,7 +11,7 @@ public interface IPersistenceService {
 	void update(IEntity entity);
 	void delete(IEntity entity);
 	
-	List<IEntity> getAll(IEntity entity);
+	List<IEntity> getAll(Class<? extends IEntity> entityClazz);
 	
 	void disconnect();
 

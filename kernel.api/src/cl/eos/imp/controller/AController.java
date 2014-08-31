@@ -105,7 +105,7 @@ public abstract class AController implements IController {
 		}
 
 	}
-
+	@Override
 	public IModel getModel() {
 		return model;
 	}

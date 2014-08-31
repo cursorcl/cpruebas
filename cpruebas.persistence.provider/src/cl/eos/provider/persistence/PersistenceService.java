@@ -76,16 +76,43 @@ public class PersistenceService implements IPersistenceService {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<IEntity> getAll(IEntity entity) {
+	public List<IEntity> getAll(final Class<? extends IEntity> entityClazz) {
+		
+//		List<IEntity> results = null;
+//		
+//		final Task<List<IEntity>> task = new Task<List<IEntity>>() {
+//		    @Override protected List<IEntity> call() throws Exception {
+//		    	List<IEntity> results = null;
+//		    	String findAll = entity.getSimpleName() + ".findAll";
+//
+//				Query query = eManager.createNamedQuery(findAll);
+//
+//				if (query != null) {
+//					results = (List<IEntity>) query.getResultList();
+//				}
+//		        return results;
+//		    }
+//		};
+//		
+//		task.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED, 
+//		        new EventHandler<WorkerStateEvent>() {
+//		    @Override
+//		    public void handle(WorkerStateEvent t) {
+//		    	results = task.getValue();
+//		    }
+//		});
+//		return results;
+		
 		List<IEntity> results = null;
-		String findAll = entity.getClass().getSimpleName() + ".findAll";
+    	String findAll = entityClazz.getSimpleName() + ".findAll";
 
 		Query query = eManager.createNamedQuery(findAll);
 
 		if (query != null) {
 			results = (List<IEntity>) query.getResultList();
 		}
-		return results;
+        return results;
+		
 	}
 
 }

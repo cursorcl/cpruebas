@@ -5,6 +5,8 @@ import cl.eos.imp.controller.AController;
 public class PruebasController extends AController {
 
 	public PruebasController() {
+		
+		
 	}
 	
 	
