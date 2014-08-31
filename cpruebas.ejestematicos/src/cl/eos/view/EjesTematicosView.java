@@ -8,7 +8,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
-import cl.eos.persistence.models.EjeTematicos;
+import cl.eos.persistence.models.EjeTematico;
 
 public class EjesTematicosView extends AFormView {
 
@@ -36,7 +36,7 @@ public class EjesTematicosView extends AFormView {
 				String nombres = txtNombres.getText();
 				String tipoPrueba = cmbTipoPrueba.getValue();
 				String asignatura = cmbAsignatura.getValue();
-				EjeTematicos ejetematico = new EjeTematicos();
+				EjeTematico ejetematico = new EjeTematico();
 				ejetematico.setName(nombres);
 				ejetematico.setTipoprueba(tipoPrueba);
 				ejetematico.setAsignatura(asignatura);

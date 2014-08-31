@@ -1,7 +1,13 @@
 package cl.eos.persistence.models;
 
+import javax.persistence.Entity;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+
 import cl.eos.interfaces.entity.IEntity;
 
+@Entity(name = "tipoprueba")
+@NamedQueries({ @NamedQuery(name = "TipoPrueba.findAll", query = "SELECT e FROM tipoprueba e") })
 public class TipoPrueba implements IEntity {
 
 	@Override

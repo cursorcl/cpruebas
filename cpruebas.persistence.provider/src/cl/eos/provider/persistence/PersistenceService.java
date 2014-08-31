@@ -1,9 +1,11 @@
 package cl.eos.provider.persistence;
 
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
 
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.persistence.IPersistenceService;
@@ -62,6 +64,28 @@ public class PersistenceService implements IPersistenceService {
 		if (eFactory != null && eFactory.isOpen()) {
 			eFactory.close();
 		}
+	}
+
+	@Override
+	public void update(IEntity entity) {
+		eManager.getTransaction().begin();
+		eManager.persist(entity);
+		eManager.getTransaction().commit();
+
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<IEntity> getAll(IEntity entity) {
+		List<IEntity> results = null;
+		String findAll = entity.getClass().getSimpleName() + ".findAll";
+
+		Query query = eManager.createNamedQuery(findAll);
+
+		if (query != null) {
+			results = (List<IEntity>) query.getResultList();
+		}
+		return results;
 	}
 
 }

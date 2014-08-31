@@ -4,10 +4,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 
 import cl.eos.interfaces.entity.IEntity;
 
 @Entity(name = "alumno")
+@NamedQueries({ @NamedQuery(name = "Alumno.findAll", query = "SELECT e FROM alumno e") })
 public class Alumno implements IEntity {
 
 	@Id

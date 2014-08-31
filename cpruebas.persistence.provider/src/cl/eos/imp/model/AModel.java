@@ -31,10 +31,11 @@ public abstract class AModel implements IModel {
 	}
 	
 	@Override
-	public List<IEntity> getAll() {
-		return entities;
+	public List<IEntity> getAll(){
+		return null;
 	}
-
+	
+	
 	@Override
 	public IEntity get(Long id) {
 		IEntity result = null;

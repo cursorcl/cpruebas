@@ -7,31 +7,33 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 
 import cl.eos.interfaces.entity.IEntity;
 
 @Entity(name = "prueba")
+@NamedQueries({ @NamedQuery(name = "Prueba.findAll", query = "SELECT e FROM prueba e") })
 public class Prueba implements IEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
-	@Column(length=100)
+
+	@Column(length = 100)
 	private String name;
-	
+
 	private TipoPrueba tipoPrueba;
 	private Curso curso;
 	private Asignatura asignatura;
-	
-	
+
 	private Date fecha;
 	private Integer nroPreguntas;
 	private Integer formas;
 	private Integer alternativas;
-	
+
 	private String responses;
-	
+
 	public TipoPrueba getTipoPrueba() {
 		return tipoPrueba;
 	}
@@ -106,8 +108,7 @@ public class Prueba implements IEntity {
 
 	private Integer nivelEvaluacion;
 	private Integer puntajeBase;
-	
-	
+
 	@Override
 	public Long getId() {
 		return id;
