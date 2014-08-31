@@ -8,6 +8,7 @@ import javafx.scene.control.TextField;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.persistence.models.Alumno;
+import cl.eos.util.Utils;
 
 public class AlumnosView extends AFormView {
 
@@ -27,7 +28,7 @@ public class AlumnosView extends AFormView {
 	private TextField txtAMaterno;
 
 	public AlumnosView() {
-
+		
 	}
 
 	@FXML
@@ -54,6 +55,33 @@ public class AlumnosView extends AFormView {
 	@Override
 	public void onSaved(IEntity otObject) {
 		System.out.println("Elemento grabando:" + otObject.toString());
+	}
+
+	@Override
+	public boolean validate(IEntity otObject) {
+		System.out.println("Validando");
+		boolean valida = true;
+		if (otObject != null) {
+			Alumno alumno = (Alumno) otObject;
+			String strRut = alumno.getRut();
+			if (strRut.length() > 0) {
+				// Creamos un arreglo con el rut y el digito verificador
+				String[] rut_dv = strRut.split("-");
+				// Las partes del rut (numero y dv) deben tener una longitud
+				// positiva
+				if (rut_dv.length == 2) {
+					int rut = Integer.parseInt(rut_dv[0]);
+					char dv = rut_dv[1].charAt(0);
+
+					if (Utils.validarRut(rut, dv)) {
+					//	JOptionPane.showMessageDialog(rootPane, "Rut correcto");
+					} else {
+						//JOptionPane.showMessageDialog(rootPane,						"Rut incorrecto");
+					}
+				}
+			}
+		}
+		return valida;
 	}
 
 }

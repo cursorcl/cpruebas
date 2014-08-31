@@ -6,15 +6,15 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="485.0" prefWidth="687.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.HabilidadesView">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="485.0" prefWidth="687.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.AlumnosView">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
           <Menu mnemonicParsing="false" text="Archivo">
             <items>
-                  <MenuItem fx:id="mnuGrabar" mnemonicParsing="false" text="Grabar" />
-                  <MenuItem id="mnuExportar" fx:id="mnuExportar" mnemonicParsing="false" text="Exportar" />
-              <MenuItem id="mnuCerrar" fx:id="mnuCerrar" mnemonicParsing="false" text="Cerrar" />
+                  <MenuItem id="mnuGrabar" fx:id="mnuGrabar" mnemonicParsing="false" text="Grabar" />
+                  <MenuItem fx:id="mnuExportar" mnemonicParsing="false" text="Exportar" />
+              <MenuItem fx:id="mnuCerrar" mnemonicParsing="false" text="Cerrar" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Edit">
@@ -37,14 +37,34 @@
                <children>
                   <VBox prefHeight="373.0" prefWidth="269.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <TextField id="txtNombre" fx:id="txtNombre" prefHeight="25.0" prefWidth="301.0" promptText="Nombre">
+                        <ComboBox id="cmbColegios" prefHeight="23.0" prefWidth="301.0" promptText="Colegio">
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="10.0" right="10.0" top="10.0" />
+                           </VBox.margin>
+                        </ComboBox>
+                        <ComboBox id="cmbCursos" prefHeight="23.0" prefWidth="302.0" promptText="Curso">
+                           <VBox.margin>
+                              <Insets left="10.0" right="10.0" />
+                           </VBox.margin>
+                        </ComboBox>
+                        <TextField id="txtRut" fx:id="txtRut" prefHeight="25.0" prefWidth="301.0" promptText="Rut">
                            <VBox.margin>
                               <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                            </VBox.margin>
                         </TextField>
-                        <TextField id="txtDescripcion" fx:id="txtDescripcion" promptText="Descripción">
+                        <TextField id="txtAPaterno" fx:id="txtAPaterno" prefHeight="25.0" prefWidth="301.0" promptText="A. Paterno">
                            <VBox.margin>
-                              <Insets left="10.0" right="10.0" />
+                              <Insets bottom="5.0" left="10.0" right="10.0" />
+                           </VBox.margin>
+                        </TextField>
+                        <TextField id="txtAMaterno" fx:id="txtAMaterno" prefHeight="25.0" prefWidth="301.0" promptText="A.Materno">
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="10.0" right="10.0" />
+                           </VBox.margin>
+                        </TextField>
+                        <TextField id="txtNombres" fx:id="txtNombres" prefHeight="25.0" prefWidth="301.0" promptText="Nombres">
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="10.0" right="10.0" />
                            </VBox.margin>
                         </TextField>
                      </children>
@@ -57,10 +77,13 @@
                      <center>
                         <ScrollPane prefHeight="311.0" prefWidth="370.0" BorderPane.alignment="CENTER">
                            <content>
-                              <TableView id="tblHabilidades" prefHeight="400.0" prefWidth="439.0">
+                              <TableView>
                                 <columns>
-                                  <TableColumn prefWidth="194.0" text="Nombre" />
-                                    <TableColumn prefWidth="151.0" text="Descripción" />
+                                  <TableColumn prefWidth="75.0" text="Rut" />
+                                  <TableColumn prefWidth="75.0" text="A.Paterno" />
+                                    <TableColumn prefWidth="75.0" text="A.Materno" />
+                                    <TableColumn prefWidth="133.0" text="Nombres" />
+                                    <TableColumn prefWidth="87.0" text="Curso" />
                                 </columns>
                                  <contextMenu>
                                     <ContextMenu>
