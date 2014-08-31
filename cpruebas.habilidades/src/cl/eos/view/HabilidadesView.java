@@ -7,7 +7,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
-import cl.eos.persistence.models.Alumno;
+import cl.eos.persistence.models.Habilidad;
 
 public class HabilidadesView extends AFormView {
 
@@ -15,16 +15,11 @@ public class HabilidadesView extends AFormView {
 	private MenuItem mnuGrabar;
 
 	@FXML
-	private TextField txtRut;
+	private TextField txtNombre;
 
 	@FXML
-	private TextField txtNombres;
+	private TextField txtDescripcion;
 
-	@FXML
-	private TextField txtAPaterno;
-
-	@FXML
-	private TextField txtAMaterno;
 
 	public HabilidadesView() {
 
@@ -35,25 +30,19 @@ public class HabilidadesView extends AFormView {
 		mnuGrabar.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
-				String rut = txtRut.getText();
-				String nombres = txtNombres.getText();
-				String aPaterno = txtAPaterno.getText();
-				String aMaterno = txtAMaterno.getText();
-				Alumno alumno = new Alumno();
-				alumno.setId(0L);
-				alumno.setRut(rut);
-				alumno.setName(nombres);
-				alumno.setPaterno(aPaterno);
-				alumno.setMaterno(aMaterno);
-
-				controller.save(alumno);
+				String nombre = txtNombre.getText();
+				String descripcion = txtDescripcion.getText();
+				Habilidad habilidad = new Habilidad();
+				habilidad.setName(nombre);
+				habilidad.setDescripcion(descripcion);
+				controller.save(habilidad);
 			}
 		});
 	}
 
 	@Override
 	public void onSaved(IEntity otObject) {
-		System.out.println("Elemento grabajdo:" + otObject.toString());
+		System.out.println("Elemento grabando:" + otObject.toString());
 	}
 
 }

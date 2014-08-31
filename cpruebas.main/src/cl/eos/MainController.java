@@ -72,5 +72,29 @@ public class MainController {
 					pnlContainer.getChildren().setAll((Pane)activator.getPane());
 			}
 		});
+		
+		mnuColegios.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+					IActivator activator = new ColegiosActivator();
+					pnlContainer.getChildren().setAll((Pane)activator.getPane());
+			}
+		});
+		
+		mnuHabilidades.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+					IActivator activator = new HabilidadesActivator();
+					pnlContainer.getChildren().setAll((Pane)activator.getPane());
+			}
+		});
+		
+		mnuEjesTematicos.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+					IActivator activator = new EjesTematicosActivator();
+					pnlContainer.getChildren().setAll((Pane)activator.getPane());
+			}
+		});
 	}
 }

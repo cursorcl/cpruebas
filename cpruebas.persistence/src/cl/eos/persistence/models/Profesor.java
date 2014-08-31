@@ -15,9 +15,7 @@ public class Profesor implements IEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
-
-	
+	private Long id;	
 	private String rut;
 	private String name;
 	private String paterno;
