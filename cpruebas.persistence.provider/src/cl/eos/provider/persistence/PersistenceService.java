@@ -2,10 +2,6 @@ package cl.eos.provider.persistence;
 
 import java.util.List;
 
-import javafx.concurrent.Task;
-import javafx.concurrent.WorkerStateEvent;
-import javafx.event.EventHandler;
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -80,14 +76,14 @@ public class PersistenceService implements IPersistenceService {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<IEntity> getAll(final IEntity entity) {
+	public List<IEntity> getAll(final Class<? extends IEntity> entityClazz) {
 		
 //		List<IEntity> results = null;
 //		
 //		final Task<List<IEntity>> task = new Task<List<IEntity>>() {
 //		    @Override protected List<IEntity> call() throws Exception {
 //		    	List<IEntity> results = null;
-//		    	String findAll = entity.getClass().getSimpleName() + ".findAll";
+//		    	String findAll = entity.getSimpleName() + ".findAll";
 //
 //				Query query = eManager.createNamedQuery(findAll);
 //
@@ -108,7 +104,7 @@ public class PersistenceService implements IPersistenceService {
 //		return results;
 		
 		List<IEntity> results = null;
-    	String findAll = entity.getClass().getSimpleName() + ".findAll";
+    	String findAll = entityClazz.getSimpleName() + ".findAll";
 
 		Query query = eManager.createNamedQuery(findAll);
 

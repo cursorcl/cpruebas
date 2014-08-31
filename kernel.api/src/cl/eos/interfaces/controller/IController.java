@@ -3,6 +3,7 @@ package cl.eos.interfaces.controller;
 import java.util.List;
 
 import cl.eos.interfaces.entity.IEntity;
+import cl.eos.interfaces.model.IModel;
 import cl.eos.interfaces.view.IView;
 
 public interface IController {
@@ -42,6 +43,13 @@ public interface IController {
 	void select(IEntity entity);
 
 	/**
+	 * Obtiene el modelo.
+	 * 
+	 * @return Modelo de la funcion.
+	 */
+	IModel getModel();
+
+	/**
 	 * Agrega una vista, no se valida si la vista esta repetida.
 	 * 
 	 * @param view
@@ -67,7 +75,7 @@ public interface IController {
 	void notifyFound(IEntity entity);
 
 	void notifySaved(IEntity entity);
-	
+
 	void notifyDeleted(IEntity entity);
 
 	void notifyChangeStatus(Object status);

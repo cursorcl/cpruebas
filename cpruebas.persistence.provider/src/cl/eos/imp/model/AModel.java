@@ -31,8 +31,9 @@ public abstract class AModel implements IModel {
 	}
 
 	@Override
-	public List<IEntity> getAll(IEntity entity) {
-		return PersistenceServiceFactory.getPersistenceService().getAll(entity);
+	public List<IEntity> getAll(Class<? extends IEntity> entityClazz) {
+		entities = PersistenceServiceFactory.getPersistenceService().getAll(entityClazz);
+		return entities;
 	}
 
 	@Override
