@@ -1,8 +1,7 @@
 package cl.eos.interfaces.model;
 
-import java.util.List;
-
 import cl.eos.interfaces.entity.IEntity;
+import cl.eos.interfaces.entity.IPersistenceListener;
 
 /**
  * Interface de un modelo.
@@ -20,7 +19,7 @@ public interface IModel {
 
 	void update(IEntity entity);
 
-	List<IEntity> getAll(Class<? extends IEntity> entityClazz);
+	void findAll(Class<? extends IEntity> entityClazz, IPersistenceListener listener);
 
 	IEntity get(IEntity entity);
 

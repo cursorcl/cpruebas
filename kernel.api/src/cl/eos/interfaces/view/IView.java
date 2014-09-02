@@ -92,6 +92,13 @@ public interface IView {
 	 *            El estado informado.
 	 */
 	void onChangeStatus(Object status);
+	
+	/**
+	 * Donde el controlador notifica a las vistas que le ha llegado informacion desde 
+	 * la persistencia.
+	 * @param list
+	 */
+	void onDataArrived(List<IEntity> list);
 
 	Dimension getPreferredSize();
 

@@ -5,15 +5,24 @@ import java.util.List;
 
 import cl.eos.interfaces.controller.IController;
 import cl.eos.interfaces.entity.IEntity;
+import cl.eos.interfaces.entity.IPersistenceListener;
 import cl.eos.interfaces.model.IModel;
 import cl.eos.interfaces.view.IView;
+import cl.eos.intrfaces.ot.IObjectTransport;
 
-public abstract class AController implements IController {
+public abstract class AController implements IController, IPersistenceListener {
 
 	protected List<IView> views;
 	protected IEntity selectedEntity;
 
 	protected IModel model;
+
+	public AController() {
+		initialize();
+	}
+
+	@Override
+	public abstract void initialize();
 
 	@Override
 	public void save(IEntity entity) {
@@ -103,11 +112,22 @@ public abstract class AController implements IController {
 				view.onChangeStatus(status);
 			}
 		}
-
 	}
+	
 	@Override
 	public IModel getModel() {
 		return model;
 	}
 
+	@Override
+	public void onFindAllFinished(List<IEntity> list) {
+		if (views != null) {
+			for (IView view : views) {
+				view.onDataArrived(list);
+			}
+		}	
+		
+	}
+	
+	
 }

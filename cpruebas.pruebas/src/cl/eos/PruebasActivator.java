@@ -21,6 +21,7 @@ public class PruebasActivator extends AActivator{
 			pane = (Parent) fxmlLoader.load(url.openStream());
 			view = fxmlLoader.getController();
 			controller.addView(view);
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}	}

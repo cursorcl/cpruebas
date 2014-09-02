@@ -8,6 +8,13 @@ import cl.eos.interfaces.view.IView;
 
 public interface IController {
 
+	/**
+	 * Este metodo debe ser implementado por todos los controladores.
+	 * Se puede utilizar para pedir la informacion desde el repositorio.
+	 */
+	void initialize();
+	
+	
 	void add(IEntity entity);
 
 	/**
@@ -77,6 +84,6 @@ public interface IController {
 	void notifySaved(IEntity entity);
 
 	void notifyDeleted(IEntity entity);
-
+	
 	void notifyChangeStatus(Object status);
 }

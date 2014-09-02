@@ -3,7 +3,7 @@ package cl.eos.imp.view;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.interfaces.view.IFormView;
 
-public class AFormView extends AView implements IFormView {
+public abstract class AFormView extends AView implements IFormView {
 
 	@Override
 	public void save(IEntity otObject) {

@@ -10,4 +10,10 @@ public class EjesTematicosContoller extends AController {
 		model = new EjesTematicosModel();
 		
 	}
+
+	@Override
+	public void initialize() {
+		// TODO Auto-generated method stub
+		
+	}
 }

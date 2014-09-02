@@ -2,12 +2,17 @@ package cl.eos.provider.persistence;
 
 import java.util.List;
 
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.EventHandler;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
 import cl.eos.interfaces.entity.IEntity;
+import cl.eos.interfaces.entity.IPersistenceListener;
 import cl.eos.persistence.IPersistenceService;
 
 /**
@@ -76,43 +81,29 @@ public class PersistenceService implements IPersistenceService {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<IEntity> getAll(final Class<? extends IEntity> entityClazz) {
-		
-//		List<IEntity> results = null;
-//		
-//		final Task<List<IEntity>> task = new Task<List<IEntity>>() {
-//		    @Override protected List<IEntity> call() throws Exception {
-//		    	List<IEntity> results = null;
-//		    	String findAll = entity.getSimpleName() + ".findAll";
-//
-//				Query query = eManager.createNamedQuery(findAll);
-//
-//				if (query != null) {
-//					results = (List<IEntity>) query.getResultList();
-//				}
-//		        return results;
-//		    }
-//		};
-//		
-//		task.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED, 
-//		        new EventHandler<WorkerStateEvent>() {
-//		    @Override
-//		    public void handle(WorkerStateEvent t) {
-//		    	results = task.getValue();
-//		    }
-//		});
-//		return results;
-		
-		List<IEntity> results = null;
-    	String findAll = entityClazz.getSimpleName() + ".findAll";
+	public void findAll(final Class<? extends IEntity> entityClazz, final IPersistenceListener listener) {
 
-		Query query = eManager.createNamedQuery(findAll);
+		final Task<List<IEntity>> task = new Task<List<IEntity>>() {
+			@Override
+			protected List<IEntity> call() throws Exception {
+				List<IEntity> lresults = null;
+				String findAll = entityClazz.getSimpleName() + ".findAll";
 
-		if (query != null) {
-			results = (List<IEntity>) query.getResultList();
-		}
-        return results;
-		
+				Query query = eManager.createNamedQuery(findAll);
+
+				if (query != null) {
+					lresults = (List<IEntity>) query.getResultList();
+				}
+				return lresults;
+			}
+		};
+		task.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED,
+				new EventHandler<WorkerStateEvent>() {
+					@Override
+					public void handle(WorkerStateEvent t) {
+						listener.onFindAllFinished(task.getValue());
+					}
+				});
 	}
 
 }

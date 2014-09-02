@@ -10,4 +10,10 @@ public class ColegiosContoller extends AController {
 		model = new ColegiosModel();
 		
 	}
+
+	@Override
+	public void initialize() {
+		// TODO Auto-generated method stub
+		
+	}
 }

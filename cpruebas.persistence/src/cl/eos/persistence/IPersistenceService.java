@@ -1,8 +1,7 @@
 package cl.eos.persistence;
 
-import java.util.List;
-
 import cl.eos.interfaces.entity.IEntity;
+import cl.eos.interfaces.entity.IPersistenceListener;
 
 public interface IPersistenceService {
 
@@ -11,7 +10,7 @@ public interface IPersistenceService {
 	void update(IEntity entity);
 	void delete(IEntity entity);
 	
-	List<IEntity> getAll(Class<? extends IEntity> entityClazz);
+	void findAll(Class<? extends IEntity> entityClazz, final IPersistenceListener listener);
 	
 	void disconnect();
 

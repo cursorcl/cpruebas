@@ -10,4 +10,10 @@ public class HabilidadesContoller extends AController {
 		model = new HabilidadesModel();
 		
 	}
+
+	@Override
+	public void initialize() {
+		// TODO Auto-generated method stub
+		
+	}
 }

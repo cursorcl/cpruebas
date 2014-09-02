@@ -9,9 +9,7 @@ import cl.eos.interfaces.controller.IController;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.interfaces.view.IView;
 
-public class AView implements IView {
-
-	
+public  abstract class AView implements IView {
 	private String title;
 	protected IController controller;
 	protected JPanel pane;
@@ -111,6 +109,12 @@ public class AView implements IView {
 	@Override
 	public Object getPane() {
 		return pane;
+	}
+
+	@Override
+	public void onDataArrived(List<IEntity> list) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

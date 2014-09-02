@@ -113,4 +113,10 @@ public class AView implements IView {
 		this.pane = pane;
 	}
 
+	@Override
+	public void onDataArrived(List<IEntity> list) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

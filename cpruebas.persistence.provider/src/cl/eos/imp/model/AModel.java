@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cl.eos.interfaces.entity.IEntity;
+import cl.eos.interfaces.entity.IPersistenceListener;
 import cl.eos.interfaces.model.IModel;
 import cl.eos.provider.persistence.PersistenceServiceFactory;
 
@@ -31,9 +32,8 @@ public abstract class AModel implements IModel {
 	}
 
 	@Override
-	public List<IEntity> getAll(Class<? extends IEntity> entityClazz) {
-		entities = PersistenceServiceFactory.getPersistenceService().getAll(entityClazz);
-		return entities;
+	public void findAll(Class<? extends IEntity> entityClazz, IPersistenceListener listener) {
+		PersistenceServiceFactory.getPersistenceService().findAll(entityClazz, listener);
 	}
 
 	@Override
@@ -61,5 +61,4 @@ public abstract class AModel implements IModel {
 		}
 		return result;
 	}
-
 }
