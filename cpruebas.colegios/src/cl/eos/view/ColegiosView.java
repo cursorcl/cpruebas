@@ -20,6 +20,9 @@ public class ColegiosView extends AFormView {
 
 	@FXML
 	private TextField txtNombre;
+	
+	@FXML
+	private TextField txtDireccion;
 
 	@FXML
 	private ImageView imgColegio;
