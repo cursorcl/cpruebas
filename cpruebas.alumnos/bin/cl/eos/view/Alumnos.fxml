@@ -67,6 +67,11 @@
                               <Insets bottom="5.0" left="10.0" right="10.0" />
                            </VBox.margin>
                         </TextField>
+                        <TextField fx:id="txtDireccion" promptText="DIrección">
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                           </VBox.margin>
+                        </TextField>
                      </children>
                   </VBox>
                </children>
@@ -77,19 +82,19 @@
                      <center>
                         <ScrollPane prefHeight="311.0" prefWidth="370.0" BorderPane.alignment="CENTER">
                            <content>
-                              <TableView>
+                              <TableView fx:id="tblAlumnos">
                                 <columns>
-                                  <TableColumn prefWidth="75.0" text="Rut" />
-                                  <TableColumn prefWidth="75.0" text="A.Paterno" />
-                                    <TableColumn prefWidth="75.0" text="A.Materno" />
-                                    <TableColumn prefWidth="133.0" text="Nombres" />
-                                    <TableColumn prefWidth="87.0" text="Curso" />
+                                  <TableColumn id="colRut" fx:id="colRut" prefWidth="75.0" text="Rut" />
+                                  <TableColumn id="colPaterno" fx:id="colPaterno" prefWidth="75.0" text="A.Paterno" />
+                                    <TableColumn id="colMaterno" fx:id="colMaterno" prefWidth="75.0" text="A.Materno" />
+                                    <TableColumn id="colName" fx:id="colName" prefWidth="133.0" text="Nombres" />
+                                    <TableColumn id="colCurso" fx:id="colCurso" prefWidth="87.0" text="Curso" />
                                 </columns>
                                  <contextMenu>
                                     <ContextMenu>
                                       <items>
-                                        <MenuItem mnemonicParsing="false" text="Modificar" />
-                                          <MenuItem mnemonicParsing="false" text="Eliminar" />
+                                        <MenuItem fx:id="mnItemModificar" mnemonicParsing="false" text="Modificar" />
+                                          <MenuItem fx:id="mnItemEliminar" mnemonicParsing="false" text="Eliminar" />
                                       </items>
                                     </ContextMenu>
                                  </contextMenu>

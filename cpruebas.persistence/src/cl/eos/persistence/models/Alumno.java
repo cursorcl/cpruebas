@@ -16,12 +16,11 @@ public class Alumno implements IEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-
-	
 	private String rut;
 	private String name;
 	private String paterno;
 	private String materno;
+	private String direccion;
 
 	@Override
 	public Long getId() {
@@ -72,4 +71,13 @@ public class Alumno implements IEntity {
 		this.materno = materno;
 	}
 
+	public String getDireccion() {
+		return direccion;
+	}
+
+	public void setDireccion(String direccion) {
+		this.direccion = direccion;
+	}
+
+	
 }
