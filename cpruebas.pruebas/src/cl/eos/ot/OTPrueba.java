@@ -22,6 +22,7 @@ public class OTPrueba {
 
 	public OTPrueba() {
 	}
+
 	
 	public Long getId() {
 		return id;
