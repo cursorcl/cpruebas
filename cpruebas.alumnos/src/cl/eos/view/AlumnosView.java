@@ -7,6 +7,8 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
@@ -40,6 +42,9 @@ public class AlumnosView extends AFormView {
 
 	@FXML
 	private TextField txtDireccion;
+	
+	@FXML
+	private Label lblError;
 
 	@FXML
 	private TableView<OTAlumno> tblAlumnos;
@@ -78,20 +83,22 @@ public class AlumnosView extends AFormView {
 		mnuGrabar.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
-				String rut = txtRut.getText();
-				String nombres = txtNombres.getText();
-				String aPaterno = txtAPaterno.getText();
-				String aMaterno = txtAMaterno.getText();
-				String direccion = txtDireccion.getText();
-
-				Alumno alumno = new Alumno();
-				alumno.setId(0L);
-				alumno.setRut(rut);
-				alumno.setName(nombres);
-				alumno.setPaterno(aPaterno);
-				alumno.setMaterno(aMaterno);
-				alumno.setDireccion(direccion);
-				save(alumno);
+				
+				if (validate()) {
+					lblError.getStyleClass().add("good");
+					lblError.setText(" ");
+					Alumno alumno = new Alumno();
+					alumno.setRut(txtRut.getText());
+					alumno.setName(txtNombres.getText());
+					alumno.setPaterno(txtAPaterno.getText());
+					alumno.setMaterno(txtAMaterno.getText());
+					alumno.setDireccion(txtDireccion.getText());
+					save(alumno);
+				}
+				else{
+					lblError.getStyleClass().add("bad");
+					lblError.setText("Corregir campos destacados en color rojo");
+				}
 			}
 		});
 
@@ -173,61 +180,65 @@ public class AlumnosView extends AFormView {
 	}
 
 	@Override
-	public boolean validate(IEntity otObject) {
+	public boolean validate() {
 		boolean valida = false;
-		if (otObject != null) 
-		{
-			Alumno alumno = (Alumno) otObject;
-			//Valida rut.
-			valida = validaRut(alumno.getRut());
-			// valida nombre			
-			valida = validaNombre(alumno.getName());			
-			// valida paterno			
-			valida = validaAPaterno(alumno.getPaterno());
-			// valida materno			
-			valida = validaAMaterno(alumno.getMaterno());
-		}
+		// Valida rut.
+		valida = validaRut();
+		// valida nombre
+		valida = validaNombre();
+		// valida paterno
+		valida = validaAPaterno();
+		// valida materno
+		valida = validaAMaterno();
+
 		return valida;
 	}
 
-	private boolean validaRut(String strRut) {
+	public void removeAllStyle(Node n){
+	   n.getStyleClass().removeAll("bad","med","good","best");
+	}
+	
+	private boolean validaRut() {
 		boolean valida;
-		if (strRut.length() > 0) {
+		removeAllStyle(txtRut);
+		String strRut = txtRut.getText();
+		if (strRut .length() > 0) {
 			if (Utils.validarRut(strRut)) {
 				valida = true;
-			} else {				
+			} else {
+				txtRut.getStyleClass().add("bad");
 				valida = false;
 			}
-		}
-		else
-		{
+		} else {
+			txtRut.getStyleClass().add("bad");
 			valida = false;
 		}
 		return valida;
 	}
 
-	private boolean validaNombre(String strNombre) {
+	private boolean validaNombre() {
 		boolean valida = true;
-		if (strNombre==null || strNombre.equals(""))
-		{
+		Object strNombre = txtNombres.getText();
+		if (strNombre == null || strNombre.equals("")) {
+			txtRut.getStyleClass().add("bad");
 			valida = false;
 		}
 		return valida;
 	}
-	
-	private boolean validaAPaterno(String strPaterno) {
+
+	private boolean validaAPaterno() {
 		boolean valida = true;
-		if (strPaterno==null || strPaterno.equals(""))
-		{
+		String strPaterno = txtAPaterno.getText();
+		if (strPaterno == null || strPaterno.equals("")) {
 			valida = false;
 		}
 		return valida;
 	}
-	
-	private boolean validaAMaterno(String strMaterno) {
+
+	private boolean validaAMaterno() {
 		boolean valida = true;
-		if (strMaterno==null|| strMaterno.equals(""))
-		{
+		String strMaterno =txtAMaterno.getText();
+		if (strMaterno == null || strMaterno.equals("")) {
 			valida = false;
 		}
 		return valida;
