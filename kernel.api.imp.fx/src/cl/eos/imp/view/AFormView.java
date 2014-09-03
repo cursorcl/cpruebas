@@ -7,14 +7,14 @@ public abstract class AFormView extends AView implements IFormView {
 
 	@Override
 	public void save(IEntity otObject) {
-		if (controller != null && validate(otObject)) {
+		if (controller != null && validate()) {
 			controller.save(otObject);
 		}
 	}
 
 	@Override
 	public void delete(IEntity otObject) {
-		if (controller != null && validate(otObject)) {
+		if (controller != null && validate()) {
 			controller.save(otObject);
 		}
 	}
@@ -27,8 +27,7 @@ public abstract class AFormView extends AView implements IFormView {
 	}
 
 	@Override
-	public boolean validate(IEntity otObject) {
+	public boolean validate() {
 		return true;
 	}
-
 }

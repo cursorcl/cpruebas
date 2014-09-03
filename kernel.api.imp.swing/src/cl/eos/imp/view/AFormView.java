@@ -1,9 +1,11 @@
 package cl.eos.imp.view;
 
+import java.util.List;
+
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.interfaces.view.IFormView;
 
-public class AFormView extends AView implements IFormView {
+public abstract class AFormView extends AView implements IFormView {
 
 	@Override
 	public void save(IEntity otObject) {
@@ -30,5 +32,49 @@ public class AFormView extends AView implements IFormView {
 	public boolean validate(IEntity otObject) {
 		return true;
 	}
+
+	@Override
+	public void onSaving(IEntity entity) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onSaved(IEntity entity) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onDeleting(IEntity entity) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onDeleted(IEntity entity) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onSelected(IEntity entity) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onFound(IEntity entity) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onDataArrived(List<IEntity> list) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
 
 }

@@ -24,24 +24,6 @@ public class AView implements IView {
 	}
 
 	@Override
-	public void onSaved(IEntity otObject) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void onDeleted(IEntity otObject) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void onSelected(IEntity otObject) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public void setController(IController controller) {
 		this.controller = controller;
 		controller.addView(this);
@@ -52,25 +34,6 @@ public class AView implements IView {
 		return this.controller;
 	}
 
-	@Override
-	public void onSaving(IEntity otObject) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void onDeleting(IEntity otObject) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void onFound(IEntity entity) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public void addView(IView view) {
 		// TODO Auto-generated method stub
 
@@ -114,9 +77,44 @@ public class AView implements IView {
 	}
 
 	@Override
-	public void onDataArrived(List<IEntity> list) {
+	public void onSaving(IEntity entity) {
 		// TODO Auto-generated method stub
 		
 	}
 
+	@Override
+	public void onSaved(IEntity entity) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onDeleting(IEntity entity) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onDeleted(IEntity entity) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onSelected(IEntity entity) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onFound(IEntity entity) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onDataArrived(List<IEntity> list) {
+		// TODO Auto-generated method stub
+		
+	}
 }

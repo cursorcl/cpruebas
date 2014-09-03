@@ -25,24 +25,6 @@ public  abstract class AView implements IView {
 	}
 
 	@Override
-	public void onSaved(IEntity otObject) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void onDeleted(IEntity otObject) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void onSelected(IEntity otObject) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public void setController(IController controller) {
 		this.controller = controller;
 		controller.addView(this);
@@ -51,24 +33,6 @@ public  abstract class AView implements IView {
 	@Override
 	public IController getController() {
 		return this.controller;
-	}
-
-	@Override
-	public void onSaving(IEntity otObject) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onDeleting(IEntity otObject) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onFound(IEntity entity) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -109,12 +73,6 @@ public  abstract class AView implements IView {
 	@Override
 	public Object getPane() {
 		return pane;
-	}
-
-	@Override
-	public void onDataArrived(List<IEntity> list) {
-		// TODO Auto-generated method stub
-		
 	}
 	
 }

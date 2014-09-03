@@ -42,6 +42,19 @@ public interface IView {
 
 	List<IView> getViews();
 
+	void setController(IController controller);
+
+	IController getController();
+
+	/**
+	 * Notificacion de cambios de estado que puedan interesar a la HMI. La HMI
+	 * espera uno o más estados especificos.
+	 * 
+	 * @param status
+	 *            El estado informado.
+	 */
+	void onChangeStatus(Object status);
+
 	/**
 	 * Metodo llamado por el controlador cuando se ha enviado a grabar el
 	 * objeto.
@@ -72,26 +85,15 @@ public interface IView {
 	void onDeleted(IEntity entity);
 
 	void onSelected(IEntity entity);
-
-	void setController(IController controller);
-
-	IController getController();
-
+	
+	
 	/**
 	 * Respuesta a la solicitud de busquda.
 	 * 
 	 * @param entity
 	 */
 	void onFound(IEntity entity);
-
-	/**
-	 * Notificacion de cambios de estado que puedan interesar a la HMI. La HMI
-	 * espera uno o más estados especificos.
-	 * 
-	 * @param status
-	 *            El estado informado.
-	 */
-	void onChangeStatus(Object status);
+	
 	
 	/**
 	 * Donde el controlador notifica a las vistas que le ha llegado informacion desde 
@@ -99,7 +101,7 @@ public interface IView {
 	 * @param list
 	 */
 	void onDataArrived(List<IEntity> list);
-
+	
 	Dimension getPreferredSize();
 
 	Object getPane();

@@ -7,7 +7,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="485.0" prefWidth="687.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.AlumnosView">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="485.0" prefWidth="939.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.AlumnosView">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
@@ -32,119 +32,115 @@
       </MenuBar>
    </top>
    <center>
-      <SplitPane dividerPositions="0.3343065693430657" prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <SplitPane prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <items>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-               <children>
-                  <VBox prefHeight="373.0" prefWidth="269.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <children>
-                        <TextField promptText="Nombre Prueba">
-                           <VBox.margin>
-                              <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
-                           </VBox.margin>
-                        </TextField>
-                        <ComboBox id="cmbColegios" prefHeight="23.0" prefWidth="301.0" promptText="Tipo prueba">
-                           <VBox.margin>
-                              <Insets bottom="5.0" left="10.0" right="10.0" top="10.0" />
-                           </VBox.margin>
-                        </ComboBox>
-                        <ComboBox id="cmbCursos" prefHeight="23.0" prefWidth="302.0" promptText="Profesor">
-                           <VBox.margin>
-                              <Insets bottom="5.0" left="10.0" right="10.0" />
-                           </VBox.margin>
-                        </ComboBox>
-                        <ComboBox prefHeight="25.0" prefWidth="208.0" promptText="Curso">
-                           <VBox.margin>
-                              <Insets bottom="5.0" left="10.0" right="10.0" />
-                           </VBox.margin>
-                        </ComboBox>
-                        <ComboBox prefHeight="25.0" prefWidth="205.0" promptText="Asignatura">
-                           <VBox.margin>
-                              <Insets bottom="5.0" left="10.0" right="10.0" />
-                           </VBox.margin>
-                        </ComboBox>
-                        <DatePicker prefHeight="25.0" prefWidth="205.0" promptText="Fecha">
-                           <VBox.margin>
-                              <Insets bottom="5.0" left="10.0" right="10.0" />
-                           </VBox.margin>
-                        </DatePicker>
-                        <BigDecimalField prefHeight="27.0" prefWidth="220.0" promptText="Número Preguntas">
-                           <VBox.margin>
-                              <Insets bottom="5.0" left="10.0" right="10.0" />
-                           </VBox.margin>
-                        </BigDecimalField>
-                        <BigDecimalField promptText="Formas">
-                           <VBox.margin>
-                              <Insets bottom="5.0" left="10.0" right="10.0" />
-                           </VBox.margin>
-                        </BigDecimalField>
-                        <BigDecimalField promptText="Alternativas">
-                           <VBox.margin>
-                              <Insets bottom="5.0" left="10.0" right="10.0" />
-                           </VBox.margin>
-                        </BigDecimalField>
-                        <BigDecimalField promptText="Nivel Evaluación">
-                           <VBox.margin>
-                              <Insets bottom="5.0" left="10.0" right="10.0" />
-                           </VBox.margin>
-                        </BigDecimalField>
-                        <BigDecimalField promptText="Pje. base pregunta correcta">
-                           <VBox.margin>
-                              <Insets bottom="5.0" left="10.0" right="10.0" />
-                           </VBox.margin>
-                        </BigDecimalField>
-                     </children>
-                  </VBox>
-               </children>
-            </AnchorPane>
             <StackPane>
                <children>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-                     <children>
-                        <BorderPane prefHeight="459.0" prefWidth="370.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                           <center>
-                              <ScrollPane prefHeight="311.0" prefWidth="370.0" BorderPane.alignment="CENTER">
-                                 <content>
-                                    <TableView>
-                                      <columns>
-                                        <TableColumn prefWidth="75.0" text="Rut" />
-                                        <TableColumn prefWidth="75.0" text="A.Paterno" />
-                                          <TableColumn prefWidth="75.0" text="A.Materno" />
-                                          <TableColumn prefWidth="133.0" text="Nombres" />
-                                          <TableColumn prefWidth="87.0" text="Curso" />
-                                      </columns>
-                                       <contextMenu>
-                                          <ContextMenu>
-                                            <items>
-                                              <MenuItem mnemonicParsing="false" text="Modificar" />
-                                                <MenuItem mnemonicParsing="false" text="Eliminar" />
-                                            </items>
-                                          </ContextMenu>
-                                       </contextMenu>
-                                       <columnResizePolicy>
-                                          <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                                       </columnResizePolicy>
-                                    </TableView>
-                                 </content>
-                              </ScrollPane>
-                           </center>
-                           <top>
-                              <AnchorPane prefHeight="53.0" prefWidth="370.0" BorderPane.alignment="CENTER">
-                                 <children>
-                                    <TextField layoutX="272.0" layoutY="15.0" prefHeight="23.0" prefWidth="167.0" promptText="Buscar" />
-                                 </children>
-                              </AnchorPane>
-                           </top>
-                           <bottom>
-                              <Pagination prefHeight="42.0" prefWidth="244.0" BorderPane.alignment="CENTER" />
-                           </bottom>
-                        </BorderPane>
-                     </children>
-                  </AnchorPane>
-                  <AnchorPane prefHeight="200.0" prefWidth="200.0" />
+                  <BorderPane prefHeight="459.0" prefWidth="370.0">
+                     <center>
+                        <ScrollPane prefHeight="311.0" prefWidth="370.0" BorderPane.alignment="CENTER">
+                           <content>
+                              <TableView prefHeight="400.0" prefWidth="696.0">
+                                <columns>
+                                  <TableColumn text="Fecha" />
+                                    <TableColumn prefWidth="152.0" text="Nombre" />
+                                  <TableColumn prefWidth="145.0" text="Asignatura" />
+                                    <TableColumn prefWidth="185.0" text="Profesor" />
+                                    <TableColumn prefWidth="55.0" text="Forma" />
+                                    <TableColumn prefWidth="71.0" text="Preguntas" />
+                                </columns>
+                                 <contextMenu>
+                                    <ContextMenu>
+                                      <items>
+                                        <MenuItem mnemonicParsing="false" text="Modificar" />
+                                          <MenuItem mnemonicParsing="false" text="Eliminar" />
+                                      </items>
+                                    </ContextMenu>
+                                 </contextMenu>
+                              </TableView>
+                           </content>
+                        </ScrollPane>
+                     </center>
+                     <top>
+                        <AnchorPane prefHeight="53.0" prefWidth="370.0" BorderPane.alignment="CENTER">
+                           <children>
+                              <TextField layoutX="417.0" layoutY="15.0" prefHeight="23.0" prefWidth="186.0" promptText="Buscar" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="18.0" AnchorPane.topAnchor="15.0" />
+                           </children>
+                        </AnchorPane>
+                     </top>
+                     <bottom>
+                        <Pagination prefHeight="42.0" prefWidth="244.0" BorderPane.alignment="CENTER" />
+                     </bottom>
+                  </BorderPane>
                </children>
             </StackPane>
         </items>
       </SplitPane>
    </center>
+   <left>
+      <VBox prefHeight="333.0" prefWidth="222.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label prefHeight="15.0" prefWidth="201.0" text="Label">
+               <VBox.margin>
+                  <Insets bottom="5.0" left="10.0" right="5.0" top="10.0" />
+               </VBox.margin>
+            </Label>
+            <ComboBox id="cmbColegios" prefHeight="23.0" prefWidth="301.0" promptText="Tipo prueba">
+               <VBox.margin>
+                  <Insets bottom="5.0" left="10.0" right="10.0" top="10.0" />
+               </VBox.margin>
+            </ComboBox>
+            <ComboBox prefHeight="25.0" prefWidth="294.0" promptText="Asignatura">
+               <VBox.margin>
+                  <Insets bottom="5.0" left="10.0" right="10.0" />
+               </VBox.margin>
+            </ComboBox>
+            <BigDecimalField promptText="Formas">
+               <VBox.margin>
+                  <Insets bottom="5.0" left="10.0" right="10.0" />
+               </VBox.margin>
+            </BigDecimalField>
+            <TextField promptText="Nombre Prueba">
+               <VBox.margin>
+                  <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+               </VBox.margin>
+            </TextField>
+            <BigDecimalField promptText="Alternativas">
+               <VBox.margin>
+                  <Insets bottom="5.0" left="10.0" right="10.0" />
+               </VBox.margin>
+            </BigDecimalField>
+            <ComboBox prefHeight="25.0" prefWidth="292.0" promptText="Curso">
+               <VBox.margin>
+                  <Insets bottom="5.0" left="10.0" right="10.0" />
+               </VBox.margin>
+            </ComboBox>
+            <DatePicker prefHeight="25.0" prefWidth="290.0" promptText="Fecha">
+               <VBox.margin>
+                  <Insets bottom="5.0" left="10.0" right="10.0" />
+               </VBox.margin>
+            </DatePicker>
+            <BigDecimalField prefHeight="27.0" prefWidth="220.0" promptText="Número Preguntas">
+               <VBox.margin>
+                  <Insets bottom="5.0" left="10.0" right="10.0" />
+               </VBox.margin>
+            </BigDecimalField>
+            <ComboBox id="cmbCursos" prefHeight="23.0" prefWidth="302.0" promptText="Profesor">
+               <VBox.margin>
+                  <Insets bottom="5.0" left="10.0" right="10.0" />
+               </VBox.margin>
+            </ComboBox>
+            <BigDecimalField promptText="Pje. base pregunta correcta">
+               <VBox.margin>
+                  <Insets bottom="5.0" left="10.0" right="10.0" />
+               </VBox.margin>
+            </BigDecimalField>
+            <BigDecimalField promptText="Nivel Evaluación">
+               <VBox.margin>
+                  <Insets bottom="5.0" left="10.0" right="10.0" />
+               </VBox.margin>
+            </BigDecimalField>
+         </children>
+      </VBox>
+   </left>
 </BorderPane>

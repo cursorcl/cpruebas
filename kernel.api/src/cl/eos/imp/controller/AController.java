@@ -8,7 +8,6 @@ import cl.eos.interfaces.entity.IEntity;
 import cl.eos.interfaces.entity.IPersistenceListener;
 import cl.eos.interfaces.model.IModel;
 import cl.eos.interfaces.view.IView;
-import cl.eos.intrfaces.ot.IObjectTransport;
 
 public abstract class AController implements IController, IPersistenceListener {
 
@@ -113,7 +112,7 @@ public abstract class AController implements IController, IPersistenceListener {
 			}
 		}
 	}
-	
+
 	@Override
 	public IModel getModel() {
 		return model;
@@ -125,9 +124,7 @@ public abstract class AController implements IController, IPersistenceListener {
 			for (IView view : views) {
 				view.onDataArrived(list);
 			}
-		}	
-		
+		}
 	}
-	
-	
+
 }

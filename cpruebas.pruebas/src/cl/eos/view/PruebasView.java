@@ -1,14 +1,33 @@
 package cl.eos.view;
 
-import cl.eos.imp.view.AView;
-import cl.eos.interfaces.model.IModel;
+import java.util.List;
 
-public class PruebasView extends AView {
+import javafx.fxml.FXML;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import cl.eos.imp.view.AFormView;
+import cl.eos.interfaces.entity.IEntity;
+import cl.eos.persistence.models.Prueba;
+
+public class PruebasView extends AFormView {
+
+	@FXML
+	private TableView<Prueba> tblListadoPruebas;
+//	@FXML
+//	private TableColumn<Prueba, Date> fechaCol;
+
+	@FXML
+	private TextField text;
+	public PruebasView() {
+		text = new TextField();
+	}
 
 	
-	private IModel model;
-
-	public PruebasView() {
-		model = getController().getModel();
+	@Override
+	public void onDataArrived(List<IEntity> list) {
+		super.onDataArrived(list);
+		
 	}
+	
+	
 }

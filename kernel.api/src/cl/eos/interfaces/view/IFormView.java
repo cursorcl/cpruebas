@@ -17,5 +17,6 @@ public interface IFormView extends IView {
 
 	void select(IEntity otObject);
 
-	boolean validate(IEntity otObject);
+	
+	boolean validate();
 }
