@@ -83,7 +83,10 @@ public class AlumnosView extends AFormView {
 		mnuGrabar.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
+				
 				if (validate()) {
+					lblError.getStyleClass().add("good");
+					lblError.setText(" ");
 					Alumno alumno = new Alumno();
 					alumno.setRut(txtRut.getText());
 					alumno.setName(txtNombres.getText());
@@ -179,15 +182,14 @@ public class AlumnosView extends AFormView {
 	@Override
 	public boolean validate() {
 		boolean valida = false;
-
 		// Valida rut.
-		valida = validaRut(txtRut.getText());
+		valida = validaRut();
 		// valida nombre
-		valida = validaNombre(txtNombres.getText());
+		valida = validaNombre();
 		// valida paterno
-		valida = validaAPaterno(txtAPaterno.getText());
+		valida = validaAPaterno();
 		// valida materno
-		valida = validaAMaterno(txtAMaterno.getText());
+		valida = validaAMaterno();
 
 		return valida;
 	}
@@ -196,14 +198,14 @@ public class AlumnosView extends AFormView {
 	   n.getStyleClass().removeAll("bad","med","good","best");
 	}
 	
-	private boolean validaRut(String strRut) {
+	private boolean validaRut() {
 		boolean valida;
 		removeAllStyle(txtRut);
-		if (strRut.length() > 0) {
+		String strRut = txtRut.getText();
+		if (strRut .length() > 0) {
 			if (Utils.validarRut(strRut)) {
 				valida = true;
 			} else {
-			
 				txtRut.getStyleClass().add("bad");
 				valida = false;
 			}
@@ -214,24 +216,28 @@ public class AlumnosView extends AFormView {
 		return valida;
 	}
 
-	private boolean validaNombre(String strNombre) {
+	private boolean validaNombre() {
 		boolean valida = true;
+		Object strNombre = txtNombres.getText();
 		if (strNombre == null || strNombre.equals("")) {
+			txtRut.getStyleClass().add("bad");
 			valida = false;
 		}
 		return valida;
 	}
 
-	private boolean validaAPaterno(String strPaterno) {
+	private boolean validaAPaterno() {
 		boolean valida = true;
+		String strPaterno = txtAPaterno.getText();
 		if (strPaterno == null || strPaterno.equals("")) {
 			valida = false;
 		}
 		return valida;
 	}
 
-	private boolean validaAMaterno(String strMaterno) {
+	private boolean validaAMaterno() {
 		boolean valida = true;
+		String strMaterno =txtAMaterno.getText();
 		if (strMaterno == null || strMaterno.equals("")) {
 			valida = false;
 		}
