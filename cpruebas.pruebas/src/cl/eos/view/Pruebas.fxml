@@ -7,7 +7,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="485.0" prefWidth="939.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.AlumnosView">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="485.0" prefWidth="939.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.PruebasView">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
@@ -42,7 +42,7 @@
                            <content>
                               <TableView prefHeight="400.0" prefWidth="696.0">
                                 <columns>
-                                  <TableColumn text="Fecha" />
+                                  <TableColumn fx:id="fechaCol" text="Fecha" />
                                     <TableColumn prefWidth="152.0" text="Nombre" />
                                   <TableColumn prefWidth="145.0" text="Asignatura" />
                                     <TableColumn prefWidth="185.0" text="Profesor" />
@@ -80,7 +80,7 @@
    <left>
       <VBox prefHeight="333.0" prefWidth="222.0" BorderPane.alignment="CENTER">
          <children>
-            <Label prefHeight="15.0" prefWidth="201.0" text="Label">
+            <Label prefHeight="15.0" prefWidth="201.0" text="Label" textAlignment="CENTER">
                <VBox.margin>
                   <Insets bottom="5.0" left="10.0" right="5.0" top="10.0" />
                </VBox.margin>
