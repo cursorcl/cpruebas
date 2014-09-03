@@ -1,5 +1,7 @@
 package cl.eos.view;
 
+import com.sun.prism.paint.Color;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -12,9 +14,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-
-import javax.swing.JOptionPane;
-
+import javafx.scene.layout.Background;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.ot.OTAlumno;
@@ -37,7 +37,7 @@ public class AlumnosView extends AFormView {
 
 	@FXML
 	private TextField txtAMaterno;
-	
+
 	@FXML
 	private TextField txtDireccion;
 
@@ -83,7 +83,7 @@ public class AlumnosView extends AFormView {
 				String aPaterno = txtAPaterno.getText();
 				String aMaterno = txtAMaterno.getText();
 				String direccion = txtDireccion.getText();
-				
+
 				Alumno alumno = new Alumno();
 				alumno.setId(0L);
 				alumno.setRut(rut);
@@ -101,16 +101,15 @@ public class AlumnosView extends AFormView {
 			public void handle(ActionEvent event) {
 				ObservableList<OTAlumno> itemsSelec = tblAlumnos
 						.getSelectionModel().getSelectedItems();
-//				for(int i = itemsSelec.size() - 1; i>=0; i--){
-//					value.remove(itemsSelec.get(i));
-//				}
-				
-				
+				// for(int i = itemsSelec.size() - 1; i>=0; i--){
+				// value.remove(itemsSelec.get(i));
+				// }
+
 				for (OTAlumno otAlumno : itemsSelec) {
 					System.out.println("Alumno " + otAlumno.getRut());
-					value.remove(otAlumno);		           
+					value.remove(otAlumno);
 				}
-				 tblAlumnos.getSelectionModel().clearSelection();
+				tblAlumnos.getSelectionModel().clearSelection();
 
 			}
 		});
@@ -121,12 +120,12 @@ public class AlumnosView extends AFormView {
 			public void handle(ActionEvent event) {
 				OTAlumno alumno = tblAlumnos.getSelectionModel()
 						.getSelectedItem();
-				if (alumno !=null){
+				if (alumno != null) {
 					txtRut.setText(alumno.getRut());
 					txtNombres.setText(alumno.getName());
 					txtAPaterno.setText(alumno.getAPaterno());
 					txtAMaterno.setText(alumno.getAMaterno());
-					
+
 				}
 
 			}
@@ -160,9 +159,9 @@ public class AlumnosView extends AFormView {
 		colCurso.setCellValueFactory(new PropertyValueFactory<OTAlumno, String>(
 				"curso"));
 
-		 value = FXCollections
-				.observableArrayList(new OTAlumno("12.623.508-8", "Susan",
-						"Farías", "Zavala", "AA"), new OTAlumno("12.623.503-8",
+		value = FXCollections
+				.observableArrayList(new OTAlumno("12.623.503-8", "Susan",
+						"Farías", "Zavala", "AA"), new OTAlumno("12.623.502-k",
 						"Ursula", "Farías", "Zavala", "AA"), new OTAlumno(
 						"12.623.503-9", "Ursula", "Farías", "Zavala", "AA"));
 		tblAlumnos.setItems(value);
@@ -175,34 +174,62 @@ public class AlumnosView extends AFormView {
 
 	@Override
 	public boolean validate(IEntity otObject) {
-		System.out.println("Validando");
-		boolean valida = true;
-		if (otObject != null) {
+		boolean valida = false;
+		if (otObject != null) 
+		{
 			Alumno alumno = (Alumno) otObject;
-			String strRut = alumno.getRut();
-			if (strRut.length() > 0) {
-				// Creamos un arreglo con el rut y el digito verificador
-				String[] rut_dv = strRut.split("-");
-				// Las partes del rut (numero y dv) deben tener una longitud
-				// positiva
-				if (rut_dv.length == 2) {
-					int rut = Integer.parseInt(rut_dv[0]);
-					char dv = rut_dv[1].charAt(0);
-
-					if (Utils.validarRut(rut, dv)) {
-						 JOptionPane.showMessageDialog(null,"Rut correcto");
-					} else {
-						 JOptionPane.showMessageDialog(null, "Rut incorrecto");
-						 valida = false;
-					}
-				}
-				else{
-					 JOptionPane.showMessageDialog(null, "Rut incorrecto");
-					 valida = false;
-				}
-			}
+			//Valida rut.
+			valida = validaRut(alumno.getRut());
+			// valida nombre			
+			valida = validaNombre(alumno.getName());			
+			// valida paterno			
+			valida = validaAPaterno(alumno.getPaterno());
+			// valida materno			
+			valida = validaAMaterno(alumno.getMaterno());
 		}
 		return valida;
 	}
 
+	private boolean validaRut(String strRut) {
+		boolean valida;
+		if (strRut.length() > 0) {
+			if (Utils.validarRut(strRut)) {
+				valida = true;
+			} else {				
+				valida = false;
+			}
+		}
+		else
+		{
+			valida = false;
+		}
+		return valida;
+	}
+
+	private boolean validaNombre(String strNombre) {
+		boolean valida = true;
+		if (strNombre==null || strNombre.equals(""))
+		{
+			valida = false;
+		}
+		return valida;
+	}
+	
+	private boolean validaAPaterno(String strPaterno) {
+		boolean valida = true;
+		if (strPaterno==null || strPaterno.equals(""))
+		{
+			valida = false;
+		}
+		return valida;
+	}
+	
+	private boolean validaAMaterno(String strMaterno) {
+		boolean valida = true;
+		if (strMaterno==null|| strMaterno.equals(""))
+		{
+			valida = false;
+		}
+		return valida;
+	}
 }
