@@ -43,11 +43,11 @@
                               <TableView prefHeight="400.0" prefWidth="696.0">
                                 <columns>
                                   <TableColumn fx:id="fechaCol" text="Fecha" />
-                                    <TableColumn prefWidth="152.0" text="Nombre" />
-                                  <TableColumn prefWidth="145.0" text="Asignatura" />
-                                    <TableColumn prefWidth="185.0" text="Profesor" />
-                                    <TableColumn prefWidth="55.0" text="Forma" />
-                                    <TableColumn prefWidth="71.0" text="Preguntas" />
+                                    <TableColumn fx:id="nameCol" prefWidth="152.0" text="Nombre" />
+                                  <TableColumn fx:id="asignaturaCol" prefWidth="145.0" text="Asignatura" />
+                                    <TableColumn fx:id="profesorCol" prefWidth="185.0" text="Profesor" />
+                                    <TableColumn fx:id="formasCol" prefWidth="55.0" text="Forma" />
+                                    <TableColumn fx:id="nroPreguntasCol" prefWidth="71.0" text="Preguntas" />
                                 </columns>
                                  <contextMenu>
                                     <ContextMenu>

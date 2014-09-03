@@ -10,11 +10,9 @@ public class OTPrueba {
 	private Long id;
 
 	private String name;
-
 	private TipoPrueba tipoPrueba;
 	private Curso curso;
 	private Asignatura asignatura;
-
 	private Date fecha;
 	private Integer nroPreguntas;
 	private Integer formas;
