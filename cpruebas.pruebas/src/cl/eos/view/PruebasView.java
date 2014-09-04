@@ -3,7 +3,6 @@ package cl.eos.view;
 import java.util.Date;
 import java.util.List;
 
-import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
@@ -63,17 +62,18 @@ public class PruebasView extends AFormView {
 		alternativasCol
 				.setCellValueFactory(new PropertyValueFactory<OTPrueba, Integer>(
 						"alternativas"));
-//		value = FXCollections
-//				.observableArrayList(new OTAlumno("12.623.503-8", "Susan",
-//						"Farías", "Zavala", "AA"), new OTAlumno("12.623.502-k",
-//						"Ursula", "Farías", "Zavala", "AA"), new OTAlumno(
-//						"12.623.503-9", "Ursula", "Farías", "Zavala", "AA"));
-//		tblListadoPruebas.setItems(value);
 	}
 
 	@Override
 	public void onDataArrived(List<IEntity> list) {
-		super.onDataArrived(list);
+
+		// Transformar Entity to OT
+//		value = FXCollections
+//		.observableArrayList(new OTAlumno("12.623.503-8", "Susan",
+//				"Farías", "Zavala", "AA"), new OTAlumno("12.623.502-k",
+//				"Ursula", "Farías", "Zavala", "AA"), new OTAlumno(
+//				"12.623.503-9", "Ursula", "Farías", "Zavala", "AA"));
+//tblListadoPruebas.setItems(value);
 
 	}
 
