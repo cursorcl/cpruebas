@@ -62,11 +62,11 @@
                      <center>
                         <ScrollPane prefHeight="311.0" prefWidth="370.0" BorderPane.alignment="CENTER">
                            <content>
-                              <TableView id="tblEjesTematicos" prefHeight="400.0" prefWidth="439.0">
+                              <TableView id="tblEjesTematicos" fx:id="tblEjesTematicos" prefHeight="400.0" prefWidth="439.0">
                                 <columns>
-                                  <TableColumn prefWidth="151.0" text="Nombre" />
-                                    <TableColumn prefWidth="110.0" text="Tipo prueba" />
-                                    <TableColumn prefWidth="68.0" text="Asign/Ensayo" />
+                                  <TableColumn fx:id="colNombre" prefWidth="151.0" text="Nombre" />
+                                    <TableColumn fx:id="colTipoPrueba" prefWidth="110.0" text="Tipo prueba" />
+                                    <TableColumn fx:id="colEnsayo" prefWidth="68.0" text="Asign/Ensayo" />
                                 </columns>
                                  <contextMenu>
                                     <ContextMenu>

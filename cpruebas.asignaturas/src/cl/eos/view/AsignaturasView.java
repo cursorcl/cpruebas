@@ -124,7 +124,6 @@ public class AsignaturasView extends AFormView {
 			public void handle(MouseEvent event) {
 				ObservableList<Asignatura> itemsSelec = tblAsignatura
 						.getSelectionModel().getSelectedItems();
-				
 				if (itemsSelec.size() > 1) {
 					mnItemModificar.setDisable(true);
 				}
@@ -144,6 +143,7 @@ public class AsignaturasView extends AFormView {
 	@Override
 	public void onSaved(IEntity otObject) {
 		System.out.println("Elemento grabando:" + otObject.toString());
+		limpiarControles();
 	}
 	
 	private void removeAllStyles() {

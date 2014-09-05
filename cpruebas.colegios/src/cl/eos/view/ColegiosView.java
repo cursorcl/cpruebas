@@ -16,6 +16,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.persistence.models.Colegio;
@@ -66,8 +67,27 @@ public class ColegiosView extends AFormView {
 		accionGrabar();
 		accionEliminar();
 		accionModificar();
+		accionClicTabla();
 	}
 
+	
+	private void accionClicTabla() {
+		tblColegio.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				ObservableList<Colegio> itemsSelec = tblColegio
+						.getSelectionModel().getSelectedItems();
+				
+				if (itemsSelec.size() > 1) {
+					mnItemModificar.setDisable(true);
+				}
+				else{
+					select((IEntity) itemsSelec);
+					mnItemModificar.setDisable(false);
+				}
+			}
+		});
+	}
 	
 	private void inicializaTabla() {
 		tblColegio.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
@@ -125,8 +145,6 @@ public class ColegiosView extends AFormView {
 					lblError.getStyleClass().add("bad");
 					lblError.setText("Corregir campos destacados en color rojo");
 				}
-				limpiarControles();	
-
 //			
 //				File f = new File("D:/Imagen006.jpg"); //asociamos el archivo fisico
 //				InputStream is = new FileInputStream(f); //lo abrimos. Lo importante es que sea un InputStream
@@ -162,6 +180,7 @@ public class ColegiosView extends AFormView {
 	@Override
 	public void onSaved(IEntity otObject) {
 		System.out.println("Elemento grabando:" + otObject.toString());
+		limpiarControles();	
 	}
 
 	public boolean validate()

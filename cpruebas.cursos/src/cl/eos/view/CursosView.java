@@ -16,6 +16,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.persistence.models.Curso;
@@ -58,6 +59,62 @@ public class CursosView extends AFormView {
 	@FXML
 	public void initialize() {
 		inicializaTabla();
+		accionGrabar();
+		accionEliminar();
+		accionModificar();
+		accionClicTabla();
+	}
+
+	private void accionModificar() {
+		mnItemModificar.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				Curso curso = tblCurso.getSelectionModel().getSelectedItem();
+				if (curso != null) {
+					txtNombre.setText(curso.getName());
+					cmbNivel.setValue(curso.getNivel());
+				}
+			}
+		});
+	}
+
+	private void accionEliminar() {
+		mnItemEliminar.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				ObservableList<Curso> cursos = tblCurso.getItems();
+				ObservableList<Curso> cursosSelec = tblCurso.getSelectionModel()
+						.getSelectedItems();
+
+				for (Curso curso : cursosSelec) {
+					cursos.remove(curso);
+				}
+				tblCurso.getSelectionModel().clearSelection();
+			}
+		});
+	}
+
+	private void accionClicTabla() {
+		tblCurso.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				ObservableList<Curso> itemsSelec = tblCurso
+						.getSelectionModel().getSelectedItems();
+				
+				if (itemsSelec.size() > 1) {
+					mnItemModificar.setDisable(true);
+				}
+				else{
+					select((IEntity) itemsSelec);
+					mnItemModificar.setDisable(false);
+				}
+			}
+		});
+	}
+	
+	private void accionGrabar() {
 		mnuGrabar.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
@@ -73,34 +130,7 @@ public class CursosView extends AFormView {
 					lblError.getStyleClass().add("bad");
 					lblError.setText("Corregir campos destacados en color rojo");
 				}
-			}
-		});
-
-		mnItemEliminar.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent event) {
-				ObservableList<Curso> cursos = tblCurso.getItems();
-				ObservableList<Curso> cursosSelec = tblCurso.getSelectionModel()
-						.getSelectedItems();
-
-				for (Curso curso : cursosSelec) {
-					System.out.println("Asignatura " + curso.getName());
-					cursos.remove(curso);
-				}
-				tblCurso.getSelectionModel().clearSelection();
-			}
-		});
-
-		mnItemModificar.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent event) {
-				Curso curso = tblCurso.getSelectionModel().getSelectedItem();
-				if (curso != null) {
-					txtNombre.setText(curso.getName());
-					cmbNivel.setValue(curso.getNivel());
-				}
+				
 			}
 		});
 	}
@@ -113,6 +143,12 @@ public class CursosView extends AFormView {
 				"nivel"));
 	}
 
+	private void limpiarControles() {
+		txtNombre.clear();
+		cmbNivel.getSelectionModel().clearSelection();
+		select(null);
+	}
+	
 	private void removeAllStyles() {
 		removeAllStyle(lblError);
 		removeAllStyle(txtNombre);
@@ -140,7 +176,6 @@ public class CursosView extends AFormView {
 
 	@Override
 	public void onDataArrived(List<IEntity> list) {
-
 		ObservableList<Curso> value = FXCollections.observableArrayList();
 		for (IEntity iEntity : list) {
 			value.add((Curso) iEntity);
@@ -151,6 +186,7 @@ public class CursosView extends AFormView {
 	@Override
 	public void onSaved(IEntity otObject) {
 		System.out.println("Elemento grabando:" + otObject.toString());
+		limpiarControles();
 	}
 
 }
