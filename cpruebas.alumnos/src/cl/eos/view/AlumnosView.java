@@ -1,6 +1,6 @@
 package cl.eos.view;
 
-import com.sun.prism.paint.Color;
+import java.util.List;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SelectionMode;
@@ -16,17 +17,25 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
-import cl.eos.ot.OTAlumno;
 import cl.eos.persistence.models.Alumno;
+import cl.eos.persistence.models.Colegio;
+import cl.eos.persistence.models.Curso;
 import cl.eos.util.Utils;
 
 public class AlumnosView extends AFormView {
 
+	private static final int LARGO_CAMPO_TEXT = 100;
+
 	@FXML
 	private MenuItem mnuGrabar;
+
+	@FXML
+	private MenuItem mnItemEliminar;
+
+	@FXML
+	private MenuItem mnItemModificar;
 
 	@FXML
 	private TextField txtRut;
@@ -42,35 +51,33 @@ public class AlumnosView extends AFormView {
 
 	@FXML
 	private TextField txtDireccion;
-	
+
+	@FXML
+	private ComboBox<Colegio> cmbColegio;
+
+	@FXML
+	private ComboBox<Curso> cmbCurso;
+
 	@FXML
 	private Label lblError;
 
 	@FXML
-	private TableView<OTAlumno> tblAlumnos;
+	private TableView<Alumno> tblAlumnos;
 
 	@FXML
-	private TableColumn<OTAlumno, String> colRut;
+	private TableColumn<Alumno, String> colRut;
 
 	@FXML
-	private TableColumn<OTAlumno, String> colName;
+	private TableColumn<Alumno, String> colName;
 
 	@FXML
-	private TableColumn<OTAlumno, String> colPaterno;
+	private TableColumn<Alumno, String> colPaterno;
 
 	@FXML
-	private TableColumn<OTAlumno, String> colMaterno;
+	private TableColumn<Alumno, String> colMaterno;
 
 	@FXML
-	private TableColumn<OTAlumno, String> colCurso;
-
-	@FXML
-	private MenuItem mnItemEliminar;
-
-	@FXML
-	private MenuItem mnItemModificar;
-
-	private ObservableList<OTAlumno> value;
+	private TableColumn<Alumno, String> colCurso;
 
 	public AlumnosView() {
 
@@ -79,13 +86,74 @@ public class AlumnosView extends AFormView {
 	@FXML
 	public void initialize() {
 		inicializaTabla();
+		accionGrabar();
+		accionEliminar();
+		accionModificar();
+		accionClicTabla();
+	}
 
+	private void accionClicTabla() {
+		tblAlumnos.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				ObservableList<Alumno> itemsSelec = tblAlumnos
+						.getSelectionModel().getSelectedItems();
+				
+				if (itemsSelec.size() > 1) {
+					mnItemModificar.setDisable(true);
+				}
+				else{
+					select((IEntity) itemsSelec);
+					mnItemModificar.setDisable(false);
+				}
+			}
+		});
+	}
+
+	private void accionModificar() {
+		mnItemModificar.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				Alumno alumno = tblAlumnos.getSelectionModel()
+						.getSelectedItem();
+				if (alumno != null) {
+					txtRut.setText(alumno.getRut());
+					txtNombres.setText(alumno.getName());
+					txtAPaterno.setText(alumno.getPaterno());
+					txtAMaterno.setText(alumno.getMaterno());
+					txtDireccion.setText(alumno.getDireccion());
+					cmbColegio.setValue(alumno.getColegio());
+					cmbCurso.setValue(alumno.getCurso());
+				}
+			}
+		});
+	}
+
+	private void accionEliminar() {
+		mnItemEliminar.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+
+				ObservableList<Alumno> alumnos = tblAlumnos.getItems();
+				ObservableList<Alumno> alumnosSelec = tblAlumnos
+						.getSelectionModel().getSelectedItems();
+
+				for (Alumno alumnoSel : alumnosSelec) {
+					alumnos.remove(alumnoSel);
+				}
+				tblAlumnos.getSelectionModel().clearSelection();
+			}
+		});
+	}
+
+	private void accionGrabar() {
 		mnuGrabar.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
-				
+				removeAllStyles();
 				if (validate()) {
-					lblError.getStyleClass().add("good");
 					lblError.setText(" ");
 					Alumno alumno = new Alumno();
 					alumno.setRut(txtRut.getText());
@@ -93,87 +161,62 @@ public class AlumnosView extends AFormView {
 					alumno.setPaterno(txtAPaterno.getText());
 					alumno.setMaterno(txtAMaterno.getText());
 					alumno.setDireccion(txtDireccion.getText());
+					alumno.setColegio(cmbColegio.getValue());
+					alumno.setCurso(cmbCurso.getValue());
 					save(alumno);
-				}
-				else{
+				} else {
 					lblError.getStyleClass().add("bad");
 					lblError.setText("Corregir campos destacados en color rojo");
 				}
+				limpiarControles();
 			}
+
 		});
+	}
 
-		mnItemEliminar.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent event) {
-				ObservableList<OTAlumno> itemsSelec = tblAlumnos
-						.getSelectionModel().getSelectedItems();
-				// for(int i = itemsSelec.size() - 1; i>=0; i--){
-				// value.remove(itemsSelec.get(i));
-				// }
-
-				for (OTAlumno otAlumno : itemsSelec) {
-					System.out.println("Alumno " + otAlumno.getRut());
-					value.remove(otAlumno);
-				}
-				tblAlumnos.getSelectionModel().clearSelection();
-
-			}
-		});
-
-		mnItemModificar.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent event) {
-				OTAlumno alumno = tblAlumnos.getSelectionModel()
-						.getSelectedItem();
-				if (alumno != null) {
-					txtRut.setText(alumno.getRut());
-					txtNombres.setText(alumno.getName());
-					txtAPaterno.setText(alumno.getAPaterno());
-					txtAMaterno.setText(alumno.getAMaterno());
-
-				}
-
-			}
-		});
-
-		tblAlumnos.setOnMouseClicked(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent event) {
-
-				ObservableList<OTAlumno> itemsSelec = tblAlumnos
-						.getSelectionModel().getSelectedItems();
-				if (itemsSelec.size() > 1) {
-					mnItemModificar.setDisable(true);
-				}
-			}
-		});
+	private void limpiarControles() {
+		txtRut.clear();
+		txtNombres.clear();
+		txtAPaterno.clear();
+		txtAMaterno.clear();
+		txtDireccion.clear();
+		cmbColegio.getSelectionModel().clearSelection();
+		cmbCurso.getSelectionModel().clearSelection();
+		select(null);
 	}
 
 	private void inicializaTabla() {
 		tblAlumnos.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-		colRut.setCellValueFactory(new PropertyValueFactory<OTAlumno, String>(
+		colRut.setCellValueFactory(new PropertyValueFactory<Alumno, String>(
 				"rut"));
-		colName.setCellValueFactory(new PropertyValueFactory<OTAlumno, String>(
+		colName.setCellValueFactory(new PropertyValueFactory<Alumno, String>(
 				"name"));
 		colPaterno
-				.setCellValueFactory(new PropertyValueFactory<OTAlumno, String>(
+				.setCellValueFactory(new PropertyValueFactory<Alumno, String>(
 						"aPaterno"));
 		colMaterno
-				.setCellValueFactory(new PropertyValueFactory<OTAlumno, String>(
+				.setCellValueFactory(new PropertyValueFactory<Alumno, String>(
 						"aMaterno"));
-		colCurso.setCellValueFactory(new PropertyValueFactory<OTAlumno, String>(
+		colCurso.setCellValueFactory(new PropertyValueFactory<Alumno, String>(
 				"curso"));
 
-		value = FXCollections
-				.observableArrayList(new OTAlumno("12.623.503-8", "Susan",
-						"Farías", "Zavala", "AA"), new OTAlumno("12.623.502-k",
-						"Ursula", "Farías", "Zavala", "AA"), new OTAlumno(
-						"12.623.503-9", "Ursula", "Farías", "Zavala", "AA"));
-		tblAlumnos.setItems(value);
 	}
 
+	private void removeAllStyles() {
+		removeAllStyle(lblError);
+		removeAllStyle(txtRut);
+		removeAllStyle(txtNombres);
+		removeAllStyle(txtAPaterno);
+		removeAllStyle(txtAMaterno);
+		removeAllStyle(cmbColegio);
+		removeAllStyle(cmbCurso);
+	}
+	
+	public void removeAllStyle(Node n) {
+		n.getStyleClass().removeAll("bad", "med", "good", "best");
+		n.applyCss();
+	}
+	
 	@Override
 	public void onSaved(IEntity otObject) {
 		System.out.println("Elemento grabando:" + otObject.toString());
@@ -181,28 +224,51 @@ public class AlumnosView extends AFormView {
 
 	@Override
 	public boolean validate() {
-		boolean valida = false;
-		// Valida rut.
+		boolean valida = true;
+		if (cmbColegio.getValue() != null) {
+			cmbColegio.getStyleClass().add("bad");
+			valida = false;
+		}
+		if (cmbCurso.getValue() != null) {
+			cmbCurso.getStyleClass().add("bad");
+			valida = false;
+		}
 		valida = validaRut();
-		// valida nombre
-		valida = validaNombre();
-		// valida paterno
-		valida = validaAPaterno();
-		// valida materno
-		valida = validaAMaterno();
+		if (txtNombres.getText() == null || txtNombres.getText().equals("")) {
+			txtNombres.getStyleClass().add("bad");
+			valida = false;
+		}
+		if (txtNombres.getText() != null
+				&& txtNombres.getText().length() > LARGO_CAMPO_TEXT) {
+			txtNombres.getStyleClass().add("bad");
+			valida = false;
+		}
 
+		if (txtAPaterno.getText() == null || txtAPaterno.getText().equals("")) {
+			txtAPaterno.getStyleClass().add("bad");
+			valida = false;
+		}
+		if (txtAPaterno.getText() != null
+				|| txtAPaterno.getText().length() > LARGO_CAMPO_TEXT) {
+			txtAPaterno.getStyleClass().add("bad");
+			valida = false;
+		}
+		if (txtAMaterno.getText() == null || txtAMaterno.getText().equals("")) {
+			txtAMaterno.getStyleClass().add("bad");
+			valida = false;
+		}
+		if (txtAMaterno.getText() != null
+				|| txtAMaterno.getText().length() > LARGO_CAMPO_TEXT) {
+			txtAMaterno.getStyleClass().add("bad");
+			valida = false;
+		}
 		return valida;
 	}
 
-	public void removeAllStyle(Node n){
-	   n.getStyleClass().removeAll("bad","med","good","best");
-	}
-	
 	private boolean validaRut() {
 		boolean valida;
-		removeAllStyle(txtRut);
 		String strRut = txtRut.getText();
-		if (strRut .length() > 0) {
+		if (strRut.length() > 0) {
 			if (Utils.validarRut(strRut)) {
 				valida = true;
 			} else {
@@ -216,31 +282,11 @@ public class AlumnosView extends AFormView {
 		return valida;
 	}
 
-	private boolean validaNombre() {
-		boolean valida = true;
-		Object strNombre = txtNombres.getText();
-		if (strNombre == null || strNombre.equals("")) {
-			txtRut.getStyleClass().add("bad");
-			valida = false;
+	@Override
+	public void onDataArrived(List<IEntity> list) {
+		ObservableList<Alumno> value = FXCollections.observableArrayList();
+		for (IEntity iEntity : list) {
+			value.add((Alumno) iEntity);
 		}
-		return valida;
-	}
-
-	private boolean validaAPaterno() {
-		boolean valida = true;
-		String strPaterno = txtAPaterno.getText();
-		if (strPaterno == null || strPaterno.equals("")) {
-			valida = false;
-		}
-		return valida;
-	}
-
-	private boolean validaAMaterno() {
-		boolean valida = true;
-		String strMaterno =txtAMaterno.getText();
-		if (strMaterno == null || strMaterno.equals("")) {
-			valida = false;
-		}
-		return valida;
 	}
 }

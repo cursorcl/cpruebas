@@ -2,18 +2,17 @@ package cl.eos.controller;
 
 import cl.eos.imp.controller.AController;
 import cl.eos.model.AlumnosModel;
+import cl.eos.persistence.models.Alumno;
 
 public class AlumnosContoller extends AController {
 
 	public AlumnosContoller() {
 		
-		model = new AlumnosModel();
-		
 	}
 
 	@Override
 	public void initialize() {
-		// TODO Auto-generated method stub
-		
+		model = new AlumnosModel();
+		model.findAll(Alumno.class, this);		
 	}
 }

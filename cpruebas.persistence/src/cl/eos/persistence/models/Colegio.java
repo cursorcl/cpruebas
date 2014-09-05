@@ -18,6 +18,9 @@ public class Colegio implements IEntity {
 	
 	@Column(name="image", columnDefinition="blob")
 	private byte[] image;
+	
+	private String direccion;
+	
 
 	@Override
 	public Long getId() {
@@ -52,4 +55,13 @@ public class Colegio implements IEntity {
 		this.image = image;
 	}
 
+	public String getDireccion() {
+		return direccion;
+	}
+
+	public void setDireccion(String direccion) {
+		this.direccion = direccion;
+	}
+
+	
 }
