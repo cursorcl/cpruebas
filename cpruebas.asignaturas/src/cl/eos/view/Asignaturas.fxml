@@ -19,7 +19,7 @@
           </Menu>
           <Menu mnemonicParsing="false" text="Edit">
             <items>
-              <MenuItem mnemonicParsing="false" text="Delete" />
+              <MenuItem fx:id="mnuEliminar" mnemonicParsing="false" text="Delete" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Help">
@@ -52,15 +52,15 @@
                      <center>
                         <ScrollPane prefHeight="311.0" prefWidth="370.0" BorderPane.alignment="CENTER">
                            <content>
-                              <TableView id="tblAsignaturas" prefHeight="400.0" prefWidth="444.0">
+                              <TableView id="tblAsignaturas" fx:id="tblAsignatura" prefHeight="400.0" prefWidth="444.0">
                                 <columns>
-                                  <TableColumn prefWidth="296.0" text="Nombre" />
+                                  <TableColumn fx:id="colNombre" prefWidth="296.0" text="Nombre" />
                                 </columns>
                                  <contextMenu>
                                     <ContextMenu>
                                       <items>
-                                        <MenuItem mnemonicParsing="false" text="Modificar" />
-                                          <MenuItem mnemonicParsing="false" text="Eliminar" />
+                                        <MenuItem fx:id="mnItemModificar" mnemonicParsing="false" text="Modificar" />
+                                          <MenuItem fx:id="mnItemEliminar" mnemonicParsing="false" text="Eliminar" />
                                       </items>
                                     </ContextMenu>
                                  </contextMenu>

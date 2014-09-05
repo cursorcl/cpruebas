@@ -21,8 +21,6 @@
 			<property name="toplink.jdbc.driver" value="com.mysql.jdbc.Driver" />
 			<!-- property name="toplink.ddl-generation" value="update-tables"/-->
 			<property name="toplink.ddl-generation" value="create-tables"/>
-			<!-- property name="toplink.ddl-generation" value="drop-and-create-tables" /-->
-		
-		</properties>
+			<!-- property name="toplink.ddl-generation" value="drop-and-create-tables" /-->		</properties>
 	</persistence-unit>
 </persistence>

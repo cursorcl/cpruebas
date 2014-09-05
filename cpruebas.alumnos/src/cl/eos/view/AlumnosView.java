@@ -161,12 +161,8 @@ public class AlumnosView extends AFormView {
 					alumno.setPaterno(txtAPaterno.getText());
 					alumno.setMaterno(txtAMaterno.getText());
 					alumno.setDireccion(txtDireccion.getText());
-					Colegio colegio = new Colegio();
-					colegio.setId(1L);
-					alumno.setColegio(colegio);//cmbColegio.getValue());
-					Curso curso = new Curso();
-					curso.setId(1L);
-					alumno.setCurso(curso);//cmbCurso.getValue());
+					alumno.setColegio(cmbColegio.getValue());
+					alumno.setCurso(cmbCurso.getValue());
 					save(alumno);
 				} else {
 					lblError.getStyleClass().add("bad");
@@ -253,7 +249,7 @@ public class AlumnosView extends AFormView {
 			valida = false;
 		}
 		if (txtAPaterno.getText() != null
-				&& txtAPaterno.getText().length() > LARGO_CAMPO_TEXT) {
+				|| txtAPaterno.getText().length() > LARGO_CAMPO_TEXT) {
 			txtAPaterno.getStyleClass().add("bad");
 			valida = false;
 		}
@@ -262,7 +258,7 @@ public class AlumnosView extends AFormView {
 			valida = false;
 		}
 		if (txtAMaterno.getText() != null
-				&& txtAMaterno.getText().length() > LARGO_CAMPO_TEXT) {
+				|| txtAMaterno.getText().length() > LARGO_CAMPO_TEXT) {
 			txtAMaterno.getStyleClass().add("bad");
 			valida = false;
 		}
