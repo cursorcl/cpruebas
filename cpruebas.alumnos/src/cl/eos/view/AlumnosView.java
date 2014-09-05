@@ -63,7 +63,7 @@ public class AlumnosView extends AFormView {
 
 	@FXML
 	private TableView<Alumno> tblAlumnos;
- 
+
 	@FXML
 	private TableColumn<Alumno, String> colRut;
 
@@ -98,12 +98,11 @@ public class AlumnosView extends AFormView {
 			public void handle(MouseEvent event) {
 				ObservableList<Alumno> itemsSelec = tblAlumnos
 						.getSelectionModel().getSelectedItems();
-				
+
 				if (itemsSelec.size() > 1) {
 					mnItemModificar.setDisable(true);
-				}
-				else{
-					select((IEntity) itemsSelec);
+				} else if (itemsSelec.size() == 1) {
+					select((IEntity) itemsSelec.get(0));
 					mnItemModificar.setDisable(false);
 				}
 			}
@@ -192,10 +191,10 @@ public class AlumnosView extends AFormView {
 				"name"));
 		colPaterno
 				.setCellValueFactory(new PropertyValueFactory<Alumno, String>(
-						"aPaterno"));
+						"paterno"));
 		colMaterno
 				.setCellValueFactory(new PropertyValueFactory<Alumno, String>(
-						"aMaterno"));
+						"materno"));
 		colCurso.setCellValueFactory(new PropertyValueFactory<Alumno, String>(
 				"curso"));
 
@@ -210,12 +209,12 @@ public class AlumnosView extends AFormView {
 		removeAllStyle(cmbColegio);
 		removeAllStyle(cmbCurso);
 	}
-	
+
 	public void removeAllStyle(Node n) {
 		n.getStyleClass().removeAll("bad", "med", "good", "best");
 		n.applyCss();
 	}
-	
+
 	@Override
 	public void onSaved(IEntity otObject) {
 		System.out.println("Elemento grabando:" + otObject.toString());
@@ -248,7 +247,8 @@ public class AlumnosView extends AFormView {
 			txtAPaterno.getStyleClass().add("bad");
 			valida = false;
 		}
-		if (txtAPaterno.getText() != null && txtAPaterno.getText().length() > LARGO_CAMPO_TEXT) {
+		if (txtAPaterno.getText() != null
+				&& txtAPaterno.getText().length() > LARGO_CAMPO_TEXT) {
 			txtAPaterno.getStyleClass().add("bad");
 			valida = false;
 		}
@@ -257,7 +257,7 @@ public class AlumnosView extends AFormView {
 			valida = false;
 		}
 		if (txtAMaterno.getText() != null
-				|| txtAMaterno.getText().length() > LARGO_CAMPO_TEXT) {
+				&& txtAMaterno.getText().length() > LARGO_CAMPO_TEXT) {
 			txtAMaterno.getStyleClass().add("bad");
 			valida = false;
 		}
@@ -283,9 +283,32 @@ public class AlumnosView extends AFormView {
 
 	@Override
 	public void onDataArrived(List<IEntity> list) {
-		ObservableList<Alumno> value = FXCollections.observableArrayList();
-		for (IEntity iEntity : list) {
-			value.add((Alumno) iEntity);
+
+		if (list != null && !list.isEmpty()) {
+			IEntity entity = list.get(0);
+			if (entity instanceof Alumno) {
+				ObservableList<Alumno> oList = FXCollections
+						.observableArrayList();
+				for (IEntity iEntity : list) {
+					oList.add((Alumno) iEntity);
+				}
+				tblAlumnos.setItems(oList);
+			} else if (entity instanceof Curso) {
+				ObservableList<Curso> oList = FXCollections
+						.observableArrayList();
+				for (IEntity iEntity : list) {
+					oList.add((Curso) iEntity);
+				}
+				cmbCurso.setItems(oList);
+			} else if (entity instanceof Colegio) {
+				ObservableList<Colegio> oList = FXCollections
+						.observableArrayList();
+				for (IEntity iEntity : list) {
+					oList.add((Colegio) iEntity);
+				}
+				cmbColegio.setItems(oList);
+			}
 		}
+
 	}
 }

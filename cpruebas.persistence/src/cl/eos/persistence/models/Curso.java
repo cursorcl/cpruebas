@@ -52,5 +52,10 @@ public class Curso implements IEntity {
 		this.nivel = nivel;
 	}
 
+	@Override
+	public String toString() {
+		return name;
+	}
 
+	
 }

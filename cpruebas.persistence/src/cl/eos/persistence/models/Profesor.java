@@ -69,5 +69,11 @@ public class Profesor implements IEntity {
 	public void setMaterno(String materno) {
 		this.materno = materno;
 	}
+	
+	@Override
+	public String toString() {
+		return name;
+	}
+
 
 }

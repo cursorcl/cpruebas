@@ -37,4 +37,10 @@ public class Nivel implements IEntity {
 	public boolean validate() {
 		return false;
 	}
+	
+	@Override
+	public String toString() {
+		return name;
+	}
+
 }

@@ -61,6 +61,10 @@ public class EjeTematico implements IEntity {
 		this.asignatura = asignatura;
 	}
 
+	@Override
+	public String toString() {
+		return name;
+	}
 
 
 }

@@ -42,4 +42,10 @@ public class Asignatura implements IEntity {
 	public boolean validate() {
 		return true;
 	}
+	
+	@Override
+	public String toString() {
+		return name;
+	}
+
 }

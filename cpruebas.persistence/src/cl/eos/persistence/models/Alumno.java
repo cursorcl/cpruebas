@@ -97,4 +97,10 @@ public class Alumno implements IEntity {
 		this.curso = curso;
 	}
 	
+	@Override
+	public String toString() {
+		return name;
+	}
+
+	
 }

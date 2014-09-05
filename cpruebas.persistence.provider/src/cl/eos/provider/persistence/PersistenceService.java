@@ -81,7 +81,8 @@ public class PersistenceService implements IPersistenceService {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void findAll(final Class<? extends IEntity> entityClazz, final IPersistenceListener listener) {
+	public void findAll(final Class<? extends IEntity> entityClazz,
+			final IPersistenceListener listener) {
 
 		final Task<List<IEntity>> task = new Task<List<IEntity>>() {
 			@Override
@@ -104,6 +105,10 @@ public class PersistenceService implements IPersistenceService {
 						listener.onFindAllFinished(task.getValue());
 					}
 				});
+		new Thread(task).start();
+
+		
+		
 	}
 
 }

@@ -51,5 +51,11 @@ public class TipoPrueba implements IEntity {
 		// TODO Auto-generated method stub
 		return false;
 	}
+	
+	@Override
+	public String toString() {
+		return name;
+	}
+
 
 }

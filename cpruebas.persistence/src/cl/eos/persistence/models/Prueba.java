@@ -148,4 +148,10 @@ public class Prueba implements IEntity {
 		this.responses = responses;
 	}
 
+	
+	@Override
+	public String toString() {
+		return name;
+	}
+
 }
