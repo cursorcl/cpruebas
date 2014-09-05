@@ -1,7 +1,9 @@
 package cl.eos.view;
 
-import javax.swing.JEditorPane;
+import java.util.List;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -14,12 +16,14 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
-import cl.eos.persistence.models.Alumno;
 import cl.eos.persistence.models.EjeTematico;
 
 public class EjesTematicosView extends AFormView {
+
+	private static final int LARGO_CAMPO_TEXT = 100;
 
 	@FXML
 	private MenuItem mnuGrabar;
@@ -38,12 +42,13 @@ public class EjesTematicosView extends AFormView {
 
 	@FXML
 	private ComboBox<String> cmbAsignatura;
+	
 	@FXML
 	private Label lblError;
-	
+
 	@FXML
 	private TableView<EjeTematico> tblEjesTematicos;
-	
+
 	@FXML
 	private TableColumn<EjeTematico, String> colNombre;
 
@@ -59,7 +64,11 @@ public class EjesTematicosView extends AFormView {
 
 	@FXML
 	public void initialize() {
+		inicializaTabla();
 		accionGrabar();
+		accionEliminar();
+		accionModificar();
+		accionClicTabla();
 	}
 
 	private void accionGrabar() {
@@ -77,6 +86,40 @@ public class EjesTematicosView extends AFormView {
 					lblError.getStyleClass().add("bad");
 					lblError.setText("Corregir campos destacados en color rojo");
 				}
+			}
+		});
+	}
+
+	private void accionModificar() {
+		mnItemModificar.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				EjeTematico ejeTematico = tblEjesTematicos.getSelectionModel()
+						.getSelectedItem();
+				if (ejeTematico != null) {
+					txtNombres.setText(ejeTematico.getName());
+					cmbAsignatura.setValue(ejeTematico.getAsignatura());
+					cmbTipoPrueba.setValue(ejeTematico.getTipoprueba());
+				}
+			}
+		});
+	}
+
+	private void accionEliminar() {
+		mnItemEliminar.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+
+				ObservableList<EjeTematico> ejesTematicos = tblEjesTematicos.getItems();
+				ObservableList<EjeTematico> ejesTematicosSelec = tblEjesTematicos
+						.getSelectionModel().getSelectedItems();
+
+				for (EjeTematico EjeTematicoSel : ejesTematicosSelec) {
+					ejesTematicos.remove(EjeTematicoSel);
+				}
+				tblEjesTematicos.getSelectionModel().clearSelection();
 			}
 		});
 	}
@@ -105,16 +148,66 @@ public class EjesTematicosView extends AFormView {
 		cmbTipoPrueba.getSelectionModel().clearSelection();
 		select(null);
 	}
-	
+
 	private void inicializaTabla() {
-		tblEjesTematicos.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-		colNombre.setCellValueFactory(new PropertyValueFactory<EjeTematico, String>(
-				"rut"));
-		colEnsayo.setCellValueFactory(new PropertyValueFactory<EjeTematico, String>(
-				"name"));
+		tblEjesTematicos.getSelectionModel().setSelectionMode(
+				SelectionMode.MULTIPLE);
+		colNombre
+				.setCellValueFactory(new PropertyValueFactory<EjeTematico, String>(
+						"name"));
+		colEnsayo
+				.setCellValueFactory(new PropertyValueFactory<EjeTematico, String>(
+						"asignatura"));
 		colTipoPrueba
 				.setCellValueFactory(new PropertyValueFactory<EjeTematico, String>(
-						"aPaterno"));
+						"tipoprueba"));
 	}
 
+	@Override
+	public boolean validate() {
+		boolean valida = true;
+		if (txtNombres.getText() == null || txtNombres.getText().equals("")) {
+			txtNombres.getStyleClass().add("bad");
+			valida = false;
+		}
+		if (txtNombres.getText() != null
+				&& txtNombres.getText().length() > LARGO_CAMPO_TEXT) {
+			txtNombres.getStyleClass().add("bad");
+			valida = false;
+		}
+		if (cmbAsignatura.getValue() != null) {
+			cmbAsignatura.getStyleClass().add("bad");
+			valida = false;
+		}
+		if (cmbTipoPrueba.getValue() != null) {
+			cmbTipoPrueba.getStyleClass().add("bad");
+			valida = false;
+		}
+		return valida;
+	}
+	
+	@Override
+	public void onDataArrived(List<IEntity> list) {
+		ObservableList<EjeTematico> value = FXCollections.observableArrayList();
+		for (IEntity iEntity : list) {
+			value.add((EjeTematico) iEntity);
+		}
+	}
+	private void accionClicTabla() {
+		tblEjesTematicos.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				ObservableList<EjeTematico> itemsSelec = tblEjesTematicos
+						.getSelectionModel().getSelectedItems();
+				
+				if (itemsSelec.size() > 1) {
+					mnItemModificar.setDisable(true);
+				}
+				else{
+					select((IEntity) itemsSelec);
+					mnItemModificar.setDisable(false);
+				}
+			}
+		});
+	}
 }
