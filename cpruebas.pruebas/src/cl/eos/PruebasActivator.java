@@ -11,6 +11,7 @@ import javafx.scene.Parent;
 public class PruebasActivator extends AActivator{
 
 	
+	
 	public PruebasActivator() {
 		controller = new PruebasController();
 		
