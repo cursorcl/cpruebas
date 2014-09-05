@@ -1,6 +1,10 @@
 package cl.eos.persistence.models;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 
@@ -10,6 +14,14 @@ import cl.eos.interfaces.entity.IEntity;
 @NamedQueries({ @NamedQuery(name = "TipoPrueba.findAll", query = "SELECT e FROM tipoprueba e") })
 public class TipoPrueba implements IEntity {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
+
+	@Column(length = 100)
+	private String name;
+
+	
 	@Override
 	public Long getId() {
 		// TODO Auto-generated method stub

@@ -48,6 +48,11 @@
 														<MenuItem mnemonicParsing="false" text="Delete" />
 													</items>
 												</Menu>
+                                    <Menu mnemonicParsing="false" text="Pruebas">
+                                      <items>
+                                        <MenuItem fx:id="mnuHacerPrueba" mnemonicParsing="false" text="Generar Prueba" />
+                                      </items>
+                                    </Menu>
 												<Menu mnemonicParsing="false" text="Administrador">
 													<items>
                                           <MenuItem id="mnuColegios" fx:id="mnuColegios" mnemonicParsing="false" text="Colegios">

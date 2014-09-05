@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import cl.eos.interfaces.entity.IEntity;
 
@@ -27,6 +29,7 @@ public class Prueba implements IEntity {
 	private Curso curso;
 	private Asignatura asignatura;
 
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date fecha;
 	private Integer nroPreguntas;
 	private Integer formas;

@@ -95,21 +95,21 @@
                   <Insets bottom="5.0" left="10.0" right="10.0" />
                </VBox.margin>
             </ComboBox>
-            <BigDecimalField promptText="Formas">
+            <ComboBox prefHeight="23.0" prefWidth="205.0" promptText="Forma">
                <VBox.margin>
                   <Insets bottom="5.0" left="10.0" right="10.0" />
                </VBox.margin>
-            </BigDecimalField>
+            </ComboBox>
             <TextField promptText="Nombre Prueba">
                <VBox.margin>
                   <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                </VBox.margin>
             </TextField>
-            <BigDecimalField promptText="Alternativas">
+            <ComboBox prefHeight="23.0" prefWidth="202.0" promptText="Núm. Alternativas">
                <VBox.margin>
                   <Insets bottom="5.0" left="10.0" right="10.0" />
                </VBox.margin>
-            </BigDecimalField>
+            </ComboBox>
             <ComboBox prefHeight="25.0" prefWidth="292.0" promptText="Curso">
                <VBox.margin>
                   <Insets bottom="5.0" left="10.0" right="10.0" />
@@ -120,26 +120,26 @@
                   <Insets bottom="5.0" left="10.0" right="10.0" />
                </VBox.margin>
             </DatePicker>
-            <BigDecimalField prefHeight="27.0" prefWidth="220.0" promptText="Número Preguntas">
+            <ComboBox prefHeight="23.0" prefWidth="202.0" promptText="Núm Preguntas">
                <VBox.margin>
                   <Insets bottom="5.0" left="10.0" right="10.0" />
                </VBox.margin>
-            </BigDecimalField>
+            </ComboBox>
             <ComboBox id="cmbCursos" prefHeight="23.0" prefWidth="302.0" promptText="Profesor">
                <VBox.margin>
                   <Insets bottom="5.0" left="10.0" right="10.0" />
                </VBox.margin>
             </ComboBox>
-            <BigDecimalField promptText="Pje. base pregunta correcta">
+            <ComboBox prefHeight="23.0" prefWidth="204.0" promptText="Puntaje pregunta">
                <VBox.margin>
                   <Insets bottom="5.0" left="10.0" right="10.0" />
                </VBox.margin>
-            </BigDecimalField>
-            <BigDecimalField promptText="Nivel Evaluación">
+            </ComboBox>
+            <ComboBox prefHeight="23.0" prefWidth="206.0" promptText="Nivel Evaluación">
                <VBox.margin>
                   <Insets bottom="5.0" left="10.0" right="10.0" />
                </VBox.margin>
-            </BigDecimalField>
+            </ComboBox>
          </children>
       </VBox>
    </left>

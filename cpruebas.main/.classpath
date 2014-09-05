@@ -13,5 +13,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.ejestematicos"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.habilidades"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.profesores"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.pruebas"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
