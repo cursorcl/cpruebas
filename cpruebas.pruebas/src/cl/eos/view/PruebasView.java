@@ -3,6 +3,8 @@ package cl.eos.view;
 import java.util.Date;
 import java.util.List;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
@@ -10,28 +12,28 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
-import cl.eos.ot.OTPrueba;
+import cl.eos.persistence.models.Prueba;
 
 public class PruebasView extends AFormView {
 
 	@FXML
-	private TableView<OTPrueba> tblListadoPruebas;
+	private TableView<Prueba> tblListadoPruebas;
 	@FXML
-	private TableColumn<OTPrueba, Date> fechaCol;
+	private TableColumn<Prueba, Date> fechaCol;
 	@FXML
-	private TableColumn<OTPrueba, String> cursoCol;
+	private TableColumn<Prueba, String> cursoCol;
 	@FXML
-	private TableColumn<OTPrueba, String> nameCol;
+	private TableColumn<Prueba, String> nameCol;
 	@FXML
-	private TableColumn<OTPrueba, String> asignaturaCol;
+	private TableColumn<Prueba, String> asignaturaCol;
 	@FXML
-	private TableColumn<OTPrueba, String> profesorCol;
+	private TableColumn<Prueba, String> profesorCol;
 	@FXML
-	private TableColumn<OTPrueba, Integer> nroPreguntasCol;
+	private TableColumn<Prueba, Integer> nroPreguntasCol;
 	@FXML
-	private TableColumn<OTPrueba, Integer> formasCol;
+	private TableColumn<Prueba, Integer> formasCol;
 	@FXML
-	private TableColumn<OTPrueba, Integer> alternativasCol;
+	private TableColumn<Prueba, Integer> alternativasCol;
 
 	public PruebasView() {
 	}
@@ -41,39 +43,38 @@ public class PruebasView extends AFormView {
 		tblListadoPruebas.getSelectionModel().setSelectionMode(
 				SelectionMode.MULTIPLE);
 		
-		nameCol.setCellValueFactory(new PropertyValueFactory<OTPrueba, String>(
+		nameCol.setCellValueFactory(new PropertyValueFactory<Prueba, String>(
 				"name"));
-		fechaCol.setCellValueFactory(new PropertyValueFactory<OTPrueba, Date>(
+		fechaCol.setCellValueFactory(new PropertyValueFactory<Prueba, Date>(
 				"fecha"));
-		cursoCol.setCellValueFactory(new PropertyValueFactory<OTPrueba, String>(
+		cursoCol.setCellValueFactory(new PropertyValueFactory<Prueba, String>(
 				"aPaterno"));
 		asignaturaCol
-				.setCellValueFactory(new PropertyValueFactory<OTPrueba, String>(
+				.setCellValueFactory(new PropertyValueFactory<Prueba, String>(
 						"aMaterno"));
 		profesorCol
-				.setCellValueFactory(new PropertyValueFactory<OTPrueba, String>(
+				.setCellValueFactory(new PropertyValueFactory<Prueba, String>(
 						"curso"));
 		nroPreguntasCol
-				.setCellValueFactory(new PropertyValueFactory<OTPrueba, Integer>(
+				.setCellValueFactory(new PropertyValueFactory<Prueba, Integer>(
 						"nroPreguntas"));
 		formasCol
-				.setCellValueFactory(new PropertyValueFactory<OTPrueba, Integer>(
+				.setCellValueFactory(new PropertyValueFactory<Prueba, Integer>(
 						"formas"));
 		alternativasCol
-				.setCellValueFactory(new PropertyValueFactory<OTPrueba, Integer>(
+				.setCellValueFactory(new PropertyValueFactory<Prueba, Integer>(
 						"alternativas"));
 	}
 
 	@Override
 	public void onDataArrived(List<IEntity> list) {
 
-		// Transformar Entity to OT
-//		value = FXCollections
-//		.observableArrayList(new OTAlumno("12.623.503-8", "Susan",
-//				"Farías", "Zavala", "AA"), new OTAlumno("12.623.502-k",
-//				"Ursula", "Farías", "Zavala", "AA"), new OTAlumno(
-//				"12.623.503-9", "Ursula", "Farías", "Zavala", "AA"));
-//tblListadoPruebas.setItems(value);
+		ObservableList<Prueba> pruebas = FXCollections.observableArrayList();
+		for(IEntity entity: list)
+		{
+			pruebas.add((Prueba) entity);
+		}
+		
 
 	}
 
