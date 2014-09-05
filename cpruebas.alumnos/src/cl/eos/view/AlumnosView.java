@@ -63,7 +63,7 @@ public class AlumnosView extends AFormView {
 
 	@FXML
 	private TableView<Alumno> tblAlumnos;
-
+ 
 	@FXML
 	private TableColumn<Alumno, String> colRut;
 
@@ -168,7 +168,6 @@ public class AlumnosView extends AFormView {
 					lblError.getStyleClass().add("bad");
 					lblError.setText("Corregir campos destacados en color rojo");
 				}
-				limpiarControles();
 			}
 
 		});
@@ -220,6 +219,7 @@ public class AlumnosView extends AFormView {
 	@Override
 	public void onSaved(IEntity otObject) {
 		System.out.println("Elemento grabando:" + otObject.toString());
+		limpiarControles();
 	}
 
 	@Override
