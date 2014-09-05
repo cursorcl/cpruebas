@@ -3,10 +3,10 @@ package cl.eos;
 import java.io.IOException;
 import java.net.URL;
 
-import cl.eos.controller.PruebasController;
-import cl.eos.interfaces.AActivator;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import cl.eos.controller.PruebasController;
+import cl.eos.interfaces.AActivator;
 
 public class PruebasActivator extends AActivator{
 
