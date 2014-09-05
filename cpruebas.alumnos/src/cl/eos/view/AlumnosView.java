@@ -248,8 +248,7 @@ public class AlumnosView extends AFormView {
 			txtAPaterno.getStyleClass().add("bad");
 			valida = false;
 		}
-		if (txtAPaterno.getText() != null
-				|| txtAPaterno.getText().length() > LARGO_CAMPO_TEXT) {
+		if (txtAPaterno.getText() != null && txtAPaterno.getText().length() > LARGO_CAMPO_TEXT) {
 			txtAPaterno.getStyleClass().add("bad");
 			valida = false;
 		}
