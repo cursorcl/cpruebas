@@ -5,6 +5,7 @@
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
+
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="485.0" prefWidth="687.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.AlumnosView">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
@@ -41,12 +42,12 @@
                               <Insets left="10.0" right="10.0" top="10.0" />
                            </VBox.margin>
                         </Label>
-                        <ComboBox id="cmbColegios" prefHeight="23.0" prefWidth="301.0" promptText="Colegio">
+                        <ComboBox id="cmbColegios" fx:id="cmbColegio" prefHeight="23.0" prefWidth="301.0" promptText="Colegio">
                            <VBox.margin>
                               <Insets bottom="5.0" left="10.0" right="10.0" top="10.0" />
                            </VBox.margin>
                         </ComboBox>
-                        <ComboBox id="cmbCursos" prefHeight="23.0" prefWidth="302.0" promptText="Curso">
+                        <ComboBox id="cmbCursos" fx:id="cmbCurso" prefHeight="23.0" prefWidth="302.0" promptText="Curso">
                            <VBox.margin>
                               <Insets left="10.0" right="10.0" />
                            </VBox.margin>

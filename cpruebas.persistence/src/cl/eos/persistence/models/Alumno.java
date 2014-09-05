@@ -21,6 +21,8 @@ public class Alumno implements IEntity {
 	private String paterno;
 	private String materno;
 	private String direccion;
+	private Colegio colegio;
+	private Curso curso;
 
 	@Override
 	public Long getId() {
@@ -79,5 +81,20 @@ public class Alumno implements IEntity {
 		this.direccion = direccion;
 	}
 
+	public Colegio getColegio() {
+		return colegio;
+	}
+
+	public void setColegio(Colegio colegio) {
+		this.colegio = colegio;
+	}
+
+	public Curso getCurso() {
+		return curso;
+	}
+
+	public void setCurso(Curso curso) {
+		this.curso = curso;
+	}
 	
 }
