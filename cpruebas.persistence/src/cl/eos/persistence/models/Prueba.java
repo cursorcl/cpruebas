@@ -34,6 +34,7 @@ public class Prueba implements IEntity {
 	private Integer nroPreguntas;
 	private Integer formas;
 	private Integer alternativas;
+	private Profesor profesor;
 
 	private String responses;
 
@@ -149,7 +150,15 @@ public class Prueba implements IEntity {
 	}
 
 	
-	@Override
+	public Profesor getProfesor() {
+    return profesor;
+  }
+
+  public void setProfesor(Profesor profesor) {
+    this.profesor = profesor;
+  }
+
+  @Override
 	public String toString() {
 		return name;
 	}
