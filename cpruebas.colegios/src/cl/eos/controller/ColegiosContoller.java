@@ -2,18 +2,17 @@ package cl.eos.controller;
 
 import cl.eos.imp.controller.AController;
 import cl.eos.model.ColegiosModel;
+import cl.eos.persistence.models.Colegio;
 
 public class ColegiosContoller extends AController {
 
 	public ColegiosContoller() {
 		
-		model = new ColegiosModel();
-		
 	}
 
 	@Override
 	public void initialize() {
-		// TODO Auto-generated method stub
-		
+		model = new ColegiosModel();
+		model.findAll(Colegio.class, this);
 	}
 }

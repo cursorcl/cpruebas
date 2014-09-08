@@ -39,6 +39,11 @@ public class Curso implements IEntity {
 		this.name = name;
 	}
 
+	@Override
+	public boolean validate() {
+		return true;
+	}
+
 	public Nivel getNivel() {
 		return nivel;
 	}
@@ -47,10 +52,6 @@ public class Curso implements IEntity {
 		this.nivel = nivel;
 	}
 
-	@Override
-	public boolean validate() {
-		return true;
-	}
 	@Override
 	public String toString() {
 		return name;

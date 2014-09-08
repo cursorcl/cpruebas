@@ -36,7 +36,6 @@ public class Habilidad  implements IEntity  {
 	}
 	@Override
 	public boolean validate() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 	

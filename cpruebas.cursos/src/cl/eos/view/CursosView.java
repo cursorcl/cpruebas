@@ -85,14 +85,11 @@ public class CursosView extends AFormView {
 
 			@Override
 			public void handle(ActionEvent event) {
-				ObservableList<Curso> cursos = tblCurso.getItems();
-				ObservableList<Curso> cursosSelec = tblCurso.getSelectionModel()
-						.getSelectedItems();
-
+				ObservableList<Curso> cursosSelec = tblCurso
+						.getSelectionModel().getSelectedItems();
 				for (Curso curso : cursosSelec) {
-					cursos.remove(curso);
+					delete(curso);
 				}
-				tblCurso.getSelectionModel().clearSelection();
 			}
 		});
 	}
@@ -101,29 +98,37 @@ public class CursosView extends AFormView {
 		tblCurso.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				ObservableList<Curso> itemsSelec = tblCurso
-						.getSelectionModel().getSelectedItems();
-				
+				ObservableList<Curso> itemsSelec = tblCurso.getSelectionModel()
+						.getSelectedItems();
 				if (itemsSelec.size() > 1) {
 					mnItemModificar.setDisable(true);
-				}
-				else{
-					select((IEntity) itemsSelec);
+					mnItemEliminar.setDisable(false);
+				} else if (itemsSelec.size() == 1) {
+					select((IEntity) itemsSelec.get(0));
 					mnItemModificar.setDisable(false);
+					mnItemEliminar.setDisable(false);
 				}
 			}
 		});
 	}
-	
+
 	private void accionGrabar() {
 		mnuGrabar.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
-
+				IEntity entitySelected = getSelectedEntity();
 				removeAllStyles();
 				if (validate()) {
-					lblError.setText(" ");
-					Curso curso = new Curso();
+					if (lblError != null) {
+						lblError.setText(" ");
+					}
+					Curso curso = null;
+					if (entitySelected != null
+							&& entitySelected instanceof Curso) {
+						curso = (Curso) entitySelected;
+					} else {
+						curso = new Curso();
+					}
 					curso.setName(txtNombre.getText());
 					curso.setNivel(cmbNivel.getValue());
 					save(curso);
@@ -131,7 +136,7 @@ public class CursosView extends AFormView {
 					lblError.getStyleClass().add("bad");
 					lblError.setText("Corregir campos destacados en color rojo");
 				}
-				
+				limpiarControles();
 			}
 		});
 	}
@@ -149,7 +154,7 @@ public class CursosView extends AFormView {
 		cmbNivel.getSelectionModel().clearSelection();
 		select(null);
 	}
-	
+
 	private void removeAllStyles() {
 		removeAllStyle(lblError);
 		removeAllStyle(txtNombre);
@@ -177,17 +182,43 @@ public class CursosView extends AFormView {
 
 	@Override
 	public void onDataArrived(List<IEntity> list) {
-		ObservableList<Curso> value = FXCollections.observableArrayList();
-		for (IEntity iEntity : list) {
-			value.add((Curso) iEntity);
+		if (list != null && !list.isEmpty()) {
+			IEntity entity = list.get(0);
+			if (entity instanceof Curso) {
+				ObservableList<Curso> value = FXCollections
+						.observableArrayList();
+				for (IEntity iEntity : list) {
+					value.add((Curso) iEntity);
+				}
+				tblCurso.setItems(value);
+			} else if (entity instanceof Nivel) {
+				ObservableList<Nivel> oList = FXCollections
+						.observableArrayList();
+				for (IEntity iEntity : list) {
+					oList.add((Nivel) iEntity);
+				}
+				cmbNivel.setItems(oList);
+			}
 		}
-		tblCurso.setItems(value);
 	}
 
 	@Override
 	public void onSaved(IEntity otObject) {
 		System.out.println("Elemento grabando:" + otObject.toString());
-		limpiarControles();
+		int indice = tblCurso.getItems().lastIndexOf(otObject);
+		if (indice != -1) {
+			tblCurso.getItems().remove(otObject);
+			tblCurso.getItems().add(indice, (Curso) otObject);
+		} else {
+			tblCurso.getItems().add((Curso) otObject);
+		}
 	}
 
+	@Override
+	public void onDeleted(IEntity entity) {
+		System.out.println("Elemento eliminando:" + entity.toString());
+		ObservableList<Curso> asignaturas = tblCurso.getItems();
+		asignaturas.remove(entity);
+		tblCurso.getSelectionModel().clearSelection();
+	}
 }

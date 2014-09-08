@@ -9,10 +9,10 @@ import javax.persistence.NamedQuery;
 
 import cl.eos.interfaces.entity.IEntity;
 
-
 @Entity(name = "nivel")
 @NamedQueries({ @NamedQuery(name = "Nivel.findAll", query = "SELECT e FROM nivel e") })
 public class Nivel implements IEntity {
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
