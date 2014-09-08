@@ -14,7 +14,7 @@ import cl.eos.interfaces.entity.IEntity;
 public class EjeTematico implements IEntity {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	private String name;
 	private String tipoprueba;

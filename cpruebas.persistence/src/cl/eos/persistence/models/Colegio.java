@@ -15,7 +15,7 @@ import cl.eos.interfaces.entity.IEntity;
 public class Colegio implements IEntity {
 
 	@Id 
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	private String name;
 	

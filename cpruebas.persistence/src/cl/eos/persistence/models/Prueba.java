@@ -1,7 +1,5 @@
 package cl.eos.persistence.models;
 
-import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,8 +7,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import cl.eos.interfaces.entity.IEntity;
 
@@ -19,7 +15,7 @@ import cl.eos.interfaces.entity.IEntity;
 public class Prueba implements IEntity {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 
 	@Column(length = 100)
@@ -29,14 +25,13 @@ public class Prueba implements IEntity {
 	private Curso curso;
 	private Asignatura asignatura;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date fecha;
+	private Long fecha;
 	private Integer nroPreguntas;
 	private Integer formas;
 	private Integer alternativas;
 	private Profesor profesor;
 
-	private String responses;
+	private Integer responses;
 
 	public TipoPrueba getTipoPrueba() {
 		return tipoPrueba;
@@ -62,11 +57,11 @@ public class Prueba implements IEntity {
 		this.asignatura = asignatura;
 	}
 
-	public Date getFecha() {
+	public Long getFecha() {
 		return fecha;
 	}
 
-	public void setFecha(Date fecha) {
+	public void setFecha(Long fecha) {
 		this.fecha = fecha;
 	}
 
@@ -141,11 +136,11 @@ public class Prueba implements IEntity {
 		return false;
 	}
 
-	public String getResponses() {
+	public Integer getResponses() {
 		return responses;
 	}
 
-	public void setResponses(String responses) {
+	public void setResponses(Integer responses) {
 		this.responses = responses;
 	}
 

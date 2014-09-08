@@ -14,10 +14,10 @@ import cl.eos.interfaces.entity.IEntity;
 public class Curso implements IEntity {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	private String name;
-	private String nivel;
+	private Nivel nivel;
 
 	@Override
 	public Long getId() {
@@ -39,19 +39,18 @@ public class Curso implements IEntity {
 		this.name = name;
 	}
 
+	public Nivel getNivel() {
+		return nivel;
+	}
+
+	public void setNivel(Nivel nivel) {
+		this.nivel = nivel;
+	}
+
 	@Override
 	public boolean validate() {
 		return true;
 	}
-
-	public String getNivel() {
-		return nivel;
-	}
-
-	public void setNivel(String nivel) {
-		this.nivel = nivel;
-	}
-
 	@Override
 	public String toString() {
 		return name;

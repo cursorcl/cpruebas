@@ -20,6 +20,7 @@ import javafx.scene.input.MouseEvent;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.persistence.models.Curso;
+import cl.eos.persistence.models.Nivel;
 
 public class CursosView extends AFormView {
 
@@ -38,7 +39,7 @@ public class CursosView extends AFormView {
 	private TextField txtNombre;
 
 	@FXML
-	private ComboBox<String> cmbNivel;
+	private ComboBox<Nivel> cmbNivel;
 
 	@FXML
 	private Label lblError;

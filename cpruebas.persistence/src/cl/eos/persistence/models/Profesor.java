@@ -14,7 +14,7 @@ import cl.eos.interfaces.entity.IEntity;
 public class Profesor implements IEntity {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;	
 	private String rut;
 	private String name;
@@ -72,7 +72,7 @@ public class Profesor implements IEntity {
 	
 	@Override
 	public String toString() {
-		return name;
+		return String.format("%s %s %s",name, paterno, materno).trim();
 	}
 
 
