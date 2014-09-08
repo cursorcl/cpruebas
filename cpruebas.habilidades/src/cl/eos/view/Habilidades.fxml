@@ -57,10 +57,10 @@
                      <center>
                         <ScrollPane prefHeight="311.0" prefWidth="370.0" BorderPane.alignment="CENTER">
                            <content>
-                              <TableView id="tblHabilidades" prefHeight="400.0" prefWidth="439.0">
+                              <TableView id="tblHabilidades" fx:id="tblHabilidades" prefHeight="400.0" prefWidth="439.0">
                                 <columns>
-                                  <TableColumn prefWidth="194.0" text="Nombre" />
-                                    <TableColumn prefWidth="151.0" text="Descripción" />
+                                  <TableColumn fx:id="colNombre" prefWidth="194.0" text="Nombre" />
+                                    <TableColumn fx:id="colDEscripcion" prefWidth="151.0" text="Descripción" />
                                 </columns>
                                  <contextMenu>
                                     <ContextMenu>

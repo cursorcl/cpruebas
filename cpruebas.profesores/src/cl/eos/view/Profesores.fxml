@@ -75,20 +75,20 @@
                         <Pagination prefHeight="42.0" prefWidth="244.0" BorderPane.alignment="CENTER" />
                      </bottom>
                      <right>
-                        <ScrollPane prefHeight="311.0" prefWidth="370.0" BorderPane.alignment="CENTER">
+                        <ScrollPane prefHeight="360.0" prefWidth="459.0" BorderPane.alignment="CENTER">
                            <content>
-                              <TableView id="tblProfesores">
+                              <TableView id="tblProfesores" fx:id="tblProfesores">
                                 <columns>
-                                  <TableColumn prefWidth="100.0" text="Rut" />
-                                  <TableColumn prefWidth="107.0" text="A.Paterno" />
-                                    <TableColumn prefWidth="100.0" text="A.Materno" />
-                                    <TableColumn prefWidth="120.0" text="Nombres" />
+                                  <TableColumn fx:id="colRut" prefWidth="100.0" text="Rut" />
+                                  <TableColumn fx:id="colPaterno" prefWidth="107.0" text="A.Paterno" />
+                                    <TableColumn fx:id="colMaterno" prefWidth="100.0" text="A.Materno" />
+                                    <TableColumn fx:id="ColNombres" prefWidth="120.0" text="Nombres" />
                                 </columns>
                                  <contextMenu>
                                     <ContextMenu>
                                       <items>
-                                        <MenuItem mnemonicParsing="false" text="Modificar" />
-                                          <MenuItem mnemonicParsing="false" text="Eliminar" />
+                                        <MenuItem fx:id="mnuModificar" mnemonicParsing="false" text="Modificar" />
+                                          <MenuItem fx:id="mnuEliminar" mnemonicParsing="false" text="Eliminar" />
                                       </items>
                                     </ContextMenu>
                                  </contextMenu>
