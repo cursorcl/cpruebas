@@ -10,7 +10,7 @@ import cl.eos.interfaces.entity.IEntity;
 @Entity(name = "habilidad")
 public class Habilidad  implements IEntity  {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;	
 	private String name;
 	private String descripcion;

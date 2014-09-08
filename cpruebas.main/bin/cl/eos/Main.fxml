@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import jfxtras.labs.scene.control.*?>
 <?import javafx.scene.input.*?>
 <?import javafx.scene.effect.*?>
 <?import javafx.scene.image.*?>
@@ -134,9 +135,7 @@
 														</ImageView>
 													</graphic>
 												</Button>
-
-												<Region prefHeight="0.0" prefWidth="221.0" styleClass="breadcrumb-bar" />
-												<VBox prefHeight="39.0" prefWidth="412.0" />
+                                    <BreadcrumbBar prefHeight="20.0" prefWidth="454.0" />
 												<Button id="SettingsButton" mnemonicParsing="false" text="">
 													<graphic>
 														<ImageView>
