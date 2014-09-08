@@ -32,8 +32,76 @@
       </MenuBar>
    </top>
    <center>
-      <SplitPane prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <SplitPane dividerPositions="0.23799359658484526" prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <items>
+            <AnchorPane>
+               <children>
+                  <VBox prefHeight="333.0" prefWidth="222.0">
+                     <children>
+                        <Label prefHeight="15.0" prefWidth="201.0" text="Label" textAlignment="CENTER">
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="10.0" right="5.0" top="10.0" />
+                           </VBox.margin>
+                        </Label>
+                        <ComboBox id="cmbColegios" fx:id="cmbTipoPrueba" prefHeight="23.0" prefWidth="301.0" promptText="Tipo prueba">
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="10.0" right="10.0" top="10.0" />
+                           </VBox.margin>
+                        </ComboBox>
+                        <ComboBox fx:id="cmbAsignatura" prefHeight="25.0" prefWidth="301.0" promptText="Asignatura">
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="10.0" right="10.0" />
+                           </VBox.margin>
+                        </ComboBox>
+                        <ComboBox prefHeight="23.0" prefWidth="301.0" promptText="Forma">
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="10.0" right="10.0" />
+                           </VBox.margin>
+                        </ComboBox>
+                        <TextField prefWidth="301.0" promptText="Nombre Prueba">
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                           </VBox.margin>
+                        </TextField>
+                        <ComboBox prefHeight="23.0" prefWidth="301.0" promptText="Núm. Alternativas">
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="10.0" right="10.0" />
+                           </VBox.margin>
+                        </ComboBox>
+                        <ComboBox fx:id="cmbCurso" prefHeight="25.0" prefWidth="301.0" promptText="Curso">
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="10.0" right="10.0" />
+                           </VBox.margin>
+                        </ComboBox>
+                        <DatePicker prefHeight="25.0" prefWidth="301.0" promptText="Fecha">
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="10.0" right="10.0" />
+                           </VBox.margin>
+                        </DatePicker>
+                        <ComboBox prefHeight="23.0" prefWidth="301.0" promptText="Núm Preguntas">
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="10.0" right="10.0" />
+                           </VBox.margin>
+                        </ComboBox>
+                        <ComboBox id="cmbCursos" fx:id="cmbProfesor" prefHeight="23.0" prefWidth="301.0" promptText="Profesor">
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="10.0" right="10.0" />
+                           </VBox.margin>
+                        </ComboBox>
+                        <ComboBox prefHeight="23.0" prefWidth="301.0" promptText="Puntaje pregunta">
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="10.0" right="10.0" />
+                           </VBox.margin>
+                        </ComboBox>
+                        <ComboBox prefHeight="23.0" prefWidth="301.0" promptText="Nivel Evaluación">
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="10.0" right="10.0" />
+                           </VBox.margin>
+                        </ComboBox>
+                     </children>
+                  </VBox>
+               </children>
+            </AnchorPane>
             <StackPane>
                <children>
                   <BorderPane prefHeight="459.0" prefWidth="370.0">
@@ -77,70 +145,4 @@
         </items>
       </SplitPane>
    </center>
-   <left>
-      <VBox prefHeight="333.0" prefWidth="222.0" BorderPane.alignment="CENTER">
-         <children>
-            <Label prefHeight="15.0" prefWidth="201.0" text="Label" textAlignment="CENTER">
-               <VBox.margin>
-                  <Insets bottom="5.0" left="10.0" right="5.0" top="10.0" />
-               </VBox.margin>
-            </Label>
-            <ComboBox id="cmbColegios" prefHeight="23.0" prefWidth="301.0" promptText="Tipo prueba">
-               <VBox.margin>
-                  <Insets bottom="5.0" left="10.0" right="10.0" top="10.0" />
-               </VBox.margin>
-            </ComboBox>
-            <ComboBox prefHeight="25.0" prefWidth="294.0" promptText="Asignatura">
-               <VBox.margin>
-                  <Insets bottom="5.0" left="10.0" right="10.0" />
-               </VBox.margin>
-            </ComboBox>
-            <ComboBox prefHeight="23.0" prefWidth="205.0" promptText="Forma">
-               <VBox.margin>
-                  <Insets bottom="5.0" left="10.0" right="10.0" />
-               </VBox.margin>
-            </ComboBox>
-            <TextField promptText="Nombre Prueba">
-               <VBox.margin>
-                  <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
-               </VBox.margin>
-            </TextField>
-            <ComboBox prefHeight="23.0" prefWidth="202.0" promptText="Núm. Alternativas">
-               <VBox.margin>
-                  <Insets bottom="5.0" left="10.0" right="10.0" />
-               </VBox.margin>
-            </ComboBox>
-            <ComboBox prefHeight="25.0" prefWidth="292.0" promptText="Curso">
-               <VBox.margin>
-                  <Insets bottom="5.0" left="10.0" right="10.0" />
-               </VBox.margin>
-            </ComboBox>
-            <DatePicker prefHeight="25.0" prefWidth="290.0" promptText="Fecha">
-               <VBox.margin>
-                  <Insets bottom="5.0" left="10.0" right="10.0" />
-               </VBox.margin>
-            </DatePicker>
-            <ComboBox prefHeight="23.0" prefWidth="202.0" promptText="Núm Preguntas">
-               <VBox.margin>
-                  <Insets bottom="5.0" left="10.0" right="10.0" />
-               </VBox.margin>
-            </ComboBox>
-            <ComboBox id="cmbCursos" prefHeight="23.0" prefWidth="302.0" promptText="Profesor">
-               <VBox.margin>
-                  <Insets bottom="5.0" left="10.0" right="10.0" />
-               </VBox.margin>
-            </ComboBox>
-            <ComboBox prefHeight="23.0" prefWidth="204.0" promptText="Puntaje pregunta">
-               <VBox.margin>
-                  <Insets bottom="5.0" left="10.0" right="10.0" />
-               </VBox.margin>
-            </ComboBox>
-            <ComboBox prefHeight="23.0" prefWidth="206.0" promptText="Nivel Evaluación">
-               <VBox.margin>
-                  <Insets bottom="5.0" left="10.0" right="10.0" />
-               </VBox.margin>
-            </ComboBox>
-         </children>
-      </VBox>
-   </left>
 </BorderPane>
