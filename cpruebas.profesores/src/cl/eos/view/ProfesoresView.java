@@ -4,9 +4,11 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
+import cl.eos.persistence.models.Alumno;
 import cl.eos.persistence.models.Profesor;
 
 public class ProfesoresView extends AFormView {
@@ -25,6 +27,9 @@ public class ProfesoresView extends AFormView {
 
 	@FXML
 	private TextField txtAMaterno;
+	
+	@FXML
+	private TableView<Profesor> tblProfesores;
 
 	public ProfesoresView() {
 
