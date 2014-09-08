@@ -7,7 +7,11 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/kernel.api"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/kernel.api.imp.fx"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.persistence.provider"/>
-	<classpathentry kind="lib" path="C:/desarrollo/jfxtras-window-8.0-r2-20140826.080205-187.jar"/>
-	<classpathentry kind="lib" path="C:/desarrollo/jfxtras-labs-8.0-r2-20140826.080232-181.jar"/>
+	<classpathentry kind="lib" path="O:/cpruebas/jars/jfxtras-agenda.jar"/>
+	<classpathentry kind="lib" path="O:/cpruebas/jars/jfxtras-common.jar"/>
+	<classpathentry kind="lib" path="O:/cpruebas/jars/jfxtras-controls.jar"/>
+	<classpathentry kind="lib" path="O:/cpruebas/jars/jfxtras-fxml-8.0.jar"/>
+	<classpathentry kind="lib" path="O:/cpruebas/jars/jfxtras-labs-8.0.jar"/>
+	<classpathentry kind="lib" path="O:/cpruebas/jars/jfxtras-window.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

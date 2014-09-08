@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import jfxtras.scene.control.*?>
 <?import jfxtras.labs.scene.control.*?>
 <?import javafx.scene.input.*?>
 <?import javafx.scene.effect.*?>
@@ -12,25 +13,31 @@
 	<children>
 		<BorderPane prefHeight="200.0" prefWidth="200.0">
 			<top>
-				<ToolBar id="mainToolBar" minHeight="29.0" minWidth="-Infinity" prefHeight="72.0" prefWidth="943.0" BorderPane.alignment="CENTER">
-					<items>
-						<ImageView fitHeight="63.0" fitWidth="165.0" pickOnBounds="true" preserveRatio="true">
+            <AnchorPane prefHeight="47.0" prefWidth="943.0">
+               <children>
+						<Pane id="SearchBox" prefHeight="52.0" prefWidth="198.0">
+							<children>
+								<Button id="clearButton" layoutX="173.0" layoutY="24.0" mnemonicParsing="false" visible="false" />
+							</children>
+						</Pane>
+						<ImageView fitHeight="63.0" fitWidth="165.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
 							<image>
 								<Image url="@images/logo_sisdef.png" />
 							</image>
 						</ImageView>
-						<HBox prefHeight="52.0" prefWidth="543.0" />
-						<Pane id="SearchBox" prefHeight="52.0" prefWidth="198.0">
-							<children>
-								<TextField layoutX="8.0" layoutY="14.0" prefHeight="25.0" prefWidth="182.0" promptText="Buscar" />
-								<Button id="clearButton" layoutX="173.0" layoutY="24.0" mnemonicParsing="false" visible="false" />
-							</children>
-						</Pane>
-					</items>
-				</ToolBar>
+                  <AnchorPane id="SearchBox" layoutX="720.0" layoutY="1.0" prefHeight="62.0" prefWidth="191.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="32.0" AnchorPane.topAnchor="1.0">
+                     <children>
+      								<TextField prefHeight="26.0" prefWidth="182.0" promptText="Buscar" AnchorPane.bottomAnchor="18.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="19.0" />
+                     </children>
+                  </AnchorPane>
+                  <MiniIconButton id="window-min" layoutX="923.0" layoutY="13.0" />
+                  <MiniIconButton id="window-close" layoutX="923.0" layoutY="43.0" />
+                  <MiniIconButton id="window-max" layoutX="923.0" layoutY="27.0" />
+               </children>
+            </AnchorPane>
 			</top>
 			<center>
-				<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+				<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="560.0" prefWidth="943.0" BorderPane.alignment="CENTER">
 					<children>
 						<BorderPane id="page-area" layoutX="133.0" layoutY="62.0" prefHeight="573.0" prefWidth="608.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 							<top>
@@ -105,48 +112,47 @@
 												</Menu>
 											</menus>
 										</MenuBar>
-										<ToolBar id="page-toolbar" maxHeight="30.0" minHeight="30.0" prefHeight="30.0">
-											<items>
-												<Button mnemonicParsing="false" text="">
-													<graphic>
-														<ImageView>
-															<image>
-																<Image url="@images/back.png" />
-															</image>
-														</ImageView>
-													</graphic>
-												</Button>
-												<Button mnemonicParsing="false" text="">
-													<graphic>
-														<ImageView>
-															<image>
-																<Image url="@images/forward.png" />
-															</image>
-														</ImageView>
-													</graphic>
-												</Button>
-
-												<Button mnemonicParsing="false" text="">
-													<graphic>
-														<ImageView>
-															<image>
-																<Image url="@images/reload.png" />
-															</image>
-														</ImageView>
-													</graphic>
-												</Button>
-                                    <BreadcrumbBar prefHeight="20.0" prefWidth="454.0" />
-												<Button id="SettingsButton" mnemonicParsing="false" text="">
-													<graphic>
-														<ImageView>
+                              <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                 <children>
+      										<ToolBar id="page-toolbar" prefHeight="35.0" prefWidth="893.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="0.0">
+      											<items>
+      												<Button mnemonicParsing="false" text="">
+      													<graphic>
+      														<ImageView>
+      															<image>
+      																<Image url="@images/back.png" />
+      															</image>
+      														</ImageView>
+      													</graphic>
+      												</Button>
+      												<Button mnemonicParsing="false" text="">
+      													<graphic>
+      														<ImageView>
+      															<image>
+      																<Image url="@images/forward.png" />
+      															</image>
+      														</ImageView>
+      													</graphic>
+      												</Button>
+      
+      												<Button mnemonicParsing="false" text="">
+      													<graphic>
+      														<ImageView>
+      															<image>
+      																<Image url="@images/reload.png" />
+      															</image>
+      														</ImageView>
+      													</graphic>
+      												</Button>
+      											</items>
+      										</ToolBar>
+														<ImageView layoutX="907.0" layoutY="3.0" AnchorPane.bottomAnchor="6.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="3.0">
 															<image>
 																<Image url="@images/settings.png" />
 															</image>
 														</ImageView>
-													</graphic>
-												</Button>
-											</items>
-										</ToolBar>
+                                 </children>
+                              </AnchorPane>
 									</children>
 								</VBox>
 							</top>
