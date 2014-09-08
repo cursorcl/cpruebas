@@ -1,12 +1,18 @@
 package cl.eos.persistence.models;
 
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 
 import cl.eos.interfaces.entity.IEntity;
 
+@Entity(name = "nivel")
+@NamedQueries({ @NamedQuery(name = "Nivel.findAll", query = "SELECT e FROM nivel e") })
 public class Nivel implements IEntity {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;

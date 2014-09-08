@@ -23,7 +23,7 @@ import cl.eos.persistence.models.Asignatura;
 public class AsignaturasView extends AFormView {
 
 	private static final int LARGO_CAMPO_TEXT = 100;
-	
+
 	@FXML
 	private MenuItem mnuGrabar;
 
@@ -45,7 +45,6 @@ public class AsignaturasView extends AFormView {
 	@FXML
 	private TableColumn<Asignatura, String> colNombre;
 
-	
 	public AsignaturasView() {
 
 	}
@@ -60,17 +59,20 @@ public class AsignaturasView extends AFormView {
 	}
 
 	private void inicializaTabla() {
-		tblAsignatura.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-		colNombre.setCellValueFactory(new PropertyValueFactory<Asignatura, String>(
-				"name"));
+		tblAsignatura.getSelectionModel().setSelectionMode(
+				SelectionMode.MULTIPLE);
+		colNombre
+				.setCellValueFactory(new PropertyValueFactory<Asignatura, String>(
+						"name"));
 	}
-	
+
 	private void accionModificar() {
 		mnItemModificar.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent event) {
-				Asignatura asignatura = tblAsignatura.getSelectionModel().getSelectedItem();
+				Asignatura asignatura = tblAsignatura.getSelectionModel()
+						.getSelectedItem();
 				if (asignatura != null) {
 					txtNombre.setText(asignatura.getName());
 				}
@@ -80,19 +82,13 @@ public class AsignaturasView extends AFormView {
 
 	private void accionEliminar() {
 		mnItemEliminar.setOnAction(new EventHandler<ActionEvent>() {
-
 			@Override
 			public void handle(ActionEvent event) {
-				ObservableList<Asignatura> asignaturas = tblAsignatura.getItems();
-				
 				ObservableList<Asignatura> asignaturasSelec = tblAsignatura
 						.getSelectionModel().getSelectedItems();
-
 				for (Asignatura asignaturaSel : asignaturasSelec) {
-					System.out.println("Asignatura " + asignaturaSel.getName());
-					asignaturas.remove(asignaturaSel);
+					delete(asignaturaSel);
 				}
-				tblAsignatura.getSelectionModel().clearSelection();
 
 			}
 		});
@@ -102,18 +98,27 @@ public class AsignaturasView extends AFormView {
 		mnuGrabar.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
+				IEntity entitySelected = getSelectedEntity();
 				removeAllStyles();
 				if (validate()) {
-					lblError.setText(" ");
-					Asignatura asignatura = new Asignatura();				
+					if (lblError != null) {
+						lblError.setText(" ");
+					}
+					Asignatura asignatura = null;
+					if (entitySelected != null
+							&& entitySelected instanceof Asignatura) {
+						asignatura = (Asignatura) entitySelected;
+					} else {
+						asignatura = new Asignatura();
+					}
 					asignatura.setName(txtNombre.getText());
 					save(asignatura);
-				}
-				else{
+
+				} else {
 					lblError.getStyleClass().add("bad");
 					lblError.setText("Corregir campos destacados en color rojo");
 				}
-				 limpiarControles();		
+				limpiarControles();
 			}
 		});
 	}
@@ -126,15 +131,16 @@ public class AsignaturasView extends AFormView {
 						.getSelectionModel().getSelectedItems();
 				if (itemsSelec.size() > 1) {
 					mnItemModificar.setDisable(true);
-				}
-				else{
-					select((IEntity) itemsSelec);
+					mnItemEliminar.setDisable(false);
+				} else if (itemsSelec.size() == 1) {
+					select((IEntity) itemsSelec.get(0));
 					mnItemModificar.setDisable(false);
+					mnItemEliminar.setDisable(false);
 				}
 			}
 		});
 	}
-	
+
 	private void limpiarControles() {
 		txtNombre.clear();
 		select(null);
@@ -143,22 +149,37 @@ public class AsignaturasView extends AFormView {
 	@Override
 	public void onSaved(IEntity otObject) {
 		System.out.println("Elemento grabando:" + otObject.toString());
-		limpiarControles();
+		int indice = tblAsignatura.getItems().lastIndexOf(otObject);
+		if (indice != -1) {
+			tblAsignatura.getItems().remove(otObject);
+			tblAsignatura.getItems().add(indice, (Asignatura) otObject);
+		} else {
+			tblAsignatura.getItems().add((Asignatura) otObject);
+		}
 	}
-	
+
+	@Override
+	public void onDeleted(IEntity entity) {
+		System.out.println("Elementoeliminando:" + entity.toString());
+		ObservableList<Asignatura> asignaturas = tblAsignatura.getItems();
+		asignaturas.remove(entity);
+		tblAsignatura.getSelectionModel().clearSelection();
+	}
+
 	private void removeAllStyles() {
 		removeAllStyle(lblError);
 		removeAllStyle(txtNombre);
 	}
 
 	public void removeAllStyle(Node n) {
-		n.getStyleClass().removeAll("bad", "med", "good", "best");
-		n.applyCss();
+		if (n != null) {
+			n.getStyleClass().removeAll("bad", "med", "good", "best");
+			n.applyCss();
+		}
 	}
-	
+
 	@Override
-	public boolean validate()
-	{
+	public boolean validate() {
 		boolean valida = true;
 		if (txtNombre.getText() == null || txtNombre.getText().equals("")) {
 			txtNombre.getStyleClass().add("bad");
@@ -171,14 +192,20 @@ public class AsignaturasView extends AFormView {
 		}
 		return valida;
 	}
-	
+
 	@Override
 	public void onDataArrived(List<IEntity> list) {
-
-		ObservableList<Asignatura> value = FXCollections.observableArrayList();
-		for (IEntity iEntity : list) {
-			value.add((Asignatura) iEntity);
+		if (list != null && !list.isEmpty()) {
+			IEntity entity = list.get(0);
+			if (entity instanceof Asignatura) {
+				ObservableList<Asignatura> oList = FXCollections
+						.observableArrayList();
+				for (IEntity iEntity : list) {
+					oList.add((Asignatura) iEntity);
+				}
+				tblAsignatura.setItems(oList);
+			}
 		}
 	}
-	
+
 }

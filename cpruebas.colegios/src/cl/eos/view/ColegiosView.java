@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SelectionMode;
@@ -19,6 +20,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
+import cl.eos.persistence.models.Asignatura;
 import cl.eos.persistence.models.Colegio;
 
 public class ColegiosView extends AFormView {
@@ -34,7 +36,7 @@ public class ColegiosView extends AFormView {
 	private MenuItem mnItemModificar;
 	
 	@FXML
-	private MenuItem btnImagen;
+	private Button btnImagen;
 
 	@FXML
 	private TextField txtNombre;
@@ -80,10 +82,11 @@ public class ColegiosView extends AFormView {
 				
 				if (itemsSelec.size() > 1) {
 					mnItemModificar.setDisable(true);
-				}
-				else{
-					select((IEntity) itemsSelec);
+					mnItemEliminar.setDisable(false);
+				} else if (itemsSelec.size() == 1) {
+					select((IEntity) itemsSelec.get(0));
 					mnItemModificar.setDisable(false);
+					mnItemEliminar.setDisable(false);
 				}
 			}
 		});
@@ -105,7 +108,6 @@ public class ColegiosView extends AFormView {
 					txtDireccion.setText(colegio.getDireccion());
 					//imgColegio.set
 				}
-
 			}
 		});
 	}
@@ -115,14 +117,11 @@ public class ColegiosView extends AFormView {
 
 			@Override
 			public void handle(ActionEvent event) {
-				ObservableList<Colegio> colegios = tblColegio.getItems();
-				
 				ObservableList<Colegio> colegiosSelec = tblColegio
 						.getSelectionModel().getSelectedItems();
 				for (Colegio colegio : colegiosSelec) {
-					colegios.remove(colegio);
+					delete(colegio);
 				}
-				tblColegio.getSelectionModel().clearSelection();
 			}
 		});
 	}
@@ -131,20 +130,29 @@ public class ColegiosView extends AFormView {
 		mnuGrabar.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
+				IEntity entitySelected = getSelectedEntity();
 				removeAllStyles();
 				if (validate()) {
-					lblError.setText(" ");
-					Colegio colegio = new Colegio();				
+					if (lblError != null) {
+						lblError.setText(" ");
+					}
+					Colegio colegio = null;
+					if (entitySelected != null
+							&& entitySelected instanceof Colegio) {
+						colegio = (Colegio) entitySelected;
+					} else {
+						colegio = new Colegio();
+					}
 					colegio.setName(txtNombre.getText());
 					colegio.setDireccion(txtDireccion.getText());
-					//TODO: Falta IMAGEN
-					//colegio.setImage();
+					colegio.setImage(null);
+					
 					save(colegio);
-				}
-				else{
+				} else {
 					lblError.getStyleClass().add("bad");
 					lblError.setText("Corregir campos destacados en color rojo");
 				}
+				limpiarControles();
 //			
 //				File f = new File("D:/Imagen006.jpg"); //asociamos el archivo fisico
 //				InputStream is = new FileInputStream(f); //lo abrimos. Lo importante es que sea un InputStream
@@ -169,20 +177,37 @@ public class ColegiosView extends AFormView {
 //				imagen.setNombre(nombre);
 //				lista.add(imagen);
 			}
+			
 		});
 	}
 
 	private void limpiarControles() {
 		txtNombre.clear();
+		txtDireccion.clear();
 		select(null);
 	}
 	
 	@Override
 	public void onSaved(IEntity otObject) {
 		System.out.println("Elemento grabando:" + otObject.toString());
-		limpiarControles();	
+		int indice = tblColegio.getItems().lastIndexOf(otObject);
+		if (indice != -1) {
+			tblColegio.getItems().remove(otObject);
+			tblColegio.getItems().add(indice, (Colegio) otObject);
+		}
+		else{
+			tblColegio.getItems().add((Colegio) otObject);
+		}
 	}
 
+	@Override
+	public void onDeleted(IEntity entity) {
+		System.out.println("Elementoeliminando:" + entity.toString());
+		ObservableList<Colegio> asignaturas = tblColegio.getItems();
+		asignaturas.remove(entity);
+		tblColegio.getSelectionModel().clearSelection();
+	}
+	
 	public boolean validate()
 	{
 		boolean valida = true;
@@ -200,16 +225,23 @@ public class ColegiosView extends AFormView {
 	
 	@Override
 	public void onDataArrived(List<IEntity> list) {
-
-		ObservableList<Colegio> value = FXCollections.observableArrayList();
-		for (IEntity iEntity : list) {
-			value.add((Colegio) iEntity);
+		if (list != null && !list.isEmpty()) {
+			IEntity entity = list.get(0);
+			if (entity instanceof Asignatura) {
+				ObservableList<Colegio> oList = FXCollections
+						.observableArrayList();
+				for (IEntity iEntity : list) {
+					oList.add((Colegio) iEntity);
+				}
+				tblColegio.setItems(oList);
+			}
 		}
 	}
 	
 	private void removeAllStyles() {
 		removeAllStyle(lblError);
 		removeAllStyle(txtNombre);
+		removeAllStyle(txtDireccion);
 	}
 
 	public void removeAllStyle(Node n) {

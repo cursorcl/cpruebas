@@ -39,6 +39,7 @@ public abstract class AController implements IController, IPersistenceListener {
   public void delete(IEntity entity) {
     if (model != null) {
       model.delete(entity);
+      notifyDeleted(entity);
     }
   }
 

@@ -17,7 +17,7 @@ public class Curso implements IEntity {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	private String name;
-	private String nivel;
+	private Nivel nivel;
 
 	@Override
 	public Long getId() {
@@ -44,11 +44,11 @@ public class Curso implements IEntity {
 		return true;
 	}
 
-	public String getNivel() {
+	public Nivel getNivel() {
 		return nivel;
 	}
 
-	public void setNivel(String nivel) {
+	public void setNivel(Nivel nivel) {
 		this.nivel = nivel;
 	}
 

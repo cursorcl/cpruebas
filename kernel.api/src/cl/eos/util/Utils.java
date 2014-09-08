@@ -1,5 +1,6 @@
 package cl.eos.util;
 
+
 public class Utils {
 
 	/**
@@ -16,7 +17,7 @@ public class Utils {
 			if (rut_dv.length == 2) 
 			{
 				int rut = Integer.parseInt(rut_dv[0]);
-				char dv = rut_dv[1].charAt(0);
+				char dv = rut_dv[1].toUpperCase().charAt(0);
 
 				int m = 0, s = 1;
 				for (; rut != 0; rut /= 10) {
