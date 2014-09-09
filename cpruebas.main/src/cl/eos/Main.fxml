@@ -27,12 +27,9 @@
 						</ImageView>
                   <AnchorPane id="SearchBox" layoutX="720.0" layoutY="1.0" prefHeight="62.0" prefWidth="191.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="32.0" AnchorPane.topAnchor="1.0">
                      <children>
-      								<TextField prefHeight="26.0" prefWidth="182.0" promptText="Buscar" AnchorPane.bottomAnchor="18.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="19.0" />
+      								<TextField layoutX="5.0" layoutY="19.0" prefHeight="26.0" prefWidth="182.0" promptText="Buscar" AnchorPane.bottomAnchor="18.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="19.0" />
                      </children>
                   </AnchorPane>
-                  <MiniIconButton id="window-min" layoutX="923.0" layoutY="13.0" />
-                  <MiniIconButton id="window-close" layoutX="923.0" layoutY="43.0" />
-                  <MiniIconButton id="window-max" layoutX="923.0" layoutY="27.0" />
                </children>
             </AnchorPane>
 			</top>
