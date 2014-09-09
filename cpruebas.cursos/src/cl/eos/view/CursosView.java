@@ -7,7 +7,6 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
@@ -159,11 +158,6 @@ public class CursosView extends AFormView {
 	private void removeAllStyles() {
 		removeAllStyle(lblError);
 		removeAllStyle(txtNombre);
-	}
-
-	public void removeAllStyle(Node n) {
-		n.getStyleClass().removeAll("bad", "med", "good", "best");
-		n.applyCss();
 	}
 
 	@Override

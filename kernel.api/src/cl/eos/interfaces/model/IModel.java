@@ -1,5 +1,7 @@
 package cl.eos.interfaces.model;
 
+import java.util.List;
+
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.interfaces.entity.IPersistenceListener;
 
@@ -16,6 +18,8 @@ public interface IModel {
 	void save(IEntity entity);
 
 	void delete(IEntity entity);
+	
+	void delete(List<IEntity> entity);
 
 	void update(IEntity entity);
 

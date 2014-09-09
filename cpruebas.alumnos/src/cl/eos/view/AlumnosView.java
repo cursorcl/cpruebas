@@ -7,7 +7,6 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
@@ -100,12 +99,12 @@ public class AlumnosView extends AFormView {
 						.getSelectionModel().getSelectedItems();
 
 				if (itemsSelec.size() > 1) {
-					mnItemModificar.setDisable(false);
-					mnItemEliminar.setDisable(true);
+					mnItemModificar.setDisable(true);
+					mnItemEliminar.setDisable(false);
 				} else if (itemsSelec.size() == 1) {
 					select((IEntity) itemsSelec.get(0));
-					mnItemModificar.setDisable(true);
-					mnItemEliminar.setDisable(true);
+					mnItemModificar.setDisable(false);
+					mnItemEliminar.setDisable(false);
 				}
 			}
 		});
@@ -137,12 +136,10 @@ public class AlumnosView extends AFormView {
 			@Override
 			public void handle(ActionEvent event) {
 
-				ObservableList<Alumno> alumnos = tblAlumnos.getItems();
 				ObservableList<Alumno> alumnosSelec = tblAlumnos
 						.getSelectionModel().getSelectedItems();
-
 				for (Alumno alumnoSel : alumnosSelec) {
-					alumnos.remove(alumnoSel);
+					delete(alumnoSel);
 				}
 				tblAlumnos.getSelectionModel().clearSelection();
 			}
@@ -237,9 +234,8 @@ public class AlumnosView extends AFormView {
 	@Override
 	public void onDeleted(IEntity entity) {
 		System.out.println("Elementoeliminando:" + entity.toString());
-		ObservableList<Alumno> asignaturas = tblAlumnos.getItems();
-		asignaturas.remove(entity);
-		tblAlumnos.getSelectionModel().clearSelection();
+		ObservableList<Alumno> alumnos = tblAlumnos.getItems();
+		alumnos.remove(entity);
 	}
 
 	@Override

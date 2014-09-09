@@ -7,9 +7,7 @@ import cl.eos.persistence.models.Profesor;
 public class ProfesoresContoller extends AController {
 
 	public ProfesoresContoller() {
-		
-		model = new ProfesoresModel();
-		
+	
 	}
 
 	@Override

@@ -25,6 +25,13 @@ public abstract class AModel implements IModel {
 	}
 
 	@Override
+	public void delete(List<IEntity> entity) {
+		for (IEntity iEntity : entity) {
+			delete(iEntity);
+		}		
+	}
+	
+	@Override
 	public void update(IEntity entity) {
 		PersistenceServiceFactory.getPersistenceService().save(entity);
 		entities.remove(entity);

@@ -39,6 +39,8 @@ public interface IController {
 	 */
 	void delete(IEntity entity);
 
+	void delete(List<IEntity> entity);
+	
 	/**
 	 * Metodo que selecciona el objeto. El controlador debe notificar que el
 	 * objeto esta seleccionado a todas la vistas.

@@ -1,5 +1,7 @@
 package cl.eos.imp.view;
 
+import java.util.List;
+
 import javafx.scene.Node;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.interfaces.view.IFormView;
@@ -21,6 +23,13 @@ public abstract class AFormView extends AView implements IFormView {
 		if (controller != null) {
 			controller.delete(otObject);
 			selectedEntity = null;
+		}
+	}
+	
+	@Override
+	public void delete(List<IEntity> otObject) {
+		if (controller != null) {
+			controller.delete(otObject);
 		}
 	}
 

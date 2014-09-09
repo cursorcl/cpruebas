@@ -2,18 +2,21 @@ package cl.eos.controller;
 
 import cl.eos.imp.controller.AController;
 import cl.eos.model.EjesTematicosModel;
+import cl.eos.persistence.models.EjeTematico;
+import cl.eos.persistence.models.TipoPrueba;
 
 public class EjesTematicosContoller extends AController {
 
 	public EjesTematicosContoller() {
 		
-		model = new EjesTematicosModel();
+		
 		
 	}
 
 	@Override
 	public void initialize() {
-		// TODO Auto-generated method stub
-		
+		model = new EjesTematicosModel();
+		model.findAll(EjeTematico.class, this);
+		model.findAll(TipoPrueba.class, this);
 	}
 }

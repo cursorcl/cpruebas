@@ -7,7 +7,6 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SelectionMode;
@@ -170,12 +169,6 @@ public class AsignaturasView extends AFormView {
 		removeAllStyle(txtNombre);
 	}
 
-	public void removeAllStyle(Node n) {
-		if (n != null) {
-			n.getStyleClass().removeAll("bad", "med", "good", "best");
-			n.applyCss();
-		}
-	}
 
 	@Override
 	public boolean validate() {

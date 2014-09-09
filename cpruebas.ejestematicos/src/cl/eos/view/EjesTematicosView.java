@@ -1,9 +1,12 @@
 package cl.eos.view;
 
+import java.util.List;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
@@ -12,9 +15,11 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.persistence.models.EjeTematico;
+import cl.eos.persistence.models.TipoPrueba;
 
 public class EjesTematicosView extends AFormView {
 
@@ -31,7 +36,7 @@ public class EjesTematicosView extends AFormView {
 	private TextField txtNombres;
 
 	@FXML
-	private ComboBox<String> cmbTipoPrueba;
+	private ComboBox<TipoPrueba> cmbTipoPrueba;
 
 	@FXML
 	private ComboBox<String> cmbAsignatura;
@@ -56,28 +61,77 @@ public class EjesTematicosView extends AFormView {
 
 	@FXML
 	public void initialize() {
+		inicializaTabla();
 		accionGrabar();
+		accionEliminar();
+		accionModificar();
+		accionClicTabla();
 	}
 
 	private void accionGrabar() {
 		mnuGrabar.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
+				IEntity entitySelected = getSelectedEntity();
 				removeAllStyles();
 				if (validate()) {
-					EjeTematico ejetematico = new EjeTematico();
-					ejetematico.setName(txtNombres.getText());
-					ejetematico.setTipoprueba(cmbTipoPrueba.getValue());
-					ejetematico.setAsignatura(cmbAsignatura.getValue());
-					save(ejetematico);
+					if (lblError != null) {
+						lblError.setText(" ");
+					}
+					EjeTematico ejeTematico = null;
+					if (entitySelected != null
+							&& entitySelected instanceof EjeTematico) {
+						ejeTematico = (EjeTematico) entitySelected;
+					} else {
+						ejeTematico = new EjeTematico();
+					}
+					ejeTematico.setName(txtNombres.getText());
+					ejeTematico.setTipoprueba(cmbTipoPrueba.getValue());
+					ejeTematico.setAsignatura(cmbAsignatura.getValue());
+					save(ejeTematico);
 				} else {
 					lblError.getStyleClass().add("bad");
 					lblError.setText("Corregir campos destacados en color rojo");
 				}
+				limpiarControles();
 			}
 		});
 	}
 
+	private void accionModificar() {
+		mnItemModificar.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				EjeTematico ejeTematico = tblEjesTematicos.getSelectionModel()
+						.getSelectedItem();
+				if (ejeTematico != null) {
+					txtNombres.setText(ejeTematico.getName());
+					cmbAsignatura.setValue(ejeTematico.getAsignatura());
+					cmbTipoPrueba.setValue(ejeTematico.getTipoprueba());
+				}
+			}
+		});
+	}
+	
+	private void accionClicTabla() {
+		tblEjesTematicos.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				ObservableList<EjeTematico> itemsSelec = tblEjesTematicos
+						.getSelectionModel().getSelectedItems();
+
+				if (itemsSelec.size() > 1) {
+					mnItemModificar.setDisable(false);
+					mnItemEliminar.setDisable(true);
+				} else if (itemsSelec.size() == 1) {
+					select((IEntity) itemsSelec.get(0));
+					mnItemModificar.setDisable(true);
+					mnItemEliminar.setDisable(true);
+				}
+			}
+		});
+	}
 	private void removeAllStyles() {
 		removeAllStyle(lblError);
 		removeAllStyle(txtNombres);
@@ -85,14 +139,15 @@ public class EjesTematicosView extends AFormView {
 		removeAllStyle(cmbTipoPrueba);
 	}
 
-	public void removeAllStyle(Node n) {
-		n.getStyleClass().removeAll("bad", "med", "good", "best");
-		n.applyCss();
-	}
-
 	@Override
 	public void onSaved(IEntity otObject) {
-		limpiarControles();
+		int indice = tblEjesTematicos.getItems().lastIndexOf(otObject);
+		if (indice != -1) {
+			tblEjesTematicos.getItems().remove(otObject);
+			tblEjesTematicos.getItems().add(indice, (EjeTematico) otObject);
+		} else {
+			tblEjesTematicos.getItems().add((EjeTematico) otObject);
+		}
 		System.out.println("Elemento grabando:" + otObject.toString());
 	}
 
@@ -114,4 +169,41 @@ public class EjesTematicosView extends AFormView {
 						"aPaterno"));
 	}
 
+	
+	private void accionEliminar() {
+		mnItemEliminar.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				ObservableList<EjeTematico> ejesTematicosSelec = tblEjesTematicos
+						.getSelectionModel().getSelectedItems();
+				for (EjeTematico ejeTematicoSel : ejesTematicosSelec) {
+					delete(ejeTematicoSel);
+				}
+				tblEjesTematicos.getSelectionModel().clearSelection();
+			}
+		});
+	}
+	
+	@Override
+	public void onDataArrived(List<IEntity> list) {
+		if (list != null && !list.isEmpty()) {
+			IEntity entity = list.get(0);
+			if (entity instanceof EjeTematico) {
+				ObservableList<EjeTematico> value = FXCollections
+						.observableArrayList();
+				for (IEntity iEntity : list) {
+					value.add((EjeTematico) iEntity);
+				}
+				tblEjesTematicos.setItems(value);
+			} else if (entity instanceof TipoPrueba){
+				ObservableList<TipoPrueba> oList = FXCollections
+						.observableArrayList();
+				for (IEntity iEntity : list) {
+					oList.add((TipoPrueba) iEntity);
+				}
+				cmbTipoPrueba.setItems(oList);
+			}
+		}
+	}
 }

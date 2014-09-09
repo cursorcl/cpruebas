@@ -17,7 +17,7 @@ public class EjeTematico implements IEntity {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	private String name;
-	private String tipoprueba;
+	private TipoPrueba tipoprueba;
 	private String asignatura;
 
 	@Override
@@ -45,11 +45,11 @@ public class EjeTematico implements IEntity {
 		return true;
 	}
 
-	public String getTipoprueba() {
+	public TipoPrueba getTipoprueba() {
 		return tipoprueba;
 	}
 
-	public void setTipoprueba(String tipoprueba) {
+	public void setTipoprueba(TipoPrueba tipoprueba) {
 		this.tipoprueba = tipoprueba;
 	}
 

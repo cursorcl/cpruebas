@@ -1,5 +1,7 @@
 package cl.eos.interfaces.view;
 
+import java.util.List;
+
 import cl.eos.interfaces.entity.IEntity;
 
 /**
@@ -24,6 +26,8 @@ public interface IFormView extends IView {
    * @param otObject Objeto que se quire eliminar.
    */
   void delete(IEntity otObject);
+  
+  void delete(List<IEntity> otObject);
 
   /**
    * Metodo que se usa para indicar la selección de una entidad.

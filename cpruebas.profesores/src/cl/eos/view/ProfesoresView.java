@@ -7,7 +7,6 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SelectionMode;
@@ -65,13 +64,17 @@ public class ProfesoresView extends AFormView {
 	private TableColumn<Profesor, String> ColNombres;
 
 	public ProfesoresView() {
+	}
+
+	@FXML
+	public void initialize() {
 		inicializaTabla();
 		accionGrabar();
 		accionEliminar();
 		accionModificar();
 		accionClicTabla();
 	}
-
+	
 	private void accionClicTabla() {
 		tblProfesores.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
@@ -79,12 +82,12 @@ public class ProfesoresView extends AFormView {
 				ObservableList<Profesor> itemsSelec = tblProfesores
 						.getSelectionModel().getSelectedItems();
 				if (itemsSelec.size() > 1) {
-					mnItemModificar.setDisable(false);
-					mnItemEliminar.setDisable(true);
+					mnItemModificar.setDisable(true);
+					mnItemEliminar.setDisable(false);
 				} else if (itemsSelec.size() == 1) {
 					select((IEntity) itemsSelec.get(0));
-					mnItemModificar.setDisable(true);
-					mnItemEliminar.setDisable(true);
+					mnItemModificar.setDisable(false);
+					mnItemEliminar.setDisable(false);
 				}
 			}
 		});
@@ -114,6 +117,7 @@ public class ProfesoresView extends AFormView {
 			public void handle(ActionEvent event) {
 				ObservableList<Profesor> ProfesorsSelec = tblProfesores
 						.getSelectionModel().getSelectedItems();
+				//delete((IEntity) ProfesorsSelec);
 				for (Profesor ProfesorSel : ProfesorsSelec) {
 					delete(ProfesorSel);
 				}
@@ -184,11 +188,6 @@ public class ProfesoresView extends AFormView {
 		removeAllStyle(txtNombres);
 		removeAllStyle(txtAPaterno);
 		removeAllStyle(txtAMaterno);
-	}
-
-	public void removeAllStyle(Node n) {
-		n.getStyleClass().removeAll("bad", "med", "good", "best");
-		n.applyCss();
 	}
 
 	@Override

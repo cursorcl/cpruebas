@@ -7,7 +7,6 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SelectionMode;
@@ -164,11 +163,6 @@ public class HabilidadesView extends AFormView {
 		removeAllStyle(lblError);
 		removeAllStyle(txtNombre);
 		removeAllStyle(txtDescripcion);
-	}
-
-	public void removeAllStyle(Node n) {
-		n.getStyleClass().removeAll("bad", "med", "good", "best");
-		n.applyCss();
 	}
 
 	@Override
