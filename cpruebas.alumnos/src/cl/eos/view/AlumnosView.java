@@ -7,7 +7,6 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
@@ -230,10 +229,6 @@ public class AlumnosView extends AFormView {
 	@Override
 	public boolean validate() {
 		boolean valida = true;
-		// if (cmbColegio.getValue() == null) {
-		// cmbColegio.getStyleClass().add("bad");
-		// valida = false;
-		// }
 		if (cmbCurso.getValue() == null) {
 			cmbCurso.getStyleClass().add("bad");
 			valida = false;

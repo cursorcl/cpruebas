@@ -1,5 +1,7 @@
 package cl.eos.persistence.models;
 
+import java.time.LocalDate;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,7 +17,7 @@ import cl.eos.interfaces.entity.IEntity;
 public class Prueba implements IEntity {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Column(length = 100)
@@ -30,8 +32,9 @@ public class Prueba implements IEntity {
 	private Integer formas;
 	private Integer alternativas;
 	private Profesor profesor;
-
 	private Integer responses;
+	private Integer nivelEvaluacion;
+	private Integer puntajeBase;
 
 	public TipoPrueba getTipoPrueba() {
 		return tipoPrueba;
@@ -105,9 +108,6 @@ public class Prueba implements IEntity {
 		this.puntajeBase = puntajeBase;
 	}
 
-	private Integer nivelEvaluacion;
-	private Integer puntajeBase;
-
 	@Override
 	public Long getId() {
 		return id;
@@ -120,20 +120,17 @@ public class Prueba implements IEntity {
 
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
+		return name;
 	}
 
 	@Override
 	public void setName(String name) {
-		// TODO Auto-generated method stub
-
+		this.name = name;
 	}
 
 	@Override
 	public boolean validate() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	public Integer getResponses() {
@@ -144,16 +141,20 @@ public class Prueba implements IEntity {
 		this.responses = responses;
 	}
 
-	
 	public Profesor getProfesor() {
-    return profesor;
-  }
+		return profesor;
+	}
 
-  public void setProfesor(Profesor profesor) {
-    this.profesor = profesor;
-  }
+	public void setProfesor(Profesor profesor) {
+		this.profesor = profesor;
+	}
 
-  @Override
+	public LocalDate getFechaLocal() {
+		return LocalDate.ofEpochDay(this.fecha.longValue());
+	}
+
+
+	@Override
 	public String toString() {
 		return name;
 	}

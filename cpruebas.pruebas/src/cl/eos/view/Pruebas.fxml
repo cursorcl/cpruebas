@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.input.*?>
 <?import jfxtras.labs.scene.control.*?>
 <?import javafx.scene.*?>
 <?import javafx.geometry.*?>
@@ -13,8 +14,24 @@
         <menus>
           <Menu mnemonicParsing="false" text="Archivo">
             <items>
-                  <MenuItem id="mnuGrabar" fx:id="mnuGrabar" mnemonicParsing="false" text="Grabar" />
-                  <MenuItem mnemonicParsing="false" text="Exportar" />
+                  <MenuItem id="mnuGrabar" fx:id="mnuGrabar" mnemonicParsing="false" text="Grabar Prueba">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="G" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator></MenuItem>
+                  <MenuItem fx:id="mnuModificar" mnemonicParsing="false" text="Modificar Prueba">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="M" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator>
+                  </MenuItem>
+                  <MenuItem fx:id="mnuEliminar" mnemonicParsing="false" text="Eliminar Prueba">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="E" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator>
+                  </MenuItem>
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem fx:id="mnuExportar" mnemonicParsing="false" text="Exportar Pruebas" />
+                  <MenuItem fx:id="mnuImportar" mnemonicParsing="false" text="Importar Pruebas" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
               <MenuItem mnemonicParsing="false" text="Cerrar" />
             </items>
           </Menu>
@@ -153,8 +170,8 @@
                                  <contextMenu>
                                     <ContextMenu>
                                       <items>
-                                        <MenuItem mnemonicParsing="false" text="Modificar" />
-                                          <MenuItem mnemonicParsing="false" text="Eliminar" />
+                                        <MenuItem fx:id="mnuPopupModificar" mnemonicParsing="false" text="Modificar" />
+                                          <MenuItem fx:id="mnuPopupEliminar" mnemonicParsing="false" text="Eliminar" />
                                       </items>
                                     </ContextMenu>
                                  </contextMenu>
