@@ -1,5 +1,6 @@
 package cl.eos.imp.view;
 
+import javafx.scene.Node;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.interfaces.view.IFormView;
 
@@ -63,4 +64,12 @@ public abstract class AFormView extends AView implements IFormView {
 		this.selectedEntity = selectedEntity;
 	}
 
+	/**
+	 * Elimina estilo del nodo que se asigna.
+	 * @param n
+	 */
+	protected void removeAllStyle(Node n) {
+		n.getStyleClass().removeAll("bad", "med", "good", "best");
+		n.applyCss();
+	}
 }

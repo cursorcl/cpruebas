@@ -79,6 +79,7 @@ public class PruebasView extends AFormView {
 
 	@FXML
 	public void initialize() {
+		lblError.setText(" ");
 		tblListadoPruebas.getSelectionModel().setSelectionMode(
 				SelectionMode.MULTIPLE);
 		fechaCol.setCellValueFactory(new PropertyValueFactory<Prueba, Date>(
@@ -97,57 +98,61 @@ public class PruebasView extends AFormView {
 		nroPreguntasCol
 				.setCellValueFactory(new PropertyValueFactory<Prueba, Integer>(
 						"nroPreguntas"));
-		
+
 		bigDecimalForma.setMinValue(new BigDecimal(1));
 		bigDecimalForma.setMaxValue(new BigDecimal(5));
 		bigDecimalForma.setStepwidth(new BigDecimal(1));
 		bigDecimalForma.setNumber(new BigDecimal(1));
-		
+
 		bigDecimaNroAlternativas.setMinValue(new BigDecimal(3));
 		bigDecimaNroAlternativas.setMaxValue(new BigDecimal(5));
 		bigDecimaNroAlternativas.setStepwidth(new BigDecimal(1));
-		bigDecimaNroAlternativas.setNumber(new BigDecimal(3));	
-		
+		bigDecimaNroAlternativas.setNumber(new BigDecimal(3));
+
 		bigDecimalNroPreguntas.setMinValue(new BigDecimal(5));
 		bigDecimalNroPreguntas.setMaxValue(new BigDecimal(90));
 		bigDecimalNroPreguntas.setStepwidth(new BigDecimal(5));
-		bigDecimalNroPreguntas.setNumber(new BigDecimal(5));		
-		
+		bigDecimalNroPreguntas.setNumber(new BigDecimal(5));
+
 		bigDecimalPuntajePregunta.setMinValue(new BigDecimal(1));
 		bigDecimalPuntajePregunta.setMaxValue(new BigDecimal(3));
 		bigDecimalPuntajePregunta.setStepwidth(new BigDecimal(1));
 		bigDecimalPuntajePregunta.setNumber(new BigDecimal(1));
-		
+
 		bigDecimaNivel.setMinValue(new BigDecimal(1));
 		bigDecimaNivel.setMaxValue(new BigDecimal(3));
 		bigDecimaNivel.setStepwidth(new BigDecimal(1));
 		bigDecimaNivel.setNumber(new BigDecimal(1));
-		
-		
-	    mnuGrabar.setOnAction(new EventHandler<ActionEvent>() {
-	        @Override
-	        public void handle(ActionEvent arg0) {
-	          if (validate()) {
-	            lblError.setText(" ");
-	            Prueba prueba = new Prueba();
-	            prueba.setAlternativas(bigDecimaNroAlternativas.getNumber().intValue());
-	            prueba.setAsignatura(cmbAsignatura.getValue());
-	            prueba.setCurso(cmbCurso.getValue());
-	            prueba.setFecha(dpFecha.getValue().toEpochDay());
-	            prueba.setFormas(bigDecimalForma.getNumber().intValue());
-	            prueba.setName(txtName.getText());
-	            prueba.setNivelEvaluacion(bigDecimaNivel.getNumber().intValue());
-	            prueba.setProfesor(cmbProfesor.getValue());
-	            prueba.setPuntajeBase(bigDecimalPuntajePregunta.getNumber().intValue());
-	            prueba.setResponses(bigDecimaNroAlternativas.getNumber().intValue());
-	            save(prueba);
-	          } else {
-	            lblError.getStyleClass().add("bad");
-	            lblError.setText("Corregir campos destacados en color rojo");
-	          }
-	        }
 
-	      });
+		mnuGrabar.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				removeAllStyles();
+				if (validate()) {
+					lblError.setText(" ");
+					Prueba prueba = new Prueba();
+					prueba.setAlternativas(bigDecimaNroAlternativas.getNumber()
+							.intValue());
+					prueba.setAsignatura(cmbAsignatura.getValue());
+					prueba.setCurso(cmbCurso.getValue());
+					prueba.setFecha(dpFecha.getValue().toEpochDay());
+					prueba.setFormas(bigDecimalForma.getNumber().intValue());
+					prueba.setName(txtName.getText());
+					prueba.setNivelEvaluacion(bigDecimaNivel.getNumber()
+							.intValue());
+					prueba.setProfesor(cmbProfesor.getValue());
+					prueba.setPuntajeBase(bigDecimalPuntajePregunta.getNumber()
+							.intValue());
+					prueba.setResponses(bigDecimaNroAlternativas.getNumber()
+							.intValue());
+					save(prueba);
+				} else {
+					lblError.getStyleClass().add("bad");
+					lblError.setText("Corregir campos destacados en color rojo");
+				}
+			}
+
+		});
 	}
 
 	@Override
@@ -163,8 +168,7 @@ public class PruebasView extends AFormView {
 				}
 				tblListadoPruebas.setItems(pruebas);
 			}
-			if(entity instanceof TipoPrueba)
-			{
+			if (entity instanceof TipoPrueba) {
 				ObservableList<TipoPrueba> tipoPruebas = FXCollections
 						.observableArrayList();
 				for (IEntity lEntity : list) {
@@ -172,35 +176,97 @@ public class PruebasView extends AFormView {
 				}
 				cmbTipoPrueba.setItems(tipoPruebas);
 			}
-			if(entity instanceof Profesor)
-			{
+			if (entity instanceof Profesor) {
 				ObservableList<Profesor> profesores = FXCollections
 						.observableArrayList();
 				for (IEntity lEntity : list) {
 					profesores.add((Profesor) lEntity);
 				}
-				cmbProfesor.setItems(profesores);				
+				cmbProfesor.setItems(profesores);
 			}
-			if(entity instanceof Curso)
-			{
+			if (entity instanceof Curso) {
 				ObservableList<Curso> cursos = FXCollections
 						.observableArrayList();
 				for (IEntity lEntity : list) {
 					cursos.add((Curso) lEntity);
 				}
-				cmbCurso.setItems(cursos);				
+				cmbCurso.setItems(cursos);
 			}
-			if(entity instanceof Asignatura)
-			{
+			if (entity instanceof Asignatura) {
 				ObservableList<Asignatura> asignaturas = FXCollections
 						.observableArrayList();
 				for (IEntity lEntity : list) {
 					asignaturas.add((Asignatura) lEntity);
 				}
-				cmbAsignatura.setItems(asignaturas);				
+				cmbAsignatura.setItems(asignaturas);
 			}
 		}
 
 	}
 
+	@Override
+	public boolean validate() {
+		boolean valid = true;
+		if (cmbTipoPrueba.getValue() == null) {
+			valid = false;
+			cmbTipoPrueba.getStyleClass().add("bad");
+		}
+		if (cmbProfesor.getValue() == null) {
+			valid = false;
+			cmbProfesor.getStyleClass().add("bad");
+		}
+		if (cmbCurso.getValue() == null) {
+			valid = false;
+			cmbCurso.getStyleClass().add("bad");
+		}
+		if (cmbAsignatura.getValue() == null) {
+			valid = false;
+			cmbAsignatura.getStyleClass().add("bad");
+		}
+		if (txtName.getText() == null || txtName.getText().isEmpty()) {
+			valid = false;
+			txtName.getStyleClass().add("bad");
+		}
+		if (bigDecimalForma.getNumber() == null) {
+			valid = false;
+			bigDecimalForma.getStyleClass().add("bad");
+		}
+		if (bigDecimaNroAlternativas.getNumber() == null) {
+			valid = false;
+			bigDecimaNroAlternativas.getStyleClass().add("bad");
+		}
+		if (bigDecimalNroPreguntas.getNumber() == null) {
+			valid = false;
+			bigDecimalNroPreguntas.getStyleClass().add("bad");
+		}
+		if (bigDecimalPuntajePregunta.getNumber() == null) {
+			valid = false;
+			bigDecimalPuntajePregunta.getStyleClass().add("bad");
+		}
+		if (bigDecimaNivel.getNumber() == null) {
+			valid = false;
+			bigDecimaNivel.getStyleClass().add("bad");
+		}
+		if (dpFecha.getValue() == null) {
+			valid = false;
+			dpFecha.getStyleClass().add("bad");
+		}
+		return valid;
+	}
+	
+	private void removeAllStyles() {
+		removeAllStyle(lblError);
+		removeAllStyle(cmbTipoPrueba);
+		removeAllStyle(cmbProfesor);
+		removeAllStyle(cmbCurso);
+		removeAllStyle(cmbAsignatura);
+		removeAllStyle(txtName);
+		removeAllStyle(bigDecimalForma);
+		removeAllStyle(bigDecimaNroAlternativas);
+		removeAllStyle(bigDecimalNroPreguntas);
+		removeAllStyle(bigDecimalPuntajePregunta);
+		removeAllStyle(bigDecimaNivel);
+		removeAllStyle(dpFecha);
+
+	}
 }

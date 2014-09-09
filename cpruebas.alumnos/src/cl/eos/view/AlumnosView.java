@@ -221,11 +221,6 @@ public class AlumnosView extends AFormView {
 		removeAllStyle(cmbCurso);
 	}
 
-	public void removeAllStyle(Node n) {
-		n.getStyleClass().removeAll("bad", "med", "good", "best");
-		n.applyCss();
-	}
-
 	@Override
 	public void onSaved(IEntity otObject) {
 		System.out.println("Elemento grabando:" + otObject.toString());
