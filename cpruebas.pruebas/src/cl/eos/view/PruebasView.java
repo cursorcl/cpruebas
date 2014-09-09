@@ -1,7 +1,7 @@
 package cl.eos.view;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import javafx.collections.FXCollections;
@@ -27,12 +27,12 @@ import cl.eos.persistence.models.Profesor;
 import cl.eos.persistence.models.Prueba;
 import cl.eos.persistence.models.TipoPrueba;
 
-public class PruebasView extends AFormView {
+public class PruebasView extends AFormView implements EventHandler<ActionEvent> {
 
 	@FXML
 	private TableView<Prueba> tblListadoPruebas;
 	@FXML
-	private TableColumn<Prueba, Date> fechaCol;
+	private TableColumn<Prueba, LocalDate> fechaCol;
 	@FXML
 	private TableColumn<Prueba, String> cursoCol;
 	@FXML
@@ -73,6 +73,14 @@ public class PruebasView extends AFormView {
 	private TextField txtName;
 	@FXML
 	private MenuItem mnuGrabar;
+	@FXML
+	private MenuItem mnuModificar;
+	@FXML
+	private MenuItem mnuEliminar;
+	@FXML
+	private MenuItem mnuPopupModificar;
+	@FXML
+	private MenuItem mnuPopupEliminar;
 
 	public PruebasView() {
 	}
@@ -82,8 +90,8 @@ public class PruebasView extends AFormView {
 		lblError.setText(" ");
 		tblListadoPruebas.getSelectionModel().setSelectionMode(
 				SelectionMode.MULTIPLE);
-		fechaCol.setCellValueFactory(new PropertyValueFactory<Prueba, Date>(
-				"fecha"));
+		fechaCol.setCellValueFactory(new PropertyValueFactory<Prueba, LocalDate>(
+				"fechaLocal"));
 		nameCol.setCellValueFactory(new PropertyValueFactory<Prueba, String>(
 				"name"));
 		asignaturaCol
@@ -124,35 +132,12 @@ public class PruebasView extends AFormView {
 		bigDecimaNivel.setStepwidth(new BigDecimal(1));
 		bigDecimaNivel.setNumber(new BigDecimal(1));
 
-		mnuGrabar.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent arg0) {
-				removeAllStyles();
-				if (validate()) {
-					lblError.setText(" ");
-					Prueba prueba = new Prueba();
-					prueba.setAlternativas(bigDecimaNroAlternativas.getNumber()
-							.intValue());
-					prueba.setAsignatura(cmbAsignatura.getValue());
-					prueba.setCurso(cmbCurso.getValue());
-					prueba.setFecha(dpFecha.getValue().toEpochDay());
-					prueba.setFormas(bigDecimalForma.getNumber().intValue());
-					prueba.setName(txtName.getText());
-					prueba.setNivelEvaluacion(bigDecimaNivel.getNumber()
-							.intValue());
-					prueba.setProfesor(cmbProfesor.getValue());
-					prueba.setPuntajeBase(bigDecimalPuntajePregunta.getNumber()
-							.intValue());
-					prueba.setResponses(bigDecimaNroAlternativas.getNumber()
-							.intValue());
-					save(prueba);
-				} else {
-					lblError.getStyleClass().add("bad");
-					lblError.setText("Corregir campos destacados en color rojo");
-				}
-			}
+		mnuGrabar.setOnAction(this);
+		mnuModificar.setOnAction(this);
+		mnuPopupModificar.setOnAction(this);
+		mnuEliminar.setOnAction(this);
+		mnuPopupEliminar.setOnAction(this);
 
-		});
 	}
 
 	@Override
@@ -205,6 +190,17 @@ public class PruebasView extends AFormView {
 	}
 
 	@Override
+	public void onSaved(IEntity otObject) {
+		int indice = tblListadoPruebas.getItems().lastIndexOf(otObject);
+		if (indice != -1) {
+			tblListadoPruebas.getItems().remove(otObject);
+			tblListadoPruebas.getItems().add(indice, (Prueba) otObject);
+		} else {
+			tblListadoPruebas.getItems().add((Prueba) otObject);
+		}
+	}
+
+	@Override
 	public boolean validate() {
 		boolean valid = true;
 		if (cmbTipoPrueba.getValue() == null) {
@@ -253,7 +249,7 @@ public class PruebasView extends AFormView {
 		}
 		return valid;
 	}
-	
+
 	private void removeAllStyles() {
 		removeAllStyle(lblError);
 		removeAllStyle(cmbTipoPrueba);
@@ -268,5 +264,72 @@ public class PruebasView extends AFormView {
 		removeAllStyle(bigDecimaNivel);
 		removeAllStyle(dpFecha);
 
+	}
+
+	@Override
+	public void handle(ActionEvent event) {
+		Object source = event.getSource();
+		if (source == mnuModificar || source == mnuPopupModificar) {
+			handleModificar();
+		} else if (source == mnuGrabar) {
+			handleGrabar();
+		}
+		else if(source == mnuEliminar || source == mnuPopupEliminar)
+		{
+			handleEliminar();
+		}
+	}
+
+	private void handleEliminar() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void handleGrabar() {
+		removeAllStyles();
+		if (validate()) {
+			lblError.setText(" ");
+			Prueba prueba = new Prueba();
+			prueba.setAlternativas(bigDecimaNroAlternativas.getNumber()
+					.intValue());
+			prueba.setAsignatura(cmbAsignatura.getValue());
+			prueba.setCurso(cmbCurso.getValue());
+			prueba.setFecha(dpFecha.getValue().toEpochDay());
+			prueba.setFormas(bigDecimalForma.getNumber().intValue());
+			prueba.setName(txtName.getText());
+			prueba.setNivelEvaluacion(bigDecimaNivel.getNumber().intValue());
+			prueba.setProfesor(cmbProfesor.getValue());
+			prueba.setPuntajeBase(bigDecimalPuntajePregunta.getNumber()
+					.intValue());
+			prueba.setNroPreguntas(bigDecimalNroPreguntas.getNumber()
+					.intValue());
+			prueba.setResponses(bigDecimaNroAlternativas.getNumber().intValue());
+			prueba.setTipoPrueba(cmbTipoPrueba.getValue());
+			save(prueba);
+		} else {
+			lblError.getStyleClass().add("bad");
+			lblError.setText("Corregir campos destacados en color rojo");
+		}
+	}
+
+	private void handleModificar() {
+		Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem();
+		if (prueba != null) {
+			bigDecimaNroAlternativas.setNumber(new BigDecimal(prueba
+					.getAlternativas()));
+			cmbAsignatura.getSelectionModel().select(prueba.getAsignatura());
+			cmbCurso.getSelectionModel().select(prueba.getCurso());
+			dpFecha.setValue(prueba.getFechaLocal());
+			bigDecimalForma.setNumber(new BigDecimal(prueba.getFormas()));
+			txtName.setText(prueba.getName());
+			bigDecimaNivel
+					.setNumber(new BigDecimal(prueba.getNivelEvaluacion()));
+			cmbProfesor.getSelectionModel().select(prueba.getProfesor());
+			bigDecimalPuntajePregunta.setNumber(new BigDecimal(prueba
+					.getPuntajeBase()));
+			bigDecimalNroPreguntas.setNumber(new BigDecimal(prueba
+					.getNroPreguntas()));
+			cmbTipoPrueba.getSelectionModel().select(prueba.getTipoPrueba());
+		}
 	}
 }
