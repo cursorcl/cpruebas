@@ -1,5 +1,8 @@
 package cl.eos.view;
 
+import java.util.List;
+
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -15,7 +18,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
-import cl.eos.persistence.models.Asignatura;
 import cl.eos.persistence.models.Habilidad;
 
 public class HabilidadesView extends AFormView {
@@ -85,10 +87,10 @@ public class HabilidadesView extends AFormView {
 					}
 					Habilidad habilidad = null;
 					if (entitySelected != null
-							&& entitySelected instanceof Asignatura) {
+							&& entitySelected instanceof Habilidad) {
 						habilidad = (Habilidad) entitySelected;
 					} else {
-						habilidad = new  Habilidad();
+						habilidad = new Habilidad();
 					}
 					habilidad.setName(txtNombre.getText());
 					habilidad.setDescripcion(txtDescripcion.getText());
@@ -103,13 +105,12 @@ public class HabilidadesView extends AFormView {
 		});
 	}
 
-
 	private void limpiarControles() {
 		txtNombre.clear();
 		txtDescripcion.clear();
 		select(null);
 	}
-	
+
 	private void accionEliminar() {
 		mnItemEliminar.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -120,6 +121,7 @@ public class HabilidadesView extends AFormView {
 				for (Habilidad habilidadesSel : habilidadesSelec) {
 					delete(habilidadesSel);
 				}
+				tblHabilidades.getSelectionModel().clearSelection();
 			}
 		});
 	}
@@ -138,14 +140,14 @@ public class HabilidadesView extends AFormView {
 			}
 		});
 	}
-	
+
 	private void accionClicTabla() {
 		tblHabilidades.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
 				ObservableList<Habilidad> itemsSelec = tblHabilidades
 						.getSelectionModel().getSelectedItems();
-				
+
 				if (itemsSelec.size() > 1) {
 					mnItemModificar.setDisable(true);
 					mnItemEliminar.setDisable(false);
@@ -157,7 +159,7 @@ public class HabilidadesView extends AFormView {
 			}
 		});
 	}
-	
+
 	private void removeAllStyles() {
 		removeAllStyle(lblError);
 		removeAllStyle(txtNombre);
@@ -179,16 +181,16 @@ public class HabilidadesView extends AFormView {
 		} else {
 			tblHabilidades.getItems().add((Habilidad) otObject);
 		}
+	
 	}
 
 	@Override
 	public void onDeleted(IEntity entity) {
 		System.out.println("Elementoeliminando:" + entity.toString());
-		ObservableList<Habilidad> asignaturas = tblHabilidades.getItems();
-		asignaturas.remove(entity);
-		tblHabilidades.getSelectionModel().clearSelection();
+		ObservableList<Habilidad> habilidades = tblHabilidades.getItems();
+		habilidades.remove(entity);		
 	}
-	
+
 	@Override
 	public boolean validate() {
 		boolean valida = true;
@@ -212,5 +214,22 @@ public class HabilidadesView extends AFormView {
 		}
 		return valida;
 	}
-	
+
+	@Override
+	public void onDataArrived(List<IEntity> list) {
+
+		if (list != null && !list.isEmpty()) {
+			IEntity entity = list.get(0);
+			if (entity instanceof Habilidad) {
+				ObservableList<Habilidad> oList = FXCollections
+						.observableArrayList();
+				for (IEntity iEntity : list) {
+					oList.add((Habilidad) iEntity);
+				}
+				tblHabilidades.setItems(oList);
+			}
+		}
+
+	}
+
 }

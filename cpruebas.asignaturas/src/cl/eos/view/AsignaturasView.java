@@ -89,7 +89,7 @@ public class AsignaturasView extends AFormView {
 				for (Asignatura asignaturaSel : asignaturasSelec) {
 					delete(asignaturaSel);
 				}
-
+				tblAsignatura.getSelectionModel().clearSelection();
 			}
 		});
 	}
@@ -163,7 +163,6 @@ public class AsignaturasView extends AFormView {
 		System.out.println("Elementoeliminando:" + entity.toString());
 		ObservableList<Asignatura> asignaturas = tblAsignatura.getItems();
 		asignaturas.remove(entity);
-		tblAsignatura.getSelectionModel().clearSelection();
 	}
 
 	private void removeAllStyles() {

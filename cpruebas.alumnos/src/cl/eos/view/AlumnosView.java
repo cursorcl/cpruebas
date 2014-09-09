@@ -178,6 +178,7 @@ public class AlumnosView extends AFormView {
 					lblError.getStyleClass().add("bad");
 					lblError.setText("Corregir campos destacados en color rojo");
 				}
+				limpiarControles();
 			}
 
 		});
@@ -229,7 +230,21 @@ public class AlumnosView extends AFormView {
 	@Override
 	public void onSaved(IEntity otObject) {
 		System.out.println("Elemento grabando:" + otObject.toString());
-		limpiarControles();
+		int indice = tblAlumnos.getItems().lastIndexOf(otObject);
+		if (indice != -1) {
+			tblAlumnos.getItems().remove(otObject);
+			tblAlumnos.getItems().add(indice, (Alumno) otObject);
+		} else {
+			tblAlumnos.getItems().add((Alumno) otObject);
+		}
+	}
+
+	@Override
+	public void onDeleted(IEntity entity) {
+		System.out.println("Elementoeliminando:" + entity.toString());
+		ObservableList<Alumno> asignaturas = tblAlumnos.getItems();
+		asignaturas.remove(entity);
+		tblAlumnos.getSelectionModel().clearSelection();
 	}
 
 	@Override

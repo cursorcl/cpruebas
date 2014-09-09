@@ -70,8 +70,8 @@
                                  <contextMenu>
                                     <ContextMenu>
                                       <items>
-                                        <MenuItem mnemonicParsing="false" text="Modificar" />
-                                          <MenuItem mnemonicParsing="false" text="Eliminar" />
+                                        <MenuItem fx:id="mnItemModificar" mnemonicParsing="false" text="Modificar" />
+                                          <MenuItem fx:id="mnItemEliminar" mnemonicParsing="false" text="Eliminar" />
                                       </items>
                                     </ContextMenu>
                                  </contextMenu>

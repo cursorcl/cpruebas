@@ -2,6 +2,7 @@ package cl.eos.controller;
 
 import cl.eos.imp.controller.AController;
 import cl.eos.model.ProfesoresModel;
+import cl.eos.persistence.models.Profesor;
 
 public class ProfesoresContoller extends AController {
 
@@ -13,7 +14,7 @@ public class ProfesoresContoller extends AController {
 
 	@Override
 	public void initialize() {
-		// TODO Auto-generated method stub
-		
+		model = new ProfesoresModel();
+		model.findAll(Profesor.class, this);		
 	}
 }

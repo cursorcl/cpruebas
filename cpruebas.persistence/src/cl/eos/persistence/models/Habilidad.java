@@ -4,10 +4,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 
 import cl.eos.interfaces.entity.IEntity;
 
 @Entity(name = "habilidad")
+@NamedQueries({ @NamedQuery(name = "Habilidad.findAll", query = "SELECT e FROM habilidad e") })
 public class Habilidad  implements IEntity  {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)

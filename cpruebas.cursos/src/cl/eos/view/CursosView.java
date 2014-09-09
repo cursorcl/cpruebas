@@ -90,6 +90,7 @@ public class CursosView extends AFormView {
 				for (Curso curso : cursosSelec) {
 					delete(curso);
 				}
+				tblCurso.getSelectionModel().clearSelection();
 			}
 		});
 	}
@@ -217,8 +218,7 @@ public class CursosView extends AFormView {
 	@Override
 	public void onDeleted(IEntity entity) {
 		System.out.println("Elemento eliminando:" + entity.toString());
-		ObservableList<Curso> asignaturas = tblCurso.getItems();
-		asignaturas.remove(entity);
-		tblCurso.getSelectionModel().clearSelection();
+		ObservableList<Curso> cursos = tblCurso.getItems();
+		cursos.remove(entity);
 	}
 }
