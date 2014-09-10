@@ -19,7 +19,7 @@ public interface IModel {
 
 	void delete(IEntity entity);
 	
-	void delete(List<IEntity> entity);
+	void delete(List<? extends IEntity> entity);
 
 	void update(IEntity entity);
 

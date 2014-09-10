@@ -10,8 +10,6 @@ import cl.eos.interfaces.AActivator;
 
 public class PruebasActivator extends AActivator{
 
-	
-	
 	public PruebasActivator() {
 		controller = new PruebasController();
 		
@@ -21,8 +19,8 @@ public class PruebasActivator extends AActivator{
 		try {
 			pane = (Parent) fxmlLoader.load(url.openStream());
 			view = fxmlLoader.getController();
+			view.setParent(pane);
 			controller.addView(view);
-			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}	}

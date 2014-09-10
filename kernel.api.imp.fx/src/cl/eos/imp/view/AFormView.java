@@ -2,7 +2,14 @@ package cl.eos.imp.view;
 
 import java.util.List;
 
+import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+
+import org.controlsfx.control.action.Action;
+import org.controlsfx.dialog.Dialog;
+import org.controlsfx.dialog.Dialogs;
+
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.interfaces.view.IFormView;
 
@@ -20,7 +27,7 @@ public abstract class AFormView extends AView implements IFormView {
 
 	@Override
 	public void delete(IEntity otObject) {
-		if (controller != null) {
+		if (controller != null && confirmaEliminar()) {
 			controller.delete(otObject);
 			selectedEntity = null;
 		}
@@ -28,7 +35,7 @@ public abstract class AFormView extends AView implements IFormView {
 	
 	@Override
 	public void delete(List<? extends IEntity> otObject) {
-		if (controller != null) {
+		if (controller != null && confirmaEliminar()) {
 			controller.delete(otObject);
 		}
 	}
@@ -80,5 +87,17 @@ public abstract class AFormView extends AView implements IFormView {
 	protected void removeAllStyle(Node n) {
 		n.getStyleClass().removeAll("bad", "med", "good", "best");
 		n.applyCss();
+	}
+
+	protected boolean confirmaEliminar() {
+		Action response = Dialogs.create()
+		        .owner(null)
+		        .title("Confirma eliminación")
+		        .masthead("Una vez borrado no se puede recuperar")
+		        .message("Está seguro de borrar?")
+		        .actions(Dialog.Actions.OK, Dialog.Actions.CANCEL)
+		        .showConfirm();
+		return response == Dialog.Actions.OK;
+
 	}
 }

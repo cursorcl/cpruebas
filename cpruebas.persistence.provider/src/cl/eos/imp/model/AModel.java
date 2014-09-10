@@ -25,7 +25,7 @@ public abstract class AModel implements IModel {
 	}
 
 	@Override
-	public void delete(List<IEntity> entity) {
+	public void delete(List<? extends IEntity> entity) {
 		for (IEntity iEntity : entity) {
 			delete(iEntity);
 		}		

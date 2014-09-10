@@ -104,5 +104,7 @@ public interface IView {
 	
 	Dimension getPreferredSize();
 
-	Object getPane();
+	Object getParent();
+	void setParent(Object parent);
+	
 }

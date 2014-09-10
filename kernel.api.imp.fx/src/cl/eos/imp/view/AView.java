@@ -11,7 +11,7 @@ public class AView implements IView {
 
 	private String title;
 	protected IController controller;
-	protected Object pane;
+	protected Object parent;
 
 	@Override
 	public String getTitle() {
@@ -68,12 +68,12 @@ public class AView implements IView {
 		return null;
 	}
 
-	public Object getPane() {
-		return pane;
+	public Object getParent() {
+		return parent;
 	}
 
-	public void setPane(Object pane) {
-		this.pane = pane;
+	public void setParent(Object parent) {
+		this.parent = parent;
 	}
 
 	@Override

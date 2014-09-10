@@ -47,7 +47,7 @@ public abstract class AController implements IController, IPersistenceListener {
 	@Override
 	public void delete(List<? extends IEntity> entity) {
 		if (model != null) {
-			model.delete((IEntity)entity);
+			model.delete(entity);
 			for (IEntity iEntity : entity) {
 				notifyDeleted(iEntity);
 			}

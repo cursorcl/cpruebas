@@ -49,107 +49,103 @@
       </MenuBar>
    </top>
    <center>
-      <SplitPane dividerPositions="0.23799359658484526" prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <SplitPane dividerPositions="0.2646744930629669" prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <items>
-            <AnchorPane>
+            <AnchorPane prefHeight="459.0" prefWidth="285.0">
                <children>
-                  <VBox prefHeight="459.0" prefWidth="222.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <children>
-                        <Label fx:id="lblError" prefHeight="15.0" prefWidth="201.0" text="Label" textAlignment="CENTER">
-                           <VBox.margin>
-                              <Insets bottom="5.0" left="10.0" right="5.0" top="10.0" />
-                           </VBox.margin>
-                        </Label>
-                        <TextField fx:id="txtName" prefWidth="301.0" promptText="Nombre Prueba">
-                           <VBox.margin>
-                              <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
-                           </VBox.margin>
-                           <tooltip>
-                              <Tooltip text="Nombre de la prueba" />
-                           </tooltip>
-                        </TextField>
-                        <ComboBox id="cmbColegios" fx:id="cmbTipoPrueba" prefHeight="23.0" prefWidth="301.0" promptText="Tipo prueba">
-                           <VBox.margin>
-                              <Insets bottom="5.0" left="10.0" right="10.0" top="10.0" />
-                           </VBox.margin>
-                           <tooltip>
-                              <Tooltip text="Tipo de prueba" />
-                           </tooltip>
-                        </ComboBox>
-                        <ComboBox fx:id="cmbCurso" prefHeight="25.0" prefWidth="301.0" promptText="Curso">
-                           <VBox.margin>
-                              <Insets bottom="5.0" left="10.0" right="10.0" />
-                           </VBox.margin>
-                           <tooltip>
-                              <Tooltip text="Curso de la prueba" />
-                           </tooltip>
-                        </ComboBox>
-                        <ComboBox id="cmbCursos" fx:id="cmbProfesor" prefHeight="23.0" prefWidth="301.0" promptText="Profesor">
-                           <VBox.margin>
-                              <Insets bottom="5.0" left="10.0" right="10.0" />
-                           </VBox.margin>
-                           <tooltip>
-                              <Tooltip text="Profesor de la prueba" />
-                           </tooltip>
-                        </ComboBox>
-                        <ComboBox fx:id="cmbAsignatura" prefHeight="25.0" prefWidth="301.0" promptText="Asignatura">
-                           <VBox.margin>
-                              <Insets bottom="5.0" left="10.0" right="10.0" />
-                           </VBox.margin>
-                           <tooltip>
-                              <Tooltip text="Asignatura de la prueba" />
-                           </tooltip>
-                        </ComboBox>
-                        <DatePicker fx:id="dpFecha" prefHeight="25.0" prefWidth="301.0" promptText="Fecha">
-                           <VBox.margin>
-                              <Insets bottom="5.0" left="10.0" right="10.0" />
-                           </VBox.margin>
-                           <tooltip>
-                              <Tooltip text="Fecha de la prueba" />
-                           </tooltip>
-                        </DatePicker>
-                        <BigDecimalField fx:id="bigDecimalForma" promptText="Forma">
-                           <VBox.margin>
-                              <Insets bottom="5.0" left="10.0" right="10.0" />
-                           </VBox.margin>
-                           <tooltip>
-                              <Tooltip text="Número de la Forma" />
-                           </tooltip>
-                        </BigDecimalField>
-                        <BigDecimalField fx:id="bigDecimaNroAlternativas" promptText="Nro. Alterativas">
-                           <VBox.margin>
-                              <Insets bottom="5.0" left="10.0" right="10.0" />
-                           </VBox.margin>
-                           <tooltip>
-                              <Tooltip text="Número de Alternativas" />
-                           </tooltip>
-                        </BigDecimalField>
-                        <BigDecimalField fx:id="bigDecimalNroPreguntas" promptText="Nro. Preguntas">
-                           <VBox.margin>
-                              <Insets bottom="5.0" left="10.0" right="10.0" />
-                           </VBox.margin>
-                           <tooltip>
-                              <Tooltip text="Número de Preguntas" />
-                           </tooltip>
-                        </BigDecimalField>
-                        <BigDecimalField fx:id="bigDecimalPuntajePregunta" promptText="Puntaje pregunta">
-                           <VBox.margin>
-                              <Insets bottom="5.0" left="10.0" right="10.0" />
-                           </VBox.margin>
-                           <tooltip>
-                              <Tooltip text="Puntaje base de cada pregunta" />
-                           </tooltip>
-                        </BigDecimalField>
-                        <BigDecimalField fx:id="bigDecimaNivel" promptText="Nivel">
-                           <VBox.margin>
-                              <Insets bottom="5.0" left="10.0" right="10.0" />
-                           </VBox.margin>
-                           <tooltip>
-                              <Tooltip text="Nivel de la evaluación" />
-                           </tooltip>
-                        </BigDecimalField>
-                     </children>
-                  </VBox>
+                  <BigDecimalField fx:id="bigDecimaNroAlternativas" layoutX="10.0" layoutY="249.0" promptText="Nro. Alterativas" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="10.0" right="10.0" />
+                     </VBox.margin>
+                     <tooltip>
+                        <Tooltip text="Número de Alternativas" />
+                     </tooltip>
+                  </BigDecimalField>
+                  <BigDecimalField fx:id="bigDecimalForma" layoutX="10.0" layoutY="219.0" promptText="Forma" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="10.0" right="10.0" />
+                     </VBox.margin>
+                     <tooltip>
+                        <Tooltip text="Número de la Forma" />
+                     </tooltip>
+                  </BigDecimalField>
+                  <BigDecimalField fx:id="bigDecimalNroPreguntas" layoutX="10.0" layoutY="279.0" promptText="Nro. Preguntas" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="10.0" right="10.0" />
+                     </VBox.margin>
+                     <tooltip>
+                        <Tooltip text="Número de Preguntas" />
+                     </tooltip>
+                  </BigDecimalField>
+                  <ComboBox fx:id="cmbCurso" layoutX="10.0" layoutY="101.0" promptText="Curso" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="10.0" right="10.0" />
+                     </VBox.margin>
+                     <tooltip>
+                        <Tooltip text="Curso de la prueba" />
+                     </tooltip>
+                  </ComboBox>
+                  <TextField fx:id="txtName" layoutX="10.0" layoutY="35.0" promptText="Nombre Prueba" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                     </VBox.margin>
+                     <tooltip>
+                        <Tooltip text="Nombre de la prueba" />
+                     </tooltip>
+                  </TextField>
+                  <ComboBox id="cmbColegios" fx:id="cmbTipoPrueba" layoutX="10.0" layoutY="73.0" promptText="Tipo prueba" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="10.0" right="10.0" top="10.0" />
+                     </VBox.margin>
+                     <tooltip>
+                        <Tooltip text="Tipo de prueba" />
+                     </tooltip>
+                  </ComboBox>
+                  <DatePicker fx:id="dpFecha" layoutX="10.0" layoutY="189.0" promptText="Fecha" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="10.0" right="10.0" />
+                     </VBox.margin>
+                     <tooltip>
+                        <Tooltip text="Fecha de la prueba" />
+                     </tooltip>
+                  </DatePicker>
+                  <BigDecimalField fx:id="bigDecimalPuntajePregunta" layoutX="10.0" layoutY="309.0" promptText="Puntaje pregunta" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="10.0" right="10.0" />
+                     </VBox.margin>
+                     <tooltip>
+                        <Tooltip text="Puntaje base de cada pregunta" />
+                     </tooltip>
+                  </BigDecimalField>
+                  <Label fx:id="lblError" layoutX="10.0" layoutY="10.0" text="Label" textAlignment="CENTER" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="10.0" right="5.0" top="10.0" />
+                     </VBox.margin>
+                  </Label>
+                  <ComboBox fx:id="cmbAsignatura" layoutX="10.0" layoutY="159.0" promptText="Asignatura" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="10.0" right="10.0" />
+                     </VBox.margin>
+                     <tooltip>
+                        <Tooltip text="Asignatura de la prueba" />
+                     </tooltip>
+                  </ComboBox>
+                  <BigDecimalField fx:id="bigDecimaNivel" layoutX="10.0" layoutY="339.0" promptText="Nivel" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="10.0" right="10.0" />
+                     </VBox.margin>
+                     <tooltip>
+                        <Tooltip text="Nivel de la evaluación" />
+                     </tooltip>
+                  </BigDecimalField>
+                  <ComboBox id="cmbCursos" fx:id="cmbProfesor" layoutX="10.0" layoutY="131.0" promptText="Profesor" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="10.0" right="10.0" />
+                     </VBox.margin>
+                     <tooltip>
+                        <Tooltip text="Profesor de la prueba" />
+                     </tooltip>
+                  </ComboBox>
                </children>
             </AnchorPane>
             <StackPane>

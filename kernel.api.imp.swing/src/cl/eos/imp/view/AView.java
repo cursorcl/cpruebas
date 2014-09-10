@@ -71,7 +71,7 @@ public  abstract class AView implements IView {
 	}
 
 	@Override
-	public Object getPane() {
+	public Object getParent() {
 		return pane;
 	}
 	

@@ -2,7 +2,6 @@ package cl.eos.view;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 import javafx.collections.FXCollections;
@@ -10,6 +9,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Parent;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -19,18 +19,26 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 import jfxtras.labs.scene.control.BigDecimalField;
+
+import org.controlsfx.control.action.Action;
+import org.controlsfx.dialog.Dialog;
+import org.controlsfx.dialog.Dialogs;
+
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.persistence.models.Asignatura;
-import cl.eos.persistence.models.Colegio;
 import cl.eos.persistence.models.Curso;
 import cl.eos.persistence.models.Profesor;
 import cl.eos.persistence.models.Prueba;
 import cl.eos.persistence.models.TipoPrueba;
 
+
 public class PruebasView extends AFormView implements EventHandler<ActionEvent> {
 
+	@FXML
+	private Parent root;
 	@FXML
 	private TableView<Prueba> tblListadoPruebas;
 	@FXML
@@ -334,4 +342,5 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 			cmbTipoPrueba.getSelectionModel().select(prueba.getTipoPrueba());
 		}
 	}
+
 }
