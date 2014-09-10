@@ -70,7 +70,7 @@ public abstract class AFormView extends AView implements IFormView {
 	}
 
 	@Override
-	public void onDataArrived(List<IEntity> list) {
+	public void onDataArrived(List<Object> list) {
 		// TODO Auto-generated method stub
 		
 	}

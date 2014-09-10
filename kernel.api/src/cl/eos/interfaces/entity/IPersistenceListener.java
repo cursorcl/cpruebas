@@ -4,5 +4,8 @@ import java.util.List;
 
 public interface IPersistenceListener {
 
-	void onFindAllFinished(List<IEntity> list);
+	void onFindAllFinished(List<Object> list);
+	void onFindFinished(List<Object> list);
+	void onFound(IEntity entity);
+	void onError(String error);
 }

@@ -19,13 +19,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Stage;
 import jfxtras.labs.scene.control.BigDecimalField;
-
-import org.controlsfx.control.action.Action;
-import org.controlsfx.dialog.Dialog;
-import org.controlsfx.dialog.Dialogs;
-
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.persistence.models.Asignatura;
@@ -151,14 +145,14 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 	}
 
 	@Override
-	public void onDataArrived(List<IEntity> list) {
+	public void onDataArrived(List<Object> list) {
 
 		if (list != null && !list.isEmpty()) {
-			IEntity entity = list.get(0);
+			Object entity = list.get(0);
 			if (entity instanceof Prueba) {
 				ObservableList<Prueba> pruebas = FXCollections
 						.observableArrayList();
-				for (IEntity lEntity : list) {
+				for (Object lEntity : list) {
 					pruebas.add((Prueba) lEntity);
 				}
 				tblListadoPruebas.setItems(pruebas);
@@ -166,7 +160,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 			if (entity instanceof TipoPrueba) {
 				ObservableList<TipoPrueba> tipoPruebas = FXCollections
 						.observableArrayList();
-				for (IEntity lEntity : list) {
+				for (Object lEntity : list) {
 					tipoPruebas.add((TipoPrueba) lEntity);
 				}
 				cmbTipoPrueba.setItems(tipoPruebas);
@@ -174,7 +168,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 			if (entity instanceof Profesor) {
 				ObservableList<Profesor> profesores = FXCollections
 						.observableArrayList();
-				for (IEntity lEntity : list) {
+				for (Object lEntity : list) {
 					profesores.add((Profesor) lEntity);
 				}
 				cmbProfesor.setItems(profesores);
@@ -182,7 +176,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 			if (entity instanceof Curso) {
 				ObservableList<Curso> cursos = FXCollections
 						.observableArrayList();
-				for (IEntity lEntity : list) {
+				for (Object lEntity : list) {
 					cursos.add((Curso) lEntity);
 				}
 				cmbCurso.setItems(cursos);
@@ -190,7 +184,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 			if (entity instanceof Asignatura) {
 				ObservableList<Asignatura> asignaturas = FXCollections
 						.observableArrayList();
-				for (IEntity lEntity : list) {
+				for (Object lEntity : list) {
 					asignaturas.add((Asignatura) lEntity);
 				}
 				cmbAsignatura.setItems(asignaturas);

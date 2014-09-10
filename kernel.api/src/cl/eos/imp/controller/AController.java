@@ -18,6 +18,9 @@ public abstract class AController implements IController, IPersistenceListener {
 
 	public AController() {
 		initialize();
+		if (model != null) {
+			model.setController(this);
+		}
 	}
 
 	@Override
@@ -135,10 +138,37 @@ public abstract class AController implements IController, IPersistenceListener {
 	}
 
 	@Override
-	public void onFindAllFinished(List<IEntity> list) {
+	public void onFindAllFinished(List<Object> list) {
 		if (views != null) {
 			for (IView view : views) {
 				view.onDataArrived(list);
+			}
+		}
+	}
+
+	@Override
+	public void onFindFinished(List<Object> list) {
+		if (views != null) {
+			for (IView view : views) {
+				view.onDataArrived(list);
+			}
+		}
+	}
+
+	@Override
+	public void onFound(IEntity entity) {
+		if (views != null) {
+			for (IView view : views) {
+				view.onFound(entity);
+			}
+		}
+	}
+
+	@Override
+	public void onError(String error) {
+		if (views != null) {
+			for (IView view : views) {
+				view.onError(error);
 			}
 		}
 	}

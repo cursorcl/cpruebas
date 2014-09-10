@@ -223,13 +223,13 @@ public class ColegiosView extends AFormView {
 	}
 	
 	@Override
-	public void onDataArrived(List<IEntity> list) {
+	public void onDataArrived(List<Object> list) {
 		if (list != null && !list.isEmpty()) {
-			IEntity entity = list.get(0);
+			Object entity = list.get(0);
 			if (entity instanceof Asignatura) {
 				ObservableList<Colegio> oList = FXCollections
 						.observableArrayList();
-				for (IEntity iEntity : list) {
+				for (Object iEntity : list) {
 					oList.add((Colegio) iEntity);
 				}
 				tblColegio.setItems(oList);

@@ -74,5 +74,24 @@ public  abstract class AView implements IView {
 	public Object getParent() {
 		return pane;
 	}
+
+	@Override
+	public void onFound(IEntity entity) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onDataArrived(List<Object> list) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onError(String error) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	
 }

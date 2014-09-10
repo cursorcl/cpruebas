@@ -14,11 +14,12 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.habilidades"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.profesores"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.pruebas"/>
-	<classpathentry kind="lib" path="C:/desarrollo/cpruebas/jars/jfxtras-agenda.jar"/>
-	<classpathentry kind="lib" path="C:/desarrollo/cpruebas/jars/jfxtras-common.jar"/>
-	<classpathentry kind="lib" path="C:/desarrollo/cpruebas/jars/jfxtras-controls.jar"/>
-	<classpathentry kind="lib" path="C:/desarrollo/cpruebas/jars/jfxtras-fxml-8.0.jar"/>
-	<classpathentry kind="lib" path="C:/desarrollo/cpruebas/jars/jfxtras-labs-8.0.jar"/>
-	<classpathentry kind="lib" path="C:/desarrollo/cpruebas/jars/jfxtras-window.jar"/>
+	<classpathentry kind="lib" path="../jars/jfxtras-agenda.jar"/>
+	<classpathentry kind="lib" path="../jars/jfxtras-common.jar"/>
+	<classpathentry kind="lib" path="../jars/jfxtras-controls.jar"/>
+	<classpathentry kind="lib" path="../jars/jfxtras-fxml-8.0.jar"/>
+	<classpathentry kind="lib" path="../jars/jfxtras-labs-8.0.jar"/>
+	<classpathentry kind="lib" path="../jars/jfxtras-window.jar"/>
+	<classpathentry kind="lib" path="../jars/controlsfx-8.0.6_20.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

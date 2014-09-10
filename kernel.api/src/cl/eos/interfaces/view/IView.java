@@ -100,7 +100,9 @@ public interface IView {
 	 * la persistencia.
 	 * @param list
 	 */
-	void onDataArrived(List<IEntity> list);
+	void onDataArrived(List<Object> list);
+	
+	void onError(String error);
 	
 	Dimension getPreferredSize();
 
