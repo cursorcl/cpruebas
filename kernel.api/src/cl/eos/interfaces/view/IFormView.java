@@ -27,7 +27,7 @@ public interface IFormView extends IView {
    */
   void delete(IEntity otObject);
   
-  void delete(List<IEntity> otObject);
+  void delete(List<? extends IEntity> otObject);
 
   /**
    * Metodo que se usa para indicar la selección de una entidad.

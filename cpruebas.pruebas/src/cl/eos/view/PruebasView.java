@@ -2,6 +2,7 @@ package cl.eos.view;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import javafx.collections.FXCollections;
@@ -22,6 +23,7 @@ import jfxtras.labs.scene.control.BigDecimalField;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.persistence.models.Asignatura;
+import cl.eos.persistence.models.Colegio;
 import cl.eos.persistence.models.Curso;
 import cl.eos.persistence.models.Profesor;
 import cl.eos.persistence.models.Prueba;
@@ -273,16 +275,16 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 			handleModificar();
 		} else if (source == mnuGrabar) {
 			handleGrabar();
-		}
-		else if(source == mnuEliminar || source == mnuPopupEliminar)
-		{
+		} else if (source == mnuEliminar || source == mnuPopupEliminar) {
 			handleEliminar();
 		}
 	}
 
 	private void handleEliminar() {
-		// TODO Auto-generated method stub
-		
+
+		ObservableList<Prueba> pruebasSeleccionadas = tblListadoPruebas
+				.getSelectionModel().getSelectedItems();
+		delete(pruebasSeleccionadas);
 	}
 
 	private void handleGrabar() {

@@ -27,7 +27,7 @@ public abstract class AFormView extends AView implements IFormView {
 	}
 	
 	@Override
-	public void delete(List<IEntity> otObject) {
+	public void delete(List<? extends IEntity> otObject) {
 		if (controller != null) {
 			controller.delete(otObject);
 		}
