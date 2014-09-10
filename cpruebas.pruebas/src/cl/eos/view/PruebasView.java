@@ -318,6 +318,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 
 	private void handleModificar() {
 		Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem();
+		
 		if (prueba != null) {
 			bigDecimaNroAlternativas.setNumber(new BigDecimal(prueba
 					.getAlternativas()));

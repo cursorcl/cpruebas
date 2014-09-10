@@ -10,7 +10,8 @@ import javax.persistence.NamedQuery;
 import cl.eos.interfaces.entity.IEntity;
 
 @Entity(name = "alumno")
-@NamedQueries({ @NamedQuery(name = "Alumno.findAll", query = "SELECT e FROM alumno e") })
+@NamedQueries({ @NamedQuery(name = "Alumno.findAll", query = "SELECT e FROM alumno e"),
+	@NamedQuery(name = "Alumno.preguntita", query = "SELECT e FROM alumno e direccion = :dato")})
 public class Alumno implements IEntity {
 
 	@Id

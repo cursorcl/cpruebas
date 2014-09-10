@@ -1,11 +1,14 @@
 package cl.eos.persistence.models;
 
+import java.util.Collection;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 
 import cl.eos.interfaces.entity.IEntity;
 
@@ -18,6 +21,8 @@ public class Curso implements IEntity {
 	private Long id;
 	private String name;
 	private Nivel nivel;
+	@OneToMany
+	private Collection<Alumno> alumnos;
 
 	@Override
 	public Long getId() {
@@ -50,6 +55,14 @@ public class Curso implements IEntity {
 
 	public void setNivel(Nivel nivel) {
 		this.nivel = nivel;
+	}
+
+	public Collection<Alumno> getAlumnos() {
+		return alumnos;
+	}
+
+	public void setAlumnos(Collection<Alumno> alumnos) {
+		this.alumnos = alumnos;
 	}
 
 	@Override

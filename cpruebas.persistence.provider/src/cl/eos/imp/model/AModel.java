@@ -81,6 +81,7 @@ public abstract class AModel implements IModel {
 		}
 		return result;
 	}
+	
 
 	@Override
 	public void find(String namedQuery, Map<String, Object> parameters,

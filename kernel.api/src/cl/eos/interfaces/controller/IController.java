@@ -1,8 +1,10 @@
 package cl.eos.interfaces.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import cl.eos.interfaces.entity.IEntity;
+import cl.eos.interfaces.entity.IPersistenceListener;
 import cl.eos.interfaces.model.IModel;
 import cl.eos.interfaces.view.IView;
 
@@ -88,4 +90,21 @@ public interface IController {
 	void notifyDeleted(IEntity entity);
 	
 	void notifyChangeStatus(Object status);
+	
+	void find(String namedQuery, Map<String, Object> parameters,
+			IPersistenceListener listener);
+
+	void findById(Class<? extends IEntity> entityClazz, Long id,
+			IPersistenceListener listener);
+
+	void findByName(Class<? extends IEntity> entityClazz, String name,
+			IPersistenceListener listener);
+
+	void findAll(Class<? extends IEntity> entityClazz);
+
+	void find(String namedQuery, Map<String, Object> parameters);
+
+	void findById(Class<? extends IEntity> entityClazz, Long id);
+
+	void findByName(Class<? extends IEntity> entityClazz, String name);
 }
