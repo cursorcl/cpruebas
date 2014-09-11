@@ -10,6 +10,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import cl.eos.interfaces.IActivator;
+import cl.eos.provider.persistence.PersistenceServiceFactory;
 
 public class MainController {
 
@@ -33,6 +34,8 @@ public class MainController {
 	private MenuItem mnuHabilidades;
 	@FXML
 	private MenuItem mnuHacerPrueba;
+	@FXML
+	private MenuItem mnuItemGeneraBD;
 	@FXML
 	private StackPane pnlContainer;
 
@@ -104,6 +107,12 @@ public class MainController {
 			public void handle(ActionEvent arg0) {
 					IActivator activator = new PruebasActivator();
 					pnlContainer.getChildren().setAll((Pane)activator.getPane());
+			}
+		});
+		mnuItemGeneraBD.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				PersistenceServiceFactory.getPersistenceService();
 			}
 		});
 	}

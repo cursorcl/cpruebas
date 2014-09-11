@@ -21,5 +21,7 @@
 	<classpathentry kind="lib" path="../jars/jfxtras-labs-8.0.jar"/>
 	<classpathentry kind="lib" path="../jars/jfxtras-window.jar"/>
 	<classpathentry kind="lib" path="../jars/controlsfx-8.0.6_20.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.persistence.provider"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.persistence"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
