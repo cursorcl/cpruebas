@@ -279,7 +279,7 @@ public class AlumnosView extends AFormView {
 		}
 		Map<String, Object> param = new HashMap<String, Object>();
 		//param.put("dato", direccion);
-		controller.find("Alumno.preguntita", param);
+		controller.find("Alumno.preguntita", param); 
 		return valida;
 	}
 
