@@ -71,7 +71,7 @@ public class AlumnosView extends AFormView {
 
 	@FXML
 	private TableColumn<Alumno, String> colPaterno;
-
+	
 	@FXML
 	private TableColumn<Alumno, String> colMaterno;
 
@@ -241,6 +241,10 @@ public class AlumnosView extends AFormView {
 	@Override
 	public boolean validate() {
 		boolean valida = true;
+		if (cmbColegio.getValue() == null) {
+			cmbColegio.getStyleClass().add("bad");
+			valida = false;
+		}
 		if (cmbCurso.getValue() == null) {
 			cmbCurso.getStyleClass().add("bad");
 			valida = false;

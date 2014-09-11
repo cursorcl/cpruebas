@@ -1,9 +1,18 @@
 package cl.eos.view;
 
+import java.awt.Dimension;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -15,12 +24,17 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.FileChooser;
+
+import javax.imageio.ImageIO;
+
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
-import cl.eos.persistence.models.Asignatura;
 import cl.eos.persistence.models.Colegio;
+import cl.eos.util.Utils;
 
 public class ColegiosView extends AFormView {
 
@@ -33,13 +47,13 @@ public class ColegiosView extends AFormView {
 
 	@FXML
 	private MenuItem mnItemModificar;
-	
+
 	@FXML
 	private Button btnImagen;
 
 	@FXML
 	private TextField txtNombre;
-	
+
 	@FXML
 	private TextField txtDireccion;
 
@@ -54,7 +68,7 @@ public class ColegiosView extends AFormView {
 
 	@FXML
 	private TableColumn<Colegio, String> colDireccion;
-	
+
 	@FXML
 	private Label lblError;
 
@@ -69,16 +83,40 @@ public class ColegiosView extends AFormView {
 		accionEliminar();
 		accionModificar();
 		accionClicTabla();
+		accionButtonImagen();
 	}
 
-	
+	private void accionButtonImagen() {
+		btnImagen.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				FileChooser fileChooser = new FileChooser();
+				File file = fileChooser.showOpenDialog(null);
+				if (file != null) {
+					Dimension dim = Utils.getImageDim(file.getPath());
+					if (dim.getHeight() <= 256 && dim.getWidth() <= 256) {
+						try {
+							URL url = file.toURI().toURL();
+							imgColegio.setImage(new Image(url.toString()));
+						} catch (MalformedURLException e) {
+							e.printStackTrace();
+						}
+					}
+
+				}
+			}
+		});
+
+	}
+
 	private void accionClicTabla() {
 		tblColegio.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
 				ObservableList<Colegio> itemsSelec = tblColegio
 						.getSelectionModel().getSelectedItems();
-				
+
 				if (itemsSelec.size() > 1) {
 					mnItemModificar.setDisable(true);
 					mnItemEliminar.setDisable(false);
@@ -90,22 +128,33 @@ public class ColegiosView extends AFormView {
 			}
 		});
 	}
-	
+
 	private void inicializaTabla() {
 		tblColegio.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-		colNombre.setCellValueFactory(new PropertyValueFactory<Colegio, String>(
-				"name"));
+		colNombre
+				.setCellValueFactory(new PropertyValueFactory<Colegio, String>(
+						"name"));
+		colDireccion
+				.setCellValueFactory(new PropertyValueFactory<Colegio, String>(
+						"direccion"));
 	}
+
 	private void accionModificar() {
 		mnItemModificar.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent event) {
-				Colegio colegio = tblColegio.getSelectionModel().getSelectedItem();
+				Colegio colegio = tblColegio.getSelectionModel()
+						.getSelectedItem();
 				if (colegio != null) {
 					txtNombre.setText(colegio.getName());
 					txtDireccion.setText(colegio.getDireccion());
-					//imgColegio.set
+
+					ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(
+							colegio.getImage());
+					javafx.scene.image.Image image = new javafx.scene.image.Image(
+							byteArrayInputStream);
+					imgColegio.setImage(image);
 				}
 			}
 		});
@@ -144,48 +193,34 @@ public class ColegiosView extends AFormView {
 					}
 					colegio.setName(txtNombre.getText());
 					colegio.setDireccion(txtDireccion.getText());
-					colegio.setImage(null);
-					
+					BufferedImage bufferImg = SwingFXUtils.fromFXImage(
+							imgColegio.getImage(), null);
+
+					ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+					try {
+						ImageIO.write(bufferImg, "png", outputStream);
+						colegio.setImage(outputStream.toByteArray());
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 					save(colegio);
 				} else {
 					lblError.getStyleClass().add("bad");
 					lblError.setText("Corregir campos destacados en color rojo");
 				}
 				limpiarControles();
-//			
-//				File f = new File("D:/Imagen006.jpg"); //asociamos el archivo fisico
-//				InputStream is = new FileInputStream(f); //lo abrimos. Lo importante es que sea un InputStream
-//				byte[] buffer = new byte[(int) f.length()]; //creamos el buffer
-//				int readers = is.read(buffer); //leemos el archivo al buffer
-//				i.setImagen(buffer); 
-				
-				
-//				
-	//			Obtener desde la BD.
-		//		Imagen imagen=new Imagen();
-//				Blob blob = rs.getBlob("imagen");
-//				String nombre = rs.getObject("nombre").toString();
-//				byte[] data = blob.getBytes(1, (int)blob.length());
-//				BufferedImage img = null;
-//				try {
-//					img = ImageIO.read(new ByteArrayInputStream(data));
-//				} catch (IOException ex) {
-//					Logger.getLogger(BaseDatos.class.getName()).log(Level.SEVERE, null, ex);
-//				}
-//				imagen.setImagen(img);
-//				imagen.setNombre(nombre);
-//				lista.add(imagen);
 			}
-			
+
 		});
 	}
 
 	private void limpiarControles() {
 		txtNombre.clear();
 		txtDireccion.clear();
+		imgColegio.setImage(null);
 		select(null);
 	}
-	
+
 	@Override
 	public void onSaved(IEntity otObject) {
 		System.out.println("Elemento grabando:" + otObject.toString());
@@ -193,8 +228,7 @@ public class ColegiosView extends AFormView {
 		if (indice != -1) {
 			tblColegio.getItems().remove(otObject);
 			tblColegio.getItems().add(indice, (Colegio) otObject);
-		}
-		else{
+		} else {
 			tblColegio.getItems().add((Colegio) otObject);
 		}
 	}
@@ -204,11 +238,10 @@ public class ColegiosView extends AFormView {
 		System.out.println("Elementoeliminando:" + entity.toString());
 		ObservableList<Colegio> asignaturas = tblColegio.getItems();
 		asignaturas.remove(entity);
-		tblColegio.getSelectionModel().clearSelection();
+		//tblColegio.getSelectionModel().clearSelection();
 	}
-	
-	public boolean validate()
-	{
+
+	public boolean validate() {
 		boolean valida = true;
 		if (txtNombre.getText() == null || txtNombre.getText().equals("")) {
 			txtNombre.getStyleClass().add("bad");
@@ -221,12 +254,12 @@ public class ColegiosView extends AFormView {
 		}
 		return valida;
 	}
-	
+
 	@Override
 	public void onDataArrived(List<IEntity> list) {
 		if (list != null && !list.isEmpty()) {
 			IEntity entity = list.get(0);
-			if (entity instanceof Asignatura) {
+			if (entity instanceof Colegio) {
 				ObservableList<Colegio> oList = FXCollections
 						.observableArrayList();
 				for (IEntity iEntity : list) {
@@ -236,7 +269,7 @@ public class ColegiosView extends AFormView {
 			}
 		}
 	}
-	
+
 	private void removeAllStyles() {
 		removeAllStyle(lblError);
 		removeAllStyle(txtNombre);
