@@ -130,15 +130,7 @@
                         <Tooltip text="Asignatura de la prueba" />
                      </tooltip>
                   </ComboBox>
-                  <BigDecimalField fx:id="bigDecimaNivel" layoutX="10.0" layoutY="339.0" promptText="Nivel" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
-                     <VBox.margin>
-                        <Insets bottom="5.0" left="10.0" right="10.0" />
-                     </VBox.margin>
-                     <tooltip>
-                        <Tooltip text="Nivel de la evaluación" />
-                     </tooltip>
-                  </BigDecimalField>
-                  <ComboBox id="cmbCursos" fx:id="cmbProfesor" layoutX="10.0" layoutY="131.0" promptText="Profesor" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+                  <ComboBox id="cmbProfesor" fx:id="cmbProfesor" layoutX="10.0" layoutY="131.0" promptText="Profesor" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
                      <VBox.margin>
                         <Insets bottom="5.0" left="10.0" right="10.0" />
                      </VBox.margin>
@@ -146,6 +138,7 @@
                         <Tooltip text="Profesor de la prueba" />
                      </tooltip>
                   </ComboBox>
+                  <ComboBox fx:id="cmbNivelEvaluacion" layoutX="10.0" layoutY="340.0" prefHeight="25.0" prefWidth="223.0" promptText="Nivel de Evaluación" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" />
                </children>
             </AnchorPane>
             <StackPane>

@@ -24,6 +24,7 @@ import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.persistence.models.Asignatura;
 import cl.eos.persistence.models.Curso;
+import cl.eos.persistence.models.NivelEvaluacion;
 import cl.eos.persistence.models.Profesor;
 import cl.eos.persistence.models.Prueba;
 import cl.eos.persistence.models.TipoPrueba;
@@ -68,7 +69,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 	@FXML
 	private BigDecimalField bigDecimalPuntajePregunta;
 	@FXML
-	private BigDecimalField bigDecimaNivel;
+	private ComboBox<NivelEvaluacion> cmbNivelEvaluacion;
 	@FXML
 	private Label lblError;
 	@FXML
@@ -131,11 +132,6 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 		bigDecimalPuntajePregunta.setStepwidth(new BigDecimal(1));
 		bigDecimalPuntajePregunta.setNumber(new BigDecimal(1));
 
-		bigDecimaNivel.setMinValue(new BigDecimal(1));
-		bigDecimaNivel.setMaxValue(new BigDecimal(3));
-		bigDecimaNivel.setStepwidth(new BigDecimal(1));
-		bigDecimaNivel.setNumber(new BigDecimal(1));
-
 		mnuGrabar.setOnAction(this);
 		mnuModificar.setOnAction(this);
 		mnuPopupModificar.setOnAction(this);
@@ -189,6 +185,15 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 				}
 				cmbAsignatura.setItems(asignaturas);
 			}
+			if (entity instanceof NivelEvaluacion) {
+				ObservableList<NivelEvaluacion> nivelEvaluacion = FXCollections
+						.observableArrayList();
+				for (Object lEntity : list) {
+					nivelEvaluacion.add((NivelEvaluacion) lEntity);
+				}
+				cmbNivelEvaluacion.setItems(nivelEvaluacion);
+			}
+			
 		}
 
 	}
@@ -223,6 +228,10 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 			valid = false;
 			cmbAsignatura.getStyleClass().add("bad");
 		}
+		if (cmbNivelEvaluacion.getValue() == null) {
+			valid = false;
+			cmbNivelEvaluacion.getStyleClass().add("bad");
+		}
 		if (txtName.getText() == null || txtName.getText().isEmpty()) {
 			valid = false;
 			txtName.getStyleClass().add("bad");
@@ -243,10 +252,6 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 			valid = false;
 			bigDecimalPuntajePregunta.getStyleClass().add("bad");
 		}
-		if (bigDecimaNivel.getNumber() == null) {
-			valid = false;
-			bigDecimaNivel.getStyleClass().add("bad");
-		}
 		if (dpFecha.getValue() == null) {
 			valid = false;
 			dpFecha.getStyleClass().add("bad");
@@ -260,12 +265,12 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 		removeAllStyle(cmbProfesor);
 		removeAllStyle(cmbCurso);
 		removeAllStyle(cmbAsignatura);
+		removeAllStyle(cmbNivelEvaluacion);
 		removeAllStyle(txtName);
 		removeAllStyle(bigDecimalForma);
 		removeAllStyle(bigDecimaNroAlternativas);
 		removeAllStyle(bigDecimalNroPreguntas);
 		removeAllStyle(bigDecimalPuntajePregunta);
-		removeAllStyle(bigDecimaNivel);
 		removeAllStyle(dpFecha);
 
 	}
@@ -301,7 +306,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 			prueba.setFecha(dpFecha.getValue().toEpochDay());
 			prueba.setFormas(bigDecimalForma.getNumber().intValue());
 			prueba.setName(txtName.getText());
-			prueba.setNivelEvaluacion(bigDecimaNivel.getNumber().intValue());
+			prueba.setNivelEvaluacion(cmbNivelEvaluacion.getValue());
 			prueba.setProfesor(cmbProfesor.getValue());
 			prueba.setPuntajeBase(bigDecimalPuntajePregunta.getNumber()
 					.intValue());
@@ -327,8 +332,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 			dpFecha.setValue(prueba.getFechaLocal());
 			bigDecimalForma.setNumber(new BigDecimal(prueba.getFormas()));
 			txtName.setText(prueba.getName());
-			bigDecimaNivel
-					.setNumber(new BigDecimal(prueba.getNivelEvaluacion()));
+			cmbNivelEvaluacion.getSelectionModel().select(prueba.getNivelEvaluacion());
 			cmbProfesor.getSelectionModel().select(prueba.getProfesor());
 			bigDecimalPuntajePregunta.setNumber(new BigDecimal(prueba
 					.getPuntajeBase()));

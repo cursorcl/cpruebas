@@ -26,6 +26,7 @@ public class Prueba implements IEntity {
 	private TipoPrueba tipoPrueba;
 	private Curso curso;
 	private Asignatura asignatura;
+	private NivelEvaluacion nivelEvaluacion;
 
 	private Long fecha;
 	private Integer nroPreguntas;
@@ -33,7 +34,7 @@ public class Prueba implements IEntity {
 	private Integer alternativas;
 	private Profesor profesor;
 	private Integer responses;
-	private Integer nivelEvaluacion;
+	
 	private Integer puntajeBase;
 
 	public TipoPrueba getTipoPrueba() {
@@ -92,11 +93,11 @@ public class Prueba implements IEntity {
 		this.alternativas = alternativas;
 	}
 
-	public Integer getNivelEvaluacion() {
+	public NivelEvaluacion getNivelEvaluacion() {
 		return nivelEvaluacion;
 	}
 
-	public void setNivelEvaluacion(Integer nivelEvaluacion) {
+	public void setNivelEvaluacion(NivelEvaluacion nivelEvaluacion) {
 		this.nivelEvaluacion = nivelEvaluacion;
 	}
 
