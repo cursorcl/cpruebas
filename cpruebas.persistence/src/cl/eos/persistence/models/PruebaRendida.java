@@ -12,7 +12,7 @@ public class PruebaRendida implements IEntity {
 	private String respuestas;
 	private Integer buenas;
 	private Integer malas;
-	private Integer omitidas;
+	private Integer omitidas; 
 	
 	@Override
 	public Long getId() {

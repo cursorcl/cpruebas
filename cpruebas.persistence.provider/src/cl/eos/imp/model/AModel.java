@@ -103,7 +103,7 @@ public abstract class AModel implements IModel {
 		PersistenceServiceFactory.getPersistenceService().findByName(
 				entityClazz, name, listener);
 	}
-
+ 
 	@Override
 	public void findAll(Class<? extends IEntity> entityClazz) {
 		if (controller != null && controller instanceof IPersistenceListener) {

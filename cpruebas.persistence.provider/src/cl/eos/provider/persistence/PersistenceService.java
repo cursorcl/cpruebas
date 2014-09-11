@@ -180,7 +180,7 @@ public class PersistenceService implements IPersistenceService {
 		final Task<IEntity> task = new Task<IEntity>() {
 			@Override
 			protected IEntity call() throws Exception {
-				IEntity lresult = null;
+				IEntity lresult = null; 
 				String strEntity = entityClazz.getSimpleName();
 				Query query = eManager.createQuery(String.format(
 						"select c from %s c where c.name = :name", strEntity));
