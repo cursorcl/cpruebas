@@ -1,8 +1,10 @@
 package cl.eos.interfaces.view;
 
 import java.util.List;
+import java.util.Map;
 
 import cl.eos.interfaces.entity.IEntity;
+import cl.eos.interfaces.entity.IPersistenceListener;
 
 /**
  * Extiende a IView. Este tipo de vistas permiten realizar cambios a los objetos. Viene siendo una
@@ -26,7 +28,7 @@ public interface IFormView extends IView {
    * @param otObject Objeto que se quire eliminar.
    */
   void delete(IEntity otObject);
-  
+
   void delete(List<? extends IEntity> otObject);
 
   /**
@@ -49,4 +51,18 @@ public interface IFormView extends IView {
    * @param otObject Objeto que se quire grabar.
    */
   boolean validate();
+
+  void find(String namedQuery, Map<String, Object> parameters, IPersistenceListener listener);
+
+  void findById(Class<? extends IEntity> entityClazz, Long id, IPersistenceListener listener);
+
+  void findByName(Class<? extends IEntity> entityClazz, String name, IPersistenceListener listener);
+
+  void findAll(Class<? extends IEntity> entityClazz);
+
+  void find(String namedQuery, Map<String, Object> parameters);
+
+  void findById(Class<? extends IEntity> entityClazz, Long id);
+
+  void findByName(Class<? extends IEntity> entityClazz, String name);
 }
