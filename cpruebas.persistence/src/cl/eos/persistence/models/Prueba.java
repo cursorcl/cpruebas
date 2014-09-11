@@ -21,7 +21,7 @@ public class Prueba implements IEntity {
 	private Long id;
 
 	@Column(length = 100)
-	private String name;
+	private String name; 
 
 	private TipoPrueba tipoPrueba;
 	private Curso curso;

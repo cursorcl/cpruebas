@@ -24,7 +24,7 @@ public class Alumno implements IEntity {
 	private String direccion;
 	private Colegio colegio;
 	private Curso curso;
-
+  
 	@Override
 	public Long getId() {
 		return id;
