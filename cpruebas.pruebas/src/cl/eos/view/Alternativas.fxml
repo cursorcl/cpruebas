@@ -7,163 +7,161 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-
-<AnchorPane id="GrupoRespuestas" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="180.0" prefWidth="224.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<VBox prefHeight="209.0" prefWidth="224.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <BorderPane layoutX="32.0" layoutY="21.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="31.0" prefWidth="184.0">
-         <center>
-            <HBox prefHeight="37.0" prefWidth="212.0" BorderPane.alignment="CENTER">
-               <children>
-                  <RadioButton mnemonicParsing="false">
-                     <toggleGroup>
-                        <ToggleGroup fx:id="group" />
-                     </toggleGroup>
-                  </RadioButton>
-                  <RadioButton mnemonicParsing="false" toggleGroup="$group" />
-                  <RadioButton mnemonicParsing="false" toggleGroup="$group" />
-                  <RadioButton mnemonicParsing="false" toggleGroup="$group" />
-                  <RadioButton mnemonicParsing="false" toggleGroup="$group" />
-                  <CheckBox alignment="CENTER_RIGHT" contentDisplay="CENTER" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" prefHeight="26.0" prefWidth="24.0" />
-               </children>
-               <BorderPane.margin>
-                  <Insets left="1.0" top="3.0" />
-               </BorderPane.margin>
-            </HBox>
-         </center>
-      </BorderPane>
-      <BorderPane layoutX="32.0" layoutY="81.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="31.0" prefWidth="184.0">
-         <center>
-            <HBox prefHeight="37.0" prefWidth="212.0" BorderPane.alignment="CENTER">
-               <children>
-                  <RadioButton mnemonicParsing="false">
-                     <toggleGroup>
-                        <ToggleGroup fx:id="group2" />
-                     </toggleGroup>
-                  </RadioButton>
-                  <RadioButton mnemonicParsing="false" toggleGroup="$group2" />
-                  <RadioButton mnemonicParsing="false" toggleGroup="$group2" />
-                  <RadioButton mnemonicParsing="false" toggleGroup="$group2" />
-                  <RadioButton mnemonicParsing="false" toggleGroup="$group2" />
-                  <CheckBox alignment="CENTER_RIGHT" contentDisplay="CENTER" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" prefHeight="26.0" prefWidth="24.0" />
-               </children>
-               <BorderPane.margin>
-                  <Insets left="1.0" top="3.0" />
-               </BorderPane.margin>
-            </HBox>
-         </center>
-      </BorderPane>
-      <BorderPane layoutX="32.0" layoutY="52.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="31.0" prefWidth="184.0">
-         <center>
-            <HBox prefHeight="37.0" prefWidth="212.0" BorderPane.alignment="CENTER">
-               <children>
-                  <RadioButton mnemonicParsing="false">
-                     <toggleGroup>
-                        <ToggleGroup fx:id="group1" />
-                     </toggleGroup>
-                  </RadioButton>
-                  <RadioButton mnemonicParsing="false" toggleGroup="$group1" />
-                  <RadioButton mnemonicParsing="false" toggleGroup="$group1" />
-                  <RadioButton mnemonicParsing="false" toggleGroup="$group1" />
-                  <RadioButton mnemonicParsing="false" toggleGroup="$group1" />
-                  <CheckBox alignment="CENTER_RIGHT" contentDisplay="CENTER" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" prefHeight="26.0" prefWidth="24.0" />
-               </children>
-               <BorderPane.margin>
-                  <Insets left="1.0" top="3.0" />
-               </BorderPane.margin>
-            </HBox>
-         </center>
-      </BorderPane>
-      <BorderPane layoutX="32.0" layoutY="112.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="31.0" prefWidth="184.0">
-         <center>
-            <HBox prefHeight="37.0" prefWidth="212.0" BorderPane.alignment="CENTER">
-               <children>
-                  <RadioButton mnemonicParsing="false">
-                     <toggleGroup>
-                        <ToggleGroup fx:id="group3" />
-                     </toggleGroup>
-                  </RadioButton>
-                  <RadioButton mnemonicParsing="false" toggleGroup="$group3" />
-                  <RadioButton mnemonicParsing="false" toggleGroup="$group3" />
-                  <RadioButton mnemonicParsing="false" toggleGroup="$group3" />
-                  <RadioButton mnemonicParsing="false" toggleGroup="$group3" />
-                  <CheckBox alignment="CENTER_RIGHT" contentDisplay="CENTER" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" prefHeight="26.0" prefWidth="24.0" />
-               </children>
-               <BorderPane.margin>
-                  <Insets left="1.0" top="3.0" />
-               </BorderPane.margin>
-            </HBox>
-         </center>
-      </BorderPane>
-      <BorderPane layoutX="32.0" layoutY="143.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="31.0" prefWidth="184.0">
-         <center>
-            <HBox prefHeight="37.0" prefWidth="212.0" BorderPane.alignment="CENTER">
-               <children>
-                  <RadioButton mnemonicParsing="false">
-                     <toggleGroup>
-                        <ToggleGroup fx:id="group4" />
-                     </toggleGroup>
-                  </RadioButton>
-                  <RadioButton mnemonicParsing="false" toggleGroup="$group4" />
-                  <RadioButton mnemonicParsing="false" toggleGroup="$group4" />
-                  <RadioButton mnemonicParsing="false" toggleGroup="$group4" />
-                  <RadioButton mnemonicParsing="false" toggleGroup="$group4" />
-                  <CheckBox alignment="CENTER_RIGHT" contentDisplay="CENTER" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" prefHeight="26.0" prefWidth="24.0" />
-               </children>
-               <BorderPane.margin>
-                  <Insets left="1.0" top="3.0" />
-               </BorderPane.margin>
-            </HBox>
-         </center>
-      </BorderPane>
-      <Label layoutX="42.0" text="A">
-         <font>
-            <Font name="System Bold" size="13.0" />
-         </font>
-      </Label>
-      <Label layoutX="74.0" text="B">
-         <font>
-            <Font name="System Bold" size="13.0" />
-         </font>
-      </Label>
-      <Label layoutX="103.0" text="C">
-         <font>
-            <Font name="System Bold" size="13.0" />
-         </font>
-      </Label>
-      <Label layoutX="133.0" text="D">
-         <font>
-            <Font name="System Bold" size="13.0" />
-         </font>
-      </Label>
-      <Label layoutX="163.0" text="E">
-         <font>
-            <Font name="System Bold" size="13.0" />
-         </font>
-      </Label>
-      <Label layoutX="12.0" layoutY="27.0" text="1">
-         <font>
-            <Font name="System Bold" size="13.0" />
-         </font>
-      </Label>
-      <Label layoutX="12.0" layoutY="58.0" text="2">
-         <font>
-            <Font name="System Bold" size="13.0" />
-         </font>
-      </Label>
-      <Label layoutX="12.0" layoutY="87.0" text="3">
-         <font>
-            <Font name="System Bold" size="13.0" />
-         </font>
-      </Label>
-      <Label layoutX="12.0" layoutY="118.0" text="4">
-         <font>
-            <Font name="System Bold" size="13.0" />
-         </font>
-      </Label>
-      <Label layoutX="12.0" layoutY="149.0" text="5">
-         <font>
-            <Font name="System Bold" size="13.0" />
-         </font>
-      </Label>
+      <AnchorPane id="PanelTitle" prefHeight="23.0" prefWidth="224.0">
+         <children>
+            <Label layoutX="25.0" layoutY="1.0" text="A" AnchorPane.rightAnchor="190.0" AnchorPane.topAnchor="1.0">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Label>
+            <Label layoutX="57.0" layoutY="-2.0" text="B" AnchorPane.rightAnchor="158.0" AnchorPane.topAnchor="1.0">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Label>
+            <Label layoutX="88.0" layoutY="1.0" text="C" AnchorPane.rightAnchor="126.0" AnchorPane.topAnchor="1.0">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Label>
+            <Label layoutX="119.0" layoutY="1.0" text="D" AnchorPane.rightAnchor="95.0" AnchorPane.topAnchor="1.0">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Label>
+            <Label layoutX="150.0" text="E" AnchorPane.rightAnchor="66.0" AnchorPane.topAnchor="1.0">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Label>
+            <Label layoutX="174.0" text="V/F" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="1.0">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Label>
+            <Label layoutX="204.0" prefHeight="16.0" prefWidth="0.0" text="M" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="1.0">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <HBox prefHeight="37.0" prefWidth="212.0">
+         <children>
+            <Label fx:id="lbl_1" text="1">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="3.0" right="5.0" top="5.0" />
+               </HBox.margin>
+            </Label>
+            <RadioButton fx:id="rb1A" mnemonicParsing="false">
+               <toggleGroup>
+                  <ToggleGroup fx:id="group" />
+               </toggleGroup>
+            </RadioButton>
+            <RadioButton fx:id="rb1B" mnemonicParsing="false" toggleGroup="$group" />
+            <RadioButton fx:id="rb1C" mnemonicParsing="false" toggleGroup="$group" />
+            <RadioButton fx:id="rb1D" mnemonicParsing="false" toggleGroup="$group" />
+            <RadioButton fx:id="rb1E" mnemonicParsing="false" toggleGroup="$group" />
+            <CheckBox fx:id="chk1VF" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" prefHeight="26.0" prefWidth="24.0" />
+            <CheckBox fx:id="chk5M" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" prefHeight="26.0" prefWidth="24.0" />
+         </children>
+      </HBox>
+      <HBox prefHeight="37.0" prefWidth="212.0">
+         <children>
+            <Label fx:id="lbl_2" text="2">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="3.0" right="5.0" top="5.0" />
+               </HBox.margin>
+            </Label>
+            <RadioButton fx:id="rb3A" mnemonicParsing="false">
+               <toggleGroup>
+                  <ToggleGroup fx:id="group2" />
+               </toggleGroup>
+            </RadioButton>
+            <RadioButton fx:id="rb3B" mnemonicParsing="false" toggleGroup="$group2" />
+            <RadioButton fx:id="rb3C" mnemonicParsing="false" toggleGroup="$group2" />
+            <RadioButton fx:id="rb3D" mnemonicParsing="false" toggleGroup="$group2" />
+            <RadioButton fx:id="rb3E" mnemonicParsing="false" toggleGroup="$group2" />
+            <CheckBox fx:id="chk3VF" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" prefHeight="26.0" prefWidth="24.0" />
+            <CheckBox fx:id="chk4M" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" prefHeight="26.0" prefWidth="24.0" />
+         </children>
+      </HBox>
+      <HBox prefHeight="37.0" prefWidth="212.0">
+         <children>
+            <Label fx:id="lbl_3" text="3">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="3.0" right="5.0" top="5.0" />
+               </HBox.margin>
+            </Label>
+            <RadioButton fx:id="rb2A" mnemonicParsing="false">
+               <toggleGroup>
+                  <ToggleGroup fx:id="group1" />
+               </toggleGroup>
+            </RadioButton>
+            <RadioButton fx:id="rb2B" mnemonicParsing="false" toggleGroup="$group1" />
+            <RadioButton fx:id="rb2C" mnemonicParsing="false" toggleGroup="$group1" />
+            <RadioButton fx:id="rb2D" mnemonicParsing="false" toggleGroup="$group1" />
+            <RadioButton fx:id="rb2E" mnemonicParsing="false" toggleGroup="$group1" />
+            <CheckBox fx:id="chk2VF" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" prefHeight="26.0" prefWidth="24.0" />
+            <CheckBox fx:id="chk3M" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" prefHeight="26.0" prefWidth="24.0" />
+         </children>
+      </HBox>
+      <HBox prefHeight="37.0" prefWidth="212.0">
+         <children>
+            <Label fx:id="lbl_4" text="4">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="3.0" right="5.0" top="5.0" />
+               </HBox.margin>
+            </Label>
+            <RadioButton fx:id="rb4A" mnemonicParsing="false">
+               <toggleGroup>
+                  <ToggleGroup fx:id="group3" />
+               </toggleGroup>
+            </RadioButton>
+            <RadioButton fx:id="rb4B" mnemonicParsing="false" toggleGroup="$group3" />
+            <RadioButton fx:id="rb4C" mnemonicParsing="false" toggleGroup="$group3" />
+            <RadioButton fx:id="rb4D" mnemonicParsing="false" toggleGroup="$group3" />
+            <RadioButton fx:id="rb4E" mnemonicParsing="false" toggleGroup="$group3" />
+            <CheckBox fx:id="chk4VF" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" prefHeight="26.0" prefWidth="24.0" />
+            <CheckBox fx:id="chk2M" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" prefHeight="26.0" prefWidth="24.0" />
+         </children>
+      </HBox>
+      <HBox prefHeight="37.0" prefWidth="212.0">
+         <children>
+            <Label fx:id="lbl_5" text="5">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="3.0" right="5.0" top="5.0" />
+               </HBox.margin>
+            </Label>
+            <RadioButton fx:id="rb5A" mnemonicParsing="false">
+               <toggleGroup>
+                  <ToggleGroup fx:id="group4" />
+               </toggleGroup>
+            </RadioButton>
+            <RadioButton fx:id="rb5B" mnemonicParsing="false" toggleGroup="$group4" />
+            <RadioButton fx:id="rb5C" mnemonicParsing="false" toggleGroup="$group4" />
+            <RadioButton fx:id="rb5D" mnemonicParsing="false" toggleGroup="$group4" />
+            <RadioButton fx:id="rb5E" mnemonicParsing="false" toggleGroup="$group4" />
+            <CheckBox fx:id="chk5VF" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" prefHeight="26.0" prefWidth="24.0" />
+            <CheckBox fx:id="chk1M" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" prefHeight="26.0" prefWidth="24.0" />
+         </children>
+      </HBox>
    </children>
-</AnchorPane>
+</VBox>

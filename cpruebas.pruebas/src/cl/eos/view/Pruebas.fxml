@@ -145,10 +145,20 @@
             <StackPane>
                <children>
                   <BorderPane prefHeight="459.0" prefWidth="370.0">
+                     <top>
+                        <AnchorPane prefHeight="53.0" prefWidth="370.0" BorderPane.alignment="CENTER">
+                           <children>
+                              <TextField layoutX="417.0" layoutY="15.0" prefHeight="23.0" prefWidth="186.0" promptText="Buscar" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="18.0" AnchorPane.topAnchor="15.0" />
+                           </children>
+                        </AnchorPane>
+                     </top>
+                     <bottom>
+                        <Pagination prefHeight="42.0" prefWidth="244.0" BorderPane.alignment="CENTER" />
+                     </bottom>
                      <center>
-                        <ScrollPane prefHeight="311.0" prefWidth="370.0" BorderPane.alignment="CENTER">
-                           <content>
-                              <TableView id="tblListadoPruebas" fx:id="tblListadoPruebas" prefHeight="400.0" prefWidth="696.0">
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                           <children>
+                              <TableView id="tblListadoPruebas" fx:id="tblListadoPruebas" prefHeight="400.0" prefWidth="696.0" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="2.0">
                                 <columns>
                                   <TableColumn fx:id="fechaCol" text="Fecha" />
                                     <TableColumn fx:id="nameCol" prefWidth="152.0" text="Nombre" />
@@ -166,19 +176,9 @@
                                     </ContextMenu>
                                  </contextMenu>
                               </TableView>
-                           </content>
-                        </ScrollPane>
-                     </center>
-                     <top>
-                        <AnchorPane prefHeight="53.0" prefWidth="370.0" BorderPane.alignment="CENTER">
-                           <children>
-                              <TextField layoutX="417.0" layoutY="15.0" prefHeight="23.0" prefWidth="186.0" promptText="Buscar" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="18.0" AnchorPane.topAnchor="15.0" />
                            </children>
                         </AnchorPane>
-                     </top>
-                     <bottom>
-                        <Pagination prefHeight="42.0" prefWidth="244.0" BorderPane.alignment="CENTER" />
-                     </bottom>
+                     </center>
                   </BorderPane>
                </children>
             </StackPane>
