@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+
+<HBox prefHeight="32.0" prefWidth="239.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label fx:id="lbl_1" text="1">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+         <HBox.margin>
+            <Insets left="3.0" right="5.0" top="5.0" />
+         </HBox.margin>
+      </Label>
+      <RadioButton fx:id="rb1A" mnemonicParsing="false">
+         <toggleGroup>
+            <ToggleGroup fx:id="group" />
+         </toggleGroup>
+      </RadioButton>
+      <RadioButton fx:id="rb1B" mnemonicParsing="false" toggleGroup="$group" />
+      <RadioButton fx:id="rb1C" mnemonicParsing="false" toggleGroup="$group" />
+      <RadioButton fx:id="rb1D" mnemonicParsing="false" toggleGroup="$group" />
+      <RadioButton fx:id="rb1E" mnemonicParsing="false" toggleGroup="$group" />
+      <CheckBox fx:id="chk1VF" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" prefHeight="26.0" prefWidth="24.0" />
+      <CheckBox fx:id="chk5M" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" prefHeight="26.0" prefWidth="24.0" />
+   </children>
+</HBox>
