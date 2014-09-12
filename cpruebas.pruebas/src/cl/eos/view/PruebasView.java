@@ -1,6 +1,7 @@
 package cl.eos.view;
 
 import java.math.BigDecimal;
+import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -9,6 +10,8 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -19,7 +22,9 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.StackPane;
 import jfxtras.labs.scene.control.BigDecimalField;
+import cl.eos.PruebasActivator;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.persistence.models.Asignatura;
@@ -28,7 +33,6 @@ import cl.eos.persistence.models.Profesor;
 import cl.eos.persistence.models.Prueba;
 import cl.eos.persistence.models.TipoCurso;
 import cl.eos.persistence.models.TipoPrueba;
-
 
 public class PruebasView extends AFormView implements EventHandler<ActionEvent> {
 
@@ -86,6 +90,8 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 	private MenuItem mnuPopupModificar;
 	@FXML
 	private MenuItem mnuPopupEliminar;
+	@FXML
+	private MenuItem mnuEvaluarPrueba;
 
 	public PruebasView() {
 	}
@@ -137,6 +143,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 		mnuPopupModificar.setOnAction(this);
 		mnuEliminar.setOnAction(this);
 		mnuPopupEliminar.setOnAction(this);
+		mnuEvaluarPrueba.setOnAction(this);
 
 	}
 
@@ -193,7 +200,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 				}
 				cmbNivelEvaluacion.setItems(nivelEvaluacion);
 			}
-			
+
 		}
 
 	}
@@ -284,7 +291,22 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 			handleGrabar();
 		} else if (source == mnuEliminar || source == mnuPopupEliminar) {
 			handleEliminar();
+		} else if (source == mnuEvaluarPrueba) {
+			handlerEvaluar();
 		}
+	}
+
+	private void handlerEvaluar() {
+		URL url = PruebasActivator.class
+				.getResource("/cl/eos/view/EvaluacionPrueba.fxml");
+		FXMLLoader fxmlLoader = new FXMLLoader();
+		try {
+			Node pane = (Parent) fxmlLoader.load(url.openStream());
+			((StackPane) root).getChildren().add(pane);
+		} catch (Exception e) {
+
+		}
+
 	}
 
 	private void handleEliminar() {
@@ -323,7 +345,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 
 	private void handleModificar() {
 		Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem();
-		
+
 		if (prueba != null) {
 			bigDecimaNroAlternativas.setNumber(new BigDecimal(prueba
 					.getAlternativas()));
@@ -332,7 +354,8 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 			dpFecha.setValue(prueba.getFechaLocal());
 			bigDecimalForma.setNumber(new BigDecimal(prueba.getFormas()));
 			txtName.setText(prueba.getName());
-			cmbNivelEvaluacion.getSelectionModel().select(prueba.getNivelEvaluacion());
+			cmbNivelEvaluacion.getSelectionModel().select(
+					prueba.getNivelEvaluacion());
 			cmbProfesor.getSelectionModel().select(prueba.getProfesor());
 			bigDecimalPuntajePregunta.setNumber(new BigDecimal(prueba
 					.getPuntajeBase()));

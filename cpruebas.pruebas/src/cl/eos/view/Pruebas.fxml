@@ -32,6 +32,7 @@
                   <MenuItem fx:id="mnuExportar" mnemonicParsing="false" text="Exportar Pruebas" />
                   <MenuItem fx:id="mnuImportar" mnemonicParsing="false" text="Importar Pruebas" />
                   <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem fx:id="mnuEvaluarPrueba" mnemonicParsing="false" text="Evaluar prueba" />
               <MenuItem mnemonicParsing="false" text="Cerrar" />
             </items>
           </Menu>

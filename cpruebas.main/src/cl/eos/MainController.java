@@ -35,6 +35,8 @@ public class MainController {
 	@FXML
 	private MenuItem mnuHacerPrueba;
 	@FXML
+	private MenuItem mnuEvaluarPrueba;
+	@FXML
 	private MenuItem mnuItemGeneraBD;
 	@FXML
 	private StackPane pnlContainer;
@@ -106,6 +108,13 @@ public class MainController {
 			@Override
 			public void handle(ActionEvent arg0) {
 					IActivator activator = new PruebasActivator();
+					pnlContainer.getChildren().setAll((Pane)activator.getPane());
+			}
+		});
+		mnuEvaluarPrueba.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+					IActivator activator = new EvaluacionPruebaActivator();
 					pnlContainer.getChildren().setAll((Pane)activator.getPane());
 			}
 		});
