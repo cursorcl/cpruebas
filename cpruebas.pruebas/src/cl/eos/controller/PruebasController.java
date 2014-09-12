@@ -3,6 +3,7 @@ package cl.eos.controller;
 import cl.eos.imp.controller.AController;
 import cl.eos.model.PruebasModel;
 import cl.eos.persistence.models.Asignatura;
+import cl.eos.persistence.models.EvaluacionPrueba;
 import cl.eos.persistence.models.NivelEvaluacion;
 import cl.eos.persistence.models.Profesor;
 import cl.eos.persistence.models.Prueba;
@@ -24,6 +25,7 @@ public class PruebasController extends AController {
 		model.findAll(TipoCurso.class, this);
 		model.findAll(Asignatura.class, this);
 		model.findAll(NivelEvaluacion.class, this);
+		model.findAll(EvaluacionPrueba.class, this);
 	}
 
 	

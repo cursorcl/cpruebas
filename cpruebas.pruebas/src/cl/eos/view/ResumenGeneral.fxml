@@ -7,7 +7,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="485.0" prefWidth="687.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.AlumnosView">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="485.0" prefWidth="783.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.AlumnosView">
    <center>
       <SplitPane dividerPositions="0.36607142857142855" orientation="VERTICAL" prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <items>
@@ -51,7 +51,7 @@
                           <content>
                             <AnchorPane>
                                  <children>
-                                    <TableView fx:id="tblResumen" fixedCellSize="1.0" prefHeight="110.0" prefWidth="401.0">
+                                    <TableView fx:id="tblResumen" fixedCellSize="1.0" prefHeight="110.0" prefWidth="466.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="-4.0">
                                       <columns>
                                           <TableColumn editable="false" prefWidth="75.0" sortable="false" />
                                         <TableColumn fx:id="colNotas" prefWidth="75.0" text="Nota" />
@@ -71,16 +71,26 @@
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
                   <BorderPane prefHeight="459.0" prefWidth="370.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <bottom>
+                        <Pagination prefHeight="0.0" prefWidth="685.0" BorderPane.alignment="CENTER" />
+                     </bottom>
                      <center>
-                        <ScrollPane BorderPane.alignment="CENTER">
-                           <content>
-                              <TableView fx:id="tblAlumnos" prefWidth="670.0">
+                        <AnchorPane>
+                           <children>
+                              <TableView fx:id="tblAlumnos" prefWidth="670.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" BorderPane.alignment="CENTER">
                                 <columns>
                                   <TableColumn id="colRut" fx:id="colRut" prefWidth="75.0" text="Rut" />
-                                  <TableColumn id="colPaterno" fx:id="colPaterno" prefWidth="75.0" text="A.Paterno" />
-                                    <TableColumn id="colMaterno" fx:id="colMaterno" prefWidth="75.0" text="A.Materno" />
-                                    <TableColumn id="colName" fx:id="colName" prefWidth="133.0" text="Nombres" />
+                                  <TableColumn id="colPaterno" fx:id="colPaterno" prefWidth="83.0" text="A.Paterno" />
+                                    <TableColumn id="colMaterno" fx:id="colMaterno" prefWidth="190.0" text="A.Materno" />
+                                    <TableColumn id="colName" fx:id="colName" prefWidth="232.0" text="Nombres" />
                                     <TableColumn id="colCurso" fx:id="colCurso" prefWidth="87.0" text="Curso" />
+                                    <TableColumn fx:id="colBuenas" prefWidth="75.0" text="Buenas" />
+                                    <TableColumn fx:id="colMalas" prefWidth="75.0" text="Malas" />
+                                    <TableColumn fx:id="colOmitidas" prefWidth="75.0" text="Omitidas" />
+                                    <TableColumn fx:id="colPBuenas" prefWidth="75.0" text="\%Buenas" />
+                                    <TableColumn fx:id="colPuntaje" prefWidth="75.0" text="Puntaje" />
+                                    <TableColumn fx:id="colPPuntaje" prefWidth="75.0" text="\%Puntaje" />
+                                    <TableColumn fx:id="colNota" prefWidth="75.0" text="Nota" />
                                 </columns>
                                  <contextMenu>
                                     <ContextMenu>
@@ -94,12 +104,9 @@
                                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                  </columnResizePolicy>
                               </TableView>
-                           </content>
-                        </ScrollPane>
+                           </children>
+                        </AnchorPane>
                      </center>
-                     <bottom>
-                        <Pagination prefHeight="0.0" prefWidth="685.0" BorderPane.alignment="CENTER" />
-                     </bottom>
                   </BorderPane>
                </children>
             </AnchorPane>
