@@ -1,41 +1,67 @@
 package cl.eos.persistence.models;
 
+import java.time.LocalDate;
+
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 import cl.eos.interfaces.entity.IEntity;
 
 @Entity(name = "pruebarendida")
 public class PruebaRendida implements IEntity {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	private String name;
+
 	private Alumno alumno;
+	/**
+	 * Es el profesor que toma la prueba, por defecto es el mismo que la diseñó.
+	 */
+	private Profesor profesor;
+	/**
+	 * Es la fecha que se toma la prueba, por defecto es la fecha que tiene la
+	 * prueba.
+	 */
+	private Long fecha;
+	/**
+	 * La prueba en base a la que hay que corregir.
+	 */
 	private Prueba prueba;
+	/**
+	 * Las respuestas del alumno.
+	 */
 	private String respuestas;
 	private Integer buenas;
 	private Integer malas;
-	private Integer omitidas; 
-	
+	private Integer omitidas;
+	/**
+	 * Corresponde a la forma asociada a la prueba del alumno.
+	 */
+	private Integer forma;
+
 	@Override
 	public Long getId() {
-		// TODO Auto-generated method stub
-		return null;
+		return id;
 	}
 
 	@Override
 	public void setId(Long id) {
-		// TODO Auto-generated method stub
+		this.id = id;
 
 	}
 
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
+		return name;
 	}
 
 	@Override
 	public void setName(String name) {
-		// TODO Auto-generated method stub
-
+		this.name = name;
 	}
 
 	public Alumno getAlumno() {
@@ -88,10 +114,39 @@ public class PruebaRendida implements IEntity {
 
 	@Override
 	public boolean validate() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
-	
-	
+
+	public Float getNota() {
+		return 0F;
+	}
+
+	public Profesor getProfesor() {
+		return profesor;
+	}
+
+	public void setProfesor(Profesor profesor) {
+		this.profesor = profesor;
+	}
+
+	public Long getFecha() {
+		return fecha;
+	}
+
+	public void setFecha(Long fecha) {
+		this.fecha = fecha;
+	}
+
+	public LocalDate getFechaLocal() {
+		return LocalDate.ofEpochDay(this.fecha.longValue());
+	}
+
+	public Integer getForma() {
+		return forma;
+	}
+
+	public void setForma(Integer forma) {
+		this.forma = forma;
+	}
 
 }
