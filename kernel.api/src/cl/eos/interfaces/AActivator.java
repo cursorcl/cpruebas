@@ -10,7 +10,6 @@ public class AActivator implements IActivator {
 	protected Object pane;
 	
 	public AActivator() {
-		
 	}
 	
 	@Override
