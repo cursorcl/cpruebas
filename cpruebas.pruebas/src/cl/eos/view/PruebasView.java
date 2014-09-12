@@ -23,10 +23,10 @@ import jfxtras.labs.scene.control.BigDecimalField;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.persistence.models.Asignatura;
-import cl.eos.persistence.models.Curso;
 import cl.eos.persistence.models.NivelEvaluacion;
 import cl.eos.persistence.models.Profesor;
 import cl.eos.persistence.models.Prueba;
+import cl.eos.persistence.models.TipoCurso;
 import cl.eos.persistence.models.TipoPrueba;
 
 
@@ -57,7 +57,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 	@FXML
 	private ComboBox<Profesor> cmbProfesor;
 	@FXML
-	private ComboBox<Curso> cmbCurso;
+	private ComboBox<TipoCurso> cmbCurso;
 	@FXML
 	private ComboBox<Asignatura> cmbAsignatura;
 	@FXML
@@ -169,11 +169,11 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 				}
 				cmbProfesor.setItems(profesores);
 			}
-			if (entity instanceof Curso) {
-				ObservableList<Curso> cursos = FXCollections
+			if (entity instanceof TipoCurso) {
+				ObservableList<TipoCurso> cursos = FXCollections
 						.observableArrayList();
 				for (Object lEntity : list) {
-					cursos.add((Curso) lEntity);
+					cursos.add((TipoCurso) lEntity);
 				}
 				cmbCurso.setItems(cursos);
 			}

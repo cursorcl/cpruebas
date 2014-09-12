@@ -24,7 +24,7 @@ public class Prueba implements IEntity {
 	private String name; 
 
 	private TipoPrueba tipoPrueba;
-	private Curso curso;
+	private TipoCurso curso;
 	private Asignatura asignatura;
 	private NivelEvaluacion nivelEvaluacion;
 
@@ -45,11 +45,11 @@ public class Prueba implements IEntity {
 		this.tipoPrueba = tipoPrueba;
 	}
 
-	public Curso getCurso() {
+	public TipoCurso getCurso() {
 		return curso;
 	}
 
-	public void setCurso(Curso curso) {
+	public void setCurso(TipoCurso curso) {
 		this.curso = curso;
 	}
 
@@ -153,7 +153,6 @@ public class Prueba implements IEntity {
 	public LocalDate getFechaLocal() {
 		return LocalDate.ofEpochDay(this.fecha.longValue());
 	}
-
 
 	@Override
 	public String toString() {
