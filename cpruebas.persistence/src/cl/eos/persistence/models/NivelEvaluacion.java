@@ -65,4 +65,10 @@ public class NivelEvaluacion implements IEntity {
 		this.nroRangos = nroRangos;
 	}
 
+	@Override
+	public String toString() {
+		return name;
+	}
+
+	
 }
