@@ -1,6 +1,8 @@
 package cl.eos.view;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -278,6 +280,9 @@ public class AlumnosView extends AFormView {
 			txtAMaterno.getStyleClass().add("bad");
 			valida = false;
 		}
+		Map<String, Object> param = new HashMap<String, Object>();
+		//param.put("dato", direccion);
+		controller.find("Alumno.preguntita", param); 
 		return valida;
 	}
 
