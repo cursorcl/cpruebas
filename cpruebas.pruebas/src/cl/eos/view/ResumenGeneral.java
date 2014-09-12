@@ -1,15 +1,12 @@
 package cl.eos.view;
 
-import java.time.LocalDate;
-
 import javafx.fxml.FXML;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import cl.eos.persistence.models.Alumno;
-import cl.eos.persistence.models.Prueba;
+import cl.eos.persistence.models.PruebaRendida;
 
 public class ResumenGeneral {
 	@FXML
@@ -26,67 +23,100 @@ public class ResumenGeneral {
 	private TextField txtPjePrueba;
 
 	@FXML
-	private TableView<Prueba> tblResumen;
+	private TableView<PruebaRendida> tblResumen;
 	@FXML
-	private TableColumn<Prueba, Integer> colNotas;
+	private TableColumn<PruebaRendida, Integer> colNotas;
 	@FXML
-	private TableColumn<Prueba, Integer> colBuenas;
+	private TableColumn<PruebaRendida, Integer> colBuenas;
 	@FXML
-	private TableColumn<Prueba, Integer> ColPuntos;
+	private TableColumn<PruebaRendida, Integer> ColPuntos;
 	@FXML
-	private TableColumn<Prueba, Integer> colPuntaje;
+	private TableColumn<PruebaRendida, Integer> colPuntaje;
 
 	@FXML
-	private TableView<Alumno> tblAlumnos;
+	private TableView<PruebaRendida> tblAlumnos;
 	@FXML
-	private TableColumn<Alumno, String> colRut;
+	private TableColumn<PruebaRendida, String> colRut;
 	@FXML
-	private TableColumn<Alumno, String> colPaterno;
+	private TableColumn<PruebaRendida, String> colPaterno;
 	@FXML
-	private TableColumn<Alumno, String> colMaterno;
+	private TableColumn<PruebaRendida, String> colMaterno;
 	@FXML
-	private TableColumn<Alumno, String> colName;
+	private TableColumn<PruebaRendida, String> colName;
 	@FXML
-	private TableColumn<Alumno, String> colCurso;
+	private TableColumn<PruebaRendida, String> colCurso;
+	@FXML
+	private TableColumn<PruebaRendida, String> colABuenas;
+	@FXML
+	private TableColumn<PruebaRendida, String> colAMalas;
+	@FXML
+	private TableColumn<PruebaRendida, String> colAOmitidas;
+	@FXML
+	private TableColumn<PruebaRendida, String> colPBuenas;
+	@FXML
+	private TableColumn<PruebaRendida, String> colAPuntaje;
+	@FXML
+	private TableColumn<PruebaRendida, String> colPPuntaje;
+	@FXML
+	private TableColumn<PruebaRendida, String> colANota;
 
 	public ResumenGeneral() {
 		// TODO Auto-generated constructor stub
 	}
 	
-	private void inicializarTabla(){
+	@FXML
+	public void initialize(){
 		inicializarTablaResumen();
 		inicializarTablaAlumnos();
 	}
 
 	private void inicializarTablaAlumnos() {
 		tblAlumnos.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-		colRut.setCellValueFactory(new PropertyValueFactory<Alumno, String>(
+		colRut.setCellValueFactory(new PropertyValueFactory<PruebaRendida, String>(
 				"rut"));
-		colName.setCellValueFactory(new PropertyValueFactory<Alumno, String>(
+		colName.setCellValueFactory(new PropertyValueFactory<PruebaRendida, String>(
 				"name"));
 		colPaterno
-				.setCellValueFactory(new PropertyValueFactory<Alumno, String>(
+				.setCellValueFactory(new PropertyValueFactory<PruebaRendida, String>(
 						"paterno"));
 		colMaterno
-				.setCellValueFactory(new PropertyValueFactory<Alumno, String>(
+				.setCellValueFactory(new PropertyValueFactory<PruebaRendida, String>(
 						"materno"));
-		colCurso.setCellValueFactory(new PropertyValueFactory<Alumno, String>(
+		colCurso.setCellValueFactory(new PropertyValueFactory<PruebaRendida, String>(
 				"curso"));
+		
+		
+		colABuenas.setCellValueFactory(new PropertyValueFactory<PruebaRendida, String>(
+				"curso"));
+		colAMalas.setCellValueFactory(new PropertyValueFactory<PruebaRendida, String>(
+				"curso"));
+		colAOmitidas.setCellValueFactory(new PropertyValueFactory<PruebaRendida, String>(
+				"curso"));
+		colPBuenas.setCellValueFactory(new PropertyValueFactory<PruebaRendida, String>(
+				"curso"));
+		colAPuntaje.setCellValueFactory(new PropertyValueFactory<PruebaRendida, String>(
+				"curso"));
+		colPPuntaje.setCellValueFactory(new PropertyValueFactory<PruebaRendida, String>(
+				"curso"));
+		colANota.setCellValueFactory(new PropertyValueFactory<PruebaRendida, String>(
+				"curso"));
+		
+		
 		
 	}
 
 	private void inicializarTablaResumen() {
 		tblResumen.getSelectionModel().setSelectionMode(
 				SelectionMode.MULTIPLE);
-		colNotas.setCellValueFactory(new PropertyValueFactory<Prueba, Integer>(
+		colNotas.setCellValueFactory(new PropertyValueFactory<PruebaRendida, Integer>(
 				"fechaLocal"));
-		colBuenas.setCellValueFactory(new PropertyValueFactory<Prueba, Integer>(
+		colBuenas.setCellValueFactory(new PropertyValueFactory<PruebaRendida, Integer>(
 				"buenas"));
 		ColPuntos
-				.setCellValueFactory(new PropertyValueFactory<Prueba, Integer>(
+				.setCellValueFactory(new PropertyValueFactory<PruebaRendida, Integer>(
 						"asignatura"));
 		colPuntaje
-				.setCellValueFactory(new PropertyValueFactory<Prueba, Integer>(
+				.setCellValueFactory(new PropertyValueFactory<PruebaRendida, Integer>(
 						"profesor"));
 	}
 
