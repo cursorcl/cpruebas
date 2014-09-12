@@ -2,6 +2,7 @@ package cl.eos.imp.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import cl.eos.interfaces.controller.IController;
 import cl.eos.interfaces.entity.IEntity;
@@ -18,6 +19,9 @@ public abstract class AController implements IController, IPersistenceListener {
 
 	public AController() {
 		initialize();
+		if (model != null) {
+			model.setController(this);
+		}
 	}
 
 	@Override
@@ -135,12 +139,73 @@ public abstract class AController implements IController, IPersistenceListener {
 	}
 
 	@Override
-	public void onFindAllFinished(List<IEntity> list) {
+	public void onFindAllFinished(List<Object> list) {
 		if (views != null) {
 			for (IView view : views) {
 				view.onDataArrived(list);
 			}
 		}
+	}
+
+	@Override
+	public void onFindFinished(List<Object> list) {
+		if (views != null) {
+			for (IView view : views) {
+				view.onDataArrived(list);
+			}
+		}
+	}
+
+	@Override
+	public void onFound(IEntity entity) {
+		if (views != null) {
+			for (IView view : views) {
+				view.onFound(entity);
+			}
+		}
+	}
+
+	@Override
+	public void onError(String error) {
+		if (views != null) {
+			for (IView view : views) {
+				view.onError(error);
+			}
+		}
+	}
+
+	public void find(String namedQuery, Map<String, Object> parameters,
+			IPersistenceListener listener) {
+		model.find(namedQuery,
+				parameters, listener);
+	}
+
+	public void findById(Class<? extends IEntity> entityClazz, Long id,
+			IPersistenceListener listener) {
+		model.findById(entityClazz,
+				id, listener);
+	}
+
+	public void findByName(Class<? extends IEntity> entityClazz, String name,
+			IPersistenceListener listener) {
+		model.findByName(
+				entityClazz, name, listener);
+	}
+
+	public void findAll(Class<? extends IEntity> entityClazz) {
+		model.findAll(entityClazz, (IPersistenceListener) this);
+	}
+
+	public void find(String namedQuery, Map<String, Object> parameters) {
+		model.find(namedQuery, parameters, (IPersistenceListener) this);
+	}
+
+	public void findById(Class<? extends IEntity> entityClazz, Long id) {
+		model.findById(entityClazz, id, (IPersistenceListener) this);
+	}
+
+	public void findByName(Class<? extends IEntity> entityClazz, String name) {
+		model.findByName(entityClazz, name, (IPersistenceListener) this);
 	}
 
 }

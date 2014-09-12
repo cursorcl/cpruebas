@@ -7,87 +7,55 @@
 <?import javafx.scene.layout.*?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="485.0" prefWidth="687.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.AlumnosView">
-   <top>
-      <MenuBar BorderPane.alignment="CENTER">
-        <menus>
-          <Menu mnemonicParsing="false" text="Archivo">
-            <items>
-                  <MenuItem id="mnuGrabar" fx:id="mnuGrabar" mnemonicParsing="false" text="Grabar" />
-                  <MenuItem fx:id="mnuExportar" mnemonicParsing="false" text="Exportar" />
-              <MenuItem fx:id="mnuCerrar" mnemonicParsing="false" text="Cerrar" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Edit">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Delete" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Help">
-            <items>
-              <MenuItem mnemonicParsing="false" text="About" />
-            </items>
-          </Menu>
-        </menus>
-      </MenuBar>
-   </top>
    <center>
-      <SplitPane dividerPositions="0.3343065693430657" prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <SplitPane dividerPositions="0.525879917184265" orientation="VERTICAL" prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <items>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-               <children>
-                  <VBox prefHeight="373.0" prefWidth="269.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <SplitPane dividerPositions="0.5051094890510949" prefHeight="200.0" prefWidth="160.0">
+              <items>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                      <children>
-                        <Label id="lblError" fx:id="lblError" prefHeight="23.0" prefWidth="206.0">
+                        <Label id="lblError" fx:id="lblTituo" layoutX="10.0" layoutY="10.0" prefHeight="23.0" prefWidth="206.0" text="Datos Generales">
                            <VBox.margin>
                               <Insets left="10.0" right="10.0" top="10.0" />
                            </VBox.margin>
                         </Label>
-                        <ComboBox id="cmbColegios" fx:id="cmbColegio" prefHeight="23.0" prefWidth="301.0" promptText="Colegio">
-                           <VBox.margin>
-                              <Insets bottom="5.0" left="10.0" right="10.0" top="10.0" />
-                           </VBox.margin>
-                        </ComboBox>
-                        <ComboBox id="cmbCursos" fx:id="cmbCurso" prefHeight="23.0" prefWidth="302.0" promptText="Curso">
-                           <VBox.margin>
-                              <Insets left="10.0" right="10.0" />
-                           </VBox.margin>
-                        </ComboBox>
-                        <TextField id="txtRut" fx:id="txtRut" prefHeight="25.0" prefWidth="301.0" promptText="Rut">
+                        <TextField fx:id="txtDireccion" layoutX="10.0" layoutY="163.0" promptText="DIrección">
                            <VBox.margin>
                               <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                            </VBox.margin>
                         </TextField>
-                        <TextField id="txtAPaterno" fx:id="txtAPaterno" prefHeight="25.0" prefWidth="301.0" promptText="A. Paterno">
+                        <TextField id="txtAPaterno" fx:id="txtAPaterno" layoutX="10.0" layoutY="68.0" promptText="A. Paterno">
                            <VBox.margin>
                               <Insets bottom="5.0" left="10.0" right="10.0" />
                            </VBox.margin>
                         </TextField>
-                        <TextField id="txtAMaterno" fx:id="txtAMaterno" prefHeight="25.0" prefWidth="301.0" promptText="A.Materno">
+                        <TextField id="txtNombres" fx:id="txtNombres" layoutX="10.0" layoutY="128.0" promptText="Nombres">
                            <VBox.margin>
                               <Insets bottom="5.0" left="10.0" right="10.0" />
                            </VBox.margin>
                         </TextField>
-                        <TextField id="txtNombres" fx:id="txtNombres" prefHeight="25.0" prefWidth="301.0" promptText="Nombres">
-                           <VBox.margin>
-                              <Insets bottom="5.0" left="10.0" right="10.0" />
-                           </VBox.margin>
-                        </TextField>
-                        <TextField fx:id="txtDireccion" promptText="DIrección">
+                        <TextField id="txtRut" fx:id="txtRut" layoutX="10.0" layoutY="38.0" promptText="Rut">
                            <VBox.margin>
                               <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                           </VBox.margin>
+                        </TextField>
+                        <TextField id="txtAMaterno" fx:id="txtAMaterno" layoutX="10.0" layoutY="98.0" promptText="A.Materno">
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="10.0" right="10.0" />
                            </VBox.margin>
                         </TextField>
                      </children>
-                  </VBox>
-               </children>
-            </AnchorPane>
+                  </AnchorPane>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="251.0" prefWidth="304.0" />
+              </items>
+            </SplitPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
                   <BorderPane prefHeight="459.0" prefWidth="370.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <center>
                         <ScrollPane prefHeight="311.0" prefWidth="370.0" BorderPane.alignment="CENTER">
                            <content>
-                              <TableView fx:id="tblAlumnos">
+                              <TableView fx:id="tblAlumnos" prefHeight="400.0" prefWidth="676.0">
                                 <columns>
                                   <TableColumn id="colRut" fx:id="colRut" prefWidth="75.0" text="Rut" />
                                   <TableColumn id="colPaterno" fx:id="colPaterno" prefWidth="75.0" text="A.Paterno" />
@@ -111,11 +79,7 @@
                         </ScrollPane>
                      </center>
                      <top>
-                        <AnchorPane prefHeight="53.0" prefWidth="370.0" BorderPane.alignment="CENTER">
-                           <children>
-                              <TextField layoutX="272.0" layoutY="15.0" prefHeight="23.0" prefWidth="167.0" promptText="Buscar" />
-                           </children>
-                        </AnchorPane>
+                        <AnchorPane prefHeight="53.0" prefWidth="370.0" BorderPane.alignment="CENTER" />
                      </top>
                      <bottom>
                         <Pagination prefHeight="42.0" prefWidth="244.0" BorderPane.alignment="CENTER" />

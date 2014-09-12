@@ -176,20 +176,20 @@ public class CursosView extends AFormView {
 	}
 
 	@Override
-	public void onDataArrived(List<IEntity> list) {
+	public void onDataArrived(List<Object> list) {
 		if (list != null && !list.isEmpty()) {
-			IEntity entity = list.get(0);
+			Object entity = list.get(0);
 			if (entity instanceof Curso) {
 				ObservableList<Curso> value = FXCollections
 						.observableArrayList();
-				for (IEntity iEntity : list) {
+				for (Object iEntity : list) {
 					value.add((Curso) iEntity);
 				}
 				tblCurso.setItems(value);
 			} else if (entity instanceof Nivel) {
 				ObservableList<Nivel> oList = FXCollections
 						.observableArrayList();
-				for (IEntity iEntity : list) {
+				for (Object iEntity : list) {
 					oList.add((Nivel) iEntity);
 				}
 				cmbNivel.setItems(oList);

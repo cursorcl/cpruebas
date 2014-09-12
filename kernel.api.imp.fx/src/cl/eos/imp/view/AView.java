@@ -7,7 +7,7 @@ import cl.eos.interfaces.controller.IController;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.interfaces.view.IView;
 
-public class AView implements IView {
+public abstract class AView implements IView {
 
 	private String title;
 	protected IController controller;
@@ -113,8 +113,16 @@ public class AView implements IView {
 	}
 
 	@Override
-	public void onDataArrived(List<IEntity> list) {
+	public void onDataArrived(List<Object> list) {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void onError(String error) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
 }

@@ -210,14 +210,14 @@ public class HabilidadesView extends AFormView {
 	}
 
 	@Override
-	public void onDataArrived(List<IEntity> list) {
+	public void onDataArrived(List<Object> list) {
 
 		if (list != null && !list.isEmpty()) {
-			IEntity entity = list.get(0);
+			Object entity = list.get(0);
 			if (entity instanceof Habilidad) {
 				ObservableList<Habilidad> oList = FXCollections
 						.observableArrayList();
-				for (IEntity iEntity : list) {
+				for (Object iEntity : list) {
 					oList.add((Habilidad) iEntity);
 				}
 				tblHabilidades.setItems(oList);

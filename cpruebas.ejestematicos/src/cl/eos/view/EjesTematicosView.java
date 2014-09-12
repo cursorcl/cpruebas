@@ -186,20 +186,20 @@ public class EjesTematicosView extends AFormView {
 	}
 	
 	@Override
-	public void onDataArrived(List<IEntity> list) {
+	public void onDataArrived(List<Object> list) {
 		if (list != null && !list.isEmpty()) {
-			IEntity entity = list.get(0);
+			Object entity = list.get(0);
 			if (entity instanceof EjeTematico) {
 				ObservableList<EjeTematico> value = FXCollections
 						.observableArrayList();
-				for (IEntity iEntity : list) {
+				for (Object iEntity : list) {
 					value.add((EjeTematico) iEntity);
 				}
 				tblEjesTematicos.setItems(value);
 			} else if (entity instanceof TipoPrueba){
 				ObservableList<TipoPrueba> oList = FXCollections
 						.observableArrayList();
-				for (IEntity iEntity : list) {
+				for (Object iEntity : list) {
 					oList.add((TipoPrueba) iEntity);
 				}
 				cmbTipoPrueba.setItems(oList);

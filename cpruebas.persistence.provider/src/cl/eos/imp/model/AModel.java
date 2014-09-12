@@ -2,7 +2,9 @@ package cl.eos.imp.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import cl.eos.interfaces.controller.IController;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.interfaces.entity.IPersistenceListener;
 import cl.eos.interfaces.model.IModel;
@@ -11,11 +13,20 @@ import cl.eos.provider.persistence.PersistenceServiceFactory;
 public abstract class AModel implements IModel {
 
 	protected List<IEntity> entities = new ArrayList<IEntity>();
+	protected IController controller;
 
 	@Override
 	public void save(IEntity entity) {
 		PersistenceServiceFactory.getPersistenceService().save(entity);
 		entities.add(entity);
+	}
+
+	public IController getController() {
+		return controller;
+	}
+
+	public void setController(IController controller) {
+		this.controller = controller;
 	}
 
 	@Override
@@ -28,9 +39,9 @@ public abstract class AModel implements IModel {
 	public void delete(List<? extends IEntity> entity) {
 		for (IEntity iEntity : entity) {
 			delete(iEntity);
-		}		
+		}
 	}
-	
+
 	@Override
 	public void update(IEntity entity) {
 		PersistenceServiceFactory.getPersistenceService().save(entity);
@@ -39,8 +50,10 @@ public abstract class AModel implements IModel {
 	}
 
 	@Override
-	public void findAll(Class<? extends IEntity> entityClazz, IPersistenceListener listener) {
-		PersistenceServiceFactory.getPersistenceService().findAll(entityClazz, listener);
+	public void findAll(Class<? extends IEntity> entityClazz,
+			IPersistenceListener listener) {
+		PersistenceServiceFactory.getPersistenceService().findAll(entityClazz,
+				listener);
 	}
 
 	@Override
@@ -68,4 +81,55 @@ public abstract class AModel implements IModel {
 		}
 		return result;
 	}
+	
+
+	@Override
+	public void find(String namedQuery, Map<String, Object> parameters,
+			IPersistenceListener listener) {
+		PersistenceServiceFactory.getPersistenceService().find(namedQuery,
+				parameters, listener);
+	}
+
+	@Override
+	public void findById(Class<? extends IEntity> entityClazz, Long id,
+			IPersistenceListener listener) {
+		PersistenceServiceFactory.getPersistenceService().findById(entityClazz,
+				id, listener);
+	}
+
+	@Override
+	public void findByName(Class<? extends IEntity> entityClazz, String name,
+			IPersistenceListener listener) {
+		PersistenceServiceFactory.getPersistenceService().findByName(
+				entityClazz, name, listener);
+	}
+ 
+	@Override
+	public void findAll(Class<? extends IEntity> entityClazz) {
+		if (controller != null && controller instanceof IPersistenceListener) {
+			findAll(entityClazz, (IPersistenceListener) controller);
+		}
+	}
+
+	@Override
+	public void find(String namedQuery, Map<String, Object> parameters) {
+		if (controller != null && controller instanceof IPersistenceListener) {
+			find(namedQuery, parameters, (IPersistenceListener) controller);
+		}
+	}
+
+	@Override
+	public void findById(Class<? extends IEntity> entityClazz, Long id) {
+		if (controller != null && controller instanceof IPersistenceListener) {
+			findById(entityClazz, id, (IPersistenceListener) controller);
+		}
+	}
+
+	@Override
+	public void findByName(Class<? extends IEntity> entityClazz, String name) {
+		if (controller != null && controller instanceof IPersistenceListener) {
+			findByName(entityClazz, name, (IPersistenceListener) controller);
+		}
+	}
+
 }
