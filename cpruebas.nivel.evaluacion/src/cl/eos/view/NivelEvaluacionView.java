@@ -4,11 +4,9 @@ import java.util.List;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import cl.eos.imp.view.AFormView;
-import cl.eos.persistence.models.Asignatura;
 import cl.eos.persistence.models.NivelEvaluacion;
 
 public class NivelEvaluacionView extends AFormView {
