@@ -31,6 +31,8 @@ public class MainController {
 	@FXML
 	private MenuItem mnuEjesTematicos;
 	@FXML
+	private MenuItem mnuTipoPrueba;
+	@FXML
 	private MenuItem mnuHabilidades;
 	@FXML
 	private MenuItem mnuHacerPrueba;
@@ -103,7 +105,13 @@ public class MainController {
 					pnlContainer.getChildren().setAll((Pane)activator.getPane());
 			}
 		});
-		
+		mnuTipoPrueba.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+					IActivator activator = new TipoPruebaActivator();
+					pnlContainer.getChildren().setAll((Pane)activator.getPane());
+			}
+		});
 		mnuHacerPrueba.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
