@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="485.0" prefWidth="687.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.NivelEvaluacionView">
+   <top>
+      <MenuBar BorderPane.alignment="CENTER">
+        <menus>
+          <Menu mnemonicParsing="false" text="Archivo">
+            <items>
+                  <MenuItem id="mnuGrabar" fx:id="mnuGrabar" mnemonicParsing="false" text="Grabar" />
+                  <MenuItem fx:id="mnuExportar" mnemonicParsing="false" text="Exportar" />
+              <MenuItem fx:id="mnuCerrar" mnemonicParsing="false" text="Cerrar" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Edit">
+            <items>
+              <MenuItem fx:id="mnuEliminar" mnemonicParsing="false" text="Delete" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+   </top>
+   <center>
+      <SplitPane dividerPositions="0.4978102189781022" prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="458.0" prefWidth="282.0">
+               <children>
+                  <AnchorPane prefHeight="187.0" prefWidth="308.0">
+                     <children>
+                        <Label fx:id="lblError" />
+                        <RadioButton fx:id="rbtn1" layoutY="22.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="308.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" />
+                        <RadioButton fx:id="rbtn2" layoutY="77.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="298.0" AnchorPane.bottomAnchor="63.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="60.0" />
+                        <RadioButton fx:id="rbtn3" layoutX="5.0" layoutY="124.0" mnemonicParsing="false" prefHeight="53.0" prefWidth="298.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="124.0" />
+                     </children>
+                  </AnchorPane>
+                  <ComboBox fx:id="cmbNIveles" layoutX="41.0" layoutY="187.0" prefHeight="25.0" prefWidth="248.0" />
+               </children>
+            </AnchorPane>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="458.0" prefWidth="423.0">
+               <children>
+                  <Label layoutX="135.0" layoutY="54.0" text="Desde" />
+                  <Label layoutX="246.0" layoutY="54.0" text="Hasta" />
+                  <Label fx:id="label1" layoutX="29.0" layoutY="95.0" prefWidth="100.0" text="Label" AnchorPane.leftAnchor="5.0" />
+                  <Label fx:id="label2" layoutX="5.0" layoutY="141.0" prefWidth="100.0" text="Label" AnchorPane.leftAnchor="5.0" />
+                  <Label fx:id="label3" layoutX="5.0" layoutY="191.0" prefWidth="100.0" text="Label" AnchorPane.leftAnchor="5.0" />
+                  <Label fx:id="label4" layoutX="5.0" layoutY="240.0" prefWidth="100.0" text="Label" AnchorPane.leftAnchor="5.0" />
+                  <TextField fx:id="txtDesde1" layoutX="127.0" layoutY="91.0" prefHeight="25.0" prefWidth="70.0" />
+                  <TextField fx:id="txtHasta1" layoutX="234.0" layoutY="91.0" prefWidth="80.0" AnchorPane.rightAnchor="27.0" />
+                  <TextField fx:id="txtDesde2" layoutX="133.0" layoutY="137.0" prefHeight="25.0" prefWidth="70.0" />
+                  <TextField fx:id="txtHasta2" layoutX="237.0" layoutY="137.0" prefWidth="80.0" AnchorPane.rightAnchor="24.0" />
+                  <TextField fx:id="txtDesde3" layoutX="130.0" layoutY="187.0" prefWidth="70.0" />
+                  <TextField fx:id="txtHasta3" layoutX="234.0" layoutY="179.0" prefWidth="80.0" AnchorPane.rightAnchor="27.0" />
+                  <TextField fx:id="txtDesde4" layoutX="130.0" layoutY="236.0" prefWidth="70.0" />
+                  <TextField fx:id="txtHasta4" layoutX="236.0" layoutY="236.0" prefHeight="25.0" prefWidth="80.0" AnchorPane.rightAnchor="25.0" />
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
+   </center>
+</BorderPane>
