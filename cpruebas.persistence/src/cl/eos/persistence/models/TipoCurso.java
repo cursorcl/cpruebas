@@ -18,8 +18,8 @@ public class TipoCurso implements IEntity {
 	private Long id;
 
 	@Column(length = 100)
-	private String name; 
-	
+	private String name;
+
 	@Override
 	public Long getId() {
 		return id;
@@ -45,4 +45,8 @@ public class TipoCurso implements IEntity {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		return name;
+	}
 }
