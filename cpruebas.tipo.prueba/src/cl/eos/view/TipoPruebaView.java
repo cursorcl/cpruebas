@@ -1,4 +1,4 @@
-package cl.eos.voew;
+package cl.eos.view;
 
 import java.util.List;
 
