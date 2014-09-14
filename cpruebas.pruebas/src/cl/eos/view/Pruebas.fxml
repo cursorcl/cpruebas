@@ -28,6 +28,7 @@
                         <KeyCodeCombination alt="UP" code="E" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator>
                   </MenuItem>
+                  <MenuItem fx:id="mnuDefinirPrueba" mnemonicParsing="false" text="Definir Prueba" />
                   <SeparatorMenuItem mnemonicParsing="false" />
                   <MenuItem fx:id="mnuExportar" mnemonicParsing="false" text="Exportar Pruebas" />
                   <MenuItem fx:id="mnuImportar" mnemonicParsing="false" text="Importar Pruebas" />
@@ -142,7 +143,7 @@
                   <ComboBox fx:id="cmbNivelEvaluacion" layoutX="10.0" layoutY="340.0" prefHeight="25.0" prefWidth="223.0" promptText="Nivel de Evaluación" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" />
                </children>
             </AnchorPane>
-            <StackPane>
+            <StackPane fx:id="pnlRoot">
                <children>
                   <BorderPane prefHeight="459.0" prefWidth="370.0">
                      <top>

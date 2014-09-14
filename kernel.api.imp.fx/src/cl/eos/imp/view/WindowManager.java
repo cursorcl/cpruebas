@@ -76,11 +76,11 @@ public class WindowManager implements IWindowManager {
 
   @Override
   public void show(Object parent, Object window, boolean closeOthers) {
-    if (window instanceof Node && root != null) {
+    if (window instanceof Node && parent != null && parent instanceof Pane) {
       if (closeOthers) {
-        root.getChildren().setAll((Node) window);
+        ((Pane)parent).getChildren().setAll((Node) window);
       } else {
-        root.getChildren().add((Node) window);
+        ((Pane)parent).getChildren().add((Node) window);
       }
     }
   }
