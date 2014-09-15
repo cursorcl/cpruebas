@@ -48,7 +48,7 @@ public interface IView {
 
 	/**
 	 * Notificacion de cambios de estado que puedan interesar a la HMI. La HMI
-	 * espera uno o más estados especificos.
+	 * espera uno o mï¿½s estados especificos.
 	 * 
 	 * @param status
 	 *            El estado informado.
@@ -108,5 +108,6 @@ public interface IView {
 
 	Object getParent();
 	void setParent(Object parent);
+
 	
 }

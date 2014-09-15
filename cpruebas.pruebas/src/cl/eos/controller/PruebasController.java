@@ -27,7 +27,6 @@ public class PruebasController extends AController {
 		model.findAll(NivelEvaluacion.class, this);
 		model.findAll(EvaluacionPrueba.class, this);
 	}
+	
 
-	
-	
 }

@@ -38,47 +38,36 @@ public class RegistroDefinePrueba {
     this.ejesTematicos = new SimpleListProperty<>();
   }
 
-
-
-  public SimpleIntegerProperty getNumero() {
-    return numero;
+  public Integer getNumero() {
+    return numero.getValue();
   }
 
-
-
-  public void setNumero(SimpleIntegerProperty numero) {
-    this.numero = numero;
+  public void setNumero(Integer numero) {
+    this.numero.set(numero);
   }
 
-
-
-  public SimpleStringProperty getRespuesta() {
-    return respuesta;
+  public String getRespuesta() {
+    return respuesta.getValue();
   }
 
-
-  public void setRespuesta(SimpleStringProperty respuesta) {
-    this.respuesta = respuesta;
+  public void setRespuesta(String respuesta) {
+    this.respuesta.set(respuesta);
   }
 
-
-  public SimpleBooleanProperty getVerdaderoFalso() {
-    return verdaderoFalso;
+  public Boolean getVerdaderoFalso() {
+    return verdaderoFalso.getValue();
   }
 
-
-  public void setVerdaderoFalso(SimpleBooleanProperty verdaderoFalso) {
-    this.verdaderoFalso = verdaderoFalso;
+  public void setVerdaderoFalso(Boolean verdaderoFalso) {
+    this.verdaderoFalso.set(verdaderoFalso);
   }
 
-
-  public SimpleBooleanProperty getMental() {
-    return mental;
+  public Boolean getMental() {
+    return mental.getValue();
   }
 
-
-  public void setMental(SimpleBooleanProperty mental) {
-    this.mental = mental;
+  public void setMental(Boolean mental) {
+    this.mental.set(mental);
   }
 
 

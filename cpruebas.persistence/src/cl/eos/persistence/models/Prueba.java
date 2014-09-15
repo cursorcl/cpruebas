@@ -33,7 +33,7 @@ public class Prueba implements IEntity {
 	private Integer formas;
 	private Integer alternativas;
 	private Profesor profesor;
-	private Integer responses;
+	private String respuetas;
 	
 	private Integer puntajeBase;
 
@@ -134,12 +134,12 @@ public class Prueba implements IEntity {
 		return true;
 	}
 
-	public Integer getResponses() {
-		return responses;
+	public String getRespuestas() {
+		return respuetas;
 	}
 
-	public void setResponses(Integer responses) {
-		this.responses = responses;
+	public void setRespuestas(String respuetas) {
+		this.respuetas = respuetas;
 	}
 
 	public Profesor getProfesor() {

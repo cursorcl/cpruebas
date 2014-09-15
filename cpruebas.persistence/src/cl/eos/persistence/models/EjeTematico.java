@@ -18,7 +18,7 @@ public class EjeTematico implements IEntity {
 	private Long id;
 	private String name;
 	private TipoPrueba tipoprueba;
-	private String asignatura;
+	private Asignatura asignatura;
 
 	@Override
 	public Long getId() {
@@ -53,11 +53,11 @@ public class EjeTematico implements IEntity {
 		this.tipoprueba = tipoprueba;
 	}
 
-	public String getAsignatura() {
+	public Asignatura getAsignatura() {
 		return asignatura;
 	}
 
-	public void setAsignatura(String asignatura) {
+	public void setAsignatura(Asignatura asignatura) {
 		this.asignatura = asignatura;
 	}
 

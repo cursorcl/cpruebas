@@ -24,32 +24,27 @@ public class TipoPrueba implements IEntity {
 	
 	@Override
 	public Long getId() {
-		// TODO Auto-generated method stub
-		return null;
+		return id;
 	}
 
 	@Override
 	public void setId(Long id) {
-		// TODO Auto-generated method stub
-
+	  this.id = id;
 	}
 
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
+		return name;
 	}
 
 	@Override
 	public void setName(String name) {
-		// TODO Auto-generated method stub
-
+	  this.name =  name;
 	}
 
 	@Override
 	public boolean validate() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 	
 	@Override

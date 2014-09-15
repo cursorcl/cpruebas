@@ -1,7 +1,6 @@
 package cl.eos.view;
 
 import java.math.BigDecimal;
-import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -10,9 +9,6 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -24,11 +20,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.StackPane;
 import jfxtras.labs.scene.control.BigDecimalField;
-import cl.eos.PruebasActivator;
 import cl.eos.imp.view.AFormView;
-import cl.eos.imp.view.WindowManager;
 import cl.eos.interfaces.entity.IEntity;
+import cl.eos.interfaces.view.IView;
 import cl.eos.persistence.models.Asignatura;
+import cl.eos.persistence.models.EjeTematico;
+import cl.eos.persistence.models.Habilidad;
 import cl.eos.persistence.models.NivelEvaluacion;
 import cl.eos.persistence.models.Profesor;
 import cl.eos.persistence.models.Prueba;
@@ -95,6 +92,9 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
   private MenuItem mnuEvaluarPrueba;
   @FXML
   private MenuItem mnuDefinirPrueba;
+  private IView evaluacionPrueba;
+  private DefinePruebaViewController definePrueba;
+  private Prueba prueba;
 
   public PruebasView() {}
 
@@ -136,7 +136,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
     mnuPopupEliminar.setOnAction(this);
     mnuEvaluarPrueba.setOnAction(this);
     mnuDefinirPrueba.setOnAction(this);
-
+    mnuDefinirPrueba.setDisable(true);
   }
 
   @Override
@@ -200,6 +200,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
     } else {
       tblListadoPruebas.getItems().add((Prueba) otObject);
     }
+    mnuDefinirPrueba.setDisable(false);
   }
 
   @Override
@@ -285,28 +286,25 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
   }
 
   private void handlerDefinirPrueba() {
-    URL url = PruebasActivator.class.getResource("/cl/eos/view/DefinePruebaView.fxml");
-    FXMLLoader fxmlLoader = new FXMLLoader();
-    try {
-      Node pane = (Parent) fxmlLoader.load(url.openStream());
-      WindowManager.getInstance().show(pnlRoot, pane, true);
-
-    } catch (Exception e) {
-      e.printStackTrace();
+    if (definePrueba == null) {
+      definePrueba =
+          (DefinePruebaViewController) show(pnlRoot, "/cl/eos/view/DefinePruebaView.fxml");
+    } else {
+      show(pnlRoot, definePrueba);
     }
-
+    if (prueba != null) {
+      controller.findById(Prueba.class, prueba.getId());
+      controller.findAll(Habilidad.class);
+      controller.findAll(EjeTematico.class);
+    }
   }
 
   private void handlerEvaluar() {
-    URL url = PruebasActivator.class.getResource("/cl/eos/view/EvaluacionPrueba.fxml");
-    FXMLLoader fxmlLoader = new FXMLLoader();
-    try {
-      Node pane = (Parent) fxmlLoader.load(url.openStream());
-      WindowManager.getInstance().show(pnlRoot, pane, true);
-    } catch (Exception e) {
-      e.printStackTrace();
+    if (evaluacionPrueba == null) {
+      evaluacionPrueba = show(pnlRoot, "/cl/eos/view/EvaluacionPrueba.fxml");
+    } else {
+      show(pnlRoot, evaluacionPrueba);
     }
-
   }
 
   private void handleEliminar() {
@@ -331,7 +329,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
       prueba.setProfesor(cmbProfesor.getValue());
       prueba.setPuntajeBase(bigDecimalPuntajePregunta.getNumber().intValue());
       prueba.setNroPreguntas(bigDecimalNroPreguntas.getNumber().intValue());
-      prueba.setResponses(bigDecimaNroAlternativas.getNumber().intValue());
+      prueba.setAlternativas(bigDecimaNroAlternativas.getNumber().intValue());
       prueba.setTipoPrueba(cmbTipoPrueba.getValue());
       save(prueba);
     } else {
@@ -341,7 +339,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
   }
 
   private void handleModificar() {
-    Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem();
+    prueba = tblListadoPruebas.getSelectionModel().getSelectedItem();
 
     if (prueba != null) {
       bigDecimaNroAlternativas.setNumber(new BigDecimal(prueba.getAlternativas()));
