@@ -19,8 +19,8 @@
                         <KeyCodeCombination alt="UP" code="G" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator></MenuItem>
                   <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem fx:id="mnuExportar" mnemonicParsing="false" text="Exportar Pruebas" />
-                  <MenuItem fx:id="mnuImportar" mnemonicParsing="false" text="Importar Pruebas" />
+                  <MenuItem fx:id="mnuExportar" mnemonicParsing="false" text="Exportar Evaluación Prueba" />
+                  <MenuItem fx:id="mnuImportar" mnemonicParsing="false" text="Importar Evaluación Prueba" />
                   <SeparatorMenuItem mnemonicParsing="false" />
               <MenuItem mnemonicParsing="false" text="Cerrar" />
             </items>
