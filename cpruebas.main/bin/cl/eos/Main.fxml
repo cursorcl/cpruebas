@@ -57,6 +57,7 @@
                                       <items>
                                         <MenuItem fx:id="mnuHacerPrueba" mnemonicParsing="false" text="Generar Prueba" />
                                           <MenuItem fx:id="mnuEvaluarPrueba" mnemonicParsing="false" text="Evaluar Prueba" />
+                                          <MenuItem fx:id="mnuResumenGeneral" mnemonicParsing="false" text="Resumen general" />
                                       
                                       </items>
                                     </Menu>

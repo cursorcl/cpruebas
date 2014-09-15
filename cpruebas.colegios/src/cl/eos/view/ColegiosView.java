@@ -36,7 +36,8 @@ import cl.eos.interfaces.entity.IEntity;
 import cl.eos.persistence.models.Colegio;
 import cl.eos.util.Utils;
 
-public class ColegiosView extends AFormView {
+public class ColegiosView extends AFormView implements
+		EventHandler<ActionEvent> {
 
 	private static final int LARGO_CAMPO_TEXT = 100;
 	@FXML
@@ -47,6 +48,12 @@ public class ColegiosView extends AFormView {
 
 	@FXML
 	private MenuItem mnItemModificar;
+
+	@FXML
+	private MenuItem mnuEliminar;
+
+	@FXML
+	private MenuItem mnuModificar;
 
 	@FXML
 	private Button btnImagen;
@@ -79,35 +86,30 @@ public class ColegiosView extends AFormView {
 	@FXML
 	public void initialize() {
 		inicializaTabla();
-		accionGrabar();
-		accionEliminar();
-		accionModificar();
 		accionClicTabla();
-		accionButtonImagen();
+
+		mnuGrabar.setOnAction(this);
+		mnuModificar.setOnAction(this);
+		mnuEliminar.setOnAction(this);
+		mnItemEliminar.setOnAction(this);
+		mnItemModificar.setOnAction(this);
+		btnImagen.setOnAction(this);
 	}
 
 	private void accionButtonImagen() {
-		btnImagen.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent event) {
-				FileChooser fileChooser = new FileChooser();
-				File file = fileChooser.showOpenDialog(null);
-				if (file != null) {
-					Dimension dim = Utils.getImageDim(file.getPath());
-					if (dim.getHeight() <= 256 && dim.getWidth() <= 256) {
-						try {
-							URL url = file.toURI().toURL();
-							imgColegio.setImage(new Image(url.toString()));
-						} catch (MalformedURLException e) {
-							e.printStackTrace();
-						}
-					}
-
+		FileChooser fileChooser = new FileChooser();
+		File file = fileChooser.showOpenDialog(null);
+		if (file != null) {
+			Dimension dim = Utils.getImageDim(file.getPath());
+			if (dim.getHeight() <= 256 && dim.getWidth() <= 256) {
+				try {
+					URL url = file.toURI().toURL();
+					imgColegio.setImage(new Image(url.toString()));
+				} catch (MalformedURLException e) {
+					e.printStackTrace();
 				}
 			}
-		});
-
+		}
 	}
 
 	private void accionClicTabla() {
@@ -140,78 +142,58 @@ public class ColegiosView extends AFormView {
 	}
 
 	private void accionModificar() {
-		mnItemModificar.setOnAction(new EventHandler<ActionEvent>() {
+		Colegio colegio = tblColegio.getSelectionModel().getSelectedItem();
+		if (colegio != null) {
+			txtNombre.setText(colegio.getName());
+			txtDireccion.setText(colegio.getDireccion());
 
-			@Override
-			public void handle(ActionEvent event) {
-				Colegio colegio = tblColegio.getSelectionModel()
-						.getSelectedItem();
-				if (colegio != null) {
-					txtNombre.setText(colegio.getName());
-					txtDireccion.setText(colegio.getDireccion());
-
-					ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(
-							colegio.getImage());
-					javafx.scene.image.Image image = new javafx.scene.image.Image(
-							byteArrayInputStream);
-					imgColegio.setImage(image);
-				}
-			}
-		});
+			ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(
+					colegio.getImage());
+			javafx.scene.image.Image image = new javafx.scene.image.Image(
+					byteArrayInputStream);
+			imgColegio.setImage(image);
+		}
 	}
 
 	private void accionEliminar() {
-		mnItemEliminar.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent event) {
-				ObservableList<Colegio> colegiosSelec = tblColegio
-						.getSelectionModel().getSelectedItems();
-				for (Colegio colegio : colegiosSelec) {
-					delete(colegio);
-				}
-			}
-		});
+		ObservableList<Colegio> colegiosSelec = tblColegio.getSelectionModel()
+				.getSelectedItems();
+		for (Colegio colegio : colegiosSelec) {
+			delete(colegio);
+		}
 	}
 
 	private void accionGrabar() {
-		mnuGrabar.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent arg0) {
-				IEntity entitySelected = getSelectedEntity();
-				removeAllStyles();
-				if (validate()) {
-					if (lblError != null) {
-						lblError.setText(" ");
-					}
-					Colegio colegio = null;
-					if (entitySelected != null
-							&& entitySelected instanceof Colegio) {
-						colegio = (Colegio) entitySelected;
-					} else {
-						colegio = new Colegio();
-					}
-					colegio.setName(txtNombre.getText());
-					colegio.setDireccion(txtDireccion.getText());
-					BufferedImage bufferImg = SwingFXUtils.fromFXImage(
-							imgColegio.getImage(), null);
-
-					ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-					try {
-						ImageIO.write(bufferImg, "png", outputStream);
-						colegio.setImage(outputStream.toByteArray());
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-					save(colegio);
-				} else {
-					lblError.getStyleClass().add("bad");
-					lblError.setText("Corregir campos destacados en color rojo");
-				}
-				limpiarControles();
+		IEntity entitySelected = getSelectedEntity();
+		removeAllStyles();
+		if (validate()) {
+			if (lblError != null) {
+				lblError.setText(" ");
 			}
+			Colegio colegio = null;
+			if (entitySelected != null && entitySelected instanceof Colegio) {
+				colegio = (Colegio) entitySelected;
+			} else {
+				colegio = new Colegio();
+			}
+			colegio.setName(txtNombre.getText());
+			colegio.setDireccion(txtDireccion.getText());
+			BufferedImage bufferImg = SwingFXUtils.fromFXImage(
+					imgColegio.getImage(), null);
 
-		});
+			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+			try {
+				ImageIO.write(bufferImg, "png", outputStream);
+				colegio.setImage(outputStream.toByteArray());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			save(colegio);
+		} else {
+			lblError.getStyleClass().add("bad");
+			lblError.setText("Corregir campos destacados en color rojo");
+		}
+		limpiarControles();
 	}
 
 	private void limpiarControles() {
@@ -238,7 +220,7 @@ public class ColegiosView extends AFormView {
 		System.out.println("Elementoeliminando:" + entity.toString());
 		ObservableList<Colegio> asignaturas = tblColegio.getItems();
 		asignaturas.remove(entity);
-		//tblColegio.getSelectionModel().clearSelection();
+		// tblColegio.getSelectionModel().clearSelection();
 	}
 
 	public boolean validate() {
@@ -274,6 +256,20 @@ public class ColegiosView extends AFormView {
 		removeAllStyle(lblError);
 		removeAllStyle(txtNombre);
 		removeAllStyle(txtDireccion);
+	}
+
+	@Override
+	public void handle(ActionEvent event) {
+		Object source = event.getSource();
+		if (source == mnuModificar || source == mnItemModificar) {
+			accionModificar();
+		} else if (source == mnuGrabar) {
+			accionGrabar();
+		} else if (source == mnuEliminar || source == mnItemEliminar) {
+			accionEliminar();
+		} else if (source == btnImagen) {
+			accionButtonImagen();
+		}
 	}
 
 }

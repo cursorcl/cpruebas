@@ -19,7 +19,8 @@ import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.persistence.models.TipoPrueba;
 
-public class TipoPruebaView  extends AFormView {
+public class TipoPruebaView extends AFormView implements
+		EventHandler<ActionEvent> {
 	private static final int LARGO_CAMPO_TEXT = 100;
 
 	@FXML
@@ -30,6 +31,12 @@ public class TipoPruebaView  extends AFormView {
 
 	@FXML
 	private MenuItem mnItemModificar;
+
+	@FXML
+	private MenuItem mnuEliminar;
+
+	@FXML
+	private MenuItem mnuModificar;
 
 	@FXML
 	private TextField txtNombre;
@@ -46,15 +53,19 @@ public class TipoPruebaView  extends AFormView {
 	public TipoPruebaView() {
 		// TODO Auto-generated constructor stub
 	}
+
 	@FXML
 	public void initialize() {
 		inicializaTabla();
-		accionGrabar();
-		accionEliminar();
-		accionModificar();
 		accionClicTabla();
+
+		mnuGrabar.setOnAction(this);
+		mnuModificar.setOnAction(this);
+		mnuEliminar.setOnAction(this);
+		mnItemEliminar.setOnAction(this);
+		mnItemModificar.setOnAction(this);
 	}
-	
+
 	private void inicializaTabla() {
 		tblTipoPrueba.getSelectionModel().setSelectionMode(
 				SelectionMode.MULTIPLE);
@@ -64,60 +75,43 @@ public class TipoPruebaView  extends AFormView {
 	}
 
 	private void accionModificar() {
-		mnItemModificar.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent event) {
-				TipoPrueba tipoPrueba = tblTipoPrueba.getSelectionModel()
-						.getSelectedItem();
-				if (tipoPrueba != null) {
-					txtNombre.setText(tipoPrueba.getName());
-				}
-			}
-		});
+		TipoPrueba tipoPrueba = tblTipoPrueba.getSelectionModel()
+				.getSelectedItem();
+		if (tipoPrueba != null) {
+			txtNombre.setText(tipoPrueba.getName());
+		}
 	}
 
 	private void accionEliminar() {
-		mnItemEliminar.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				ObservableList<TipoPrueba> tipoPruebaSelec = tblTipoPrueba
-						.getSelectionModel().getSelectedItems();
-				for (TipoPrueba tpPruebaSel : tipoPruebaSelec) {
-					delete(tpPruebaSel);
-				}
-				tblTipoPrueba.getSelectionModel().clearSelection();
-			}
-		});
+		ObservableList<TipoPrueba> tipoPruebaSelec = tblTipoPrueba
+				.getSelectionModel().getSelectedItems();
+		for (TipoPrueba tpPruebaSel : tipoPruebaSelec) {
+			delete(tpPruebaSel);
+		}
+		tblTipoPrueba.getSelectionModel().clearSelection();
 	}
 
 	private void accionGrabar() {
-		mnuGrabar.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent arg0) {
-				IEntity entitySelected = getSelectedEntity();
-				removeAllStyles();
-				if (validate()) {
-					if (lblError != null) {
-						lblError.setText(" ");
-					}
-					TipoPrueba tipoPrueba = null;
-					if (entitySelected != null
-							&& entitySelected instanceof TipoPrueba) {
-						tipoPrueba = (TipoPrueba) entitySelected;
-					} else {
-						tipoPrueba = new TipoPrueba();
-					}
-					tipoPrueba.setName(txtNombre.getText());
-					save(tipoPrueba);
-
-				} else {
-					lblError.getStyleClass().add("bad");
-					lblError.setText("Corregir campos destacados en color rojo");
-				}
-				limpiarControles();
+		IEntity entitySelected = getSelectedEntity();
+		removeAllStyles();
+		if (validate()) {
+			if (lblError != null) {
+				lblError.setText(" ");
 			}
-		});
+			TipoPrueba tipoPrueba = null;
+			if (entitySelected != null && entitySelected instanceof TipoPrueba) {
+				tipoPrueba = (TipoPrueba) entitySelected;
+			} else {
+				tipoPrueba = new TipoPrueba();
+			}
+			tipoPrueba.setName(txtNombre.getText());
+			save(tipoPrueba);
+
+		} else {
+			lblError.getStyleClass().add("bad");
+			lblError.setText("Corregir campos destacados en color rojo");
+		}
+		limpiarControles();
 	}
 
 	private void accionClicTabla() {
@@ -167,7 +161,6 @@ public class TipoPruebaView  extends AFormView {
 		removeAllStyle(txtNombre);
 	}
 
-
 	@Override
 	public boolean validate() {
 		boolean valida = true;
@@ -197,5 +190,16 @@ public class TipoPruebaView  extends AFormView {
 			}
 		}
 	}
-	
+
+	@Override
+	public void handle(ActionEvent event) {
+		Object source = event.getSource();
+		if (source == mnuModificar || source == mnItemModificar) {
+			accionModificar();
+		} else if (source == mnuGrabar) {
+			accionGrabar();
+		} else if (source == mnuEliminar || source == mnItemEliminar) {
+			accionEliminar();
+		}
+	}
 }

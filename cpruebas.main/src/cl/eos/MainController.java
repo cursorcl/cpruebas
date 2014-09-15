@@ -10,7 +10,6 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import cl.eos.interfaces.IActivator;
-import cl.eos.persistence.models.NivelEvaluacion;
 import cl.eos.provider.persistence.PersistenceServiceFactory;
 
 public class MainController {
@@ -41,6 +40,8 @@ public class MainController {
 	private MenuItem mnuHacerPrueba;
 	@FXML
 	private MenuItem mnuEvaluarPrueba;
+	@FXML
+	private MenuItem mnuResumenGeneral;
 	@FXML
 	private MenuItem mnuItemGeneraBD;
 	@FXML
@@ -135,7 +136,15 @@ public class MainController {
 					IActivator activator = new EvaluacionPruebaActivator();
 					pnlContainer.getChildren().setAll((Pane)activator.getPane());
 			}
+		});	
+		mnuResumenGeneral.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+					IActivator activator = new ResumenGeneralActivator();
+					pnlContainer.getChildren().setAll((Pane)activator.getPane());
+			}
 		});
+		
 		mnuItemGeneraBD.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {

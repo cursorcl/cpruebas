@@ -25,7 +25,7 @@ import cl.eos.persistence.models.Colegio;
 import cl.eos.persistence.models.Curso;
 import cl.eos.util.Utils;
 
-public class AlumnosView extends AFormView {
+public class AlumnosView extends AFormView implements EventHandler<ActionEvent>{
 
 	private static final int LARGO_CAMPO_TEXT = 100;
 
@@ -38,6 +38,12 @@ public class AlumnosView extends AFormView {
 	@FXML
 	private MenuItem mnItemModificar;
 
+	@FXML
+	private MenuItem mnuEliminar;
+
+	@FXML
+	private MenuItem mnuModificar;
+	
 	@FXML
 	private TextField txtRut;
 
@@ -87,10 +93,13 @@ public class AlumnosView extends AFormView {
 	@FXML
 	public void initialize() {
 		inicializaTabla();
-		accionGrabar();
-		accionEliminar();
-		accionModificar();
 		accionClicTabla();
+		
+		mnuGrabar.setOnAction(this);
+		mnuModificar.setOnAction(this);
+		mnuEliminar.setOnAction(this);
+		mnItemEliminar.setOnAction(this);
+		mnItemModificar.setOnAction(this);
 	}
 
 	private void accionClicTabla() {
@@ -331,5 +340,17 @@ public class AlumnosView extends AFormView {
 				cmbColegio.setItems(oList);
 			}
 		}
+	}
+
+	@Override
+	public void handle(ActionEvent event) {
+		Object source = event.getSource();
+		if (source == mnuModificar || source == mnItemModificar) {
+			accionModificar();
+		} else if (source == mnuGrabar) {
+			accionGrabar();
+		} else if (source == mnuEliminar || source == mnItemEliminar) {
+			accionEliminar();
+		} 
 	}
 }

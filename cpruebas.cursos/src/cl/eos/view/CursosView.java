@@ -21,7 +21,7 @@ import cl.eos.interfaces.entity.IEntity;
 import cl.eos.persistence.models.Curso;
 import cl.eos.persistence.models.Nivel;
 
-public class CursosView extends AFormView {
+public class CursosView extends AFormView implements EventHandler<ActionEvent> {
 
 	private static final int LARGO_CAMPO_TEXT = 100;
 
@@ -33,6 +33,12 @@ public class CursosView extends AFormView {
 
 	@FXML
 	private MenuItem mnItemModificar;
+
+	@FXML
+	private MenuItem mnuEliminar;
+
+	@FXML
+	private MenuItem mnuModificar;
 
 	@FXML
 	private TextField txtNombre;
@@ -59,39 +65,30 @@ public class CursosView extends AFormView {
 	@FXML
 	public void initialize() {
 		inicializaTabla();
-		accionGrabar();
-		accionEliminar();
-		accionModificar();
 		accionClicTabla();
+
+		mnuGrabar.setOnAction(this);
+		mnuModificar.setOnAction(this);
+		mnuEliminar.setOnAction(this);
+		mnItemEliminar.setOnAction(this);
+		mnItemModificar.setOnAction(this);
 	}
 
 	private void accionModificar() {
-		mnItemModificar.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent event) {
-				Curso curso = tblCurso.getSelectionModel().getSelectedItem();
-				if (curso != null) {
-					txtNombre.setText(curso.getName());
-					cmbNivel.setValue(curso.getNivel());
-				}
-			}
-		});
+		Curso curso = tblCurso.getSelectionModel().getSelectedItem();
+		if (curso != null) {
+			txtNombre.setText(curso.getName());
+			cmbNivel.setValue(curso.getNivel());
+		}
 	}
 
 	private void accionEliminar() {
-		mnItemEliminar.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent event) {
-				ObservableList<Curso> cursosSelec = tblCurso
-						.getSelectionModel().getSelectedItems();
-				for (Curso curso : cursosSelec) {
-					delete(curso);
-				}
-				tblCurso.getSelectionModel().clearSelection();
-			}
-		});
+		ObservableList<Curso> cursosSelec = tblCurso.getSelectionModel()
+				.getSelectedItems();
+		for (Curso curso : cursosSelec) {
+			delete(curso);
+		}
+		tblCurso.getSelectionModel().clearSelection();
 	}
 
 	private void accionClicTabla() {
@@ -113,32 +110,26 @@ public class CursosView extends AFormView {
 	}
 
 	private void accionGrabar() {
-		mnuGrabar.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent arg0) {
-				IEntity entitySelected = getSelectedEntity();
-				removeAllStyles();
-				if (validate()) {
-					if (lblError != null) {
-						lblError.setText(" ");
-					}
-					Curso curso = null;
-					if (entitySelected != null
-							&& entitySelected instanceof Curso) {
-						curso = (Curso) entitySelected;
-					} else {
-						curso = new Curso();
-					}
-					curso.setName(txtNombre.getText());
-					curso.setNivel(cmbNivel.getValue());
-					save(curso);
-				} else {
-					lblError.getStyleClass().add("bad");
-					lblError.setText("Corregir campos destacados en color rojo");
-				}
-				limpiarControles();
+		IEntity entitySelected = getSelectedEntity();
+		removeAllStyles();
+		if (validate()) {
+			if (lblError != null) {
+				lblError.setText(" ");
 			}
-		});
+			Curso curso = null;
+			if (entitySelected != null && entitySelected instanceof Curso) {
+				curso = (Curso) entitySelected;
+			} else {
+				curso = new Curso();
+			}
+			curso.setName(txtNombre.getText());
+			curso.setNivel(cmbNivel.getValue());
+			save(curso);
+		} else {
+			lblError.getStyleClass().add("bad");
+			lblError.setText("Corregir campos destacados en color rojo");
+		}
+		limpiarControles();
 	}
 
 	private void inicializaTabla() {
@@ -214,5 +205,17 @@ public class CursosView extends AFormView {
 		System.out.println("Elemento eliminando:" + entity.toString());
 		ObservableList<Curso> cursos = tblCurso.getItems();
 		cursos.remove(entity);
+	}
+
+	@Override
+	public void handle(ActionEvent event) {
+		Object source = event.getSource();
+		if (source == mnuModificar || source == mnItemModificar) {
+			accionModificar();
+		} else if (source == mnuGrabar) {
+			accionGrabar();
+		} else if (source == mnuEliminar || source == mnItemEliminar) {
+			accionEliminar();
+		}
 	}
 }

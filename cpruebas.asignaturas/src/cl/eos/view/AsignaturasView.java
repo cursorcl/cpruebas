@@ -19,13 +19,19 @@ import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.persistence.models.Asignatura;
 
-public class AsignaturasView extends AFormView {
+public class AsignaturasView extends AFormView implements EventHandler<ActionEvent> {
 
 	private static final int LARGO_CAMPO_TEXT = 100;
 
 	@FXML
 	private MenuItem mnuGrabar;
+	
+	@FXML
+	private MenuItem mnuEliminar;
 
+	@FXML
+	private MenuItem mnuModificar;
+	
 	@FXML
 	private MenuItem mnItemEliminar;
 
@@ -51,10 +57,13 @@ public class AsignaturasView extends AFormView {
 	@FXML
 	public void initialize() {
 		inicializaTabla();
-		accionGrabar();
-		accionEliminar();
-		accionModificar();
 		accionClicTabla();
+		
+		mnuGrabar.setOnAction(this);
+		mnuModificar.setOnAction(this);
+		mnuEliminar.setOnAction(this);
+		mnItemEliminar.setOnAction(this);
+		mnItemModificar.setOnAction(this);
 	}
 
 	private void inicializaTabla() {
@@ -200,4 +209,16 @@ public class AsignaturasView extends AFormView {
 		}
 	}
 
+	@Override
+	public void handle(ActionEvent event) {
+		Object source = event.getSource();
+		if (source == mnuModificar || source == mnItemModificar) {
+			accionModificar();
+		} else if (source == mnuGrabar) {
+			accionGrabar();
+		} else if (source == mnuEliminar || source == mnItemEliminar) {
+			accionEliminar();
+		} 
+	}
+	
 }

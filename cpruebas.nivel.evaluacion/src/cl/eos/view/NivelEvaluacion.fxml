@@ -43,22 +43,23 @@
          <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="335.0" prefWidth="597.0">
                <children>
-                  <Label layoutX="24.0" layoutY="18.0" prefHeight="17.0" prefWidth="91.0" text="Nivel Evaluación" AnchorPane.leftAnchor="10.0" />
-                  <ComboBox fx:id="cmbNiveles" layoutX="143.0" layoutY="14.0" prefHeight="25.0" prefWidth="303.0" />
-                  <Label layoutX="198.0" layoutY="78.0" text="Desde" />
-                  <Label layoutX="342.0" layoutY="78.0" text="Hasta" />
-                  <Label fx:id="label1" layoutX="56.0" layoutY="111.0" prefWidth="100.0" text="Label" AnchorPane.leftAnchor="56.0" />
-                  <Label fx:id="label2" layoutX="56.0" layoutY="164.0" prefWidth="100.0" text="Label" AnchorPane.leftAnchor="56.0" />
-                  <Label fx:id="label3" layoutX="56.0" layoutY="214.0" prefWidth="100.0" text="Label" AnchorPane.leftAnchor="56.0" />
-                  <Label fx:id="label4" layoutX="56.0" layoutY="264.0" prefWidth="100.0" text="Label" AnchorPane.leftAnchor="56.0" />
-                  <TextField fx:id="txtDesde1" layoutX="185.0" layoutY="113.0" prefWidth="80.0" />
-                  <TextField fx:id="txtHasta1" layoutX="332.0" layoutY="113.0" prefWidth="80.0" />
-                  <TextField fx:id="txtDesde2" layoutX="185.0" layoutY="163.0" prefWidth="80.0" />
-                  <TextField fx:id="txtHasta2" layoutX="332.0" layoutY="163.0" prefWidth="80.0" />
-                  <TextField fx:id="txtDesde3" layoutX="185.0" layoutY="213.0" prefWidth="80.0" />
-                  <TextField fx:id="txtHasta3" layoutX="332.0" layoutY="213.0" prefWidth="80.0" />
-                  <TextField fx:id="txtDesde4" layoutX="185.0" layoutY="263.0" prefWidth="80.0" />
-                  <TextField fx:id="txtHasta4" layoutX="332.0" layoutY="263.0" prefWidth="80.0" />
+                  <Label layoutX="14.0" layoutY="40.0" prefHeight="17.0" prefWidth="91.0" text="Nivel Evaluación" AnchorPane.leftAnchor="14.0" />
+                  <ComboBox fx:id="cmbNiveles" layoutX="147.0" layoutY="36.0" prefHeight="25.0" prefWidth="303.0" />
+                  <Label layoutX="202.0" layoutY="100.0" text="Desde" />
+                  <Label layoutX="346.0" layoutY="100.0" text="Hasta" />
+                  <Label fx:id="label1" layoutX="60.0" layoutY="133.0" prefWidth="100.0" text="Label" AnchorPane.leftAnchor="60.0" />
+                  <Label fx:id="label2" layoutX="60.0" layoutY="186.0" prefWidth="100.0" text="Label" AnchorPane.leftAnchor="60.0" />
+                  <Label fx:id="label3" layoutX="60.0" layoutY="236.0" prefWidth="100.0" text="Label" AnchorPane.leftAnchor="60.0" />
+                  <Label fx:id="label4" layoutX="60.0" layoutY="286.0" prefWidth="100.0" text="Label" AnchorPane.leftAnchor="60.0" />
+                  <TextField fx:id="txtDesde1" layoutX="189.0" layoutY="135.0" prefWidth="80.0" />
+                  <TextField fx:id="txtHasta1" layoutX="336.0" layoutY="135.0" prefWidth="80.0" />
+                  <TextField fx:id="txtDesde2" layoutX="189.0" layoutY="185.0" prefWidth="80.0" />
+                  <TextField fx:id="txtHasta2" layoutX="336.0" layoutY="185.0" prefWidth="80.0" />
+                  <TextField fx:id="txtDesde3" layoutX="189.0" layoutY="235.0" prefWidth="80.0" />
+                  <TextField fx:id="txtHasta3" layoutX="336.0" layoutY="235.0" prefWidth="80.0" />
+                  <TextField fx:id="txtDesde4" layoutX="189.0" layoutY="285.0" prefWidth="80.0" />
+                  <TextField fx:id="txtHasta4" layoutX="336.0" layoutY="285.0" prefWidth="80.0" />
+                  <Label fx:id="lblError" layoutX="14.0" layoutY="14.0" AnchorPane.leftAnchor="14.0" />
                </children>
             </AnchorPane>
          </items>
