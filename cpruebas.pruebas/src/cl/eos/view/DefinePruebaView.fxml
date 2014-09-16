@@ -4,7 +4,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="427.0" prefWidth="721.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.DefinePruebaViewController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="427.0" prefWidth="728.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.DefinePruebaViewController">
    <children>
       <TableView fx:id="tblRegistroDefinePrueba" editable="true" layoutX="6.0" layoutY="7.0" prefHeight="421.0" prefWidth="256.0" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="6.0" AnchorPane.topAnchor="3.0">
         <columns>
@@ -14,12 +14,12 @@
             <TableColumn fx:id="mentalCol" prefWidth="48.0" text="Mem" />
         </columns>
       </TableView>
-      <TableView fx:id="tblEjesTematicos" layoutX="175.0" layoutY="3.0" prefHeight="421.0" prefWidth="203.0" AnchorPane.bottomAnchor="3.0" AnchorPane.rightAnchor="232.0" AnchorPane.topAnchor="3.0">
+      <TableView fx:id="tblEjesTematicos" layoutX="275.0" layoutY="3.0" prefHeight="421.0" prefWidth="213.0" AnchorPane.bottomAnchor="3.0" AnchorPane.rightAnchor="238.0" AnchorPane.topAnchor="3.0">
         <columns>
           <TableColumn fx:id="ejeTematicoCol" prefWidth="199.0" text="Ejes temáticos" />
         </columns>
       </TableView>
-      <TableView fx:id="tblHabilidades" layoutX="445.0" layoutY="3.0" prefHeight="421.0" prefWidth="220.0" AnchorPane.bottomAnchor="3.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="3.0">
+      <TableView fx:id="tblHabilidades" layoutX="496.0" layoutY="3.0" prefHeight="421.0" prefWidth="228.0" AnchorPane.bottomAnchor="3.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="3.0">
         <columns>
           <TableColumn fx:id="habilidadCol" prefWidth="216.0" text="Hbilidad" />
         </columns>
