@@ -1,5 +1,6 @@
 package cl.eos.view;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import javafx.collections.FXCollections;
@@ -12,6 +13,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
+import cl.eos.ot.OTResumenGeneral;
 import cl.eos.persistence.models.EvaluacionPrueba;
 import cl.eos.persistence.models.PruebaRendida;
 
@@ -30,15 +32,17 @@ public class ResumenGeneralView extends AFormView {
 	private TextField txtPjePrueba;
 
 	@FXML
-	private TableView<EvaluacionPrueba> tblResumen;
+	private TableView<OTResumenGeneral> tblResumen;
 	@FXML
-	private TableColumn<EvaluacionPrueba, Integer> colNotas;
+	private TableColumn<OTResumenGeneral, String> colNombre;
 	@FXML
-	private TableColumn<EvaluacionPrueba, Integer> colBuenas;
+	private TableColumn<OTResumenGeneral, Float> colNotas;
 	@FXML
-	private TableColumn<EvaluacionPrueba, Integer> ColPuntos;
+	private TableColumn<OTResumenGeneral, Float> colBuenas;
 	@FXML
-	private TableColumn<EvaluacionPrueba, Integer> colPuntaje;
+	private TableColumn<OTResumenGeneral, Integer> ColPuntos;
+	@FXML
+	private TableColumn<OTResumenGeneral, Float> colPuntaje;
 
 	@FXML
 	private TableView<PruebaRendida> tblAlumnos;
@@ -116,28 +120,55 @@ public class ResumenGeneralView extends AFormView {
 
 	private void inicializarTablaResumen() {
 		tblResumen.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-		colNotas.setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba, Integer>(
-				"fechaLocal"));
+		colNombre
+				.setCellValueFactory(new PropertyValueFactory<OTResumenGeneral, String>(
+						"name"));
+		colNotas.setCellValueFactory(new PropertyValueFactory<OTResumenGeneral, Float>(
+				"notaMin"));
 		colBuenas
-				.setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba, Integer>(
-						"buenas"));
+				.setCellValueFactory(new PropertyValueFactory<OTResumenGeneral, Float>(
+						"notaMax"));
 		ColPuntos
-				.setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba, Integer>(
-						"asignatura"));
+				.setCellValueFactory(new PropertyValueFactory<OTResumenGeneral, Integer>(
+						"puntaje"));
 		colPuntaje
-				.setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba, Integer>(
-						"profesor"));
+				.setCellValueFactory(new PropertyValueFactory<OTResumenGeneral, Float>(
+						"pPuntaje"));
 	}
 
 	@Override
 	public void onFound(IEntity entity) {
 		if (entity instanceof EvaluacionPrueba) {
-			((EvaluacionPrueba) entity).obtenerValoresMinMax();
-			asignarDatosEvalucion((EvaluacionPrueba) entity);
+			EvaluacionPrueba evaluacionPrueba = (EvaluacionPrueba) entity;
+			evaluacionPrueba.procesarValoresMinMax();
+
+			List<OTResumenGeneral> listaResumen = new LinkedList<>();
+			listaResumen.add(new OTResumenGeneral("Máximo", evaluacionPrueba
+					.getNotaMax(), evaluacionPrueba.getPBuenasMax(),
+					evaluacionPrueba.getPpuntajeMax(), evaluacionPrueba
+							.getPuntajeMax()));
+			listaResumen.add(new OTResumenGeneral("Mínimo", evaluacionPrueba
+					.getNotaMin(), evaluacionPrueba.getPBuenasMin(),
+					evaluacionPrueba.getPpuntajeMin(), evaluacionPrueba
+							.getPuntajeMin()));
+
+			Float promNota = (evaluacionPrueba.getNotaMax() + evaluacionPrueba
+					.getNotaMin()) / 2;
+			Float prompBuenas = (evaluacionPrueba.getPBuenasMax() + evaluacionPrueba
+					.getPBuenasMin()) / 2;
+			Float prompPuntaje = (evaluacionPrueba.getPpuntajeMax() + evaluacionPrueba
+					.getPpuntajeMin()) / 2;
+			Integer promPuntaje = (evaluacionPrueba.getPuntajeMax() + evaluacionPrueba
+					.getPuntajeMin()) / 2;
+
+			listaResumen.add(new OTResumenGeneral("Promedio", promNota,
+					prompBuenas, prompPuntaje, promPuntaje));
+			asignarDatosEvalucion(evaluacionPrueba, listaResumen);
 		}
 	}
 
-	private void asignarDatosEvalucion(EvaluacionPrueba entity) {
+	private void asignarDatosEvalucion(EvaluacionPrueba entity,
+			List<OTResumenGeneral> listaResumen) {
 		if (entity.getCurso() != null) {
 			txtCurso.setText(entity.getCurso().getName());
 		}
@@ -164,17 +195,12 @@ public class ResumenGeneralView extends AFormView {
 			tblAlumnos.setItems(oList);
 		}
 
-//		if (list != null && !list.isEmpty()) {
-//			Object entityObj = list.get(0);
-//			if (entityObj instanceof EvaluacionPrueba) {
-//				ObservableList<EvaluacionPrueba> oList = FXCollections
-//						.observableArrayList();
-//				for (Object iEntity : list) {
-//					oList.add((EvaluacionPrueba) iEntity);
-//				}
-//				tblResumen.setItems(oList);
-//			}
-//		}
+		ObservableList<OTResumenGeneral> oList = FXCollections
+				.observableArrayList();
+		for (OTResumenGeneral iEntity : listaResumen) {
+			oList.add((OTResumenGeneral) iEntity);
+		}
+		tblResumen.setItems(oList);
 
 	}
 }

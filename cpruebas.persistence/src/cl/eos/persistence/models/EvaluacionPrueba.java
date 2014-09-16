@@ -139,7 +139,7 @@ public class EvaluacionPrueba implements IEntity {
 	@Transient
 	private Integer puntajeMax = 0;
 
-	public void obtenerValoresMinMax() {
+	public void procesarValoresMinMax() {
 		for (PruebaRendida pruebaRendida : pruebasRendidas) {
 			if (pruebaRendida.getNota() < NotaMin) {
 				NotaMin = pruebaRendida.getNota();
@@ -168,8 +168,7 @@ public class EvaluacionPrueba implements IEntity {
 			if (pruebaRendida.getPuntaje() > puntajeMax) {
 				puntajeMax = pruebaRendida.getPuntaje();
 			}
-		}
-
+		}		
 	}
 
 	public Float getNotaMin() {

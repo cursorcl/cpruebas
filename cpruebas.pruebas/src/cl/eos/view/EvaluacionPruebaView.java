@@ -101,6 +101,7 @@ public class EvaluacionPruebaView extends AFormView implements
 		} else {
 			show((Pane) parent, resumenGeneral);
 		}
+		evaluacionPrueba = tblListadoPruebas.getSelectionModel().getSelectedItem();
 		if (evaluacionPrueba != null) {
 			controller.findById(EvaluacionPrueba.class, evaluacionPrueba.getId());
 		}

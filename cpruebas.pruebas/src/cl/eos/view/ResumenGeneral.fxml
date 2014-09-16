@@ -53,7 +53,7 @@
                                  <children>
                                     <TableView fx:id="tblResumen" fixedCellSize="1.0" prefHeight="110.0" prefWidth="466.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="-4.0">
                                       <columns>
-                                          <TableColumn editable="false" prefWidth="75.0" sortable="false" />
+                                          <TableColumn fx:id="colNombre" editable="false" prefWidth="75.0" sortable="false" />
                                         <TableColumn fx:id="colNotas" prefWidth="75.0" text="Nota" />
                                         <TableColumn fx:id="colBuenas" prefWidth="75.0" text="\%Buenas" />
                                           <TableColumn fx:id="ColPuntos" prefWidth="75.0" text="Puntos" />
