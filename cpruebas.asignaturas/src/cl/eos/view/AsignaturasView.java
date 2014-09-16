@@ -19,19 +19,20 @@ import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.persistence.models.Asignatura;
 
-public class AsignaturasView extends AFormView implements EventHandler<ActionEvent> {
+public class AsignaturasView extends AFormView implements
+		EventHandler<ActionEvent> {
 
 	private static final int LARGO_CAMPO_TEXT = 100;
 
 	@FXML
 	private MenuItem mnuGrabar;
-	
+
 	@FXML
 	private MenuItem mnuEliminar;
 
 	@FXML
 	private MenuItem mnuModificar;
-	
+
 	@FXML
 	private MenuItem mnItemEliminar;
 
@@ -58,7 +59,7 @@ public class AsignaturasView extends AFormView implements EventHandler<ActionEve
 	public void initialize() {
 		inicializaTabla();
 		accionClicTabla();
-		
+
 		mnuGrabar.setOnAction(this);
 		mnuModificar.setOnAction(this);
 		mnuEliminar.setOnAction(this);
@@ -75,60 +76,41 @@ public class AsignaturasView extends AFormView implements EventHandler<ActionEve
 	}
 
 	private void accionModificar() {
-		mnItemModificar.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent event) {
-				Asignatura asignatura = tblAsignatura.getSelectionModel()
-						.getSelectedItem();
-				if (asignatura != null) {
-					txtNombre.setText(asignatura.getName());
-				}
-			}
-		});
+		Asignatura asignatura = tblAsignatura.getSelectionModel()
+				.getSelectedItem();
+		if (asignatura != null) {
+			txtNombre.setText(asignatura.getName());
+		}
 	}
 
 	private void accionEliminar() {
-		mnItemEliminar.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				ObservableList<Asignatura> asignaturasSelec = tblAsignatura
-						.getSelectionModel().getSelectedItems();
-				for (Asignatura asignaturaSel : asignaturasSelec) {
-					delete(asignaturaSel);
-				}
-				tblAsignatura.getSelectionModel().clearSelection();
-			}
-		});
+		ObservableList<Asignatura> asignaturasSelec = tblAsignatura
+				.getSelectionModel().getSelectedItems();
+		delete(asignaturasSelec);
+		tblAsignatura.getSelectionModel().clearSelection();
 	}
 
 	private void accionGrabar() {
-		mnuGrabar.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent arg0) {
-				IEntity entitySelected = getSelectedEntity();
-				removeAllStyles();
-				if (validate()) {
-					if (lblError != null) {
-						lblError.setText(" ");
-					}
-					Asignatura asignatura = null;
-					if (entitySelected != null
-							&& entitySelected instanceof Asignatura) {
-						asignatura = (Asignatura) entitySelected;
-					} else {
-						asignatura = new Asignatura();
-					}
-					asignatura.setName(txtNombre.getText());
-					save(asignatura);
-
-				} else {
-					lblError.getStyleClass().add("bad");
-					lblError.setText("Corregir campos destacados en color rojo");
-				}
-				limpiarControles();
+		IEntity entitySelected = getSelectedEntity();
+		removeAllStyles();
+		if (validate()) {
+			if (lblError != null) {
+				lblError.setText(" ");
 			}
-		});
+			Asignatura asignatura = null;
+			if (entitySelected != null && entitySelected instanceof Asignatura) {
+				asignatura = (Asignatura) entitySelected;
+			} else {
+				asignatura = new Asignatura();
+			}
+			asignatura.setName(txtNombre.getText());
+			save(asignatura);
+
+		} else {
+			lblError.getStyleClass().add("bad");
+			lblError.setText("Corregir campos destacados en color rojo");
+		}
+		limpiarControles();
 	}
 
 	private void accionClicTabla() {
@@ -169,15 +151,13 @@ public class AsignaturasView extends AFormView implements EventHandler<ActionEve
 	@Override
 	public void onDeleted(IEntity entity) {
 		System.out.println("Elementoeliminando:" + entity.toString());
-		ObservableList<Asignatura> asignaturas = tblAsignatura.getItems();
-		asignaturas.remove(entity);
+		tblAsignatura.getItems().remove(entity);
 	}
 
 	private void removeAllStyles() {
 		removeAllStyle(lblError);
 		removeAllStyle(txtNombre);
 	}
-
 
 	@Override
 	public boolean validate() {
@@ -218,7 +198,7 @@ public class AsignaturasView extends AFormView implements EventHandler<ActionEve
 			accionGrabar();
 		} else if (source == mnuEliminar || source == mnItemEliminar) {
 			accionEliminar();
-		} 
+		}
 	}
-	
+
 }

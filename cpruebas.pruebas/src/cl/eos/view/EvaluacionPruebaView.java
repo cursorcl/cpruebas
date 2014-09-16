@@ -102,7 +102,7 @@ public class EvaluacionPruebaView extends AFormView implements
 			show((Pane) parent, resumenGeneral);
 		}
 		if (evaluacionPrueba != null) {
-			controller.findById(Prueba.class, evaluacionPrueba.getId());
+			controller.findById(EvaluacionPrueba.class, evaluacionPrueba.getId());
 		}
 
 	}
