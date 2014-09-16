@@ -126,7 +126,7 @@ public class PersistenceService implements IPersistenceService {
 					if (parameters != null && !parameters.isEmpty()) {
 						for (Entry<String, Object> entry : parameters
 								.entrySet()) {
-							parameters.put(entry.getKey(), entry.getValue());
+							query.setParameter(entry.getKey(), entry.getValue());
 						}
 					}
 					lresults = query.getResultList();
@@ -154,8 +154,8 @@ public class PersistenceService implements IPersistenceService {
 			protected IEntity call() throws Exception {
 				IEntity lresult = null;
 				String strEntity = entityClazz.getSimpleName();
-				Query query = eManager.createQuery(String.format(
-						"select c from %s c where c.id = :id", strEntity));
+				String strQuery = String.format("select c from %s c where c.id = :id", strEntity.toLowerCase());
+				Query query = eManager.createQuery(strQuery);
 				if (query != null) {
 					query.setParameter("id", id);
 					lresult = (IEntity) query.getSingleResult();

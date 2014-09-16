@@ -222,7 +222,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 		} else {
 			tblListadoPruebas.getItems().add((Prueba) otObject);
 		}
-		clearFields();
+		limpiarCampos();
 		prueba = null;
 	}
 
@@ -352,7 +352,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 				.getSelectionModel().getSelectedItems();
 		delete(pruebasSeleccionadas);
 		tblListadoPruebas.getSelectionModel().clearSelection();
-		clearFields();
+		limpiarCampos();
 	}
 
 	private void handleGrabar() {
@@ -412,7 +412,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 		tblListadoPruebas.getItems().remove(entity);
 	}
 
-	private void clearFields() {
+	private void limpiarCampos() {
 		cmbTipoPrueba.getSelectionModel().clearSelection();
 		cmbProfesor.getSelectionModel().clearSelection();
 		cmbCurso.getSelectionModel().clearSelection();
