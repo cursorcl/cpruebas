@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.input.*?>
 <?import javafx.scene.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
@@ -10,13 +11,30 @@
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
-          <Menu mnemonicParsing="false" text="Archivo">
-            <items>
-                  <MenuItem fx:id="mnuGrabar" mnemonicParsing="false" text="Grabar" />
-                  <MenuItem fx:id="mnuExpoortar" mnemonicParsing="false" text="Exportar" />
-              <MenuItem fx:id="mnuCerrar" mnemonicParsing="false" text="Cerrar" />
-            </items>
-          </Menu>
+            <Menu mnemonicParsing="false" text="Archivo">
+               <items>
+                  <MenuItem id="mnuGrabar" fx:id="mnuGrabar" mnemonicParsing="false" text="Grabar Profesor">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="G" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator>
+                  </MenuItem>
+                  <MenuItem fx:id="mnuModificar" mnemonicParsing="false" text="Modificar Profesor">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="M" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator>
+                  </MenuItem>
+                  <MenuItem fx:id="mnuEliminar" mnemonicParsing="false" text="Eliminar Profesor">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="E" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator>
+                  </MenuItem>
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem fx:id="mnuExportar" mnemonicParsing="false" text="Exportar Profesor" />
+                  <MenuItem fx:id="mnuImportar" mnemonicParsing="false" text="Importar Profesor" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" text="Cerrar" />
+               </items>
+            </Menu>
           <Menu mnemonicParsing="false" text="Edit">
             <items>
               <MenuItem mnemonicParsing="false" text="Delete" />

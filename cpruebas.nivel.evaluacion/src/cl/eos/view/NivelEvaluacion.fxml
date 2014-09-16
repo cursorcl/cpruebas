@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.input.*?>
+<?import javafx.scene.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="485.0" prefWidth="687.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.NivelEvaluacionView">
+   <top>
+      <MenuBar BorderPane.alignment="CENTER">
+        <menus>
+          <Menu mnemonicParsing="false" text="Archivo">
+            <items>
+                  <MenuItem id="mnuGrabar" fx:id="mnuGrabar" mnemonicParsing="false" text="Grabar Nivel Evaluación">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="G" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator>
+                  </MenuItem>
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem fx:id="mnuExportar" mnemonicParsing="false" text="Exportar Nivel Evaluación" />
+                  <MenuItem fx:id="mnuImportar" mnemonicParsing="false" text="Importar Nivel Evaluación" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+              <MenuItem fx:id="mnuCerrar" mnemonicParsing="false" text="Cerrar" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Edit">
+            <items>
+              <MenuItem fx:id="mnuEliminar" mnemonicParsing="false" text="Delete" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+   </top>
+   <center>
+      <SplitPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="335.0" prefWidth="597.0">
+               <children>
+                  <Label layoutX="14.0" layoutY="40.0" prefHeight="17.0" prefWidth="91.0" text="Nivel Evaluación" AnchorPane.leftAnchor="14.0" />
+                  <ComboBox fx:id="cmbNiveles" layoutX="147.0" layoutY="36.0" prefHeight="25.0" prefWidth="303.0" />
+                  <Label layoutX="202.0" layoutY="100.0" text="Desde" />
+                  <Label layoutX="346.0" layoutY="100.0" text="Hasta" />
+                  <Label fx:id="label1" layoutX="60.0" layoutY="133.0" prefWidth="100.0" text="Label" AnchorPane.leftAnchor="60.0" />
+                  <Label fx:id="label2" layoutX="60.0" layoutY="186.0" prefWidth="100.0" text="Label" AnchorPane.leftAnchor="60.0" />
+                  <Label fx:id="label3" layoutX="60.0" layoutY="236.0" prefWidth="100.0" text="Label" AnchorPane.leftAnchor="60.0" />
+                  <Label fx:id="label4" layoutX="60.0" layoutY="286.0" prefWidth="100.0" text="Label" AnchorPane.leftAnchor="60.0" />
+                  <TextField fx:id="txtDesde1" layoutX="189.0" layoutY="135.0" prefWidth="80.0" />
+                  <TextField fx:id="txtHasta1" layoutX="336.0" layoutY="135.0" prefWidth="80.0" />
+                  <TextField fx:id="txtDesde2" layoutX="189.0" layoutY="185.0" prefWidth="80.0" />
+                  <TextField fx:id="txtHasta2" layoutX="336.0" layoutY="185.0" prefWidth="80.0" />
+                  <TextField fx:id="txtDesde3" layoutX="189.0" layoutY="235.0" prefWidth="80.0" />
+                  <TextField fx:id="txtHasta3" layoutX="336.0" layoutY="235.0" prefWidth="80.0" />
+                  <TextField fx:id="txtDesde4" layoutX="189.0" layoutY="285.0" prefWidth="80.0" />
+                  <TextField fx:id="txtHasta4" layoutX="336.0" layoutY="285.0" prefWidth="80.0" />
+                  <Label fx:id="lblError" layoutX="14.0" layoutY="14.0" AnchorPane.leftAnchor="14.0" />
+               </children>
+            </AnchorPane>
+         </items>
+      </SplitPane>
+   </center>
+</BorderPane>

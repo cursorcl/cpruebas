@@ -105,4 +105,39 @@ public class PruebaRendida implements IEntity {
 		this.forma = forma;
 	}
 
+	public String getRut(){
+		return alumno.getRut();
+	}
+	
+	public String getPaterno(){
+		return alumno.getPaterno();
+	}
+	
+	public String getMaterno(){
+		return alumno.getMaterno();
+	}
+	
+	public String getNombre(){
+		return alumno.getName();
+	}
+	
+	public String getCurso(){
+		return alumno.getCurso().getName();
+	}
+
+	public Integer getPBuenas(){
+		return (getBuenas()/100);
+	}
+	
+	public Integer getPuntaje(){
+		return (Integer)120;
+	}
+	
+	public Integer getPPuntaje(){
+		return (Integer)87;
+	}
+	
+	
+	
+	
 }

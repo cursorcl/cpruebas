@@ -20,7 +20,8 @@ import cl.eos.interfaces.entity.IEntity;
 import cl.eos.persistence.models.Profesor;
 import cl.eos.util.Utils;
 
-public class ProfesoresView extends AFormView {
+public class ProfesoresView extends AFormView implements
+		EventHandler<ActionEvent> {
 
 	private static final int LARGO_CAMPO_TEXT = 100;
 
@@ -32,6 +33,12 @@ public class ProfesoresView extends AFormView {
 
 	@FXML
 	private MenuItem mnuGrabar;
+
+	@FXML
+	private MenuItem mnuEliminar;
+
+	@FXML
+	private MenuItem mnuModificar;
 
 	@FXML
 	private TextField txtRut;
@@ -69,12 +76,15 @@ public class ProfesoresView extends AFormView {
 	@FXML
 	public void initialize() {
 		inicializaTabla();
-		accionGrabar();
-		accionEliminar();
-		accionModificar();
 		accionClicTabla();
+
+		mnuGrabar.setOnAction(this);
+		mnuModificar.setOnAction(this);
+		mnuEliminar.setOnAction(this);
+		mnItemEliminar.setOnAction(this);
+		mnItemModificar.setOnAction(this);
 	}
-	
+
 	private void accionClicTabla() {
 		tblProfesores.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
@@ -94,67 +104,48 @@ public class ProfesoresView extends AFormView {
 	}
 
 	private void accionModificar() {
-		mnItemModificar.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent event) {
-				Profesor Profesor = tblProfesores.getSelectionModel()
-						.getSelectedItem();
-				if (Profesor != null) {
-					txtRut.setText(Profesor.getRut());
-					txtNombres.setText(Profesor.getName());
-					txtAPaterno.setText(Profesor.getPaterno());
-					txtAMaterno.setText(Profesor.getMaterno());
-				}
-			}
-		});
+		Profesor Profesor = tblProfesores.getSelectionModel().getSelectedItem();
+		if (Profesor != null) {
+			txtRut.setText(Profesor.getRut());
+			txtNombres.setText(Profesor.getName());
+			txtAPaterno.setText(Profesor.getPaterno());
+			txtAMaterno.setText(Profesor.getMaterno());
+		}
 	}
 
 	private void accionEliminar() {
-		mnItemEliminar.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent event) {
-				ObservableList<Profesor> ProfesorsSelec = tblProfesores
-						.getSelectionModel().getSelectedItems();
-				//delete((IEntity) ProfesorsSelec);
-				for (Profesor ProfesorSel : ProfesorsSelec) {
-					delete(ProfesorSel);
-				}
-				tblProfesores.getSelectionModel().clearSelection();
-			}
-		});
+		ObservableList<Profesor> ProfesorsSelec = tblProfesores
+				.getSelectionModel().getSelectedItems();
+		// delete((IEntity) ProfesorsSelec);
+		for (Profesor ProfesorSel : ProfesorsSelec) {
+			delete(ProfesorSel);
+		}
+		tblProfesores.getSelectionModel().clearSelection();
 	}
 
 	private void accionGrabar() {
-		mnuGrabar.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent arg0) {
-				IEntity entitySelected = getSelectedEntity();
-				removeAllStyles();
-				if (validate()) {
-					if (lblError != null) {
-						lblError.setText(" ");
-					}
-					Profesor Profesor = null;
-					if (entitySelected != null
-							&& entitySelected instanceof Profesor) {
-						Profesor = (Profesor) entitySelected;
-					} else {
-						Profesor = new Profesor();
-					}
-					Profesor.setRut(txtRut.getText());
-					Profesor.setName(txtNombres.getText());
-					Profesor.setPaterno(txtAPaterno.getText());
-					Profesor.setMaterno(txtAMaterno.getText());
-					save(Profesor);
-				} else {
-					lblError.getStyleClass().add("bad");
-					lblError.setText("Corregir campos destacados en color rojo");
-				}
-				limpiarControles();
+		IEntity entitySelected = getSelectedEntity();
+		removeAllStyles();
+		if (validate()) {
+			if (lblError != null) {
+				lblError.setText(" ");
 			}
-		});
+			Profesor Profesor = null;
+			if (entitySelected != null && entitySelected instanceof Profesor) {
+				Profesor = (Profesor) entitySelected;
+			} else {
+				Profesor = new Profesor();
+			}
+			Profesor.setRut(txtRut.getText());
+			Profesor.setName(txtNombres.getText());
+			Profesor.setPaterno(txtAPaterno.getText());
+			Profesor.setMaterno(txtAMaterno.getText());
+			save(Profesor);
+		} else {
+			lblError.getStyleClass().add("bad");
+			lblError.setText("Corregir campos destacados en color rojo");
+		}
+		limpiarControles();
 	}
 
 	private void limpiarControles() {
@@ -276,4 +267,15 @@ public class ProfesoresView extends AFormView {
 		}
 	}
 
+	@Override
+	public void handle(ActionEvent event) {
+		Object source = event.getSource();
+		if (source == mnuModificar || source == mnItemModificar) {
+			accionModificar();
+		} else if (source == mnuGrabar) {
+			accionGrabar();
+		} else if (source == mnuEliminar || source == mnItemEliminar) {
+			accionEliminar();
+		}
+	}
 }

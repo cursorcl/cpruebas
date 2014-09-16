@@ -23,5 +23,7 @@
 	<classpathentry kind="lib" path="../jars/controlsfx-8.0.6_20.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.persistence.provider"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.persistence"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.tipo.prueba"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.nivel.evaluacion"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

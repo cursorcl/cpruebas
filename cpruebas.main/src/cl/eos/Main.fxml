@@ -57,6 +57,7 @@
                                       <items>
                                         <MenuItem fx:id="mnuHacerPrueba" mnemonicParsing="false" text="Generar Prueba" />
                                           <MenuItem fx:id="mnuEvaluarPrueba" mnemonicParsing="false" text="Evaluar Prueba" />
+                                          <MenuItem fx:id="mnuResumenGeneral" mnemonicParsing="false" text="Resumen general" />
                                       
                                       </items>
                                     </Menu>
@@ -97,6 +98,14 @@
                                                 <KeyCodeCombination alt="UP" code="H" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                                              </accelerator>
                                           </MenuItem>
+                                          <MenuItem fx:id="mnuTipoPrueba" mnemonicParsing="false" text="Tipo prueba">
+                                             <accelerator>
+                                                <KeyCodeCombination alt="UP" code="T" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                                             </accelerator></MenuItem>
+                                          <MenuItem fx:id="mnuNivelEvaluacion" mnemonicParsing="false" text="Nivel evaluación">
+                                             <accelerator>
+                                                <KeyCodeCombination alt="UP" code="N" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                                             </accelerator></MenuItem>
 													</items>
 												</Menu>
 												<Menu mnemonicParsing="false" text="Reportes">

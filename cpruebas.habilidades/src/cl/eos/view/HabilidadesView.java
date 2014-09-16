@@ -19,7 +19,8 @@ import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.persistence.models.Habilidad;
 
-public class HabilidadesView extends AFormView {
+public class HabilidadesView extends AFormView implements
+		EventHandler<ActionEvent> {
 
 	private static final int LARGO_CAMPO_TEXT = 100;
 
@@ -31,6 +32,12 @@ public class HabilidadesView extends AFormView {
 
 	@FXML
 	private MenuItem mnItemModificar;
+
+	@FXML
+	private MenuItem mnuEliminar;
+
+	@FXML
+	private MenuItem mnuModificar;
 
 	@FXML
 	private Label lblError;
@@ -57,10 +64,13 @@ public class HabilidadesView extends AFormView {
 	@FXML
 	public void initialize() {
 		inicializaTabla();
-		accionGrabar();
-		accionEliminar();
-		accionModificar();
 		accionClicTabla();
+
+		mnuGrabar.setOnAction(this);
+		mnuModificar.setOnAction(this);
+		mnuEliminar.setOnAction(this);
+		mnItemEliminar.setOnAction(this);
+		mnItemModificar.setOnAction(this);
 	}
 
 	private void inicializaTabla() {
@@ -75,33 +85,27 @@ public class HabilidadesView extends AFormView {
 	}
 
 	private void accionGrabar() {
-		mnuGrabar.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent arg0) {
-				IEntity entitySelected = getSelectedEntity();
-				removeAllStyles();
-				if (validate()) {
-					if (lblError != null) {
-						lblError.setText(" ");
-					}
-					Habilidad habilidad = null;
-					if (entitySelected != null
-							&& entitySelected instanceof Habilidad) {
-						habilidad = (Habilidad) entitySelected;
-					} else {
-						habilidad = new Habilidad();
-					}
-					habilidad.setName(txtNombre.getText());
-					habilidad.setDescripcion(txtDescripcion.getText());
-					save(habilidad);
-
-				} else {
-					lblError.getStyleClass().add("bad");
-					lblError.setText("Corregir campos destacados en color rojo");
-				}
-				limpiarControles();
+		IEntity entitySelected = getSelectedEntity();
+		removeAllStyles();
+		if (validate()) {
+			if (lblError != null) {
+				lblError.setText(" ");
 			}
-		});
+			Habilidad habilidad = null;
+			if (entitySelected != null && entitySelected instanceof Habilidad) {
+				habilidad = (Habilidad) entitySelected;
+			} else {
+				habilidad = new Habilidad();
+			}
+			habilidad.setName(txtNombre.getText());
+			habilidad.setDescripcion(txtDescripcion.getText());
+			save(habilidad);
+
+		} else {
+			lblError.getStyleClass().add("bad");
+			lblError.setText("Corregir campos destacados en color rojo");
+		}
+		limpiarControles();
 	}
 
 	private void limpiarControles() {
@@ -111,33 +115,21 @@ public class HabilidadesView extends AFormView {
 	}
 
 	private void accionEliminar() {
-		mnItemEliminar.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent event) {
-				ObservableList<Habilidad> habilidadesSelec = tblHabilidades
-						.getSelectionModel().getSelectedItems();
-				for (Habilidad habilidadesSel : habilidadesSelec) {
-					delete(habilidadesSel);
-				}
-				tblHabilidades.getSelectionModel().clearSelection();
-			}
-		});
+		ObservableList<Habilidad> habilidadesSelec = tblHabilidades
+				.getSelectionModel().getSelectedItems();
+		for (Habilidad habilidadesSel : habilidadesSelec) {
+			delete(habilidadesSel);
+		}
+		tblHabilidades.getSelectionModel().clearSelection();
 	}
 
 	private void accionModificar() {
-		mnItemModificar.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent event) {
-				Habilidad habilidades = tblHabilidades.getSelectionModel()
-						.getSelectedItem();
-				if (habilidades != null) {
-					txtNombre.setText(habilidades.getName());
-					txtDescripcion.setText(habilidades.getDescripcion());
-				}
-			}
-		});
+		Habilidad habilidades = tblHabilidades.getSelectionModel()
+				.getSelectedItem();
+		if (habilidades != null) {
+			txtNombre.setText(habilidades.getName());
+			txtDescripcion.setText(habilidades.getDescripcion());
+		}
 	}
 
 	private void accionClicTabla() {
@@ -175,14 +167,14 @@ public class HabilidadesView extends AFormView {
 		} else {
 			tblHabilidades.getItems().add((Habilidad) otObject);
 		}
-	
+
 	}
 
 	@Override
 	public void onDeleted(IEntity entity) {
 		System.out.println("Elementoeliminando:" + entity.toString());
 		ObservableList<Habilidad> habilidades = tblHabilidades.getItems();
-		habilidades.remove(entity);		
+		habilidades.remove(entity);
 	}
 
 	@Override
@@ -211,7 +203,6 @@ public class HabilidadesView extends AFormView {
 
 	@Override
 	public void onDataArrived(List<Object> list) {
-
 		if (list != null && !list.isEmpty()) {
 			Object entity = list.get(0);
 			if (entity instanceof Habilidad) {
@@ -223,7 +214,17 @@ public class HabilidadesView extends AFormView {
 				tblHabilidades.setItems(oList);
 			}
 		}
-
 	}
 
+	@Override
+	public void handle(ActionEvent event) {
+		Object source = event.getSource();
+		if (source == mnuModificar || source == mnItemModificar) {
+			accionModificar();
+		} else if (source == mnuGrabar) {
+			accionGrabar();
+		} else if (source == mnuEliminar || source == mnItemEliminar) {
+			accionEliminar();
+		}
+	}
 }

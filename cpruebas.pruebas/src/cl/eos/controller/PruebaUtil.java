@@ -1,6 +1,5 @@
 package cl.eos.controller;
 
-import cl.eos.persistence.models.NivelEvaluacion;
 
 /**
  * Esta clase contiene los metodos para realizar los calculos de las pruebas.

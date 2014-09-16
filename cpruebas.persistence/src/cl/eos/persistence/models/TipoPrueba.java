@@ -24,12 +24,12 @@ public class TipoPrueba implements IEntity {
 	
 	@Override
 	public Long getId() {
-		return id;
+		return this.id;
 	}
 
 	@Override
 	public void setId(Long id) {
-	  this.id = id;
+		this.id = id;
 	}
 
 	@Override
@@ -39,7 +39,7 @@ public class TipoPrueba implements IEntity {
 
 	@Override
 	public void setName(String name) {
-	  this.name =  name;
+		this.name = name;
 	}
 
 	@Override

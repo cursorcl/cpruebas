@@ -82,7 +82,7 @@ public class EvaluacionPrueba implements IEntity {
 	public Long getFecha() {
 		return fecha;
 	}
-	
+
 	public LocalDate getFechaLocal() {
 		return LocalDate.ofEpochDay(this.fecha.longValue());
 	}
@@ -106,6 +106,5 @@ public class EvaluacionPrueba implements IEntity {
 	public void setColegio(Colegio colegio) {
 		this.colegio = colegio;
 	}
-	
 
 }

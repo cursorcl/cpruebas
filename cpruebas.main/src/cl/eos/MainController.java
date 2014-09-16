@@ -14,33 +14,38 @@ import cl.eos.provider.persistence.PersistenceServiceFactory;
 
 public class MainController {
 
-  @FXML
-  private MenuContainer mnuPrincipal;
-  @FXML
-  private Menu mnuAdministrar;
-  @FXML
-  private MenuItem mnuAlumno;
-  @FXML
-  private MenuItem mnuCursos;
-  @FXML
-  private MenuItem mnuProfesores;
-  @FXML
-  private MenuItem mnuAsignaturas;
-  @FXML
-  private MenuItem mnuColegios;
-  @FXML
-  private MenuItem mnuEjesTematicos;
-  @FXML
-  private MenuItem mnuHabilidades;
-  @FXML
-  private MenuItem mnuHacerPrueba;
-  @FXML
-  private MenuItem mnuEvaluarPrueba;
-  @FXML
-  private MenuItem mnuItemGeneraBD;
-  @FXML
-  private StackPane pnlContainer;
-
+	@FXML
+	private MenuContainer mnuPrincipal;
+	@FXML
+	private Menu mnuAdministrar;
+	@FXML
+	private MenuItem mnuAlumno;
+	@FXML
+	private MenuItem mnuCursos;
+	@FXML
+	private MenuItem mnuProfesores;
+	@FXML
+	private MenuItem mnuAsignaturas;
+	@FXML
+	private MenuItem mnuColegios;
+	@FXML
+	private MenuItem mnuEjesTematicos;
+	@FXML
+	private MenuItem mnuTipoPrueba;
+	@FXML
+	private MenuItem mnuNivelEvaluacion;
+	@FXML
+	private MenuItem mnuHabilidades;
+	@FXML
+	private MenuItem mnuHacerPrueba;
+	@FXML
+	private MenuItem mnuEvaluarPrueba;
+	@FXML
+	private MenuItem mnuResumenGeneral;
+	@FXML
+	private MenuItem mnuItemGeneraBD;
+	@FXML
+	private StackPane pnlContainer;
   public MainController() {
     super();
   }
@@ -129,5 +134,27 @@ public class MainController {
         PersistenceServiceFactory.getPersistenceService();
       }
     });
+    
+	mnuResumenGeneral.setOnAction(new EventHandler<ActionEvent>() {
+		@Override
+		public void handle(ActionEvent arg0) {
+				IActivator activator = new ResumenGeneralActivator();
+				 WindowManager.getInstance().show(activator.getPane(), true);
+		}
+	});
+	mnuTipoPrueba.setOnAction(new EventHandler<ActionEvent>() {
+		@Override
+		public void handle(ActionEvent arg0) {
+				IActivator activator = new TipoPruebaActivator();
+				 WindowManager.getInstance().show(activator.getPane(), true);
+		}
+	});
+	mnuNivelEvaluacion.setOnAction(new EventHandler<ActionEvent>() {
+		@Override
+		public void handle(ActionEvent arg0) {
+				IActivator activator = new NivelEvaluacionActivator();
+				 WindowManager.getInstance().show(activator.getPane(), true);
+		}
+	});
   }
 }
