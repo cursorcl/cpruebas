@@ -41,7 +41,7 @@
                   <Font name="System Bold" size="13.0" />
                </font>
             </Label>
-            <Label layoutX="204.0" prefHeight="16.0" prefWidth="0.0" text="M" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="1.0">
+            <Label layoutX="204.0" prefHeight="19.0" prefWidth="22.0" text="M" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="1.0">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>

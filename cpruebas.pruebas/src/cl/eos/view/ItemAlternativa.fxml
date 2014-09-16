@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+
+<HBox prefHeight="26.0" prefWidth="203.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <RadioButton mnemonicParsing="false">
+         <toggleGroup>
+            <ToggleGroup fx:id="group" />
+         </toggleGroup>
+         <HBox.margin>
+            <Insets bottom="2.0" left="2.0" top="2.0" />
+         </HBox.margin>
+      </RadioButton>
+      <RadioButton mnemonicParsing="false" toggleGroup="$group">
+         <HBox.margin>
+            <Insets bottom="2.0" left="2.0" top="2.0" />
+         </HBox.margin>
+      </RadioButton>
+      <RadioButton mnemonicParsing="false" toggleGroup="$group">
+         <HBox.margin>
+            <Insets bottom="2.0" left="2.0" top="2.0" />
+         </HBox.margin>
+      </RadioButton>
+      <RadioButton mnemonicParsing="false" toggleGroup="$group">
+         <HBox.margin>
+            <Insets bottom="2.0" left="2.0" top="2.0" />
+         </HBox.margin>
+      </RadioButton>
+      <RadioButton mnemonicParsing="false" toggleGroup="$group">
+         <HBox.margin>
+            <Insets bottom="2.0" left="2.0" top="2.0" />
+         </HBox.margin>
+      </RadioButton>
+      <CheckBox alignment="CENTER_RIGHT" contentDisplay="CENTER" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" prefHeight="26.0" prefWidth="24.0">
+         <HBox.margin>
+            <Insets />
+         </HBox.margin>
+      </CheckBox>
+      <CheckBox alignment="CENTER_RIGHT" contentDisplay="CENTER" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" prefHeight="26.0" prefWidth="24.0">
+         <HBox.margin>
+            <Insets right="2.0" />
+         </HBox.margin>
+      </CheckBox>
+   </children>
+</HBox>

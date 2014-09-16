@@ -7,8 +7,8 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import cl.eos.imp.view.WindowManager;
 import cl.eos.interfaces.IActivator;
 import cl.eos.provider.persistence.PersistenceServiceFactory;
 
@@ -46,110 +46,115 @@ public class MainController {
 	private MenuItem mnuItemGeneraBD;
 	@FXML
 	private StackPane pnlContainer;
+  public MainController() {
+    super();
+  }
 
-	public MainController() {
-		super();
-	}
+  @FXML
+  public void initialize() {
+    try {
+      WindowManager.getInstance().setRoot(pnlContainer);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    pnlContainer.getChildren().clear();
+    mnuAlumno.setOnAction(new EventHandler<ActionEvent>() {
+      @Override
+      public void handle(ActionEvent arg0) {
+        IActivator activator = new AlumnosActivator();
+        WindowManager.getInstance().show(activator.getPane(), true);
+      }
+    });
 
-	@FXML
-	public void initialize() {
-		pnlContainer.getChildren().clear();
-		mnuAlumno.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent arg0) {
-					IActivator activator = new AlumnosActivator();
-					pnlContainer.getChildren().setAll((Pane)activator.getPane());
-			}
-		});
-		
-		mnuCursos.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent arg0) {
-					IActivator activator = new CursosActivator();
-					pnlContainer.getChildren().setAll((Pane)activator.getPane());
-			}
-		});
-		
-		mnuAsignaturas.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent arg0) {
-					IActivator activator = new AsignaturasActivator();
-					pnlContainer.getChildren().setAll((Pane)activator.getPane());
-			}
-		});
-		
-		mnuProfesores.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent arg0) {
-					IActivator activator = new ProfesoresActivator();
-					pnlContainer.getChildren().setAll((Pane)activator.getPane());
-			}
-		});
-		
-		mnuColegios.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent arg0) {
-					IActivator activator = new ColegiosActivator();
-					pnlContainer.getChildren().setAll((Pane)activator.getPane());
-			}
-		});
-		
-		mnuHabilidades.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent arg0) {
-					IActivator activator = new HabilidadesActivator();
-					pnlContainer.getChildren().setAll((Pane)activator.getPane());
-			}
-		});
-		
-		mnuEjesTematicos.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent arg0) {
-					IActivator activator = new EjesTematicosActivator();
-					pnlContainer.getChildren().setAll((Pane)activator.getPane());
-			}
-		});
-		mnuTipoPrueba.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent arg0) {
-					IActivator activator = new TipoPruebaActivator();
-					pnlContainer.getChildren().setAll((Pane)activator.getPane());
-			}
-		});
-		mnuNivelEvaluacion.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent arg0) {
-					IActivator activator = new NivelEvaluacionActivator();
-					pnlContainer.getChildren().setAll((Pane)activator.getPane());
-			}
-		});
-		mnuHacerPrueba.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent arg0) {
-					IActivator activator = new PruebasActivator();
-					pnlContainer.getChildren().setAll((Pane)activator.getPane());
-			}
-		});
-		mnuEvaluarPrueba.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent arg0) {
-					IActivator activator = new EvaluacionPruebaActivator();
-					pnlContainer.getChildren().setAll((Pane)activator.getPane());
-			}
-		});	
-		mnuResumenGeneral.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent arg0) {
-					IActivator activator = new ResumenGeneralActivator();
-					pnlContainer.getChildren().setAll((Pane)activator.getPane());
-			}
-		});
-		
-		mnuItemGeneraBD.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent arg0) {
-				PersistenceServiceFactory.getPersistenceService();
-			}
-		});
-	}
+    mnuCursos.setOnAction(new EventHandler<ActionEvent>() {
+      @Override
+      public void handle(ActionEvent arg0) {
+        IActivator activator = new CursosActivator();
+        WindowManager.getInstance().show(activator.getPane(), true);
+      }
+    });
+
+    mnuAsignaturas.setOnAction(new EventHandler<ActionEvent>() {
+      @Override
+      public void handle(ActionEvent arg0) {
+        IActivator activator = new AsignaturasActivator();
+        WindowManager.getInstance().show(activator.getPane(), true);
+      }
+    });
+
+    mnuProfesores.setOnAction(new EventHandler<ActionEvent>() {
+      @Override
+      public void handle(ActionEvent arg0) {
+        IActivator activator = new ProfesoresActivator();
+        WindowManager.getInstance().show(activator.getPane(), true);
+      }
+    });
+
+    mnuColegios.setOnAction(new EventHandler<ActionEvent>() {
+      @Override
+      public void handle(ActionEvent arg0) {
+        IActivator activator = new ColegiosActivator();
+        WindowManager.getInstance().show(activator.getPane(), true);
+      }
+    });
+
+    mnuHabilidades.setOnAction(new EventHandler<ActionEvent>() {
+      @Override
+      public void handle(ActionEvent arg0) {
+        IActivator activator = new HabilidadesActivator();
+        WindowManager.getInstance().show(activator.getPane(), true);
+      }
+    });
+
+    mnuEjesTematicos.setOnAction(new EventHandler<ActionEvent>() {
+      @Override
+      public void handle(ActionEvent arg0) {
+        IActivator activator = new EjesTematicosActivator();
+        WindowManager.getInstance().show(activator.getPane(), true);
+      }
+    });
+
+    mnuHacerPrueba.setOnAction(new EventHandler<ActionEvent>() {
+      @Override
+      public void handle(ActionEvent arg0) {
+        IActivator activator = new PruebasActivator();
+        WindowManager.getInstance().show(activator.getPane(), true);
+      }
+    });
+    mnuEvaluarPrueba.setOnAction(new EventHandler<ActionEvent>() {
+      @Override
+      public void handle(ActionEvent arg0) {
+        IActivator activator = new EvaluacionPruebaActivator();
+        WindowManager.getInstance().show(activator.getPane(), true);
+      }
+    });
+    mnuItemGeneraBD.setOnAction(new EventHandler<ActionEvent>() {
+      @Override
+      public void handle(ActionEvent arg0) {
+        PersistenceServiceFactory.getPersistenceService();
+      }
+    });
+    
+	mnuResumenGeneral.setOnAction(new EventHandler<ActionEvent>() {
+		@Override
+		public void handle(ActionEvent arg0) {
+				IActivator activator = new ResumenGeneralActivator();
+				 WindowManager.getInstance().show(activator.getPane(), true);
+		}
+	});
+	mnuTipoPrueba.setOnAction(new EventHandler<ActionEvent>() {
+		@Override
+		public void handle(ActionEvent arg0) {
+				IActivator activator = new TipoPruebaActivator();
+				 WindowManager.getInstance().show(activator.getPane(), true);
+		}
+	});
+	mnuNivelEvaluacion.setOnAction(new EventHandler<ActionEvent>() {
+		@Override
+		public void handle(ActionEvent arg0) {
+				IActivator activator = new NivelEvaluacionActivator();
+				 WindowManager.getInstance().show(activator.getPane(), true);
+		}
+	});
+  }
 }

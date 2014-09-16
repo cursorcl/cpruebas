@@ -30,7 +30,6 @@ public class TipoPrueba implements IEntity {
 	@Override
 	public void setId(Long id) {
 		this.id = id;
-
 	}
 
 	@Override
