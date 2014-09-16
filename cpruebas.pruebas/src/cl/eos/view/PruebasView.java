@@ -211,7 +211,6 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 			}
 
 		}
-
 	}
 
 	@Override

@@ -50,6 +50,7 @@ public class EvaluacionPruebaView extends AFormView implements
 
 	@FXML
 	public void initialize() {
+		mnuResumenGeneral.setOnAction(this);
 		tblListadoPruebas.getSelectionModel().setSelectionMode(
 				SelectionMode.MULTIPLE);
 		fechaCol.setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba, LocalDate>(
@@ -69,7 +70,7 @@ public class EvaluacionPruebaView extends AFormView implements
 				.setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba, Integer>(
 						"nroPreguntas"));
 	}
-	
+
 	@Override
 	public void onDataArrived(List<Object> list) {
 		if (list != null && !list.isEmpty()) {
@@ -85,7 +86,6 @@ public class EvaluacionPruebaView extends AFormView implements
 		}
 	}
 
-
 	@Override
 	public void handle(ActionEvent event) {
 		Object source = event.getSource();
@@ -95,15 +95,15 @@ public class EvaluacionPruebaView extends AFormView implements
 	}
 
 	private void handleResumenGeneral() {
-		 if (resumenGeneral == null) {
-		      resumenGeneral =
-		          (ResumenGeneralView) show((Pane)parent, "/cl/eos/view/ResumenGeneralView.fxml");
-		    } else {
-		      show((Pane)parent, resumenGeneral);
-		    }
-		    if (evaluacionPrueba != null) {
-		      controller.findById(Prueba.class, evaluacionPrueba.getId());
-		    }
-		
+		if (resumenGeneral == null) {
+			resumenGeneral = (ResumenGeneralView) show((Pane) parent,
+					"/cl/eos/view/ResumenGeneral.fxml");
+		} else {
+			show((Pane) parent, resumenGeneral);
+		}
+		if (evaluacionPrueba != null) {
+			controller.findById(Prueba.class, evaluacionPrueba.getId());
+		}
+
 	}
 }

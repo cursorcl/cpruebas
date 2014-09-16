@@ -12,7 +12,7 @@
    <center>
       <SplitPane prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <items>
-            <StackPane prefHeight="458.0" prefWidth="686.0">
+            <StackPane prefHeight="450.0" prefWidth="650.0">
                <children>
                   <BorderPane prefHeight="459.0" prefWidth="370.0">
                      <top>
@@ -40,8 +40,7 @@
                                  <contextMenu>
                                     <ContextMenu>
                                       <items>
-                                        <MenuItem fx:id="mnuPopupModificar" mnemonicParsing="false" text="Modificar" />
-                                          <MenuItem fx:id="mnuPopupEliminar" mnemonicParsing="false" text="Eliminar" />
+                                        <MenuItem fx:id="mnuResumenGeneral" mnemonicParsing="false" text="Resumen General" />
                                       </items>
                                     </ContextMenu>
                                  </contextMenu>

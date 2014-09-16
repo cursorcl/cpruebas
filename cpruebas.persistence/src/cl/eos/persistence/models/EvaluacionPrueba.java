@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.Transient;
 
 import cl.eos.interfaces.entity.IEntity;
 
@@ -108,29 +109,36 @@ public class EvaluacionPrueba implements IEntity {
 	public void setColegio(Colegio colegio) {
 		this.colegio = colegio;
 	}
-	
-	public String getAsignatura(){
+
+	public String getAsignatura() {
 		return prueba.getAsignatura().getName();
 	}
 
-	public Integer getFormas(){
+	public Integer getFormas() {
 		return prueba.getFormas();
 	}
-	
-	public Integer getNroPreguntas(){
+
+	public Integer getNroPreguntas() {
 		return prueba.getNroPreguntas();
 	}
-	
-	private volatile Float NotaMin = 7f;
-	private volatile Float NotaMax = 0f;
-	private volatile Float PBuenasMin = 100f;
-	private volatile Float PBuenasMax = 0f;
-	private volatile Float ppuntajeMin = 100f;
-	private volatile Float ppuntajeMax = 0f;
-	private volatile Integer puntajeMin = 100;
-	private volatile Integer puntajeMax = 0;
 
-	
+	@Transient
+	private Float NotaMin = 7f;
+	@Transient
+	private Float NotaMax = 0f;
+	@Transient
+	private Float PBuenasMin = 100f;
+	@Transient
+	private Float PBuenasMax = 0f;
+	@Transient
+	private Float ppuntajeMin = 100f;
+	@Transient
+	private Float ppuntajeMax = 0f;
+	@Transient
+	private Integer puntajeMin = 100;
+	@Transient
+	private Integer puntajeMax = 0;
+
 	public void obtenerValoresMinMax() {
 		for (PruebaRendida pruebaRendida : pruebasRendidas) {
 			if (pruebaRendida.getNota() < NotaMin) {
