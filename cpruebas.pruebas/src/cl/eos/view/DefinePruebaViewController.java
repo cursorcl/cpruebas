@@ -82,8 +82,8 @@ public class DefinePruebaViewController extends AFormView {
       ObservableList<RegistroDefinePrueba> registros = FXCollections.observableArrayList();
 
       prueba = (Prueba) entity;
-      if (prueba.getRespuestas() != null) {
-        String respuestas = prueba.getRespuestas();
+      if (prueba.getResponses() != null) {
+        String respuestas = prueba.getResponses();
         int nroPreguntas = prueba.getNroPreguntas();
         for (int n = 0; n < nroPreguntas; n++) {
           RegistroDefinePrueba registro = new RegistroDefinePrueba();
