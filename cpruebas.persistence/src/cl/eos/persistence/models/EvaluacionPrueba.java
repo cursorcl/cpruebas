@@ -108,5 +108,124 @@ public class EvaluacionPrueba implements IEntity {
 	public void setColegio(Colegio colegio) {
 		this.colegio = colegio;
 	}
+	
+	public String getAsignatura(){
+		return prueba.getAsignatura().getName();
+	}
+
+	public Integer getFormas(){
+		return prueba.getFormas();
+	}
+	
+	public Integer getNroPreguntas(){
+		return prueba.getNroPreguntas();
+	}
+	
+	private volatile Float NotaMin = 7f;
+	private volatile Float NotaMax = 0f;
+	private volatile Float PBuenasMin = 100f;
+	private volatile Float PBuenasMax = 0f;
+	private volatile Float ppuntajeMin = 100f;
+	private volatile Float ppuntajeMax = 0f;
+	private volatile Integer puntajeMin = 100;
+	private volatile Integer puntajeMax = 0;
+
+	
+	public void obtenerValoresMinMax() {
+		for (PruebaRendida pruebaRendida : pruebasRendidas) {
+			if (pruebaRendida.getNota() < NotaMin) {
+				NotaMin = pruebaRendida.getNota();
+			}
+			if (pruebaRendida.getNota() > NotaMax) {
+				NotaMax = pruebaRendida.getNota();
+			}
+
+			if (pruebaRendida.getPbuenas() < PBuenasMin) {
+				PBuenasMin = pruebaRendida.getPbuenas();
+			}
+			if (pruebaRendida.getPbuenas() > PBuenasMax) {
+				PBuenasMax = pruebaRendida.getPbuenas();
+			}
+
+			if (pruebaRendida.getPpuntaje() < ppuntajeMin) {
+				ppuntajeMin = pruebaRendida.getPpuntaje();
+			}
+			if (pruebaRendida.getPpuntaje() > ppuntajeMax) {
+				ppuntajeMax = pruebaRendida.getPpuntaje();
+			}
+
+			if (pruebaRendida.getPuntaje() < puntajeMin) {
+				puntajeMin = pruebaRendida.getPuntaje();
+			}
+			if (pruebaRendida.getPuntaje() > puntajeMax) {
+				puntajeMax = pruebaRendida.getPuntaje();
+			}
+		}
+
+	}
+
+	public Float getNotaMin() {
+		return NotaMin;
+	}
+
+	public void setNotaMin(Float notaMin) {
+		NotaMin = notaMin;
+	}
+
+	public Float getNotaMax() {
+		return NotaMax;
+	}
+
+	public void setNotaMax(Float notaMax) {
+		NotaMax = notaMax;
+	}
+
+	public Float getPBuenasMin() {
+		return PBuenasMin;
+	}
+
+	public void setPBuenasMin(Float pBuenasMin) {
+		PBuenasMin = pBuenasMin;
+	}
+
+	public Float getPBuenasMax() {
+		return PBuenasMax;
+	}
+
+	public void setPBuenasMax(Float pBuenasMax) {
+		PBuenasMax = pBuenasMax;
+	}
+
+	public Float getPpuntajeMin() {
+		return ppuntajeMin;
+	}
+
+	public void setPpuntajeMin(Float ppuntajeMin) {
+		this.ppuntajeMin = ppuntajeMin;
+	}
+
+	public Float getPpuntajeMax() {
+		return ppuntajeMax;
+	}
+
+	public void setPpuntajeMax(Float ppuntajeMax) {
+		this.ppuntajeMax = ppuntajeMax;
+	}
+
+	public Integer getPuntajeMin() {
+		return puntajeMin;
+	}
+
+	public void setPuntajeMin(Integer puntajeMin) {
+		this.puntajeMin = puntajeMin;
+	}
+
+	public Integer getPuntajeMax() {
+		return puntajeMax;
+	}
+
+	public void setPuntajeMax(Integer puntajeMax) {
+		this.puntajeMax = puntajeMax;
+	}
 
 }

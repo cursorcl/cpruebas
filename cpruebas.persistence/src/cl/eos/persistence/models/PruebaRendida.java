@@ -22,6 +22,8 @@ public class PruebaRendida implements IEntity {
 	private Integer buenas;
 	private Integer malas;
 	private Integer omitidas;
+	private Float nota;
+	
 	/**
 	 * Corresponde a la forma asociada a la prueba del alumno.
 	 */
@@ -94,7 +96,11 @@ public class PruebaRendida implements IEntity {
 	}
 
 	public Float getNota() {
-		return 0F;
+		return nota;
+	}
+
+	public void setNota(Float nota) {
+		this.nota = nota;
 	}
 
 	public Integer getForma() {
@@ -105,39 +111,38 @@ public class PruebaRendida implements IEntity {
 		this.forma = forma;
 	}
 
-	public String getRut(){
+	public String getRut() {
 		return alumno.getRut();
 	}
-	
-	public String getPaterno(){
+
+	public String getPaterno() {
 		return alumno.getPaterno();
 	}
-	
-	public String getMaterno(){
+
+	public String getMaterno() {
 		return alumno.getMaterno();
 	}
-	
-	public String getNombre(){
+
+	public String getNombre() {
 		return alumno.getName();
 	}
-	
-	public String getCurso(){
+
+	public String getCurso() {
 		return alumno.getCurso().getName();
 	}
 
-	public Integer getPBuenas(){
-		return (getBuenas()/100);
+	public Float getPbuenas() {
+		Integer totalRespuestas = this.malas + this.buenas + this.omitidas;
+		return (float) ((this.buenas / totalRespuestas) * 100);
 	}
-	
-	public Integer getPuntaje(){
-		return (Integer)120;
+
+	public Integer getPuntaje() {
+		return (Integer) this.buenas;
 	}
-	
-	public Integer getPPuntaje(){
-		return (Integer)87;
+
+	public Float getPpuntaje() {
+		Integer totalRespuestas = this.malas + this.buenas + this.omitidas;
+		return (float) ((this.buenas / totalRespuestas) * 100);
 	}
-	
-	
-	
-	
+
 }

@@ -5,34 +5,44 @@ import java.util.List;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.Pane;
 import cl.eos.imp.view.AFormView;
+import cl.eos.persistence.models.EvaluacionPrueba;
 import cl.eos.persistence.models.Prueba;
 
-public class EvaluacionPruebaView extends AFormView {
+public class EvaluacionPruebaView extends AFormView implements
+		EventHandler<ActionEvent> {
 
 	@FXML
-	private TableView<Prueba> tblListadoPruebas;
+	private TableView<EvaluacionPrueba> tblListadoPruebas;
 	@FXML
-	private TableColumn<Prueba, LocalDate> fechaCol;
+	private TableColumn<EvaluacionPrueba, LocalDate> fechaCol;
 	@FXML
-	private TableColumn<Prueba, String> cursoCol;
+	private TableColumn<EvaluacionPrueba, String> cursoCol;
 	@FXML
-	private TableColumn<Prueba, String> nameCol;
+	private TableColumn<EvaluacionPrueba, String> nameCol;
 	@FXML
-	private TableColumn<Prueba, String> asignaturaCol;
+	private TableColumn<EvaluacionPrueba, String> asignaturaCol;
 	@FXML
-	private TableColumn<Prueba, String> profesorCol;
+	private TableColumn<EvaluacionPrueba, String> profesorCol;
 	@FXML
-	private TableColumn<Prueba, Integer> nroPreguntasCol;
+	private TableColumn<EvaluacionPrueba, Integer> nroPreguntasCol;
 	@FXML
-	private TableColumn<Prueba, Integer> formasCol;
+	private TableColumn<EvaluacionPrueba, Integer> formasCol;
 	@FXML
-	private TableColumn<Prueba, Integer> alternativasCol;
+	private TableColumn<EvaluacionPrueba, Integer> alternativasCol;
+	@FXML
+	private MenuItem mnuResumenGeneral;
+	private ResumenGeneralView resumenGeneral;
+	private EvaluacionPrueba evaluacionPrueba;
 
 	public EvaluacionPruebaView() {
 		// TODO Auto-generated constructor stub
@@ -42,38 +52,58 @@ public class EvaluacionPruebaView extends AFormView {
 	public void initialize() {
 		tblListadoPruebas.getSelectionModel().setSelectionMode(
 				SelectionMode.MULTIPLE);
-		fechaCol.setCellValueFactory(new PropertyValueFactory<Prueba, LocalDate>(
+		fechaCol.setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba, LocalDate>(
 				"fechaLocal"));
-		nameCol.setCellValueFactory(new PropertyValueFactory<Prueba, String>(
+		nameCol.setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba, String>(
 				"name"));
 		asignaturaCol
-				.setCellValueFactory(new PropertyValueFactory<Prueba, String>(
+				.setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba, String>(
 						"asignatura"));
 		profesorCol
-				.setCellValueFactory(new PropertyValueFactory<Prueba, String>(
+				.setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba, String>(
 						"profesor"));
 		formasCol
-				.setCellValueFactory(new PropertyValueFactory<Prueba, Integer>(
+				.setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba, Integer>(
 						"formas"));
 		nroPreguntasCol
-				.setCellValueFactory(new PropertyValueFactory<Prueba, Integer>(
+				.setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba, Integer>(
 						"nroPreguntas"));
-
 	}
-
+	
 	@Override
 	public void onDataArrived(List<Object> list) {
-
 		if (list != null && !list.isEmpty()) {
 			Object entity = list.get(0);
-			if (entity instanceof Prueba) {
-				ObservableList<Prueba> pruebas = FXCollections
+			if (entity instanceof EvaluacionPrueba) {
+				ObservableList<EvaluacionPrueba> evaluaciones = FXCollections
 						.observableArrayList();
 				for (Object lEntity : list) {
-					pruebas.add((Prueba) lEntity);
+					evaluaciones.add((EvaluacionPrueba) lEntity);
 				}
-				tblListadoPruebas.setItems(pruebas);
+				tblListadoPruebas.setItems(evaluaciones);
 			}
 		}
+	}
+
+
+	@Override
+	public void handle(ActionEvent event) {
+		Object source = event.getSource();
+		if (source == mnuResumenGeneral) {
+			handleResumenGeneral();
+		}
+	}
+
+	private void handleResumenGeneral() {
+		 if (resumenGeneral == null) {
+		      resumenGeneral =
+		          (ResumenGeneralView) show((Pane)parent, "/cl/eos/view/ResumenGeneralView.fxml");
+		    } else {
+		      show((Pane)parent, resumenGeneral);
+		    }
+		    if (evaluacionPrueba != null) {
+		      controller.findById(Prueba.class, evaluacionPrueba.getId());
+		    }
+		
 	}
 }

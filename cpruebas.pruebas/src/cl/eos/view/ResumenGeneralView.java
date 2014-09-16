@@ -11,6 +11,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import cl.eos.imp.view.AFormView;
+import cl.eos.interfaces.entity.IEntity;
 import cl.eos.persistence.models.EvaluacionPrueba;
 import cl.eos.persistence.models.PruebaRendida;
 
@@ -52,19 +53,19 @@ public class ResumenGeneralView extends AFormView {
 	@FXML
 	private TableColumn<PruebaRendida, String> colCurso;
 	@FXML
-	private TableColumn<PruebaRendida, String> colABuenas;
+	private TableColumn<PruebaRendida, Integer> colABuenas;
 	@FXML
-	private TableColumn<PruebaRendida, String> colAMalas;
+	private TableColumn<PruebaRendida, Integer> colAMalas;
 	@FXML
-	private TableColumn<PruebaRendida, String> colAOmitidas;
+	private TableColumn<PruebaRendida, Integer> colAOmitidas;
 	@FXML
-	private TableColumn<PruebaRendida, String> colPBuenas;
+	private TableColumn<PruebaRendida, Float> colPBuenas;
 	@FXML
-	private TableColumn<PruebaRendida, String> colAPuntaje;
+	private TableColumn<PruebaRendida, Integer> colAPuntaje;
 	@FXML
-	private TableColumn<PruebaRendida, String> colPPuntaje;
+	private TableColumn<PruebaRendida, Float> colPPuntaje;
 	@FXML
-	private TableColumn<PruebaRendida, String> colANota;
+	private TableColumn<PruebaRendida, Float> colANota;
 
 	public ResumenGeneralView() {
 		// TODO Auto-generated constructor stub
@@ -90,26 +91,25 @@ public class ResumenGeneralView extends AFormView {
 						"materno"));
 		colCurso.setCellValueFactory(new PropertyValueFactory<PruebaRendida, String>(
 				"curso"));
-
 		colABuenas
-				.setCellValueFactory(new PropertyValueFactory<PruebaRendida, String>(
+				.setCellValueFactory(new PropertyValueFactory<PruebaRendida, Integer>(
 						"buenas"));
 		colAMalas
-				.setCellValueFactory(new PropertyValueFactory<PruebaRendida, String>(
+				.setCellValueFactory(new PropertyValueFactory<PruebaRendida, Integer>(
 						"malas"));
 		colAOmitidas
-				.setCellValueFactory(new PropertyValueFactory<PruebaRendida, String>(
+				.setCellValueFactory(new PropertyValueFactory<PruebaRendida, Integer>(
 						"omitidas"));
 		colPBuenas
-				.setCellValueFactory(new PropertyValueFactory<PruebaRendida, String>(
+				.setCellValueFactory(new PropertyValueFactory<PruebaRendida, Float>(
 						"pbuenas"));
 		colAPuntaje
-				.setCellValueFactory(new PropertyValueFactory<PruebaRendida, String>(
+				.setCellValueFactory(new PropertyValueFactory<PruebaRendida, Integer>(
 						"puntaje"));
 		colPPuntaje
-				.setCellValueFactory(new PropertyValueFactory<PruebaRendida, String>(
+				.setCellValueFactory(new PropertyValueFactory<PruebaRendida, Float>(
 						"ppuntaje"));
-		colANota.setCellValueFactory(new PropertyValueFactory<PruebaRendida, String>(
+		colANota.setCellValueFactory(new PropertyValueFactory<PruebaRendida, Float>(
 				"nota"));
 
 	}
@@ -130,12 +130,10 @@ public class ResumenGeneralView extends AFormView {
 	}
 
 	@Override
-	public void onDataArrived(List<Object> list) {
-		if (list != null && !list.isEmpty()) {
-			Object entity = list.get(0);
-			if (entity instanceof EvaluacionPrueba) {
-				asignarDatosEvalucion((EvaluacionPrueba) entity);
-			}
+	public void onFound(IEntity entity) {
+		if (entity instanceof EvaluacionPrueba) {
+			((EvaluacionPrueba) entity).obtenerValoresMinMax();
+			asignarDatosEvalucion((EvaluacionPrueba) entity);
 		}
 	}
 
@@ -158,15 +156,25 @@ public class ResumenGeneralView extends AFormView {
 
 		List<PruebaRendida> list = entity.getPruebasRendidas();
 		if (list != null && !list.isEmpty()) {
-			Object entityObj = list.get(0);
-			if (entityObj instanceof PruebaRendida) {
-				ObservableList<PruebaRendida> oList = FXCollections
-						.observableArrayList();
-				for (Object iEntity : list) {
-					oList.add((PruebaRendida) iEntity);
-				}
-				tblAlumnos.setItems(oList);
+			ObservableList<PruebaRendida> oList = FXCollections
+					.observableArrayList();
+			for (Object iEntity : list) {
+				oList.add((PruebaRendida) iEntity);
 			}
+			tblAlumnos.setItems(oList);
 		}
+
+//		if (list != null && !list.isEmpty()) {
+//			Object entityObj = list.get(0);
+//			if (entityObj instanceof EvaluacionPrueba) {
+//				ObservableList<EvaluacionPrueba> oList = FXCollections
+//						.observableArrayList();
+//				for (Object iEntity : list) {
+//					oList.add((EvaluacionPrueba) iEntity);
+//				}
+//				tblResumen.setItems(oList);
+//			}
+//		}
+
 	}
 }
