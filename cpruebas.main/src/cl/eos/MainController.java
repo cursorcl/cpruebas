@@ -121,27 +121,13 @@ public class MainController {
         WindowManager.getInstance().show(activator.getPane(), true);
       }
     });
-    mnuEvaluarPrueba.setOnAction(new EventHandler<ActionEvent>() {
-      @Override
-      public void handle(ActionEvent arg0) {
-        IActivator activator = new EvaluacionPruebaActivator();
-        WindowManager.getInstance().show(activator.getPane(), true);
-      }
-    });
-    mnuItemGeneraBD.setOnAction(new EventHandler<ActionEvent>() {
+     mnuItemGeneraBD.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent arg0) {
         PersistenceServiceFactory.getPersistenceService();
       }
     });
     
-	mnuResumenGeneral.setOnAction(new EventHandler<ActionEvent>() {
-		@Override
-		public void handle(ActionEvent arg0) {
-				IActivator activator = new ResumenGeneralActivator();
-				 WindowManager.getInstance().show(activator.getPane(), true);
-		}
-	});
 	mnuTipoPrueba.setOnAction(new EventHandler<ActionEvent>() {
 		@Override
 		public void handle(ActionEvent arg0) {

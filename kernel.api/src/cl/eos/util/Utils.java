@@ -76,4 +76,36 @@ public class Utils {
 	    }
 	    return result;
 	}
+	
+	public static Float getNota(int nroPreguntas, float porcDificultad, String respuestas, String respEsperadas, float  notaMinima)
+	{
+		float puntajeCorte = ((float)porcDificultad / 100f) * ((float)nroPreguntas);
+		float factorBajoCorte = (4f - notaMinima) /  puntajeCorte;
+		float factorSobreCorte = 3f /  (nroPreguntas  - puntajeCorte);
+		
+		float nota = 0f;
+		
+		float correctas = getCorrectas(respuestas, respEsperadas);
+		
+		if(correctas <= puntajeCorte)
+		{
+			nota = correctas * factorBajoCorte + notaMinima;
+		}
+		else
+		{
+			nota = factorBajoCorte * puntajeCorte + (correctas - puntajeCorte) * factorSobreCorte + notaMinima;
+		}
+		
+		return nota;
+	}
+	
+	public static Float getCorrectas(String respuestas, String respEsperadas)
+	{
+		float correctas = 0;
+		for(int n = 0; n < respEsperadas.length(); n++)
+		{
+			correctas += respEsperadas.charAt(n) == respuestas.charAt(n) ? 1: 0; 
+		}
+		return correctas;
+	}
 }

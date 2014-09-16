@@ -9,43 +9,14 @@
 <?import javafx.scene.layout.*?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="485.0" prefWidth="939.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.EvaluacionPruebaView">
-   <top>
-      <MenuBar prefHeight="68.0" prefWidth="939.0" BorderPane.alignment="CENTER">
-        <menus>
-          <Menu mnemonicParsing="false" text="Archivo">
-            <items>
-                  <MenuItem id="mnuGrabar" fx:id="mnuResumenGeneral" mnemonicParsing="false" text="Resumen general">
-                     <accelerator>
-                        <KeyCodeCombination alt="UP" code="G" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-                     </accelerator></MenuItem>
-                  <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem fx:id="mnuExportar" mnemonicParsing="false" text="Exportar Evaluación Prueba" />
-                  <MenuItem fx:id="mnuImportar" mnemonicParsing="false" text="Importar Evaluación Prueba" />
-                  <SeparatorMenuItem mnemonicParsing="false" />
-              <MenuItem mnemonicParsing="false" text="Cerrar" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Edit">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Delete" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Help">
-            <items>
-              <MenuItem mnemonicParsing="false" text="About" />
-            </items>
-          </Menu>
-        </menus>
-      </MenuBar>
-   </top>
    <center>
       <SplitPane prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <items>
-            <StackPane>
+            <StackPane prefHeight="458.0" prefWidth="686.0">
                <children>
                   <BorderPane prefHeight="459.0" prefWidth="370.0">
                      <top>
-                        <AnchorPane prefHeight="53.0" prefWidth="370.0" BorderPane.alignment="CENTER">
+                        <AnchorPane prefHeight="53.0" prefWidth="686.0" BorderPane.alignment="CENTER">
                            <children>
                               <TextField layoutX="417.0" layoutY="15.0" prefHeight="23.0" prefWidth="186.0" promptText="Buscar" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="18.0" AnchorPane.topAnchor="15.0" />
                            </children>
