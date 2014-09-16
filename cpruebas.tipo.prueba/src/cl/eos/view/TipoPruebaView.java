@@ -85,9 +85,7 @@ public class TipoPruebaView extends AFormView implements
 	private void accionEliminar() {
 		ObservableList<TipoPrueba> tipoPruebaSelec = tblTipoPrueba
 				.getSelectionModel().getSelectedItems();
-		for (TipoPrueba tpPruebaSel : tipoPruebaSelec) {
-			delete(tpPruebaSel);
-		}
+		delete(tipoPruebaSelec);
 		tblTipoPrueba.getSelectionModel().clearSelection();
 	}
 
@@ -152,8 +150,7 @@ public class TipoPruebaView extends AFormView implements
 	@Override
 	public void onDeleted(IEntity entity) {
 		System.out.println("Elementoeliminando:" + entity.toString());
-		ObservableList<TipoPrueba> tipoPruebas = tblTipoPrueba.getItems();
-		tipoPruebas.remove(entity);
+		tblTipoPrueba.getItems().remove(entity);
 	}
 
 	private void removeAllStyles() {

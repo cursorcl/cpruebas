@@ -85,9 +85,7 @@ public class CursosView extends AFormView implements EventHandler<ActionEvent> {
 	private void accionEliminar() {
 		ObservableList<Curso> cursosSelec = tblCurso.getSelectionModel()
 				.getSelectedItems();
-		for (Curso curso : cursosSelec) {
-			delete(curso);
-		}
+		delete(cursosSelec);
 		tblCurso.getSelectionModel().clearSelection();
 	}
 
@@ -203,8 +201,7 @@ public class CursosView extends AFormView implements EventHandler<ActionEvent> {
 	@Override
 	public void onDeleted(IEntity entity) {
 		System.out.println("Elemento eliminando:" + entity.toString());
-		ObservableList<Curso> cursos = tblCurso.getItems();
-		cursos.remove(entity);
+		tblCurso.getItems().remove(entity);
 	}
 
 	@Override

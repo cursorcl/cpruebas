@@ -158,9 +158,8 @@ public class ColegiosView extends AFormView implements
 	private void accionEliminar() {
 		ObservableList<Colegio> colegiosSelec = tblColegio.getSelectionModel()
 				.getSelectedItems();
-		for (Colegio colegio : colegiosSelec) {
-			delete(colegio);
-		}
+		delete(colegiosSelec);
+		tblColegio.getSelectionModel().clearSelection();
 	}
 
 	private void accionGrabar() {
@@ -218,9 +217,7 @@ public class ColegiosView extends AFormView implements
 	@Override
 	public void onDeleted(IEntity entity) {
 		System.out.println("Elementoeliminando:" + entity.toString());
-		ObservableList<Colegio> asignaturas = tblColegio.getItems();
-		asignaturas.remove(entity);
-		// tblColegio.getSelectionModel().clearSelection();
+		 tblColegio.getItems().remove(entity);
 	}
 
 	public boolean validate() {

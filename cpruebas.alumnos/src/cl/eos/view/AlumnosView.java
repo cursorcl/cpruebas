@@ -25,7 +25,7 @@ import cl.eos.persistence.models.Colegio;
 import cl.eos.persistence.models.Curso;
 import cl.eos.util.Utils;
 
-public class AlumnosView extends AFormView implements EventHandler<ActionEvent>{
+public class AlumnosView extends AFormView implements EventHandler<ActionEvent> {
 
 	private static final int LARGO_CAMPO_TEXT = 100;
 
@@ -43,7 +43,7 @@ public class AlumnosView extends AFormView implements EventHandler<ActionEvent>{
 
 	@FXML
 	private MenuItem mnuModificar;
-	
+
 	@FXML
 	private TextField txtRut;
 
@@ -79,7 +79,7 @@ public class AlumnosView extends AFormView implements EventHandler<ActionEvent>{
 
 	@FXML
 	private TableColumn<Alumno, String> colPaterno;
-	
+
 	@FXML
 	private TableColumn<Alumno, String> colMaterno;
 
@@ -94,7 +94,7 @@ public class AlumnosView extends AFormView implements EventHandler<ActionEvent>{
 	public void initialize() {
 		inicializaTabla();
 		accionClicTabla();
-		
+
 		mnuGrabar.setOnAction(this);
 		mnuModificar.setOnAction(this);
 		mnuEliminar.setOnAction(this);
@@ -122,74 +122,52 @@ public class AlumnosView extends AFormView implements EventHandler<ActionEvent>{
 	}
 
 	private void accionModificar() {
-		mnItemModificar.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent event) {
-				Alumno alumno = tblAlumnos.getSelectionModel()
-						.getSelectedItem();
-				if (alumno != null) {
-					txtRut.setText(alumno.getRut());
-					txtNombres.setText(alumno.getName());
-					txtAPaterno.setText(alumno.getPaterno());
-					txtAMaterno.setText(alumno.getMaterno());
-					txtDireccion.setText(alumno.getDireccion());
-					cmbColegio.setValue(alumno.getColegio());
-					cmbCurso.setValue(alumno.getCurso());
-				}
-			}
-		});
+		Alumno alumno = tblAlumnos.getSelectionModel().getSelectedItem();
+		if (alumno != null) {
+			txtRut.setText(alumno.getRut());
+			txtNombres.setText(alumno.getName());
+			txtAPaterno.setText(alumno.getPaterno());
+			txtAMaterno.setText(alumno.getMaterno());
+			txtDireccion.setText(alumno.getDireccion());
+			cmbColegio.setValue(alumno.getColegio());
+			cmbCurso.setValue(alumno.getCurso());
+		}
 	}
 
 	private void accionEliminar() {
-		mnItemEliminar.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent event) {
-
-				ObservableList<Alumno> alumnosSelec = tblAlumnos
-						.getSelectionModel().getSelectedItems();
-				for (Alumno alumnoSel : alumnosSelec) {
-					delete(alumnoSel);
-				}
-				tblAlumnos.getSelectionModel().clearSelection();
-			}
-		});
+		ObservableList<Alumno> alumnosSelec = tblAlumnos.getSelectionModel()
+				.getSelectedItems();
+		delete(alumnosSelec);
+		tblAlumnos.getSelectionModel().clearSelection();
+		limpiarControles();
 	}
 
 	private void accionGrabar() {
-		mnuGrabar.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent arg0) {
-				IEntity entitySelected = getSelectedEntity();
-				removeAllStyles();
-				if (validate()) {
-					if (lblError != null) {
-						lblError.setText(" ");
-					}
-					Alumno alumno = null;
-					if (entitySelected != null
-							&& entitySelected instanceof Alumno) {
-						alumno = (Alumno) entitySelected;
-					} else {
-						alumno = new Alumno();
-					}
-					alumno.setRut(txtRut.getText());
-					alumno.setName(txtNombres.getText());
-					alumno.setPaterno(txtAPaterno.getText());
-					alumno.setMaterno(txtAMaterno.getText());
-					alumno.setDireccion(txtDireccion.getText());
-					alumno.setColegio(cmbColegio.getValue());
-					alumno.setCurso(cmbCurso.getValue());
-					save(alumno);
-				} else {
-					lblError.getStyleClass().add("bad");
-					lblError.setText("Corregir campos destacados en color rojo");
-				}
-				limpiarControles();
+		IEntity entitySelected = getSelectedEntity();
+		removeAllStyles();
+		if (validate()) {
+			if (lblError != null) {
+				lblError.setText(" ");
 			}
-
-		});
+			Alumno alumno = null;
+			if (entitySelected != null && entitySelected instanceof Alumno) {
+				alumno = (Alumno) entitySelected;
+			} else {
+				alumno = new Alumno();
+			}
+			alumno.setRut(txtRut.getText());
+			alumno.setName(txtNombres.getText());
+			alumno.setPaterno(txtAPaterno.getText());
+			alumno.setMaterno(txtAMaterno.getText());
+			alumno.setDireccion(txtDireccion.getText());
+			alumno.setColegio(cmbColegio.getValue());
+			alumno.setCurso(cmbCurso.getValue());
+			save(alumno);
+		} else {
+			lblError.getStyleClass().add("bad");
+			lblError.setText("Corregir campos destacados en color rojo");
+		}
+		limpiarControles();
 	}
 
 	private void limpiarControles() {
@@ -245,8 +223,7 @@ public class AlumnosView extends AFormView implements EventHandler<ActionEvent>{
 	@Override
 	public void onDeleted(IEntity entity) {
 		System.out.println("Elementoeliminando:" + entity.toString());
-		ObservableList<Alumno> alumnos = tblAlumnos.getItems();
-		alumnos.remove(entity);
+		tblAlumnos.getItems().remove(entity);
 	}
 
 	@Override
@@ -290,8 +267,8 @@ public class AlumnosView extends AFormView implements EventHandler<ActionEvent>{
 			valida = false;
 		}
 		Map<String, Object> param = new HashMap<String, Object>();
-		//param.put("dato", direccion);
-		controller.find("Alumno.preguntita", param); 
+		// param.put("dato", direccion);
+		controller.find("Alumno.preguntita", param);
 		return valida;
 	}
 
@@ -351,6 +328,6 @@ public class AlumnosView extends AFormView implements EventHandler<ActionEvent>{
 			accionGrabar();
 		} else if (source == mnuEliminar || source == mnItemEliminar) {
 			accionEliminar();
-		} 
+		}
 	}
 }

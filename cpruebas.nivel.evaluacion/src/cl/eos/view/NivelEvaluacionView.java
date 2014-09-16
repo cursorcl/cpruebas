@@ -60,7 +60,7 @@ public class NivelEvaluacionView extends AFormView implements
 	public void initialize() {
 		cmbNiveles.setOnAction(this);
 		mnuGrabar.setOnAction(this);
-		txtHasta1.setOnAction(this);
+		//txtHasta1.setOnKeyReleased();
 		txtHasta2.setOnAction(this);
 		txtHasta3.setOnAction(this);
 		txtHasta4.setOnAction(this);
@@ -268,7 +268,7 @@ public class NivelEvaluacionView extends AFormView implements
 				}
 			} else {
 				lblError.getStyleClass().add("bad");
-				lblError.setText("Corregir campos destacados en color rojo. La suma de los campos debe ser el 100%");
+				lblError.setText("Corregir campos destacados en color rojo.");
 			}
 
 		}

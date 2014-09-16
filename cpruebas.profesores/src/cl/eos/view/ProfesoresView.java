@@ -116,10 +116,7 @@ public class ProfesoresView extends AFormView implements
 	private void accionEliminar() {
 		ObservableList<Profesor> ProfesorsSelec = tblProfesores
 				.getSelectionModel().getSelectedItems();
-		// delete((IEntity) ProfesorsSelec);
-		for (Profesor ProfesorSel : ProfesorsSelec) {
-			delete(ProfesorSel);
-		}
+		delete(ProfesorsSelec);
 		tblProfesores.getSelectionModel().clearSelection();
 	}
 
@@ -196,8 +193,7 @@ public class ProfesoresView extends AFormView implements
 	@Override
 	public void onDeleted(IEntity entity) {
 		System.out.println("Elementoeliminando:" + entity.toString());
-		ObservableList<Profesor> profesores = tblProfesores.getItems();
-		profesores.remove(entity);
+		tblProfesores.getItems().remove(entity);
 	}
 
 	@Override

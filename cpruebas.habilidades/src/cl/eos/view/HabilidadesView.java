@@ -117,9 +117,7 @@ public class HabilidadesView extends AFormView implements
 	private void accionEliminar() {
 		ObservableList<Habilidad> habilidadesSelec = tblHabilidades
 				.getSelectionModel().getSelectedItems();
-		for (Habilidad habilidadesSel : habilidadesSelec) {
-			delete(habilidadesSel);
-		}
+		delete(habilidadesSelec);
 		tblHabilidades.getSelectionModel().clearSelection();
 	}
 
@@ -173,8 +171,7 @@ public class HabilidadesView extends AFormView implements
 	@Override
 	public void onDeleted(IEntity entity) {
 		System.out.println("Elementoeliminando:" + entity.toString());
-		ObservableList<Habilidad> habilidades = tblHabilidades.getItems();
-		habilidades.remove(entity);
+		tblHabilidades.getItems().remove(entity);
 	}
 
 	@Override
