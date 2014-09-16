@@ -124,7 +124,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 		nroPreguntasCol
 				.setCellValueFactory(new PropertyValueFactory<Prueba, Integer>(
 						"nroPreguntas"));
-
+		
 		bigDecimalForma.setMinValue(new BigDecimal(1));
 		bigDecimalForma.setMaxValue(new BigDecimal(5));
 		bigDecimalForma.setStepwidth(new BigDecimal(1));

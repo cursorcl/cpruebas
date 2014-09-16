@@ -7,7 +7,13 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.CheckBoxTableCell;
+import javafx.scene.control.cell.ComboBoxListCell;
+import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.util.StringConverter;
+import javafx.util.converter.CharacterStringConverter;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.persistence.models.EjeTematico;
@@ -34,6 +40,7 @@ public class DefinePruebaViewController extends AFormView {
   private TableView<Habilidad> tblHabilidades;
   @FXML
   private TableColumn<Habilidad, String> habilidadCol;
+  
 
   /**
    * A que prueba pertenece.
@@ -42,14 +49,26 @@ public class DefinePruebaViewController extends AFormView {
 
   @FXML
   public void initialize() {
+	 
+	 
     preguntaCol.setCellValueFactory(new PropertyValueFactory<RegistroDefinePrueba, Integer>(
         "numero"));
     respuestaCol.setCellValueFactory(new PropertyValueFactory<RegistroDefinePrueba, String>(
         "respuesta"));
+    
+    respuestaCol.setCellFactory(TextFieldTableCell.<RegistroDefinePrueba>forTableColumn());
+    respuestaCol.setEditable(true);
     vfCol.setCellValueFactory(new PropertyValueFactory<RegistroDefinePrueba, Boolean>(
         "verdaderoFalso"));
+    vfCol.setCellFactory(CheckBoxTableCell.forTableColumn(vfCol));
+    vfCol.setEditable(true);    
     mentalCol
         .setCellValueFactory(new PropertyValueFactory<RegistroDefinePrueba, Boolean>("mental"));
+    mentalCol.setCellFactory(CheckBoxTableCell.forTableColumn(mentalCol));
+    mentalCol.setEditable(true);
+    tblRegistroDefinePrueba.setEditable(true);
+    
+    
     habilidadCol.setCellValueFactory(new PropertyValueFactory<Habilidad, String>("name"));
     ejeTematicoCol.setCellValueFactory(new PropertyValueFactory<EjeTematico, String>("name"));
   }
@@ -87,7 +106,7 @@ public class DefinePruebaViewController extends AFormView {
         int nroPreguntas = prueba.getNroPreguntas();
         for (int n = 0; n < nroPreguntas; n++) {
           RegistroDefinePrueba registro = new RegistroDefinePrueba();
-          registro.setNumero(n);
+          registro.setNumero(n + 1);
           registro.setRespuesta(respuestas.substring(n, n + 1));
           registros.add(registro);
         }
@@ -95,7 +114,7 @@ public class DefinePruebaViewController extends AFormView {
         int nroPreguntas = prueba.getNroPreguntas();
         for (int n = 0; n < nroPreguntas; n++) {
           RegistroDefinePrueba registro = new RegistroDefinePrueba();
-          registro.setNumero(n);
+          registro.setNumero(n + 1);
           registros.add(registro);
         }
       }
