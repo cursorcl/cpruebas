@@ -2,16 +2,21 @@ package cl.eos.view;
 
 import java.util.List;
 
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TreeTableColumn.CellDataFeatures;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.ComboBoxListCell;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.util.Callback;
 import javafx.util.StringConverter;
 import javafx.util.converter.CharacterStringConverter;
 import cl.eos.imp.view.AFormView;
@@ -21,6 +26,8 @@ import cl.eos.persistence.models.Habilidad;
 import cl.eos.persistence.models.Prueba;
 
 public class DefinePruebaViewController extends AFormView {
+
+  private static final String VALID_LETTERS = "ABCDEVF";
 
   @FXML
   private TableView<RegistroDefinePrueba> tblRegistroDefinePrueba;
@@ -40,7 +47,7 @@ public class DefinePruebaViewController extends AFormView {
   private TableView<Habilidad> tblHabilidades;
   @FXML
   private TableColumn<Habilidad, String> habilidadCol;
-  
+
 
   /**
    * A que prueba pertenece.
@@ -49,26 +56,42 @@ public class DefinePruebaViewController extends AFormView {
 
   @FXML
   public void initialize() {
-	 
-	 
+
+
     preguntaCol.setCellValueFactory(new PropertyValueFactory<RegistroDefinePrueba, Integer>(
         "numero"));
     respuestaCol.setCellValueFactory(new PropertyValueFactory<RegistroDefinePrueba, String>(
         "respuesta"));
-    
     respuestaCol.setCellFactory(TextFieldTableCell.<RegistroDefinePrueba>forTableColumn());
     respuestaCol.setEditable(true);
+    respuestaCol
+        .setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<RegistroDefinePrueba, String>>() {
+          @Override
+          public void handle(TableColumn.CellEditEvent<RegistroDefinePrueba, String> t) {
+            String values = VALID_LETTERS.substring(0, prueba.getAlternativas());
+            String answer = t.getNewValue().substring(0, 1).toUpperCase();
+            if (values.indexOf(answer) != -1) {
+              t.getRowValue().setRespuesta(answer);
+            }
+            else
+            {
+              t.getRowValue().setRespuesta("");
+            }
+          }
+        });
+
     vfCol.setCellValueFactory(new PropertyValueFactory<RegistroDefinePrueba, Boolean>(
         "verdaderoFalso"));
     vfCol.setCellFactory(CheckBoxTableCell.forTableColumn(vfCol));
-    vfCol.setEditable(true);    
+    vfCol.setEditable(true);
+
     mentalCol
         .setCellValueFactory(new PropertyValueFactory<RegistroDefinePrueba, Boolean>("mental"));
     mentalCol.setCellFactory(CheckBoxTableCell.forTableColumn(mentalCol));
     mentalCol.setEditable(true);
     tblRegistroDefinePrueba.setEditable(true);
-    
-    
+
+
     habilidadCol.setCellValueFactory(new PropertyValueFactory<Habilidad, String>("name"));
     ejeTematicoCol.setCellValueFactory(new PropertyValueFactory<EjeTematico, String>("name"));
   }
