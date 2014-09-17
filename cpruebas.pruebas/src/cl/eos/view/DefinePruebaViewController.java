@@ -9,6 +9,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TreeTableColumn.CellDataFeatures;
 import javafx.scene.control.cell.CheckBoxTableCell;
@@ -27,138 +28,159 @@ import cl.eos.persistence.models.Prueba;
 
 public class DefinePruebaViewController extends AFormView {
 
-  private static final String VALID_LETTERS = "ABCDEVF";
+	private static final String VALID_LETTERS = "ABCDEVF";
 
-  @FXML
-  private TableView<RegistroDefinePrueba> tblRegistroDefinePrueba;
-  @FXML
-  private TableColumn<RegistroDefinePrueba, Integer> preguntaCol;
-  @FXML
-  private TableColumn<RegistroDefinePrueba, String> respuestaCol;
-  @FXML
-  private TableColumn<RegistroDefinePrueba, Boolean> vfCol;
-  @FXML
-  private TableColumn<RegistroDefinePrueba, Boolean> mentalCol;
-  @FXML
-  private TableView<EjeTematico> tblEjesTematicos;
-  @FXML
-  private TableColumn<EjeTematico, String> ejeTematicoCol;
-  @FXML
-  private TableView<Habilidad> tblHabilidades;
-  @FXML
-  private TableColumn<Habilidad, String> habilidadCol;
+	@FXML
+	private TableView<RegistroDefinePrueba> tblRegistroDefinePrueba;
+	@FXML
+	private TableColumn<RegistroDefinePrueba, Integer> preguntaCol;
+	@FXML
+	private TableColumn<RegistroDefinePrueba, String> respuestaCol;
+	@FXML
+	private TableColumn<RegistroDefinePrueba, Boolean> vfCol;
+	@FXML
+	private TableColumn<RegistroDefinePrueba, Boolean> mentalCol;
+	@FXML
+	private TableView<EjeTematico> tblEjesTematicos;
+	@FXML
+	private TableColumn<EjeTematico, String> ejeTematicoCol;
+	@FXML
+	private TableView<Habilidad> tblHabilidades;
+	@FXML
+	private TableColumn<Habilidad, String> habilidadCol;
 
+	/**
+	 * A que prueba pertenece.
+	 */
+	private Prueba prueba;
 
-  /**
-   * A que prueba pertenece.
-   */
-  private Prueba prueba;
+	@FXML
+	public void initialize() {
 
-  @FXML
-  public void initialize() {
+		preguntaCol
+				.setCellValueFactory(new PropertyValueFactory<RegistroDefinePrueba, Integer>(
+						"numero"));
+		respuestaCol
+				.setCellValueFactory(new PropertyValueFactory<RegistroDefinePrueba, String>(
+						"respuesta"));
+		respuestaCol.setCellFactory(TextFieldTableCell
+				.<RegistroDefinePrueba> forTableColumn());
+		respuestaCol.setEditable(true);
+		respuestaCol
+				.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<RegistroDefinePrueba, String>>() {
+					@Override
+					public void handle(
+							TableColumn.CellEditEvent<RegistroDefinePrueba, String> event) {
+						String values = VALID_LETTERS.substring(0,
+								prueba.getAlternativas());
+						String answer = event.getNewValue().substring(0, 1)
+								.toUpperCase();
+						if (values.indexOf(answer) != -1) {
+							event.getRowValue().setRespuesta(answer);
+						} else {
+							event.getRowValue().setRespuesta(
+									event.getOldValue());
+						}
+					}
+				});
 
+		vfCol.setCellValueFactory(new PropertyValueFactory<RegistroDefinePrueba, Boolean>(
+				"verdaderoFalso"));
+		vfCol.setCellFactory(CheckBoxTableCell.forTableColumn(vfCol));
+		vfCol.setEditable(true);
+		vfCol.setOnEditCommit(new EventHandler<CellEditEvent<RegistroDefinePrueba, Boolean>>() {
+			@Override
+			public void handle(
+					CellEditEvent<RegistroDefinePrueba, Boolean> event) {
+				
+				if(event.getRowValue().getVerdaderoFalso().booleanValue())
+				{
+					event.getRowValue().setMental(false);
+				}
+			}
 
-    preguntaCol.setCellValueFactory(new PropertyValueFactory<RegistroDefinePrueba, Integer>(
-        "numero"));
-    respuestaCol.setCellValueFactory(new PropertyValueFactory<RegistroDefinePrueba, String>(
-        "respuesta"));
-    respuestaCol.setCellFactory(TextFieldTableCell.<RegistroDefinePrueba>forTableColumn());
-    respuestaCol.setEditable(true);
-    respuestaCol
-        .setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<RegistroDefinePrueba, String>>() {
-          @Override
-          public void handle(TableColumn.CellEditEvent<RegistroDefinePrueba, String> t) {
-            String values = VALID_LETTERS.substring(0, prueba.getAlternativas());
-            String answer = t.getNewValue().substring(0, 1).toUpperCase();
-            if (values.indexOf(answer) != -1) {
-              t.getRowValue().setRespuesta(answer);
-            }
-            else
-            {
-              t.getRowValue().setRespuesta("");
-            }
-          }
-        });
+		});
 
-    vfCol.setCellValueFactory(new PropertyValueFactory<RegistroDefinePrueba, Boolean>(
-        "verdaderoFalso"));
-    vfCol.setCellFactory(CheckBoxTableCell.forTableColumn(vfCol));
-    vfCol.setEditable(true);
+		mentalCol
+				.setCellValueFactory(new PropertyValueFactory<RegistroDefinePrueba, Boolean>(
+						"mental"));
+		mentalCol.setCellFactory(CheckBoxTableCell.forTableColumn(mentalCol));
+		mentalCol.setEditable(true);
+		tblRegistroDefinePrueba.setEditable(true);
 
-    mentalCol
-        .setCellValueFactory(new PropertyValueFactory<RegistroDefinePrueba, Boolean>("mental"));
-    mentalCol.setCellFactory(CheckBoxTableCell.forTableColumn(mentalCol));
-    mentalCol.setEditable(true);
-    tblRegistroDefinePrueba.setEditable(true);
+		habilidadCol
+				.setCellValueFactory(new PropertyValueFactory<Habilidad, String>(
+						"name"));
+		ejeTematicoCol
+				.setCellValueFactory(new PropertyValueFactory<EjeTematico, String>(
+						"name"));
+	}
 
+	@Override
+	public void onDataArrived(List<Object> list) {
 
-    habilidadCol.setCellValueFactory(new PropertyValueFactory<Habilidad, String>("name"));
-    ejeTematicoCol.setCellValueFactory(new PropertyValueFactory<EjeTematico, String>("name"));
-  }
+		if (list != null && !list.isEmpty()) {
+			Object entity = list.get(0);
+			if (entity instanceof EjeTematico) {
+				ObservableList<EjeTematico> ejesTematicos = FXCollections
+						.observableArrayList();
+				for (Object lEntity : list) {
+					ejesTematicos.add((EjeTematico) lEntity);
+				}
+				tblEjesTematicos.setItems(ejesTematicos);
+			} else if (entity instanceof Habilidad) {
+				ObservableList<Habilidad> habilidades = FXCollections
+						.observableArrayList();
+				for (Object lEntity : list) {
+					habilidades.add((Habilidad) lEntity);
+				}
+				tblHabilidades.setItems(habilidades);
+			}
+		}
+	}
 
-  @Override
-  public void onDataArrived(List<Object> list) {
+	@Override
+	public void onFound(IEntity entity) {
+		if (entity instanceof Prueba) {
+			ObservableList<RegistroDefinePrueba> registros = FXCollections
+					.observableArrayList();
 
-    if (list != null && !list.isEmpty()) {
-      Object entity = list.get(0);
-      if (entity instanceof EjeTematico) {
-        ObservableList<EjeTematico> ejesTematicos = FXCollections.observableArrayList();
-        for (Object lEntity : list) {
-          ejesTematicos.add((EjeTematico) lEntity);
-        }
-        tblEjesTematicos.setItems(ejesTematicos);
-      } else if (entity instanceof Habilidad) {
-        ObservableList<Habilidad> habilidades = FXCollections.observableArrayList();
-        for (Object lEntity : list) {
-          habilidades.add((Habilidad) lEntity);
-        }
-        tblHabilidades.setItems(habilidades);
-      }
-    }
-  }
+			prueba = (Prueba) entity;
+			if (prueba.getResponses() != null) {
+				String respuestas = prueba.getResponses();
+				int nroPreguntas = prueba.getNroPreguntas();
+				for (int n = 0; n < nroPreguntas; n++) {
+					RegistroDefinePrueba registro = new RegistroDefinePrueba();
+					registro.setNumero(n + 1);
+					registro.setRespuesta(respuestas.substring(n, n + 1));
+					registros.add(registro);
+				}
+			} else {
+				int nroPreguntas = prueba.getNroPreguntas();
+				for (int n = 0; n < nroPreguntas; n++) {
+					RegistroDefinePrueba registro = new RegistroDefinePrueba();
+					registro.setNumero(n + 1);
+					registros.add(registro);
+				}
+			}
+			tblRegistroDefinePrueba.setItems(registros);
+		}
+	}
 
+	public Prueba getPrueba() {
+		return prueba;
+	}
 
-  @Override
-  public void onFound(IEntity entity) {
-    if (entity instanceof Prueba) {
-      ObservableList<RegistroDefinePrueba> registros = FXCollections.observableArrayList();
+	public void setPrueba(Prueba prueba) {
+		this.prueba = prueba;
+		if (this.prueba != null) {
+			this.prueba.getAlternativas();
+		}
+	}
 
-      prueba = (Prueba) entity;
-      if (prueba.getResponses() != null) {
-        String respuestas = prueba.getResponses();
-        int nroPreguntas = prueba.getNroPreguntas();
-        for (int n = 0; n < nroPreguntas; n++) {
-          RegistroDefinePrueba registro = new RegistroDefinePrueba();
-          registro.setNumero(n + 1);
-          registro.setRespuesta(respuestas.substring(n, n + 1));
-          registros.add(registro);
-        }
-      } else {
-        int nroPreguntas = prueba.getNroPreguntas();
-        for (int n = 0; n < nroPreguntas; n++) {
-          RegistroDefinePrueba registro = new RegistroDefinePrueba();
-          registro.setNumero(n + 1);
-          registros.add(registro);
-        }
-      }
-      tblRegistroDefinePrueba.setItems(registros);
-    }
-  }
-
-  public Prueba getPrueba() {
-    return prueba;
-  }
-
-  public void setPrueba(Prueba prueba) {
-    this.prueba = prueba;
-    if (this.prueba != null) {
-      this.prueba.getAlternativas();
-    }
-  }
-
-  public static void main(String[] args) {
-    String koala = "cualquier palabra";
-    System.out.println(koala.substring(2, 3));
-  }
+	public static void main(String[] args) {
+		String koala = "cualquier palabra";
+		System.out.println(koala.substring(2, 3));
+	}
 
 }
