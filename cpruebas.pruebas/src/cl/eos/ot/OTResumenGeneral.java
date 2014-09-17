@@ -4,8 +4,8 @@ public class OTResumenGeneral {
 
 	private String name;
 	private Float nota;
-	private Float pBuenas;
-	private Float pPuntaje;
+	private Float pbuenas;
+	private Float ppuntaje;
 	private Integer puntaje;
 
 	public OTResumenGeneral(String name, Float nota, Float pBuenas,
@@ -13,8 +13,8 @@ public class OTResumenGeneral {
 		super();
 		this.name = name;
 		this.nota = nota;
-		this.pBuenas = pBuenas;
-		this.pPuntaje = pPuntaje;
+		this.pbuenas = pBuenas;
+		this.ppuntaje = pPuntaje;
 		this.puntaje = puntaje;
 	}
 
@@ -34,20 +34,20 @@ public class OTResumenGeneral {
 		this.nota = nota;
 	}
 
-	public Float getpBuenas() {
-		return pBuenas;
+	public Float getPbuenas() {
+		return pbuenas;
 	}
 
-	public void setpBuenas(Float pBuenas) {
-		this.pBuenas = pBuenas;
+	public void setPbuenas(Float pBuenas) {
+		this.pbuenas = pBuenas;
 	}
 
-	public Float getpPuntaje() {
-		return pPuntaje;
+	public Float getPpuntaje() {
+		return ppuntaje;
 	}
 
-	public void setpPuntaje(Float pPuntaje) {
-		this.pPuntaje = pPuntaje;
+	public void setPpuntaje(Float pPuntaje) {
+		this.ppuntaje = pPuntaje;
 	}
 
 	public Integer getPuntaje() {

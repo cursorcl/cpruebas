@@ -127,13 +127,13 @@ public class ResumenGeneralView extends AFormView {
 				"nota"));
 		colBuenas
 				.setCellValueFactory(new PropertyValueFactory<OTResumenGeneral, Float>(
-						"pBuenas"));
+						"pbuenas"));
 		ColPuntos
 				.setCellValueFactory(new PropertyValueFactory<OTResumenGeneral, Integer>(
 						"puntaje"));
 		colPuntaje
 				.setCellValueFactory(new PropertyValueFactory<OTResumenGeneral, Float>(
-						"pPuntaje"));
+						"ppuntaje"));
 	}
 
 	@Override
