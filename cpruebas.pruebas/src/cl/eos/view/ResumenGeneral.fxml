@@ -11,7 +11,7 @@
    <center>
       <SplitPane dividerPositions="0.36607142857142855" orientation="VERTICAL" prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <items>
-            <SplitPane dividerPositions="0.3970802919708029" prefHeight="114.0" prefWidth="685.0">
+            <SplitPane dividerPositions="0.3761792452830189" prefHeight="114.0" prefWidth="685.0">
               <items>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                      <children>
@@ -47,15 +47,15 @@
                               <TextField fx:id="txtPjePrueba" editable="false" layoutX="330.0" layoutY="11.0" prefHeight="25.0" prefWidth="50.0" />
                            </children>
                         </AnchorPane>
-                      <AnchorPane prefHeight="111.0" prefWidth="493.0">
+                      <AnchorPane prefHeight="82.0" prefWidth="526.0">
                            <children>
-                              <TableView fx:id="tblResumen" fixedCellSize="1.0" prefHeight="110.0" prefWidth="506.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="-44.0">
+                              <TableView fx:id="tblResumen" prefHeight="139.0" prefWidth="524.0">
                                 <columns>
-                                    <TableColumn fx:id="colNombre" editable="false" prefWidth="106.0" sortable="false" />
-                                  <TableColumn fx:id="colNotas" prefWidth="89.0" text="Nota" />
-                                  <TableColumn fx:id="colBuenas" prefWidth="91.0" text="\%Buenas" />
-                                    <TableColumn fx:id="ColPuntos" prefWidth="100.0" text="Puntos" />
-                                    <TableColumn fx:id="colPuntaje" prefWidth="90.0" text="\%Puntaje" />
+                                  <TableColumn fx:id="colNombre" prefWidth="105.0" />
+                                  <TableColumn fx:id="colNotas" prefWidth="91.0" text="Nota" />
+                                    <TableColumn fx:id="colBuenas" prefWidth="97.0" text="\%Buenas" />
+                                    <TableColumn fx:id="ColPuntos" prefWidth="103.0" text="Puntos" />
+                                    <TableColumn fx:id="colPuntaje" prefWidth="127.0" text="\%Puntaje" />
                                 </columns>
                               </TableView>
                            </children>
@@ -71,7 +71,7 @@
                         <Pagination prefHeight="0.0" prefWidth="685.0" BorderPane.alignment="CENTER" />
                      </bottom>
                      <center>
-                        <AnchorPane>
+                        <AnchorPane prefHeight="482.0" prefWidth="848.0">
                            <children>
                               <TableView fx:id="tblAlumnos" prefWidth="670.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" BorderPane.alignment="CENTER">
                                 <columns>

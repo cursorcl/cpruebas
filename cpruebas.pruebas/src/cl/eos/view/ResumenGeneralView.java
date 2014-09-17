@@ -118,6 +118,8 @@ public class ResumenGeneralView extends AFormView {
 
 	}
 
+
+	
 	private void inicializarTablaResumen() {
 		tblResumen.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 		colNombre
@@ -134,6 +136,7 @@ public class ResumenGeneralView extends AFormView {
 		colPuntaje
 				.setCellValueFactory(new PropertyValueFactory<OTResumenGeneral, Float>(
 						"ppuntaje"));
+		
 	}
 
 	@Override
@@ -147,6 +150,7 @@ public class ResumenGeneralView extends AFormView {
 					.getNotaMax(), evaluacionPrueba.getPBuenasMax(),
 					evaluacionPrueba.getPpuntajeMax(), evaluacionPrueba
 							.getPuntajeMax()));
+
 			listaResumen.add(new OTResumenGeneral("Mínimo", evaluacionPrueba
 					.getNotaMin(), evaluacionPrueba.getPBuenasMin(),
 					evaluacionPrueba.getPpuntajeMin(), evaluacionPrueba
@@ -188,19 +192,12 @@ public class ResumenGeneralView extends AFormView {
 		List<PruebaRendida> list = entity.getPruebasRendidas();
 		if (list != null && !list.isEmpty()) {
 			ObservableList<PruebaRendida> oList = FXCollections
-					.observableArrayList();
-			for (Object iEntity : list) {
-				oList.add((PruebaRendida) iEntity);
-			}
+					.observableArrayList(list);
 			tblAlumnos.setItems(oList);
 		}
-		
+
 		ObservableList<OTResumenGeneral> oList = FXCollections
-				.observableArrayList();
-		for (OTResumenGeneral iEntity : listaResumen) {
-			oList.add((OTResumenGeneral) iEntity);
-		}
+				.observableArrayList(listaResumen);
 		tblResumen.setItems(oList);
-		tblResumen.getSelectionModel().getSelectedItems();
 	}
 }
