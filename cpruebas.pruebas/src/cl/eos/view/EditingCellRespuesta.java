@@ -10,6 +10,14 @@ public class EditingCellRespuesta extends
 		TableCell<RegistroDefinePrueba, String> {
 
 	private String validValues = "abcdevf";
+	public String getValidValues() {
+		return validValues;
+	}
+
+	public void setValidValues(String validValues) {
+		this.validValues = validValues;
+	}
+
 	private TextField textField;
 
 	public EditingCellRespuesta() {
@@ -63,7 +71,7 @@ public class EditingCellRespuesta extends
 			public void handle(KeyEvent event) {
 				String ch = event.getCharacter();
 				
-				if (!ch.toLowerCase().equals("a") ) {
+				if (validValues.indexOf(ch.toUpperCase()) == -1 ) {
 					event.consume();
 				}
 				if(textField.getText().length() > 0)

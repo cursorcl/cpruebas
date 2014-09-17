@@ -65,7 +65,6 @@ public class DefinePruebaViewController extends AFormView {
 					@Override
 					public TableCell<RegistroDefinePrueba, String> call(
 							final TableColumn<RegistroDefinePrueba, String> column) {
-						// if (value instanceof Boolean)
 						return new EditingCellRespuesta();
 					}
 				});
@@ -149,6 +148,17 @@ public class DefinePruebaViewController extends AFormView {
 			ObservableList<RegistroDefinePrueba> registros = FXCollections
 					.observableArrayList();
 
+			respuestaCol
+			.setCellFactory(new Callback<TableColumn<RegistroDefinePrueba, String>, TableCell<RegistroDefinePrueba, String>>() {
+				@Override
+				public TableCell<RegistroDefinePrueba, String> call(
+						final TableColumn<RegistroDefinePrueba, String> column) {
+					EditingCellRespuesta editing = new EditingCellRespuesta();
+					editing.setValidValues(VALID_LETTERS.substring(0, prueba.getAlternativas()));
+					return editing;
+				}
+			});
+
 			prueba = (Prueba) entity;
 			if (prueba.getResponses() != null) {
 				String respuestas = prueba.getResponses();
@@ -168,7 +178,7 @@ public class DefinePruebaViewController extends AFormView {
 					registros.add(registro);
 				}
 			}
-			tblRegistroDefinePrueba.setItems(registros);
+			
 		}
 	}
 
