@@ -100,7 +100,7 @@
                                              <accelerator>
                                                 <KeyCodeCombination alt="UP" code="T" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                                              </accelerator></MenuItem>
-                                          <MenuItem fx:id="mnuNivelEvaluacion" mnemonicParsing="false" text="Nivel evaluación">
+                                          <MenuItem fx:id="mnuNivelEvaluacion" mnemonicParsing="false" text="Nivel evaluación" visible="false">
                                              <accelerator>
                                                 <KeyCodeCombination alt="UP" code="N" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                                              </accelerator></MenuItem>

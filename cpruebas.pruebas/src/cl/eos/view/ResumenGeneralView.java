@@ -124,10 +124,10 @@ public class ResumenGeneralView extends AFormView {
 				.setCellValueFactory(new PropertyValueFactory<OTResumenGeneral, String>(
 						"name"));
 		colNotas.setCellValueFactory(new PropertyValueFactory<OTResumenGeneral, Float>(
-				"notaMin"));
+				"nota"));
 		colBuenas
 				.setCellValueFactory(new PropertyValueFactory<OTResumenGeneral, Float>(
-						"notaMax"));
+						"pBuenas"));
 		ColPuntos
 				.setCellValueFactory(new PropertyValueFactory<OTResumenGeneral, Integer>(
 						"puntaje"));
@@ -142,7 +142,7 @@ public class ResumenGeneralView extends AFormView {
 			EvaluacionPrueba evaluacionPrueba = (EvaluacionPrueba) entity;
 			evaluacionPrueba.procesarValoresMinMax();
 
-			List<OTResumenGeneral> listaResumen = new LinkedList<>();
+			List<OTResumenGeneral> listaResumen = new LinkedList<OTResumenGeneral>();
 			listaResumen.add(new OTResumenGeneral("Máximo", evaluacionPrueba
 					.getNotaMax(), evaluacionPrueba.getPBuenasMax(),
 					evaluacionPrueba.getPpuntajeMax(), evaluacionPrueba
@@ -194,13 +194,13 @@ public class ResumenGeneralView extends AFormView {
 			}
 			tblAlumnos.setItems(oList);
 		}
-
+		
 		ObservableList<OTResumenGeneral> oList = FXCollections
 				.observableArrayList();
 		for (OTResumenGeneral iEntity : listaResumen) {
 			oList.add((OTResumenGeneral) iEntity);
 		}
 		tblResumen.setItems(oList);
-
+		tblResumen.getSelectionModel().getSelectedItems();
 	}
 }
