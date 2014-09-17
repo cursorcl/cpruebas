@@ -2,24 +2,18 @@ package cl.eos.view;
 
 import java.util.List;
 
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.RadioButton;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TreeTableColumn.CellDataFeatures;
 import javafx.scene.control.cell.CheckBoxTableCell;
-import javafx.scene.control.cell.ComboBoxListCell;
-import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.Callback;
-import javafx.util.StringConverter;
-import javafx.util.converter.CharacterStringConverter;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.persistence.models.EjeTematico;
@@ -65,6 +59,17 @@ public class DefinePruebaViewController extends AFormView {
 						"respuesta"));
 		respuestaCol.setCellFactory(TextFieldTableCell
 				.<RegistroDefinePrueba> forTableColumn());
+
+		respuestaCol
+				.setCellFactory(new Callback<TableColumn<RegistroDefinePrueba, String>, TableCell<RegistroDefinePrueba, String>>() {
+					@Override
+					public TableCell<RegistroDefinePrueba, String> call(
+							final TableColumn<RegistroDefinePrueba, String> column) {
+						// if (value instanceof Boolean)
+						return new EditingCellRespuesta();
+					}
+				});
+
 		respuestaCol.setEditable(true);
 		respuestaCol
 				.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<RegistroDefinePrueba, String>>() {
@@ -92,9 +97,8 @@ public class DefinePruebaViewController extends AFormView {
 			@Override
 			public void handle(
 					CellEditEvent<RegistroDefinePrueba, Boolean> event) {
-				
-				if(event.getRowValue().getVerdaderoFalso().booleanValue())
-				{
+
+				if (event.getRowValue().getVerdaderoFalso().booleanValue()) {
 					event.getRowValue().setMental(false);
 				}
 			}
@@ -149,6 +153,7 @@ public class DefinePruebaViewController extends AFormView {
 			if (prueba.getResponses() != null) {
 				String respuestas = prueba.getResponses();
 				int nroPreguntas = prueba.getNroPreguntas();
+				
 				for (int n = 0; n < nroPreguntas; n++) {
 					RegistroDefinePrueba registro = new RegistroDefinePrueba();
 					registro.setNumero(n + 1);
