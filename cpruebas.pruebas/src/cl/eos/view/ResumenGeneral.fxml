@@ -37,7 +37,7 @@
                   </AnchorPane>
                   <VBox>
                      <children>
-                        <AnchorPane prefHeight="86.0" prefWidth="410.0">
+                        <AnchorPane prefHeight="43.0" prefWidth="508.0">
                            <children>
                               <Label layoutX="14.0" layoutY="14.0" prefHeight="17.0" prefWidth="76.0" text="Exigencia" AnchorPane.leftAnchor="5.0" />
                               <TextField id="txtExigencia" fx:id="txtExigencia" editable="false" layoutX="65.0" layoutY="10.0" maxWidth="50.0" />
