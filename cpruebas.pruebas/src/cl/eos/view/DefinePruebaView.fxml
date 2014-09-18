@@ -1,27 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.shape.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="427.0" prefWidth="728.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.DefinePruebaViewController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="427.0" prefWidth="805.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.DefinePruebaViewController">
    <children>
-      <TableView fx:id="tblRegistroDefinePrueba" editable="true" layoutX="6.0" layoutY="7.0" prefHeight="421.0" prefWidth="256.0" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="6.0" AnchorPane.topAnchor="3.0">
+      <TableView fx:id="tblEjesTematicos" layoutX="350.0" layoutY="3.0" prefHeight="421.0" prefWidth="186.0" AnchorPane.bottomAnchor="3.0" AnchorPane.rightAnchor="192.0" AnchorPane.topAnchor="3.0">
         <columns>
-          <TableColumn fx:id="preguntaCol" prefWidth="64.0" text="Pregunta" />
-          <TableColumn fx:id="respuestaCol" prefWidth="86.0" text="Respuesta" />
-            <TableColumn fx:id="vfCol" prefWidth="42.0" text="V/F" />
-            <TableColumn fx:id="mentalCol" prefWidth="48.0" text="Mem" />
+          <TableColumn fx:id="ejeTematicoCol" editable="false" prefWidth="175.0" resizable="false" sortable="false" text="Ejes temáticos" />
         </columns>
       </TableView>
-      <TableView fx:id="tblEjesTematicos" layoutX="275.0" layoutY="3.0" prefHeight="421.0" prefWidth="213.0" AnchorPane.bottomAnchor="3.0" AnchorPane.rightAnchor="238.0" AnchorPane.topAnchor="3.0">
+      <TableView fx:id="tblHabilidades" layoutX="496.0" layoutY="3.0" prefHeight="421.0" prefWidth="186.0" AnchorPane.bottomAnchor="3.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="3.0">
         <columns>
-          <TableColumn fx:id="ejeTematicoCol" prefWidth="199.0" text="Ejes temáticos" />
+          <TableColumn fx:id="habilidadCol" editable="false" prefWidth="180.0" resizable="false" sortable="false" text="Habilidad" />
         </columns>
       </TableView>
-      <TableView fx:id="tblHabilidades" layoutX="496.0" layoutY="3.0" prefHeight="421.0" prefWidth="228.0" AnchorPane.bottomAnchor="3.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="3.0">
+      <TableView fx:id="tblRegistroDefinePrueba" layoutY="3.0" prefHeight="421.0" prefWidth="422.0">
         <columns>
-          <TableColumn fx:id="habilidadCol" prefWidth="216.0" text="Hbilidad" />
+          <TableColumn fx:id="preguntaCol" prefWidth="29.0" resizable="false" sortable="false" text="#" />
+          <TableColumn fx:id="respuestaCol" prefWidth="42.0" resizable="false" sortable="false" text="Res" />
+            <TableColumn fx:id="vfCol" prefWidth="33.0" resizable="false" sortable="false" text="V/F" />
+            <TableColumn fx:id="mentalCol" prefWidth="44.0" resizable="false" sortable="false" text="Mental" />
+            <TableColumn fx:id="ejeCol" editable="false" prefWidth="127.0" resizable="false" sortable="false" text="Eje" />
+            <TableColumn fx:id="habCol" editable="false" prefWidth="135.0" sortable="false" text="Habilidad" />
         </columns>
       </TableView>
    </children>

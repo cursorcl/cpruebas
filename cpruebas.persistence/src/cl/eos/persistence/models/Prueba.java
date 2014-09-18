@@ -1,6 +1,7 @@
 package cl.eos.persistence.models;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,155 +10,160 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 
 import cl.eos.interfaces.entity.IEntity;
 
 @Entity(name = "prueba")
-@NamedQueries({ @NamedQuery(name = "Prueba.findAll", query = "SELECT e FROM prueba e") })
+@NamedQueries({@NamedQuery(name = "Prueba.findAll", query = "SELECT e FROM prueba e")})
 public class Prueba implements IEntity {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+  private static final long serialVersionUID = 1L;
 
-	@Column(length = 100)
-	private String name; 
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-	private TipoPrueba tipoPrueba;
-	private TipoCurso curso;
-	private Asignatura asignatura;
-	private NivelEvaluacion nivelEvaluacion;
+  @Column(length = 100)
+  private String name;
 
-	private Long fecha;
-	private Integer nroPreguntas;
-	private Integer formas;
-	private Integer alternativas;
-	private Profesor profesor;
-	private String responses;
-	
-	private Integer puntajeBase;
+  private TipoPrueba tipoPrueba;
+  private TipoCurso curso;
+  private Asignatura asignatura;
+  private NivelEvaluacion nivelEvaluacion;
 
-	public TipoPrueba getTipoPrueba() {
-		return tipoPrueba;
-	}
+  private Long fecha;
+  private Integer nroPreguntas;
+  private Integer formas;
+  private Integer alternativas;
+  private Profesor profesor;
+  private String responses;
+  private Integer puntajeBase;
 
-	public void setTipoPrueba(TipoPrueba tipoPrueba) {
-		this.tipoPrueba = tipoPrueba;
-	}
+//  @OneToMany(mappedBy = "prueba")
+//  private List<RespuestasEsperadasPrueba> respuestas;
 
-	public TipoCurso getCurso() {
-		return curso;
-	}
+  public TipoPrueba getTipoPrueba() {
+    return tipoPrueba;
+  }
 
-	public void setCurso(TipoCurso curso) {
-		this.curso = curso;
-	}
+  public void setTipoPrueba(TipoPrueba tipoPrueba) {
+    this.tipoPrueba = tipoPrueba;
+  }
 
-	public Asignatura getAsignatura() {
-		return asignatura;
-	}
+  public TipoCurso getCurso() {
+    return curso;
+  }
 
-	public void setAsignatura(Asignatura asignatura) {
-		this.asignatura = asignatura;
-	}
+  public void setCurso(TipoCurso curso) {
+    this.curso = curso;
+  }
 
-	public Long getFecha() {
-		return fecha;
-	}
+  public Asignatura getAsignatura() {
+    return asignatura;
+  }
 
-	public void setFecha(Long fecha) {
-		this.fecha = fecha;
-	}
+  public void setAsignatura(Asignatura asignatura) {
+    this.asignatura = asignatura;
+  }
 
-	public Integer getNroPreguntas() {
-		return nroPreguntas;
-	}
+  public Long getFecha() {
+    return fecha;
+  }
 
-	public void setNroPreguntas(Integer nroPreguntas) {
-		this.nroPreguntas = nroPreguntas;
-	}
+  public void setFecha(Long fecha) {
+    this.fecha = fecha;
+  }
 
-	public Integer getFormas() {
-		return formas;
-	}
+  public Integer getNroPreguntas() {
+    return nroPreguntas;
+  }
 
-	public void setFormas(Integer formas) {
-		this.formas = formas;
-	}
+  public void setNroPreguntas(Integer nroPreguntas) {
+    this.nroPreguntas = nroPreguntas;
+  }
 
-	public Integer getAlternativas() {
-		return alternativas;
-	}
+  public Integer getFormas() {
+    return formas;
+  }
 
-	public void setAlternativas(Integer alternativas) {
-		this.alternativas = alternativas;
-	}
+  public void setFormas(Integer formas) {
+    this.formas = formas;
+  }
 
-	public NivelEvaluacion getNivelEvaluacion() {
-		return nivelEvaluacion;
-	}
+  public Integer getAlternativas() {
+    return alternativas;
+  }
 
-	public void setNivelEvaluacion(NivelEvaluacion nivelEvaluacion) {
-		this.nivelEvaluacion = nivelEvaluacion;
-	}
+  public void setAlternativas(Integer alternativas) {
+    this.alternativas = alternativas;
+  }
 
-	public Integer getPuntajeBase() {
-		return puntajeBase;
-	}
+  public NivelEvaluacion getNivelEvaluacion() {
+    return nivelEvaluacion;
+  }
 
-	public void setPuntajeBase(Integer puntajeBase) {
-		this.puntajeBase = puntajeBase;
-	}
+  public void setNivelEvaluacion(NivelEvaluacion nivelEvaluacion) {
+    this.nivelEvaluacion = nivelEvaluacion;
+  }
 
-	@Override
-	public Long getId() {
-		return id;
-	}
+  public Integer getPuntajeBase() {
+    return puntajeBase;
+  }
 
-	@Override
-	public void setId(Long id) {
-		this.id = id;
-	}
+  public void setPuntajeBase(Integer puntajeBase) {
+    this.puntajeBase = puntajeBase;
+  }
 
-	@Override
-	public String getName() {
-		return name;
-	}
+  @Override
+  public Long getId() {
+    return id;
+  }
 
-	@Override
-	public void setName(String name) {
-		this.name = name;
-	}
+  @Override
+  public void setId(Long id) {
+    this.id = id;
+  }
 
-	@Override
-	public boolean validate() {
-		return true;
-	}
+  @Override
+  public String getName() {
+    return name;
+  }
 
-	public Profesor getProfesor() {
-		return profesor;
-	}
+  @Override
+  public void setName(String name) {
+    this.name = name;
+  }
 
-	public void setProfesor(Profesor profesor) {
-		this.profesor = profesor;
-	}
+  @Override
+  public boolean validate() {
+    return true;
+  }
 
-	public LocalDate getFechaLocal() {
-		return LocalDate.ofEpochDay(this.fecha.longValue());
-	}
+  public Profesor getProfesor() {
+    return profesor;
+  }
 
-	@Override
-	public String toString() {
-		return name;
-	}
+  public void setProfesor(Profesor profesor) {
+    this.profesor = profesor;
+  }
 
-	public String getResponses() {
-		return responses;
-	}
+  public LocalDate getFechaLocal() {
+    return LocalDate.ofEpochDay(this.fecha.longValue());
+  }
 
-	public void setResponses(String responses) {
-		this.responses = responses;
-	}
+  @Override
+  public String toString() {
+    return name;
+  }
 
-	
+  public String getResponses() {
+    return responses;
+  }
+
+  public void setResponses(String responses) {
+    this.responses = responses;
+  }
+
+
 }
