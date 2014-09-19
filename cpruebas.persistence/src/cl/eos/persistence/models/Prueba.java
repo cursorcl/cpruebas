@@ -15,155 +15,164 @@ import javax.persistence.OneToMany;
 import cl.eos.interfaces.entity.IEntity;
 
 @Entity(name = "prueba")
-@NamedQueries({@NamedQuery(name = "Prueba.findAll", query = "SELECT e FROM prueba e")})
+@NamedQueries({ @NamedQuery(name = "Prueba.findAll", query = "SELECT e FROM prueba e") })
 public class Prueba implements IEntity {
 
-  private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-  @Column(length = 100)
-  private String name;
+	@Column(length = 100)
+	private String name;
 
-  private TipoPrueba tipoPrueba;
-  private TipoCurso curso;
-  private Asignatura asignatura;
-  private NivelEvaluacion nivelEvaluacion;
+	private TipoPrueba tipoPrueba;
+	private TipoCurso curso;
+	private Asignatura asignatura;
+	private NivelEvaluacion nivelEvaluacion;
 
-  private Long fecha;
-  private Integer nroPreguntas;
-  private Integer formas;
-  private Integer alternativas;
-  private Profesor profesor;
-  private String responses;
-  private Integer puntajeBase;
+	private Long fecha;
+	private Integer nroPreguntas;
+	private Integer nroFormas;
+	private Integer alternativas;
+	private Profesor profesor;
+	private Integer puntajeBase;
 
-//  @OneToMany(mappedBy = "prueba")
-//  private List<RespuestasEsperadasPrueba> respuestas;
+	@OneToMany(mappedBy = "prueba")
+	private List<Formas> formas;
 
-  public TipoPrueba getTipoPrueba() {
-    return tipoPrueba;
-  }
+	@OneToMany(mappedBy = "prueba")
+	private List<RespuestasEsperadasPrueba> respuestas;
 
-  public void setTipoPrueba(TipoPrueba tipoPrueba) {
-    this.tipoPrueba = tipoPrueba;
-  }
+	public TipoPrueba getTipoPrueba() {
+		return tipoPrueba;
+	}
 
-  public TipoCurso getCurso() {
-    return curso;
-  }
+	public void setTipoPrueba(TipoPrueba tipoPrueba) {
+		this.tipoPrueba = tipoPrueba;
+	}
 
-  public void setCurso(TipoCurso curso) {
-    this.curso = curso;
-  }
+	public TipoCurso getCurso() {
+		return curso;
+	}
 
-  public Asignatura getAsignatura() {
-    return asignatura;
-  }
+	public void setCurso(TipoCurso curso) {
+		this.curso = curso;
+	}
 
-  public void setAsignatura(Asignatura asignatura) {
-    this.asignatura = asignatura;
-  }
+	public Asignatura getAsignatura() {
+		return asignatura;
+	}
 
-  public Long getFecha() {
-    return fecha;
-  }
+	public void setAsignatura(Asignatura asignatura) {
+		this.asignatura = asignatura;
+	}
 
-  public void setFecha(Long fecha) {
-    this.fecha = fecha;
-  }
+	public Long getFecha() {
+		return fecha;
+	}
 
-  public Integer getNroPreguntas() {
-    return nroPreguntas;
-  }
+	public void setFecha(Long fecha) {
+		this.fecha = fecha;
+	}
 
-  public void setNroPreguntas(Integer nroPreguntas) {
-    this.nroPreguntas = nroPreguntas;
-  }
+	public Integer getNroPreguntas() {
+		return nroPreguntas;
+	}
 
-  public Integer getFormas() {
-    return formas;
-  }
+	public void setNroPreguntas(Integer nroPreguntas) {
+		this.nroPreguntas = nroPreguntas;
+	}
 
-  public void setFormas(Integer formas) {
-    this.formas = formas;
-  }
+	public Integer getNroFormas() {
+		return nroFormas;
+	}
 
-  public Integer getAlternativas() {
-    return alternativas;
-  }
+	public void setNroFormas(Integer nroFormas) {
+		this.nroFormas = nroFormas;
+	}
 
-  public void setAlternativas(Integer alternativas) {
-    this.alternativas = alternativas;
-  }
+	public Integer getAlternativas() {
+		return alternativas;
+	}
 
-  public NivelEvaluacion getNivelEvaluacion() {
-    return nivelEvaluacion;
-  }
+	public void setAlternativas(Integer alternativas) {
+		this.alternativas = alternativas;
+	}
 
-  public void setNivelEvaluacion(NivelEvaluacion nivelEvaluacion) {
-    this.nivelEvaluacion = nivelEvaluacion;
-  }
+	public NivelEvaluacion getNivelEvaluacion() {
+		return nivelEvaluacion;
+	}
 
-  public Integer getPuntajeBase() {
-    return puntajeBase;
-  }
+	public void setNivelEvaluacion(NivelEvaluacion nivelEvaluacion) {
+		this.nivelEvaluacion = nivelEvaluacion;
+	}
 
-  public void setPuntajeBase(Integer puntajeBase) {
-    this.puntajeBase = puntajeBase;
-  }
+	public Integer getPuntajeBase() {
+		return puntajeBase;
+	}
 
-  @Override
-  public Long getId() {
-    return id;
-  }
+	public void setPuntajeBase(Integer puntajeBase) {
+		this.puntajeBase = puntajeBase;
+	}
 
-  @Override
-  public void setId(Long id) {
-    this.id = id;
-  }
+	@Override
+	public Long getId() {
+		return id;
+	}
 
-  @Override
-  public String getName() {
-    return name;
-  }
+	@Override
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-  @Override
-  public void setName(String name) {
-    this.name = name;
-  }
+	@Override
+	public String getName() {
+		return name;
+	}
 
-  @Override
-  public boolean validate() {
-    return true;
-  }
+	@Override
+	public void setName(String name) {
+		this.name = name;
+	}
 
-  public Profesor getProfesor() {
-    return profesor;
-  }
+	@Override
+	public boolean validate() {
+		return true;
+	}
 
-  public void setProfesor(Profesor profesor) {
-    this.profesor = profesor;
-  }
+	public Profesor getProfesor() {
+		return profesor;
+	}
 
-  public LocalDate getFechaLocal() {
-    return LocalDate.ofEpochDay(this.fecha.longValue());
-  }
+	public void setProfesor(Profesor profesor) {
+		this.profesor = profesor;
+	}
 
-  @Override
-  public String toString() {
-    return name;
-  }
+	public LocalDate getFechaLocal() {
+		return LocalDate.ofEpochDay(this.fecha.longValue());
+	}
 
-  public String getResponses() {
-    return responses;
-  }
+	public List<Formas> getFormas() {
+		return formas;
+	}
 
-  public void setResponses(String responses) {
-    this.responses = responses;
-  }
+	public void setFormas(List<Formas> formas) {
+		this.formas = formas;
+	}
 
+	public List<RespuestasEsperadasPrueba> getRespuestas() {
+		return respuestas;
+	}
+
+	public void setRespuestas(List<RespuestasEsperadasPrueba> respuestas) {
+		this.respuestas = respuestas;
+	}
+
+	@Override
+	public String toString() {
+		return name;
+	}
 
 }

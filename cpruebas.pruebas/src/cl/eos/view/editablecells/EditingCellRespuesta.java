@@ -1,12 +1,13 @@
 package cl.eos.view.editablecells;
 
-import cl.eos.view.RegistroDefinePrueba;
 import javafx.event.EventHandler;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
+import cl.eos.view.RegistroDefinePrueba;
 
 public class EditingCellRespuesta extends TableCell<RegistroDefinePrueba, String> {
 
@@ -24,7 +25,12 @@ public class EditingCellRespuesta extends TableCell<RegistroDefinePrueba, String
   private TextField textField;
 
   public EditingCellRespuesta() {
-
+	  this.setOnMouseClicked(new EventHandler<MouseEvent>() {
+          @Override
+          public void handle(MouseEvent event) {
+               startEdit();
+          }
+     });
   }
 
   @Override
@@ -59,7 +65,6 @@ public class EditingCellRespuesta extends TableCell<RegistroDefinePrueba, String
         if (textField != null) {
           textField.setText(getString());
         }
-        // setText(null);
         setGraphic(textField);
         setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
       } else {
@@ -96,7 +101,6 @@ public class EditingCellRespuesta extends TableCell<RegistroDefinePrueba, String
         }
       }
     });
-
     textField.setOnKeyPressed(new EventHandler<KeyEvent>() {
       @Override
       public void handle(KeyEvent t) {
@@ -108,6 +112,12 @@ public class EditingCellRespuesta extends TableCell<RegistroDefinePrueba, String
         }
       }
     });
+//    textField.focusedProperty().addListener(new ChangeListener<Boolean>() {
+//        public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+//            if(!newValue.booleanValue())
+//                commitEdit(textField.getText());
+//        }
+//    } );
   }
 
   private String getString() {
