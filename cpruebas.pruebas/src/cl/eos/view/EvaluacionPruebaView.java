@@ -15,8 +15,9 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import cl.eos.imp.view.AFormView;
+import cl.eos.persistence.models.Curso;
 import cl.eos.persistence.models.EvaluacionPrueba;
-import cl.eos.persistence.models.Prueba;
+import cl.eos.persistence.models.TipoPrueba;
 
 public class EvaluacionPruebaView extends AFormView implements
 		EventHandler<ActionEvent> {
@@ -26,9 +27,11 @@ public class EvaluacionPruebaView extends AFormView implements
 	@FXML
 	private TableColumn<EvaluacionPrueba, LocalDate> fechaCol;
 	@FXML
-	private TableColumn<EvaluacionPrueba, String> cursoCol;
+	private TableColumn<EvaluacionPrueba, Curso> cursoCol;
 	@FXML
 	private TableColumn<EvaluacionPrueba, String> nameCol;
+	@FXML
+	private TableColumn<EvaluacionPrueba, TipoPrueba> colTipo;
 	@FXML
 	private TableColumn<EvaluacionPrueba, String> asignaturaCol;
 	@FXML
@@ -38,11 +41,15 @@ public class EvaluacionPruebaView extends AFormView implements
 	@FXML
 	private TableColumn<EvaluacionPrueba, Integer> formasCol;
 	@FXML
-	private TableColumn<EvaluacionPrueba, Integer> alternativasCol;
+	private TableColumn<EvaluacionPrueba, Integer> colExigencia;
 	@FXML
 	private MenuItem mnuResumenGeneral;
+	@FXML
+	private MenuItem mnuResumenAlumno;
+
 	private ResumenGeneralView resumenGeneral;
 	private EvaluacionPrueba evaluacionPrueba;
+	private ResumenAlumnoView resumenAlumno;
 
 	public EvaluacionPruebaView() {
 		// TODO Auto-generated constructor stub
@@ -51,24 +58,33 @@ public class EvaluacionPruebaView extends AFormView implements
 	@FXML
 	public void initialize() {
 		mnuResumenGeneral.setOnAction(this);
+		mnuResumenAlumno.setOnAction(this);
 		tblListadoPruebas.getSelectionModel().setSelectionMode(
 				SelectionMode.MULTIPLE);
-		fechaCol.setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba, LocalDate>(
-				"fechaLocal"));
 		nameCol.setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba, String>(
 				"name"));
+		fechaCol.setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba, LocalDate>(
+				"fechaLocal"));
+		colTipo.setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba, TipoPrueba>(
+				"tipo"));
+		cursoCol.setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba, Curso>(
+				"curso"));
 		asignaturaCol
 				.setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba, String>(
 						"asignatura"));
-		profesorCol
-				.setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba, String>(
-						"profesor"));
 		formasCol
 				.setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba, Integer>(
 						"formas"));
+		profesorCol
+				.setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba, String>(
+						"profesor"));
 		nroPreguntasCol
 				.setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba, Integer>(
 						"nroPreguntas"));
+//		colExigencia
+//				.setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba, Integer>(
+//						"nroPreguntas"));
+
 	}
 
 	@Override
@@ -91,6 +107,23 @@ public class EvaluacionPruebaView extends AFormView implements
 		Object source = event.getSource();
 		if (source == mnuResumenGeneral) {
 			handleResumenGeneral();
+		} else if (source == mnuResumenAlumno) {
+			handleResumenAlumno();
+		}
+	}
+
+	private void handleResumenAlumno() {
+		if (resumenAlumno == null) {
+			resumenAlumno = (ResumenAlumnoView) show((Pane) parent,
+					"/cl/eos/view/ResumenAlumno.fxml");
+		} else {
+			show((Pane) parent, resumenGeneral);
+		}
+		evaluacionPrueba = tblListadoPruebas.getSelectionModel()
+				.getSelectedItem();
+		if (evaluacionPrueba != null) {
+			controller.findById(EvaluacionPrueba.class,
+					evaluacionPrueba.getId());
 		}
 	}
 
@@ -101,9 +134,11 @@ public class EvaluacionPruebaView extends AFormView implements
 		} else {
 			show((Pane) parent, resumenGeneral);
 		}
-		evaluacionPrueba = tblListadoPruebas.getSelectionModel().getSelectedItem();
+		evaluacionPrueba = tblListadoPruebas.getSelectionModel()
+				.getSelectedItem();
 		if (evaluacionPrueba != null) {
-			controller.findById(EvaluacionPrueba.class, evaluacionPrueba.getId());
+			controller.findById(EvaluacionPrueba.class,
+					evaluacionPrueba.getId());
 		}
 
 	}

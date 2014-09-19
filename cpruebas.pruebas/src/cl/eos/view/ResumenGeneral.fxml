@@ -79,7 +79,6 @@
                                   <TableColumn id="colPaterno" fx:id="colPaterno" prefWidth="83.0" text="A.Paterno" />
                                     <TableColumn id="colMaterno" fx:id="colMaterno" prefWidth="190.0" text="A.Materno" />
                                     <TableColumn id="colName" fx:id="colName" prefWidth="232.0" text="Nombres" />
-                                    <TableColumn id="colCurso" fx:id="colCurso" prefWidth="87.0" text="Curso" />
                                     <TableColumn fx:id="colABuenas" prefWidth="75.0" text="Buenas" />
                                     <TableColumn fx:id="colAMalas" prefWidth="75.0" text="Malas" />
                                     <TableColumn fx:id="colAOmitidas" prefWidth="75.0" text="Omitidas" />
@@ -88,14 +87,6 @@
                                     <TableColumn fx:id="colPPuntaje" prefWidth="75.0" text="\%Puntaje" />
                                     <TableColumn fx:id="colANota" prefWidth="75.0" text="Nota" />
                                 </columns>
-                                 <contextMenu>
-                                    <ContextMenu>
-                                      <items>
-                                        <MenuItem fx:id="mnItemModificar" mnemonicParsing="false" text="Modificar" />
-                                          <MenuItem fx:id="mnItemEliminar" mnemonicParsing="false" text="Eliminar" />
-                                      </items>
-                                    </ContextMenu>
-                                 </contextMenu>
                                  <columnResizePolicy>
                                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                  </columnResizePolicy>

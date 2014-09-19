@@ -1,7 +1,5 @@
 package cl.eos.persistence.models;
 
-import java.text.DecimalFormat;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -61,6 +59,7 @@ public class PruebaRendida implements IEntity {
 	}
 
 	public String getRespuestas() {
+		System.out.println("Respuestas " + respuestas);
 		return respuestas;
 	}
 
