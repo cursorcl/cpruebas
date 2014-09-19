@@ -18,105 +18,108 @@ import cl.eos.interfaces.entity.IEntity;
  * @author curso_000
  */
 @Entity(name = "respuestasesperadasprueba")
-@NamedQueries({ @NamedQuery(name = "RespuestasEsperadasPrueba.findAll", query = "SELECT e FROM respuestasesperadasprueba e") })
+@NamedQueries({
+    @NamedQuery(name = "RespuestasEsperadasPrueba.findAll", query = "SELECT e FROM respuestasesperadasprueba e"),
+    @NamedQuery(name = "respuestasesperadasprueba.findByPrueba", query = "SELECT e FROM respuestasesperadasprueba e WHERE e.prueba.id = :pruebaId"),
+    @NamedQuery(name = "respuestasesperadasprueba.deleteByPrueba", query = "DELETE FROM respuestasesperadasprueba e WHERE e.prueba.id = :pruebaId")})
 public class RespuestasEsperadasPrueba implements IEntity {
 
-	private static final long serialVersionUID = 1L;
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "PRUEBA_ID")
-	private Prueba prueba;
+  private static final long serialVersionUID = 1L;
 
-	private Integer numero;
-	private String respuesta;
-	private Boolean verdaderoFalso;
-	private Boolean mental;
-	private Habilidad habilidad;
-	private EjeTematico ejeTematico;
+  @ManyToOne(fetch = FetchType.LAZY)
+  private Prueba prueba;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	private String name;
+  private Integer numero;
+  private String respuesta;
+  private Boolean verdaderoFalso;
+  private Boolean mental;
+  private Habilidad habilidad;
+  private EjeTematico ejeTematico;
 
-	@Override
-	public Long getId() {
-		return id;
-	}
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
+  private String name;
 
-	@Override
-	public void setId(Long id) {
-		this.id = id;
-	}
+  @Override
+  public Long getId() {
+    return id;
+  }
 
-	@Override
-	public String getName() {
-		return name;
-	}
+  @Override
+  public void setId(Long id) {
+    this.id = id;
+  }
 
-	@Override
-	public void setName(String name) {
-		this.name = name;
-	}
+  @Override
+  public String getName() {
+    return name;
+  }
 
-	@Override
-	public boolean validate() {
-		return false;
-	}
+  @Override
+  public void setName(String name) {
+    this.name = name;
+  }
 
-	public Prueba getPrueba() {
-		return prueba;
-	}
+  @Override
+  public boolean validate() {
+    return false;
+  }
 
-	public void setPrueba(Prueba prueba) {
-		this.prueba = prueba;
-	}
+  public Prueba getPrueba() {
+    return prueba;
+  }
 
-	public Integer getNumero() {
-		return numero;
-	}
+  public void setPrueba(Prueba prueba) {
+    this.prueba = prueba;
+  }
 
-	public void setNumero(Integer numero) {
-		this.numero = numero;
-	}
+  public Integer getNumero() {
+    return numero;
+  }
 
-	public String getRespuesta() {
-		return respuesta;
-	}
+  public void setNumero(Integer numero) {
+    this.numero = numero;
+  }
 
-	public void setRespuesta(String respuesta) {
-		this.respuesta = respuesta;
-	}
+  public String getRespuesta() {
+    return respuesta;
+  }
 
-	public Boolean getVerdaderoFalso() {
-		return verdaderoFalso;
-	}
+  public void setRespuesta(String respuesta) {
+    this.respuesta = respuesta;
+  }
 
-	public void setVerdaderoFalso(Boolean verdaderoFalso) {
-		this.verdaderoFalso = verdaderoFalso;
-	}
+  public Boolean getVerdaderoFalso() {
+    return verdaderoFalso;
+  }
 
-	public Boolean getMental() {
-		return mental;
-	}
+  public void setVerdaderoFalso(Boolean verdaderoFalso) {
+    this.verdaderoFalso = verdaderoFalso;
+  }
 
-	public void setMental(Boolean mental) {
-		this.mental = mental;
-	}
+  public Boolean getMental() {
+    return mental;
+  }
 
-	public Habilidad getHabilidad() {
-		return habilidad;
-	}
+  public void setMental(Boolean mental) {
+    this.mental = mental;
+  }
 
-	public void setHabilidad(Habilidad habilidad) {
-		this.habilidad = habilidad;
-	}
+  public Habilidad getHabilidad() {
+    return habilidad;
+  }
 
-	public EjeTematico getEjeTematico() {
-		return ejeTematico;
-	}
+  public void setHabilidad(Habilidad habilidad) {
+    this.habilidad = habilidad;
+  }
 
-	public void setEjeTematico(EjeTematico ejeTematico) {
-		this.ejeTematico = ejeTematico;
-	}
+  public EjeTematico getEjeTematico() {
+    return ejeTematico;
+  }
+
+  public void setEjeTematico(EjeTematico ejeTematico) {
+    this.ejeTematico = ejeTematico;
+  }
 
 }

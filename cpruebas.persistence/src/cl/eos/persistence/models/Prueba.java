@@ -3,6 +3,7 @@ package cl.eos.persistence.models;
 import java.time.LocalDate;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -39,10 +40,10 @@ public class Prueba implements IEntity {
 	private Profesor profesor;
 	private Integer puntajeBase;
 
-	@OneToMany(mappedBy = "prueba")
+	@OneToMany(mappedBy = "prueba", cascade = CascadeType.PERSIST)
 	private List<Formas> formas;
 
-	@OneToMany(mappedBy = "prueba")
+	@OneToMany(mappedBy = "prueba", cascade = CascadeType.PERSIST)
 	private List<RespuestasEsperadasPrueba> respuestas;
 
 	public TipoPrueba getTipoPrueba() {

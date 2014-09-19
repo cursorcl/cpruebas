@@ -2,50 +2,56 @@ package cl.eos;
 
 import java.awt.MenuContainer;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Group;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
-import javafx.scene.layout.StackPane;
 import cl.eos.imp.view.WindowManager;
 import cl.eos.interfaces.IActivator;
 import cl.eos.provider.persistence.PersistenceServiceFactory;
 
 public class MainController {
 
-	@FXML
-	private MenuContainer mnuPrincipal;
-	@FXML
-	private Menu mnuAdministrar;
-	@FXML
-	private MenuItem mnuAlumno;
-	@FXML
-	private MenuItem mnuCursos;
-	@FXML
-	private MenuItem mnuProfesores;
-	@FXML
-	private MenuItem mnuAsignaturas;
-	@FXML
-	private MenuItem mnuColegios;
-	@FXML
-	private MenuItem mnuEjesTematicos;
-	@FXML
-	private MenuItem mnuTipoPrueba;
-	@FXML
-	private MenuItem mnuNivelEvaluacion;
-	@FXML
-	private MenuItem mnuHabilidades;
-	@FXML
-	private MenuItem mnuHacerPrueba;
-	@FXML
-	private MenuItem mnuEvaluarPrueba;
-	@FXML
-	private MenuItem mnuResumenGeneral;
-	@FXML
-	private MenuItem mnuItemGeneraBD;
-	@FXML
-	private StackPane pnlContainer;
+  @FXML
+  private MenuContainer mnuPrincipal;
+  @FXML
+  private Menu mnuAdministrar;
+  @FXML
+  private MenuItem mnuAlumno;
+  @FXML
+  private MenuItem mnuCursos;
+  @FXML
+  private MenuItem mnuProfesores;
+  @FXML
+  private MenuItem mnuAsignaturas;
+  @FXML
+  private MenuItem mnuColegios;
+  @FXML
+  private MenuItem mnuEjesTematicos;
+  @FXML
+  private MenuItem mnuTipoPrueba;
+  @FXML
+  private MenuItem mnuNivelEvaluacion;
+  @FXML
+  private MenuItem mnuHabilidades;
+  @FXML
+  private MenuItem mnuHacerPrueba;
+  @FXML
+  private MenuItem mnuEvaluarPrueba;
+  @FXML
+  private MenuItem mnuResumenGeneral;
+  @FXML
+  private MenuItem mnuItemGeneraBD;
+  @FXML
+  private MenuItem mnuCerrarAplicacion;
+//  @FXML
+//  private StackPane pnlContainer;
+  @FXML
+  private Group groupRoot;
+
   public MainController() {
     super();
   }
@@ -53,16 +59,15 @@ public class MainController {
   @FXML
   public void initialize() {
     try {
-      WindowManager.getInstance().setRoot(pnlContainer);
+       WindowManager.getInstance().setRoot(groupRoot);
     } catch (Exception e) {
       e.printStackTrace();
     }
-    pnlContainer.getChildren().clear();
     mnuAlumno.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent arg0) {
         IActivator activator = new AlumnosActivator();
-        WindowManager.getInstance().show(activator.getPane(), true);
+        WindowManager.getInstance().show(activator.getView());
       }
     });
 
@@ -70,7 +75,7 @@ public class MainController {
       @Override
       public void handle(ActionEvent arg0) {
         IActivator activator = new CursosActivator();
-        WindowManager.getInstance().show(activator.getPane(), true);
+        WindowManager.getInstance().show(activator.getView());
       }
     });
 
@@ -78,7 +83,7 @@ public class MainController {
       @Override
       public void handle(ActionEvent arg0) {
         IActivator activator = new AsignaturasActivator();
-        WindowManager.getInstance().show(activator.getPane(), true);
+        WindowManager.getInstance().show(activator.getView());
       }
     });
 
@@ -86,7 +91,7 @@ public class MainController {
       @Override
       public void handle(ActionEvent arg0) {
         IActivator activator = new ProfesoresActivator();
-        WindowManager.getInstance().show(activator.getPane(), true);
+        WindowManager.getInstance().show(activator.getView());
       }
     });
 
@@ -94,7 +99,7 @@ public class MainController {
       @Override
       public void handle(ActionEvent arg0) {
         IActivator activator = new ColegiosActivator();
-        WindowManager.getInstance().show(activator.getPane(), true);
+        WindowManager.getInstance().show(activator.getView());
       }
     });
 
@@ -102,7 +107,7 @@ public class MainController {
       @Override
       public void handle(ActionEvent arg0) {
         IActivator activator = new HabilidadesActivator();
-        WindowManager.getInstance().show(activator.getPane(), true);
+        WindowManager.getInstance().show(activator.getView());
       }
     });
 
@@ -110,7 +115,7 @@ public class MainController {
       @Override
       public void handle(ActionEvent arg0) {
         IActivator activator = new EjesTematicosActivator();
-        WindowManager.getInstance().show(activator.getPane(), true);
+        WindowManager.getInstance().show(activator.getView());
       }
     });
 
@@ -118,29 +123,42 @@ public class MainController {
       @Override
       public void handle(ActionEvent arg0) {
         IActivator activator = new PruebasActivator();
-        WindowManager.getInstance().show(activator.getPane(), true);
+        WindowManager.getInstance().show(activator.getView());
       }
     });
-     mnuItemGeneraBD.setOnAction(new EventHandler<ActionEvent>() {
+    mnuItemGeneraBD.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent arg0) {
         PersistenceServiceFactory.getPersistenceService();
       }
     });
-    
-	mnuTipoPrueba.setOnAction(new EventHandler<ActionEvent>() {
-		@Override
-		public void handle(ActionEvent arg0) {
-				IActivator activator = new TipoPruebaActivator();
-				 WindowManager.getInstance().show(activator.getPane(), true);
-		}
-	});
-	mnuNivelEvaluacion.setOnAction(new EventHandler<ActionEvent>() {
-		@Override
-		public void handle(ActionEvent arg0) {
-				IActivator activator = new NivelEvaluacionActivator();
-				 WindowManager.getInstance().show(activator.getPane(), true);
-		}
-	});
+
+    mnuTipoPrueba.setOnAction(new EventHandler<ActionEvent>() {
+      @Override
+      public void handle(ActionEvent arg0) {
+        IActivator activator = new TipoPruebaActivator();
+        WindowManager.getInstance().show(activator.getView());
+      }
+    });
+    mnuNivelEvaluacion.setOnAction(new EventHandler<ActionEvent>() {
+      @Override
+      public void handle(ActionEvent arg0) {
+        IActivator activator = new NivelEvaluacionActivator();
+        WindowManager.getInstance().show(activator.getView());
+      }
+    });
+    mnuCerrarAplicacion.setOnAction(new EventHandler<ActionEvent>() {
+
+      @Override
+      public void handle(ActionEvent event) {
+        Platform.exit();
+
+      }
+    });
   }
+
+  public Group getGroup() {
+    return groupRoot;
+  }
+
 }

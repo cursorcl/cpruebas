@@ -6,7 +6,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -14,7 +13,9 @@ import javax.persistence.NamedQuery;
 import cl.eos.interfaces.entity.IEntity;
 
 @Entity(name = "formas")
-@NamedQueries({ @NamedQuery(name = "Formas.findAll", query = "SELECT e FROM formas e") })
+@NamedQueries({ @NamedQuery(name = "Formas.findAll", query = "SELECT e FROM formas e"),
+                @NamedQuery(name = "Formas.findByPrueba", query = "SELECT e FROM formas e WHERE e.prueba.id = :pruebaId"),
+                @NamedQuery(name = "Fromas.deleteByPrueba", query = "DELETE FROM formas e WHERE e.prueba.id = :pruebaId")})
 
 public class Formas implements IEntity {
 
@@ -34,10 +35,17 @@ public class Formas implements IEntity {
 	private String orden;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "PRUEBA_ID")
 	private Prueba prueba;
 
-	@Override
+	public Prueba getPrueba() {
+    return prueba;
+  }
+
+  public void setPrueba(Prueba prueba) {
+    this.prueba = prueba;
+  }
+
+  @Override
 	public Long getId() {
 		return id;
 	}

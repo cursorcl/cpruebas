@@ -13,10 +13,8 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.Pane;
 import cl.eos.imp.view.AFormView;
 import cl.eos.persistence.models.EvaluacionPrueba;
-import cl.eos.persistence.models.Prueba;
 
 public class EvaluacionPruebaView extends AFormView implements
 		EventHandler<ActionEvent> {
@@ -96,10 +94,9 @@ public class EvaluacionPruebaView extends AFormView implements
 
 	private void handleResumenGeneral() {
 		if (resumenGeneral == null) {
-			resumenGeneral = (ResumenGeneralView) show((Pane) parent,
-					"/cl/eos/view/ResumenGeneral.fxml");
+			resumenGeneral = (ResumenGeneralView) show("/cl/eos/view/ResumenGeneral.fxml");
 		} else {
-			show((Pane) parent, resumenGeneral);
+			show(resumenGeneral);
 		}
 		evaluacionPrueba = tblListadoPruebas.getSelectionModel().getSelectedItem();
 		if (evaluacionPrueba != null) {

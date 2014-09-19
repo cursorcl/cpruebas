@@ -103,6 +103,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 	private Prueba prueba;
 
 	public PruebasView() {
+	  setTitle("Definición de Pruebas");
 	}
 
 	@FXML
@@ -326,27 +327,8 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 		} else {
 			show(definePrueba);
 		}
-
 		Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem();
-
 		if (prueba != null) {
-			bigDecimaNroAlternativas.setNumber(new BigDecimal(prueba
-					.getAlternativas()));
-			cmbAsignatura.getSelectionModel().select(prueba.getAsignatura());
-			cmbCurso.getSelectionModel().select(prueba.getCurso());
-			dpFecha.setValue(prueba.getFechaLocal());
-			bigDecimalForma.setNumber(new BigDecimal(prueba.getNroFormas()));
-			txtName.setText(prueba.getName());
-			cmbNivelEvaluacion.getSelectionModel().select(
-					prueba.getNivelEvaluacion());
-			cmbProfesor.getSelectionModel().select(prueba.getProfesor());
-			bigDecimalPuntajePregunta.setNumber(new BigDecimal(prueba
-					.getPuntajeBase()));
-			bigDecimalNroPreguntas.setNumber(new BigDecimal(prueba
-					.getNroPreguntas()));
-			cmbTipoPrueba.getSelectionModel().select(prueba.getTipoPrueba());
-			pnlEdition.setDisable(true);
-
 			controller.findById(Prueba.class, prueba.getId());
 			Map<String, Object> parameters = new HashMap<String, Object>();
 			parameters.put("idAsignatura", prueba.getAsignatura().getId());

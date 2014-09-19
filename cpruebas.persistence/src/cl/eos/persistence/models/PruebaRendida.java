@@ -1,7 +1,5 @@
 package cl.eos.persistence.models;
 
-import java.text.DecimalFormat;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;

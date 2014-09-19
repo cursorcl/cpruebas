@@ -6,7 +6,6 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import cl.eos.view.RegistroDefinePrueba;
 
 public class EditingCellRespuesta extends TableCell<RegistroDefinePrueba, String> {
@@ -24,14 +23,7 @@ public class EditingCellRespuesta extends TableCell<RegistroDefinePrueba, String
 
   private TextField textField;
 
-  public EditingCellRespuesta() {
-	  this.setOnMouseClicked(new EventHandler<MouseEvent>() {
-          @Override
-          public void handle(MouseEvent event) {
-               startEdit();
-          }
-     });
-  }
+  public EditingCellRespuesta() {}
 
   @Override
   public void startEdit() {
@@ -112,12 +104,6 @@ public class EditingCellRespuesta extends TableCell<RegistroDefinePrueba, String
         }
       }
     });
-//    textField.focusedProperty().addListener(new ChangeListener<Boolean>() {
-//        public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-//            if(!newValue.booleanValue())
-//                commitEdit(textField.getText());
-//        }
-//    } );
   }
 
   private String getString() {
