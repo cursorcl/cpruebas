@@ -153,14 +153,14 @@ public class DefinePruebaViewController extends AFormView {
     mnuGrabar.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent event) {
-        handleGrabar();
+        ejecutaGrabar();
       }
     });
     btnListo.setOnAction(new EventHandler<ActionEvent>() {
 
       @Override
       public void handle(ActionEvent event) {
-        handleListo();
+        ejecutarAccionListo();
 
       }
     });
@@ -182,7 +182,7 @@ public class DefinePruebaViewController extends AFormView {
           event.consume();
         }
         if (txtRespuestas.getText() != null) {
-          updateLblCount(txtRespuestas.getText().length() + 1);
+          actualizaLabelCuenta(txtRespuestas.getText().length() + 1);
         }
       }
     });
@@ -239,7 +239,7 @@ public class DefinePruebaViewController extends AFormView {
     });
   }
 
-  protected void handleListo() {
+  protected void ejecutarAccionListo() {
     String resps = txtRespuestas.getText();
     if (resps.length() != prueba.getNroPreguntas()) {
       // error
@@ -313,6 +313,10 @@ public class DefinePruebaViewController extends AFormView {
           RegistroDefinePrueba registro = new RegistroDefinePrueba();
           registro.setNumero(n++);
           registro.setRespuesta(respuesta.getRespuesta());
+          registro.setEjeTematico(respuesta.getEjeTematico());
+          registro.setHabilidad(respuesta.getHabilidad());
+          registro.setVerdaderoFalso(respuesta.getVerdaderoFalso());
+          registro.setMental(respuesta.getMental());
           resps.append(respuesta.getRespuesta());
           registros.add(registro);
         }
@@ -326,16 +330,16 @@ public class DefinePruebaViewController extends AFormView {
           registros.add(registro);
         }
       }
-      updateLblCount(0);
+      actualizaLabelCuenta(0);
       tblRegistroDefinePrueba.setItems(registros);
     }
   }
 
-  private void updateLblCount(int nro) {
+  private void actualizaLabelCuenta(int nro) {
     lblCount.setText(String.format("%d/%d", nro, prueba.getNroPreguntas()));
   }
 
-  protected void handleGrabar() {
+  protected void ejecutaGrabar() {
     List<RespuestasEsperadasPrueba> respuestas = new ArrayList<RespuestasEsperadasPrueba>();
     List<Integer> numeros = new ArrayList<Integer>();
     for (RegistroDefinePrueba registro : registros) {

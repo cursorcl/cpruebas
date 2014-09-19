@@ -30,7 +30,7 @@ public abstract class AController implements IController, IPersistenceListener {
   @Override
   public void save(IEntity entity) {
     if (model != null) {
-      if (selectedEntity != null && entity.equals(selectedEntity) || entity.getId() == null) {
+      if (entity.getId() != null) {
         model.update(entity);
       } else {
         model.save(entity);
