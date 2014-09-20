@@ -45,10 +45,20 @@ public class EvaluacionPruebaView extends AFormView implements
 	private MenuItem mnuResumenGeneral;
 	@FXML
 	private MenuItem mnuResumenAlumno;
+	@FXML
+	private MenuItem mnuRespuestasPregunta;
+	
+	@FXML
+	private MenuItem menuResumenGeneral;
+	@FXML
+	private MenuItem menuResumenAlumno;
+	@FXML
+	private MenuItem menuRespuestasPregunta;
 
 	private ResumenGeneralView resumenGeneral;
 	private EvaluacionPrueba evaluacionPrueba;
 	private ResumenAlumnoView resumenAlumno;
+	private ResumenRespuestaView resumenRespuestas;
 
 	public EvaluacionPruebaView() {
 		// TODO Auto-generated constructor stub
@@ -58,6 +68,12 @@ public class EvaluacionPruebaView extends AFormView implements
 	public void initialize() {
 		mnuResumenGeneral.setOnAction(this);
 		mnuResumenAlumno.setOnAction(this);
+		mnuRespuestasPregunta.setOnAction(this);
+		
+		menuResumenGeneral.setOnAction(this);
+		menuResumenAlumno.setOnAction(this);
+		menuRespuestasPregunta.setOnAction(this);
+
 		tblListadoPruebas.getSelectionModel().setSelectionMode(
 				SelectionMode.MULTIPLE);
 		nameCol.setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba, String>(
@@ -80,9 +96,10 @@ public class EvaluacionPruebaView extends AFormView implements
 		nroPreguntasCol
 				.setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba, Integer>(
 						"nroPreguntas"));
-//		colExigencia
-//				.setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba, Integer>(
-//						"nroPreguntas"));
+		// colExigencia
+		// .setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba,
+		// Integer>(
+		// "nroPreguntas"));
 
 	}
 
@@ -104,19 +121,20 @@ public class EvaluacionPruebaView extends AFormView implements
 	@Override
 	public void handle(ActionEvent event) {
 		Object source = event.getSource();
-		if (source == mnuResumenGeneral) {
+		if (source == mnuResumenGeneral || source == menuResumenGeneral) {
 			handleResumenGeneral();
-		} else if (source == mnuResumenAlumno) {
+		} else if (source == mnuResumenAlumno||source == menuResumenAlumno) {
 			handleResumenAlumno();
+		} else if (source == mnuRespuestasPregunta || source == menuRespuestasPregunta) {
+			handleResumenRespuesta();
 		}
 	}
 
 	private void handleResumenAlumno() {
 		if (resumenAlumno == null) {
-			resumenAlumno = (ResumenAlumnoView) show(
-					"/cl/eos/view/ResumenAlumno.fxml");
+			resumenAlumno = (ResumenAlumnoView) show("/cl/eos/view/ResumenAlumno.fxml");
 		} else {
-			show( resumenGeneral);
+			show(resumenGeneral);
 		}
 		evaluacionPrueba = tblListadoPruebas.getSelectionModel()
 				.getSelectedItem();
@@ -128,10 +146,9 @@ public class EvaluacionPruebaView extends AFormView implements
 
 	private void handleResumenGeneral() {
 		if (resumenGeneral == null) {
-			resumenGeneral = (ResumenGeneralView) show(
-					"/cl/eos/view/ResumenGeneral.fxml");
+			resumenGeneral = (ResumenGeneralView) show("/cl/eos/view/ResumenGeneral.fxml");
 		} else {
-			show( resumenGeneral);
+			show(resumenGeneral);
 		}
 		evaluacionPrueba = tblListadoPruebas.getSelectionModel()
 				.getSelectedItem();
@@ -140,5 +157,19 @@ public class EvaluacionPruebaView extends AFormView implements
 					evaluacionPrueba.getId());
 		}
 
+	}
+
+	private void handleResumenRespuesta() {
+		if (resumenRespuestas == null) {
+			resumenRespuestas = (ResumenRespuestaView) show("/cl/eos/view/ResumenRespuestas.fxml");
+		} else {
+			show(resumenRespuestas);
+		}
+		evaluacionPrueba = tblListadoPruebas.getSelectionModel()
+				.getSelectedItem();
+		if (evaluacionPrueba != null) {
+			controller.findById(EvaluacionPrueba.class,
+					evaluacionPrueba.getId());
+		}
 	}
 }
