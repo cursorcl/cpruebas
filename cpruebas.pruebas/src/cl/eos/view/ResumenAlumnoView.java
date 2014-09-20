@@ -149,7 +149,7 @@ public class ResumenAlumnoView extends AFormView implements
 			EvaluacionPrueba evaluacionPrueba = (EvaluacionPrueba) entity;
 
 			int nroPreguntas = evaluacionPrueba.getNroPreguntas();
-			String responses = evaluacionPrueba.getResponses();
+			final String responses = evaluacionPrueba.getResponses();
 
 			inicializarTablaRespuesta();
 			for (int indice = 1; indice <= nroPreguntas; indice++) {
