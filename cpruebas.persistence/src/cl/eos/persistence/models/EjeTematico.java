@@ -10,7 +10,8 @@ import javax.persistence.NamedQuery;
 import cl.eos.interfaces.entity.IEntity;
 
 @Entity(name = "ejetematico")
-@NamedQueries({ @NamedQuery(name = "EjeTematico.findAll", query = "SELECT e FROM ejetematico e") })
+@NamedQueries({ @NamedQuery(name = "EjeTematico.findAll", query = "SELECT e FROM ejetematico e"),
+                @NamedQuery(name = "EjeTematico.findByAsigntura", query = "Select e FROM ejetematico e WHERE e.asignatura.id = :idAsignatura")})
 public class EjeTematico implements IEntity {
 
 	@Id
@@ -23,7 +24,7 @@ public class EjeTematico implements IEntity {
 	@Override
 	public Long getId() {
 		return id;
-	}
+	} 
 
 	@Override
 	public void setId(Long id) {

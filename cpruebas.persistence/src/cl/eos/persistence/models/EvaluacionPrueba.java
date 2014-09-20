@@ -114,7 +114,7 @@ public class EvaluacionPrueba implements IEntity {
 	}
 
 	public Integer getFormas() {
-		return prueba.getFormas();
+		return prueba.getNroFormas();
 	}
 
 	public Integer getNroPreguntas() {
@@ -130,3 +130,4 @@ public class EvaluacionPrueba implements IEntity {
 	}
 
 }
+

@@ -8,50 +8,55 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="485.0" prefWidth="977.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.PruebasView">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="485.0" prefWidth="1087.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.PruebasView">
    <top>
-      <MenuBar BorderPane.alignment="CENTER">
-        <menus>
-          <Menu mnemonicParsing="false" text="Archivo">
-            <items>
-                  <MenuItem id="mnuGrabar" fx:id="mnuGrabar" mnemonicParsing="false" text="Grabar Prueba">
-                     <accelerator>
-                        <KeyCodeCombination alt="UP" code="G" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-                     </accelerator></MenuItem>
-                  <MenuItem fx:id="mnuModificar" mnemonicParsing="false" text="Modificar Prueba">
-                     <accelerator>
-                        <KeyCodeCombination alt="UP" code="M" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-                     </accelerator>
-                  </MenuItem>
-                  <MenuItem fx:id="mnuEliminar" mnemonicParsing="false" text="Eliminar Prueba">
-                     <accelerator>
-                        <KeyCodeCombination alt="UP" code="E" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-                     </accelerator>
-                  </MenuItem>
-                  <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem fx:id="mnuExportar" mnemonicParsing="false" text="Exportar Pruebas" />
-                  <MenuItem fx:id="mnuImportar" mnemonicParsing="false" text="Importar Pruebas" />
-                  <SeparatorMenuItem mnemonicParsing="false" />
-              <MenuItem mnemonicParsing="false" text="Cerrar" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Edit">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Delete" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Help">
-            <items>
-              <MenuItem mnemonicParsing="false" text="About" />
-            </items>
-          </Menu>
-        </menus>
-      </MenuBar>
+      <VBox>
+         <children>
+            <MenuBar BorderPane.alignment="CENTER">
+              <menus>
+                <Menu mnemonicParsing="false" text="Archivo">
+                  <items>
+                        <MenuItem id="mnuGrabar" fx:id="mnuGrabar" mnemonicParsing="false" text="Grabar Prueba">
+                           <accelerator>
+                              <KeyCodeCombination alt="UP" code="G" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                           </accelerator>
+                        </MenuItem>
+                        <MenuItem fx:id="mnuModificar" mnemonicParsing="false" text="Modificar Prueba">
+                           <accelerator>
+                              <KeyCodeCombination alt="UP" code="M" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                           </accelerator>
+                        </MenuItem>
+                        <MenuItem fx:id="mnuEliminar" mnemonicParsing="false" text="Eliminar Prueba">
+                           <accelerator>
+                              <KeyCodeCombination alt="UP" code="E" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                           </accelerator>
+                        </MenuItem>
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem fx:id="mnuExportar" mnemonicParsing="false" text="Exportar Pruebas" />
+                        <MenuItem fx:id="mnuImportar" mnemonicParsing="false" text="Importar Pruebas" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                    <MenuItem mnemonicParsing="false" text="Cerrar" />
+                  </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Edit">
+                  <items>
+                    <MenuItem mnemonicParsing="false" text="Delete" />
+                  </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Help">
+                  <items>
+                    <MenuItem mnemonicParsing="false" text="About" />
+                  </items>
+                </Menu>
+              </menus>
+            </MenuBar>
+         </children>
+      </VBox>
    </top>
    <center>
       <SplitPane dividerPositions="0.2646744930629669" prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <items>
-            <AnchorPane prefHeight="459.0" prefWidth="285.0">
+            <AnchorPane fx:id="pnlEdition" prefHeight="459.0" prefWidth="285.0">
                <children>
                   <BigDecimalField fx:id="bigDecimaNroAlternativas" layoutX="10.0" layoutY="249.0" promptText="Nro. Alterativas" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
                      <VBox.margin>
@@ -160,11 +165,11 @@
                               <TableView id="tblListadoPruebas" fx:id="tblListadoPruebas" prefHeight="400.0" prefWidth="696.0" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="2.0">
                                 <columns>
                                   <TableColumn fx:id="fechaCol" text="Fecha" />
-                                    <TableColumn fx:id="nameCol" prefWidth="152.0" text="Nombre" />
-                                  <TableColumn fx:id="asignaturaCol" prefWidth="145.0" text="Asignatura" />
-                                    <TableColumn fx:id="profesorCol" prefWidth="185.0" text="Profesor" />
+                                    <TableColumn fx:id="nameCol" prefWidth="174.0" text="Nombre" />
+                                  <TableColumn fx:id="asignaturaCol" prefWidth="190.0" text="Asignatura" />
+                                    <TableColumn fx:id="profesorCol" prefWidth="182.0" text="Profesor" />
                                     <TableColumn fx:id="formasCol" prefWidth="55.0" text="Forma" />
-                                    <TableColumn fx:id="nroPreguntasCol" prefWidth="71.0" text="Preguntas" />
+                                    <TableColumn fx:id="nroPreguntasCol" prefWidth="61.0" text="Preguntas" />
                                 </columns>
                                  <contextMenu>
                                     <ContextMenu>

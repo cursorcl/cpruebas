@@ -71,11 +71,11 @@ public abstract class AView implements IView {
     return null;
   }
 
-  public Object getParent() {
+  public Object getPanel() {
     return parent;
   }
 
-  public void setParent(Object parent) {
+  public void setPanel(Object parent) {
     this.parent = parent;
   }
 
@@ -127,25 +127,26 @@ public abstract class AView implements IView {
 
   }
 
-  public void show(Pane root, IView pane) {
-    WindowManager.getInstance().show(root, pane.getParent(), true);
+  public void show(IView pane) {
+    WindowManager.getInstance().show(pane);
   }
 
-  public IView show(Pane root, String fxml) {
+  public IView show(String fxml) {
     IView view = null;
     URL url = AView.class.getResource(fxml);
     FXMLLoader fxmlLoader = new FXMLLoader();
     try {
       Pane pane = (Pane) fxmlLoader.load(url.openStream());
       view = (IView) fxmlLoader.getController();
-      view.setParent(pane);
+      view.setPanel(pane);
       controller.addView(view);
     } catch (Exception e) {
       e.printStackTrace();
     }
     if (view != null) {
-      WindowManager.getInstance().show(root, view.getParent(), true);
+      WindowManager.getInstance().show(view);
     }
     return view;
   }
+
 }

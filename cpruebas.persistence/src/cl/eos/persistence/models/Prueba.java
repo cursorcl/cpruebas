@@ -1,7 +1,9 @@
 package cl.eos.persistence.models;
 
 import java.time.LocalDate;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 
 import cl.eos.interfaces.entity.IEntity;
 
@@ -16,12 +19,14 @@ import cl.eos.interfaces.entity.IEntity;
 @NamedQueries({ @NamedQuery(name = "Prueba.findAll", query = "SELECT e FROM prueba e") })
 public class Prueba implements IEntity {
 
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Column(length = 100)
-	private String name; 
+	private String name;
 
 	private TipoPrueba tipoPrueba;
 	private TipoCurso curso;
@@ -30,12 +35,16 @@ public class Prueba implements IEntity {
 
 	private Long fecha;
 	private Integer nroPreguntas;
-	private Integer formas;
+	private Integer nroFormas;
 	private Integer alternativas;
 	private Profesor profesor;
-	private String responses;
-	
 	private Integer puntajeBase;
+
+	@OneToMany(mappedBy = "prueba", cascade = CascadeType.PERSIST)
+	private List<Formas> formas;
+
+	@OneToMany(mappedBy = "prueba", cascade = CascadeType.PERSIST)
+	private List<RespuestasEsperadasPrueba> respuestas;
 
 	public TipoPrueba getTipoPrueba() {
 		return tipoPrueba;
@@ -77,12 +86,12 @@ public class Prueba implements IEntity {
 		this.nroPreguntas = nroPreguntas;
 	}
 
-	public Integer getFormas() {
-		return formas;
+	public Integer getNroFormas() {
+		return nroFormas;
 	}
 
-	public void setFormas(Integer formas) {
-		this.formas = formas;
+	public void setNroFormas(Integer nroFormas) {
+		this.nroFormas = nroFormas;
 	}
 
 	public Integer getAlternativas() {
@@ -146,18 +155,25 @@ public class Prueba implements IEntity {
 		return LocalDate.ofEpochDay(this.fecha.longValue());
 	}
 
+	public List<Formas> getFormas() {
+		return formas;
+	}
+
+	public void setFormas(List<Formas> formas) {
+		this.formas = formas;
+	}
+
+	public List<RespuestasEsperadasPrueba> getRespuestas() {
+		return respuestas;
+	}
+
+	public void setRespuestas(List<RespuestasEsperadasPrueba> respuestas) {
+		this.respuestas = respuestas;
+	}
+
 	@Override
 	public String toString() {
 		return name;
 	}
 
-	public String getResponses() {
-		return responses;
-	}
-
-	public void setResponses(String responses) {
-		this.responses = responses;
-	}
-
-	
 }

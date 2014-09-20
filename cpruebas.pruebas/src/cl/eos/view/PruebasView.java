@@ -20,12 +20,12 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import jfxtras.labs.scene.control.BigDecimalField;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.persistence.models.Asignatura;
-import cl.eos.persistence.models.EjeTematico;
 import cl.eos.persistence.models.Habilidad;
 import cl.eos.persistence.models.NivelEvaluacion;
 import cl.eos.persistence.models.Profesor;
@@ -37,6 +37,8 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 
 	@FXML
 	private StackPane pnlRoot;
+	@FXML
+	private AnchorPane pnlEdition;
 	@FXML
 	private TableView<Prueba> tblListadoPruebas;
 	@FXML
@@ -101,6 +103,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 	private Prueba prueba;
 
 	public PruebasView() {
+	  setTitle("Definición de Pruebas");
 	}
 
 	@FXML
@@ -124,7 +127,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 		nroPreguntasCol
 				.setCellValueFactory(new PropertyValueFactory<Prueba, Integer>(
 						"nroPreguntas"));
-		
+
 		bigDecimalForma.setMinValue(new BigDecimal(1));
 		bigDecimalForma.setMaxValue(new BigDecimal(5));
 		bigDecimalForma.setStepwidth(new BigDecimal(1));
@@ -299,6 +302,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 			handleModificar();
 		} else if (source == mnuGrabar) {
 			handleGrabar();
+			handlerDefinirPrueba();
 		} else if (source == mnuEliminar || source == mnuPopupEliminar) {
 			handleEliminar();
 		} else if (source == mnuEvaluarPrueba) {
@@ -318,27 +322,26 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 
 	private void handlerDefinirPrueba() {
 		if (definePrueba == null) {
-			definePrueba = (DefinePruebaViewController) show(pnlRoot,
+			definePrueba = (DefinePruebaViewController) show(
 					"/cl/eos/view/DefinePruebaView.fxml");
-			definePrueba.setParent(pnlRoot);
 		} else {
-			show(pnlRoot, definePrueba);
+			show(definePrueba);
 		}
 		Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem();
 		if (prueba != null) {
 			controller.findById(Prueba.class, prueba.getId());
-			controller.findAll(EjeTematico.class);
+			Map<String, Object> parameters = new HashMap<String, Object>();
+			parameters.put("idAsignatura", prueba.getAsignatura().getId());
+			controller.find("EjeTematico.findByAsigntura", parameters);
 			controller.findAll(Habilidad.class);
 		}
 	}
 
 	private void handlerListaEvaluaciones() {
 		if (evaluacionPrueba == null) {
-			evaluacionPrueba = (EvaluacionPruebaView) show(pnlRoot,
-					"/cl/eos/view/EvaluacionPrueba.fxml");
-			evaluacionPrueba.setParent(pnlRoot);
+			evaluacionPrueba = (EvaluacionPruebaView) show("/cl/eos/view/EvaluacionPrueba.fxml");
 		} else {
-			show(pnlRoot, evaluacionPrueba);
+			show(evaluacionPrueba);
 		}
 		Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem();
 		Map<String, Object> parameters = new HashMap<String, Object>();
@@ -367,7 +370,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 			prueba.setAsignatura(cmbAsignatura.getValue());
 			prueba.setCurso(cmbCurso.getValue());
 			prueba.setFecha(dpFecha.getValue().toEpochDay());
-			prueba.setFormas(bigDecimalForma.getNumber().intValue());
+			prueba.setNroFormas(bigDecimalForma.getNumber().intValue());
 			prueba.setName(txtName.getText());
 			prueba.setNivelEvaluacion(cmbNivelEvaluacion.getValue());
 			prueba.setProfesor(cmbProfesor.getValue());
@@ -378,6 +381,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 			prueba.setAlternativas(bigDecimaNroAlternativas.getNumber()
 					.intValue());
 			prueba.setTipoPrueba(cmbTipoPrueba.getValue());
+
 			save(prueba);
 		} else {
 			lblError.getStyleClass().add("bad");
@@ -394,7 +398,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 			cmbAsignatura.getSelectionModel().select(prueba.getAsignatura());
 			cmbCurso.getSelectionModel().select(prueba.getCurso());
 			dpFecha.setValue(prueba.getFechaLocal());
-			bigDecimalForma.setNumber(new BigDecimal(prueba.getFormas()));
+			bigDecimalForma.setNumber(new BigDecimal(prueba.getNroFormas()));
 			txtName.setText(prueba.getName());
 			cmbNivelEvaluacion.getSelectionModel().select(
 					prueba.getNivelEvaluacion());

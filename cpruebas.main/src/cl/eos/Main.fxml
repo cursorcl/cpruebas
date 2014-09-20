@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.*?>
 <?import jfxtras.scene.control.*?>
 <?import jfxtras.labs.scene.control.*?>
 <?import javafx.scene.input.*?>
@@ -45,7 +46,7 @@
 												<Menu mnemonicParsing="false" text="Archivo">
 													<items>
 														<MenuItem id="mnuGrabar" mnemonicParsing="false" text="Grabar" />
-														<MenuItem mnemonicParsing="false" text="Cerrar" />
+														<MenuItem fx:id="mnuCerrarAplicacion" mnemonicParsing="false" text="Cerrar" />
 													</items>
 												</Menu>
 												<Menu mnemonicParsing="false" text="Edición">
@@ -162,9 +163,9 @@
 									</children>
 								</VBox>
 							</top>
-							<center>
-								<StackPane id="pnlContainer" fx:id="pnlContainer" prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
-							</center>
+                     <center>
+                        <Group fx:id="groupRoot" BorderPane.alignment="CENTER" />
+                     </center>
 						</BorderPane>
 					</children>
 				</AnchorPane>

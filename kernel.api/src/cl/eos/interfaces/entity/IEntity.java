@@ -1,6 +1,8 @@
 package cl.eos.interfaces.entity;
 
-public interface IEntity {
+import java.io.Serializable;
+
+public interface IEntity extends Serializable{
 
 	Long getId();
 

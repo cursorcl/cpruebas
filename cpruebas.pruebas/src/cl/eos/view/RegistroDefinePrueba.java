@@ -1,14 +1,18 @@
 package cl.eos.view;
 
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleListProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import cl.eos.persistence.models.EjeTematico;
 import cl.eos.persistence.models.Habilidad;
 
 /**
- * Clase que permite registrar la definición de un registro de una prueba. 
+ * Clase que permite registrar la definición de un registro de una prueba.
+ * 
  * @author curso
  */
 public class RegistroDefinePrueba {
@@ -17,15 +21,12 @@ public class RegistroDefinePrueba {
   private SimpleStringProperty respuesta;
   private SimpleBooleanProperty verdaderoFalso;
   private SimpleBooleanProperty mental;
-  private SimpleListProperty<Habilidad> habilidades;
-  private SimpleListProperty<EjeTematico> ejesTematicos;
-
+  private ObjectProperty<Habilidad> habilidad;
+  private ObjectProperty<EjeTematico> ejeTematico;
 
   public RegistroDefinePrueba() {
     this(0, "", false, false);
   }
-
-
 
   public RegistroDefinePrueba(Integer numero, String respuesta, Boolean verdaderoFalso,
       Boolean mental) {
@@ -34,8 +35,31 @@ public class RegistroDefinePrueba {
     this.respuesta = new SimpleStringProperty(respuesta);
     this.verdaderoFalso = new SimpleBooleanProperty(verdaderoFalso.booleanValue());
     this.mental = new SimpleBooleanProperty(mental.booleanValue());
-    this.habilidades = new SimpleListProperty<>();
-    this.ejesTematicos = new SimpleListProperty<>();
+    this.habilidad = new SimpleObjectProperty<Habilidad>();
+    this.ejeTematico = new SimpleObjectProperty<EjeTematico>();
+
+    this.mental.addListener(new ChangeListener<Boolean>() {
+      @Override
+      public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue,
+          Boolean newValue) {
+        if (newValue.equals(Boolean.TRUE)) {
+          RegistroDefinePrueba.this.verdaderoFalso.set(Boolean.FALSE);
+          RegistroDefinePrueba.this.respuesta.set(" ");
+        }
+      }
+    });
+
+    this.verdaderoFalso.addListener(new ChangeListener<Boolean>() {
+      @Override
+      public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue,
+          Boolean newValue) {
+        if (newValue.equals(Boolean.TRUE)) {
+          RegistroDefinePrueba.this.mental.set(Boolean.FALSE);
+          RegistroDefinePrueba.this.respuesta.set("");
+        }
+      }
+    });
+
   }
 
   public Integer getNumero() {
@@ -50,6 +74,10 @@ public class RegistroDefinePrueba {
     return respuesta.getValue();
   }
 
+  public SimpleStringProperty respuestaProperty() {
+    return respuesta;
+  }
+
   public void setRespuesta(String respuesta) {
     this.respuesta.set(respuesta);
   }
@@ -62,37 +90,47 @@ public class RegistroDefinePrueba {
     this.verdaderoFalso.set(verdaderoFalso);
   }
 
+  public SimpleBooleanProperty verdaderoFalsoProperty() {
+    return verdaderoFalso;
+  }
+
   public Boolean getMental() {
     return mental.getValue();
   }
 
   public void setMental(Boolean mental) {
     this.mental.set(mental);
+    if (mental) {
+      setVerdaderoFalso(false);
+    }
   }
 
-
-
-  public SimpleListProperty<Habilidad> getHabilidades() {
-    return habilidades;
+  public SimpleBooleanProperty mentalProperty() {
+    return mental;
   }
 
-
-
-  public void setHabilidades(SimpleListProperty<Habilidad> habilidades) {
-    this.habilidades = habilidades;
+  public Habilidad getHabilidad() {
+    return habilidad.getValue();
   }
 
-
-
-  public SimpleListProperty<EjeTematico> getEjesTematicos() {
-    return ejesTematicos;
+  public ObjectProperty<Habilidad> habilidadProperty() {
+    return habilidad;
   }
 
-
-
-  public void setEjesTematicos(SimpleListProperty<EjeTematico> ejesTematicos) {
-    this.ejesTematicos = ejesTematicos;
+  public void setHabilidad(Habilidad habilidad) {
+    this.habilidad.set(habilidad);
   }
 
+  public ObjectProperty<EjeTematico> ejeTematicoProperty() {
+    return ejeTematico;
+  }
+
+  public EjeTematico getEjeTematico() {
+    return ejeTematico.getValue();
+  }
+
+  public void setEjeTematico(EjeTematico ejeTematico) {
+    this.ejeTematico.set(ejeTematico);
+  }
 
 }

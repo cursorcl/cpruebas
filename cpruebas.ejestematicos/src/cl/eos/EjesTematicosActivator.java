@@ -20,6 +20,7 @@ public class EjesTematicosActivator extends AActivator {
 		try {
 			pane = (Parent) fxmlLoader.load(url.openStream());
 			view = fxmlLoader.getController();
+			view.setPanel(pane);
 			controller.addView(view);
 		} catch (IOException e) {
 			e.printStackTrace();
