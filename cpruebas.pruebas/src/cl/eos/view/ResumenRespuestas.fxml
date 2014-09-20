@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.chart.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.*?>
 <?import javafx.geometry.*?>
@@ -7,25 +8,25 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="485.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.ResumenGeneralView">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="485.0" prefWidth="1087.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.ResumenRespuestaView">
    <center>
       <SplitPane orientation="VERTICAL" prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <items>
-            <SplitPane dividerPositions="0.4257075471698113" prefHeight="114.0" prefWidth="685.0">
+            <SplitPane dividerPositions="0.4976958525345622" prefHeight="114.0" prefWidth="685.0">
               <items>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="403.0" prefWidth="375.0">
                      <children>
-                        <TextField id="txtCurso" fx:id="txtCurso" layoutX="10.0" layoutY="66.0" promptText="Curso" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">
+                        <TextField id="txtCurso" fx:id="txtCurso" editable="false" layoutX="10.0" layoutY="66.0" promptText="Curso" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">
                            <VBox.margin>
                               <Insets bottom="5.0" left="10.0" right="10.0" />
                            </VBox.margin>
                         </TextField>
-                        <TextField id="txtPrueba" fx:id="txtPrueba" layoutX="10.0" layoutY="23.0" promptText="Prueba" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">
+                        <TextField id="txtPrueba" fx:id="txtPrueba" editable="false" layoutX="10.0" layoutY="23.0" promptText="Prueba" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">
                            <VBox.margin>
                               <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                            </VBox.margin>
                         </TextField>
-                        <TextField id="txtAsignatura" fx:id="txtAsignatura" layoutX="10.0" layoutY="108.0" promptText="Asignatura" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">
+                        <TextField id="txtAsignatura" fx:id="txtAsignatura" editable="false" layoutX="10.0" layoutY="108.0" promptText="Asignatura" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">
                            <VBox.margin>
                               <Insets bottom="5.0" left="10.0" right="10.0" />
                            </VBox.margin>
@@ -33,26 +34,48 @@
                         <Label layoutX="10.0" layoutY="6.0" prefHeight="17.0" prefWidth="61.0" text="Prueba" AnchorPane.leftAnchor="5.0" />
                         <Label layoutX="10.0" layoutY="48.0" text="Curso" AnchorPane.leftAnchor="5.0" />
                         <Label layoutX="12.0" layoutY="91.0" text="Asignatura" AnchorPane.leftAnchor="5.0" />
-                        <TableView fx:id="tblAlumnos" layoutY="136.0" prefHeight="222.0" prefWidth="844.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="180.0">
+                        <TableView fx:id="tblPreguntas" layoutY="136.0" prefHeight="222.0" prefWidth="844.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="180.0">
                            <columnResizePolicy>
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
                            <columns>
-                              <TableColumn prefWidth="75.0" text="Column X" />
-                              <TableColumn prefWidth="75.0" text="Column X" />
-                              <TableColumn prefWidth="75.0" text="Column X" />
-                              <TableColumn prefWidth="75.0" text="Column X" />
+                              <TableColumn fx:id="colPregunta" prefWidth="75.0" text="Pregunta" />
+                              <TableColumn fx:id="colBuenas" prefWidth="75.0" text="Buenas" />
+                              <TableColumn fx:id="colMalas" prefWidth="75.0" text="Malas" />
+                              <TableColumn fx:id="colOmitidas" prefWidth="75.0" text="Omitidas" />
                            </columns>
                         </TableView>
                         <Label layoutX="5.0" layoutY="142.0" text="Nro. Preguntas" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="140.0" />
-                        <TextField layoutX="93.0" layoutY="138.0" prefHeight="25.0" prefWidth="74.0" />
-                        <TextField layoutX="329.0" layoutY="138.0" prefHeight="25.0" prefWidth="78.0" AnchorPane.rightAnchor="5.0" />
+                        <TextField fx:id="txtNroPreguntas" editable="false" layoutX="93.0" layoutY="138.0" prefHeight="25.0" prefWidth="74.0" />
+                        <TextField fx:id="txtPuntaje" editable="false" layoutX="329.0" layoutY="138.0" prefHeight="25.0" prefWidth="78.0" AnchorPane.rightAnchor="5.0" />
                         <Label layoutX="273.0" layoutY="142.0" prefHeight="17.0" prefWidth="60.0" text="Puntaje" AnchorPane.rightAnchor="83.0" />
                      </children>
                   </AnchorPane>
                 <AnchorPane minHeight="0.0" minWidth="0.0">
                      <children>
-                        <BorderPane layoutX="7.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="7.0" AnchorPane.rightAnchor="-7.0" AnchorPane.topAnchor="0.0" />
+                        <BorderPane layoutX="7.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="7.0" AnchorPane.rightAnchor="-7.0" AnchorPane.topAnchor="0.0">
+                           <center>
+                              <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                 <children>
+                                    <Label text="Gráfico Respuestas" />
+                                    <TableView fx:id="tblPorcentaje" layoutY="38.0" prefHeight="110.0" prefWidth="323.0">
+                                      <columns>
+                                        <TableColumn fx:id="colTitulo" prefWidth="151.0" />
+                                        <TableColumn fx:id="colPorcentaje" prefWidth="171.0" text="Porcentaje%" />
+                                      </columns>
+                                    </TableView>
+                                    <BarChart fx:id="graficoBarra" layoutX="8.0" layoutY="173.0" prefHeight="216.0" prefWidth="327.0" title="Respuestas por pregunta">
+                                      <xAxis>
+                                        <CategoryAxis side="BOTTOM" />
+                                      </xAxis>
+                                      <yAxis>
+                                        <NumberAxis side="LEFT" />
+                                      </yAxis>
+                                    </BarChart>
+                                 </children>
+                              </AnchorPane>
+                           </center>
+                        </BorderPane>
                      </children>
                   </AnchorPane>
               </items>

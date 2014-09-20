@@ -134,7 +134,7 @@ public class EvaluacionPruebaView extends AFormView implements
 		if (resumenAlumno == null) {
 			resumenAlumno = (ResumenAlumnoView) show("/cl/eos/view/ResumenAlumno.fxml");
 		} else {
-			show(resumenGeneral);
+			show(resumenAlumno);
 		}
 		evaluacionPrueba = tblListadoPruebas.getSelectionModel()
 				.getSelectedItem();
