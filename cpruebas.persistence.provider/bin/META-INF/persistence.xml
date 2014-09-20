@@ -14,7 +14,7 @@
 		<class>cl.eos.persistence.models.Habilidad</class>
 		<class>cl.eos.persistence.models.Prueba</class>
 		<class>cl.eos.persistence.models.TipoPrueba</class>
-		<class>cl.eos.persistence.models.Nivel</class>
+		<class>cl.eos.persistence.models.Ciclo</class>
 		<class>cl.eos.persistence.models.PruebaRendida</class>
 		<class>cl.eos.persistence.models.NivelEvaluacion</class>
 		<class>cl.eos.persistence.models.RangoEvaluacion</class>

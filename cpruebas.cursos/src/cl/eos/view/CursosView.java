@@ -19,7 +19,7 @@ import javafx.scene.input.MouseEvent;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.persistence.models.Curso;
-import cl.eos.persistence.models.Nivel;
+import cl.eos.persistence.models.Ciclo;
 
 public class CursosView extends AFormView implements EventHandler<ActionEvent> {
 
@@ -44,7 +44,7 @@ public class CursosView extends AFormView implements EventHandler<ActionEvent> {
 	private TextField txtNombre;
 
 	@FXML
-	private ComboBox<Nivel> cmbNivel;
+	private ComboBox<Ciclo> cmbNivel;
 
 	@FXML
 	private Label lblError;
@@ -78,7 +78,7 @@ public class CursosView extends AFormView implements EventHandler<ActionEvent> {
 		Curso curso = tblCurso.getSelectionModel().getSelectedItem();
 		if (curso != null) {
 			txtNombre.setText(curso.getName());
-			cmbNivel.setValue(curso.getNivel());
+			cmbNivel.setValue(curso.getCiclo());
 		}
 	}
 
@@ -121,7 +121,7 @@ public class CursosView extends AFormView implements EventHandler<ActionEvent> {
 				curso = new Curso();
 			}
 			curso.setName(txtNombre.getText());
-			curso.setNivel(cmbNivel.getValue());
+			curso.setCiclo(cmbNivel.getValue());
 			save(curso);
 		} else {
 			lblError.getStyleClass().add("bad");
@@ -175,11 +175,11 @@ public class CursosView extends AFormView implements EventHandler<ActionEvent> {
 					value.add((Curso) iEntity);
 				}
 				tblCurso.setItems(value);
-			} else if (entity instanceof Nivel) {
-				ObservableList<Nivel> oList = FXCollections
+			} else if (entity instanceof Ciclo) {
+				ObservableList<Ciclo> oList = FXCollections
 						.observableArrayList();
 				for (Object iEntity : list) {
-					oList.add((Nivel) iEntity);
+					oList.add((Ciclo) iEntity);
 				}
 				cmbNivel.setItems(oList);
 			}

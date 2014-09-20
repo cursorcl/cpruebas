@@ -19,6 +19,7 @@ import cl.eos.interfaces.entity.IEntity;
 		@NamedQuery(name = "EvaluacionPrueba.findByPrueba", query = "SELECT e FROM evaluacionprueba e where e.prueba.id = :idPrueba") })
 public class EvaluacionPrueba implements IEntity {
 
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;

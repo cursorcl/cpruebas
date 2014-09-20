@@ -144,6 +144,7 @@
                      </tooltip>
                   </ComboBox>
                   <ComboBox fx:id="cmbNivelEvaluacion" layoutX="10.0" layoutY="340.0" prefHeight="25.0" prefWidth="223.0" promptText="Nivel de Evaluación" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" />
+                  <BigDecimalField fx:id="bigDecimalExigencia" layoutX="10.0" layoutY="370.0" promptText="\% Exigencia" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" />
                </children>
             </AnchorPane>
             <StackPane fx:id="pnlRoot">
