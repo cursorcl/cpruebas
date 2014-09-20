@@ -86,4 +86,10 @@ public class Formas implements IEntity {
 		this.orden = orden;
 	}
 
+  @Override
+  public String toString() {
+    return name;
+  }
+
+	
 }

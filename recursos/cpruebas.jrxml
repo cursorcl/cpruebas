@@ -1,0 +1,756 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="cpruebas" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="86614353-d0df-4b40-b301-f8b680f1bca7">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="45"/>
+	<parameter name="NOMBRES_ALUMNO" class="java.lang.String"/>
+	<parameter name="PATERNO_ALUMNO" class="java.lang.String"/>
+	<parameter name="MATERNO_ALUMNO" class="java.lang.String"/>
+	<parameter name="NOMBRE_PROFESOR" class="java.lang.String"/>
+	<parameter name="NOMBRE_ASIGNATURA" class="java.lang.String"/>
+	<parameter name="CURSO" class="java.lang.String"/>
+	<parameter name="COLEGIO" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="27"/>
+	</title>
+	<detail>
+		<band height="670" splitType="Stretch">
+			<textField>
+				<reportElement uuid="559497ae-0f2f-47d6-90eb-663b10cc28b2" x="297" y="80" width="228" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$P{PATERNO_ALUMNO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="1bb6b640-a068-4d54-97d7-110334c34de4" x="297" y="111" width="228" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$P{MATERNO_ALUMNO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="0c05deac-ce0e-40b6-888a-dced9f7d24f5" x="297" y="32" width="228" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$P{NOMBRES_ALUMNO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="f4049a65-ad0c-48f7-857b-0e2acc874a4f" x="297" y="150" width="140" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$P{NOMBRE_ASIGNATURA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="6fbb7606-b034-4525-8ec3-e6f3793d1b23" x="450" y="150" width="75" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$P{CURSO}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="919c0c04-a13e-418a-91b2-2fa57a299418" x="297" y="2" width="228" height="20"/>
+				<textElement/>
+				<text><![CDATA[Nombres]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="580828ec-1c65-4c89-a30b-5d2fc0699afd" x="297" y="60" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[Apellido Paterno]]></text>
+			</staticText>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="29" y="40" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="43" y="40" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="77" y="40" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="63" y="40" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="91" y="40" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="124" y="40" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="110" y="40" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="138" y="40" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="160" y="40" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="124" y="55" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="77" y="55" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="138" y="55" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="43" y="55" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="63" y="55" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="110" y="55" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="160" y="55" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="91" y="55" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="29" y="55" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="124" y="71" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="77" y="71" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="138" y="71" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="43" y="71" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="63" y="71" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="110" y="71" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="160" y="71" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="91" y="71" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="29" y="71" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="63" y="100" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="138" y="116" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="43" y="85" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="29" y="116" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="110" y="85" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="91" y="85" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="91" y="116" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="77" y="116" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="77" y="85" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="110" y="100" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="110" y="116" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="63" y="85" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="160" y="116" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="160" y="100" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="124" y="85" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="138" y="85" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="29" y="100" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="124" y="116" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="29" y="85" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="63" y="116" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="124" y="100" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="91" y="100" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="43" y="116" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="160" y="85" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="138" y="100" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="43" y="100" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="77" y="100" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="63" y="148" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="138" y="164" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="43" y="133" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="29" y="164" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="110" y="133" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="91" y="133" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="91" y="164" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="77" y="164" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="77" y="133" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="110" y="148" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="110" y="164" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="63" y="133" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="160" y="164" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="160" y="148" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="124" y="133" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="138" y="133" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="29" y="148" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="124" y="164" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="29" y="133" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="63" y="164" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="124" y="148" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="91" y="148" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="43" y="164" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="160" y="133" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="138" y="148" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="43" y="148" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="77" y="148" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="43" y="182" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="110" y="182" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="91" y="182" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="77" y="182" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="63" y="182" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="124" y="182" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="138" y="182" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="29" y="182" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="160" y="182" width="8" height="8"/>
+			</ellipse>
+			<staticText>
+				<reportElement uuid="acbe3cbd-73b7-4a09-8ff7-97a1ffec45a5" x="14" y="40" width="9" height="13"/>
+				<textElement/>
+				<text><![CDATA[0]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="8011a9e9-7372-44a7-8a6c-d6bfa7de86e1" x="14" y="55" width="8" height="8"/>
+				<textElement/>
+				<text><![CDATA[1]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="905c1510-713f-41df-9ced-e1ebebf77c6a" x="14" y="71" width="9" height="13"/>
+				<textElement/>
+				<text><![CDATA[2]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="905c1510-713f-41df-9ced-e1ebebf77c6a" x="14" y="85" width="9" height="13"/>
+				<textElement/>
+				<text><![CDATA[3]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="905c1510-713f-41df-9ced-e1ebebf77c6a" x="14" y="101" width="9" height="13"/>
+				<textElement/>
+				<text><![CDATA[4]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="905c1510-713f-41df-9ced-e1ebebf77c6a" x="14" y="116" width="9" height="13"/>
+				<textElement/>
+				<text><![CDATA[5]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="905c1510-713f-41df-9ced-e1ebebf77c6a" x="14" y="133" width="9" height="13"/>
+				<textElement/>
+				<text><![CDATA[6]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="905c1510-713f-41df-9ced-e1ebebf77c6a" x="14" y="147" width="9" height="13"/>
+				<textElement/>
+				<text><![CDATA[7]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="905c1510-713f-41df-9ced-e1ebebf77c6a" x="14" y="163" width="9" height="13"/>
+				<textElement/>
+				<text><![CDATA[8]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="905c1510-713f-41df-9ced-e1ebebf77c6a" x="14" y="182" width="9" height="13"/>
+				<textElement/>
+				<text><![CDATA[9]]></text>
+			</staticText>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="63" y="237" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="21" y="237" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="77" y="237" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="35" y="237" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="49" y="237" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="63" y="247" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="49" y="247" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="35" y="247" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="21" y="247" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="77" y="247" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="77" y="257" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="21" y="257" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="63" y="257" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="49" y="257" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="35" y="257" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="63" y="267" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="21" y="267" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="49" y="267" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="35" y="267" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="77" y="267" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="35" y="277" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="77" y="277" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="63" y="277" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="49" y="277" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="21" y="277" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="63" y="372" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="49" y="372" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="63" y="316" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="21" y="372" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="63" y="344" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="21" y="344" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="35" y="358" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="49" y="344" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="77" y="358" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="49" y="316" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="35" y="316" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="63" y="358" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="21" y="316" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="49" y="358" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="21" y="358" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="77" y="330" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="21" y="330" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="35" y="344" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="63" y="330" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="77" y="344" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="77" y="316" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="49" y="330" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="35" y="330" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="77" y="372" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="35" y="372" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="61" y="460" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="47" y="460" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="61" y="501" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="33" y="487" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="61" y="404" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="75" y="487" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="19" y="460" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="61" y="543" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="61" y="432" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="19" y="543" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="19" y="432" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="33" y="446" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="47" y="432" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="75" y="543" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="33" y="501" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="47" y="501" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="47" y="404" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="75" y="446" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="33" y="404" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="61" y="529" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="61" y="446" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="33" y="543" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="33" y="529" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="75" y="501" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="75" y="515" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="19" y="404" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="19" y="487" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="47" y="446" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="19" y="529" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="47" y="515" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="19" y="446" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="75" y="418" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="19" y="418" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="33" y="432" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="61" y="418" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="75" y="432" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="75" y="529" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="19" y="515" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="33" y="515" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="75" y="404" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="47" y="487" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="47" y="542" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="47" y="528" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="47" y="418" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="61" y="514" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="19" y="501" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="61" y="487" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="33" y="418" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="75" y="460" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="33" y="460" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="79" y="616" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="51" y="615" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="23" y="602" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="65" y="630" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="79" y="602" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="65" y="616" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="37" y="616" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="79" y="588" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="51" y="574" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="23" y="616" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="51" y="588" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="23" y="630" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="23" y="574" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="65" y="601" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="37" y="602" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="37" y="630" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="37" y="588" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="65" y="588" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="23" y="588" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="65" y="574" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="79" y="630" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="51" y="629" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="79" y="574" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="51" y="602" width="8" height="8"/>
+			</ellipse>
+			<ellipse>
+				<reportElement uuid="78c2bd97-21a7-41d2-84c7-b1033c909415" x="37" y="574" width="8" height="8"/>
+			</ellipse>
+		</band>
+	</detail>
+	<summary>
+		<band height="21" splitType="Stretch"/>
+	</summary>
+</jasperReport>
