@@ -74,6 +74,8 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 	@FXML
 	private BigDecimalField bigDecimalPuntajePregunta;
 	@FXML
+	private BigDecimalField bigDecimalExigencia;
+	@FXML
 	private ComboBox<NivelEvaluacion> cmbNivelEvaluacion;
 	@FXML
 	private Label lblError;
@@ -103,7 +105,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 	private Prueba prueba;
 
 	public PruebasView() {
-	  setTitle("Definición de Pruebas");
+		setTitle("Definición de Pruebas");
 	}
 
 	@FXML
@@ -147,6 +149,11 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 		bigDecimalPuntajePregunta.setMaxValue(new BigDecimal(3));
 		bigDecimalPuntajePregunta.setStepwidth(new BigDecimal(1));
 		bigDecimalPuntajePregunta.setNumber(new BigDecimal(1));
+
+		bigDecimalExigencia.setMinValue(new BigDecimal(40));
+		bigDecimalExigencia.setMaxValue(new BigDecimal(60));
+		bigDecimalExigencia.setStepwidth(new BigDecimal(10));
+		bigDecimalExigencia.setNumber(new BigDecimal(60));
 
 		dpFecha.setValue(LocalDate.now());
 		mnuGrabar.setOnAction(this);
@@ -272,6 +279,11 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 			valid = false;
 			bigDecimalPuntajePregunta.getStyleClass().add("bad");
 		}
+		if (bigDecimalExigencia.getNumber() == null) {
+			valid = false;
+			bigDecimalExigencia.getStyleClass().add("bad");
+		}
+
 		if (dpFecha.getValue() == null) {
 			valid = false;
 			dpFecha.getStyleClass().add("bad");
@@ -292,6 +304,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 		removeAllStyle(bigDecimalNroPreguntas);
 		removeAllStyle(bigDecimalPuntajePregunta);
 		removeAllStyle(dpFecha);
+		removeAllStyle(bigDecimalExigencia);
 
 	}
 
@@ -302,7 +315,6 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 			handleModificar();
 		} else if (source == mnuGrabar) {
 			handleGrabar();
-			handlerDefinirPrueba();
 		} else if (source == mnuEliminar || source == mnuPopupEliminar) {
 			handleEliminar();
 		} else if (source == mnuEvaluarPrueba) {
@@ -322,8 +334,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 
 	private void handlerDefinirPrueba() {
 		if (definePrueba == null) {
-			definePrueba = (DefinePruebaViewController) show(
-					"/cl/eos/view/DefinePruebaView.fxml");
+			definePrueba = (DefinePruebaViewController) show("/cl/eos/view/DefinePruebaView.fxml");
 		} else {
 			show(definePrueba);
 		}
@@ -381,6 +392,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 			prueba.setAlternativas(bigDecimaNroAlternativas.getNumber()
 					.intValue());
 			prueba.setTipoPrueba(cmbTipoPrueba.getValue());
+			prueba.setExigencia(bigDecimalExigencia.getNumber().intValue());
 
 			save(prueba);
 		} else {
@@ -408,6 +420,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 			bigDecimalNroPreguntas.setNumber(new BigDecimal(prueba
 					.getNroPreguntas()));
 			cmbTipoPrueba.getSelectionModel().select(prueba.getTipoPrueba());
+			prueba.setExigencia(bigDecimalExigencia.getNumber().intValue());
 		}
 	}
 

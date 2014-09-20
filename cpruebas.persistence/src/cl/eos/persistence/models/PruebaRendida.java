@@ -10,6 +10,10 @@ import cl.eos.interfaces.entity.IEntity;
 @Entity(name = "pruebarendida")
 public class PruebaRendida implements IEntity {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -59,6 +63,7 @@ public class PruebaRendida implements IEntity {
 	}
 
 	public String getRespuestas() {
+		System.out.println("Respuestas " + respuestas);
 		return respuestas;
 	}
 

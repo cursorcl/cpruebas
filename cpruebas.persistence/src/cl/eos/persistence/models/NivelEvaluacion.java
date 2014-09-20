@@ -16,6 +16,7 @@ import cl.eos.interfaces.entity.IEntity;
 @NamedQueries({ @NamedQuery(name = "NivelEvaluacion.findAll", query = "SELECT e FROM nivelevaluacion e") })
 public class NivelEvaluacion implements IEntity {
 
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;

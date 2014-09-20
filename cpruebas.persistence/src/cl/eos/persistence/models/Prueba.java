@@ -39,6 +39,8 @@ public class Prueba implements IEntity {
 	private Integer alternativas;
 	private Profesor profesor;
 	private Integer puntajeBase;
+	private String responses;
+	private Integer exigencia;
 
 	@OneToMany(mappedBy = "prueba", cascade = CascadeType.PERSIST)
 	private List<Formas> formas;
@@ -159,6 +161,14 @@ public class Prueba implements IEntity {
 		return formas;
 	}
 
+	public Integer getExigencia() {
+		return exigencia;
+	}
+
+	public void setExigencia(Integer exigencia) {
+		this.exigencia = exigencia;
+	}
+
 	public void setFormas(List<Formas> formas) {
 		this.formas = formas;
 	}
@@ -175,5 +185,14 @@ public class Prueba implements IEntity {
 	public String toString() {
 		return name;
 	}
+
+	public String getResponses() {
+		return responses;
+	}
+
+	public void setResponses(String responses) {
+		this.responses = responses;
+	}
+	
 
 }

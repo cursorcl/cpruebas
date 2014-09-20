@@ -16,11 +16,12 @@ import cl.eos.interfaces.entity.IEntity;
 @NamedQueries({ @NamedQuery(name = "Curso.findAll", query = "SELECT e FROM curso e") })
 public class Curso implements IEntity {
 
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	private String name;
-	private Nivel nivel;
+	private Ciclo ciclo;
 	@OneToMany
 	private Collection<Alumno> alumnos;
 
@@ -49,12 +50,12 @@ public class Curso implements IEntity {
 		return true;
 	}
 
-	public Nivel getNivel() {
-		return nivel;
+	public Ciclo getCiclo() {
+		return ciclo;
 	}
 
-	public void setNivel(Nivel nivel) {
-		this.nivel = nivel;
+	public void setCiclo(Ciclo ciclo) {
+		this.ciclo = ciclo;
 	}
 
 	public Collection<Alumno> getAlumnos() {

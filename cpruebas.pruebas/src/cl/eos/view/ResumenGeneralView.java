@@ -55,8 +55,6 @@ public class ResumenGeneralView extends AFormView {
 	@FXML
 	private TableColumn<PruebaRendida, String> colName;
 	@FXML
-	private TableColumn<PruebaRendida, String> colCurso;
-	@FXML
 	private TableColumn<PruebaRendida, Integer> colABuenas;
 	@FXML
 	private TableColumn<PruebaRendida, Integer> colAMalas;
@@ -71,6 +69,15 @@ public class ResumenGeneralView extends AFormView {
 	@FXML
 	private TableColumn<PruebaRendida, Float> colANota;
 
+	private Float notaMin = 7f;
+	private Float notaMax = 0f;
+	private Float pbuenasMin = 100f;
+	private Float pbuenasMax = 0f;
+	private Float ppuntajeMin = 100f;
+	private Float ppuntajeMax = 0f;
+	private Integer puntajeMin = 100;
+	private Integer puntajeMax = 0;
+	
 	public ResumenGeneralView() {
 		// TODO Auto-generated constructor stub
 	}
@@ -93,8 +100,6 @@ public class ResumenGeneralView extends AFormView {
 		colMaterno
 				.setCellValueFactory(new PropertyValueFactory<PruebaRendida, String>(
 						"materno"));
-		colCurso.setCellValueFactory(new PropertyValueFactory<PruebaRendida, String>(
-				"curso"));
 		colABuenas
 				.setCellValueFactory(new PropertyValueFactory<PruebaRendida, Integer>(
 						"buenas"));
@@ -118,8 +123,6 @@ public class ResumenGeneralView extends AFormView {
 
 	}
 
-
-	
 	private void inicializarTablaResumen() {
 		tblResumen.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 		colNombre
@@ -136,39 +139,70 @@ public class ResumenGeneralView extends AFormView {
 		colPuntaje
 				.setCellValueFactory(new PropertyValueFactory<OTResumenGeneral, Float>(
 						"ppuntaje"));
-		
+
 	}
 
 	@Override
 	public void onFound(IEntity entity) {
 		if (entity instanceof EvaluacionPrueba) {
 			EvaluacionPrueba evaluacionPrueba = (EvaluacionPrueba) entity;
-			evaluacionPrueba.procesarValoresMinMax();
-
-			List<OTResumenGeneral> listaResumen = new LinkedList<OTResumenGeneral>();
-			listaResumen.add(new OTResumenGeneral("Máximo", evaluacionPrueba
-					.getNotaMax(), evaluacionPrueba.getPBuenasMax(),
-					evaluacionPrueba.getPpuntajeMax(), evaluacionPrueba
-							.getPuntajeMax()));
-
-			listaResumen.add(new OTResumenGeneral("Mínimo", evaluacionPrueba
-					.getNotaMin(), evaluacionPrueba.getPBuenasMin(),
-					evaluacionPrueba.getPpuntajeMin(), evaluacionPrueba
-							.getPuntajeMin()));
-
-			Float promNota = (evaluacionPrueba.getNotaMax() + evaluacionPrueba
-					.getNotaMin()) / 2;
-			Float prompBuenas = (evaluacionPrueba.getPBuenasMax() + evaluacionPrueba
-					.getPBuenasMin()) / 2;
-			Float prompPuntaje = (evaluacionPrueba.getPpuntajeMax() + evaluacionPrueba
-					.getPpuntajeMin()) / 2;
-			Integer promPuntaje = (evaluacionPrueba.getPuntajeMax() + evaluacionPrueba
-					.getPuntajeMin()) / 2;
-
-			listaResumen.add(new OTResumenGeneral("Promedio", promNota,
-					prompBuenas, prompPuntaje, promPuntaje));
+			List<PruebaRendida> pRendidas = evaluacionPrueba
+					.getPruebasRendidas();
+			List<OTResumenGeneral> listaResumen = procesarValoresMinMax(pRendidas);
 			asignarDatosEvalucion(evaluacionPrueba, listaResumen);
 		}
+	}
+
+
+	private List<OTResumenGeneral> procesarValoresMinMax(
+			List<PruebaRendida> pruebasRendidas) {
+
+		for (PruebaRendida pruebaRendida : pruebasRendidas) {
+			if (pruebaRendida.getNota() < notaMin) {
+				notaMin = pruebaRendida.getNota();
+			}
+			if (pruebaRendida.getNota() > notaMax) {
+				notaMax = pruebaRendida.getNota();
+			}
+
+			if (pruebaRendida.getPbuenas() < pbuenasMin) {
+				pbuenasMin = pruebaRendida.getPbuenas();
+			}
+			if (pruebaRendida.getPbuenas() > pbuenasMax) {
+				pbuenasMax = pruebaRendida.getPbuenas();
+			}
+
+			if (pruebaRendida.getPpuntaje() < ppuntajeMin) {
+				ppuntajeMin = pruebaRendida.getPpuntaje();
+			}
+			if (pruebaRendida.getPpuntaje() > ppuntajeMax) {
+				ppuntajeMax = pruebaRendida.getPpuntaje();
+			}
+
+			if (pruebaRendida.getPuntaje() < puntajeMin) {
+				puntajeMin = pruebaRendida.getPuntaje();
+			}
+			if (pruebaRendida.getPuntaje() > puntajeMax) {
+				puntajeMax = pruebaRendida.getPuntaje();
+			}
+		}
+
+		List<OTResumenGeneral> listaResumen = new LinkedList<OTResumenGeneral>();
+		listaResumen.add(new OTResumenGeneral("Máximo", notaMax, pbuenasMax,
+				ppuntajeMax, puntajeMax));
+
+		listaResumen.add(new OTResumenGeneral("Mínimo", notaMin, pbuenasMin,
+				ppuntajeMin, puntajeMin));
+
+		Float promNota = (notaMax + notaMin) / 2;
+		Float prompBuenas = (pbuenasMax + pbuenasMin) / 2;
+		Float prompPuntaje = (ppuntajeMax + ppuntajeMin) / 2;
+		Integer promPuntaje = (puntajeMax + puntajeMin) / 2;
+
+		listaResumen.add(new OTResumenGeneral("Promedio", promNota,
+				prompBuenas, prompPuntaje, promPuntaje));
+		
+		return listaResumen;
 	}
 
 	private void asignarDatosEvalucion(EvaluacionPrueba entity,

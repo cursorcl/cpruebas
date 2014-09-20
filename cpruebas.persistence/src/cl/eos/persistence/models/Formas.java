@@ -15,7 +15,7 @@ import cl.eos.interfaces.entity.IEntity;
 @Entity(name = "formas")
 @NamedQueries({ @NamedQuery(name = "Formas.findAll", query = "SELECT e FROM formas e"),
                 @NamedQuery(name = "Formas.findByPrueba", query = "SELECT e FROM formas e WHERE e.prueba.id = :pruebaId"),
-                @NamedQuery(name = "Fromas.deleteByPrueba", query = "DELETE FROM formas e WHERE e.prueba.id = :pruebaId")})
+                @NamedQuery(name = "Formas.deleteByPrueba", query = "DELETE FROM formas e WHERE e.prueba.id = :pruebaId")})
 
 public class Formas implements IEntity {
 

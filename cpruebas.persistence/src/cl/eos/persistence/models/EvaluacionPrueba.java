@@ -10,7 +10,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.Transient;
 
 import cl.eos.interfaces.entity.IEntity;
 
@@ -18,11 +17,10 @@ import cl.eos.interfaces.entity.IEntity;
 @NamedQueries({
 		@NamedQuery(name = "EvaluacionPrueba.findAll", query = "SELECT e FROM evaluacionprueba e"),
 		@NamedQuery(name = "EvaluacionPrueba.findByPrueba", query = "SELECT e FROM evaluacionprueba e where e.prueba.id = :idPrueba") })
-
 public class EvaluacionPrueba implements IEntity {
 
-  private static final long serialVersionUID = 1L;
-  @Id
+	private static final long serialVersionUID = 1L;
+	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	@Column(length = 100)
@@ -123,118 +121,14 @@ public class EvaluacionPrueba implements IEntity {
 	public Integer getNroPreguntas() {
 		return prueba.getNroPreguntas();
 	}
-
-	@Transient
-	private Float NotaMin = 7f;
-	@Transient
-	private Float NotaMax = 0f;
-	@Transient
-	private Float PBuenasMin = 100f;
-	@Transient
-	private Float PBuenasMax = 0f;
-	@Transient
-	private Float ppuntajeMin = 100f;
-	@Transient
-	private Float ppuntajeMax = 0f;
-	@Transient
-	private Integer puntajeMin = 100;
-	@Transient
-	private Integer puntajeMax = 0;
-
-	public void procesarValoresMinMax() {
-		for (PruebaRendida pruebaRendida : pruebasRendidas) {
-			if (pruebaRendida.getNota() < NotaMin) {
-				NotaMin = pruebaRendida.getNota();
-			}
-			if (pruebaRendida.getNota() > NotaMax) {
-				NotaMax = pruebaRendida.getNota();
-			}
-
-			if (pruebaRendida.getPbuenas() < PBuenasMin) {
-				PBuenasMin = pruebaRendida.getPbuenas();
-			}
-			if (pruebaRendida.getPbuenas() > PBuenasMax) {
-				PBuenasMax = pruebaRendida.getPbuenas();
-			}
-
-			if (pruebaRendida.getPpuntaje() < ppuntajeMin) {
-				ppuntajeMin = pruebaRendida.getPpuntaje();
-			}
-			if (pruebaRendida.getPpuntaje() > ppuntajeMax) {
-				ppuntajeMax = pruebaRendida.getPpuntaje();
-			}
-
-			if (pruebaRendida.getPuntaje() < puntajeMin) {
-				puntajeMin = pruebaRendida.getPuntaje();
-			}
-			if (pruebaRendida.getPuntaje() > puntajeMax) {
-				puntajeMax = pruebaRendida.getPuntaje();
-			}
-		}		
+	
+	public String getResponses() {
+		return prueba.getResponses();
 	}
-
-	public Float getNotaMin() {
-		return NotaMin;
-	}
-
-	public void setNotaMin(Float notaMin) {
-		NotaMin = notaMin;
-	}
-
-	public Float getNotaMax() {
-		return NotaMax;
-	}
-
-	public void setNotaMax(Float notaMax) {
-		NotaMax = notaMax;
-	}
-
-	public Float getPBuenasMin() {
-		return PBuenasMin;
-	}
-
-	public void setPBuenasMin(Float pBuenasMin) {
-		PBuenasMin = pBuenasMin;
-	}
-
-	public Float getPBuenasMax() {
-		return PBuenasMax;
-	}
-
-	public void setPBuenasMax(Float pBuenasMax) {
-		PBuenasMax = pBuenasMax;
-	}
-
-	public Float getPpuntajeMin() {
-		return ppuntajeMin;
-	}
-
-	public void setPpuntajeMin(Float ppuntajeMin) {
-		this.ppuntajeMin = ppuntajeMin;
-	}
-
-	public Float getPpuntajeMax() {
-		return ppuntajeMax;
-	}
-
-	public void setPpuntajeMax(Float ppuntajeMax) {
-		this.ppuntajeMax = ppuntajeMax;
-	}
-
-	public Integer getPuntajeMin() {
-		return puntajeMin;
-	}
-
-	public void setPuntajeMin(Integer puntajeMin) {
-		this.puntajeMin = puntajeMin;
-	}
-
-	public Integer getPuntajeMax() {
-		return puntajeMax;
-	}
-
-	public void setPuntajeMax(Integer puntajeMax) {
-		this.puntajeMax = puntajeMax;
+		
+	public TipoPrueba getTipo(){
+		return prueba.getTipoPrueba();
 	}
 
 }
+

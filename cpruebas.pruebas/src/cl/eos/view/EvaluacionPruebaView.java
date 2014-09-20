@@ -14,7 +14,9 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import cl.eos.imp.view.AFormView;
+import cl.eos.persistence.models.Curso;
 import cl.eos.persistence.models.EvaluacionPrueba;
+import cl.eos.persistence.models.TipoPrueba;
 
 public class EvaluacionPruebaView extends AFormView implements
 		EventHandler<ActionEvent> {
@@ -24,9 +26,11 @@ public class EvaluacionPruebaView extends AFormView implements
 	@FXML
 	private TableColumn<EvaluacionPrueba, LocalDate> fechaCol;
 	@FXML
-	private TableColumn<EvaluacionPrueba, String> cursoCol;
+	private TableColumn<EvaluacionPrueba, Curso> cursoCol;
 	@FXML
 	private TableColumn<EvaluacionPrueba, String> nameCol;
+	@FXML
+	private TableColumn<EvaluacionPrueba, TipoPrueba> colTipo;
 	@FXML
 	private TableColumn<EvaluacionPrueba, String> asignaturaCol;
 	@FXML
@@ -36,11 +40,25 @@ public class EvaluacionPruebaView extends AFormView implements
 	@FXML
 	private TableColumn<EvaluacionPrueba, Integer> formasCol;
 	@FXML
-	private TableColumn<EvaluacionPrueba, Integer> alternativasCol;
+	private TableColumn<EvaluacionPrueba, Integer> colExigencia;
 	@FXML
 	private MenuItem mnuResumenGeneral;
+	@FXML
+	private MenuItem mnuResumenAlumno;
+	@FXML
+	private MenuItem mnuRespuestasPregunta;
+	
+	@FXML
+	private MenuItem menuResumenGeneral;
+	@FXML
+	private MenuItem menuResumenAlumno;
+	@FXML
+	private MenuItem menuRespuestasPregunta;
+
 	private ResumenGeneralView resumenGeneral;
 	private EvaluacionPrueba evaluacionPrueba;
+	private ResumenAlumnoView resumenAlumno;
+	private ResumenRespuestaView resumenRespuestas;
 
 	public EvaluacionPruebaView() {
 		// TODO Auto-generated constructor stub
@@ -49,24 +67,40 @@ public class EvaluacionPruebaView extends AFormView implements
 	@FXML
 	public void initialize() {
 		mnuResumenGeneral.setOnAction(this);
+		mnuResumenAlumno.setOnAction(this);
+		mnuRespuestasPregunta.setOnAction(this);
+		
+		menuResumenGeneral.setOnAction(this);
+		menuResumenAlumno.setOnAction(this);
+		menuRespuestasPregunta.setOnAction(this);
+
 		tblListadoPruebas.getSelectionModel().setSelectionMode(
 				SelectionMode.MULTIPLE);
-		fechaCol.setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba, LocalDate>(
-				"fechaLocal"));
 		nameCol.setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba, String>(
 				"name"));
+		fechaCol.setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba, LocalDate>(
+				"fechaLocal"));
+		colTipo.setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba, TipoPrueba>(
+				"tipo"));
+		cursoCol.setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba, Curso>(
+				"curso"));
 		asignaturaCol
 				.setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba, String>(
 						"asignatura"));
-		profesorCol
-				.setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba, String>(
-						"profesor"));
 		formasCol
 				.setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba, Integer>(
 						"formas"));
+		profesorCol
+				.setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba, String>(
+						"profesor"));
 		nroPreguntasCol
 				.setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba, Integer>(
 						"nroPreguntas"));
+		// colExigencia
+		// .setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba,
+		// Integer>(
+		// "nroPreguntas"));
+
 	}
 
 	@Override
@@ -87,8 +121,26 @@ public class EvaluacionPruebaView extends AFormView implements
 	@Override
 	public void handle(ActionEvent event) {
 		Object source = event.getSource();
-		if (source == mnuResumenGeneral) {
+		if (source == mnuResumenGeneral || source == menuResumenGeneral) {
 			handleResumenGeneral();
+		} else if (source == mnuResumenAlumno||source == menuResumenAlumno) {
+			handleResumenAlumno();
+		} else if (source == mnuRespuestasPregunta || source == menuRespuestasPregunta) {
+			handleResumenRespuesta();
+		}
+	}
+
+	private void handleResumenAlumno() {
+		if (resumenAlumno == null) {
+			resumenAlumno = (ResumenAlumnoView) show("/cl/eos/view/ResumenAlumno.fxml");
+		} else {
+			show(resumenGeneral);
+		}
+		evaluacionPrueba = tblListadoPruebas.getSelectionModel()
+				.getSelectedItem();
+		if (evaluacionPrueba != null) {
+			controller.findById(EvaluacionPrueba.class,
+					evaluacionPrueba.getId());
 		}
 	}
 
@@ -98,10 +150,26 @@ public class EvaluacionPruebaView extends AFormView implements
 		} else {
 			show(resumenGeneral);
 		}
-		evaluacionPrueba = tblListadoPruebas.getSelectionModel().getSelectedItem();
+		evaluacionPrueba = tblListadoPruebas.getSelectionModel()
+				.getSelectedItem();
 		if (evaluacionPrueba != null) {
-			controller.findById(EvaluacionPrueba.class, evaluacionPrueba.getId());
+			controller.findById(EvaluacionPrueba.class,
+					evaluacionPrueba.getId());
 		}
 
+	}
+
+	private void handleResumenRespuesta() {
+		if (resumenRespuestas == null) {
+			resumenRespuestas = (ResumenRespuestaView) show("/cl/eos/view/ResumenRespuestas.fxml");
+		} else {
+			show(resumenRespuestas);
+		}
+		evaluacionPrueba = tblListadoPruebas.getSelectionModel()
+				.getSelectedItem();
+		if (evaluacionPrueba != null) {
+			controller.findById(EvaluacionPrueba.class,
+					evaluacionPrueba.getId());
+		}
 	}
 }

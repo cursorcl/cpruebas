@@ -19,8 +19,8 @@ import cl.eos.interfaces.entity.IEntity;
 @Entity(name = "respuestasesperadasprueba")
 @NamedQueries({
     @NamedQuery(name = "RespuestasEsperadasPrueba.findAll", query = "SELECT e FROM respuestasesperadasprueba e"),
-    @NamedQuery(name = "respuestasesperadasprueba.findByPrueba", query = "SELECT e FROM respuestasesperadasprueba e WHERE e.prueba.id = :pruebaId"),
-    @NamedQuery(name = "respuestasesperadasprueba.deleteByPrueba", query = "DELETE FROM respuestasesperadasprueba e WHERE e.prueba.id = :pruebaId")})
+    @NamedQuery(name = "RespuestasEsperadasPrueba.findByPrueba", query = "SELECT e FROM respuestasesperadasprueba e WHERE e.prueba.id = :pruebaId"),
+    @NamedQuery(name = "RespuestasEsperadasPrueba.deleteByPrueba", query = "DELETE FROM respuestasesperadasprueba e WHERE e.prueba.id = :pruebaId")})
 public class RespuestasEsperadasPrueba implements IEntity {
 
   private static final long serialVersionUID = 1L;
