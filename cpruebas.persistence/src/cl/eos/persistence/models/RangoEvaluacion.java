@@ -13,6 +13,7 @@ import cl.eos.interfaces.entity.IEntity;
 @NamedQueries({ @NamedQuery(name = "RangoEvaluacion.findAll", query = "SELECT e FROM rangoevaluacion e") })
 public class RangoEvaluacion implements IEntity {
 
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;

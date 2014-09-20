@@ -11,9 +11,9 @@ import cl.eos.interfaces.entity.IEntity;
 
 @Entity(name = "alumno")
 @NamedQueries({ @NamedQuery(name = "Alumno.findAll", query = "SELECT e FROM alumno e")})
-//,@NamedQuery(name = "Alumno.preguntita", query = "SELECT e FROM alumno e where direccion = :dato")})
 public class Alumno implements IEntity {
 
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;

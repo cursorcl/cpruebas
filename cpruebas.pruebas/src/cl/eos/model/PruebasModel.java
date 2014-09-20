@@ -21,8 +21,8 @@ public class PruebasModel extends AModel {
       Prueba prueba =  (Prueba)entity;
       Map<String, Object> parameters = new HashMap<String, Object>();
       parameters.put("pruebaId", prueba.getId());
-      PersistenceServiceFactory.getPersistenceService().executeUpdate("Fromas.deleteByPrueba", parameters);
-      PersistenceServiceFactory.getPersistenceService().executeUpdate("respuestasesperadasprueba.deleteByPrueba", parameters);
+      PersistenceServiceFactory.getPersistenceService().executeUpdate("Formas.deleteByPrueba", parameters);
+      PersistenceServiceFactory.getPersistenceService().executeUpdate("RespuestasEsperadasPrueba.deleteByPrueba", parameters);
     }
     super.update(entity);
   }

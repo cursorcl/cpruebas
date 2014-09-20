@@ -201,7 +201,7 @@ public class PersistenceService implements IPersistenceService {
   @Override
   public int executeUpdate(final String namedQuery, Map<String, Object> parameters) {
 
-    Query query = eManager.createQuery(namedQuery);
+    Query query = eManager.createNamedQuery(namedQuery);
     for (Entry<String, Object> entry : parameters.entrySet()) {
       query.setParameter(entry.getKey(), entry.getValue());
     }

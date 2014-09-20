@@ -13,6 +13,7 @@ import cl.eos.interfaces.entity.IEntity;
 @NamedQueries({ @NamedQuery(name = "Asignatura.findAll", query = "SELECT e FROM asignatura e") })
 public class Asignatura implements IEntity {
 
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;	
