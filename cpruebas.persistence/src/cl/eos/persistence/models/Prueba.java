@@ -16,183 +16,202 @@ import javax.persistence.OneToMany;
 import cl.eos.interfaces.entity.IEntity;
 
 @Entity(name = "prueba")
-@NamedQueries({ @NamedQuery(name = "Prueba.findAll", query = "SELECT e FROM prueba e") })
+@NamedQueries({@NamedQuery(name = "Prueba.findAll", query = "SELECT e FROM prueba e")})
 public class Prueba implements IEntity {
 
-	private static final long serialVersionUID = 1L;
+  public enum Estado {
+    CREADA, DEFINIDA, EVALUADA
+  };
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+  private static final long serialVersionUID = 1L;
 
-	@Column(length = 100)
-	private String name;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-	private TipoPrueba tipoPrueba;
-	private TipoCurso curso;
-	private Asignatura asignatura;
-	private NivelEvaluacion nivelEvaluacion;
+  @Column(length = 100)
+  private String name;
 
-	private Long fecha;
-	private Integer nroPreguntas;
-	private Integer nroFormas;
-	private Integer alternativas;
-	private Profesor profesor;
-	private Integer puntajeBase;
-	private String responses;
-	private Integer exigencia;
+  private TipoPrueba tipoPrueba;
+  private TipoCurso curso;
+  private Asignatura asignatura;
+  private NivelEvaluacion nivelEvaluacion;
 
-	@OneToMany(mappedBy = "prueba", cascade = CascadeType.PERSIST)
-	private List<Formas> formas;
+  private Long fecha;
+  private Integer nroPreguntas;
+  private Integer nroFormas;
+  private Integer alternativas;
+  private Profesor profesor;
+  private Integer puntajeBase;
+  private String responses;
+  private Integer exigencia;
 
-	@OneToMany(mappedBy = "prueba", cascade = CascadeType.PERSIST)
-	private List<RespuestasEsperadasPrueba> respuestas;
 
-	public TipoPrueba getTipoPrueba() {
-		return tipoPrueba;
-	}
 
-	public void setTipoPrueba(TipoPrueba tipoPrueba) {
-		this.tipoPrueba = tipoPrueba;
-	}
+  @OneToMany(mappedBy = "prueba", cascade = CascadeType.ALL)
+  private List<Formas> formas;
 
-	public TipoCurso getCurso() {
-		return curso;
-	}
+  @OneToMany(mappedBy = "prueba", cascade = CascadeType.ALL)
+  private List<RespuestasEsperadasPrueba> respuestas;
 
-	public void setCurso(TipoCurso curso) {
-		this.curso = curso;
-	}
+  @OneToMany(mappedBy = "prueba", cascade = CascadeType.ALL)
+  private List<EvaluacionPrueba> evaluaciones;
 
-	public Asignatura getAsignatura() {
-		return asignatura;
-	}
 
-	public void setAsignatura(Asignatura asignatura) {
-		this.asignatura = asignatura;
-	}
+  public TipoPrueba getTipoPrueba() {
+    return tipoPrueba;
+  }
 
-	public Long getFecha() {
-		return fecha;
-	}
+  public void setTipoPrueba(TipoPrueba tipoPrueba) {
+    this.tipoPrueba = tipoPrueba;
+  }
 
-	public void setFecha(Long fecha) {
-		this.fecha = fecha;
-	}
+  public TipoCurso getCurso() {
+    return curso;
+  }
 
-	public Integer getNroPreguntas() {
-		return nroPreguntas;
-	}
+  public void setCurso(TipoCurso curso) {
+    this.curso = curso;
+  }
 
-	public void setNroPreguntas(Integer nroPreguntas) {
-		this.nroPreguntas = nroPreguntas;
-	}
+  public Asignatura getAsignatura() {
+    return asignatura;
+  }
 
-	public Integer getNroFormas() {
-		return nroFormas;
-	}
+  public void setAsignatura(Asignatura asignatura) {
+    this.asignatura = asignatura;
+  }
 
-	public void setNroFormas(Integer nroFormas) {
-		this.nroFormas = nroFormas;
-	}
+  public Long getFecha() {
+    return fecha;
+  }
 
-	public Integer getAlternativas() {
-		return alternativas;
-	}
+  public void setFecha(Long fecha) {
+    this.fecha = fecha;
+  }
 
-	public void setAlternativas(Integer alternativas) {
-		this.alternativas = alternativas;
-	}
+  public Integer getNroPreguntas() {
+    return nroPreguntas;
+  }
 
-	public NivelEvaluacion getNivelEvaluacion() {
-		return nivelEvaluacion;
-	}
+  public void setNroPreguntas(Integer nroPreguntas) {
+    this.nroPreguntas = nroPreguntas;
+  }
 
-	public void setNivelEvaluacion(NivelEvaluacion nivelEvaluacion) {
-		this.nivelEvaluacion = nivelEvaluacion;
-	}
+  public Integer getNroFormas() {
+    return nroFormas;
+  }
 
-	public Integer getPuntajeBase() {
-		return puntajeBase;
-	}
+  public void setNroFormas(Integer nroFormas) {
+    this.nroFormas = nroFormas;
+  }
 
-	public void setPuntajeBase(Integer puntajeBase) {
-		this.puntajeBase = puntajeBase;
-	}
+  public Integer getAlternativas() {
+    return alternativas;
+  }
 
-	@Override
-	public Long getId() {
-		return id;
-	}
+  public void setAlternativas(Integer alternativas) {
+    this.alternativas = alternativas;
+  }
 
-	@Override
-	public void setId(Long id) {
-		this.id = id;
-	}
+  public NivelEvaluacion getNivelEvaluacion() {
+    return nivelEvaluacion;
+  }
 
-	@Override
-	public String getName() {
-		return name;
-	}
+  public void setNivelEvaluacion(NivelEvaluacion nivelEvaluacion) {
+    this.nivelEvaluacion = nivelEvaluacion;
+  }
 
-	@Override
-	public void setName(String name) {
-		this.name = name;
-	}
+  public Integer getPuntajeBase() {
+    return puntajeBase;
+  }
 
-	@Override
-	public boolean validate() {
-		return true;
-	}
+  public void setPuntajeBase(Integer puntajeBase) {
+    this.puntajeBase = puntajeBase;
+  }
 
-	public Profesor getProfesor() {
-		return profesor;
-	}
+  @Override
+  public Long getId() {
+    return id;
+  }
 
-	public void setProfesor(Profesor profesor) {
-		this.profesor = profesor;
-	}
+  @Override
+  public void setId(Long id) {
+    this.id = id;
+  }
 
-	public LocalDate getFechaLocal() {
-		return LocalDate.ofEpochDay(this.fecha.longValue());
-	}
+  @Override
+  public String getName() {
+    return name;
+  }
 
-	public List<Formas> getFormas() {
-		return formas;
-	}
+  @Override
+  public void setName(String name) {
+    this.name = name;
+  }
 
-	public Integer getExigencia() {
-		return exigencia;
-	}
+  @Override
+  public boolean validate() {
+    return true;
+  }
 
-	public void setExigencia(Integer exigencia) {
-		this.exigencia = exigencia;
-	}
+  public Profesor getProfesor() {
+    return profesor;
+  }
 
-	public void setFormas(List<Formas> formas) {
-		this.formas = formas;
-	}
+  public void setProfesor(Profesor profesor) {
+    this.profesor = profesor;
+  }
 
-	public List<RespuestasEsperadasPrueba> getRespuestas() {
-		return respuestas;
-	}
+  public LocalDate getFechaLocal() {
+    return LocalDate.ofEpochDay(this.fecha.longValue());
+  }
 
-	public void setRespuestas(List<RespuestasEsperadasPrueba> respuestas) {
-		this.respuestas = respuestas;
-	}
+  public List<Formas> getFormas() {
+    return formas;
+  }
 
-	@Override
-	public String toString() {
-		return name;
-	}
+  public Integer getExigencia() {
+    return exigencia;
+  }
 
-	public String getResponses() {
-		return responses;
-	}
+  public void setExigencia(Integer exigencia) {
+    this.exigencia = exigencia;
+  }
 
-	public void setResponses(String responses) {
-		this.responses = responses;
-	}
-	
+  public void setFormas(List<Formas> formas) {
+    this.formas = formas;
+  }
 
+  public List<RespuestasEsperadasPrueba> getRespuestas() {
+    return respuestas;
+  }
+
+  public void setRespuestas(List<RespuestasEsperadasPrueba> respuestas) {
+    this.respuestas = respuestas;
+  }
+
+  @Override
+  public String toString() {
+    return name;
+  }
+
+  public String getResponses() {
+    return responses;
+  }
+
+  public void setResponses(String responses) {
+    this.responses = responses;
+  }
+
+  public Estado getEstado() {
+    Estado estado = Estado.CREADA;
+    if (respuestas != null && !respuestas.isEmpty()) {
+      estado = Estado.DEFINIDA;
+    }
+    if (evaluaciones != null && !evaluaciones.isEmpty()) {
+      estado = Estado.EVALUADA;
+    }
+    return estado;
+  }
 }
