@@ -126,38 +126,7 @@
 										</MenuBar>
                               <AnchorPane prefHeight="200.0" prefWidth="200.0">
                                  <children>
-      										<ToolBar id="page-toolbar" prefHeight="32.0" prefWidth="943.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-      											<items>
-      												<Button mnemonicParsing="false" text="">
-      													<graphic>
-      														<ImageView>
-      															<image>
-      																<Image url="@images/back.png" />
-      															</image>
-      														</ImageView>
-      													</graphic>
-      												</Button>
-      												<Button mnemonicParsing="false" text="">
-      													<graphic>
-      														<ImageView>
-      															<image>
-      																<Image url="@images/forward.png" />
-      															</image>
-      														</ImageView>
-      													</graphic>
-      												</Button>
-      
-      												<Button mnemonicParsing="false" text="">
-      													<graphic>
-      														<ImageView>
-      															<image>
-      																<Image url="@images/reload.png" />
-      															</image>
-      														</ImageView>
-      													</graphic>
-      												</Button>
-      											</items>
-      										</ToolBar>
+                                    <BreadcrumbBar fx:id="breadCrumb" layoutY="2.0" prefWidth="711.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                  </children>
                               </AnchorPane>
 									</children>

@@ -90,8 +90,8 @@ public abstract class AFormView extends AView implements IFormView {
 
   protected boolean confirmaEliminar() {
     Action response =
-        Dialogs.create().owner(null).title("Confirma eliminaciÛn")
-            .masthead("Una vez borrado no se puede recuperar").message("Est· seguro de borrar?")
+        Dialogs.create().owner(null).title("Confirma eliminaci√≥n")
+            .masthead("Una vez borrado no se puede recuperar").message("Est√° seguro de borrar?")
             .actions(Dialog.Actions.OK, Dialog.Actions.CANCEL).showConfirm();
     return response == Dialog.Actions.OK;
 

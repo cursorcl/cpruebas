@@ -52,7 +52,7 @@ public class AsignaturasView extends AFormView implements
 	private TableColumn<Asignatura, String> colNombre;
 
 	public AsignaturasView() {
-
+		setTitle("Asignaturas");
 	}
 
 	@FXML

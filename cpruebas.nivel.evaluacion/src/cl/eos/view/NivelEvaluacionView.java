@@ -53,7 +53,7 @@ public class NivelEvaluacionView extends AFormView implements
 	private Object entityFirstElement;
 
 	public NivelEvaluacionView() {
-		// TODO Auto-generated constructor stub
+		setTitle("Nivel Evaluación");
 	}
 
 	@FXML

@@ -51,7 +51,7 @@ public class TipoPruebaView extends AFormView implements
 	private TableColumn<TipoPrueba, String> colNombre;
 
 	public TipoPruebaView() {
-		// TODO Auto-generated constructor stub
+		setTitle("Tipo Prueba");
 	}
 
 	@FXML

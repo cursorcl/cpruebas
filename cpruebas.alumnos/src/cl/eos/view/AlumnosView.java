@@ -92,6 +92,7 @@ public class AlumnosView extends AFormView implements EventHandler<ActionEvent> 
 
 	@FXML
 	public void initialize() {
+		setTitle("Alumnos");
 		inicializaTabla();
 		accionClicTabla();
 

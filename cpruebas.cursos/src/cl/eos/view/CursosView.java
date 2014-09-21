@@ -59,7 +59,7 @@ public class CursosView extends AFormView implements EventHandler<ActionEvent> {
 	private TableColumn<Curso, String> colNivel;
 
 	public CursosView() {
-
+		setTitle("Cursos");
 	}
 
 	@FXML

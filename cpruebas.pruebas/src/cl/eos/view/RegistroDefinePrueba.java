@@ -57,7 +57,10 @@ public class RegistroDefinePrueba {
 					Boolean oldValue, Boolean newValue) {
 				if (newValue.equals(Boolean.TRUE)) {
 					RegistroDefinePrueba.this.mental.set(Boolean.FALSE);
-					RegistroDefinePrueba.this.respuesta.set("");
+					if(!"VF".contains(getRespuesta().toUpperCase()))
+					{
+						setRespuesta("");
+					}
 				}
 			}
 		});

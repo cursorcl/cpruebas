@@ -10,13 +10,15 @@
 <?import java.lang.*?>
 <?import jfxtras.labs.scene.control.window.*?>
 
-
 <BorderPane fx:id="mainWindow" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <top>
-      <AnchorPane prefHeight="49.0" prefWidth="600.0" styleClass="page-header" BorderPane.alignment="CENTER">
+      <AnchorPane id="ModalDimmer" prefHeight="33.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <children>
             <MiniIconButton id="window-close" layoutX="592.0" layoutY="8.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="1.0" />
-            <Label fx:id="windowTitle" contentDisplay="CENTER" layoutX="5.0" layoutY="5.0" prefHeight="60.0" prefWidth="576.0" style="-fx-alignment: CENTER;" text="Título de la ventana" textAlignment="CENTER" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="4.0" />
+            <Label fx:id="windowTitle" contentDisplay="CENTER" layoutX="5.0" layoutY="5.0" prefHeight="21.0" prefWidth="576.0" style="-fx-alignment: CENTER;" text="Título de la ventana" textAlignment="CENTER" textFill="#fcf8f8" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="4.0">
+               <font>
+                  <Font name="System Bold" size="17.0" />
+               </font></Label>
          </children>
       </AnchorPane>
    </top>

@@ -110,7 +110,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
   private Prueba prueba;
 
   public PruebasView() {
-    setTitle("Definición de Pruebas");
+    setTitle("Pruebas");
   }
 
   @FXML

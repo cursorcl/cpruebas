@@ -71,6 +71,7 @@ public class ProfesoresView extends AFormView implements
 	private TableColumn<Profesor, String> ColNombres;
 
 	public ProfesoresView() {
+		setTitle("Profesores");
 	}
 
 	@FXML

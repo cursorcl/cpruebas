@@ -80,7 +80,7 @@ public class ColegiosView extends AFormView implements
 	private Label lblError;
 
 	public ColegiosView() {
-
+		setTitle("Colegios");
 	}
 
 	@FXML

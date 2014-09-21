@@ -58,7 +58,7 @@ public class HabilidadesView extends AFormView implements
 	private TableColumn<Habilidad, String> colDescripcion;
 
 	public HabilidadesView() {
-
+		setTitle("Habilidades");
 	}
 
 	@FXML

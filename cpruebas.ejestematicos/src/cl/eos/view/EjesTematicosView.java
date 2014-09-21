@@ -57,7 +57,7 @@ public class EjesTematicosView extends AFormView {
   private TableColumn<EjeTematico, String> colEnsayo;
 
   public EjesTematicosView() {
-
+	  setTitle("Ejes Temáticos");
   }
 
   @FXML
