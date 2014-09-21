@@ -3,6 +3,9 @@ package cl.eos.view;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.controlsfx.dialog.Dialog;
+import org.controlsfx.dialog.Dialogs;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -14,6 +17,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import cl.eos.imp.view.AFormView;
+import cl.eos.interfaces.view.IView;
 import cl.eos.persistence.models.Curso;
 import cl.eos.persistence.models.EvaluacionPrueba;
 import cl.eos.persistence.models.TipoPrueba;
@@ -47,18 +51,23 @@ public class EvaluacionPruebaView extends AFormView implements
 	private MenuItem mnuResumenAlumno;
 	@FXML
 	private MenuItem mnuRespuestasPregunta;
-	
+	@FXML
+	private MenuItem mnuRespuestasHabilidad;
+
 	@FXML
 	private MenuItem menuResumenGeneral;
 	@FXML
 	private MenuItem menuResumenAlumno;
 	@FXML
 	private MenuItem menuRespuestasPregunta;
+	@FXML
+	private MenuItem menuRespuestasHabilidad;
 
 	private ResumenGeneralView resumenGeneral;
 	private EvaluacionPrueba evaluacionPrueba;
 	private ResumenAlumnoView resumenAlumno;
 	private ResumenRespuestaView resumenRespuestas;
+	private ResumenHabilidadesView resumeHabilidad;
 
 	public EvaluacionPruebaView() {
 		// TODO Auto-generated constructor stub
@@ -69,10 +78,12 @@ public class EvaluacionPruebaView extends AFormView implements
 		mnuResumenGeneral.setOnAction(this);
 		mnuResumenAlumno.setOnAction(this);
 		mnuRespuestasPregunta.setOnAction(this);
-		
+		mnuRespuestasHabilidad.setOnAction(this);
+
 		menuResumenGeneral.setOnAction(this);
 		menuResumenAlumno.setOnAction(this);
 		menuRespuestasPregunta.setOnAction(this);
+		menuRespuestasHabilidad.setOnAction(this);
 
 		tblListadoPruebas.getSelectionModel().setSelectionMode(
 				SelectionMode.MULTIPLE);
@@ -111,7 +122,10 @@ public class EvaluacionPruebaView extends AFormView implements
 				ObservableList<EvaluacionPrueba> evaluaciones = FXCollections
 						.observableArrayList();
 				for (Object lEntity : list) {
-					evaluaciones.add((EvaluacionPrueba) lEntity);
+					if (((EvaluacionPrueba) lEntity).getPruebasRendidas()
+							.size() > 0) {
+						evaluaciones.add((EvaluacionPrueba) lEntity);
+					}
 				}
 				tblListadoPruebas.setItems(evaluaciones);
 			}
@@ -123,10 +137,34 @@ public class EvaluacionPruebaView extends AFormView implements
 		Object source = event.getSource();
 		if (source == mnuResumenGeneral || source == menuResumenGeneral) {
 			handleResumenGeneral();
-		} else if (source == mnuResumenAlumno||source == menuResumenAlumno) {
+		} else if (source == mnuResumenAlumno || source == menuResumenAlumno) {
 			handleResumenAlumno();
-		} else if (source == mnuRespuestasPregunta || source == menuRespuestasPregunta) {
+		} else if (source == mnuRespuestasPregunta
+				|| source == menuRespuestasPregunta) {
 			handleResumenRespuesta();
+		}
+		 else if (source == mnuRespuestasHabilidad
+					|| source == menuRespuestasHabilidad) {
+				handleResumenHabilidad();
+			}
+	}
+
+	private void handleResumenHabilidad() {
+		if (resumeHabilidad == null) {
+			resumeHabilidad = (ResumenHabilidadesView) show("/cl/eos/view/ResumenHabilidades.fxml");
+		} else {
+			show(resumeHabilidad);
+		}
+		evaluacionPrueba = tblListadoPruebas.getSelectionModel()
+				.getSelectedItem();
+		if (evaluacionPrueba != null) {
+			controller.findById(EvaluacionPrueba.class,
+					evaluacionPrueba.getId());
+		}
+		else{
+			 Dialogs.create().owner(null).title("Selección registro")
+	            .masthead(resumeHabilidad.getName()).message("Debe seleccionar registro a procesar")
+	            .showInformation();
 		}
 	}
 
