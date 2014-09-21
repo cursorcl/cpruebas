@@ -46,6 +46,7 @@
                                         <MenuItem fx:id="mnuResumenGeneral" mnemonicParsing="false" text="Resumen General" />
                                           <MenuItem fx:id="mnuResumenAlumno" mnemonicParsing="false" text="Resumen por Alumno" />
                                           <MenuItem fx:id="mnuRespuestasPregunta" mnemonicParsing="false" text="Resumen Respuestas por Pregunta" />
+                                          <MenuItem fx:id="mnuRespuestasHabilidad" mnemonicParsing="false" text="Resumen Respuestas por Habilidad" />
                                       </items>
                                     </ContextMenu>
                                  </contextMenu>
@@ -67,6 +68,7 @@
                   <MenuItem fx:id="menuResumenAlumno" mnemonicParsing="false" text="Resumen por Alumno" />
                   <MenuItem fx:id="menuResumenGeneral" mnemonicParsing="false" text="Resumen General" />
                   <MenuItem fx:id="menuRespuestasPregunta" mnemonicParsing="false" text="Resumen Respuestas por Pregunta" />
+                  <MenuItem fx:id="menuRespuestasHabilidad" mnemonicParsing="false" text="Resumen Respuestas por Habilidad" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Help">
