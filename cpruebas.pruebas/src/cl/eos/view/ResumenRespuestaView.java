@@ -67,6 +67,7 @@ public class ResumenRespuestaView extends AFormView {
 
 	@FXML
 	public void initialize() {
+		this.setTitle("Resumen de respuestas por pregunta");
 		inicializarTablaRespuestas();
 		inicializarTablaPorcentaje();
 		graficoBarra.setTitle("Gráfico Respuestas por pregunta");

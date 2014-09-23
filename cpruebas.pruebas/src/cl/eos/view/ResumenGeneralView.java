@@ -84,6 +84,7 @@ public class ResumenGeneralView extends AFormView {
 
 	@FXML
 	public void initialize() {
+		this.setTitle("Resumren de respuestas generales");
 		inicializarTablaResumen();
 		inicializarTablaAlumnos();
 	}

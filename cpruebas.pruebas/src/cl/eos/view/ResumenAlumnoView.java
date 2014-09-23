@@ -69,6 +69,7 @@ public class ResumenAlumnoView extends AFormView implements
 
 	@FXML
 	public void initialize() {
+		this.setTitle("Resumen de respuestas por alumno");
 		inicializarTablaAlumnos();
 		clicTablaRespuesta();
 		clicTablaAlumnos();
