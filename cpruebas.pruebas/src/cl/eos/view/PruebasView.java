@@ -163,6 +163,8 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
     mnuEvaluarPrueba.setOnAction(this);
     mnuDefinirPrueba.setOnAction(this);
     mnuListaEvaluaciones.setOnAction(this);
+    
+    
   }
 
   @Override
