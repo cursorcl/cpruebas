@@ -83,11 +83,13 @@ public class EvaluacionPruebaView extends AFormView implements
 		mnuResumenAlumno.setOnAction(this);
 		mnuRespuestasPregunta.setOnAction(this);
 		mnuRespuestasHabilidad.setOnAction(this);
+		mnuRespuestasEje.setOnAction(this);
 
 		menuResumenGeneral.setOnAction(this);
 		menuResumenAlumno.setOnAction(this);
 		menuRespuestasPregunta.setOnAction(this);
 		menuRespuestasHabilidad.setOnAction(this);
+		menuRespuestasEje.setOnAction(this);
 
 		tblListadoPruebas.getSelectionModel().setSelectionMode(
 				SelectionMode.MULTIPLE);

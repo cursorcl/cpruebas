@@ -166,7 +166,7 @@ public class ResumenHabilidadesView extends AFormView {
 					Integer valor = 1;
 					OTPreguntasHabilidad otPreguntas = new OTPreguntasHabilidad();
 					otPreguntas.setHabilidad(hab);
-					if (cRespuesta[numeroPreg] == respuestasEsperadasPrueba
+					if (cRespuesta[numeroPreg-1] == respuestasEsperadasPrueba
 							.getRespuesta().toCharArray()[0]) {
 						otPreguntas.setBuenas(valor);
 					}
