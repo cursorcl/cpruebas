@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -89,14 +91,15 @@ public class ResumenEjesTematicosView extends AFormView {
 	}
 
 	private void accionClicTabla() {
-		tblEjesTematicos.setOnMouseClicked(new EventHandler<MouseEvent>() {
+		tblEjesTematicos.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<OTPreguntasEjes>() {
+
 			@Override
-			public void handle(MouseEvent event) {
+			public void changed(ObservableValue<? extends OTPreguntasEjes> observable,
+					OTPreguntasEjes oldValue, OTPreguntasEjes newValue) {
 				ObservableList<OTPreguntasEjes> itemsSelec = tblEjesTematicos
 						.getSelectionModel().getSelectedItems();
 
 				if (itemsSelec.size() == 1) {
-					// select((OTPreguntasHabilidad) itemsSelec.get(0));
 					OTPreguntasEjes ejeTematico = itemsSelec.get(0);
 					txtEjeTematico.setText(ejeTematico.getName());
 
@@ -113,9 +116,36 @@ public class ResumenEjesTematicosView extends AFormView {
 									porcentajeNologrado));
 					graficoBarra.getData().clear();
 					graficoBarra.getData().add(series1);
-				}
-			}
+			}}
 		});
+		
+//		tblEjesTematicos.setOnMouseClicked(new EventHandler<MouseEvent>() {
+//			@Override
+//			public void handle(MouseEvent event) {
+//				ObservableList<OTPreguntasEjes> itemsSelec = tblEjesTematicos
+//						.getSelectionModel().getSelectedItems();
+//
+//				if (itemsSelec.size() == 1) {
+//					// select((OTPreguntasHabilidad) itemsSelec.get(0));
+//					OTPreguntasEjes ejeTematico = itemsSelec.get(0);
+//					txtEjeTematico.setText(ejeTematico.getName());
+//
+//					Float porcentajeLogrado = ejeTematico.getLogrado();
+//					Float porcentajeNologrado = ejeTematico.getNologrado();
+//
+//					XYChart.Series series1 = new XYChart.Series();
+//					series1.setName("Porcentaje de Respuestas");
+//					series1.getData().add(
+//							new XYChart.Data<String, Float>("Logrado",
+//									porcentajeLogrado));
+//					series1.getData().add(
+//							new XYChart.Data<String, Float>("No Logrado",
+//									porcentajeNologrado));
+//					graficoBarra.getData().clear();
+//					graficoBarra.getData().add(series1);
+//				}
+//			}
+//		});
 	}
 
 	@Override

@@ -67,13 +67,10 @@
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
                   <BorderPane prefHeight="459.0" prefWidth="370.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <bottom>
-                        <Pagination prefHeight="0.0" prefWidth="685.0" BorderPane.alignment="CENTER" />
-                     </bottom>
                      <center>
-                        <AnchorPane prefHeight="482.0" prefWidth="848.0">
+                        <AnchorPane>
                            <children>
-                              <TableView fx:id="tblAlumnos" prefWidth="670.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" BorderPane.alignment="CENTER">
+                              <TableView fx:id="tblAlumnos" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="0.0" BorderPane.alignment="CENTER">
                                 <columns>
                                   <TableColumn id="colRut" fx:id="colRut" prefWidth="75.0" text="Rut" />
                                   <TableColumn id="colPaterno" fx:id="colPaterno" prefWidth="83.0" text="A.Paterno" />

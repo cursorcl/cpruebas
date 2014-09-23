@@ -34,12 +34,17 @@ import javax.imageio.ImageIO;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.persistence.models.Colegio;
+import cl.eos.util.ExportadorDeTablasAExcel;
 import cl.eos.util.Utils;
 
 public class ColegiosView extends AFormView implements
 		EventHandler<ActionEvent> {
 
 	private static final int LARGO_CAMPO_TEXT = 100;
+
+	@FXML
+	private MenuItem mnuAgregar;
+
 	@FXML
 	private MenuItem mnuGrabar;
 
@@ -54,6 +59,12 @@ public class ColegiosView extends AFormView implements
 
 	@FXML
 	private MenuItem mnuModificar;
+
+	@FXML
+	private MenuItem menuExportar;
+
+	@FXML
+	private MenuItem mnuExportar;
 
 	@FXML
 	private Button btnImagen;
@@ -87,12 +98,14 @@ public class ColegiosView extends AFormView implements
 	public void initialize() {
 		inicializaTabla();
 		accionClicTabla();
-
+		mnuAgregar.setOnAction(this);
 		mnuGrabar.setOnAction(this);
 		mnuModificar.setOnAction(this);
 		mnuEliminar.setOnAction(this);
 		mnItemEliminar.setOnAction(this);
 		mnItemModificar.setOnAction(this);
+		mnuExportar.setOnAction(this);
+		menuExportar.setOnAction(this);
 		btnImagen.setOnAction(this);
 	}
 
@@ -200,6 +213,7 @@ public class ColegiosView extends AFormView implements
 		txtDireccion.clear();
 		imgColegio.setImage(null);
 		select(null);
+		tblColegio.getSelectionModel().clearSelection();
 	}
 
 	@Override
@@ -217,7 +231,7 @@ public class ColegiosView extends AFormView implements
 	@Override
 	public void onDeleted(IEntity entity) {
 		System.out.println("Elementoeliminando:" + entity.toString());
-		 tblColegio.getItems().remove(entity);
+		tblColegio.getItems().remove(entity);
 	}
 
 	public boolean validate() {
@@ -258,7 +272,9 @@ public class ColegiosView extends AFormView implements
 	@Override
 	public void handle(ActionEvent event) {
 		Object source = event.getSource();
-		if (source == mnuModificar || source == mnItemModificar) {
+		if (source == mnuAgregar) {
+			limpiarControles();
+		} else if (source == mnuModificar || source == mnItemModificar) {
 			accionModificar();
 		} else if (source == mnuGrabar) {
 			accionGrabar();
@@ -266,6 +282,8 @@ public class ColegiosView extends AFormView implements
 			accionEliminar();
 		} else if (source == btnImagen) {
 			accionButtonImagen();
+		} else if (source == mnuExportar || source == menuExportar) {
+			ExportadorDeTablasAExcel.convertirDatosALibroDeExcel(tblColegio);
 		}
 	}
 

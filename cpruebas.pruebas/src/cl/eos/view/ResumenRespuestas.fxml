@@ -57,11 +57,11 @@
                            <center>
                               <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                                  <children>
-                                    <Label text="Label" />
-                                    <TableView fx:id="tblPorcentaje" layoutY="38.0" prefHeight="110.0" prefWidth="243.0">
+                                    <Label layoutX="20.0" layoutY="14.0" prefHeight="17.0" prefWidth="268.0" text="Porcentaje de respuestas" AnchorPane.leftAnchor="20.0" />
+                                    <TableView fx:id="tblPorcentaje" layoutY="38.0" prefHeight="110.0" prefWidth="280.0" AnchorPane.leftAnchor="20.0">
                                       <columns>
-                                        <TableColumn fx:id="colTitulo" prefWidth="115.0" />
-                                        <TableColumn fx:id="colPorcentaje" prefWidth="127.0" text="Porcentaje%" />
+                                        <TableColumn fx:id="colTitulo" prefWidth="147.0" />
+                                        <TableColumn fx:id="colPorcentaje" prefWidth="130.0" text="Porcentaje%" />
                                       </columns>
                                     </TableView>
                                     <BarChart fx:id="graficoBarra" layoutX="8.0" layoutY="173.0" prefHeight="216.0" prefWidth="327.0" title="Respuestas por pregunta">
@@ -98,7 +98,4 @@
          </children>
       </Pane>
    </top>
-   <bottom>
-      <Pagination BorderPane.alignment="CENTER" />
-   </bottom>
 </BorderPane>

@@ -22,13 +22,10 @@
                            </children>
                         </AnchorPane>
                      </top>
-                     <bottom>
-                        <Pagination prefHeight="42.0" prefWidth="244.0" BorderPane.alignment="CENTER" />
-                     </bottom>
                      <center>
                         <AnchorPane BorderPane.alignment="CENTER">
                            <children>
-                              <TableView id="tblListadoPruebas" fx:id="tblListadoPruebas" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="6.0">
+                              <TableView id="tblListadoPruebas" fx:id="tblListadoPruebas" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="6.0">
                                 <columns>
                                     <TableColumn fx:id="nameCol" prefWidth="137.0" text="Nombre" />
                                   <TableColumn fx:id="fechaCol" prefWidth="88.0" text="Fecha" />

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -20,6 +22,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
+import cl.eos.ot.OTPreguntasEjes;
 import cl.eos.ot.OTPreguntasHabilidad;
 import cl.eos.persistence.models.EvaluacionPrueba;
 import cl.eos.persistence.models.Habilidad;
@@ -89,14 +92,15 @@ public class ResumenHabilidadesView extends AFormView {
 	}
 
 	private void accionClicTabla() {
-		tblHabilidades.setOnMouseClicked(new EventHandler<MouseEvent>() {
+		tblHabilidades.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<OTPreguntasHabilidad>() {
+
 			@Override
-			public void handle(MouseEvent event) {
+			public void changed(ObservableValue<? extends OTPreguntasHabilidad> observable,
+					OTPreguntasHabilidad oldValue, OTPreguntasHabilidad newValue) {
 				ObservableList<OTPreguntasHabilidad> itemsSelec = tblHabilidades
 						.getSelectionModel().getSelectedItems();
 
 				if (itemsSelec.size() == 1) {
-					// select((OTPreguntasHabilidad) itemsSelec.get(0));
 					OTPreguntasHabilidad habilidad = itemsSelec.get(0);
 					txtHabilidad.setText(habilidad.getName());
 					
@@ -178,16 +182,5 @@ public class ResumenHabilidadesView extends AFormView {
 				}
 			}
 		}
-
-		// XYChart.Series series1 = new XYChart.Series();
-		// series1.setName("Porcentaje de Respuestas");
-		// series1.getData().add(
-		// new XYChart.Data<String, Float>("Buenas", porcentajeBuenas));
-		// series1.getData().add(
-		// new XYChart.Data<String, Float>("Malas", porcentajeMalas));
-		// series1.getData()
-		// .add(new XYChart.Data<String, Float>("Omitidas",
-		// porcentajeOmitidas));
-		// graficoBarra.getData().add(series1);
 	}
 }

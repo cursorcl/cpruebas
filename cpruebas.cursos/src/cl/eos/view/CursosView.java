@@ -2,6 +2,8 @@ package cl.eos.view;
 
 import java.util.List;
 
+import org.controlsfx.dialog.Dialogs;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -18,12 +20,17 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
+import cl.eos.persistence.models.Colegio;
 import cl.eos.persistence.models.Curso;
 import cl.eos.persistence.models.Ciclo;
+import cl.eos.util.ExportadorDeTablasAExcel;
 
 public class CursosView extends AFormView implements EventHandler<ActionEvent> {
 
 	private static final int LARGO_CAMPO_TEXT = 100;
+
+	@FXML
+	private MenuItem mnuAgregar;
 
 	@FXML
 	private MenuItem mnuGrabar;
@@ -41,10 +48,19 @@ public class CursosView extends AFormView implements EventHandler<ActionEvent> {
 	private MenuItem mnuModificar;
 
 	@FXML
+	private MenuItem menuExportar;
+
+	@FXML
+	private MenuItem mnuExportar;
+
+	@FXML
 	private TextField txtNombre;
 
 	@FXML
 	private ComboBox<Ciclo> cmbNivel;
+
+	@FXML
+	private ComboBox<Colegio> cmbColegio;
 
 	@FXML
 	private Label lblError;
@@ -58,6 +74,9 @@ public class CursosView extends AFormView implements EventHandler<ActionEvent> {
 	@FXML
 	private TableColumn<Curso, String> colNivel;
 
+	@FXML
+	private TableColumn<Curso, String> colColegio;
+
 	public CursosView() {
 		setTitle("Cursos");
 	}
@@ -66,12 +85,16 @@ public class CursosView extends AFormView implements EventHandler<ActionEvent> {
 	public void initialize() {
 		inicializaTabla();
 		accionClicTabla();
-
+		mnuAgregar.setOnAction(this);
 		mnuGrabar.setOnAction(this);
 		mnuModificar.setOnAction(this);
 		mnuEliminar.setOnAction(this);
+		mnuExportar.setOnAction(this);
 		mnItemEliminar.setOnAction(this);
 		mnItemModificar.setOnAction(this);
+		menuExportar.setOnAction(this);
+		mnuExportar.setOnAction(this);
+
 	}
 
 	private void accionModificar() {
@@ -79,14 +102,22 @@ public class CursosView extends AFormView implements EventHandler<ActionEvent> {
 		if (curso != null) {
 			txtNombre.setText(curso.getName());
 			cmbNivel.setValue(curso.getCiclo());
+			cmbColegio.setValue(curso.getColegio());
 		}
 	}
 
 	private void accionEliminar() {
 		ObservableList<Curso> cursosSelec = tblCurso.getSelectionModel()
 				.getSelectedItems();
-		delete(cursosSelec);
-		tblCurso.getSelectionModel().clearSelection();
+		if (cursosSelec.size() == 0) {
+			Dialogs.create().owner(null).title("Selección registro")
+					.masthead(this.getName())
+					.message("Debe seleccionar registro a procesar")
+					.showInformation();
+		} else {
+			delete(cursosSelec);
+			tblCurso.getSelectionModel().clearSelection();
+		}
 	}
 
 	private void accionClicTabla() {
@@ -122,6 +153,7 @@ public class CursosView extends AFormView implements EventHandler<ActionEvent> {
 			}
 			curso.setName(txtNombre.getText());
 			curso.setCiclo(cmbNivel.getValue());
+			curso.setColegio(cmbColegio.getValue());
 			save(curso);
 		} else {
 			lblError.getStyleClass().add("bad");
@@ -134,19 +166,24 @@ public class CursosView extends AFormView implements EventHandler<ActionEvent> {
 		tblCurso.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 		colNombre.setCellValueFactory(new PropertyValueFactory<Curso, String>(
 				"name"));
+		colColegio.setCellValueFactory(new PropertyValueFactory<Curso, String>(
+				"colegio"));
 		colNivel.setCellValueFactory(new PropertyValueFactory<Curso, String>(
-				"nivel"));
+				"ciclo"));
 	}
 
 	private void limpiarControles() {
 		txtNombre.clear();
 		cmbNivel.getSelectionModel().clearSelection();
+		cmbColegio.getSelectionModel().clearSelection();
+		tblCurso.getSelectionModel().clearSelection();
 		select(null);
 	}
 
 	private void removeAllStyles() {
 		removeAllStyle(lblError);
 		removeAllStyle(txtNombre);
+		removeAllStyle(cmbColegio);
 	}
 
 	@Override
@@ -159,6 +196,10 @@ public class CursosView extends AFormView implements EventHandler<ActionEvent> {
 		if (txtNombre.getText() != null
 				&& txtNombre.getText().length() > LARGO_CAMPO_TEXT) {
 			txtNombre.getStyleClass().add("bad");
+			valida = false;
+		}
+		if (cmbColegio.getValue() == null) {
+			cmbColegio.getStyleClass().add("bad");
 			valida = false;
 		}
 		return valida;
@@ -175,6 +216,13 @@ public class CursosView extends AFormView implements EventHandler<ActionEvent> {
 					value.add((Curso) iEntity);
 				}
 				tblCurso.setItems(value);
+			} else if (entity instanceof Colegio) {
+				ObservableList<Colegio> value = FXCollections
+						.observableArrayList();
+				for (Object iEntity : list) {
+					value.add((Colegio) iEntity);
+				}
+				cmbColegio.setItems(value);
 			} else if (entity instanceof Ciclo) {
 				ObservableList<Ciclo> oList = FXCollections
 						.observableArrayList();
@@ -188,7 +236,6 @@ public class CursosView extends AFormView implements EventHandler<ActionEvent> {
 
 	@Override
 	public void onSaved(IEntity otObject) {
-		System.out.println("Elemento grabando:" + otObject.toString());
 		int indice = tblCurso.getItems().lastIndexOf(otObject);
 		if (indice != -1) {
 			tblCurso.getItems().remove(otObject);
@@ -196,23 +243,28 @@ public class CursosView extends AFormView implements EventHandler<ActionEvent> {
 		} else {
 			tblCurso.getItems().add((Curso) otObject);
 		}
+		limpiarControles();
 	}
 
 	@Override
 	public void onDeleted(IEntity entity) {
-		System.out.println("Elemento eliminando:" + entity.toString());
 		tblCurso.getItems().remove(entity);
 	}
 
 	@Override
 	public void handle(ActionEvent event) {
 		Object source = event.getSource();
-		if (source == mnuModificar || source == mnItemModificar) {
+		if (source == mnuAgregar) {
+			limpiarControles();
+		} else if (source == mnuModificar || source == mnItemModificar) {
 			accionModificar();
 		} else if (source == mnuGrabar) {
 			accionGrabar();
 		} else if (source == mnuEliminar || source == mnItemEliminar) {
 			accionEliminar();
+		} else if (source == mnuExportar || source == menuExportar) {
+			ExportadorDeTablasAExcel.convertirDatosALibroDeExcel(tblCurso);
 		}
+
 	}
 }

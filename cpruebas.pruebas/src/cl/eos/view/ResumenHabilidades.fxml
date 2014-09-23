@@ -89,7 +89,4 @@
          </children>
       </Pane>
    </top>
-   <bottom>
-      <Pagination BorderPane.alignment="CENTER" />
-   </bottom>
 </BorderPane>

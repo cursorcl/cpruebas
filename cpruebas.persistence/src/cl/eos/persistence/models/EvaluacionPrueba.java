@@ -135,4 +135,8 @@ public class EvaluacionPrueba implements IEntity {
     return prueba.getTipoPrueba();
   }
 
+  
+  public Integer getExigencia(){
+	  return prueba.getExigencia();
+  }
 }

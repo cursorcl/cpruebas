@@ -113,10 +113,9 @@ public class EvaluacionPruebaView extends AFormView implements
 		nroPreguntasCol
 				.setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba, Integer>(
 						"nroPreguntas"));
-		// colExigencia
-		// .setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba,
-		// Integer>(
-		// "nroPreguntas"));
+		colExigencia
+				.setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba, Integer>(
+						"exigencia"));
 
 	}
 
