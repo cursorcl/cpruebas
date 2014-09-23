@@ -53,18 +53,19 @@ public class ProcesadorPruebas {
 	}
 
 	public List<Contour> process(BufferedImage image) {
-//		BufferedImage imgScaled = rectifyScale(image);
-		BufferedImage imgRotated = image; //rectifyRotation(imgScaled);
+		BufferedImage imgScaled = rectifyScale(image);
+		BufferedImage imgRotated = imgScaled; //rectifyRotation(imgScaled);
 
-		ImageFloat32 input = ConvertBufferedImage.convertFromSingle(image,
+		ImageFloat32 input = ConvertBufferedImage.convertFromSingle(imgRotated,
 				null, ImageFloat32.class);
 
 		ImageUInt8 binary = new ImageUInt8(input.width, input.height);
 		ImageSInt32 label = new ImageSInt32(input.width, input.height);
 		ThresholdImageOps.threshold(input, binary, (float) 145, true);
+		binary  = BinaryImageOps.dilate4(binary, 1, null);
 //		ImageUInt8 nBinary = BinaryImageOps.removePointNoise(binary, null);
-		ImageUInt8 eroded = BinaryImageOps.erode8(binary, 2, null);
-		ImageUInt8 filtered = BinaryImageOps.dilate8(eroded, 3, null);
+		ImageUInt8 eroded = BinaryImageOps.erode4(binary, 4, null);
+		ImageUInt8 filtered = BinaryImageOps.dilate4(eroded, 3, null);
 		List<Contour> contours = BinaryImageOps.contour(filtered,
 				ConnectRule.FOUR, label);
 
