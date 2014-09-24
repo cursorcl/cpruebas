@@ -16,5 +16,7 @@
 	<classpathentry kind="lib" path="../jars/boofcv/xpp3_min-1.1.4c.jar"/>
 	<classpathentry kind="lib" path="../jars/boofcv/xstream-1.4.7.jar"/>
 	<classpathentry kind="lib" path="../jars/MarvinFramework/marvin_1.5.1.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.persistence"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.persistence.provider"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
