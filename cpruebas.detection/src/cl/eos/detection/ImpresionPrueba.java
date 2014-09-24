@@ -6,22 +6,30 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.imageio.ImageIO;
+import javax.print.Doc;
+import javax.print.DocFlavor;
+import javax.print.DocPrintJob;
+import javax.print.PrintException;
+import javax.print.PrintService;
+import javax.print.PrintServiceLookup;
+import javax.print.SimpleDoc;
+import javax.print.attribute.HashPrintRequestAttributeSet;
+import javax.print.attribute.PrintRequestAttributeSet;
+import javax.print.attribute.standard.Copies;
 
 import org.apache.pdfbox.exceptions.COSVisitorException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.edit.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.graphics.xobject.PDJpeg;
-import org.apache.pdfbox.pdmodel.graphics.xobject.PDXObjectImage;
 
+import boofcv.gui.image.ShowImages;
 import cl.eos.persistence.models.Prueba;
 import cl.eos.persistence.models.RespuestasEsperadasPrueba;
-import boofcv.gui.image.ShowImages;
 
 public class ImpresionPrueba {
 
@@ -188,7 +196,7 @@ public class ImpresionPrueba {
 			PDPageContentStream contentStream = new PDPageContentStream(document, page);
 			contentStream.drawImage(img, 0, 0);
 			contentStream.close();
-			document.addPage(page);
+			document.addPage(page);	
 			try {
 				document.save(new File("./res/prueba.pdf"));
 			} catch (COSVisitorException e) {
@@ -196,6 +204,24 @@ public class ImpresionPrueba {
 			}
 
 			document.close();
+			
+			
+			PrintRequestAttributeSet pras = new HashPrintRequestAttributeSet();
+		    pras.add(new Copies(1));
+		    PrintService pss[] = PrintServiceLookup.lookupPrintServices(DocFlavor.INPUT_STREAM.JPEG, pras);
+		    if (pss.length == 0)
+		      throw new RuntimeException("No printer services available.");
+		    PrintService ps = pss[pss.length - 1];
+		    System.out.println("Printing to " + ps);
+		    DocPrintJob job = ps.createPrintJob();
+		    FileInputStream fin = new FileInputStream(new File("./res/prueba.jpg"));
+		    Doc doc = new SimpleDoc(fin, DocFlavor.INPUT_STREAM.JPEG, null);
+		    try {
+				job.print(doc, pras);
+			} catch (PrintException e) {
+				e.printStackTrace();
+			}
+		    fin.close();
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
