@@ -4,11 +4,20 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.imageio.ImageIO;
+
+import org.apache.pdfbox.exceptions.COSVisitorException;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.edit.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.graphics.xobject.PDJpeg;
+import org.apache.pdfbox.pdmodel.graphics.xobject.PDXObjectImage;
 
 import cl.eos.persistence.models.Prueba;
 import cl.eos.persistence.models.RespuestasEsperadasPrueba;
@@ -57,7 +66,7 @@ public class ImpresionPrueba {
 		colAlternativas = getMinNroAlternativas();
 	}
 
-	public void draw() throws IOException {
+	public BufferedImage draw() throws IOException {
 
 		image = ImageIO.read(new File("./res/cpruebas.vacia.png"));
 
@@ -94,7 +103,7 @@ public class ImpresionPrueba {
 			nro++;
 			n++;
 		}
-		ShowImages.showWindow(image, "Prueba");
+		return image;
 	}
 
 	private int getMinNroAlternativas() {
@@ -165,7 +174,29 @@ public class ImpresionPrueba {
 	public static void main(String[] args) {
 		ImpresionPrueba imp = new ImpresionPrueba();
 		try {
-			imp.draw();
+			
+			BufferedImage image = imp.draw();
+			ShowImages.showWindow(image, "Prueba");
+			
+			ImageIO.write(image, "jpg", new File("./res/prueba.jpg"));
+			
+			PDDocument document = new PDDocument();
+			PDPage page = new PDPage(PDPage.PAGE_SIZE_LETTER);
+			
+			PDJpeg img = new PDJpeg(document, image);
+			
+			PDPageContentStream contentStream = new PDPageContentStream(document, page);
+			contentStream.drawImage(img, 0, 0);
+			contentStream.close();
+			document.addPage(page);
+			try {
+				document.save(new File("./res/prueba.pdf"));
+			} catch (COSVisitorException e) {
+				e.printStackTrace();
+			}
+
+			document.close();
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
