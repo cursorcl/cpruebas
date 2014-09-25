@@ -15,8 +15,8 @@ import cl.eos.interfaces.entity.IEntity;
 @Entity(name = "curso")
 @NamedQueries({
 		@NamedQuery(name = "Curso.findAll", query = "SELECT e FROM curso e"),
-		@NamedQuery(name = "Curso.findByTipo", query = "SELECT e FROM curso where e.tipocurso.id = :tcursoId"),
-		@NamedQuery(name = "Curso.findByColegio", query = "SELECT e FROM curso where e.colegio.id = :coelgioId") })
+		@NamedQuery(name = "Curso.findByTipo", query = "SELECT e FROM curso e where e.tipoCurso.id = :tcursoId"),
+		@NamedQuery(name = "Curso.findByColegio", query = "SELECT e FROM curso e where e.colegio.id = :coelgioId") })
 public class Curso implements IEntity {
 
 	private static final long serialVersionUID = 1L;
