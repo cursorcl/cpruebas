@@ -4,28 +4,11 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.imageio.ImageIO;
-import javax.print.Doc;
-import javax.print.DocFlavor;
-import javax.print.DocPrintJob;
-import javax.print.PrintException;
-import javax.print.PrintService;
-import javax.print.PrintServiceLookup;
-import javax.print.SimpleDoc;
-import javax.print.attribute.HashPrintRequestAttributeSet;
-import javax.print.attribute.PrintRequestAttributeSet;
-import javax.print.attribute.standard.Copies;
-
-import org.apache.pdfbox.exceptions.COSVisitorException;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.pdmodel.edit.PDPageContentStream;
-import org.apache.pdfbox.pdmodel.graphics.xobject.PDJpeg;
 
 import boofcv.gui.image.ShowImages;
 import cl.eos.persistence.models.Prueba;
@@ -45,7 +28,7 @@ public class ImpresionPrueba {
 
 	private int nroAlternativas;
 
-	private Prueba prueba;
+	//private Prueba prueba;
 	private List<RespuestasEsperadasPrueba> respEsperadas = new ArrayList<RespuestasEsperadasPrueba>();
 
 	private int row = FIRST_ROW;
@@ -79,7 +62,7 @@ public class ImpresionPrueba {
 		image = ImageIO.read(new File("./res/cpruebas.vacia.png"));
 
 		g2 = (Graphics2D) image.getGraphics();
-		g2.setColor(Color.RED);
+		g2.setColor(Color.BLACK);
 		int n = 1;
 		for (RespuestasEsperadasPrueba resp : respEsperadas) {
 			if (n % GROUP_SIZE == 1) {
@@ -185,46 +168,11 @@ public class ImpresionPrueba {
 			
 			BufferedImage image = imp.draw();
 			ShowImages.showWindow(image, "Prueba");
-			
-			ImageIO.write(image, "jpg", new File("./res/prueba.jpg"));
-			
-			PDDocument document = new PDDocument();
-			PDPage page = new PDPage(PDPage.PAGE_SIZE_LETTER);
-			
-			PDJpeg img = new PDJpeg(document, image);
-			
-			PDPageContentStream contentStream = new PDPageContentStream(document, page);
-			contentStream.drawImage(img, 0, 0);
-			contentStream.close();
-			document.addPage(page);	
-			try {
-				document.save(new File("./res/prueba.pdf"));
-			} catch (COSVisitorException e) {
-				e.printStackTrace();
-			}
-
-			document.close();
-			
-			
-			PrintRequestAttributeSet pras = new HashPrintRequestAttributeSet();
-		    pras.add(new Copies(1));
-		    PrintService pss[] = PrintServiceLookup.lookupPrintServices(DocFlavor.INPUT_STREAM.JPEG, pras);
-		    if (pss.length == 0)
-		      throw new RuntimeException("No printer services available.");
-		    PrintService ps = pss[pss.length - 1];
-		    System.out.println("Printing to " + ps);
-		    DocPrintJob job = ps.createPrintJob();
-		    FileInputStream fin = new FileInputStream(new File("./res/prueba.jpg"));
-		    Doc doc = new SimpleDoc(fin, DocFlavor.INPUT_STREAM.JPEG, null);
-		    try {
-				job.print(doc, pras);
-			} catch (PrintException e) {
-				e.printStackTrace();
-			}
-		    fin.close();
+			PrintActionListener print = new PrintActionListener(image);
+			Thread th = new Thread(print);
+			th.start();
 			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
