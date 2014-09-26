@@ -1,8 +1,16 @@
 package cl.eos.view;
 
+import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.ListView;
@@ -16,6 +24,7 @@ import cl.eos.persistence.models.Curso;
 import cl.eos.persistence.models.EjeTematico;
 import cl.eos.persistence.models.Habilidad;
 import cl.eos.persistence.models.Prueba;
+import cl.eos.persistence.models.RespuestasEsperadasPrueba;
 import cl.eos.view.ots.OTPruebaRendida;
 
 public class EvaluarPruebaView extends AFormView {
@@ -57,10 +66,45 @@ public class EvaluarPruebaView extends AFormView {
 	private ListView<EjeTematico> lstEjes;
 	@FXML
 	private ListView<Habilidad> lstHabilidad;
+	@FXML
+	private Button btnScanner;
+	@FXML
+	private Button btnManual;
+
+	public EvaluarPruebaView() {
+		setTitle("Evaluar");
+	}
 
 	@FXML
 	public void initialize() {
+		cmbCursos.setDisable(true);
+		dtpFecha.setValue(LocalDate.now());
+		cmbColegios.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				Colegio colegio = cmbColegios.getSelectionModel()
+						.getSelectedItem();
 
+				Map<String, Object> parameters = new HashMap<String, Object>();
+				parameters.put("tcursoId", prueba.getCurso().getId());
+				parameters.put("colegioId", colegio.getId());
+				controller.find("Curso.findByTipoColegio", parameters);
+			}
+		});
+		btnScanner.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				//ProcesadorPrueba procesador = new ProcesadorPrueba();
+				
+			}
+		});
+		
+		btnManual.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				
+			}
+		});
 	}
 
 	@Override
@@ -69,13 +113,48 @@ public class EvaluarPruebaView extends AFormView {
 			prueba = (Prueba) entity;
 			txtName.setText(prueba.getName());
 			txtAsignatura.setText(prueba.getAsignatura().getName());
+			List<RespuestasEsperadasPrueba> respuestas = prueba.getRespuestas();
+			ObservableList<EjeTematico> lEjes = FXCollections
+					.observableArrayList();
+			ObservableList<Habilidad> lHabilidad = FXCollections
+					.observableArrayList();
+
+			for (RespuestasEsperadasPrueba respuesta : respuestas) {
+				if (!lEjes.contains(respuesta.getEjeTematico())) {
+					lEjes.add(respuesta.getEjeTematico());
+				}
+				if (!lHabilidad.contains(respuesta.getHabilidad())) {
+					lHabilidad.add(respuesta.getHabilidad());
+				}
+			}
+			lstEjes.setItems(lEjes);
+			lstHabilidad.setItems(lHabilidad);
 		}
+
 	}
 
 	@Override
 	public void onDataArrived(List<Object> list) {
-		// TODO Auto-generated method stub
-		super.onDataArrived(list);
+		if (list != null && !list.isEmpty()) {
+			Object entity = list.get(0);
+			if (entity instanceof Colegio) {
+				ObservableList<Colegio> oList = FXCollections
+						.observableArrayList();
+				for (Object iEntity : list) {
+					oList.add((Colegio) iEntity);
+				}
+				cmbColegios.setItems(oList);
+			} else if (entity instanceof Curso) {
+				ObservableList<Curso> oList = FXCollections
+						.observableArrayList();
+				for (Object iEntity : list) {
+					oList.add((Curso) iEntity);
+				}
+				cmbCursos.setItems(oList);
+				cmbCursos.setDisable(false);
+			}
+
+		}
 	}
 
 }

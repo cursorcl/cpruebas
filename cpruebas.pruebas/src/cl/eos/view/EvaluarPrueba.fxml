@@ -12,11 +12,11 @@
    <top>
       <AnchorPane prefHeight="108.0" prefWidth="1087.0" BorderPane.alignment="CENTER">
          <children>
-            <ComboBox fx:id="cmbCursos" layoutX="189.0" layoutY="70.0" prefWidth="150.0" promptText="Curso" />
-            <Label layoutX="26.0" layoutY="51.0" text="Colegio" />
+            <ComboBox fx:id="cmbCursos" layoutX="186.0" layoutY="72.0" prefWidth="150.0" promptText="Curso" />
+            <Label layoutX="27.0" layoutY="57.0" text="Colegio" />
             <DatePicker fx:id="dtpFecha" layoutX="352.0" layoutY="72.0" />
-            <Label layoutX="352.0" layoutY="49.0" text="Fecha" />
-            <Label layoutX="189.0" layoutY="49.0" text="Curso" />
+            <Label layoutX="352.0" layoutY="57.0" text="Fecha" />
+            <Label layoutX="186.0" layoutY="57.0" text="Curso" />
             <ComboBox fx:id="cmbColegios" layoutX="26.0" layoutY="72.0" prefWidth="150.0" promptText="Colegio" />
             <TextField fx:id="txtName" layoutX="27.0" layoutY="24.0" prefHeight="25.0" prefWidth="234.0" promptText="Nombre Prueba" />
             <TextField fx:id="txtAsignatura" layoutX="273.0" layoutY="24.0" prefHeight="25.0" prefWidth="253.0" promptText="Asignatura" />
@@ -26,6 +26,8 @@
             <ListView fx:id="lstHabilidad" layoutX="758.0" layoutY="21.0" prefHeight="76.0" prefWidth="200.0" />
             <Label layoutX="544.0" layoutY="6.0" text="Ejes temáticos" />
             <Label layoutX="758.0" layoutY="6.0" text="Habilidades" />
+            <Button fx:id="btnScanner" layoutX="973.0" layoutY="13.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="96.0" text="Scanner" />
+            <Button fx:id="btnManual" layoutX="973.0" layoutY="43.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="97.0" text="Manual" />
          </children>
       </AnchorPane>
    </top>

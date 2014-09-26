@@ -15,9 +15,9 @@
    version="1.1"
    inkscape:version="0.48.2 r9819"
    sodipodi:docname="cpruebas.vacia.svg"
-   inkscape:export-filename="C:\desarrollo\cpruebas\cpruebas.detection\res\cpruebas.vacia.png"
-   inkscape:export-xdpi="90"
-   inkscape:export-ydpi="90">
+   inkscape:export-filename="C:\desarrollo\cpruebas\cpruebas.detection\res\cpruebas.vacia.1200.png"
+   inkscape:export-xdpi="1200.03"
+   inkscape:export-ydpi="1200.03">
   <title
      id="title3470">Prueba</title>
   <defs
@@ -66,12 +66,12 @@
      inkscape:groupmode="layer"
      id="layer1">
     <rect
-       style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:0.18000001;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:0.22704275;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
        id="rect6278"
-       width="393.36407"
-       height="616.78998"
-       x="22.210194"
-       y="321.10211"
+       width="717.10864"
+       height="538.29126"
+       x="22.233713"
+       y="423.82605"
        ry="0" />
     <rect
        style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:0.18;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0.56999999000000001"
@@ -1202,16 +1202,16 @@
     <text
        xml:space="preserve"
        style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:ERS v2 Infrastructures Stage 1;-inkscape-font-specification:'ERS v2 Infrastructures Stage 01,'"
-       x="327.33096"
+       x="381.33096"
        y="69.246735"
        id="text3117-6"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan3119-6"
-         x="327.33096"
+         x="381.33096"
          y="69.246735">Forma</tspan></text>
     <path
-       transform="translate(249.06973,-35.153071)"
+       transform="translate(303.06973,-35.153071)"
        sodipodi:type="arc"
        style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0.56999999"
        id="path3133-15-0"
@@ -1219,9 +1219,9 @@
        sodipodi:cy="128.54167"
        sodipodi:rx="6.5972223"
        sodipodi:ry="6.5972223"
-       d="m 83.333337,128.54167 a 6.5972223,6.5972223 0 1 1 -13.194445,0 6.5972223,6.5972223 0 1 1 13.194445,0 z" />
+       d="M 83.333337,128.54167 A 6.5972223,6.5972223 0 1 1 70.138892,128.54167 6.5972223,6.5972223 0 1 1 83.333337,128.54167 z" />
     <path
-       transform="translate(268.14982,-35.153071)"
+       transform="translate(322.14982,-35.153071)"
        sodipodi:type="arc"
        style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0.56999999"
        id="path3133-2-38"
@@ -1229,9 +1229,9 @@
        sodipodi:cy="128.54167"
        sodipodi:rx="6.5972223"
        sodipodi:ry="6.5972223"
-       d="m 83.333337,128.54167 a 6.5972223,6.5972223 0 1 1 -13.194445,0 6.5972223,6.5972223 0 1 1 13.194445,0 z" />
+       d="M 83.333337,128.54167 A 6.5972223,6.5972223 0 1 1 70.138892,128.54167 6.5972223,6.5972223 0 1 1 83.333337,128.54167 z" />
     <path
-       transform="translate(287.59428,-35.153071)"
+       transform="translate(341.59428,-35.153071)"
        sodipodi:type="arc"
        style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0.56999999"
        id="path3133-76-0"
@@ -1239,165 +1239,165 @@
        sodipodi:cy="128.54167"
        sodipodi:rx="6.5972223"
        sodipodi:ry="6.5972223"
-       d="m 83.333337,128.54167 a 6.5972223,6.5972223 0 1 1 -13.194445,0 6.5972223,6.5972223 0 1 1 13.194445,0 z" />
+       d="M 83.333337,128.54167 A 6.5972223,6.5972223 0 1 1 70.138892,128.54167 6.5972223,6.5972223 0 1 1 83.333337,128.54167 z" />
     <text
        xml:space="preserve"
        style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
-       x="322.5285"
+       x="376.5285"
        y="84.763977"
        id="text3117-6-1"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan3119-6-2"
-         x="322.5285"
+         x="376.5285"
          y="84.763977">1</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
-       x="340.9133"
+       x="394.9133"
        y="85.471069"
        id="text3117-6-5"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan3119-6-0"
-         x="340.9133"
+         x="394.9133"
          y="85.471069">2</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
-       x="360.71228"
+       x="414.71228"
        y="85.471077"
        id="text3117-6-9"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan3119-6-4"
-         x="360.71228"
+         x="414.71228"
          y="85.471077">3</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:ERS v2 Infrastructures Stage 1;-inkscape-font-specification:'ERS v2 Infrastructures Stage 01,'"
-       x="381.92545"
+       x="435.92545"
        y="69.29361"
        id="text3117-6-7"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan3119-6-8"
-         x="381.92545"
+         x="435.92545"
          y="69.29361">Fecha Evaluación</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:ERS v2 Infrastructures Stage 1;-inkscape-font-specification:'ERS v2 Infrastructures Stage 01,'"
-       x="311.83423"
+       x="365.83423"
        y="117.18343"
        id="text3117-6-7-1"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan3119-6-8-2"
-         x="311.83423"
+         x="365.83423"
          y="117.18343">Nombres</tspan></text>
     <rect
-       style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:0.18;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0.56999999000000001"
+       style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:0.18000001;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0.56999999"
        id="rect3577-0"
        width="367.47623"
        height="18.688526"
-       x="313.6217"
+       x="367.6217"
        y="121.26427" />
     <text
        xml:space="preserve"
        style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:ERS v2 Infrastructures Stage 1;-inkscape-font-specification:'ERS v2 Infrastructures Stage 01,'"
-       x="311.83423"
+       x="365.83423"
        y="157.62306"
        id="text3117-6-7-1-8"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan3119-6-8-2-4"
-         x="311.83423"
+         x="365.83423"
          y="157.62306">Nombres</tspan></text>
     <rect
-       style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:0.18;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0.56999999000000001"
+       style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:0.18000001;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0.56999999"
        id="rect3577-0-1"
        width="368.0358"
        height="18.688526"
-       x="313.6217"
+       x="367.6217"
        y="161.7039" />
     <text
        xml:space="preserve"
        style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:ERS v2 Infrastructures Stage 1;-inkscape-font-specification:'ERS v2 Infrastructures Stage 01,'"
-       x="312.76587"
+       x="366.76587"
        y="196.39261"
        id="text3117-6-7-1-4"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan3119-6-8-2-3"
-         x="312.76587"
+         x="366.76587"
          y="196.39261">Profesor</tspan></text>
     <rect
-       style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:0.18;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0.56999999000000001"
+       style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:0.18000001;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0.56999999"
        id="rect3577-0-9"
        width="368.88989"
        height="18.688526"
-       x="313.6217"
+       x="367.6217"
        y="200.47345" />
     <text
        xml:space="preserve"
        style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:ERS v2 Infrastructures Stage 1;-inkscape-font-specification:'ERS v2 Infrastructures Stage 01,'"
-       x="312.76587"
+       x="366.76587"
        y="235.18988"
        id="text3117-6-7-1-88"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan3119-6-8-2-0"
-         x="312.76587"
+         x="366.76587"
          y="235.18988">Asignatura</tspan></text>
     <rect
-       style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:0.18;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0.56999999000000001"
+       style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:0.18000001;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0.56999999"
        id="rect3577-0-8"
        width="217.28471"
        height="18.688526"
-       x="313.39468"
+       x="367.39468"
        y="240.87733" />
     <text
        xml:space="preserve"
        style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:ERS v2 Infrastructures Stage 1;-inkscape-font-specification:'ERS v2 Infrastructures Stage 01,'"
-       x="535.9798"
+       x="589.9798"
        y="235.18988"
        id="text3117-6-7-1-88-7"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan3119-6-8-2-0-7"
-         x="535.9798"
+         x="589.9798"
          y="235.18988">Curso</tspan></text>
     <rect
-       style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:0.18;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0.56999999000000001"
+       style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:0.18000001;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0.56999999"
        id="rect3577-0-8-8"
        width="144.1684"
        height="18.688526"
-       x="537.44189"
+       x="591.44189"
        y="240.80626" />
     <rect
-       style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:0.18;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0.56999999000000001"
+       style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:0.18000001;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0.56999999"
        id="rect3577-0-8-8-3"
        width="144.1684"
        height="18.688526"
-       x="383.99966"
+       x="437.99966"
        y="80.57309" />
     <text
        xml:space="preserve"
        style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:ERS v2 Infrastructures Stage 1;-inkscape-font-specification:'ERS v2 Infrastructures Stage 01,'"
-       x="534.91779"
+       x="588.91779"
        y="69.393219"
        id="text3117-6-7-8"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan3119-6-8-3"
-         x="534.91779"
+         x="588.91779"
          y="69.393219">Colegio</tspan></text>
     <rect
-       style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:0.18;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0.56999999000000001"
+       style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:0.18000001;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0.56999999"
        id="rect3577-0-8-8-3-7"
        width="144.1684"
        height="18.688526"
-       x="536.992"
+       x="590.992"
        y="80.57309" />
     <rect
        style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:0.18;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0.56999999000000001"
@@ -1409,56 +1409,14 @@
     <text
        xml:space="preserve"
        style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:ERS v2 Infrastructures Stage 1;-inkscape-font-specification:'ERS v2 Infrastructures Stage 01,'"
-       x="516.99054"
-       y="350.41516"
+       x="284.48819"
+       y="310.75531"
        id="text8198"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan8200"
-         x="516.99054"
-         y="350.41516">INSTRUCCIONES</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:ERS v2 Infrastructures Stage 1;-inkscape-font-specification:'ERS v2 Infrastructures Stage 01,'"
-       x="457.99054"
-       y="382.41516"
-       id="text8202"
-       sodipodi:linespacing="125%"><tspan
-         sodipodi:role="line"
-         id="tspan8204"
-         x="457.99054"
-         y="382.41516">- Utilice un lápiz que permita borrar con facilidad, </tspan><tspan
-         sodipodi:role="line"
-         x="457.99054"
-         y="397.41516"
-         id="tspan8206">de preferencia N°2</tspan><tspan
-         sodipodi:role="line"
-         x="457.99054"
-         y="412.41516"
-         id="tspan8208">- Llene el círculo de la alternativa seleccionada </tspan><tspan
-         sodipodi:role="line"
-         x="457.99054"
-         y="427.41516"
-         id="tspan8210">evitando salirse de los bordes.</tspan><tspan
-         sodipodi:role="line"
-         x="457.99054"
-         y="442.41516"
-         id="tspan8212">- No raye ni haga marcas adicionales.</tspan><tspan
-         sodipodi:role="line"
-         x="457.99054"
-         y="457.41516"
-         id="tspan8214">- No utlice corrector.</tspan><tspan
-         sodipodi:role="line"
-         x="457.99054"
-         y="472.41516"
-         id="tspan8216">- Evite arrugar y/o doblaer la hoja de respuestas.</tspan></text>
-    <rect
-       style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:0.18;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
-       id="rect8218"
-       width="284.5"
-       height="175"
-       x="446.49054"
-       y="321.10284" />
+         x="284.48819"
+         y="310.75531">INSTRUCCIONES</tspan></text>
     <rect
        style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:0.36;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0.56999999000000001"
        id="rect9129"
@@ -1470,14 +1428,14 @@
     <text
        xml:space="preserve"
        style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:ERS v2 Infrastructures Stage 1;-inkscape-font-specification:'ERS v2 Infrastructures Stage 01,'"
-       x="109.7728"
-       y="313.17776"
+       x="248.1331"
+       y="415.87817"
        id="text7048"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan7050"
-         x="109.7728"
-         y="313.17776">PLANTILLA DE RESPUESTAS</tspan></text>
+         x="248.1331"
+         y="415.87817">PLANTILLA DE RESPUESTAS</tspan></text>
     <path
        transform="translate(165.75567,144.08333)"
        sodipodi:type="arc"
@@ -1499,5 +1457,54 @@
          id="tspan3204-2-4"
          x="212.33403"
          y="276.11301">K</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:ERS v2 Infrastructures Stage 1;-inkscape-font-specification:'ERS v2 Infrastructures Stage 01,'"
+       x="68.466949"
+       y="335.28479"
+       id="text3192"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3194"></tspan></text>
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot3209"
+       style="fill:black;stroke:none;stroke-opacity:1;stroke-width:1px;stroke-linejoin:miter;stroke-linecap:butt;fill-opacity:1;font-family:ERS v2 Infrastructures Stage 1;font-style:normal;font-weight:normal;font-size:12px;line-height:125%;letter-spacing:0px;word-spacing:0px;-inkscape-font-specification:'ERS v2 Infrastructures Stage 01,';font-stretch:normal;font-variant:normal;text-anchor:start;text-align:start;writing-mode:lr"><flowRegion
+         id="flowRegion3211"><rect
+           id="rect3213"
+           width="554.86755"
+           height="119.81716"
+           x="124.09634"
+           y="332.43201" /></flowRegion><flowPara
+         id="flowPara3215"></flowPara></flowRoot>    <text
+       xml:space="preserve"
+       style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:ERS v2 Infrastructures Stage 1;-inkscape-font-specification:'ERS v2 Infrastructures Stage 01,'"
+       x="55.629395"
+       y="339.56396"
+       id="text3229"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3231"
+         x="55.629395"
+         y="339.56396">- Llene el círculo de la alternativa seleccionada evitando salirse de los bordes.</tspan><tspan
+         sodipodi:role="line"
+         x="55.629395"
+         y="354.56396"
+         id="tspan3233">- No raye ni haga marcas adicionales.</tspan><tspan
+         sodipodi:role="line"
+         x="55.629395"
+         y="369.56396"
+         id="tspan3235">- No utlice corrector.</tspan><tspan
+         sodipodi:role="line"
+         x="55.629395"
+         y="384.56396"
+         id="tspan3237">- Evite arrugar y/o doblaer la hoja de respuestas.</tspan></text>
+    <rect
+       style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:0.18553965;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect3239"
+       width="718.89746"
+       height="72.740601"
+       x="19.972296"
+       y="321.02365" />
   </g>
 </svg>
