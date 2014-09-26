@@ -69,6 +69,7 @@ public class ResumenAlumnoView extends AFormView implements
 
 	@FXML
 	public void initialize() {
+		this.setTitle("Resumen de respuestas por alumno");
 		inicializarTablaAlumnos();
 		clicTablaRespuesta();
 		clicTablaAlumnos();
@@ -155,7 +156,7 @@ public class ResumenAlumnoView extends AFormView implements
 			for (int indice = 1; indice <= nroPreguntas; indice++) {
 				TableColumn<PruebaRendida, String> nro = new TableColumn<PruebaRendida, String>(
 						String.valueOf(indice));
-				nro.setPrefWidth(10);
+				nro.setPrefWidth(30);
 				nro.setCellValueFactory(new PropertyValueFactory<PruebaRendida, String>(
 						"respuestas"));
 

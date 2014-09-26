@@ -22,13 +22,10 @@
                            </children>
                         </AnchorPane>
                      </top>
-                     <bottom>
-                        <Pagination prefHeight="42.0" prefWidth="244.0" BorderPane.alignment="CENTER" />
-                     </bottom>
                      <center>
                         <AnchorPane BorderPane.alignment="CENTER">
                            <children>
-                              <TableView id="tblListadoPruebas" fx:id="tblListadoPruebas" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="6.0">
+                              <TableView id="tblListadoPruebas" fx:id="tblListadoPruebas" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="6.0">
                                 <columns>
                                     <TableColumn fx:id="nameCol" prefWidth="137.0" text="Nombre" />
                                   <TableColumn fx:id="fechaCol" prefWidth="88.0" text="Fecha" />
@@ -47,6 +44,7 @@
                                           <MenuItem fx:id="mnuResumenAlumno" mnemonicParsing="false" text="Resumen por Alumno" />
                                           <MenuItem fx:id="mnuRespuestasPregunta" mnemonicParsing="false" text="Resumen Respuestas por Pregunta" />
                                           <MenuItem fx:id="mnuRespuestasHabilidad" mnemonicParsing="false" text="Resumen Respuestas por Habilidad" />
+                                          <MenuItem fx:id="mnuRespuestasEje" mnemonicParsing="false" text="Resumen Respuestas por Eje Temático" />
                                       </items>
                                     </ContextMenu>
                                  </contextMenu>
@@ -69,6 +67,7 @@
                   <MenuItem fx:id="menuResumenGeneral" mnemonicParsing="false" text="Resumen General" />
                   <MenuItem fx:id="menuRespuestasPregunta" mnemonicParsing="false" text="Resumen Respuestas por Pregunta" />
                   <MenuItem fx:id="menuRespuestasHabilidad" mnemonicParsing="false" text="Resumen Respuestas por Habilidad" />
+                  <MenuItem fx:id="menuRespuestasEje" mnemonicParsing="false" text="Resumen Respuestas por Eje Temático" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Help">

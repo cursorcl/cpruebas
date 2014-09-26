@@ -63,7 +63,6 @@ public class PruebaRendida implements IEntity {
 	}
 
 	public String getRespuestas() {
-		System.out.println("Respuestas " + respuestas);
 		return respuestas;
 	}
 

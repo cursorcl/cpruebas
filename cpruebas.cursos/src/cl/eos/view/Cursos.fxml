@@ -13,6 +13,7 @@
         <menus>
             <Menu mnemonicParsing="false" text="Archivo">
                <items>
+                  <MenuItem fx:id="mnuAgregar" mnemonicParsing="false" text="Agregar Curso" />
                   <MenuItem id="mnuGrabar" fx:id="mnuGrabar" mnemonicParsing="false" text="Grabar Curso">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="G" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
@@ -29,7 +30,7 @@
                      </accelerator>
                   </MenuItem>
                   <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem fx:id="mnuExportar" mnemonicParsing="false" text="Exportar Curso" />
+                  <MenuItem fx:id="mnuExportar" mnemonicParsing="false" text="Exportar a Excel" />
                   <MenuItem fx:id="mnuImportar" mnemonicParsing="false" text="Importar Curso" />
                   <SeparatorMenuItem mnemonicParsing="false" />
                   <MenuItem mnemonicParsing="false" text="Cerrar" />
@@ -55,17 +56,37 @@
                <children>
                   <VBox prefHeight="373.0" prefWidth="269.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <Label fx:id="lblError">
+                        <Label fx:id="lblError" prefHeight="17.0" prefWidth="216.0">
                            <VBox.margin>
                               <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                            </VBox.margin>
                         </Label>
+                        <Label prefHeight="17.0" prefWidth="204.0" text="Nombre">
+                           <VBox.margin>
+                              <Insets left="10.0" right="10.0" />
+                           </VBox.margin>
+                        </Label>
                         <TextField id="txtNombre" fx:id="txtNombre" prefHeight="25.0" prefWidth="301.0" promptText="Nombre">
                            <VBox.margin>
-                              <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                              <Insets left="10.0" right="10.0" top="5.0" />
                            </VBox.margin>
                         </TextField>
-                        <ComboBox id="cmbNivel" fx:id="cmbNivel" prefHeight="23.0" prefWidth="302.0" promptText="Nivel">
+                        <Label prefHeight="17.0" prefWidth="206.0" text="Colegio">
+                           <VBox.margin>
+                              <Insets left="10.0" right="10.0" top="5.0" />
+                           </VBox.margin>
+                        </Label>
+                        <ComboBox fx:id="cmbColegio" prefHeight="25.0" prefWidth="204.0" promptText="Colegio">
+                           <VBox.margin>
+                              <Insets left="10.0" right="10.0" />
+                           </VBox.margin>
+                        </ComboBox>
+                        <Label prefHeight="17.0" prefWidth="206.0" text="Ciclo">
+                           <VBox.margin>
+                              <Insets left="10.0" top="5.0" />
+                           </VBox.margin>
+                        </Label>
+                        <ComboBox id="cmbNivel" fx:id="cmbNivel" prefHeight="23.0" prefWidth="302.0" promptText="Ciclo">
                            <VBox.margin>
                               <Insets left="10.0" right="10.0" />
                            </VBox.margin>
@@ -83,6 +104,7 @@
                               <TableView id="tblCursos" fx:id="tblCurso" prefHeight="400.0" prefWidth="440.0">
                                 <columns>
                                   <TableColumn fx:id="colNombre" prefWidth="194.0" text="Nombre" />
+                                    <TableColumn fx:id="colColegio" prefWidth="75.0" text="Colegio" />
                                     <TableColumn fx:id="colNivel" prefWidth="150.0" text="Nivel" />
                                 </columns>
                                  <contextMenu>
@@ -90,6 +112,8 @@
                                       <items>
                                         <MenuItem fx:id="mnItemModificar" mnemonicParsing="false" text="Modificar" />
                                           <MenuItem fx:id="mnItemEliminar" mnemonicParsing="false" text="Eliminar" />
+                                          <SeparatorMenuItem mnemonicParsing="false" />
+                                          <MenuItem fx:id="menuExportar" mnemonicParsing="false" text="Exportar a Excel" />
                                       </items>
                                     </ContextMenu>
                                  </contextMenu>
@@ -107,9 +131,6 @@
                            </children>
                         </AnchorPane>
                      </top>
-                     <bottom>
-                        <Pagination prefHeight="42.0" prefWidth="244.0" BorderPane.alignment="CENTER" />
-                     </bottom>
                   </BorderPane>
                </children>
             </AnchorPane>

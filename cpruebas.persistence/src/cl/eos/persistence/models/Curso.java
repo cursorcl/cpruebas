@@ -2,6 +2,7 @@ package cl.eos.persistence.models;
 
 import java.util.Collection;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -27,10 +28,11 @@ public class Curso implements IEntity {
 	private Long id;
 	private String name;
 	private Ciclo ciclo;
-	@OneToMany
+	private Colegio colegio;
+
+	@OneToMany(mappedBy = "curso", cascade = CascadeType.ALL)
 	private Collection<Alumno> alumnos;
 	private TipoCurso tipoCurso;
-	private Colegio colegio;
 
 	@Override
 	public Long getId() {

@@ -123,7 +123,7 @@ public final class ExportadorDeTablasAExcel {
 	private static void recorrerColumnas(
 			final TableView<? extends IEntity> tabla, final int indiceFila,
 			final Row fila) {
-		for (int indiceColumna = 0; indiceColumna < tabla.getColumns().size() - 1; indiceColumna++) {
+		for (int indiceColumna = 0; indiceColumna < tabla.getColumns().size(); indiceColumna++) {
 
 			final Cell cell = fila.createCell(indiceColumna);
 			TableColumn<? extends IEntity, ?> valores = tabla.getColumns().get(
@@ -146,7 +146,7 @@ public final class ExportadorDeTablasAExcel {
 					|| valor instanceof Color) {
 				cell.setCellValue("");
 			} else {
-				cell.setCellValue((String) valor);
+				cell.setCellValue((String) valor.toString());
 			}
 		}
 	}

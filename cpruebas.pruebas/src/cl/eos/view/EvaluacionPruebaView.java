@@ -3,9 +3,6 @@ package cl.eos.view;
 import java.time.LocalDate;
 import java.util.List;
 
-import org.controlsfx.dialog.Dialog;
-import org.controlsfx.dialog.Dialogs;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -16,8 +13,10 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+
+import org.controlsfx.dialog.Dialogs;
+
 import cl.eos.imp.view.AFormView;
-import cl.eos.interfaces.view.IView;
 import cl.eos.persistence.models.Curso;
 import cl.eos.persistence.models.EvaluacionPrueba;
 import cl.eos.persistence.models.TipoPrueba;
@@ -53,6 +52,8 @@ public class EvaluacionPruebaView extends AFormView implements
 	private MenuItem mnuRespuestasPregunta;
 	@FXML
 	private MenuItem mnuRespuestasHabilidad;
+	@FXML
+	private MenuItem mnuRespuestasEje;
 
 	@FXML
 	private MenuItem menuResumenGeneral;
@@ -62,12 +63,15 @@ public class EvaluacionPruebaView extends AFormView implements
 	private MenuItem menuRespuestasPregunta;
 	@FXML
 	private MenuItem menuRespuestasHabilidad;
+	@FXML
+	private MenuItem menuRespuestasEje;
 
-	private ResumenGeneralView resumenGeneral;
 	private EvaluacionPrueba evaluacionPrueba;
+	private ResumenGeneralView resumenGeneral;
 	private ResumenAlumnoView resumenAlumno;
 	private ResumenRespuestaView resumenRespuestas;
 	private ResumenHabilidadesView resumeHabilidad;
+	private ResumenEjesTematicosView resumeEjeTematico;
 
 	public EvaluacionPruebaView() {
 		// TODO Auto-generated constructor stub
@@ -79,11 +83,13 @@ public class EvaluacionPruebaView extends AFormView implements
 		mnuResumenAlumno.setOnAction(this);
 		mnuRespuestasPregunta.setOnAction(this);
 		mnuRespuestasHabilidad.setOnAction(this);
+		mnuRespuestasEje.setOnAction(this);
 
 		menuResumenGeneral.setOnAction(this);
 		menuResumenAlumno.setOnAction(this);
 		menuRespuestasPregunta.setOnAction(this);
 		menuRespuestasHabilidad.setOnAction(this);
+		menuRespuestasEje.setOnAction(this);
 
 		tblListadoPruebas.getSelectionModel().setSelectionMode(
 				SelectionMode.MULTIPLE);
@@ -107,10 +113,9 @@ public class EvaluacionPruebaView extends AFormView implements
 		nroPreguntasCol
 				.setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba, Integer>(
 						"nroPreguntas"));
-		// colExigencia
-		// .setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba,
-		// Integer>(
-		// "nroPreguntas"));
+		colExigencia
+				.setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba, Integer>(
+						"exigencia"));
 
 	}
 
@@ -142,11 +147,32 @@ public class EvaluacionPruebaView extends AFormView implements
 		} else if (source == mnuRespuestasPregunta
 				|| source == menuRespuestasPregunta) {
 			handleResumenRespuesta();
+		} else if (source == mnuRespuestasHabilidad
+				|| source == menuRespuestasHabilidad) {
+			handleResumenHabilidad();
+		} else if (source == mnuRespuestasEje || source == menuRespuestasEje) {
+			handleResumenEje();
 		}
-		 else if (source == mnuRespuestasHabilidad
-					|| source == menuRespuestasHabilidad) {
-				handleResumenHabilidad();
-			}
+	}
+
+	private void handleResumenEje() {
+		if (resumeEjeTematico == null) {
+			resumeEjeTematico = (ResumenEjesTematicosView) show("/cl/eos/view/ResumenEjesTematicos.fxml");
+		} else {
+			show(resumeEjeTematico);
+		}
+		evaluacionPrueba = tblListadoPruebas.getSelectionModel()
+				.getSelectedItem();
+		if (evaluacionPrueba != null) {
+			controller.findById(EvaluacionPrueba.class,
+					evaluacionPrueba.getId());
+		} else {
+			Dialogs.create().owner(null).title("Selección registro")
+					.masthead(resumeEjeTematico.getName())
+					.message("Debe seleccionar registro a procesar")
+					.showInformation();
+		}
+
 	}
 
 	private void handleResumenHabilidad() {
@@ -160,11 +186,11 @@ public class EvaluacionPruebaView extends AFormView implements
 		if (evaluacionPrueba != null) {
 			controller.findById(EvaluacionPrueba.class,
 					evaluacionPrueba.getId());
-		}
-		else{
-			 Dialogs.create().owner(null).title("Selección registro")
-	            .masthead(resumeHabilidad.getName()).message("Debe seleccionar registro a procesar")
-	            .showInformation();
+		} else {
+			Dialogs.create().owner(null).title("Selección registro")
+					.masthead(resumeHabilidad.getName())
+					.message("Debe seleccionar registro a procesar")
+					.showInformation();
 		}
 	}
 
@@ -179,6 +205,11 @@ public class EvaluacionPruebaView extends AFormView implements
 		if (evaluacionPrueba != null) {
 			controller.findById(EvaluacionPrueba.class,
 					evaluacionPrueba.getId());
+		} else {
+			Dialogs.create().owner(null).title("Selección registro")
+					.masthead(resumenAlumno.getName())
+					.message("Debe seleccionar registro a procesar")
+					.showInformation();
 		}
 	}
 
@@ -193,8 +224,12 @@ public class EvaluacionPruebaView extends AFormView implements
 		if (evaluacionPrueba != null) {
 			controller.findById(EvaluacionPrueba.class,
 					evaluacionPrueba.getId());
+		} else {
+			Dialogs.create().owner(null).title("Selección registro")
+					.masthead(resumenGeneral.getName())
+					.message("Debe seleccionar registro a procesar")
+					.showInformation();
 		}
-
 	}
 
 	private void handleResumenRespuesta() {
@@ -208,6 +243,11 @@ public class EvaluacionPruebaView extends AFormView implements
 		if (evaluacionPrueba != null) {
 			controller.findById(EvaluacionPrueba.class,
 					evaluacionPrueba.getId());
+		} else {
+			Dialogs.create().owner(null).title("Selección registro")
+					.masthead(resumenRespuestas.getName())
+					.message("Debe seleccionar registro a procesar")
+					.showInformation();
 		}
 	}
 }

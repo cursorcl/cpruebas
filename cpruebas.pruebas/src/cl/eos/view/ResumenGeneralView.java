@@ -77,13 +77,14 @@ public class ResumenGeneralView extends AFormView {
 	private Float ppuntajeMax = 0f;
 	private Integer puntajeMin = 100;
 	private Integer puntajeMax = 0;
-	
+
 	public ResumenGeneralView() {
 		// TODO Auto-generated constructor stub
 	}
 
 	@FXML
 	public void initialize() {
+		this.setTitle("Resumren de respuestas generales");
 		inicializarTablaResumen();
 		inicializarTablaAlumnos();
 	}
@@ -153,7 +154,6 @@ public class ResumenGeneralView extends AFormView {
 		}
 	}
 
-
 	private List<OTResumenGeneral> procesarValoresMinMax(
 			List<PruebaRendida> pruebasRendidas) {
 
@@ -201,7 +201,7 @@ public class ResumenGeneralView extends AFormView {
 
 		listaResumen.add(new OTResumenGeneral("Promedio", promNota,
 				prompBuenas, prompPuntaje, promPuntaje));
-		
+
 		return listaResumen;
 	}
 
@@ -209,6 +209,7 @@ public class ResumenGeneralView extends AFormView {
 			List<OTResumenGeneral> listaResumen) {
 		if (entity.getCurso() != null) {
 			txtCurso.setText(entity.getCurso().getName());
+			txtExigencia.setText(String.valueOf(entity.getExigencia()));
 		}
 
 		if (entity.getPrueba() != null) {

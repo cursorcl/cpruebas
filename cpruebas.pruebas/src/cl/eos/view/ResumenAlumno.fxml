@@ -7,7 +7,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="485.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.ResumenAlumnoView">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="485.0" prefWidth="1087.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.ResumenAlumnoView">
    <center>
       <SplitPane dividerPositions="0.3169642857142857" orientation="VERTICAL" prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <items>
@@ -65,18 +65,15 @@
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="71.0" prefWidth="848.0">
                <children>
                   <BorderPane prefHeight="459.0" prefWidth="370.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <bottom>
-                        <Pagination prefHeight="0.0" prefWidth="685.0" BorderPane.alignment="CENTER" />
-                     </bottom>
                      <center>
                         <TableView fx:id="tblRespuestas" prefHeight="400.0" prefWidth="773.0" BorderPane.alignment="CENTER">
                            <columnResizePolicy>
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
                            <columns>
-                              <TableColumn id="colRut" fx:id="colRRut" prefWidth="90.0" text="Rut" />
-                              <TableColumn id="colMaterno" fx:id="colRMaterno" prefWidth="165.0" text="A.Materno" />
-                              <TableColumn id="colPaterno" fx:id="colRPaterno" prefWidth="151.0" text="A.Paterno" />
+                              <TableColumn id="colRut" fx:id="colRRut" prefWidth="130.0" resizable="false" text="Rut" />
+                              <TableColumn id="colPaterno" fx:id="colRPaterno" prefWidth="151.0" resizable="false" text="A.Paterno" />
+                              <TableColumn id="colMaterno" fx:id="colRMaterno" prefWidth="165.0" resizable="false" text="A.Materno" />
                               <TableColumn id="colName" fx:id="colRName" prefWidth="192.0" resizable="false" text="Nombres" />
                            </columns>
                            <contextMenu>
@@ -86,6 +83,9 @@
                                 </items>
                               </ContextMenu>
                            </contextMenu>
+                           <BorderPane.margin>
+                              <Insets bottom="20.0" />
+                           </BorderPane.margin>
                         </TableView>
                      </center>
                   </BorderPane>
