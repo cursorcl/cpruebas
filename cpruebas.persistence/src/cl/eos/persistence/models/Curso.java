@@ -14,7 +14,10 @@ import javax.persistence.OneToMany;
 import cl.eos.interfaces.entity.IEntity;
 
 @Entity(name = "curso")
-@NamedQueries({ @NamedQuery(name = "Curso.findAll", query = "SELECT e FROM curso e") })
+@NamedQueries({
+		@NamedQuery(name = "Curso.findAll", query = "SELECT e FROM curso e"),
+		@NamedQuery(name = "Curso.findByTipo", query = "SELECT e FROM curso e where e.tipoCurso.id = :tcursoId"),
+		@NamedQuery(name = "Curso.findByColegio", query = "SELECT e FROM curso e where e.colegio.id = :coelgioId") })
 public class Curso implements IEntity {
 
 	private static final long serialVersionUID = 1L;
@@ -27,6 +30,7 @@ public class Curso implements IEntity {
 
 	@OneToMany(mappedBy = "curso", cascade = CascadeType.ALL)
 	private Collection<Alumno> alumnos;
+	private TipoCurso tipoCurso;
 
 	@Override
 	public Long getId() {
@@ -69,9 +73,12 @@ public class Curso implements IEntity {
 		this.alumnos = alumnos;
 	}
 
-	@Override
-	public String toString() {
-		return name;
+	public TipoCurso getTipoCurso() {
+		return tipoCurso;
+	}
+
+	public void setTipoCurso(TipoCurso tipoCurso) {
+		this.tipoCurso = tipoCurso;
 	}
 
 	public Colegio getColegio() {
@@ -80,6 +87,11 @@ public class Curso implements IEntity {
 
 	public void setColegio(Colegio colegio) {
 		this.colegio = colegio;
+	}
+
+	@Override
+	public String toString() {
+		return name;
 	}
 
 }
