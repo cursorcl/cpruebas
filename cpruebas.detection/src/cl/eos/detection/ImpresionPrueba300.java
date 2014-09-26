@@ -23,7 +23,7 @@ import org.apache.pdfbox.pdmodel.graphics.xobject.PDXObjectImage;
 
 import cl.eos.persistence.models.RespuestasEsperadasPrueba;
 
-public class ImpresionPrueba {
+public class ImpresionPrueba300 {
 
 	private final int FIRST_ROW = 1450;
 	private final int FIRST_COL = 150;
@@ -49,7 +49,7 @@ public class ImpresionPrueba {
 	private BufferedImage image;
 	private Graphics2D g2;
 
-	public ImpresionPrueba() {
+	public ImpresionPrueba300() {
 		nroAlternativas = 5;
 		colAlternativas = nroAlternativas;
 		for (int n = 1; n <= 100; n++) {
@@ -177,7 +177,7 @@ public class ImpresionPrueba {
 	}
 
 	public static void main(String[] args) {
-		ImpresionPrueba imp = new ImpresionPrueba();
+		ImpresionPrueba300 imp = new ImpresionPrueba300();
 		try {
 
 			BufferedImage image = imp.draw();
