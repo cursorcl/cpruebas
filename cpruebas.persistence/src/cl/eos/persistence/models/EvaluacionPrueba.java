@@ -17,126 +17,132 @@ import cl.eos.interfaces.entity.IEntity;
 
 @Entity(name = "evaluacionprueba")
 @NamedQueries({
-    @NamedQuery(name = "EvaluacionPrueba.findAll", query = "SELECT e FROM evaluacionprueba e"),
-    @NamedQuery(name = "EvaluacionPrueba.findByPrueba",
-        query = "SELECT e FROM evaluacionprueba e where e.prueba.id = :idPrueba")})
+		@NamedQuery(name = "EvaluacionPrueba.findAll", query = "SELECT e FROM evaluacionprueba e"),
+		@NamedQuery(name = "EvaluacionPrueba.findByPrueba", query = "SELECT e FROM evaluacionprueba e where e.prueba.id = :idPrueba") })
 public class EvaluacionPrueba implements IEntity {
 
-  private static final long serialVersionUID = 1L;
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
-  @Column(length = 100)
-  private String name;
+	private static final long serialVersionUID = 1L;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	@Column(length = 100)
+	private String name;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  private Prueba prueba;
-  
-  private Curso curso;
-  private List<PruebaRendida> pruebasRendidas;
-  private Long fecha;
-  private Profesor profesor;
-  private Colegio colegio;
+	@ManyToOne(fetch = FetchType.LAZY)
+	private Prueba prueba;
 
-  @Override
-  public Long getId() {
-    return id;
-  }
+	private Curso curso;
+	private List<PruebaRendida> pruebasRendidas;
+	private Long fecha;
+	private Profesor profesor;
+	private Colegio colegio;
 
-  @Override
-  public void setId(Long id) {
-    this.id = id;
-  }
+	@Override
+	public Long getId() {
+		return id;
+	}
 
-  @Override
-  public String getName() {
-    return name;
-  }
+	@Override
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-  @Override
-  public void setName(String name) {
-    this.name = name;
-  }
+	@Override
+	public String getName() {
+		return name;
+	}
 
-  @Override
-  public boolean validate() {
-    return true;
-  }
+	@Override
+	public void setName(String name) {
+		this.name = name;
+	}
 
-  public Prueba getPrueba() {
-    return prueba;
-  }
+	@Override
+	public boolean validate() {
+		return true;
+	}
 
-  public void setPrueba(Prueba prueba) {
-    this.prueba = prueba;
-  }
+	public Prueba getPrueba() {
+		return prueba;
+	}
 
-  public Curso getCurso() {
-    return curso;
-  }
+	public void setPrueba(Prueba prueba) {
+		this.prueba = prueba;
+	}
 
-  public void setCurso(Curso curso) {
-    this.curso = curso;
-  }
+	public Curso getCurso() {
+		return curso;
+	}
 
-  public List<PruebaRendida> getPruebasRendidas() {
-    return pruebasRendidas;
-  }
+	public void setCurso(Curso curso) {
+		this.curso = curso;
+	}
 
-  public void setPruebasRendidas(List<PruebaRendida> pruebasRendidas) {
-    this.pruebasRendidas = pruebasRendidas;
-  }
+	public List<PruebaRendida> getPruebasRendidas() {
+		return pruebasRendidas;
+	}
 
-  public Long getFecha() {
-    return fecha;
-  }
+	public void setPruebasRendidas(List<PruebaRendida> pruebasRendidas) {
+		this.pruebasRendidas = pruebasRendidas;
+	}
 
-  public LocalDate getFechaLocal() {
-    return LocalDate.ofEpochDay(this.fecha.longValue());
-  }
+	public Long getFecha() {
+		return fecha;
+	}
 
-  public void setFecha(Long fecha) {
-    this.fecha = fecha;
-  }
+	public LocalDate getFechaLocal() {
+		return LocalDate.ofEpochDay(this.fecha.longValue());
+	}
 
-  public Profesor getProfesor() {
-    return profesor;
-  }
+	public void setFecha(Long fecha) {
+		this.fecha = fecha;
+	}
 
-  public void setProfesor(Profesor profesor) {
-    this.profesor = profesor;
-  }
+	public Profesor getProfesor() {
+		return profesor;
+	}
 
-  public Colegio getColegio() {
-    return colegio;
-  }
+	public void setProfesor(Profesor profesor) {
+		this.profesor = profesor;
+	}
 
-  public void setColegio(Colegio colegio) {
-    this.colegio = colegio;
-  }
+	public Colegio getColegio() {
+		return colegio;
+	}
 
-  public String getAsignatura() {
-    return prueba.getAsignatura().getName();
-  }
+	public void setColegio(Colegio colegio) {
+		this.colegio = colegio;
+	}
 
-  public Integer getFormas() {
-    return prueba.getNroFormas();
-  }
+	public String getAsignatura() {
+		return prueba.getAsignatura().getName();
+	}
 
-  public Integer getNroPreguntas() {
-    return prueba.getNroPreguntas();
-  }
+	public Integer getFormas() {
+		return prueba.getNroFormas();
+	}
 
-  public String getResponses() {
-    return prueba.getResponses();
-  }
+	public Integer getNroPreguntas() {
+		return prueba.getNroPreguntas();
+	}
 
-  public TipoPrueba getTipo() {
-    return prueba.getTipoPrueba();
-  }
+	public String getResponses() {
+		return prueba.getResponses();
+	}
 
-  
-  public Integer getExigencia(){
-	  return prueba.getExigencia();
-  }
+	public TipoPrueba getTipo() {
+		return prueba.getTipoPrueba();
+	}
+
+	public Integer getExigencia() {
+		return prueba.getExigencia();
+	}
+
+	public String getColegiocurso() {
+		StringBuffer buffer = new StringBuffer();
+		buffer.append(colegio.getName());
+		buffer.append("\n");
+		buffer.append(curso.getName());
+		return buffer.toString();
+	}
 }

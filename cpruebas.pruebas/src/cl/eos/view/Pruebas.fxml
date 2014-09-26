@@ -181,6 +181,7 @@
                                           <MenuItem fx:id="mnuDefinirPrueba" mnemonicParsing="false" text="Definir Prueba" />
                                           <MenuItem fx:id="mnuEvaluarPrueba" mnemonicParsing="false" text="Evaluar prueba" />
                                           <MenuItem fx:id="mnuListaEvaluaciones" mnemonicParsing="false" text="Lista de Evaluaciones" />
+                                          <MenuItem fx:id="mnuComparativoComunal" mnemonicParsing="false" text="Resumen comparativo comunal" />
                                       </items>
                                     </ContextMenu>
                                  </contextMenu>

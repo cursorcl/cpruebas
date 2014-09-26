@@ -8,7 +8,6 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
@@ -19,7 +18,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.ot.OTPreguntasEjes;
@@ -119,33 +117,6 @@ public class ResumenEjesTematicosView extends AFormView {
 			}}
 		});
 		
-//		tblEjesTematicos.setOnMouseClicked(new EventHandler<MouseEvent>() {
-//			@Override
-//			public void handle(MouseEvent event) {
-//				ObservableList<OTPreguntasEjes> itemsSelec = tblEjesTematicos
-//						.getSelectionModel().getSelectedItems();
-//
-//				if (itemsSelec.size() == 1) {
-//					// select((OTPreguntasHabilidad) itemsSelec.get(0));
-//					OTPreguntasEjes ejeTematico = itemsSelec.get(0);
-//					txtEjeTematico.setText(ejeTematico.getName());
-//
-//					Float porcentajeLogrado = ejeTematico.getLogrado();
-//					Float porcentajeNologrado = ejeTematico.getNologrado();
-//
-//					XYChart.Series series1 = new XYChart.Series();
-//					series1.setName("Porcentaje de Respuestas");
-//					series1.getData().add(
-//							new XYChart.Data<String, Float>("Logrado",
-//									porcentajeLogrado));
-//					series1.getData().add(
-//							new XYChart.Data<String, Float>("No Logrado",
-//									porcentajeNologrado));
-//					graficoBarra.getData().clear();
-//					graficoBarra.getData().add(series1);
-//				}
-//			}
-//		});
 	}
 
 	@Override
