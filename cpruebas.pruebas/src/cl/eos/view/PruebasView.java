@@ -104,10 +104,15 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
   private MenuItem mnuDefinirPrueba;
   @FXML
   private MenuItem mnuListaEvaluaciones;
+  @FXML
+  private MenuItem mnuImprimirPrueba;
+
+
 
   private EvaluacionPruebaView evaluacionPrueba;
   private DefinePruebaViewController definePrueba;
   private Prueba prueba;
+  private ImprimirPruebaView imprimirPrueba;
 
   public PruebasView() {
     setTitle("Pruebas");
@@ -316,6 +321,26 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
       handlerDefinirPrueba();
     } else if (source == mnuListaEvaluaciones) {
       handlerListaEvaluaciones();
+    } else if (source == mnuImprimirPrueba) {
+      handlerImrpimirPrueba();
+    }
+
+  }
+
+  private void handlerImrpimirPrueba() {
+    if (imprimirPrueba == null) {
+      imprimirPrueba = (ImprimirPruebaView) show("/cl/eos/view/ImprimirPrueba.fxml");
+    } else {
+      show(imprimirPrueba);
+    }
+    Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem();
+    if (prueba != null) {
+      controller.findById(Prueba.class, prueba.getId());
+      Map<String, Object> parameters = new HashMap<String, Object>();
+      parameters.put("idAsignatura", prueba.getAsignatura().getId());
+      controller.find("EjeTematico.findByAsigntura", parameters);
+      controller.findAll(Habilidad.class);
+      controller.findAll(Profesor.class);
     }
 
   }
