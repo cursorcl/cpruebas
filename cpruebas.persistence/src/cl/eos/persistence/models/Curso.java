@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -30,7 +31,7 @@ public class Curso implements IEntity {
 	private Ciclo ciclo;
 	private Colegio colegio;
 
-	@OneToMany(mappedBy = "curso", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "curso", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
 	private Collection<Alumno> alumnos;
 	private TipoCurso tipoCurso;
 

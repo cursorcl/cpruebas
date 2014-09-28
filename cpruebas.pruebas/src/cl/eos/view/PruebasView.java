@@ -26,6 +26,7 @@ import jfxtras.labs.scene.control.BigDecimalField;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.persistence.models.Asignatura;
+import cl.eos.persistence.models.Colegio;
 import cl.eos.persistence.models.Habilidad;
 import cl.eos.persistence.models.NivelEvaluacion;
 import cl.eos.persistence.models.Profesor;
@@ -168,11 +169,11 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
     mnuEvaluarPrueba.setOnAction(this);
     mnuDefinirPrueba.setOnAction(this);
     mnuListaEvaluaciones.setOnAction(this);
+    mnuImprimirPrueba.setOnAction(this);
   }
 
   @Override
   public void onDataArrived(List<Object> list) {
-
     if (list != null && !list.isEmpty()) {
       Object entity = list.get(0);
       if (entity instanceof Prueba) {
@@ -341,6 +342,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
       controller.find("EjeTematico.findByAsigntura", parameters);
       controller.findAll(Habilidad.class);
       controller.findAll(Profesor.class);
+      controller.findAll(Colegio.class);
     }
 
   }

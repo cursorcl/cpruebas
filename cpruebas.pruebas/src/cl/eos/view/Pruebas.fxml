@@ -180,6 +180,7 @@
                                           <MenuItem fx:id="mnuPopupEliminar" mnemonicParsing="false" text="Eliminar Prueba" />
                                           <MenuItem fx:id="mnuDefinirPrueba" mnemonicParsing="false" text="Definir Prueba" />
                                           <MenuItem fx:id="mnuEvaluarPrueba" mnemonicParsing="false" text="Evaluar prueba" />
+                                          <MenuItem fx:id="mnuImprimirPrueba" mnemonicParsing="false" text="Imprimir Prueba" />
                                           <MenuItem fx:id="mnuListaEvaluaciones" mnemonicParsing="false" text="Lista de Evaluaciones" />
                                           <MenuItem fx:id="mnuComparativoComunal" mnemonicParsing="false" text="Resumen comparativo comunal" />
                                       </items>
