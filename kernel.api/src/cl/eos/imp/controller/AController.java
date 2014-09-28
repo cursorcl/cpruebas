@@ -202,6 +202,10 @@ public abstract class AController implements IController, IPersistenceListener {
   public void findById(Class<? extends IEntity> entityClazz, Long id) {
     model.findById(entityClazz, id, (IPersistenceListener) this);
   }
+  
+  public void findByAllId(Class<? extends IEntity> entityClazz,  Object[] id) {
+	    model.findByAllId(entityClazz, id);
+	  }
 
   public void findByName(Class<? extends IEntity> entityClazz, String name) {
     model.findByName(entityClazz, name, (IPersistenceListener) this);

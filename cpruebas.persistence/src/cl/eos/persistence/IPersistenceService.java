@@ -40,6 +40,14 @@ public interface IPersistenceService {
   void findById(Class<? extends IEntity> entityClazz, Long id, final IPersistenceListener listener);
 
   /**
+   * Busca la entidad asociada con el identificador.
+   * 
+   * @param entityClazz Entidad de la que se requieren la b�squeda.
+   * @param listener A quien se notifica del resultado.
+   */
+  void findByAllId(Class<? extends IEntity> entityClazz, Object[] id, final IPersistenceListener listener);
+
+  /**
    * Busca la entidad asociada con el nombre.
    * 
    * @param entityClazz Entidad de la que se requieren la b�squeda.

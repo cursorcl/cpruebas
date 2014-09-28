@@ -126,10 +126,21 @@ public abstract class AModel implements IModel {
 	}
 
 	@Override
+	public void findByAllId(Class<? extends IEntity> entityClazz, Object[] id) {
+		if (controller != null && controller instanceof IPersistenceListener) {
+		
+			PersistenceServiceFactory.getPersistenceService().findByAllId(entityClazz,
+					id,  (IPersistenceListener) controller);
+		}
+	}
+	
+	@Override
 	public void findByName(Class<? extends IEntity> entityClazz, String name) {
 		if (controller != null && controller instanceof IPersistenceListener) {
 			findByName(entityClazz, name, (IPersistenceListener) controller);
 		}
 	}
+	
+	
 
 }

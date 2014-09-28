@@ -145,4 +145,10 @@ public class EvaluacionPrueba implements IEntity {
 		buffer.append(curso.getName());
 		return buffer.toString();
 	}
+	
+	public String getColegiocur() {
+		StringBuffer buffer = new StringBuffer();
+		buffer.append(colegio.getName() + "-" +curso.getName());
+		return buffer.toString();
+	}
 }

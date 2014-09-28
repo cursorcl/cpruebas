@@ -105,6 +105,8 @@ public interface IController {
 	void find(String namedQuery, Map<String, Object> parameters);
 
 	void findById(Class<? extends IEntity> entityClazz, Long id);
+	
+	void findByAllId(Class<? extends IEntity> entityClazz, Object[] objects);
 
 	void findByName(Class<? extends IEntity> entityClazz, String name);
 }

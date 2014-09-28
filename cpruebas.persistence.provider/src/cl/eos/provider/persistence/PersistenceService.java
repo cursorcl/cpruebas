@@ -16,6 +16,7 @@ import javax.persistence.Query;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.interfaces.entity.IPersistenceListener;
 import cl.eos.persistence.IPersistenceService;
+import cl.eos.persistence.models.Prueba;
 
 /**
  * Instancia de servicio para almacenamiento.
@@ -175,6 +176,48 @@ public class PersistenceService implements IPersistenceService {
 					@Override
 					public void handle(WorkerStateEvent t) {
 						listener.onFound(task.getValue());
+					}
+				});
+		new Thread(task).start();
+
+	}
+
+	@Override
+	public void findByAllId(final Class<? extends IEntity> entityClazz,
+			final Object[] id, final IPersistenceListener listener) {
+		final Task<List> task = new Task<List>() {
+			@Override
+			protected List call() throws Exception {
+				List<IEntity> lresult = null;
+				StringBuffer ids = new StringBuffer();
+				for (Object object : id) {
+					if (object instanceof Prueba) {
+						ids.append(((Prueba) object).getId());
+						ids.append(",");
+					}
+				}
+				if (ids != null) {
+					int idLast = ids.lastIndexOf(",");
+					String listaIds = ids.substring(0, idLast);
+					String strEntity = entityClazz.getSimpleName();
+					String strQuery = String.format(
+							"select c from %s c where c.id in ("
+									+ listaIds.toString() + ")",
+							strEntity.toLowerCase());
+					Query query = eManager.createQuery(strQuery);
+					if (query != null) {
+					
+						lresult = query.getResultList();
+					}
+				}
+				return lresult;
+			}
+		};
+		task.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED,
+				new EventHandler<WorkerStateEvent>() {
+					@Override
+					public void handle(WorkerStateEvent t) {
+						listener.onFindAllFinished(task.getValue());
 					}
 				});
 		new Thread(task).start();
