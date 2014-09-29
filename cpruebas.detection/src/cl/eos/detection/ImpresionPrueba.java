@@ -19,6 +19,7 @@ import javax.swing.JFrame;
 
 import org.apache.pdfbox.exceptions.COSVisitorException;
 import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDDocumentInformation;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.edit.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.graphics.xobject.PDJpeg;
@@ -77,8 +78,9 @@ public class ImpresionPrueba {
 
   }
 
-  public void imprimir(Prueba prueba, Curso curso, Profesor profesor, Colegio colegio,
+  public PDDocument imprimir(Prueba prueba, Curso curso, Profesor profesor, Colegio colegio,
       LocalDate fecha) {
+    PDDocument doc = null;
     respEsperadas = prueba.getRespuestas();
     nroAlternativas = prueba.getAlternativas();
     colAlternativas =
@@ -98,7 +100,7 @@ public class ImpresionPrueba {
 
       g2.setStroke(new BasicStroke(1f));
 
-      PDDocument doc = new PDDocument();
+      doc = new PDDocument();
       for (Alumno alumno : curso.getAlumnos()) {
         g2.setColor(Color.WHITE);
         g2.fillRect(0, 0, imageEmpty.getWidth(), imageEmpty.getHeight());
@@ -113,16 +115,21 @@ public class ImpresionPrueba {
         BufferedImage image = drawAlternativas();
         addImageToPdf(image, doc);
       }
-      File output = new File("./res/h" + prueba.getName() + "-" + fecha.toString() + ".pdf");
+      String fileName =
+          String.format("%s-%s-%s-%s", fecha.toString(), prueba.getName(), colegio.getName(),
+              curso.getName());
+      File output = new File("./res/" + fileName + ".pdf");
+      doc.setDocumentInformation(new PDDocumentInformation());
+      doc.getDocumentInformation().setTitle(fileName);
+      doc.getDocumentInformation().setAuthor("EOS");
       doc.save(output);
-      doc.close();
-
+      //doc.close();
     } catch (IOException e) {
       e.printStackTrace();
     } catch (COSVisitorException e) {
       e.printStackTrace();
     }
-
+    return doc;
   }
 
   private void drawHeader(Prueba prueba, Alumno alumno, Profesor profesor, LocalDate fecha) {
