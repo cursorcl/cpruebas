@@ -135,16 +135,6 @@ public class DefinePruebaViewController extends AFormView {
 		// });
 		ejeCol.setCellValueFactory(new PropertyValueFactory<RegistroDefinePrueba, EjeTematico>(
 				"ejeTematico"));
-		// ejeCol
-		// .setCellFactory(new Callback<TableColumn<RegistroDefinePrueba,
-		// EjeTematico>,
-		// TableCell<RegistroDefinePrueba, EjeTematico>>() {
-		// @Override
-		// public TableCell<RegistroDefinePrueba, EjeTematico> call(
-		// TableColumn<RegistroDefinePrueba, EjeTematico> p) {
-		// return new EjeTematicoDND();
-		// }
-		// });
 		habilidadCol
 				.setCellValueFactory(new PropertyValueFactory<Habilidad, String>(
 						"name"));
@@ -152,8 +142,6 @@ public class DefinePruebaViewController extends AFormView {
 				.setCellValueFactory(new PropertyValueFactory<EjeTematico, String>(
 						"name"));
 
-		badCol.setCellValueFactory(new PropertyValueFactory<RegistroDefinePrueba, String>(
-				"bad"));
 
 		tblHabilidades.setOnDragDetected(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent event) {

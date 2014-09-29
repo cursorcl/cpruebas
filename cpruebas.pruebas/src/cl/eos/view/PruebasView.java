@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -90,6 +91,8 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
   @FXML
   private TextField txtName;
   @FXML
+  private MenuItem mnuNueva;
+  @FXML
   private MenuItem mnuGrabar;
   @FXML
   private MenuItem mnuModificar;
@@ -114,6 +117,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
   private DefinePruebaViewController definePrueba;
   private Prueba prueba;
   private ImprimirPruebaView imprimirPrueba;
+  private EvaluarPruebaView evaluarPruebaView;
 
   public PruebasView() {
     setTitle("Pruebas");
@@ -170,6 +174,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
     mnuDefinirPrueba.setOnAction(this);
     mnuListaEvaluaciones.setOnAction(this);
     mnuImprimirPrueba.setOnAction(this);
+    mnuNueva.setOnAction(this);
   }
 
   @Override
@@ -324,8 +329,22 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
       handlerListaEvaluaciones();
     } else if (source == mnuImprimirPrueba) {
       handlerImrpimirPrueba();
+    } else if (source == mnuNueva) {
+      handlerNuevaPrueba();
     }
 
+
+  }
+
+  private void handlerNuevaPrueba() {
+    removeAllStyles();
+    limpiarCampos();
+    Platform.runLater(new Runnable() {
+      @Override
+      public void run() {
+        txtName.requestFocus();
+      }
+    });
   }
 
   private void handlerImrpimirPrueba() {
@@ -348,8 +367,16 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
   }
 
   private void handlerEvaluar() {
-    // TODO Auto-generated method stub
-
+    if (evaluarPruebaView == null) {
+      evaluarPruebaView = (EvaluarPruebaView) show("/cl/eos/view/EvaluarPrueba.fxml");
+    } else {
+      show(evaluarPruebaView);
+    }
+    Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem();
+    if (prueba != null) {
+      controller.findById(Prueba.class, prueba.getId());
+      controller.findAll(Colegio.class);
+    }
   }
 
   private void handlerDefinirPrueba() {

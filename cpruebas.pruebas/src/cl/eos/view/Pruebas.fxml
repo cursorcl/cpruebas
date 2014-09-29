@@ -16,6 +16,7 @@
               <menus>
                 <Menu mnemonicParsing="false" text="Archivo">
                   <items>
+                        <MenuItem fx:id="mnuNueva" mnemonicParsing="false" text="Nueva Prueba" />
                         <MenuItem id="mnuGrabar" fx:id="mnuGrabar" mnemonicParsing="false" text="Grabar Prueba">
                            <accelerator>
                               <KeyCodeCombination alt="UP" code="G" control="DOWN" meta="UP" shift="UP" shortcut="UP" />

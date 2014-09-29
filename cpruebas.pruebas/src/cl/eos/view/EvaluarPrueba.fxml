@@ -10,7 +10,7 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="485.0" prefWidth="1087.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.EvaluarPruebaView">
    <top>
-      <AnchorPane prefHeight="108.0" prefWidth="1087.0" BorderPane.alignment="CENTER">
+      <AnchorPane prefHeight="108.0" prefWidth="1087.0" styleClass="sample-page" BorderPane.alignment="CENTER">
          <children>
             <ComboBox fx:id="cmbCursos" layoutX="186.0" layoutY="72.0" prefWidth="150.0" promptText="Curso" />
             <Label layoutX="27.0" layoutY="57.0" text="Colegio" />
@@ -32,7 +32,7 @@
       </AnchorPane>
    </top>
    <center>
-      <AnchorPane prefHeight="370.0" prefWidth="1087.0" BorderPane.alignment="CENTER">
+      <AnchorPane prefHeight="370.0" prefWidth="1087.0" styleClass="sample-page" BorderPane.alignment="CENTER">
          <children>
             <TableView id="tblListadoPruebas" fx:id="tblListadoPruebas" prefHeight="400.0" prefWidth="696.0" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="2.0">
               <columns>

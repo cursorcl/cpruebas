@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.input.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="540.0" prefWidth="987.0" styleClass="sample-page" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.DefinePruebaViewController">
+   <children>
+      <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="1087.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <top>
+            <MenuBar BorderPane.alignment="CENTER">
+              <menus>
+                <Menu mnemonicParsing="false" text="Archivo">
+                  <items>
+                        <MenuItem fx:id="mnuGrabar" mnemonicParsing="false" text="Grabar Definición">
+                           <accelerator>
+                              <KeyCodeCombination alt="UP" code="G" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                           </accelerator>
+                        </MenuItem>
+                    <MenuItem fx:id="mnuVolver" mnemonicParsing="false" text="Volver a Pruebas" />
+                  </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Edit">
+                  <items>
+                    <MenuItem mnemonicParsing="false" text="Delete" />
+                  </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Help">
+                  <items>
+                    <MenuItem mnemonicParsing="false" text="About" />
+                  </items>
+                </Menu>
+              </menus>
+            </MenuBar>
+         </top>
+         <center>
+            <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="553.0" prefWidth="1079.0" styleClass="sample-page" BorderPane.alignment="CENTER">
+               <children>
+                  <TableView fx:id="tblRegistroDefinePrueba" layoutX="629.0" layoutY="53.0" prefHeight="500.0" prefWidth="275.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="629.0" AnchorPane.rightAnchor="175.0" AnchorPane.topAnchor="53.0">
+                    <columns>
+                      <TableColumn fx:id="preguntaCol" prefWidth="35.0" resizable="false" sortable="false" text="#" />
+                      <TableColumn fx:id="respuestaCol" prefWidth="56.0" resizable="false" sortable="false" text="Res" />
+                        <TableColumn fx:id="vfCol" prefWidth="47.0" resizable="false" sortable="false" text="V/F" />
+                        <TableColumn fx:id="mentalCol" prefWidth="69.0" resizable="false" sortable="false" text="Cálculo" />
+                    </columns>
+                  </TableView>
+                  <Label layoutX="668.0" layoutY="6.0" prefHeight="17.0" prefWidth="69.0" text="Respuestas" AnchorPane.bottomAnchor="530.0" AnchorPane.rightAnchor="342.0" AnchorPane.topAnchor="6.0" />
+                  <TextField fx:id="txtRespuestas" layoutX="631.0" layoutY="24.0" prefHeight="25.0" prefWidth="233.0" promptText="Respuestas" AnchorPane.bottomAnchor="504.0" AnchorPane.rightAnchor="215.0" AnchorPane.topAnchor="24.0" />
+                  <Button fx:id="btnListo" layoutX="864.0" layoutY="24.0" mnemonicParsing="false" text="Listo" AnchorPane.bottomAnchor="504.0" AnchorPane.rightAnchor="174.0" AnchorPane.topAnchor="24.0" />
+                  <Label fx:id="lblCount" layoutX="728.0" layoutY="6.0" prefHeight="17.0" prefWidth="38.0" style="-fx-alignment: CENTER;" text="0/0" textAlignment="CENTER" AnchorPane.bottomAnchor="530.0" AnchorPane.rightAnchor="313.0" AnchorPane.topAnchor="6.0" />
+                  <TableView layoutX="14.0" layoutY="117.0" prefHeight="436.0" prefWidth="604.0">
+                    <columns>
+                        <TableColumn prefWidth="91.0" text="Rut" />
+                        <TableColumn prefWidth="125.0" text="Nombres" />
+                      <TableColumn prefWidth="113.0" text="Paterno" />
+                      <TableColumn prefWidth="102.0" text="Materno" />
+                        <TableColumn prefWidth="143.0" text="Respuestas" />
+                    </columns>
+                  </TableView>
+                  <Label layoutX="261.0" layoutY="4.0" text="Asignatura" />
+                  <Label layoutX="11.0" layoutY="7.0" text="Nombre de la prueba" />
+                  <TextField fx:id="txtAsignatura" layoutX="261.0" layoutY="24.0" prefHeight="25.0" prefWidth="253.0" promptText="Asignatura" />
+                  <TextField fx:id="txtName" layoutX="11.0" layoutY="24.0" prefHeight="25.0" prefWidth="234.0" promptText="Nombre Prueba" />
+                  <ComboBox fx:id="cmbColegios" layoutX="11.0" layoutY="76.0" prefWidth="150.0" promptText="Colegio" />
+                  <Label layoutX="178.0" layoutY="54.0" text="Curso" />
+                  <Label layoutX="327.0" layoutY="54.0" text="Fecha" />
+                  <DatePicker fx:id="dtpFecha" layoutX="327.0" layoutY="76.0" prefHeight="25.0" prefWidth="190.0" />
+                  <Label layoutX="11.0" layoutY="54.0" text="Colegio" />
+                  <ComboBox fx:id="cmbCursos" layoutX="170.0" layoutY="76.0" prefWidth="150.0" promptText="Curso" />
+               </children>
+            </AnchorPane>
+         </center>
+      </BorderPane>
+   </children>
+</AnchorPane>

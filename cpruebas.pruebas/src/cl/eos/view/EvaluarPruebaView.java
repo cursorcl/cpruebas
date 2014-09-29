@@ -70,6 +70,8 @@ public class EvaluarPruebaView extends AFormView {
 	private Button btnScanner;
 	@FXML
 	private Button btnManual;
+	
+	private EvaluarManualPruebaView evaluarManualPruebaView;
 
 	public EvaluarPruebaView() {
 		setTitle("Evaluar");
@@ -102,7 +104,15 @@ public class EvaluarPruebaView extends AFormView {
 		btnManual.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				
+			    if (evaluarManualPruebaView == null) {
+			      evaluarManualPruebaView = (EvaluarManualPruebaView) show("/cl/eos/view/EvaluarManualPrueba.fxml");
+			    } else {
+			      show(evaluarManualPruebaView);
+			    }
+			    if (prueba != null) {
+			      controller.findById(Prueba.class, prueba.getId());
+			      controller.findAll(Colegio.class);
+			    }
 			}
 		});
 	}
