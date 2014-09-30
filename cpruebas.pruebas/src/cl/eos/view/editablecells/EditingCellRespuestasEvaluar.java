@@ -14,7 +14,7 @@ import cl.eos.view.ots.OTAlumnosEvaluarManual;
 import cl.eos.view.ots.OTPruebaRendida;
 
 public class EditingCellRespuestasEvaluar extends
-		TableCell<OTPruebaRendida, String> {
+		TableCell<OTAlumnosEvaluarManual, String> {
 
 	private TextField textField;
 	private Prueba prueba = null;
