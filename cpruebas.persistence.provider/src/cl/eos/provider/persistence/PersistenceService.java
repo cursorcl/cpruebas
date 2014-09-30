@@ -263,4 +263,19 @@ public class PersistenceService implements IPersistenceService {
 		return query.executeUpdate();
 	}
 
+	public void insertUpdate(){
+//		EntityManager em = getEntityManager();
+//		em.getTransaction().begin();
+
+//		Employee employee = new Employee();
+//		employee.setFirstName("Bob");
+//		Address address = new Address();
+//		address.setCity("Ottawa");
+//		employee.setAddress(address);
+
+//		em.persist(employee);
+//
+//		em.getTransaction().commit();
+	}
+	
 }

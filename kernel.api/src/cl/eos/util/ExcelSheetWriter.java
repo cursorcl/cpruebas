@@ -27,12 +27,12 @@ import cl.eos.interfaces.entity.IEntity;
  * 
  * @author Sisdef.
  */
-public final class ExportadorDeTablasAExcel {
+public final class ExcelSheetWriter {
 
 	/**
 	 * Constructor de la clase.
 	 */
-	private ExportadorDeTablasAExcel() {
+	private ExcelSheetWriter() {
 		// Sin implementar.
 	}
 

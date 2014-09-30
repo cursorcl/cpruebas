@@ -30,7 +30,7 @@ import cl.eos.persistence.models.EvaluacionPrueba;
 import cl.eos.persistence.models.Prueba;
 import cl.eos.persistence.models.PruebaRendida;
 import cl.eos.persistence.models.RespuestasEsperadasPrueba;
-import cl.eos.util.ExportadorDeTablasAExcel;
+import cl.eos.util.ExcelSheetWriter;
 
 public class ComparativoComunalEjeView extends AFormView implements
 		EventHandler<ActionEvent> {
@@ -381,7 +381,7 @@ public class ComparativoComunalEjeView extends AFormView implements
 			// ExportadorDeTablasAExcel
 			// .convertirDatosALibroDeExcel(tblEjesTematicos);
 		} else if (source == mnuExportarEvaluacion) {
-			ExportadorDeTablasAExcel
+			ExcelSheetWriter
 					.convertirDatosALibroDeExcel(tblEvaluacionEjesTematicos);
 		}
 	}

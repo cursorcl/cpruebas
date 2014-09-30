@@ -23,7 +23,7 @@ import cl.eos.interfaces.entity.IEntity;
 import cl.eos.persistence.models.Colegio;
 import cl.eos.persistence.models.Curso;
 import cl.eos.persistence.models.Ciclo;
-import cl.eos.util.ExportadorDeTablasAExcel;
+import cl.eos.util.ExcelSheetWriter;
 
 public class CursosView extends AFormView implements EventHandler<ActionEvent> {
 
@@ -263,7 +263,7 @@ public class CursosView extends AFormView implements EventHandler<ActionEvent> {
 		} else if (source == mnuEliminar || source == mnItemEliminar) {
 			accionEliminar();
 		} else if (source == mnuExportar || source == menuExportar) {
-			ExportadorDeTablasAExcel.convertirDatosALibroDeExcel(tblCurso);
+			ExcelSheetWriter.convertirDatosALibroDeExcel(tblCurso);
 		}
 
 	}

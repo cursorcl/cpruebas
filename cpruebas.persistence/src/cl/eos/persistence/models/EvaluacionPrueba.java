@@ -121,6 +121,10 @@ public class EvaluacionPrueba implements IEntity {
 	public Integer getFormas() {
 		return prueba.getNroFormas();
 	}
+	
+	public String getTipoCurso(){
+		return curso.getTipoCurso().getName();
+	}
 
 	public Integer getNroPreguntas() {
 		return prueba.getNroPreguntas();
@@ -146,9 +150,4 @@ public class EvaluacionPrueba implements IEntity {
 		return buffer.toString();
 	}
 	
-	public String getColegiocur() {
-		StringBuffer buffer = new StringBuffer();
-		buffer.append(colegio.getName() + "-" +curso.getName());
-		return buffer.toString();
-	}
 }

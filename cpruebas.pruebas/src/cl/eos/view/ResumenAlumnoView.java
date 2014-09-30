@@ -20,7 +20,7 @@ import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.persistence.models.EvaluacionPrueba;
 import cl.eos.persistence.models.PruebaRendida;
-import cl.eos.util.ExportadorDeTablasAExcel;
+import cl.eos.util.ExcelSheetWriter;
 
 public class ResumenAlumnoView extends AFormView implements
 		EventHandler<ActionEvent> {
@@ -200,9 +200,9 @@ public class ResumenAlumnoView extends AFormView implements
 	public void handle(ActionEvent event) {
 		Object source = event.getSource();
 		if (source == mnuExportarRespuestas) {
-			ExportadorDeTablasAExcel.convertirDatosALibroDeExcel(tblRespuestas);
+			ExcelSheetWriter.convertirDatosALibroDeExcel(tblRespuestas);
 		} else if (source == mnuExportarAlumnos) {
-			ExportadorDeTablasAExcel.convertirDatosALibroDeExcel(tblAlumnos);
+			ExcelSheetWriter.convertirDatosALibroDeExcel(tblAlumnos);
 		}
 	}
 }

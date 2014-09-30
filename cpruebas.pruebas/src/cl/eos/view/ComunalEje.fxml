@@ -14,8 +14,8 @@
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="403.0" prefWidth="375.0">
                <children>
-                  <TableView fx:id="tblEjesTematicos" prefHeight="200.0" prefWidth="1075.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="10.0" />
-                  <TableView fx:id="tblEvaluacionEjesTematicos" layoutX="5.0" layoutY="210.0" prefHeight="215.0" prefWidth="1075.0" AnchorPane.bottomAnchor="23.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="210.0" />
+                  <TableView fx:id="tblEvaluaciones" prefHeight="200.0" prefWidth="1075.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="10.0" />
+                  <TableView fx:id="tblTotales" layoutX="5.0" layoutY="210.0" prefHeight="215.0" prefWidth="1075.0" AnchorPane.bottomAnchor="23.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="210.0" />
                </children>
             </AnchorPane>
         </items>

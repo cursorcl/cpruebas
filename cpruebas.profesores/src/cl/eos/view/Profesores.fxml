@@ -53,35 +53,15 @@
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
-                  <VBox prefHeight="373.0" prefWidth="269.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <children>
-                        <Label fx:id="lblError">
-                           <VBox.margin>
-                              <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
-                           </VBox.margin>
-                        </Label>
-                        <TextField id="txtRut" fx:id="txtRut" prefHeight="25.0" prefWidth="301.0" promptText="Rut">
-                           <VBox.margin>
-                              <Insets bottom="5.0" left="10.0" right="10.0" top="10.0" />
-                           </VBox.margin>
-                        </TextField>
-                        <TextField id="txtAPaterno" fx:id="txtAPaterno" prefHeight="25.0" prefWidth="301.0" promptText="A. Paterno">
-                           <VBox.margin>
-                              <Insets bottom="5.0" left="10.0" right="10.0" />
-                           </VBox.margin>
-                        </TextField>
-                        <TextField id="txtAMaterno" fx:id="txtAMaterno" prefHeight="25.0" prefWidth="301.0" promptText="A.Materno">
-                           <VBox.margin>
-                              <Insets bottom="5.0" left="10.0" right="10.0" />
-                           </VBox.margin>
-                        </TextField>
-                        <TextField id="txtNombres" fx:id="txtNombres" prefHeight="25.0" prefWidth="301.0" promptText="Nombres">
-                           <VBox.margin>
-                              <Insets bottom="5.0" left="10.0" right="10.0" />
-                           </VBox.margin>
-                        </TextField>
-                     </children>
-                  </VBox>
+                  <Label fx:id="lblError" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="10.0" />
+                  <Label text="Rut" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="30.0" />
+                  <TextField id="txtRut" fx:id="txtRut" prefHeight="25.0" prefWidth="301.0" promptText="Rut" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="50.0" />
+                  <Label text="Nombre" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="80.0" />
+                  <TextField id="txtNombres" fx:id="txtNombres" layoutX="10.0" layoutY="105.0" prefHeight="25.0" prefWidth="301.0" promptText="Nombres" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="100.0" />
+                  <TextField id="txtAPaterno" fx:id="txtAPaterno" layoutX="10.0" layoutY="155.0" prefHeight="25.0" prefWidth="301.0" promptText="A. Paterno" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="150.0" />
+                  <Label text="Apellido paterno" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="130.0" />
+                  <TextField id="txtAMaterno" fx:id="txtAMaterno" layoutX="13.0" layoutY="204.0" prefHeight="25.0" prefWidth="301.0" promptText="A.Materno" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="200.0" />
+                  <Label text="Apellido materno" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="180.0" />
                </children>
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">

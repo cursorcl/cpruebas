@@ -34,7 +34,7 @@ import javax.imageio.ImageIO;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.persistence.models.Colegio;
-import cl.eos.util.ExportadorDeTablasAExcel;
+import cl.eos.util.ExcelSheetWriter;
 import cl.eos.util.Utils;
 
 public class ColegiosView extends AFormView implements
@@ -283,7 +283,7 @@ public class ColegiosView extends AFormView implements
 		} else if (source == btnImagen) {
 			accionButtonImagen();
 		} else if (source == mnuExportar || source == menuExportar) {
-			ExportadorDeTablasAExcel.convertirDatosALibroDeExcel(tblColegio);
+			ExcelSheetWriter.convertirDatosALibroDeExcel(tblColegio);
 		}
 	}
 
