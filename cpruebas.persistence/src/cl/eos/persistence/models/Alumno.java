@@ -10,12 +10,12 @@ import javax.persistence.NamedQuery;
 import cl.eos.interfaces.entity.IEntity;
 
 @Entity(name = "alumno")
-@NamedQueries({ @NamedQuery(name = "Alumno.findAll", query = "SELECT e FROM alumno e")})
+@NamedQueries({ @NamedQuery(name = "Alumno.findAll", query = "SELECT e FROM alumno e") })
 public class Alumno implements IEntity {
 
 	private static final long serialVersionUID = 1L;
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String rut;
 	private String name;
@@ -24,7 +24,7 @@ public class Alumno implements IEntity {
 	private String direccion;
 	private Colegio colegio;
 	private Curso curso;
-	
+
 	@Override
 	public Long getId() {
 		return id;
@@ -97,11 +97,10 @@ public class Alumno implements IEntity {
 	public void setCurso(Curso curso) {
 		this.curso = curso;
 	}
-	
+
 	@Override
 	public String toString() {
 		return name;
 	}
 
-	
 }
