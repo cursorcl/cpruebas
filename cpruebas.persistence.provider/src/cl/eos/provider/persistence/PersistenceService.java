@@ -13,6 +13,8 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
+import org.controlsfx.dialog.Dialogs;
+
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.interfaces.entity.IPersistenceListener;
 import cl.eos.persistence.IPersistenceService;
@@ -263,6 +265,7 @@ public class PersistenceService implements IPersistenceService {
 		return query.executeUpdate();
 	}
 
+	@Override
 	public void insert(final String entity, List<Object> list,
 			final IPersistenceListener listener) {
 
@@ -270,23 +273,39 @@ public class PersistenceService implements IPersistenceService {
 			@Override
 			protected List<Object> call() throws Exception {
 				List<Object> lresults = null;
+
 				StringBuffer string = new StringBuffer();
-				for (int i = 0; i < list.size(); i++) {
-					string.append(":p" + (i + 1) + ",");
-				}
-				int largo = string.length();
-				string.substring(0, largo - 1);
 
-				String insert = "INSERT INTO " + entity + " values ("
-						+ string.toString() + ")";
-
-				Query query = eManager.createNamedQuery(insert);
-				if (query != null) {
-					int indice = 1;
-					for (Object entry : list) {
-						query.setParameter("p"+indice++, entry);
+				List<Object> filas = list;
+				if (filas.size() > 0) {
+					List columnas = (List) filas.get(0);
+					for (int i = 0; i < columnas.size(); i++) {
+						string.append("?,");
 					}
-					 query.executeUpdate();
+				}
+				int largo = string.lastIndexOf(",");
+				String parametros = string.substring(0, largo);
+
+				String insert = "INSERT INTO " + entity + " values ( 0, "
+						+ parametros + ")";
+				try {
+					for (Object fila : filas) {
+						int indice = 1;
+						Query query = eManager.createNativeQuery(insert);
+						if (query != null) {
+							List<Object> columnas = ((List<Object>) fila);
+							for (int i = 0; i < columnas.size(); i++) {
+								eManager.getTransaction().begin();
+								query.setParameter(indice++, columnas.get(i));
+								query.executeUpdate();
+								eManager.getTransaction().commit();
+							}
+						}
+					}
+					
+				} catch (Exception e) {
+					e.printStackTrace();
+					eManager.getTransaction().rollback();
 				}
 				return lresults;
 			}
@@ -295,7 +314,7 @@ public class PersistenceService implements IPersistenceService {
 				new EventHandler<WorkerStateEvent>() {
 					@Override
 					public void handle(WorkerStateEvent t) {
-						listener.onFindAllFinished(task.getValue());
+						// listener.onFindAllFinished(task.getValue());
 					}
 				});
 		new Thread(task).start();

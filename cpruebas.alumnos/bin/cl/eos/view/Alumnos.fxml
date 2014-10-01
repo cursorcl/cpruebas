@@ -85,6 +85,7 @@
                            <children>
                               <TableView fx:id="tblAlumnos" prefHeight="396.0" prefWidth="447.0" AnchorPane.bottomAnchor="24.0">
                                 <columns>
+                                    <TableColumn fx:id="colId" prefWidth="75.0" text="Identificador" />
                                   <TableColumn id="colRut" fx:id="colRut" prefWidth="75.0" text="Rut" />
                                   <TableColumn id="colPaterno" fx:id="colPaterno" prefWidth="75.0" text="A.Paterno" />
                                     <TableColumn id="colMaterno" fx:id="colMaterno" prefWidth="75.0" text="A.Materno" />

@@ -47,7 +47,8 @@ public class AsignaturasView extends AFormView implements
 
 	@FXML
 	private TableView<Asignatura> tblAsignatura;
-
+	@FXML
+	private TableColumn<Asignatura, Long> colId;
 	@FXML
 	private TableColumn<Asignatura, String> colNombre;
 

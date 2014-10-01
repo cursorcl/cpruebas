@@ -2,6 +2,9 @@ package cl.eos;
 
 import java.awt.MenuContainer;
 import java.io.File;
+import java.util.List;
+
+import org.controlsfx.dialog.Dialogs;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -10,6 +13,8 @@ import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.control.ProgressIndicator;
 import javafx.stage.FileChooser;
 import jfxtras.labs.scene.control.BreadcrumbBar;
 import cl.eos.imp.view.WindowManager;
@@ -177,8 +182,15 @@ public class MainController {
 				"XLS files (*.xls)", "*.xls");
 		fileChooser.getExtensionFilters().add(extFilter);
 		File file = fileChooser.showOpenDialog(null);
-		ExcelSheetReader excel =  new ExcelSheetReader();
-		excel.readExcelFile(file.getAbsolutePath());
+		ExcelSheetReader excel = new ExcelSheetReader();
+
+		List lista = excel.readExcelFile(file);
+		String[] datosFile = file.getName().split(".xls");
+		PersistenceServiceFactory.getPersistenceService().insert(datosFile[0],
+				lista, null);
+		Dialogs.create().owner(null).title("Importación desde excel")
+				.masthead("").message("Ha finalizado proceso de importación de [" +lista.size() + "] registros para tabla ["+ datosFile[0] +"]")
+				.showInformation();
 		System.out.println(file);
 	}
 

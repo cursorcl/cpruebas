@@ -1,13 +1,9 @@
 package cl.eos.view;
 
-import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.List;
 
 import javafx.collections.FXCollections;
@@ -16,7 +12,6 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SelectionMode;
@@ -24,10 +19,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.FileChooser;
 
 import javax.imageio.ImageIO;
 
@@ -35,7 +28,6 @@ import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.persistence.models.Colegio;
 import cl.eos.util.ExcelSheetWriter;
-import cl.eos.util.Utils;
 
 public class ColegiosView extends AFormView implements
 		EventHandler<ActionEvent> {
@@ -66,8 +58,8 @@ public class ColegiosView extends AFormView implements
 	@FXML
 	private MenuItem mnuExportar;
 
-	@FXML
-	private Button btnImagen;
+//	@FXML
+//	private Button btnImagen;
 
 	@FXML
 	private TextField txtNombre;
@@ -108,24 +100,24 @@ public class ColegiosView extends AFormView implements
 		mnItemModificar.setOnAction(this);
 		mnuExportar.setOnAction(this);
 		menuExportar.setOnAction(this);
-		btnImagen.setOnAction(this);
+//		btnImagen.setOnAction(this);
 	}
 
-	private void accionButtonImagen() {
-		FileChooser fileChooser = new FileChooser();
-		File file = fileChooser.showOpenDialog(null);
-		if (file != null) {
-			Dimension dim = Utils.getImageDim(file.getPath());
-			if (dim.getHeight() <= 256 && dim.getWidth() <= 256) {
-				try {
-					URL url = file.toURI().toURL();
-					imgColegio.setImage(new Image(url.toString()));
-				} catch (MalformedURLException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-	}
+//	private void accionButtonImagen() {
+//		FileChooser fileChooser = new FileChooser();
+//		File file = fileChooser.showOpenDialog(null);
+//		if (file != null) {
+//			Dimension dim = Utils.getImageDim(file.getPath());
+//			if (dim.getHeight() <= 256 && dim.getWidth() <= 256) {
+//				try {
+//					URL url = file.toURI().toURL();
+//					imgColegio.setImage(new Image(url.toString()));
+//				} catch (MalformedURLException e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		}
+//	}
 
 	private void accionClicTabla() {
 		tblColegio.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -283,8 +275,8 @@ public class ColegiosView extends AFormView implements
 			accionGrabar();
 		} else if (source == mnuEliminar || source == mnItemEliminar) {
 			accionEliminar();
-		} else if (source == btnImagen) {
-			accionButtonImagen();
+			// } else if (source == btnImagen) {
+			// accionButtonImagen();
 		} else if (source == mnuExportar || source == menuExportar) {
 			ExcelSheetWriter.convertirDatosALibroDeExcel(tblColegio);
 		}

@@ -19,7 +19,7 @@ public class ExcelSheetReader {
 	 * @param fileName
 	 *            - Name of the excel file.
 	 */
-	public void readExcelFile(String fileName) {
+	public List readExcelFile(File fileName) {
 		/**
 		 * Create a new instance for cellDataList
 		 */
@@ -28,7 +28,7 @@ public class ExcelSheetReader {
 			/**
 			 * Create a new instance for FileInputStream class
 			 */
-			FileInputStream fileInputStream = new FileInputStream(fileName);
+			FileInputStream fileInputStream = new FileInputStream(fileName.getAbsoluteFile());
 			/**
 			 * Create a new instance for POIFSFileSystem class
 			 */
@@ -49,7 +49,7 @@ public class ExcelSheetReader {
 				List cellTempList = new ArrayList();
 				while (iterator.hasNext()) {
 					HSSFCell hssfCell = (HSSFCell) iterator.next();
-					cellTempList.add(hssfCell);
+					cellTempList.add(hssfCell.getStringCellValue());
 				}
 				cellDataList.add(cellTempList);
 			}
@@ -60,7 +60,8 @@ public class ExcelSheetReader {
 		/**
 		 * Call the printToConsole method to print the cell data in the console.
 		 */
-		printToConsole(cellDataList);
+		//printToConsole(cellDataList);
+		return cellDataList;
 	}
 
 	/**
@@ -82,8 +83,8 @@ public class ExcelSheetReader {
 	}
 
 	public static void main(String[] args) {
-		String fileName = "C:" + File.separator + "APP" + File.separator
-				+ "ciclo.xls";
-		new ExcelSheetReader().readExcelFile(fileName);
+//		String fileName = "C:" + File.separator + "APP" + File.separator
+//				+ "ciclo.xls";
+//		new ExcelSheetReader().readExcelFile(fileName);
 	}
 }

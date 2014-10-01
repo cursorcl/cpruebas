@@ -72,6 +72,9 @@ public class AlumnosView extends AFormView implements EventHandler<ActionEvent> 
 	private TableView<Alumno> tblAlumnos;
 
 	@FXML
+	private TableColumn<Alumno, Long> colId;
+	
+	@FXML
 	private TableColumn<Alumno, String> colRut;
 
 	@FXML
@@ -184,6 +187,8 @@ public class AlumnosView extends AFormView implements EventHandler<ActionEvent> 
 
 	private void inicializaTabla() {
 		tblAlumnos.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+		colId.setCellValueFactory(new PropertyValueFactory<Alumno, Long>(
+				"id"));
 		colRut.setCellValueFactory(new PropertyValueFactory<Alumno, String>(
 				"rut"));
 		colName.setCellValueFactory(new PropertyValueFactory<Alumno, String>(
