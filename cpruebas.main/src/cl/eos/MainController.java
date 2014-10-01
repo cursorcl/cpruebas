@@ -9,7 +9,10 @@ import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 import jfxtras.labs.scene.control.BreadcrumbBar;
+import cl.eos.imp.view.WindowButtons;
 import cl.eos.imp.view.WindowManager;
 import cl.eos.interfaces.IActivator;
 import cl.eos.provider.persistence.PersistenceServiceFactory;
@@ -49,10 +52,12 @@ public class MainController {
   @FXML
   private MenuItem mnuCerrarAplicacion;
   @FXML
-  private BreadcrumbBar breadCrumb;
+  private AnchorPane pnlWindow;
   @FXML
   private Group groupRoot;
 
+  private Stage stage;
+  
   public MainController() {
     super();
   }
@@ -61,7 +66,6 @@ public class MainController {
   public void initialize() {
     try {
        WindowManager.getInstance().setRoot(groupRoot);
-       WindowManager.getInstance().setBreadcrumbBar(breadCrumb);
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -157,10 +161,21 @@ public class MainController {
 
       }
     });
+    
+    WindowButtons wButtons = new WindowButtons(stage);
+    pnlWindow.getChildren().add(wButtons);
   }
 
   public Group getGroup() {
     return groupRoot;
   }
+
+public Stage getStage() {
+	return stage;
+}
+
+public void setStage(Stage stage) {
+	this.stage = stage;
+}
 
 }

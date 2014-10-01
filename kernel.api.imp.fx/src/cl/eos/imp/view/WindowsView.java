@@ -1,6 +1,7 @@
 package cl.eos.imp.view;
 
 
+import cl.eos.interfaces.view.IView;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
@@ -14,6 +15,7 @@ public class WindowsView extends BorderPane {
 	private Label windowTitle;
 	private AnchorPane topPane;
 	private MiniIconButton miniButton;
+	private IView view;
 
 	public WindowsView() {
 		setTop(getAnchorPane());
@@ -64,4 +66,14 @@ public class WindowsView extends BorderPane {
 	{
 		getLabel().setText(text);
 	}
+
+	public IView getView() {
+		return view;
+	}
+
+	public void setView(IView view) {
+		this.view = view;
+	}
+	
+	
 }

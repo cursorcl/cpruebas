@@ -14,23 +14,23 @@
 	<children>
 		<BorderPane prefHeight="200.0" prefWidth="200.0">
 			<top>
-            <AnchorPane prefHeight="47.0" prefWidth="943.0">
+            <AnchorPane fx:id="pnlWindow" prefHeight="47.0" prefWidth="943.0">
                <children>
 						<Pane id="SearchBox" prefHeight="52.0" prefWidth="198.0">
 							<children>
 								<Button id="clearButton" layoutX="173.0" layoutY="24.0" mnemonicParsing="false" visible="false" />
 							</children>
 						</Pane>
-						<ImageView fitHeight="63.0" fitWidth="165.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
-							<image>
-								<Image url="@images/logo_sisdef.png" />
-							</image>
-						</ImageView>
                   <AnchorPane id="SearchBox" layoutX="720.0" layoutY="1.0" prefHeight="62.0" prefWidth="191.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="32.0" AnchorPane.topAnchor="1.0">
                      <children>
-      								<TextField layoutX="5.0" layoutY="19.0" prefHeight="26.0" prefWidth="182.0" promptText="Buscar" AnchorPane.bottomAnchor="18.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="19.0" />
+      								<TextField layoutX="5.0" layoutY="19.0" prefHeight="24.0" prefWidth="181.0" promptText="Buscar" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="19.0" />
                      </children>
                   </AnchorPane>
+                  <ImageView fitHeight="84.0" fitWidth="200.0" preserveRatio="true">
+                     <image>
+                        <Image url="@/images/logo_sisdef.png" />
+                     </image>
+                  </ImageView>
                </children>
             </AnchorPane>
 			</top>
@@ -38,103 +38,96 @@
 				<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="560.0" prefWidth="943.0" BorderPane.alignment="CENTER">
 					<children>
 						<BorderPane id="page-area" layoutX="133.0" layoutY="62.0" prefHeight="573.0" prefWidth="608.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-							<top>
-								<VBox prefHeight="57.0" prefWidth="943.0" BorderPane.alignment="CENTER">
-									<children>
-										<MenuBar id="mnuPrincipal">
-											<menus>
-												<Menu mnemonicParsing="false" text="Archivo">
-													<items>
-														<MenuItem id="mnuGrabar" mnemonicParsing="false" text="Grabar" />
-														<MenuItem fx:id="mnuCerrarAplicacion" mnemonicParsing="false" text="Cerrar" />
-													</items>
-												</Menu>
-												<Menu mnemonicParsing="false" text="Edición">
-													<items>
-														<MenuItem mnemonicParsing="false" text="Delete" />
-													</items>
-												</Menu>
-                                    <Menu mnemonicParsing="false" text="Pruebas">
-                                      <items>
-                                        <MenuItem fx:id="mnuHacerPrueba" mnemonicParsing="false" text="Generar Prueba" />
-                                      
-                                      </items>
-                                    </Menu>
-												<Menu mnemonicParsing="false" text="Administrador">
-													<items>
-                                          <MenuItem id="mnuColegios" fx:id="mnuColegios" mnemonicParsing="false" text="Colegios">
-                                             <accelerator>
-                                                <KeyCodeCombination alt="UP" code="C" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-                                             </accelerator>
-                                          </MenuItem>
-                                          <MenuItem id="mnuCursos" fx:id="mnuCursos" mnemonicParsing="false" text="Cursos">
-                                             <accelerator>
-                                                <KeyCodeCombination alt="UP" code="U" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-                                             </accelerator>
-                                          </MenuItem>
-                                          <MenuItem id="mnuAsignaturas" fx:id="mnuAsignaturas" mnemonicParsing="false" text="Asignaturas">
-                                             <accelerator>
-                                                <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-                                             </accelerator>
-                                          </MenuItem>
-                                          <MenuItem id="mnuProfesores" fx:id="mnuProfesores" mnemonicParsing="false" text="Profesores">
-                                             <accelerator>
-                                                <KeyCodeCombination alt="UP" code="P" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-                                             </accelerator>
-                                          </MenuItem>
-														<MenuItem id="mnuAlumno" fx:id="mnuAlumno" mnemonicParsing="false" text="Alumnos">
-															<accelerator>
-																<KeyCodeCombination alt="UP" code="A" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-															</accelerator>
-														</MenuItem>
-                                          <MenuItem id="mnuEjesTematicos" fx:id="mnuEjesTematicos" mnemonicParsing="false" text="Ejes Temáticos">
-                                             <accelerator>
-                                                <KeyCodeCombination alt="UP" code="E" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-                                             </accelerator>
-                                          </MenuItem>
-                                          <MenuItem id="mnuHabilidades" fx:id="mnuHabilidades" mnemonicParsing="false" text="Habilidades">
-                                             <accelerator>
-                                                <KeyCodeCombination alt="UP" code="H" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-                                             </accelerator>
-                                          </MenuItem>
-                                          <MenuItem fx:id="mnuTipoPrueba" mnemonicParsing="false" text="Tipo prueba">
-                                             <accelerator>
-                                                <KeyCodeCombination alt="UP" code="T" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-                                             </accelerator></MenuItem>
-                                          <MenuItem fx:id="mnuNivelEvaluacion" mnemonicParsing="false" text="Nivel evaluación" visible="false">
-                                             <accelerator>
-                                                <KeyCodeCombination alt="UP" code="N" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-                                             </accelerator></MenuItem>
-													</items>
-												</Menu>
-												<Menu mnemonicParsing="false" text="Reportes">
-													<items>
-														<MenuItem mnemonicParsing="false" text="Action 1" />
-													</items>
-												</Menu>
-                                    <Menu mnemonicParsing="false" text="Configurar">
-                                      <items>
-                                        <MenuItem fx:id="mnuItemGeneraBD" mnemonicParsing="false" text="Generar BD." />
-                                      </items>
-                                    </Menu>
-												<Menu mnemonicParsing="false" text="Ayuda">
-													<items>
-														<MenuItem mnemonicParsing="false" text="About" />
-													</items>
-												</Menu>
-											</menus>
-										</MenuBar>
-                              <AnchorPane prefHeight="200.0" prefWidth="200.0">
-                                 <children>
-                                    <BreadcrumbBar fx:id="breadCrumb" layoutY="2.0" prefWidth="711.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                                 </children>
-                              </AnchorPane>
-									</children>
-								</VBox>
-							</top>
                      <center>
                         <Group fx:id="groupRoot" BorderPane.alignment="CENTER" />
                      </center>
+                     <top>
+            										<MenuBar id="mnuPrincipal" BorderPane.alignment="CENTER">
+            											<menus>
+            												<Menu mnemonicParsing="false" text="Archivo">
+            													<items>
+            														<MenuItem id="mnuGrabar" mnemonicParsing="false" text="Grabar" />
+            														<MenuItem fx:id="mnuCerrarAplicacion" mnemonicParsing="false" text="Cerrar" />
+            													</items>
+            												</Menu>
+            												<Menu mnemonicParsing="false" text="Edición">
+            													<items>
+            														<MenuItem mnemonicParsing="false" text="Delete" />
+            													</items>
+            												</Menu>
+                              <Menu mnemonicParsing="false" text="Pruebas">
+                                <items>
+                                  <MenuItem fx:id="mnuHacerPrueba" mnemonicParsing="false" text="Generar Prueba" />
+                                
+                                                  </items>
+                              </Menu>
+            												<Menu mnemonicParsing="false" text="Administrador">
+            													<items>
+                                    <MenuItem id="mnuColegios" fx:id="mnuColegios" mnemonicParsing="false" text="Colegios">
+                                       <accelerator>
+                                          <KeyCodeCombination alt="UP" code="C" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                                       </accelerator>
+                                    </MenuItem>
+                                    <MenuItem id="mnuCursos" fx:id="mnuCursos" mnemonicParsing="false" text="Cursos">
+                                       <accelerator>
+                                          <KeyCodeCombination alt="UP" code="U" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                                       </accelerator>
+                                    </MenuItem>
+                                    <MenuItem id="mnuAsignaturas" fx:id="mnuAsignaturas" mnemonicParsing="false" text="Asignaturas">
+                                       <accelerator>
+                                          <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                                       </accelerator>
+                                    </MenuItem>
+                                    <MenuItem id="mnuProfesores" fx:id="mnuProfesores" mnemonicParsing="false" text="Profesores">
+                                       <accelerator>
+                                          <KeyCodeCombination alt="UP" code="P" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                                       </accelerator>
+                                    </MenuItem>
+            														<MenuItem id="mnuAlumno" fx:id="mnuAlumno" mnemonicParsing="false" text="Alumnos">
+            															<accelerator>
+            																<KeyCodeCombination alt="UP" code="A" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+            															</accelerator>
+            														</MenuItem>
+                                    <MenuItem id="mnuEjesTematicos" fx:id="mnuEjesTematicos" mnemonicParsing="false" text="Ejes Temáticos">
+                                       <accelerator>
+                                          <KeyCodeCombination alt="UP" code="E" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                                       </accelerator>
+                                    </MenuItem>
+                                    <MenuItem id="mnuHabilidades" fx:id="mnuHabilidades" mnemonicParsing="false" text="Habilidades">
+                                       <accelerator>
+                                          <KeyCodeCombination alt="UP" code="H" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                                       </accelerator>
+                                    </MenuItem>
+                                    <MenuItem fx:id="mnuTipoPrueba" mnemonicParsing="false" text="Tipo prueba">
+                                       <accelerator>
+                                          <KeyCodeCombination alt="UP" code="T" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                                       </accelerator>
+                                    </MenuItem>
+                                    <MenuItem fx:id="mnuNivelEvaluacion" mnemonicParsing="false" text="Nivel evaluación" visible="false">
+                                       <accelerator>
+                                          <KeyCodeCombination alt="UP" code="N" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                                       </accelerator>
+                                    </MenuItem>
+            													</items>
+            												</Menu>
+            												<Menu mnemonicParsing="false" text="Reportes">
+            													<items>
+            														<MenuItem mnemonicParsing="false" text="Action 1" />
+            													</items>
+            												</Menu>
+                              <Menu mnemonicParsing="false" text="Configurar">
+                                <items>
+                                  <MenuItem fx:id="mnuItemGeneraBD" mnemonicParsing="false" text="Generar BD." />
+                                </items>
+                              </Menu>
+            												<Menu mnemonicParsing="false" text="Ayuda">
+            													<items>
+            														<MenuItem mnemonicParsing="false" text="About" />
+            													</items>
+            												</Menu>
+            											</menus>
+            										</MenuBar>
+                     </top>
 						</BorderPane>
 					</children>
 				</AnchorPane>
