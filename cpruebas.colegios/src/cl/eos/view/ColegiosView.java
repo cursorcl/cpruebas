@@ -82,6 +82,8 @@ public class ColegiosView extends AFormView implements
 	private TableView<Colegio> tblColegio;
 
 	@FXML
+	private TableColumn<Colegio, Long> colId;
+	@FXML
 	private TableColumn<Colegio, String> colNombre;
 
 	@FXML
@@ -146,6 +148,7 @@ public class ColegiosView extends AFormView implements
 
 	private void inicializaTabla() {
 		tblColegio.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+		colId.setCellValueFactory(new PropertyValueFactory<Colegio, Long>("id"));
 		colNombre
 				.setCellValueFactory(new PropertyValueFactory<Colegio, String>(
 						"name"));
