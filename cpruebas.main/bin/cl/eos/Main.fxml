@@ -115,6 +115,7 @@
                                     <Menu mnemonicParsing="false" text="Configurar">
                                       <items>
                                         <MenuItem fx:id="mnuItemGeneraBD" mnemonicParsing="false" text="Generar BD." />
+                                          <MenuItem fx:id="mnuImportar" mnemonicParsing="false" text="Importar Excel" />
                                       </items>
                                     </Menu>
 												<Menu mnemonicParsing="false" text="Ayuda">

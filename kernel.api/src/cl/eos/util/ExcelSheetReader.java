@@ -19,7 +19,7 @@ public class ExcelSheetReader {
 	 * @param fileName
 	 *            - Name of the excel file.
 	 */
-	private void readExcelFile(String fileName) {
+	public void readExcelFile(String fileName) {
 		/**
 		 * Create a new instance for cellDataList
 		 */
@@ -82,7 +82,6 @@ public class ExcelSheetReader {
 	}
 
 	public static void main(String[] args) {
-		
 		String fileName = "C:" + File.separator + "APP" + File.separator
 				+ "ciclo.xls";
 		new ExcelSheetReader().readExcelFile(fileName);

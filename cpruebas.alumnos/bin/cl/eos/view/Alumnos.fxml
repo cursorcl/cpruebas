@@ -58,9 +58,9 @@
                   <ComboBox id="cmbColegios" fx:id="cmbColegio" layoutX="10.0" layoutY="47.0" promptText="Colegio" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="50.0" />
                   <ComboBox id="cmbCursos" fx:id="cmbCurso" layoutX="10.0" layoutY="97.0" promptText="Curso" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="100.0" />
                   <TextField id="txtRut" fx:id="txtRut" layoutX="13.0" layoutY="150.0" promptText="Rut" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="150.0" />
+                  <TextField id="txtNombres" fx:id="txtNombres" layoutX="9.0" layoutY="192.0" promptText="Nombres" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="200.0" />
                   <TextField id="txtAPaterno" fx:id="txtAPaterno" layoutX="20.0" layoutY="264.0" promptText="A. Paterno" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="250.0" />
                   <TextField id="txtAMaterno" fx:id="txtAMaterno" layoutX="10.0" layoutY="297.0" promptText="A.Materno" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="300.0" />
-                  <TextField id="txtNombres" fx:id="txtNombres" layoutX="9.0" layoutY="192.0" promptText="Nombres" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="200.0" />
                   <TextField fx:id="txtDireccion" layoutX="9.0" layoutY="339.0" promptText="DIrección" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="350.0" />
                   <Label layoutX="14.0" layoutY="80.0" text="Curso" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="80.0" />
                   <Label layoutX="10.0" layoutY="133.0" text="Rut" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="130.0" />

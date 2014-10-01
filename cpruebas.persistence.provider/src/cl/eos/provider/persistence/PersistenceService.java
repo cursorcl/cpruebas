@@ -206,7 +206,7 @@ public class PersistenceService implements IPersistenceService {
 							strEntity.toLowerCase());
 					Query query = eManager.createQuery(strQuery);
 					if (query != null) {
-					
+
 						lresult = query.getResultList();
 					}
 				}
@@ -263,19 +263,43 @@ public class PersistenceService implements IPersistenceService {
 		return query.executeUpdate();
 	}
 
-	public void insertUpdate(){
-//		EntityManager em = getEntityManager();
-//		em.getTransaction().begin();
+	public void insert(final String entity, List<Object> list,
+			final IPersistenceListener listener) {
 
-//		Employee employee = new Employee();
-//		employee.setFirstName("Bob");
-//		Address address = new Address();
-//		address.setCity("Ottawa");
-//		employee.setAddress(address);
+		final Task<List<Object>> task = new Task<List<Object>>() {
+			@Override
+			protected List<Object> call() throws Exception {
+				List<Object> lresults = null;
+				StringBuffer string = new StringBuffer();
+				for (int i = 0; i < list.size(); i++) {
+					string.append(":p" + (i + 1) + ",");
+				}
+				int largo = string.length();
+				string.substring(0, largo - 1);
 
-//		em.persist(employee);
-//
-//		em.getTransaction().commit();
+				String insert = "INSERT INTO " + entity + " values ("
+						+ string.toString() + ")";
+
+				Query query = eManager.createNamedQuery(insert);
+				if (query != null) {
+					int indice = 1;
+					for (Object entry : list) {
+						query.setParameter("p"+indice++, entry);
+					}
+					 query.executeUpdate();
+				}
+				return lresults;
+			}
+		};
+		task.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED,
+				new EventHandler<WorkerStateEvent>() {
+					@Override
+					public void handle(WorkerStateEvent t) {
+						listener.onFindAllFinished(task.getValue());
+					}
+				});
+		new Thread(task).start();
+
 	}
-	
+
 }

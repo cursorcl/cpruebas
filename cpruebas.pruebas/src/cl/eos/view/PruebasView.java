@@ -121,6 +121,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 	private ComparativoComunalEjeView comparativoComunal;
 	private ComparativoComunalHabilidadView comparativoComunalHabilidad;
 	private ComunalCursoEjeTematico comunalEje;
+	private ComunalCursoHabilidad comunalHabilidad;
 
 	public PruebasView() {
 		setTitle("Pruebas");
@@ -361,10 +362,10 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 	}
 
 	private void handlerComunalHabilidad() {
-		if (comunalEje == null) {
-			comunalEje = (ComunalCursoEjeTematico) show("/cl/eos/view/ComunalEje.fxml.fxml");
+		if (comunalHabilidad == null) {
+			comunalHabilidad = (ComunalCursoHabilidad) show("/cl/eos/view/ComunalHabilidad.fxml");
 		} else {
-			show(comunalEje);
+			show(comunalHabilidad);
 		}
 		Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem();
 		if (prueba != null) {

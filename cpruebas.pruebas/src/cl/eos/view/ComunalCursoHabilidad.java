@@ -28,7 +28,7 @@ import cl.eos.persistence.models.Prueba;
 import cl.eos.persistence.models.PruebaRendida;
 import cl.eos.persistence.models.TipoCurso;
 
-public class ComunalCursoEjeTematico extends AFormView implements
+public class ComunalCursoHabilidad extends AFormView implements
 		EventHandler<ActionEvent> {
 
 	@FXML
@@ -44,7 +44,7 @@ public class ComunalCursoEjeTematico extends AFormView implements
 	private Map<EvaluacionEjeTematico, HashMap<String, OTPreguntasEvaluacion>> mapEvaAlumnos = null;
 	private ArrayList<String> titulosColumnas;
 
-	public ComunalCursoEjeTematico() {
+	public ComunalCursoHabilidad() {
 		// TODO Auto-generated constructor stub
 	}
 
