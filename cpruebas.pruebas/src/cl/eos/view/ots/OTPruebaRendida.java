@@ -49,6 +49,14 @@ public class OTPruebaRendida {
 	{
 		return "NN";
 	}
+
+	public PruebaRendida getPruebaRendida() {
+		return pruebaRendida;
+	}
+
+	public void setPruebaRendida(PruebaRendida pruebaRendida) {
+		this.pruebaRendida = pruebaRendida;
+	}
 	
 	
 	

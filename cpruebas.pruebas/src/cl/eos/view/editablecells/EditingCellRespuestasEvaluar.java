@@ -10,11 +10,10 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import cl.eos.persistence.models.Prueba;
 import cl.eos.persistence.models.RespuestasEsperadasPrueba;
-import cl.eos.view.ots.OTAlumnosEvaluarManual;
 import cl.eos.view.ots.OTPruebaRendida;
 
 public class EditingCellRespuestasEvaluar extends
-		TableCell<OTAlumnosEvaluarManual, String> {
+		TableCell<OTPruebaRendida, String> {
 
 	private TextField textField;
 	private Prueba prueba = null;

@@ -1,6 +1,7 @@
 package cl.eos.view;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +17,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -28,10 +30,11 @@ import cl.eos.persistence.models.Curso;
 import cl.eos.persistence.models.EjeTematico;
 import cl.eos.persistence.models.EvaluacionPrueba;
 import cl.eos.persistence.models.Habilidad;
+import cl.eos.persistence.models.Profesor;
 import cl.eos.persistence.models.Prueba;
+import cl.eos.persistence.models.PruebaRendida;
 import cl.eos.persistence.models.RespuestasEsperadasPrueba;
 import cl.eos.view.editablecells.EditingCellRespuestasEvaluar;
-import cl.eos.view.ots.OTAlumnosEvaluarManual;
 import cl.eos.view.ots.OTPruebaRendida;
 
 public class EvaluarPruebaView extends AFormView {
@@ -64,6 +67,8 @@ public class EvaluarPruebaView extends AFormView {
 	@FXML
 	private ComboBox<Curso> cmbCursos;
 	@FXML
+	private ComboBox<Profesor> cmbProfesor;
+	@FXML
 	private TextField txtName;
 	@FXML
 	private TextField txtAsignatura;
@@ -77,8 +82,6 @@ public class EvaluarPruebaView extends AFormView {
 	private Button btnScanner;
 	@FXML
 	private Button btnManual;
-
-	private EvaluarManualPruebaView evaluarManualPruebaView;
 
 	public EvaluarPruebaView() {
 		setTitle("Evaluar");
@@ -100,45 +103,9 @@ public class EvaluarPruebaView extends AFormView {
 				controller.find("Curso.findByTipoColegio", parameters);
 			}
 		});
-		cmbCursos.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				Curso curso =  cmbCursos.getSelectionModel().getSelectedItem();
-				Colegio colegio = cmbColegios.getSelectionModel().getSelectedItem();
-				List<EvaluacionPrueba> listEvaluaciones = prueba.getEvaluaciones();
-				EvaluacionPrueba evaPrueba = null;
-				if(listEvaluaciones != null &&  !listEvaluaciones.isEmpty())
-				{
-					for(EvaluacionPrueba evaluacion: listEvaluaciones)
-					{
-
-						if(evaluacion.getPrueba().equals(prueba) && evaluacion.getColegio().equals(colegio) && evaluacion.getCurso().equals(curso))
-						{
-							evaPrueba = evaluacion;
-							break;
-						}
-					}
-				}
-				if(evaPrueba == null)
-				{
-					//Tengo que crear la evaluacion Prueba.
-					evaPrueba = new EvaluacionPrueba();
-					evaPrueba.setColegio(colegio);
-					evaPrueba.setCurso(curso);
-					evaPrueba.setPrueba(prueba);
-				}
-			}
-		});
-		btnScanner.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				// ProcesadorPrueba procesador = new ProcesadorPrueba();
-
-			}
-		});
+		cmbCursos.setOnAction(new EHandlerCmbCurso());
 		definirTablaListadoPruebas();
-		
-		
+
 	}
 
 	private void definirTablaListadoPruebas() {
@@ -181,6 +148,40 @@ public class EvaluarPruebaView extends AFormView {
 						return new EditingCellRespuestasEvaluar(prueba);
 					}
 				});
+		respuestasCol
+				.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<OTPruebaRendida, String>>() {
+					@Override
+					public void handle(
+							CellEditEvent<OTPruebaRendida, String> event) {
+						// Aqui debo validar el resultado de la prueba.
+						String value = event.getNewValue();
+						PruebaRendida pRendida = event.getRowValue()
+								.getPruebaRendida();
+						if (value != null && !value.isEmpty()) {
+							evaluar(value, pRendida);
+						}
+					}
+				});
+	}
+
+	protected void evaluar(String value, PruebaRendida pRendida) {
+		List<RespuestasEsperadasPrueba> respEsperadas = prueba.getRespuestas();
+		int nMax = Math.min(value.length(), respEsperadas.size());
+		pRendida.setOmitidas(Math.abs(value.length() - respEsperadas.size()));
+		pRendida.setBuenas(0);
+		pRendida.setMalas(0);
+		for (int n = 0; n < nMax; n++) {
+			RespuestasEsperadasPrueba resp = respEsperadas.get(n);
+			String userResp = value.substring(n, n + 1);
+			String validResp = resp.getRespuesta();
+			if (userResp.toUpperCase().equals("*")) {
+				pRendida.setOmitidas(pRendida.getOmitidas() + 1);
+			} else if (userResp.toUpperCase().equals(validResp.toUpperCase())) {
+				pRendida.setBuenas(pRendida.getBuenas() + 1);
+			} else {
+				pRendida.setMalas(pRendida.getMalas() + 1);
+			}
+		}
 
 	}
 
@@ -207,7 +208,6 @@ public class EvaluarPruebaView extends AFormView {
 			lstEjes.setItems(lEjes);
 			lstHabilidad.setItems(lHabilidad);
 		}
-
 	}
 
 	@Override
@@ -229,9 +229,58 @@ public class EvaluarPruebaView extends AFormView {
 				}
 				cmbCursos.setItems(oList);
 				cmbCursos.setDisable(false);
+			} else if (entity instanceof Profesor) {
+				ObservableList<Profesor> oList = FXCollections
+						.observableArrayList();
+				for (Object iEntity : list) {
+					oList.add((Profesor) iEntity);
+				}
+				cmbProfesor.setItems(oList);
 			}
-
 		}
 	}
 
+	private class EHandlerCmbCurso implements EventHandler<ActionEvent> {
+		@Override
+		public void handle(ActionEvent event) {
+			Curso curso = cmbCursos.getSelectionModel().getSelectedItem();
+			Colegio colegio = cmbColegios.getSelectionModel().getSelectedItem();
+			Profesor profesor = cmbProfesor.getSelectionModel()
+					.getSelectedItem();
+			List<EvaluacionPrueba> listEvaluaciones = prueba.getEvaluaciones();
+			EvaluacionPrueba evalPrueba = null;
+			if (listEvaluaciones != null && !listEvaluaciones.isEmpty()) {
+				for (EvaluacionPrueba evaluacion : listEvaluaciones) {
+					if (evaluacion.getPrueba().equals(prueba)
+							&& evaluacion.getColegio().equals(colegio)
+							&& evaluacion.getCurso().equals(curso)) {
+						evalPrueba = evaluacion;
+						break;
+					}
+				}
+			}
+			if (evalPrueba == null) {
+				ObservableList<OTPruebaRendida> oList = FXCollections
+						.observableArrayList();
+				// Tengo que crear la evaluacion Prueba.
+				evalPrueba = new EvaluacionPrueba();
+				evalPrueba.setColegio(colegio);
+				evalPrueba.setCurso(curso);
+				evalPrueba.setPrueba(prueba);
+				evalPrueba.setProfesor(profesor);
+				evalPrueba.setFecha(dtpFecha.getValue().toEpochDay());
+				evalPrueba.setPruebasRendidas(new ArrayList<PruebaRendida>());
+				for (Alumno alumno : curso.getAlumnos()) {
+					PruebaRendida pRendida = new PruebaRendida();
+					pRendida.setAlumno(alumno);
+					evalPrueba.getPruebasRendidas().add(pRendida);
+					oList.add(new OTPruebaRendida(pRendida));
+				}
+
+				tblListadoPruebas.setItems(oList);
+			} else {
+
+			}
+		}
+	}
 }
