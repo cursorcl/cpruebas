@@ -35,16 +35,16 @@
                   <DatePicker fx:id="dtpFecha" layoutX="453.0" layoutY="24.0" />
                   <Label layoutX="462.0" layoutY="6.0" text="Fecha" />
                   <Label layoutX="177.0" layoutY="57.0" text="Curso" />
-                  <ComboBox fx:id="cmbColegios" layoutX="18.0" layoutY="72.0" prefWidth="154.0" promptText="Colegio" />
-                  <TextField fx:id="txtName" editable="false" layoutX="18.0" layoutY="24.0" prefWidth="204.0" promptText="Nombre Prueba" />
-                  <TextField fx:id="txtAsignatura" editable="false" layoutX="232.0" layoutY="24.0" prefWidth="214.0" promptText="Asignatura" />
+                  <ComboBox fx:id="cmbColegios" layoutX="18.0" layoutY="72.0" prefHeight="25.0" prefWidth="154.0" promptText="Colegio" />
+                  <TextField fx:id="txtName" editable="false" layoutX="18.0" layoutY="24.0" prefHeight="25.0" prefWidth="204.0" promptText="Nombre Prueba" />
+                  <TextField fx:id="txtAsignatura" editable="false" layoutX="232.0" layoutY="24.0" prefHeight="25.0" prefWidth="214.0" promptText="Asignatura" />
                   <Label layoutX="17.0" layoutY="6.0" text="Nombre de la prueba" />
                   <Label layoutX="232.0" layoutY="6.0" text="Asignatura" />
                   <ListView fx:id="lstEjes" disable="true" layoutX="652.0" layoutY="21.0" prefHeight="73.0" prefWidth="200.0" />
                   <ListView fx:id="lstHabilidad" disable="true" layoutX="864.0" layoutY="19.0" prefHeight="76.0" prefWidth="200.0" />
                   <Label layoutX="652.0" layoutY="6.0" text="Ejes temáticos" />
                   <Label layoutX="864.0" layoutY="6.0" text="Habilidades" />
-                  <ComboBox fx:id="cmbProfesor" layoutX="339.0" layoutY="72.0" prefWidth="289.0" promptText="Profesor" />
+                  <ComboBox fx:id="cmbProfesor" layoutX="339.0" layoutY="72.0" prefHeight="25.0" prefWidth="289.0" promptText="Profesor" />
                   <Label layoutX="339.0" layoutY="57.0" text="Profesor" />
                </children>
             </AnchorPane>

@@ -18,8 +18,7 @@ import cl.eos.interfaces.entity.IEntity;
 @Entity(name = "evaluacionprueba")
 @NamedQueries({
 		@NamedQuery(name = "EvaluacionPrueba.findAll", query = "SELECT e FROM evaluacionprueba e"),
-		@NamedQuery(name = "EvaluacionPrueba.findByPrueba", query = "SELECT e FROM evaluacionprueba e where e.prueba.id = :idPrueba"),
-		@NamedQuery(name = "EvaluacionPrueba.findByPruebaColegioCurso", query = "SELECT e FROM evaluacionprueba e where e.prueba.id = :idPrueba and e.colegio.id = :idColegio and e.curso.id = :idCurso")})
+		@NamedQuery(name = "EvaluacionPrueba.findByPrueba", query = "SELECT e FROM evaluacionprueba e where e.prueba.id = :idPrueba") })
 public class EvaluacionPrueba implements IEntity {
 
 	private static final long serialVersionUID = 1L;

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.input.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane styleClass="sample-page" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.EvaluarManualPruebaView">
+   <children>
+      <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="920.0">
+         <top>
+            <MenuBar prefHeight="25.0" prefWidth="912.0" BorderPane.alignment="CENTER">
+              <menus>
+                <Menu mnemonicParsing="false" text="Archivo">
+                  <items>
+                        <MenuItem fx:id="mnuGrabar" mnemonicParsing="false" text="Grabar Definición">
+                           <accelerator>
+                              <KeyCodeCombination alt="UP" code="G" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                           </accelerator>
+                        </MenuItem>
+                    <MenuItem fx:id="mnuVolver" mnemonicParsing="false" text="Volver a Pruebas" />
+                  </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Edit">
+                  <items>
+                    <MenuItem mnemonicParsing="false" text="Delete" />
+                  </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Help">
+                  <items>
+                    <MenuItem mnemonicParsing="false" text="About" />
+                  </items>
+                </Menu>
+              </menus>
+            </MenuBar>
+         </top>
+         <center>
+            <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="553.0" prefWidth="918.0" styleClass="sample-page" BorderPane.alignment="CENTER">
+               <children>
+                  <TableView fx:id="tblRespuestasPrueba" layoutX="629.0" layoutY="53.0" prefHeight="500.0" prefWidth="275.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="629.0" AnchorPane.topAnchor="53.0">
+                    <columns>
+                      <TableColumn fx:id="preguntaCol" prefWidth="35.0" resizable="false" sortable="false" text="#" />
+                      <TableColumn fx:id="respuestaCol" prefWidth="56.0" resizable="false" sortable="false" text="Res" />
+                        <TableColumn fx:id="vfCol" prefWidth="47.0" resizable="false" sortable="false" text="V/F" />
+                        <TableColumn fx:id="mentalCol" prefWidth="69.0" resizable="false" sortable="false" text="Cálculo" />
+                    </columns>
+                  </TableView>
+                  <Label layoutX="668.0" layoutY="6.0" prefHeight="17.0" prefWidth="69.0" text="Respuestas" AnchorPane.rightAnchor="181.0" AnchorPane.topAnchor="6.0" />
+                  <TextField fx:id="txtRespuestas" layoutX="631.0" layoutY="24.0" prefHeight="25.0" prefWidth="233.0" promptText="Respuestas" AnchorPane.rightAnchor="55.0" AnchorPane.topAnchor="24.0" />
+                  <Button fx:id="btnListo" layoutX="864.0" layoutY="24.0" mnemonicParsing="false" text="Listo" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="24.0" />
+                  <Label fx:id="lblCount" layoutX="728.0" layoutY="6.0" prefHeight="17.0" prefWidth="38.0" style="-fx-alignment: CENTER;" text="0/0" textAlignment="CENTER" AnchorPane.bottomAnchor="530.0" AnchorPane.rightAnchor="120.0" AnchorPane.topAnchor="6.0" />
+                  <TableView fx:id="tblListadoAlumnos" layoutX="14.0" layoutY="117.0" prefHeight="436.0" prefWidth="604.0">
+                    <columns>
+                        <TableColumn fx:id="rutCol" prefWidth="91.0" text="Rut" />
+                        <TableColumn fx:id="nombresCol" prefWidth="125.0" text="Nombres" />
+                      <TableColumn fx:id="paternoCol" prefWidth="113.0" text="Paterno" />
+                      <TableColumn fx:id="maternoCol" prefWidth="102.0" text="Materno" />
+                        <TableColumn fx:id="respuestasCol" prefWidth="143.0" text="Respuestas" />
+                    </columns>
+                  </TableView>
+                  <Label layoutX="261.0" layoutY="4.0" text="Asignatura" />
+                  <Label layoutX="11.0" layoutY="7.0" text="Nombre de la prueba" />
+                  <TextField fx:id="txtAsignatura" editable="false" layoutX="261.0" layoutY="24.0" prefHeight="25.0" prefWidth="253.0" promptText="Asignatura" AnchorPane.leftAnchor="261.0" />
+                  <TextField fx:id="txtName" editable="false" layoutX="11.0" layoutY="24.0" prefHeight="25.0" prefWidth="234.0" promptText="Nombre Prueba" AnchorPane.leftAnchor="14.0" />
+                  <Label layoutX="178.0" layoutY="54.0" text="Curso" />
+                  <Label layoutX="327.0" layoutY="54.0" text="Fecha" />
+                  <Label layoutX="11.0" layoutY="54.0" text="Colegio" />
+                  <TextField fx:id="txtFecha" editable="false" layoutX="11.0" layoutY="76.0" prefHeight="25.0" prefWidth="186.0" promptText="Fecha" AnchorPane.leftAnchor="327.0" />
+                  <TextField fx:id="txtColegio" editable="false" layoutX="171.0" layoutY="76.0" promptText="Colegio" AnchorPane.leftAnchor="14.0" />
+                  <TextField fx:id="txtCurso" editable="false" layoutX="174.0" layoutY="76.0" promptText="Curso" AnchorPane.leftAnchor="174.0" />
+               </children>
+            </AnchorPane>
+         </center>
+      </BorderPane>
+   </children>
+</AnchorPane>

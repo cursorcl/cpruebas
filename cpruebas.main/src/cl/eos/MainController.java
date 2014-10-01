@@ -52,6 +52,8 @@ public class MainController {
   @FXML
   private MenuItem mnuCerrarAplicacion;
   @FXML
+  private BreadcrumbBar breadCrumb;  
+  @FXML
   private AnchorPane pnlWindow;
   @FXML
   private Group groupRoot;
@@ -66,6 +68,7 @@ public class MainController {
   public void initialize() {
     try {
        WindowManager.getInstance().setRoot(groupRoot);
+       WindowManager.getInstance().setBreadcrumbBar(breadCrumb);
     } catch (Exception e) {
       e.printStackTrace();
     }

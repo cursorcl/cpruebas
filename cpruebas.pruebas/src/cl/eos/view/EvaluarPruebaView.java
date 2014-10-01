@@ -15,30 +15,29 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.util.Callback;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
-import cl.eos.persistence.models.Alumno;
 import cl.eos.persistence.models.Colegio;
 import cl.eos.persistence.models.Curso;
 import cl.eos.persistence.models.EjeTematico;
-import cl.eos.persistence.models.EvaluacionPrueba;
 import cl.eos.persistence.models.Habilidad;
 import cl.eos.persistence.models.Profesor;
 import cl.eos.persistence.models.Prueba;
 import cl.eos.persistence.models.PruebaRendida;
 import cl.eos.persistence.models.RespuestasEsperadasPrueba;
+<<<<<<< master
 import cl.eos.view.editablecells.EditingCellRespuestasEvaluar;
+=======
+>>>>>>> b41dfa2 Donde SFA, Cambiando la Evaluación.
 import cl.eos.view.ots.OTPruebaRendida;
 
 public class EvaluarPruebaView extends AFormView {
 
+<<<<<<< master
 	private Prueba prueba;
 	@FXML
 	private TableView<OTPruebaRendida> tblListadoPruebas;
@@ -82,21 +81,66 @@ public class EvaluarPruebaView extends AFormView {
 	private Button btnScanner;
 	@FXML
 	private Button btnManual;
+=======
+  private Prueba prueba;
+  @FXML
+  private TableView<OTPruebaRendida> tblListadoPruebas;
+  @FXML
+  private TableColumn<OTPruebaRendida, String> paternoCol;
+  @FXML
+  private TableColumn<OTPruebaRendida, String> maternoCol;
+  @FXML
+  private TableColumn<OTPruebaRendida, String> nombresCol;
+  @FXML
+  private TableColumn<OTPruebaRendida, String> respuestasCol;
+  @FXML
+  private TableColumn<OTPruebaRendida, Integer> buenasCol;
+  @FXML
+  private TableColumn<OTPruebaRendida, Integer> malasCol;
+  @FXML
+  private TableColumn<OTPruebaRendida, Integer> omitidasCol;
+  @FXML
+  private TableColumn<OTPruebaRendida, Float> notaCol;
+  @FXML
+  private TableColumn<OTPruebaRendida, Float> puntajeCol;
+  @FXML
+  private TableColumn<OTPruebaRendida, String> nivelCol;
+  @FXML
+  private ComboBox<Colegio> cmbColegios;
+  @FXML
+  private ComboBox<Curso> cmbCursos;
+  @FXML
+  private TextField txtName;
+  @FXML
+  private TextField txtAsignatura;
+  @FXML
+  private DatePicker dtpFecha;
+  @FXML
+  private ListView<EjeTematico> lstEjes;
+  @FXML
+  private ListView<Habilidad> lstHabilidad;
+  @FXML
+  private Button btnScanner;
+  @FXML
+  private Button btnManual;
 
-	public EvaluarPruebaView() {
-		setTitle("Evaluar");
-	}
+  private EvaluarManualPruebaView evaluarManualPruebaView;
+>>>>>>> b41dfa2 Donde SFA, Cambiando la Evaluación.
 
-	@FXML
-	public void initialize() {
-		cmbCursos.setDisable(true);
-		dtpFecha.setValue(LocalDate.now());
-		cmbColegios.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				Colegio colegio = cmbColegios.getSelectionModel()
-						.getSelectedItem();
+  public EvaluarPruebaView() {
+    setTitle("Evaluar");
+  }
 
+  @FXML
+  public void initialize() {
+    cmbCursos.setDisable(true);
+    dtpFecha.setValue(LocalDate.now());
+    cmbColegios.setOnAction(new EventHandler<ActionEvent>() {
+      @Override
+      public void handle(ActionEvent event) {
+        Colegio colegio = cmbColegios.getSelectionModel().getSelectedItem();
+
+<<<<<<< master
 				Map<String, Object> parameters = new HashMap<String, Object>();
 				parameters.put("tcursoId", prueba.getCurso().getId());
 				parameters.put("colegioId", colegio.getId());
@@ -107,41 +151,44 @@ public class EvaluarPruebaView extends AFormView {
 		definirTablaListadoPruebas();
 
 	}
+=======
+        Map<String, Object> parameters = new HashMap<String, Object>();
+        parameters.put("tcursoId", prueba.getCurso().getId());
+        parameters.put("colegioId", colegio.getId());
+        controller.find("Curso.findByTipoColegio", parameters);
+      }
+    });
+    btnScanner.setOnAction(new EventHandler<ActionEvent>() {
+      @Override
+      public void handle(ActionEvent event) {
+        // ProcesadorPrueba procesador = new ProcesadorPrueba();
 
-	private void definirTablaListadoPruebas() {
-		paternoCol
-				.setCellValueFactory(new PropertyValueFactory<OTPruebaRendida, String>(
-						"paterno"));
-		maternoCol
-				.setCellValueFactory(new PropertyValueFactory<OTPruebaRendida, String>(
-						"materno"));
-		nombresCol
-				.setCellValueFactory(new PropertyValueFactory<OTPruebaRendida, String>(
-						"nombres"));
-		buenasCol
-				.setCellValueFactory(new PropertyValueFactory<OTPruebaRendida, Integer>(
-						"buenas"));
-		malasCol.setCellValueFactory(new PropertyValueFactory<OTPruebaRendida, Integer>(
-				"malas"));
-		omitidasCol
-				.setCellValueFactory(new PropertyValueFactory<OTPruebaRendida, Integer>(
-						"omitidas"));
-		notaCol.setCellValueFactory(new PropertyValueFactory<OTPruebaRendida, Float>(
-				"nota"));
-		puntajeCol
-				.setCellValueFactory(new PropertyValueFactory<OTPruebaRendida, Float>(
-						"puntaje"));
-		nivelCol.setCellValueFactory(new PropertyValueFactory<OTPruebaRendida, String>(
-				"nivel"));
-		tblListadoPruebas.setEditable(true);
+      }
+    });
 
-		respuestasCol
-				.setCellValueFactory(new PropertyValueFactory<OTPruebaRendida, String>(
-						"respuestas"));
-		respuestasCol.setEditable(true);
-		respuestasCol
-				.setCellFactory(new Callback<TableColumn<OTPruebaRendida, String>, TableCell<OTPruebaRendida, String>>() {
+    btnManual.setOnAction(new EventHandler<ActionEvent>() {
+      @Override
+      public void handle(ActionEvent event) {
+        if (evaluarManualPruebaView == null) {
+          evaluarManualPruebaView =
+              (EvaluarManualPruebaView) show("/cl/eos/view/EvaluarManualPrueba.fxml");
+        } else {
+          show(evaluarManualPruebaView);
+        }
+        if (prueba != null) {
+          evaluarManualPruebaView.setFecha(dtpFecha.getValue().toString());
+          controller.findById(Prueba.class, prueba.getId());
+          controller.findById(Curso.class, cmbCursos.getValue().getId());
+          controller.findById(Curso.class, cmbColegios.getValue().getId());
+>>>>>>> b41dfa2 Donde SFA, Cambiando la Evaluación.
 
+
+        }
+      }
+    });
+  }
+
+<<<<<<< master
 					@Override
 					public TableCell<OTPruebaRendida, String> call(
 							TableColumn<OTPruebaRendida, String> param) {
@@ -182,21 +229,33 @@ public class EvaluarPruebaView extends AFormView {
 				pRendida.setMalas(pRendida.getMalas() + 1);
 			}
 		}
+=======
+  @Override
+  public void onFound(IEntity entity) {
+    if (entity instanceof Prueba) {
+      prueba = (Prueba) entity;
+      txtName.setText(prueba.getName());
+      txtAsignatura.setText(prueba.getAsignatura().getName());
+      List<RespuestasEsperadasPrueba> respuestas = prueba.getRespuestas();
+      ObservableList<EjeTematico> lEjes = FXCollections.observableArrayList();
+      ObservableList<Habilidad> lHabilidad = FXCollections.observableArrayList();
+>>>>>>> b41dfa2 Donde SFA, Cambiando la Evaluación.
 
-	}
+      for (RespuestasEsperadasPrueba respuesta : respuestas) {
+        if (!lEjes.contains(respuesta.getEjeTematico())) {
+          lEjes.add(respuesta.getEjeTematico());
+        }
+        if (!lHabilidad.contains(respuesta.getHabilidad())) {
+          lHabilidad.add(respuesta.getHabilidad());
+        }
+      }
+      lstEjes.setItems(lEjes);
+      lstHabilidad.setItems(lHabilidad);
+    }
 
-	@Override
-	public void onFound(IEntity entity) {
-		if (entity instanceof Prueba) {
-			prueba = (Prueba) entity;
-			txtName.setText(prueba.getName());
-			txtAsignatura.setText(prueba.getAsignatura().getName());
-			List<RespuestasEsperadasPrueba> respuestas = prueba.getRespuestas();
-			ObservableList<EjeTematico> lEjes = FXCollections
-					.observableArrayList();
-			ObservableList<Habilidad> lHabilidad = FXCollections
-					.observableArrayList();
+  }
 
+<<<<<<< master
 			for (RespuestasEsperadasPrueba respuesta : respuestas) {
 				if (!lEjes.contains(respuesta.getEjeTematico())) {
 					lEjes.add(respuesta.getEjeTematico());
@@ -239,6 +298,29 @@ public class EvaluarPruebaView extends AFormView {
 			}
 		}
 	}
+=======
+  @Override
+  public void onDataArrived(List<Object> list) {
+    if (list != null && !list.isEmpty()) {
+      Object entity = list.get(0);
+      if (entity instanceof Colegio) {
+        ObservableList<Colegio> oList = FXCollections.observableArrayList();
+        for (Object iEntity : list) {
+          oList.add((Colegio) iEntity);
+        }
+        cmbColegios.setItems(oList);
+      } else if (entity instanceof Curso) {
+        ObservableList<Curso> oList = FXCollections.observableArrayList();
+        for (Object iEntity : list) {
+          oList.add((Curso) iEntity);
+        }
+        cmbCursos.setItems(oList);
+        cmbCursos.setDisable(false);
+      }
+
+    }
+  }
+>>>>>>> b41dfa2 Donde SFA, Cambiando la Evaluación.
 
 	private class EHandlerCmbCurso implements EventHandler<ActionEvent> {
 		@Override

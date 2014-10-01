@@ -15,6 +15,6 @@
 	<classpathentry kind="lib" path="../jars/jfxtras-window.jar"/>
 	<classpathentry kind="lib" path="../jars/controlsfx-8.0.6_20.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.detection"/>
-	<classpathentry kind="lib" path="../jars/pdfbox-1.8.7.jar"/>
+	<classpathentry kind="lib" path="O:/cpruebas/jars/pdfbox-1.8.7.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
