@@ -25,10 +25,10 @@ public class Main extends Application {
 //			// primaryStage.setFullScreen(true);
 //			primaryStage.show();
 
-			URL url = getClass().getResource("Main.fxml");
-			FXMLLoader fxmlLoader = new FXMLLoader();
+			
 			try {
-				StackPane root = (StackPane) fxmlLoader.load(url.openStream());
+			  FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Main.fxml"));
+				StackPane root = (StackPane) fxmlLoader.load();
 				MainController controller = (MainController) fxmlLoader
 						.getController();
 				controller.setStage(primaryStage);
