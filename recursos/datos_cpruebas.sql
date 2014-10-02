@@ -38,7 +38,7 @@ CREATE TABLE `alumno` (
   KEY `FK_ALUMNO_COLEGIO_ID` (`COLEGIO_ID`),
   CONSTRAINT `FK_ALUMNO_COLEGIO_ID` FOREIGN KEY (`COLEGIO_ID`) REFERENCES `colegio` (`ID`),
   CONSTRAINT `FK_ALUMNO_CURSO_ID` FOREIGN KEY (`CURSO_ID`) REFERENCES `curso` (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -47,7 +47,7 @@ CREATE TABLE `alumno` (
 
 LOCK TABLES `alumno` WRITE;
 /*!40000 ALTER TABLE `alumno` DISABLE KEYS */;
-INSERT INTO `alumno` VALUES (1,'Osorio','Verdugo','10613781-1','Marinero Fuentealba 614','Eliecer Enrique',1,1),(2,'Osorio','Espinoza','21021606-5','Progreso 1000 casa 10','Viviana',1,1),(3,'Osorio','Espinoza','21652190-0','Progreso 1000 casa 10','Eliecer',1,1),(4,'Osorio','Espinoza','22148346-4','Progreso 1000 casa 10','Evelyn',1,1);
+INSERT INTO `alumno` VALUES (1,'Osorio','Verdugo','10613781-1','Mi casa','Eliecer Enrique',1,1),(2,'Far√≠as','Zavala','12623503-8','Su Casa','Susan Angela',1,1);
 /*!40000 ALTER TABLE `alumno` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -62,7 +62,7 @@ CREATE TABLE `asignatura` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `NAME` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -71,8 +71,32 @@ CREATE TABLE `asignatura` (
 
 LOCK TABLES `asignatura` WRITE;
 /*!40000 ALTER TABLE `asignatura` DISABLE KEYS */;
-INSERT INTO `asignatura` VALUES (1,'Lenguaje y Comunicaci√≥n'),(2,'Matem√°ticas');
+INSERT INTO `asignatura` VALUES (1,'Lenguaje y Comunicaci√≥n'),(2,'Matem√°ticas'),(3,'Sociedad y Cultura'),(4,'Naturaleza');
 /*!40000 ALTER TABLE `asignatura` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `ciclo`
+--
+
+DROP TABLE IF EXISTS `ciclo`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ciclo` (
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `NAME` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ciclo`
+--
+
+LOCK TABLES `ciclo` WRITE;
+/*!40000 ALTER TABLE `ciclo` DISABLE KEYS */;
+INSERT INTO `ciclo` VALUES (1,'Ciclo 1'),(2,'Ciclo 2'),(3,'Ciclo 3');
+/*!40000 ALTER TABLE `ciclo` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -88,7 +112,7 @@ CREATE TABLE `colegio` (
   `image` blob,
   `DIRECCION` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -97,7 +121,7 @@ CREATE TABLE `colegio` (
 
 LOCK TABLES `colegio` WRITE;
 /*!40000 ALTER TABLE `colegio` DISABLE KEYS */;
-INSERT INTO `colegio` VALUES (1,'Colegio 1','âPNG\r\n\Z\n\0\0\0\rIHDR\0\0\0\0\0\0\0\0\0‡w=¯\0\0KIDATx⁄≈÷kLõUpñ(Jπ¥–2Ç‡∆DÓ-êÇ_ÿ ⁄““ñ˜•@◊Æ•ÖR\n¥ÖruÃ9G¢∆ò,Ÿ5ŒòI6ñÅ‹±‹-Ü Ö.ŸGçYÃ‘òÏì˙˜P¬Õ1¯aorÚ~:œÔ<Á<Ôs^üó˝–4Ì[@ç	e;Ø£≠πZ™\\î/WäÑB°ﬂ±Ü≤.O£˘$}Tﬂı§bú	„‘ITL˙¡‡BYWÃcıÕÃ~e•∏X*ï2è∂ÍK‚Ìg¸)ì”6˜I‘-≥`]CÕ<fï”!0:®òˆ!ÍY˝4-„*xQ•8OˇuÙØ÷•W–∞ Ö}ô€\"µﬂá¡<ÀÜ……B≈x(Ùé`hÉ†s¢¸[ËæJ|TT*=w 5˘ô˙ﬁË\'uÏ+ˇ‘/qQøƒ!@∏®ﬁ&Ba	Ån(Í&T›Å0L‰v“#Z&Àÿ7¯∆>joÒ\\6∑ÔÆ‡/4Ω∏àí{Ë\'|†˛8ª_,á>î4Â\ZÕ≥æhl>–Ô∫°ºÄ“n?ËáÿP\ZÚ5{ÇK$í\0Ìó<W›\nıÓ„P∑˝°Òf1HJ8hêïä3*OÌ´·ˇ	~t@’s⁄;qøJ•i€\0U+(6M3ˆŸû#\0ù–˛Pv˙B◊À˝´¢§pßzör,ÊÔ^%áÀ˘ﬂ@—ùì–\r0Aƒ;4ÊX≠sl¥xbP∑∂pø\0Ë€ä;vA†Ù\"„P#PY\\\\\\»C£;j/‚8∞<P˜1P⁄ÂÔ=É¢Å»ıpˇ¶U˘ m@°fëO7Äk´|4-od¬&#¸π@Ÿ⁄!&É\\TúÜ©Ô,å]düÇ∂#Ó±B¢»⁄©\"ô,DÛyÍÉ∂µX¥Øe‡Ω’4\\^y\rÓHo6÷E6ÈC,“*BQÈ&@L„ë∞åΩ€X,ﬂ$†z ¶ÓxTM≤†˙0{Lí#	€Û-(mπñ⁄Y⁄¶yÅÎkÈ‰Õ«O\"Z‹±∞/ê¨Ê»ò=ÉÜôx4N\'¡>ôÎhjá„aÓãGıp, 9(TãÃœˆ!°˛î7ﬂÍâB˚èõYlA◊<ixgâ`<º=œCÛl\n\ZùI®üH‹Ü‚Q3HVÔ$’Ù˛[ì\n°\"jˇfwQö´ªÛ{€˙iÇ§o#Ôz¯‡°m!≠Û)HﬁF`u$†fÜÕ≠îü(ôLppª6HJ¥˜^ˇ≠y9íTÌÎ;xÅπT4ª6Ädÿ\'íPÁåÉyÜ	Õ…?Sîº¯pNâÙÇÍf˙|’T(ZW¢qu=WWRqÂáT\\^HAÀ|\"\ZÁŒ¬2√0•dO”r˘2ıƒ°oµÇÇÇ◊ä™Ñv’çå∫Æò?ç£·§BHôN∞Q>Ã¡•ªg˛(˘(”EïâÎ\"EÃÒ/}r¯\nÖÙ•(S^e6Qö|É\\.?Ø»SúzÈ%ˇ7Ò5öÄAÏ^\0\0\0\0IENDÆB`Ç','Camino a casa');
+INSERT INTO `colegio` VALUES (1,'Colegio 1','âPNG\r\n\Z\n\0\0\0\rIHDR\0\0\0\0\0\0\0\0\0È=M¢\0\0÷IDATx⁄c` ËöÈÈ9Vhi)mbfΩàˇßdß·UliihmÁ¸\Zàˇ[Ÿ:˝œ.™…ƒ™–¡¡Å«∆ﬁe¶£ã◊w_0vvÛ˘_PZá©¡“÷…®¶õg¿oø–ˇ~Aë`bóV6#4ÑÜÜ2€9∏Uªz¯˝ÚÚ\r˘˚?<:˘dl*òè˚_Y◊—`mÌ\"Á‰Íu¿›+@HÙˇ∞®§ˇqIŸˇì“˛\'g˛OH…˝ìÚø¶±7ìhj8–‘è +C\"‚ˇG«ßÉfÊïˇœ)¨˛ü]Pı?-ªl@]s&Cai}ïp‘œêà∞ H2Ø∏ˆQy”ˇí ñˇÖeç`MIi˘ˇõ;&e2¸ˇˇﬂ¯Ê≠{3 \Zü¶fÉÉV÷uÇqYu€ˇ¸í:`5LÅ¯®I¯◊Ø_ÖÛñ¨>4Ò_yM–Ω=`\\Q€	Œ∞Õm]S°‘ƒƒn/_[ﬁ‘1Ò=HqmSÔˇ™˙Æˇ≈Õ`?uÙN«å†&˘œü?7œûø¸\nH1»Y \rY˘ïÿ5@5±q‰¡#\'∂\05¸9	ß\rh\Zıû>}9µµsÚcPÄ‘\0’ƒƒŸsÆ<‹ﬁ3-ÖÿÏ\0“ËƒÍ\0	hœ e_\0\0\0\0IENDÆB`Ç','Direcci√≥n 1'),(2,'Colegio 2','âPNG\r\n\Z\n\0\0\0\rIHDR\0\0\0\r\0\0\0\0\0\0ˇ&ú\0\0ÃIDATx⁄c`†åLååq%ISMso}HD¸ﬂ‡∏R¢5’5˜Nj¯¬!aq´CCCy∞*\rM–)\0*|”\0◊Cchh¨=P‚{HD¬üÚöé\'ı-˝/a\Z\"bR˛Ï⁄{hÁˇˇˇ9ë4ÑrÜF&æåéOˇuˆ¸ÂS@…¶]˚œiHJœˇ~Ì∆≠√@13†:∂†àÿd∞¶Ë∏¥xêÇe´6^JjÉƒ&LõSX÷¯˛Õ€˜kÄbJ ±∞à§lê:†7≤Ú+∂\0m˙˚ˆÌ€PòÌ7oﬁ5˝Ò„«d†^òÿãØ¬Å^¯óñS2ô!∑®ÊJRZ˛w†vòê˚ÅòŸﬂ ±‘¨¢Øy≈uG j:/Él˘çPTƒ%e≠¨Î<…0o—™U ∑ÜE\'W‚”\0ÚH›‘YãW3|¸¯—+3Ø¸(‡J:†êãåM9ùêí˚„˘ÛW! ∑≤‹∫}o5H\0ötzÅ¶J@3É‚04\"˛,(vÔ;|_@ÜÙ´◊o6µvN~Üî¬ÿIÈÔOüΩx®ŒÇ-tÄ∏¸⁄ç€ß.]sß•sÚ›)3=‹πÁ¿ïü?. È‚Ù0PRà#Ä∏àSÅÿ=¯÷˘#)»ØÈ}\0\0\0\0IENDÆB`Ç','Direcci√≥n 2');
 /*!40000 ALTER TABLE `colegio` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -111,11 +135,17 @@ DROP TABLE IF EXISTS `curso`;
 CREATE TABLE `curso` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `NAME` varchar(255) DEFAULT NULL,
-  `NIVEL_ID` bigint(20) DEFAULT NULL,
+  `TIPOCURSO_ID` bigint(20) DEFAULT NULL,
+  `CICLO_ID` bigint(20) DEFAULT NULL,
+  `COLEGIO_ID` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`ID`),
-  KEY `FK_CURSO_NIVEL_ID` (`NIVEL_ID`),
-  CONSTRAINT `FK_CURSO_NIVEL_ID` FOREIGN KEY (`NIVEL_ID`) REFERENCES `nivel` (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+  KEY `FK_CURSO_COLEGIO_ID` (`COLEGIO_ID`),
+  KEY `FK_CURSO_CICLO_ID` (`CICLO_ID`),
+  KEY `FK_CURSO_TIPOCURSO_ID` (`TIPOCURSO_ID`),
+  CONSTRAINT `FK_CURSO_CICLO_ID` FOREIGN KEY (`CICLO_ID`) REFERENCES `ciclo` (`ID`),
+  CONSTRAINT `FK_CURSO_COLEGIO_ID` FOREIGN KEY (`COLEGIO_ID`) REFERENCES `colegio` (`ID`),
+  CONSTRAINT `FK_CURSO_TIPOCURSO_ID` FOREIGN KEY (`TIPOCURSO_ID`) REFERENCES `tipocurso` (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -124,7 +154,7 @@ CREATE TABLE `curso` (
 
 LOCK TABLES `curso` WRITE;
 /*!40000 ALTER TABLE `curso` DISABLE KEYS */;
-INSERT INTO `curso` VALUES (1,'Primero A',1),(2,'Primero B',1);
+INSERT INTO `curso` VALUES (1,'Primero A',1,1,1),(2,'Primero B',1,1,1),(3,'Segundo A',2,1,1);
 /*!40000 ALTER TABLE `curso` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -169,9 +199,9 @@ CREATE TABLE `ejetematico` (
   PRIMARY KEY (`ID`),
   KEY `FK_EJETEMATICO_ASIGNATURA_ID` (`ASIGNATURA_ID`),
   KEY `FK_EJETEMATICO_TIPOPRUEBA_ID` (`TIPOPRUEBA_ID`),
-  CONSTRAINT `FK_EJETEMATICO_TIPOPRUEBA_ID` FOREIGN KEY (`TIPOPRUEBA_ID`) REFERENCES `tipoprueba` (`ID`),
-  CONSTRAINT `FK_EJETEMATICO_ASIGNATURA_ID` FOREIGN KEY (`ASIGNATURA_ID`) REFERENCES `asignatura` (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+  CONSTRAINT `FK_EJETEMATICO_ASIGNATURA_ID` FOREIGN KEY (`ASIGNATURA_ID`) REFERENCES `asignatura` (`ID`),
+  CONSTRAINT `FK_EJETEMATICO_TIPOPRUEBA_ID` FOREIGN KEY (`TIPOPRUEBA_ID`) REFERENCES `tipoprueba` (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -180,8 +210,33 @@ CREATE TABLE `ejetematico` (
 
 LOCK TABLES `ejetematico` WRITE;
 /*!40000 ALTER TABLE `ejetematico` DISABLE KEYS */;
-INSERT INTO `ejetematico` VALUES (1,'Eje tem√°tico 1',1,1),(2,'Eje tem√°tico 2',1,1);
+INSERT INTO `ejetematico` VALUES (1,'Eje tem√°tico 1',1,1),(2,'Eje tem√°tico 2',1,1),(3,'Eje tem√°tico 3',1,1),(4,'Eje tem√°tico 4',2,1),(5,'Eje tem√°tico 5',2,1);
 /*!40000 ALTER TABLE `ejetematico` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `evaluacionejetematico`
+--
+
+DROP TABLE IF EXISTS `evaluacionejetematico`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `evaluacionejetematico` (
+  `ID` bigint(20) NOT NULL,
+  `NAME` varchar(255) DEFAULT NULL,
+  `NRORANGOMIN` float DEFAULT NULL,
+  `NRORANGOMAX` float DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `evaluacionejetematico`
+--
+
+LOCK TABLES `evaluacionejetematico` WRITE;
+/*!40000 ALTER TABLE `evaluacionejetematico` DISABLE KEYS */;
+/*!40000 ALTER TABLE `evaluacionejetematico` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -201,12 +256,12 @@ CREATE TABLE `evaluacionprueba` (
   `PRUEBA_ID` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`ID`),
   KEY `FK_EVALUACIONPRUEBA_COLEGIO_ID` (`COLEGIO_ID`),
-  KEY `FK_EVALUACIONPRUEBA_CURSO_ID` (`CURSO_ID`),
   KEY `FK_EVALUACIONPRUEBA_PRUEBA_ID` (`PRUEBA_ID`),
+  KEY `FK_EVALUACIONPRUEBA_CURSO_ID` (`CURSO_ID`),
   KEY `FK_EVALUACIONPRUEBA_PROFESOR_ID` (`PROFESOR_ID`),
-  CONSTRAINT `FK_EVALUACIONPRUEBA_PROFESOR_ID` FOREIGN KEY (`PROFESOR_ID`) REFERENCES `profesor` (`ID`),
   CONSTRAINT `FK_EVALUACIONPRUEBA_COLEGIO_ID` FOREIGN KEY (`COLEGIO_ID`) REFERENCES `colegio` (`ID`),
   CONSTRAINT `FK_EVALUACIONPRUEBA_CURSO_ID` FOREIGN KEY (`CURSO_ID`) REFERENCES `curso` (`ID`),
+  CONSTRAINT `FK_EVALUACIONPRUEBA_PROFESOR_ID` FOREIGN KEY (`PROFESOR_ID`) REFERENCES `profesor` (`ID`),
   CONSTRAINT `FK_EVALUACIONPRUEBA_PRUEBA_ID` FOREIGN KEY (`PRUEBA_ID`) REFERENCES `prueba` (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -262,7 +317,7 @@ CREATE TABLE `formas` (
   PRIMARY KEY (`ID`),
   KEY `FK_FORMAS_PRUEBA_ID` (`PRUEBA_ID`),
   CONSTRAINT `FK_FORMAS_PRUEBA_ID` FOREIGN KEY (`PRUEBA_ID`) REFERENCES `prueba` (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -271,6 +326,7 @@ CREATE TABLE `formas` (
 
 LOCK TABLES `formas` WRITE;
 /*!40000 ALTER TABLE `formas` DISABLE KEYS */;
+INSERT INTO `formas` VALUES (2,1,'1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30','Forma 1',1);
 /*!40000 ALTER TABLE `formas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -286,7 +342,7 @@ CREATE TABLE `habilidad` (
   `NAME` varchar(255) DEFAULT NULL,
   `DESCRIPCION` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -295,32 +351,8 @@ CREATE TABLE `habilidad` (
 
 LOCK TABLES `habilidad` WRITE;
 /*!40000 ALTER TABLE `habilidad` DISABLE KEYS */;
-INSERT INTO `habilidad` VALUES (1,'Habilidad 1','La habilidad de leer'),(2,'Habilidad 2','La habilidad de escribir'),(3,'Habilidad 3','La habilidad de contar');
+INSERT INTO `habilidad` VALUES (1,'Habilidad 1','Habilidad 1'),(2,'Habilidad 2','Habilidad 2'),(3,'Habilidad 3','Habilidad 3'),(4,'Habilidad 4','Habilidad 4');
 /*!40000 ALTER TABLE `habilidad` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `nivel`
---
-
-DROP TABLE IF EXISTS `nivel`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `nivel` (
-  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
-  `NAME` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `nivel`
---
-
-LOCK TABLES `nivel` WRITE;
-/*!40000 ALTER TABLE `nivel` DISABLE KEYS */;
-INSERT INTO `nivel` VALUES (1,'Ciclo 1'),(2,'Ciclo 2');
-/*!40000 ALTER TABLE `nivel` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -344,7 +376,7 @@ CREATE TABLE `nivelevaluacion` (
 
 LOCK TABLES `nivelevaluacion` WRITE;
 /*!40000 ALTER TABLE `nivelevaluacion` DISABLE KEYS */;
-INSERT INTO `nivelevaluacion` VALUES (1,'Insuficiete/Suficiente/Avanzado',3);
+INSERT INTO `nivelevaluacion` VALUES (1,'Alto / Medio Alto / Medio Bajo / Bajo',4);
 /*!40000 ALTER TABLE `nivelevaluacion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -360,8 +392,8 @@ CREATE TABLE `nivelevaluacion_rangoevaluacion` (
   `rangos_ID` bigint(20) NOT NULL,
   PRIMARY KEY (`nivelevaluacion_ID`,`rangos_ID`),
   KEY `FK_NIVELEVALUACION_RANGOEVALUACION_rangos_ID` (`rangos_ID`),
-  CONSTRAINT `NIVELEVALUACION_RANGOEVALUACION_nivelevaluacion_ID` FOREIGN KEY (`nivelevaluacion_ID`) REFERENCES `nivelevaluacion` (`ID`),
-  CONSTRAINT `FK_NIVELEVALUACION_RANGOEVALUACION_rangos_ID` FOREIGN KEY (`rangos_ID`) REFERENCES `rangoevaluacion` (`ID`)
+  CONSTRAINT `FK_NIVELEVALUACION_RANGOEVALUACION_rangos_ID` FOREIGN KEY (`rangos_ID`) REFERENCES `rangoevaluacion` (`ID`),
+  CONSTRAINT `NIVELEVALUACION_RANGOEVALUACION_nivelevaluacion_ID` FOREIGN KEY (`nivelevaluacion_ID`) REFERENCES `nivelevaluacion` (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -371,7 +403,7 @@ CREATE TABLE `nivelevaluacion_rangoevaluacion` (
 
 LOCK TABLES `nivelevaluacion_rangoevaluacion` WRITE;
 /*!40000 ALTER TABLE `nivelevaluacion_rangoevaluacion` DISABLE KEYS */;
-INSERT INTO `nivelevaluacion_rangoevaluacion` VALUES (1,1),(1,2),(1,3);
+INSERT INTO `nivelevaluacion_rangoevaluacion` VALUES (1,1),(1,2),(1,3),(1,4);
 /*!40000 ALTER TABLE `nivelevaluacion_rangoevaluacion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -389,7 +421,7 @@ CREATE TABLE `profesor` (
   `RUT` varchar(255) DEFAULT NULL,
   `MATERNO` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -398,7 +430,7 @@ CREATE TABLE `profesor` (
 
 LOCK TABLES `profesor` WRITE;
 /*!40000 ALTER TABLE `profesor` DISABLE KEYS */;
-INSERT INTO `profesor` VALUES (1,'Eliecer Enrique','Osorio','10613781-1','Verdugo');
+INSERT INTO `profesor` VALUES (1,'Eliecer Enrique','Osorio','10613781-1','Verdugo'),(2,'Susan Angela','Far√≠as','12623503-8','Zavala');
 /*!40000 ALTER TABLE `profesor` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -411,25 +443,27 @@ DROP TABLE IF EXISTS `prueba`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `prueba` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
-  `PUNTAJEBASE` int(11) DEFAULT NULL,
-  `NROPREGUNTAS` int(11) DEFAULT NULL,
-  `NROFORMAS` int(11) DEFAULT NULL,
-  `FECHA` bigint(20) DEFAULT NULL,
+  `EXIGENCIA` int(11) DEFAULT NULL,
   `ALTERNATIVAS` int(11) DEFAULT NULL,
+  `FECHA` bigint(20) DEFAULT NULL,
+  `PUNTAJEBASE` int(11) DEFAULT NULL,
+  `NROFORMAS` int(11) DEFAULT NULL,
+  `RESPONSES` varchar(255) DEFAULT NULL,
+  `NROPREGUNTAS` int(11) DEFAULT NULL,
   `NAME` varchar(100) DEFAULT NULL,
   `ASIGNATURA_ID` bigint(20) DEFAULT NULL,
-  `TIPOPRUEBA_ID` bigint(20) DEFAULT NULL,
   `CURSO_ID` bigint(20) DEFAULT NULL,
-  `NIVELEVALUACION_ID` bigint(20) DEFAULT NULL,
+  `TIPOPRUEBA_ID` bigint(20) DEFAULT NULL,
   `PROFESOR_ID` bigint(20) DEFAULT NULL,
+  `NIVELEVALUACION_ID` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`ID`),
   KEY `FK_PRUEBA_ASIGNATURA_ID` (`ASIGNATURA_ID`),
   KEY `FK_PRUEBA_NIVELEVALUACION_ID` (`NIVELEVALUACION_ID`),
   KEY `FK_PRUEBA_TIPOPRUEBA_ID` (`TIPOPRUEBA_ID`),
   KEY `FK_PRUEBA_PROFESOR_ID` (`PROFESOR_ID`),
   KEY `FK_PRUEBA_CURSO_ID` (`CURSO_ID`),
-  CONSTRAINT `FK_PRUEBA_CURSO_ID` FOREIGN KEY (`CURSO_ID`) REFERENCES `tipocurso` (`ID`),
   CONSTRAINT `FK_PRUEBA_ASIGNATURA_ID` FOREIGN KEY (`ASIGNATURA_ID`) REFERENCES `asignatura` (`ID`),
+  CONSTRAINT `FK_PRUEBA_CURSO_ID` FOREIGN KEY (`CURSO_ID`) REFERENCES `tipocurso` (`ID`),
   CONSTRAINT `FK_PRUEBA_NIVELEVALUACION_ID` FOREIGN KEY (`NIVELEVALUACION_ID`) REFERENCES `nivelevaluacion` (`ID`),
   CONSTRAINT `FK_PRUEBA_PROFESOR_ID` FOREIGN KEY (`PROFESOR_ID`) REFERENCES `profesor` (`ID`),
   CONSTRAINT `FK_PRUEBA_TIPOPRUEBA_ID` FOREIGN KEY (`TIPOPRUEBA_ID`) REFERENCES `tipoprueba` (`ID`)
@@ -442,7 +476,7 @@ CREATE TABLE `prueba` (
 
 LOCK TABLES `prueba` WRITE;
 /*!40000 ALTER TABLE `prueba` DISABLE KEYS */;
-INSERT INTO `prueba` VALUES (1,1,30,3,16332,5,'Prueba 1',1,1,1,1,1);
+INSERT INTO `prueba` VALUES (1,NULL,5,16332,1,1,NULL,30,'Prueba 1',1,1,1,1,1);
 /*!40000 ALTER TABLE `prueba` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -492,7 +526,7 @@ CREATE TABLE `rangoevaluacion` (
   `NAME` varchar(255) DEFAULT NULL,
   `MAXIMO` float DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -501,7 +535,7 @@ CREATE TABLE `rangoevaluacion` (
 
 LOCK TABLES `rangoevaluacion` WRITE;
 /*!40000 ALTER TABLE `rangoevaluacion` DISABLE KEYS */;
-INSERT INTO `rangoevaluacion` VALUES (1,'INS',1,'Insuficiente',3),(2,'SUF',3.1,'Suficiente',5),(3,'AV',5.1,'Avanzado',7);
+INSERT INTO `rangoevaluacion` VALUES (1,'BA',0,'Bajo',25),(2,'MB',25,'Medio Bajo',50),(3,'MA',50,'Medio Alto',75),(4,'AL',75,'Alto',100);
 /*!40000 ALTER TABLE `rangoevaluacion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -526,10 +560,10 @@ CREATE TABLE `respuestasesperadasprueba` (
   KEY `FK_RESPUESTASESPERADASPRUEBA_HABILIDAD_ID` (`HABILIDAD_ID`),
   KEY `FK_RESPUESTASESPERADASPRUEBA_EJETEMATICO_ID` (`EJETEMATICO_ID`),
   KEY `FK_RESPUESTASESPERADASPRUEBA_PRUEBA_ID` (`PRUEBA_ID`),
-  CONSTRAINT `FK_RESPUESTASESPERADASPRUEBA_PRUEBA_ID` FOREIGN KEY (`PRUEBA_ID`) REFERENCES `prueba` (`ID`),
   CONSTRAINT `FK_RESPUESTASESPERADASPRUEBA_EJETEMATICO_ID` FOREIGN KEY (`EJETEMATICO_ID`) REFERENCES `ejetematico` (`ID`),
-  CONSTRAINT `FK_RESPUESTASESPERADASPRUEBA_HABILIDAD_ID` FOREIGN KEY (`HABILIDAD_ID`) REFERENCES `habilidad` (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  CONSTRAINT `FK_RESPUESTASESPERADASPRUEBA_HABILIDAD_ID` FOREIGN KEY (`HABILIDAD_ID`) REFERENCES `habilidad` (`ID`),
+  CONSTRAINT `FK_RESPUESTASESPERADASPRUEBA_PRUEBA_ID` FOREIGN KEY (`PRUEBA_ID`) REFERENCES `prueba` (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -538,6 +572,7 @@ CREATE TABLE `respuestasesperadasprueba` (
 
 LOCK TABLES `respuestasesperadasprueba` WRITE;
 /*!40000 ALTER TABLE `respuestasesperadasprueba` DISABLE KEYS */;
+INSERT INTO `respuestasesperadasprueba` VALUES (31,5,'5',0,'E',0,1,2,1),(32,24,'24',0,'D',0,1,2,1),(33,28,'28',0,'C',0,1,2,1),(34,3,'3',0,'C',0,1,2,1),(35,12,'12',0,'B',0,1,2,1),(36,25,'25',0,'E',0,1,2,1),(37,16,'16',0,'A',0,1,2,1),(38,17,'17',0,'B',0,1,2,1),(39,2,'2',0,'B',0,1,1,3),(40,18,'18',0,'C',0,1,2,1),(41,20,'20',0,'E',0,1,2,1),(42,22,'22',0,'B',0,1,2,1),(43,4,'4',0,'D',0,1,2,1),(44,26,'26',0,'A',0,1,2,1),(45,15,'15',0,'E',0,1,2,1),(46,23,'23',0,'C',0,1,2,1),(47,29,'29',0,'D',0,1,2,1),(48,8,'8',0,'C',0,1,2,1),(49,10,'10',0,'E',0,1,2,1),(50,7,'7',0,'B',0,1,2,1),(51,1,'1',0,'A',0,1,4,2),(52,14,'14',0,'D',0,1,2,1),(53,6,'6',0,'A',0,1,2,1),(54,27,'27',0,'B',0,1,2,1),(55,21,'21',0,'A',0,1,2,1),(56,11,'11',0,'A',0,1,2,2),(57,19,'19',0,'D',0,1,2,1),(58,13,'13',0,'C',0,1,2,1),(59,9,'9',0,'D',0,1,2,1),(60,30,'30',0,'E',0,1,2,1);
 /*!40000 ALTER TABLE `respuestasesperadasprueba` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -552,7 +587,7 @@ CREATE TABLE `tipocurso` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `NAME` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -561,7 +596,7 @@ CREATE TABLE `tipocurso` (
 
 LOCK TABLES `tipocurso` WRITE;
 /*!40000 ALTER TABLE `tipocurso` DISABLE KEYS */;
-INSERT INTO `tipocurso` VALUES (1,'Primero'),(2,'Segundo');
+INSERT INTO `tipocurso` VALUES (1,'Primero B√°sico'),(2,'Segundo B√°sico'),(3,'Tercero B√°sico'),(4,'Cuarto B√°sico'),(5,'Quinto B√°sico'),(6,'Sexto B√°sico'),(7,'Septimo B√°sico'),(8,'Octavo B√°sico');
 /*!40000 ALTER TABLE `tipocurso` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -576,7 +611,7 @@ CREATE TABLE `tipoprueba` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `NAME` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -585,7 +620,7 @@ CREATE TABLE `tipoprueba` (
 
 LOCK TABLES `tipoprueba` WRITE;
 /*!40000 ALTER TABLE `tipoprueba` DISABLE KEYS */;
-INSERT INTO `tipoprueba` VALUES (1,'Regular'),(2,'SIMCE');
+INSERT INTO `tipoprueba` VALUES (1,'General'),(2,'SIMCE'),(3,'PSU');
 /*!40000 ALTER TABLE `tipoprueba` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -598,4 +633,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-09-19 18:17:58
+-- Dump completed on 2014-10-02  0:41:39
