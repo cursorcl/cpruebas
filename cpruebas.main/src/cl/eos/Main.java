@@ -1,11 +1,9 @@
 package cl.eos;
 
 import java.io.IOException;
-import java.net.URL;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
@@ -15,17 +13,6 @@ public class Main extends Application {
 	public void start(Stage primaryStage) {
 		try {
 			setUserAgentStylesheet(STYLESHEET_MODENA);
-//			StackPane root = (StackPane) FXMLLoader.load(getClass()
-//					.getResource("Main.fxml"));
-//			
-//			Scene scene = new Scene(root, 1024, 768);
-//			scene.getStylesheets().add(
-//					getClass().getResource("ensemble2.css").toExternalForm());
-//			primaryStage.setScene(scene);
-//			// primaryStage.setFullScreen(true);
-//			primaryStage.show();
-
-			
 			try {
 			  FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Main.fxml"));
 				StackPane root = (StackPane) fxmlLoader.load();

@@ -52,14 +52,14 @@ public class MainController {
   @FXML
   private MenuItem mnuCerrarAplicacion;
   @FXML
-  private BreadcrumbBar breadCrumb;  
+  private BreadcrumbBar breadCrumb;
   @FXML
   private AnchorPane pnlWindow;
   @FXML
   private Group groupRoot;
 
   private Stage stage;
-  
+
   public MainController() {
     super();
   }
@@ -67,8 +67,8 @@ public class MainController {
   @FXML
   public void initialize() {
     try {
-       WindowManager.getInstance().setRoot(groupRoot);
-       WindowManager.getInstance().setBreadcrumbBar(breadCrumb);
+      WindowManager.getInstance().setRoot(groupRoot);
+      WindowManager.getInstance().setBreadcrumbBar(breadCrumb);
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -164,21 +164,24 @@ public class MainController {
 
       }
     });
-    
-    WindowButtons wButtons = new WindowButtons(stage);
-    pnlWindow.getChildren().add(wButtons);
+
+
   }
 
   public Group getGroup() {
     return groupRoot;
   }
 
-public Stage getStage() {
-	return stage;
-}
+  public Stage getStage() {
+    return stage;
+  }
 
-public void setStage(Stage stage) {
-	this.stage = stage;
-}
+  public void setStage(Stage stage) {
+    this.stage = stage;
+    WindowButtons wButtons = new WindowButtons(stage);
+    AnchorPane.setRightAnchor(wButtons, 1.0);
+    AnchorPane.setTopAnchor(wButtons, 1.0);
+    pnlWindow.getChildren().add(wButtons);
+  }
 
 }

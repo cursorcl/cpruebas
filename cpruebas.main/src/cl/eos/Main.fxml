@@ -14,12 +14,12 @@
 	<children>
 		<BorderPane prefHeight="200.0" prefWidth="200.0">
 			<top>
-            <AnchorPane prefHeight="47.0" prefWidth="943.0">
+            <AnchorPane fx:id="pnlWindow" prefHeight="65.0" prefWidth="1024.0">
                <children>
 						<Pane id="SearchBox" prefHeight="52.0" prefWidth="198.0">
 							<children>
 								<Button id="clearButton" layoutX="173.0" layoutY="24.0" mnemonicParsing="false" visible="false" />
-                        <ImageView fitHeight="59.0" fitWidth="61.0" layoutX="2.0" layoutY="2.0">
+                        <ImageView fitHeight="62.0" fitWidth="61.0" layoutX="2.0" layoutY="2.0">
                            <image>
                               <Image url="@images/logo128.png" />
                            </image>
@@ -28,7 +28,7 @@
 						</Pane>
                   <AnchorPane id="SearchBox" layoutX="720.0" layoutY="1.0" prefHeight="62.0" prefWidth="191.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="32.0" AnchorPane.topAnchor="1.0">
                      <children>
-      								<TextField layoutX="5.0" layoutY="19.0" prefHeight="26.0" prefWidth="182.0" promptText="Buscar" AnchorPane.bottomAnchor="19.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="19.0" />
+      								<TextField layoutX="5.0" layoutY="18.0" prefHeight="24.0" prefWidth="181.0" promptText="Buscar" AnchorPane.bottomAnchor="9.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" />
                      </children>
                   </AnchorPane>
                </children>

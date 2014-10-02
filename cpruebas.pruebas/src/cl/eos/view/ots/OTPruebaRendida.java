@@ -1,6 +1,7 @@
 package cl.eos.view.ots;
 
 import cl.eos.persistence.models.PruebaRendida;
+import cl.eos.util.Utils;
 
 public class OTPruebaRendida {
 
@@ -39,11 +40,11 @@ public class OTPruebaRendida {
 	}
 	public Float getNota()
 	{
-		return pruebaRendida.getNota();
+		return pruebaRendida.getNota() != null ? pruebaRendida.getNota() : 0F;
 	}
-	public Float getPuntaje()
+	public Integer getPuntaje()
 	{
-		return 0F;
+		return Utils.getPuntaje(pruebaRendida.getNota().floatValue());
 	}
 	public String getNivel()
 	{

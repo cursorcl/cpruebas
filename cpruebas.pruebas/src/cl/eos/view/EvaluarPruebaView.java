@@ -34,6 +34,7 @@ import cl.eos.persistence.models.Profesor;
 import cl.eos.persistence.models.Prueba;
 import cl.eos.persistence.models.PruebaRendida;
 import cl.eos.persistence.models.RespuestasEsperadasPrueba;
+import cl.eos.util.Utils;
 import cl.eos.view.editablecells.EditingCellRespuestasEvaluar;
 import cl.eos.view.ots.OTPruebaRendida;
 
@@ -59,7 +60,7 @@ public class EvaluarPruebaView extends AFormView {
 	@FXML
 	private TableColumn<OTPruebaRendida, Float> notaCol;
 	@FXML
-	private TableColumn<OTPruebaRendida, Float> puntajeCol;
+	private TableColumn<OTPruebaRendida, Integer> puntajeCol;
 	@FXML
 	private TableColumn<OTPruebaRendida, String> nivelCol;
 	@FXML
@@ -129,7 +130,7 @@ public class EvaluarPruebaView extends AFormView {
 		notaCol.setCellValueFactory(new PropertyValueFactory<OTPruebaRendida, Float>(
 				"nota"));
 		puntajeCol
-				.setCellValueFactory(new PropertyValueFactory<OTPruebaRendida, Float>(
+				.setCellValueFactory(new PropertyValueFactory<OTPruebaRendida, Integer>(
 						"puntaje"));
 		nivelCol.setCellValueFactory(new PropertyValueFactory<OTPruebaRendida, String>(
 				"nivel"));
@@ -166,6 +167,7 @@ public class EvaluarPruebaView extends AFormView {
 
 	protected void evaluar(String value, PruebaRendida pRendida) {
 		List<RespuestasEsperadasPrueba> respEsperadas = prueba.getRespuestas();
+		
 		int nMax = Math.min(value.length(), respEsperadas.size());
 		pRendida.setOmitidas(Math.abs(value.length() - respEsperadas.size()));
 		pRendida.setBuenas(0);
@@ -181,6 +183,10 @@ public class EvaluarPruebaView extends AFormView {
 			} else {
 				pRendida.setMalas(pRendida.getMalas() + 1);
 			}
+			int nroPreguntas = respEsperadas.size();
+			float porcDificultad = prueba.getExigencia() == null ? 60f:prueba.getExigencia();
+			float notaMinima = 1.0f;
+			pRendida.setNota(Utils.getNota(nroPreguntas, porcDificultad, pRendida.getBuenas(), notaMinima));
 		}
 
 	}
