@@ -1,12 +1,13 @@
 package cl.eos.view.ots;
 
 import cl.eos.persistence.models.PruebaRendida;
+import cl.eos.persistence.models.RangoEvaluacion;
 import cl.eos.util.Utils;
 
 public class OTPruebaRendida {
 
 	private PruebaRendida pruebaRendida;
-	private String nivel;
+	private RangoEvaluacion nivel;
 
 	public OTPruebaRendida(PruebaRendida pruebaRendida) {
 		this.pruebaRendida = pruebaRendida;
@@ -28,6 +29,11 @@ public class OTPruebaRendida {
 		return pruebaRendida.getRespuestas();
 	}
 
+	public void setRespuestas(String respuestas) {
+		pruebaRendida.setRespuestas(respuestas);
+
+	}
+
 	public Integer getBuenas() {
 		return pruebaRendida.getBuenas();
 	}
@@ -39,22 +45,23 @@ public class OTPruebaRendida {
 	public Integer getOmitidas() {
 		return pruebaRendida.getOmitidas();
 	}
-	public Float getNota()
-	{
+
+	public Float getNota() {
 		return pruebaRendida.getNota() != null ? pruebaRendida.getNota() : 0F;
 	}
-	public Integer getPuntaje()
-	{
+
+	public Integer getPuntaje() {
 		return Utils.getPuntaje(pruebaRendida.getNota().floatValue());
 	}
-	public String getNivel()
-	{
-		return  nivel;
+
+	public RangoEvaluacion getNivel() {
+		return nivel;
 	}
-	public void setNivel(String nivel)
-	{
+
+	public void setNivel(RangoEvaluacion nivel) {
 		this.nivel = nivel;
 	}
+
 	public PruebaRendida getPruebaRendida() {
 		return pruebaRendida;
 	}
@@ -62,8 +69,5 @@ public class OTPruebaRendida {
 	public void setPruebaRendida(PruebaRendida pruebaRendida) {
 		this.pruebaRendida = pruebaRendida;
 	}
-	
-	
-	
 
 }

@@ -17,7 +17,7 @@
                 <Menu mnemonicParsing="false" text="Archivo">
                   <items>
                         <MenuItem mnemonicParsing="false" text="Obtener de Scanner" />
-                        <MenuItem mnemonicParsing="false" text="Grabar Resultado" />
+                        <MenuItem fx:id="mnuGrabar" mnemonicParsing="false" text="Grabar Resultado" />
                         <SeparatorMenuItem mnemonicParsing="false" />
                     <MenuItem mnemonicParsing="false" text="Volver" />
                   </items>

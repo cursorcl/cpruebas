@@ -17,7 +17,7 @@ public class EditingCellRespuestasEvaluar extends
 
 	private TextField textField;
 	private Prueba prueba = null;
-	private int maxLength = 0;
+	private int maxLength;
 
 	public EditingCellRespuestasEvaluar(Prueba prueba) {
 		super();
@@ -86,7 +86,7 @@ public class EditingCellRespuestasEvaluar extends
 			public void changed(final ObservableValue<? extends String> ov,
 					final String oldValue, final String newValue) {
 				if (newValue.length() > maxLength) {
-					textField.setText(oldValue);
+					textField.setText(newValue.substring(0, maxLength));
 				} else {
 					boolean validValue = false;
 					int len = newValue.length();
