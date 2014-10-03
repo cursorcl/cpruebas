@@ -6,6 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import cl.eos.interfaces.entity.IEntity;
+import cl.eos.util.Utils;
 
 @Entity(name = "pruebarendida")
 public class PruebaRendida implements IEntity {
@@ -27,13 +28,12 @@ public class PruebaRendida implements IEntity {
 	private Integer malas;
 	private Integer omitidas;
 	private Float nota;
-	
+
 	/**
 	 * Corresponde a la forma asociada a la prueba del alumno.
 	 */
 	private Integer forma;
 
-	
 	public PruebaRendida() {
 		buenas = new Integer(0);
 		malas = new Integer(0);
@@ -43,8 +43,7 @@ public class PruebaRendida implements IEntity {
 		respuestas = "";
 		alumno = null;
 	}
-	
-	
+
 	@Override
 	public Long getId() {
 		return id;
@@ -149,18 +148,17 @@ public class PruebaRendida implements IEntity {
 
 	public Float getPbuenas() {
 		Integer totalRespuestas = this.malas + this.buenas + this.omitidas;
-//		DecimalFormat df = new DecimalFormat("#.##");
-//		System.out.print(df.format(d))
-		return (float) (((float)this.buenas / (float)totalRespuestas) * 100f);
+		// DecimalFormat df = new DecimalFormat("#.##");
+		// System.out.print(df.format(d))
+		return (float) (((float) this.buenas / (float) totalRespuestas) * 100f);
 	}
 
 	public Integer getPuntaje() {
-		return (Integer) this.buenas;
+		return (Integer) Utils.getPuntaje(getNota());
 	}
 
 	public Float getPpuntaje() {
-		Integer totalRespuestas = this.malas + this.buenas + this.omitidas;
-		return (float) (((float)this.buenas / (float)totalRespuestas) * 100f);
+		return ((float) Utils.getPuntaje(getNota())) / Utils.MAX_PUNTAJE;
 	}
 
 }

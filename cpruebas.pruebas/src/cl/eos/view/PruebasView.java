@@ -27,9 +27,6 @@ import jfxtras.labs.scene.control.BigDecimalField;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.persistence.models.Asignatura;
-import cl.eos.persistence.models.Colegio;
-import cl.eos.persistence.models.EvaluacionEjeTematico;
-import cl.eos.persistence.models.Habilidad;
 import cl.eos.persistence.models.NivelEvaluacion;
 import cl.eos.persistence.models.Profesor;
 import cl.eos.persistence.models.Prueba;
@@ -37,6 +34,10 @@ import cl.eos.persistence.models.Prueba.Estado;
 import cl.eos.persistence.models.TipoCurso;
 import cl.eos.persistence.models.TipoPrueba;
 import cl.eos.view.editablecells.PruebaCellFactory;
+//github.com/cursorcl/cpruebas
+import cl.eos.persistence.models.Colegio;
+import cl.eos.persistence.models.EvaluacionEjeTematico;
+import cl.eos.persistence.models.Habilidad;
 
 public class PruebasView extends AFormView implements EventHandler<ActionEvent> {
 
@@ -374,9 +375,9 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 
 	private void handlerComunalEje() {
 		if (comunalEje == null) {
-			comunalEje = (ComunalCursoView) show("/cl/eos/view/ComunalEje.fxml");
+			comunalEje = (ComunalCursoView) show("/cl/eos/view/ComunalEje.fxml", true);
 		} else {
-			show(comunalEje);
+			show(comunalEje, true);
 		}
 		ObservableList<Prueba> prueba = tblListadoPruebas.getSelectionModel()
 				.getSelectedItems();
@@ -389,9 +390,9 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 
 	private void handlerComparativoComunal() {
 		if (comparativoComunal == null) {
-			comparativoComunal = (ComparativoComunalEjeView) show("/cl/eos/view/ComparativoComunalEje.fxml");
+			comparativoComunal = (ComparativoComunalEjeView) show("/cl/eos/view/ComparativoComunalEje.fxml", true);
 		} else {
-			show(comparativoComunal);
+			show(comparativoComunal, true);
 		}
 		Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem();
 		if (prueba != null) {
@@ -413,9 +414,9 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 
 	private void handlerImrpimirPrueba() {
 		if (imprimirPrueba == null) {
-			imprimirPrueba = (ImprimirPruebaView) show("/cl/eos/view/ImprimirPrueba.fxml");
+			imprimirPrueba = (ImprimirPruebaView) show("/cl/eos/view/ImprimirPrueba.fxml", true);
 		} else {
-			show(imprimirPrueba);
+			show(imprimirPrueba, true);
 		}
 		Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem();
 		if (prueba != null) {
@@ -431,9 +432,9 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 
 	private void handlerComparativoComunalHab() {
 		if (comparativoComunalHabilidad == null) {
-			comparativoComunalHabilidad = (ComparativoComunalHabilidadView) show("/cl/eos/view/ComparativoComunalHabilidad.fxml");
+			comparativoComunalHabilidad = (ComparativoComunalHabilidadView) show("/cl/eos/view/ComparativoComunalHabilidad.fxml", true);
 		} else {
-			show(comparativoComunalHabilidad);
+			show(comparativoComunalHabilidad, true);
 		}
 		Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem();
 		if (prueba != null) {
@@ -444,9 +445,9 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 
 	private void handlerEvaluar() {
 		if (evaluarPruebaView == null) {
-			evaluarPruebaView = (EvaluarPruebaView) show("/cl/eos/view/EvaluarPrueba.fxml");
+			evaluarPruebaView = (EvaluarPruebaView) show("/cl/eos/view/EvaluarPrueba.fxml", true);
 		} else {
-			show(evaluarPruebaView);
+			show(evaluarPruebaView, true);
 		}
 		Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem();
 		if (prueba != null) {
@@ -458,9 +459,9 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 
 	private void handlerDefinirPrueba() {
 		if (definePrueba == null) {
-			definePrueba = (DefinePruebaViewController) show("/cl/eos/view/DefinePruebaView.fxml");
+			definePrueba = (DefinePruebaViewController) show("/cl/eos/view/DefinePruebaView.fxml", true);
 		} else {
-			show(definePrueba);
+			show(definePrueba, true);
 		}
 		Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem();
 		if (prueba != null) {
@@ -474,9 +475,9 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 
 	private void handlerListaEvaluaciones() {
 		if (evaluacionPrueba == null) {
-			evaluacionPrueba = (EvaluacionPruebaView) show("/cl/eos/view/EvaluacionPrueba.fxml");
+			evaluacionPrueba = (EvaluacionPruebaView) show("/cl/eos/view/EvaluacionPrueba.fxml", true);
 		} else {
-			show(evaluacionPrueba);
+			show(evaluacionPrueba, true);
 		}
 		Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem();
 		Map<String, Object> parameters = new HashMap<String, Object>();

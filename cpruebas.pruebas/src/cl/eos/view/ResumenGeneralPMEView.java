@@ -1,6 +1,9 @@
 package cl.eos.view;
 
+import java.awt.font.NumericShaper.Range;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +21,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.util.Callback;
@@ -25,6 +29,7 @@ import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.ot.OTPreguntasEjes;
 import cl.eos.ot.OTPreguntasEvaluacion;
+import cl.eos.ot.OTRangoEvaluacion;
 import cl.eos.persistence.models.EjeTematico;
 import cl.eos.persistence.models.EvaluacionEjeTematico;
 import cl.eos.persistence.models.EvaluacionPrueba;
@@ -32,7 +37,9 @@ import cl.eos.persistence.models.Habilidad;
 import cl.eos.persistence.models.NivelEvaluacion;
 import cl.eos.persistence.models.Prueba;
 import cl.eos.persistence.models.PruebaRendida;
+import cl.eos.persistence.models.RangoEvaluacion;
 import cl.eos.persistence.models.RespuestasEsperadasPrueba;
+import cl.eos.persistence.util.Comparadores;
 import cl.eos.util.ExcelSheetWriter;
 import cl.eos.util.Utils;
 
@@ -60,13 +67,13 @@ public class ResumenGeneralPMEView extends AFormView implements
 	private TableColumn colHabilidadLogro;
 
 	@FXML
-	private TableView tblNiveles;
+	private TableView<OTRangoEvaluacion> tblRangos;
 	@FXML
-	private TableColumn colNivel;
+	private TableColumn<OTRangoEvaluacion, String> colRango;
 	@FXML
-	private TableColumn colNivelCantidad;
+	private TableColumn<OTRangoEvaluacion, Integer> colRangoCantidad;
 	@FXML
-	private TableColumn colNivelLogro;
+	private TableColumn<OTRangoEvaluacion, Float> colRangolLogro;
 
 	@FXML
 	private TableView tblReportePME;
@@ -88,7 +95,7 @@ public class ResumenGeneralPMEView extends AFormView implements
 	private ArrayList<String> titulosColumnas;
 	private Map<Long, EjeTematico> mEjeTematico;
 	private Map<Long, Habilidad> mHabilidad;
-	private Map<Long, NivelEvaluacion> mNivel;
+	private Map<RangoEvaluacion, Integer> mRango;
 
 	public ResumenGeneralPMEView() {
 
@@ -111,6 +118,17 @@ public class ResumenGeneralPMEView extends AFormView implements
 	private void inicializarTablaHabilidades() {
 		tblHabilidades.getSelectionModel().setSelectionMode(
 				SelectionMode.MULTIPLE);
+	}
+
+	private void inicializarTablaEvaluacines() {
+		tblRangos.getSelectionModel().setSelectionMode(
+				SelectionMode.MULTIPLE);
+		colRango.setCellValueFactory(new PropertyValueFactory<OTRangoEvaluacion, String>(
+				"nombre"));
+		colRangoCantidad.setCellValueFactory(new PropertyValueFactory<OTRangoEvaluacion, Integer>(
+				"nombre"));
+		colRangolLogro.setCellValueFactory(new PropertyValueFactory<OTRangoEvaluacion, Float>(
+				"nombre"));
 	}
 
 	private boolean llegaOnFound = false;
@@ -160,12 +178,13 @@ public class ResumenGeneralPMEView extends AFormView implements
 				}
 			}
 
-			if (entity instanceof NivelEvaluacion) {
+			if (entity instanceof RangoEvaluacion) {
 				llegaOnDANivel = true;
-				mNivel = new HashMap<Long, NivelEvaluacion>();
+				mRango = new HashMap<RangoEvaluacion, Integer>();
 				for (Object object : list) {
-					NivelEvaluacion nivel = (NivelEvaluacion) object;
-					mNivel.put(nivel.getId(), nivel);
+
+					RangoEvaluacion rango = (RangoEvaluacion) object;
+					mRango.put(rango, 0);
 				}
 			}
 		}
@@ -183,103 +202,112 @@ public class ResumenGeneralPMEView extends AFormView implements
 
 		mapaEjesTematicos = new HashMap<EjeTematico, HashMap<String, OTPreguntasEjes>>();
 		mapEvaAlumnos = new HashMap<EvaluacionEjeTematico, HashMap<String, OTPreguntasEvaluacion>>();
-		Map<NivelEvaluacion, Integer> mapaNivel = new HashMap<NivelEvaluacion, Integer>();
-		
+		Map<RangoEvaluacion, OTRangoEvaluacion> mapaRango = new HashMap<RangoEvaluacion, OTRangoEvaluacion>();
+
 		HashMap<String, OTPreguntasEjes> mapaColegios = null;
 
 		List<PruebaRendida> listaEvaluaciones = evaluacionPrueba
 				.getPruebasRendidas();
-		int totalAlumnos= evaluacionPrueba.getPruebasRendidas().size();
+		int totalAlumnos = evaluacionPrueba.getPruebasRendidas().size();
 		int totalPreguntas = evaluacionPrueba.getPrueba().getNroPreguntas();
-		
-		txtEvaluados.setText(String.valueOf(totalAlumnos));
+		Prueba prueba = evaluacionPrueba.getPrueba();
+		NivelEvaluacion nivelEvaluacion = prueba.getNivelEvaluacion();
 
 		float sumaNotas = 0;
-		float sumaLogro=0;
+		float sumaLogro = 0;
 		for (PruebaRendida evaluacionPrueba : listaEvaluaciones) {
 
 			sumaNotas = sumaNotas + evaluacionPrueba.getNota();
-			
-			int logro = evaluacionPrueba.getBuenas()/totalPreguntas;
+
+			int logro = evaluacionPrueba.getBuenas() / totalPreguntas;
 			sumaLogro = sumaLogro + logro;
-			
-			
-			
-			
-//			String colegioCurso = evaluacionPrueba.getColegiocurso();
-//			List<RespuestasEsperadasPrueba> respuestasEsperadas = evaluacionPrueba
-//					.getRespuestas();
-//
-//			for (PruebaRendida pruebaRendida : pruebasRendidas) {
-//				generaDatosEvaluacion(pruebaRendida, colegioCurso);
-//
-//				String respuesta = pruebaRendida.getRespuestas();
-//				char[] cRespuesta = respuesta.toCharArray();
-//
-//				foor (RespuestasEsperadasPrueba respuestasEsperadasPrueba : respuestasEsperadas) {
-//
-//					EjeTematico ejeTematico = respuestasEsperadasPrueba
-//							.getEjeTematico();
-//					Integer numeroPreg = respuestasEsperadasPrueba.getNumero();
-//					if (mapaEjesTematicos.containsKey(ejeTematico)) {
-//						HashMap<String, OTPreguntasEjes> mapa = mapaEjesTematicos
-//								.get(ejeTematico);
-//
-//						if (mapa.containsKey(colegioCurso)) {
-//							OTPreguntasEjes otPregunta = mapa.get(colegioCurso);
-//
-//							if (cRespuesta[numeroPreg - 1] == respuestasEsperadasPrueba
-//									.getRespuesta().toCharArray()[0]) {
-//								otPregunta
-//										.setBuenas(otPregunta.getBuenas() + 1);
-//							}
-//							otPregunta.setTotal(otPregunta.getTotal() + 1);
-//						} else {
-//							OTPreguntasEjes otPreguntas = new OTPreguntasEjes();
-//							otPreguntas.setEjeTematico(ejeTematico);
-//							if (cRespuesta[numeroPreg - 1] == respuestasEsperadasPrueba
-//									.getRespuesta().toCharArray()[0]) {
-//								otPreguntas.setBuenas(1);
-//							} else {
-//								otPreguntas.setBuenas(0);
-//							}
-//							otPreguntas.setTotal(1);
-//
-//							mapa.put(colegioCurso, otPreguntas);
-//						}
-//					} else {
-//						OTPreguntasEjes otPreguntas = new OTPreguntasEjes();
-//						otPreguntas.setEjeTematico(ejeTematico);
-//						if (cRespuesta[numeroPreg - 1] == respuestasEsperadasPrueba
-//								.getRespuesta().toCharArray()[0]) {
-//							otPreguntas.setBuenas(1);
-//						} else {
-//							otPreguntas.setBuenas(0);
-//						}
-//						otPreguntas.setTotal(1);
-//
-//						mapaColegios = new HashMap<String, OTPreguntasEjes>();
-//						mapaColegios.put(colegioCurso, otPreguntas);
-//						mapaEjesTematicos.put(ejeTematico, mapaColegios);
-//					}
-//				}
-		//	}
+
+			RangoEvaluacion rango = nivelEvaluacion.getRango(logro);
+			OTRangoEvaluacion otRango = mapaRango.get(rango);
+			otRango.setCantidad(otRango.getCantidad() + 1);
+			otRango.setLogrado(otRango.getCantidad() / totalAlumnos);
+
+			// String colegioCurso = evaluacionPrueba.getColegiocurso();
+			// List<RespuestasEsperadasPrueba> respuestasEsperadas =
+			// evaluacionPrueba
+			// .getRespuestas();
+			//
+			// for (PruebaRendida pruebaRendida : pruebasRendidas) {
+			// generaDatosEvaluacion(pruebaRendida, colegioCurso);
+			//
+			// String respuesta = pruebaRendida.getRespuestas();
+			// char[] cRespuesta = respuesta.toCharArray();
+			//
+			// foor (RespuestasEsperadasPrueba respuestasEsperadasPrueba :
+			// respuestasEsperadas) {
+			//
+			// EjeTematico ejeTematico = respuestasEsperadasPrueba
+			// .getEjeTematico();
+			// Integer numeroPreg = respuestasEsperadasPrueba.getNumero();
+			// if (mapaEjesTematicos.containsKey(ejeTematico)) {
+			// HashMap<String, OTPreguntasEjes> mapa = mapaEjesTematicos
+			// .get(ejeTematico);
+			//
+			// if (mapa.containsKey(colegioCurso)) {
+			// OTPreguntasEjes otPregunta = mapa.get(colegioCurso);
+			//
+			// if (cRespuesta[numeroPreg - 1] == respuestasEsperadasPrueba
+			// .getRespuesta().toCharArray()[0]) {
+			// otPregunta
+			// .setBuenas(otPregunta.getBuenas() + 1);
+			// }
+			// otPregunta.setTotal(otPregunta.getTotal() + 1);
+			// } else {
+			// OTPreguntasEjes otPreguntas = new OTPreguntasEjes();
+			// otPreguntas.setEjeTematico(ejeTematico);
+			// if (cRespuesta[numeroPreg - 1] == respuestasEsperadasPrueba
+			// .getRespuesta().toCharArray()[0]) {
+			// otPreguntas.setBuenas(1);
+			// } else {
+			// otPreguntas.setBuenas(0);
+			// }
+			// otPreguntas.setTotal(1);
+			//
+			// mapa.put(colegioCurso, otPreguntas);
+			// }
+			// } else {
+			// OTPreguntasEjes otPreguntas = new OTPreguntasEjes();
+			// otPreguntas.setEjeTematico(ejeTematico);
+			// if (cRespuesta[numeroPreg - 1] == respuestasEsperadasPrueba
+			// .getRespuesta().toCharArray()[0]) {
+			// otPreguntas.setBuenas(1);
+			// } else {
+			// otPreguntas.setBuenas(0);
+			// }
+			// otPreguntas.setTotal(1);
+			//
+			// mapaColegios = new HashMap<String, OTPreguntasEjes>();
+			// mapaColegios.put(colegioCurso, otPreguntas);
+			// mapaEjesTematicos.put(ejeTematico, mapaColegios);
+			// }
+			// }
+			// }
 		}
-		
-		//Asignar promedio.
-		float promedio = sumaNotas/totalAlumnos;
+
+		List<OTRangoEvaluacion> lista = new ArrayList<OTRangoEvaluacion>(
+				mapaRango.values());
+		Collections.sort(lista, Comparadores.comparaRangoEvaluacion());
+
+		// Asignar evaluados
+		txtEvaluados.setText(String.valueOf(totalAlumnos));
+		// Asignar promedio.
+		float promedio = sumaNotas / totalAlumnos;
 		txtPromedio.setText(String.valueOf(promedio));
-		//Asignar puntaje
+		// Asignar puntaje
 		int puntaje = Utils.getPuntaje(promedio);
 		txtPuntaje.setText(String.valueOf(puntaje));
-		//Asignar promedio logro
-		float promedioLogro = sumaLogro/totalAlumnos;
+		// Asignar promedio logro
+		float promedioLogro = sumaLogro / totalAlumnos;
 		txtLogro.setText(String.valueOf(promedio));
-		
-		for (NivelEvaluacion   nivel: mNivel.values()) {
-			
-		}
-		
+		// Asignar evaluacion
+		RangoEvaluacion rango = nivelEvaluacion.getRango(promedioLogro);
+		txtEvaluados.setText(rango.getAbreviacion());
+
 	}
 
 	private void generaDatosEvaluacion(PruebaRendida pruebaRendida,

@@ -13,6 +13,7 @@ import javax.imageio.stream.ImageInputStream;
 
 public class Utils {
 
+	public static float MAX_PUNTAJE = 340f;
   /**
    * M�todo Est�tico que valida si un rut es v�lido Fuente :
    */
@@ -98,10 +99,10 @@ public class Utils {
    */
   public static int getPuntaje(float nota) {
     float fNota =  ((int)(nota * 10f))/ 10f;
-    float v1 = (340f - 215f) / 31f; // 4.03225806
-    float v2 = (340f - 210f) / 30f; // 4.33333333
-    float v3 = (340f - 215f) / 33f; // 3.78787879
-    float max = 340;
+    float v1 = (MAX_PUNTAJE - 215f) / 31f; // 4.03225806
+    float v2 = (MAX_PUNTAJE - 210f) / 30f; // 4.33333333
+    float v3 = (MAX_PUNTAJE - 215f) / 33f; // 3.78787879
+    float max = MAX_PUNTAJE;
     int n = (int) Math.round(((7.0f - fNota) * 10f));
     float pje1 = max - v1 * n;
     float pje2 = max - v2 * n;

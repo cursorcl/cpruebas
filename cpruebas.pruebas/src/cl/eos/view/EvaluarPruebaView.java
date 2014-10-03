@@ -33,6 +33,7 @@ import cl.eos.persistence.models.Habilidad;
 import cl.eos.persistence.models.Profesor;
 import cl.eos.persistence.models.Prueba;
 import cl.eos.persistence.models.PruebaRendida;
+import cl.eos.persistence.models.RangoEvaluacion;
 import cl.eos.persistence.models.RespuestasEsperadasPrueba;
 import cl.eos.util.Utils;
 import cl.eos.view.editablecells.EditingCellRespuestasEvaluar;
@@ -183,11 +184,23 @@ public class EvaluarPruebaView extends AFormView {
 			} else {
 				pRendida.setMalas(pRendida.getMalas() + 1);
 			}
-			int nroPreguntas = respEsperadas.size();
-			float porcDificultad = prueba.getExigencia() == null ? 60f:prueba.getExigencia();
-			float notaMinima = 1.0f;
-			pRendida.setNota(Utils.getNota(nroPreguntas, porcDificultad, pRendida.getBuenas(), notaMinima));
 		}
+		int nroPreguntas = respEsperadas.size();
+		float porcDificultad = prueba.getExigencia() == null ? 60f:prueba.getExigencia();
+		float notaMinima = 1.0f;
+		pRendida.setNota(Utils.getNota(nroPreguntas, porcDificultad, pRendida.getBuenas(), notaMinima));
+
+		float total = pRendida.getBuenas() + pRendida.getMalas() + pRendida.getOmitidas();
+		float porcentaje = ((float)pRendida.getBuenas()) / total * 100f;
+		for(RangoEvaluacion rango: prueba.getNivelEvaluacion().getRangos())
+		{
+			if(porcentaje >= rango.getMinimo() && porcentaje <= rango.getMaximo())
+			{
+				
+			}
+				
+		}
+
 
 	}
 

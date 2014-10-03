@@ -71,5 +71,31 @@ public class NivelEvaluacion implements IEntity {
 		return name;
 	}
 
-	
+	public RangoEvaluacion getRango(float porcentaje) {
+		RangoEvaluacion result = null;
+		int n = 0;
+
+		for (RangoEvaluacion rango : rangos) {
+			if (n == 0) {
+				if (porcentaje < rango.getMaximo()) {
+					result = rango;
+					break;
+				}
+			} else if (n == nroRangos - 1) {
+				if (porcentaje >= rango.getMinimo()) {
+					result = rango;
+					break;
+				}
+			} else {
+				if (porcentaje >= rango.getMinimo()
+						&& porcentaje < rango.getMaximo()) {
+					result = rango;
+					break;
+				}
+			}
+			n++;
+		}
+		return result;
+	}
+
 }

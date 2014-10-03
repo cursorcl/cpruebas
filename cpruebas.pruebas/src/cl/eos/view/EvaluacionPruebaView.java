@@ -23,6 +23,7 @@ import cl.eos.persistence.models.EvaluacionPrueba;
 import cl.eos.persistence.models.Habilidad;
 import cl.eos.persistence.models.NivelEvaluacion;
 import cl.eos.persistence.models.Prueba;
+import cl.eos.persistence.models.RangoEvaluacion;
 import cl.eos.persistence.models.TipoPrueba;
 
 public class EvaluacionPruebaView extends AFormView implements
@@ -272,7 +273,7 @@ public class EvaluacionPruebaView extends AFormView implements
 			controller.findById(Prueba.class, prueba.getId());
 			controller.findAll(EjeTematico.class);
 			controller.findAll(Habilidad.class);
-			controller.findAll(NivelEvaluacion.class);
+			controller.findAll(RangoEvaluacion.class);
 		}
 	}
 }

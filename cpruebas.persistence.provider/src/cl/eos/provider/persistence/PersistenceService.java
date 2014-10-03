@@ -264,7 +264,7 @@ public class PersistenceService implements IPersistenceService {
 	}
 
 	@Override
-	public void insert(final String entity, List<Object> list,
+	public void insert(final String entity, final List<Object> list,
 			final IPersistenceListener listener) {
 
 		final Task<List<Object>> task = new Task<List<Object>>() {
