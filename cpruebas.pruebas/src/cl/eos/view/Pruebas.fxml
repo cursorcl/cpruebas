@@ -16,6 +16,7 @@
               <menus>
                 <Menu mnemonicParsing="false" text="Archivo">
                   <items>
+                        <MenuItem fx:id="mnuNueva" mnemonicParsing="false" text="Nueva Prueba" />
                         <MenuItem id="mnuGrabar" fx:id="mnuGrabar" mnemonicParsing="false" text="Grabar Prueba">
                            <accelerator>
                               <KeyCodeCombination alt="UP" code="G" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
@@ -180,6 +181,7 @@
                                           <MenuItem fx:id="mnuPopupEliminar" mnemonicParsing="false" text="Eliminar Prueba" />
                                           <MenuItem fx:id="mnuDefinirPrueba" mnemonicParsing="false" text="Definir Prueba" />
                                           <MenuItem fx:id="mnuEvaluarPrueba" mnemonicParsing="false" text="Evaluar prueba" />
+                                          <MenuItem fx:id="mnuImprimirPrueba" mnemonicParsing="false" text="Imprimir Prueba" />
                                           <MenuItem fx:id="mnuListaEvaluaciones" mnemonicParsing="false" text="Lista de Evaluaciones" />
                                           <MenuItem fx:id="mnuComparativoComunal" mnemonicParsing="false" text="Comparativo comunal ejes temáticos" />
                                           <MenuItem fx:id="mnuComparativoComunalHab" mnemonicParsing="false" text="Comparativo comunal habilidades" />

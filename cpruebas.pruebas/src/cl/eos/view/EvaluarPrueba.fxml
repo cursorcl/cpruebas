@@ -8,45 +8,68 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="485.0" prefWidth="1087.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.EvaluarPruebaView">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="563.0" prefWidth="1087.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.EvaluarPruebaView">
    <top>
-      <AnchorPane prefHeight="108.0" prefWidth="1087.0" BorderPane.alignment="CENTER">
+      <VBox>
          <children>
-            <ComboBox fx:id="cmbCursos" layoutX="186.0" layoutY="72.0" prefWidth="150.0" promptText="Curso" />
-            <Label layoutX="27.0" layoutY="57.0" text="Colegio" />
-            <DatePicker fx:id="dtpFecha" layoutX="352.0" layoutY="72.0" />
-            <Label layoutX="352.0" layoutY="57.0" text="Fecha" />
-            <Label layoutX="186.0" layoutY="57.0" text="Curso" />
-            <ComboBox fx:id="cmbColegios" layoutX="26.0" layoutY="72.0" prefWidth="150.0" promptText="Colegio" />
-            <TextField fx:id="txtName" layoutX="27.0" layoutY="24.0" prefHeight="25.0" prefWidth="234.0" promptText="Nombre Prueba" />
-            <TextField fx:id="txtAsignatura" layoutX="273.0" layoutY="24.0" prefHeight="25.0" prefWidth="253.0" promptText="Asignatura" />
-            <Label layoutX="26.0" layoutY="6.0" text="Nombre de la prueba" />
-            <Label layoutX="273.0" layoutY="6.0" text="Asignatura" />
-            <ListView fx:id="lstEjes" layoutX="544.0" layoutY="23.0" prefHeight="73.0" prefWidth="200.0" />
-            <ListView fx:id="lstHabilidad" layoutX="758.0" layoutY="21.0" prefHeight="76.0" prefWidth="200.0" />
-            <Label layoutX="544.0" layoutY="6.0" text="Ejes temáticos" />
-            <Label layoutX="758.0" layoutY="6.0" text="Habilidades" />
-            <Button fx:id="btnScanner" layoutX="973.0" layoutY="13.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="96.0" text="Scanner" />
-            <Button fx:id="btnManual" layoutX="973.0" layoutY="43.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="97.0" text="Manual" />
+            <MenuBar>
+              <menus>
+                <Menu mnemonicParsing="false" text="Archivo">
+                  <items>
+                        <MenuItem mnemonicParsing="false" text="Obtener de Scanner" />
+                        <MenuItem mnemonicParsing="false" text="Grabar Resultado" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                    <MenuItem mnemonicParsing="false" text="Volver" />
+                  </items>
+                </Menu>
+              </menus>
+            </MenuBar>
+            <AnchorPane prefHeight="108.0" prefWidth="1087.0" styleClass="sample-page" BorderPane.alignment="CENTER">
+               <children>
+                  <ComboBox fx:id="cmbCursos" layoutX="173.0" layoutY="76.0" prefWidth="150.0" promptText="Curso" />
+                  <Label layoutX="15.0" layoutY="61.0" text="Colegio" />
+                  <DatePicker fx:id="dtpFecha" layoutX="491.0" layoutY="75.0" />
+                  <Label layoutX="492.0" layoutY="61.0" text="Fecha" />
+                  <Label layoutX="175.0" layoutY="62.0" text="Curso" />
+                  <ComboBox fx:id="cmbColegios" layoutX="14.0" layoutY="76.0" prefWidth="150.0" promptText="Colegio" />
+                  <TextField fx:id="txtName" layoutX="14.0" layoutY="26.0" prefHeight="25.0" prefWidth="259.0" promptText="Nombre Prueba" />
+                  <TextField fx:id="txtAsignatura" layoutX="285.0" layoutY="26.0" prefHeight="25.0" prefWidth="373.0" promptText="Asignatura" />
+                  <Label layoutX="15.0" layoutY="9.0" text="Nombre de la prueba" />
+                  <Label layoutX="285.0" layoutY="9.0" text="Asignatura" />
+                  <ListView fx:id="lstEjes" layoutX="668.0" layoutY="26.0" prefHeight="73.0" prefWidth="200.0" />
+                  <ListView fx:id="lstHabilidad" layoutX="870.0" layoutY="24.0" prefHeight="76.0" prefWidth="200.0" />
+                  <Label layoutX="668.0" layoutY="9.0" text="Ejes temáticos" />
+                  <Label layoutX="873.0" layoutY="9.0" text="Habilidades" />
+                  <ComboBox fx:id="cmbProfesor" layoutX="329.0" layoutY="76.0" prefHeight="23.0" prefWidth="155.0" promptText="Profesor" />
+                  <Label layoutX="331.0" layoutY="62.0" text="Profesor" />
+               </children>
+            </AnchorPane>
          </children>
-      </AnchorPane>
+      </VBox>
    </top>
    <center>
-      <AnchorPane prefHeight="370.0" prefWidth="1087.0" BorderPane.alignment="CENTER">
+      <AnchorPane prefHeight="370.0" prefWidth="1087.0" styleClass="sample-page" BorderPane.alignment="CENTER">
          <children>
             <TableView id="tblListadoPruebas" fx:id="tblListadoPruebas" prefHeight="400.0" prefWidth="696.0" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="2.0">
               <columns>
-                  <TableColumn fx:id="paternoCol" prefWidth="155.0" text="Paterno" />
-                <TableColumn fx:id="maternoCol" prefWidth="156.0" text="Materno" />
-                  <TableColumn fx:id="nombresCol" prefWidth="172.0" text="Nombres" />
-                  <TableColumn fx:id="respuestasCol" prefWidth="129.0" text="Respuestas" />
-                  <TableColumn fx:id="buenasCol" prefWidth="50.0" text="Buenas" />
-                  <TableColumn fx:id="malasCol" prefWidth="56.0" text="Malas" />
-                  <TableColumn fx:id="omitidasCol" prefWidth="63.0" text="Omitidas" />
-                  <TableColumn fx:id="notaCol" prefWidth="75.0" text="Nota" />
-                  <TableColumn fx:id="puntajeCol" prefWidth="70.0" text="Puntaje" />
-                  <TableColumn fx:id="nivelCol" prefWidth="59.0" text="Nivel" />
+                  <TableColumn fx:id="paternoCol" prefWidth="94.0" text="Paterno" />
+                <TableColumn fx:id="maternoCol" prefWidth="110.0" text="Materno" />
+                  <TableColumn fx:id="nombresCol" prefWidth="105.0" text="Nombres" />
+                  <TableColumn fx:id="respuestasCol" prefWidth="417.0" text="Respuestas" />
+                  <TableColumn fx:id="buenasCol" prefWidth="58.0" text="Buenas" />
+                  <TableColumn fx:id="malasCol" prefWidth="61.0" text="Malas" />
+                  <TableColumn fx:id="omitidasCol" prefWidth="57.0" text="Omitidas" />
+                  <TableColumn fx:id="notaCol" prefWidth="50.0" text="Nota" />
+                  <TableColumn fx:id="puntajeCol" prefWidth="59.0" text="Puntaje" />
+                  <TableColumn fx:id="nivelCol" prefWidth="61.0" text="Nivel" />
               </columns>
+               <contextMenu>
+                  <ContextMenu>
+                    <items>
+                      <MenuItem mnemonicParsing="false" text="No rindió prueba" />
+                    </items>
+                  </ContextMenu>
+               </contextMenu>
             </TableView>
          </children>
       </AnchorPane>

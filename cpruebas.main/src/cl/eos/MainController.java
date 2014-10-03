@@ -12,10 +12,11 @@ import javafx.scene.Group;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.stage.FileChooser;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 import jfxtras.labs.scene.control.BreadcrumbBar;
-
 import org.controlsfx.dialog.Dialogs;
-
+import cl.eos.imp.view.WindowButtons;
 import cl.eos.imp.view.WindowManager;
 import cl.eos.interfaces.IActivator;
 import cl.eos.provider.persistence.PersistenceServiceFactory;
@@ -54,14 +55,17 @@ public class MainController {
 	@FXML
 	private MenuItem mnuItemGeneraBD;
 	@FXML
-	private MenuItem mnuImportar;
-
-	@FXML
 	private MenuItem mnuCerrarAplicacion;
 	@FXML
 	private BreadcrumbBar breadCrumb;
 	@FXML
+	private AnchorPane pnlWindow;
+	@FXML
 	private Group groupRoot;
+
+	private Stage stage;
+	@FXML
+	private MenuItem mnuImportar;
 
 	public MainController() {
 		super();
@@ -164,9 +168,9 @@ public class MainController {
 			@Override
 			public void handle(ActionEvent event) {
 				Platform.exit();
-
 			}
 		});
+
 		mnuImportar.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -187,14 +191,31 @@ public class MainController {
 		String[] datosFile = file.getName().split(".xls");
 		PersistenceServiceFactory.getPersistenceService().insert(datosFile[0],
 				lista, null);
-		Dialogs.create().owner(null).title("Importación desde excel")
-				.masthead("").message("Ha finalizado proceso de importación de [" +lista.size() + "] registros para tabla ["+ datosFile[0] +"]")
-				.showInformation();
+		Dialogs.create()
+				.owner(null)
+				.title("Importación desde excel")
+				.masthead("")
+				.message(
+						"Ha finalizado proceso de importación de ["
+								+ lista.size() + "] registros para tabla ["
+								+ datosFile[0] + "]").showInformation();
 		System.out.println(file);
 	}
 
 	public Group getGroup() {
 		return groupRoot;
+	}
+
+	public Stage getStage() {
+		return stage;
+	}
+
+	public void setStage(Stage stage) {
+		this.stage = stage;
+		WindowButtons wButtons = new WindowButtons(stage);
+		AnchorPane.setRightAnchor(wButtons, 1.0);
+		AnchorPane.setTopAnchor(wButtons, 1.0);
+		pnlWindow.getChildren().add(wButtons);
 	}
 
 }

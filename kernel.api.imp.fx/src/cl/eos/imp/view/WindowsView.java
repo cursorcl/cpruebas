@@ -1,6 +1,9 @@
 package cl.eos.imp.view;
 
 
+import cl.eos.interfaces.view.IView;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
@@ -14,6 +17,7 @@ public class WindowsView extends BorderPane {
 	private Label windowTitle;
 	private AnchorPane topPane;
 	private MiniIconButton miniButton;
+	private IView view;
 
 	public WindowsView() {
 		setTop(getAnchorPane());
@@ -23,14 +27,15 @@ public class WindowsView extends BorderPane {
 		if (topPane == null) {
 			topPane = new AnchorPane();
 			topPane.setId("ModalDimmer");
-			AnchorPane.setRightAnchor(getMiniButton(), 1.0);
-			AnchorPane.setTopAnchor(getMiniButton(), 1.0);
+//			AnchorPane.setRightAnchor(getMiniButton(), 1.0);
+//			AnchorPane.setTopAnchor(getMiniButton(), 1.0);
 
 			AnchorPane.setRightAnchor(getLabel(), 20.0);
 			AnchorPane.setTopAnchor(getLabel(), 4.0);
 			AnchorPane.setLeftAnchor(getLabel(), 4.0);
 			AnchorPane.setBottomAnchor(getLabel(), 8.0);
-			topPane.getChildren().addAll(getLabel(), getMiniButton());
+//			topPane.getChildren().addAll(getLabel(), getMiniButton());
+            topPane.getChildren().addAll(getLabel());
 		}
 		return topPane;
 	}
@@ -45,17 +50,6 @@ public class WindowsView extends BorderPane {
 		return windowTitle;
 	}
 
-	private MiniIconButton getMiniButton() {
-		if (miniButton == null) {
-			miniButton = new MiniIconButton();
-			miniButton.setId("window-close");
-			miniButton.setLayoutX(592);
-			miniButton.setLayoutX(8);
-
-		}
-		return miniButton;
-	}
-
 	public void setContent(Node node) {
 		setCenter(node);
 	}
@@ -64,4 +58,14 @@ public class WindowsView extends BorderPane {
 	{
 		getLabel().setText(text);
 	}
+
+	public IView getView() {
+		return view;
+	}
+
+	public void setView(IView view) {
+		this.view = view;
+	}
+	
+	
 }

@@ -14,7 +14,6 @@ public interface IWindowManager {
 
   Object getBreadcrumbBar();
   void setBreadcrumbBar(Object breadCrumb);
-
   /**
    * Agrega una ventana al visualizador
    * 

@@ -12,6 +12,7 @@ import java.awt.print.PrinterJob;
 
 import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
+import javax.print.attribute.standard.MediaPrintableArea;
 import javax.print.attribute.standard.PrintQuality;
 import javax.print.attribute.standard.PrinterResolution;
 
@@ -27,14 +28,22 @@ public class PrintActionListener implements Runnable {
 	public void run() {
 		PrintRequestAttributeSet printAttributes = new HashPrintRequestAttributeSet();
 	    printAttributes.add(PrintQuality.HIGH);
+	    printAttributes.add(new MediaPrintableArea(0f, 0f, 241.3f, 279.4f, MediaPrintableArea.MM));
 	    printAttributes.add(new PrinterResolution(600, 600, PrinterResolution.DPI)); 
 		PrinterJob printJob = PrinterJob.getPrinterJob();
 		
+//		Paper paper = new Paper();
+//		paper.setSize(612, 792);
+		//paper.setImageableArea(0, 0, image.getWidth(), image.getHeight());
+//		PageFormat pageFormat = new PageFormat();
+//		pageFormat.setPaper(paper);
+//		pageFormat.setOrientation(PageFormat.PORTRAIT);
 		
-		printJob.setPrintable(new ImagePrintable(printJob, image));
-		if (printJob.printDialog()) {
+		
+		printJob.setPrintable(new ImagePrintable(printJob, image), printJob.getPageFormat(printAttributes));
+		if (printJob.printDialog(printAttributes)) {
 			try {
-				printJob.print();
+				printJob.print(printAttributes);
 			} catch (PrinterException prt) {
 			}
 		}
@@ -54,11 +63,6 @@ public class PrintActionListener implements Runnable {
 			this.width = pageFormat.getImageableWidth();
 			this.orientation = pageFormat.getOrientation();
 			this.image = image;
-			
-			Paper paper = new Paper();
-			paper.setImageableArea(0, 0, image.getWidth(), image.getHeight());
-			pageFormat.setPaper(paper);
-
 		}
 
 		@Override

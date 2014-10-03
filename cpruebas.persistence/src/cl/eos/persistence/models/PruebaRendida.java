@@ -33,6 +33,18 @@ public class PruebaRendida implements IEntity {
 	 */
 	private Integer forma;
 
+	
+	public PruebaRendida() {
+		buenas = new Integer(0);
+		malas = new Integer(0);
+		omitidas = new Integer(0);
+		forma = new Integer(1);
+		nota = new Float(0);
+		respuestas = "";
+		alumno = null;
+	}
+	
+	
 	@Override
 	public Long getId() {
 		return id;

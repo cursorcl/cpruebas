@@ -104,6 +104,7 @@ public class EditingCellRespuesta extends TableCell<RegistroDefinePrueba, String
         }
       }
     });
+    
   }
 
   private String getString() {

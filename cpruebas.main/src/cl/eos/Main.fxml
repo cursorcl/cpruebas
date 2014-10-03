@@ -10,25 +10,25 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<StackPane id="ModalDimmer" depthTest="DISABLE" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="647.0" prefWidth="943.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.MainController">
+<StackPane id="ModalDimmer" depthTest="DISABLE" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.MainController">
 	<children>
 		<BorderPane prefHeight="200.0" prefWidth="200.0">
 			<top>
-            <AnchorPane prefHeight="47.0" prefWidth="943.0">
+            <AnchorPane fx:id="pnlWindow" prefHeight="65.0" prefWidth="1024.0">
                <children>
 						<Pane id="SearchBox" prefHeight="52.0" prefWidth="198.0">
 							<children>
 								<Button id="clearButton" layoutX="173.0" layoutY="24.0" mnemonicParsing="false" visible="false" />
+                        <ImageView fitHeight="62.0" fitWidth="61.0" layoutX="2.0" layoutY="2.0">
+                           <image>
+                              <Image url="@images/logo128.png" />
+                           </image>
+                        </ImageView>
 							</children>
 						</Pane>
-						<ImageView fitHeight="63.0" fitWidth="165.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
-							<image>
-								<Image url="@images/logo_sisdef.png" />
-							</image>
-						</ImageView>
                   <AnchorPane id="SearchBox" layoutX="720.0" layoutY="1.0" prefHeight="62.0" prefWidth="191.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="32.0" AnchorPane.topAnchor="1.0">
                      <children>
-      								<TextField layoutX="5.0" layoutY="19.0" prefHeight="26.0" prefWidth="182.0" promptText="Buscar" AnchorPane.bottomAnchor="18.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="19.0" />
+      								<TextField layoutX="5.0" layoutY="18.0" prefHeight="24.0" prefWidth="181.0" promptText="Buscar" AnchorPane.bottomAnchor="9.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" />
                      </children>
                   </AnchorPane>
                </children>
