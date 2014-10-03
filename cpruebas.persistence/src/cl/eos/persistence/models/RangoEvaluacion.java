@@ -71,4 +71,10 @@ public class RangoEvaluacion implements IEntity {
 		this.maximo = maximo;
 	}
 
+	@Override
+	public String toString() {
+		return name;
+	}
+
+	
 }

@@ -263,15 +263,17 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 
 	@Override
 	public void onSaved(IEntity otObject) {
-		int indice = tblListadoPruebas.getItems().lastIndexOf(otObject);
-		if (indice != -1) {
-			tblListadoPruebas.getItems().remove(otObject);
-			tblListadoPruebas.getItems().add(indice, (Prueba) otObject);
-		} else {
-			tblListadoPruebas.getItems().add((Prueba) otObject);
+		if (otObject instanceof Prueba) {
+			int indice = tblListadoPruebas.getItems().lastIndexOf(otObject);
+			if (indice != -1) {
+				tblListadoPruebas.getItems().remove(otObject);
+				tblListadoPruebas.getItems().add(indice, (Prueba) otObject);
+			} else {
+				tblListadoPruebas.getItems().add((Prueba) otObject);
+			}
+			limpiarCampos();
+			prueba = null;
 		}
-		limpiarCampos();
-		prueba = null;
 	}
 
 	@Override
@@ -375,7 +377,8 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 
 	private void handlerComunalEje() {
 		if (comunalEje == null) {
-			comunalEje = (ComunalCursoView) show("/cl/eos/view/ComunalEje.fxml", true);
+			comunalEje = (ComunalCursoView) show(
+					"/cl/eos/view/ComunalEje.fxml", true);
 		} else {
 			show(comunalEje, true);
 		}
@@ -390,7 +393,8 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 
 	private void handlerComparativoComunal() {
 		if (comparativoComunal == null) {
-			comparativoComunal = (ComparativoComunalEjeView) show("/cl/eos/view/ComparativoComunalEje.fxml", true);
+			comparativoComunal = (ComparativoComunalEjeView) show(
+					"/cl/eos/view/ComparativoComunalEje.fxml", true);
 		} else {
 			show(comparativoComunal, true);
 		}
@@ -414,7 +418,8 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 
 	private void handlerImrpimirPrueba() {
 		if (imprimirPrueba == null) {
-			imprimirPrueba = (ImprimirPruebaView) show("/cl/eos/view/ImprimirPrueba.fxml", true);
+			imprimirPrueba = (ImprimirPruebaView) show(
+					"/cl/eos/view/ImprimirPrueba.fxml", true);
 		} else {
 			show(imprimirPrueba, true);
 		}
@@ -432,7 +437,8 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 
 	private void handlerComparativoComunalHab() {
 		if (comparativoComunalHabilidad == null) {
-			comparativoComunalHabilidad = (ComparativoComunalHabilidadView) show("/cl/eos/view/ComparativoComunalHabilidad.fxml", true);
+			comparativoComunalHabilidad = (ComparativoComunalHabilidadView) show(
+					"/cl/eos/view/ComparativoComunalHabilidad.fxml", true);
 		} else {
 			show(comparativoComunalHabilidad, true);
 		}
@@ -445,7 +451,8 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 
 	private void handlerEvaluar() {
 		if (evaluarPruebaView == null) {
-			evaluarPruebaView = (EvaluarPruebaView) show("/cl/eos/view/EvaluarPrueba.fxml", true);
+			evaluarPruebaView = (EvaluarPruebaView) show(
+					"/cl/eos/view/EvaluarPrueba.fxml", true);
 		} else {
 			show(evaluarPruebaView, true);
 		}
@@ -459,7 +466,8 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 
 	private void handlerDefinirPrueba() {
 		if (definePrueba == null) {
-			definePrueba = (DefinePruebaViewController) show("/cl/eos/view/DefinePruebaView.fxml", true);
+			definePrueba = (DefinePruebaViewController) show(
+					"/cl/eos/view/DefinePruebaView.fxml", true);
 		} else {
 			show(definePrueba, true);
 		}
@@ -475,7 +483,8 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 
 	private void handlerListaEvaluaciones() {
 		if (evaluacionPrueba == null) {
-			evaluacionPrueba = (EvaluacionPruebaView) show("/cl/eos/view/EvaluacionPrueba.fxml", true);
+			evaluacionPrueba = (EvaluacionPruebaView) show(
+					"/cl/eos/view/EvaluacionPrueba.fxml", true);
 		} else {
 			show(evaluacionPrueba, true);
 		}

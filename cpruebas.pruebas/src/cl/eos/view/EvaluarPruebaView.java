@@ -15,6 +15,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.ListView;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellEditEvent;
@@ -63,7 +64,7 @@ public class EvaluarPruebaView extends AFormView {
 	@FXML
 	private TableColumn<OTPruebaRendida, Integer> puntajeCol;
 	@FXML
-	private TableColumn<OTPruebaRendida, String> nivelCol;
+	private TableColumn<OTPruebaRendida, RangoEvaluacion> nivelCol;
 	@FXML
 	private ComboBox<Colegio> cmbColegios;
 	@FXML
@@ -83,8 +84,8 @@ public class EvaluarPruebaView extends AFormView {
 	@FXML
 	private Button btnScanner;
 	@FXML
-	private Button btnManual;
-
+	private MenuItem mnuGrabar;
+	
 	public EvaluarPruebaView() {
 		setTitle("Evaluar");
 	}
@@ -107,6 +108,13 @@ public class EvaluarPruebaView extends AFormView {
 		});
 		cmbCursos.setOnAction(new EHandlerCmbCurso());
 		definirTablaListadoPruebas();
+		mnuGrabar.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				handlerGrabar();				
+			}
+		});
 
 	}
 
@@ -133,7 +141,7 @@ public class EvaluarPruebaView extends AFormView {
 		puntajeCol
 				.setCellValueFactory(new PropertyValueFactory<OTPruebaRendida, Integer>(
 						"puntaje"));
-		nivelCol.setCellValueFactory(new PropertyValueFactory<OTPruebaRendida, String>(
+		nivelCol.setCellValueFactory(new PropertyValueFactory<OTPruebaRendida, RangoEvaluacion>(
 				"nivel"));
 		tblListadoPruebas.setEditable(true);
 
@@ -157,8 +165,7 @@ public class EvaluarPruebaView extends AFormView {
 							CellEditEvent<OTPruebaRendida, String> event) {
 						// Aqui debo validar el resultado de la prueba.
 						String value = event.getNewValue();
-						PruebaRendida pRendida = event.getRowValue()
-								.getPruebaRendida();
+						OTPruebaRendida pRendida = event.getRowValue();
 						if (value != null && !value.isEmpty()) {
 							evaluar(value, pRendida);
 						}
@@ -166,7 +173,8 @@ public class EvaluarPruebaView extends AFormView {
 				});
 	}
 
-	protected void evaluar(String value, PruebaRendida pRendida) {
+	protected void evaluar(String value, OTPruebaRendida otRendida) {
+		PruebaRendida pRendida = otRendida.getPruebaRendida();
 		List<RespuestasEsperadasPrueba> respEsperadas = prueba.getRespuestas();
 		
 		int nMax = Math.min(value.length(), respEsperadas.size());
@@ -192,16 +200,8 @@ public class EvaluarPruebaView extends AFormView {
 
 		float total = pRendida.getBuenas() + pRendida.getMalas() + pRendida.getOmitidas();
 		float porcentaje = ((float)pRendida.getBuenas()) / total * 100f;
-		for(RangoEvaluacion rango: prueba.getNivelEvaluacion().getRangos())
-		{
-			if(porcentaje >= rango.getMinimo() && porcentaje <= rango.getMaximo())
-			{
-				
-			}
-				
-		}
-
-
+		RangoEvaluacion rango =  prueba.getNivelEvaluacion().getRango(porcentaje);
+		otRendida.setNivel(rango);
 	}
 
 	@Override
@@ -302,4 +302,14 @@ public class EvaluarPruebaView extends AFormView {
 			}
 		}
 	}
+	
+	protected void handlerGrabar() {
+		
+		ObservableList<OTPruebaRendida> oList =  tblListadoPruebas.getItems();
+		for(OTPruebaRendida pRendida: oList)
+		{
+			save(pRendida.getPruebaRendida());
+		}
+	}
+
 }
