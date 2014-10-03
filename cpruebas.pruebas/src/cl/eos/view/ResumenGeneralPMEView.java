@@ -1,5 +1,6 @@
 package cl.eos.view;
 
+import java.awt.TextField;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,47 +23,87 @@ import javafx.scene.control.TableView;
 import javafx.util.Callback;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
+import cl.eos.ot.OTPreguntasEjes;
 import cl.eos.ot.OTPreguntasEvaluacion;
-import cl.eos.ot.OTPreguntasHabilidad;
+import cl.eos.persistence.models.Curso;
+import cl.eos.persistence.models.EjeTematico;
 import cl.eos.persistence.models.EvaluacionEjeTematico;
 import cl.eos.persistence.models.EvaluacionPrueba;
 import cl.eos.persistence.models.Habilidad;
+import cl.eos.persistence.models.NivelEvaluacion;
 import cl.eos.persistence.models.Prueba;
 import cl.eos.persistence.models.PruebaRendida;
 import cl.eos.persistence.models.RespuestasEsperadasPrueba;
 import cl.eos.util.ExcelSheetWriter;
 
-public class ComparativoComunalHabilidadView extends AFormView implements
+public class ResumenGeneralPMEView extends AFormView implements
 		EventHandler<ActionEvent> {
 
 	@FXML
 	private Label lblTitulo;
 	@FXML
-	private MenuItem mnuExportarHabilidad;
+	private MenuItem mnuExportarEjesTematicos;
 	@FXML
-	private MenuItem mnuExportarEvaluacion;
+	private MenuItem mnuExportarHabilidades;
+	@FXML
+	private TableView tblEjesTematicos;
+	@FXML
+	private TableColumn colEje;
+	@FXML
+	private TableColumn colEjeLogro;
+
 	@FXML
 	private TableView tblHabilidades;
 	@FXML
-	private TableView tblEvaluaciones;
+	private TableColumn colHabilidad;
+	@FXML
+	private TableColumn colHabilidadLogro;
 
-	private HashMap<Habilidad, HashMap<String, OTPreguntasHabilidad>> mapaHabilidad;
+	@FXML
+	private TableView tblNiveles;
+	@FXML
+	private TableColumn colNivel;
+	@FXML
+	private TableColumn colNivelCantidad;
+	@FXML
+	private TableColumn colNivelLogro;
 
-	private Map<Long, EvaluacionEjeTematico> mEvaluaciones;
+	@FXML
+	private TableView tblReportePME;
 
+	@FXML
+	private TextField txtPromedio;
+	@FXML
+	private TextField txtPuntaje;
+	@FXML
+	private TextField txtNivel;
+	@FXML
+	private TextField txtLogro;
+
+	private Map<EjeTematico, HashMap<String, OTPreguntasEjes>> mapaEjesTematicos;
 	private Map<EvaluacionEjeTematico, HashMap<String, OTPreguntasEvaluacion>> mapEvaAlumnos = null;
 
-	public ComparativoComunalHabilidadView() {
+	private ArrayList<String> titulosColumnas;
+	private Map<Long, EjeTematico> mEjeTematico;
+	private Map<Long, Habilidad> mHabilidad;
+	private Map<Long, NivelEvaluacion> mNivel;
+
+	public ResumenGeneralPMEView() {
 
 	}
 
 	@FXML
 	public void initialize() {
-		this.setTitle("Resumen comparativo comunal habilidad");
+		this.setTitle("Resumen General por curso");
+		inicializarTablaEjes();
 		inicializarTablaHabilidades();
-		inicializarTablaEvaluacion();
 		// mnuExportarEjesTematicos.setOnAction(this);
 		// mnuExportarEvaluacion.setOnAction(this);
+	}
+
+	private void inicializarTablaEjes() {
+		tblEjesTematicos.getSelectionModel().setSelectionMode(
+				SelectionMode.MULTIPLE);
 	}
 
 	private void inicializarTablaHabilidades() {
@@ -70,15 +111,20 @@ public class ComparativoComunalHabilidadView extends AFormView implements
 				SelectionMode.MULTIPLE);
 	}
 
-	private void inicializarTablaEvaluacion() {
-		tblEvaluaciones.getSelectionModel().setSelectionMode(
-				SelectionMode.MULTIPLE);
-	}
-
 	private boolean llegaOnFound = false;
-	private boolean llegaOnDataArrived = false;
-	private ArrayList<String> titulosColumnas;
+	private boolean llegaOnDAEje = false;
+	private boolean llegaOnDAHabilidad = false;
+	private boolean llegaOnDANivel = false;
 	private Prueba prueba;
+
+	private void procesaDatosReporte() {
+		if (llegaOnDAEje && llegaOnDAHabilidad && llegaOnDANivel
+				&& llegaOnFound) {
+			llenarDatosTabla();
+			desplegarDatosEjesTematicos();
+			desplegarDatosEvaluaciones();
+		}
+	}
 
 	@Override
 	public void onFound(IEntity entity) {
@@ -88,47 +134,59 @@ public class ComparativoComunalHabilidadView extends AFormView implements
 		}
 		procesaDatosReporte();
 	}
-	
+
 	@Override
 	public void onDataArrived(List<Object> list) {
 		if (list != null && !list.isEmpty()) {
 			Object entity = list.get(0);
-			if (entity instanceof EvaluacionEjeTematico) {
-				llegaOnDataArrived = true;
-				mEvaluaciones = new HashMap<Long, EvaluacionEjeTematico>();
+
+			if (entity instanceof EjeTematico) {
+				llegaOnDAEje = true;
+				mEjeTematico = new HashMap<Long, EjeTematico>();
 				for (Object object : list) {
-					EvaluacionEjeTematico eje = (EvaluacionEjeTematico) object;
-					mEvaluaciones.put(eje.getId(), eje);
+					EjeTematico eje = (EjeTematico) object;
+					mEjeTematico.put(eje.getId(), eje);
+				}
+			}
+
+			if (entity instanceof Habilidad) {
+				llegaOnDAHabilidad = true;
+				mHabilidad = new HashMap<Long, Habilidad>();
+				for (Object object : list) {
+					Habilidad habilidad = (Habilidad) object;
+					mHabilidad.put(habilidad.getId(), habilidad);
+				}
+			}
+
+			if (entity instanceof NivelEvaluacion) {
+				llegaOnDANivel = true;
+				mNivel = new HashMap<Long, NivelEvaluacion>();
+				for (Object object : list) {
+					NivelEvaluacion nivel = (NivelEvaluacion) object;
+					mNivel.put(nivel.getId(), nivel);
 				}
 			}
 		}
 		procesaDatosReporte();
 	}
 
-	private void procesaDatosReporte() {
-		if (llegaOnDataArrived && llegaOnFound) {
-			llenarDatosTabla();
-			desplegarDatosHabilidades();
-			desplegarDatosEvaluaciones();
-		}
-	}
 	private void llenarDatosTabla() {
-
-		if (llegaOnFound && llegaOnDataArrived) {
 			StringBuffer buffer = new StringBuffer();
-			buffer.append(prueba.getAsignatura());
+			buffer.append(prueba.getName());
 			buffer.append(" ");
-			buffer.append(prueba.getCurso());
+			buffer.append(prueba.getAsignatura().getName());
+			buffer.append(" ");
+			buffer.append(prueba.getCurso().getName());
 			lblTitulo.setText(buffer.toString());
 
-			mapaHabilidad = new HashMap<Habilidad, HashMap<String, OTPreguntasHabilidad>>();
+			mapaEjesTematicos = new HashMap<EjeTematico, HashMap<String, OTPreguntasEjes>>();
 			mapEvaAlumnos = new HashMap<EvaluacionEjeTematico, HashMap<String, OTPreguntasEvaluacion>>();
-			HashMap<String, OTPreguntasHabilidad> mapaColegios = null;
+			HashMap<String, OTPreguntasEjes> mapaColegios = null;
 
 			List<EvaluacionPrueba> listaEvaluaciones = prueba.getEvaluaciones();
 
-			creacionColumnasEjesTematicos(listaEvaluaciones);
-			creacionColumnasEvaluaciones(listaEvaluaciones);
+//			creacionColumnasEjesTematicos(listaEvaluaciones);
+//			creacionColumnasEvaluaciones(listaEvaluaciones);
 
 			// ********** generar datos ejes tematicos y evaluaciones
 
@@ -148,16 +206,16 @@ public class ComparativoComunalHabilidadView extends AFormView implements
 
 					for (RespuestasEsperadasPrueba respuestasEsperadasPrueba : respuestasEsperadas) {
 
-						Habilidad habilidad = respuestasEsperadasPrueba
-								.getHabilidad();
+						EjeTematico ejeTematico = respuestasEsperadasPrueba
+								.getEjeTematico();
 						Integer numeroPreg = respuestasEsperadasPrueba
 								.getNumero();
-						if (mapaHabilidad.containsKey(habilidad)) {
-							HashMap<String, OTPreguntasHabilidad> mapa = mapaHabilidad
-									.get(habilidad);
+						if (mapaEjesTematicos.containsKey(ejeTematico)) {
+							HashMap<String, OTPreguntasEjes> mapa = mapaEjesTematicos
+									.get(ejeTematico);
 
 							if (mapa.containsKey(colegioCurso)) {
-								OTPreguntasHabilidad otPregunta = mapa
+								OTPreguntasEjes otPregunta = mapa
 										.get(colegioCurso);
 
 								if (cRespuesta[numeroPreg - 1] == respuestasEsperadasPrueba
@@ -167,8 +225,8 @@ public class ComparativoComunalHabilidadView extends AFormView implements
 								}
 								otPregunta.setTotal(otPregunta.getTotal() + 1);
 							} else {
-								OTPreguntasHabilidad otPreguntas = new OTPreguntasHabilidad();
-								otPreguntas.setHabilidad(habilidad);
+								OTPreguntasEjes otPreguntas = new OTPreguntasEjes();
+								otPreguntas.setEjeTematico(ejeTematico);
 								if (cRespuesta[numeroPreg - 1] == respuestasEsperadasPrueba
 										.getRespuesta().toCharArray()[0]) {
 									otPreguntas.setBuenas(1);
@@ -180,8 +238,8 @@ public class ComparativoComunalHabilidadView extends AFormView implements
 								mapa.put(colegioCurso, otPreguntas);
 							}
 						} else {
-							OTPreguntasHabilidad otPreguntas = new OTPreguntasHabilidad();
-							otPreguntas.setHabilidad(habilidad);
+							OTPreguntasEjes otPreguntas = new OTPreguntasEjes();
+							otPreguntas.setEjeTematico(ejeTematico);
 							if (cRespuesta[numeroPreg - 1] == respuestasEsperadasPrueba
 									.getRespuesta().toCharArray()[0]) {
 								otPreguntas.setBuenas(1);
@@ -190,15 +248,15 @@ public class ComparativoComunalHabilidadView extends AFormView implements
 							}
 							otPreguntas.setTotal(1);
 
-							mapaColegios = new HashMap<String, OTPreguntasHabilidad>();
+							mapaColegios = new HashMap<String, OTPreguntasEjes>();
 							mapaColegios.put(colegioCurso, otPreguntas);
-							mapaHabilidad.put(habilidad, mapaColegios);
+							mapaEjesTematicos.put(ejeTematico, mapaColegios);
 						}
 					}
 				}
 			}
 		}
-	}
+	
 
 	private void generaDatosEvaluacion(PruebaRendida pruebaRendida,
 			String colegioCurso) {
@@ -206,72 +264,72 @@ public class ComparativoComunalHabilidadView extends AFormView implements
 		HashMap<String, OTPreguntasEvaluacion> mapaOT = new HashMap<String, OTPreguntasEvaluacion>();
 
 		Float pBuenas = pruebaRendida.getPbuenas();
-		for (Entry<Long, EvaluacionEjeTematico> mEvaluacion : mEvaluaciones
-				.entrySet()) {
-
-			EvaluacionEjeTematico evaluacionAl = mEvaluacion.getValue();
-			if (mapEvaAlumnos.containsKey(evaluacionAl)) {
-				HashMap<String, OTPreguntasEvaluacion> evaluacion = mapEvaAlumnos
-						.get(evaluacionAl);
-				if (evaluacion.containsKey(colegioCurso)) {
-					OTPreguntasEvaluacion otPreguntas = evaluacion
-							.get(colegioCurso);
-
-					if (pBuenas >= evaluacionAl.getNroRangoMin()
-							&& pBuenas <= evaluacionAl.getNroRangoMax()) {
-						otPreguntas.setAlumnos(otPreguntas.getAlumnos() + 1);
-					}
-				} else {
-
-					OTPreguntasEvaluacion pregunta = new OTPreguntasEvaluacion();
-					if (pBuenas >= evaluacionAl.getNroRangoMin()
-							&& pBuenas <= evaluacionAl.getNroRangoMax()) {
-						pregunta.setAlumnos(1);
-					} else {
-						pregunta.setAlumnos(0);
-					}
-					pregunta.setEvaluacion(evaluacionAl);
-					evaluacion.put(colegioCurso, pregunta);
-				}
-			} else {
-				OTPreguntasEvaluacion pregunta = new OTPreguntasEvaluacion();
-				if (pBuenas >= evaluacionAl.getNroRangoMin()
-						&& pBuenas <= evaluacionAl.getNroRangoMax()) {
-					pregunta.setAlumnos(1);
-				} else {
-					pregunta.setAlumnos(0);
-				}
-				pregunta.setEvaluacion(evaluacionAl);
-
-				mapaOT = new HashMap<String, OTPreguntasEvaluacion>();
-				mapaOT.put(colegioCurso, pregunta);
-				mapEvaAlumnos.put(evaluacionAl, mapaOT);
-			}
-		}
+//		for (Entry<Long, EvaluacionEjeTematico> mEvaluacion : mEvaluaciones
+//				.entrySet()) {
+//
+//			EvaluacionEjeTematico evaluacionAl = mEvaluacion.getValue();
+//			if (mapEvaAlumnos.containsKey(evaluacionAl)) {
+//				HashMap<String, OTPreguntasEvaluacion> evaluacion = mapEvaAlumnos
+//						.get(evaluacionAl);
+//				if (evaluacion.containsKey(colegioCurso)) {
+//					OTPreguntasEvaluacion otPreguntas = evaluacion
+//							.get(colegioCurso);
+//
+//					if (pBuenas >= evaluacionAl.getNroRangoMin()
+//							&& pBuenas <= evaluacionAl.getNroRangoMax()) {
+//						otPreguntas.setAlumnos(otPreguntas.getAlumnos() + 1);
+//					}
+//				} else {
+//
+//					OTPreguntasEvaluacion pregunta = new OTPreguntasEvaluacion();
+//					if (pBuenas >= evaluacionAl.getNroRangoMin()
+//							&& pBuenas <= evaluacionAl.getNroRangoMax()) {
+//						pregunta.setAlumnos(1);
+//					} else {
+//						pregunta.setAlumnos(0);
+//					}
+//					pregunta.setEvaluacion(evaluacionAl);
+//					evaluacion.put(colegioCurso, pregunta);
+//				}
+//			} else {
+//				OTPreguntasEvaluacion pregunta = new OTPreguntasEvaluacion();
+//				if (pBuenas >= evaluacionAl.getNroRangoMin()
+//						&& pBuenas <= evaluacionAl.getNroRangoMax()) {
+//					pregunta.setAlumnos(1);
+//				} else {
+//					pregunta.setAlumnos(0);
+//				}
+//				pregunta.setEvaluacion(evaluacionAl);
+//
+//				mapaOT = new HashMap<String, OTPreguntasEvaluacion>();
+//				mapaOT.put(colegioCurso, pregunta);
+//				mapEvaAlumnos.put(evaluacionAl, mapaOT);
+//			}
+//		}
 
 	}
 
-	private void desplegarDatosHabilidades() {
+	private void desplegarDatosEjesTematicos() {
 		ObservableList<ObservableList> registros = FXCollections
 				.observableArrayList();
 
-		for (Entry<Habilidad, HashMap<String, OTPreguntasHabilidad>> mapa : mapaHabilidad
+		for (Entry<EjeTematico, HashMap<String, OTPreguntasEjes>> mapa : mapaEjesTematicos
 				.entrySet()) {
 
 			ObservableList<String> row = FXCollections.observableArrayList();
 
-			row.add(((Habilidad) mapa.getKey()).getName());
+			row.add(((EjeTematico) mapa.getKey()).getName());
 
-			HashMap<String, OTPreguntasHabilidad> resultados = mapa.getValue();
+			HashMap<String, OTPreguntasEjes> resultados = mapa.getValue();
 
 			for (String string : titulosColumnas) {
-				OTPreguntasHabilidad otPregunta = resultados.get(string);
+				OTPreguntasEjes otPregunta = resultados.get(string);
 				row.add(String.valueOf(otPregunta.getLogrado()));
 			}
 
 			registros.add(row);
 		}
-		tblHabilidades.setItems(registros);
+		tblEjesTematicos.setItems(registros);
 	}
 
 	private void desplegarDatosEvaluaciones() {
@@ -309,7 +367,7 @@ public class ComparativoComunalHabilidadView extends AFormView implements
 		}
 		registroseEva.add(row);
 
-		tblEvaluaciones.setItems(registroseEva);
+		tblHabilidades.setItems(registroseEva);
 	}
 
 	private void creacionColumnasEjesTematicos(
@@ -324,7 +382,7 @@ public class ComparativoComunalHabilidadView extends AFormView implements
 			}
 		});
 		columna0.setPrefWidth(100);
-		tblHabilidades.getColumns().add(columna0);
+		tblEjesTematicos.getColumns().add(columna0);
 
 		titulosColumnas = new ArrayList<>();
 		int indice = 1;
@@ -343,7 +401,7 @@ public class ComparativoComunalHabilidadView extends AFormView implements
 				}
 			});
 			columna.setPrefWidth(100);
-			tblHabilidades.getColumns().add(columna);
+			tblEjesTematicos.getColumns().add(columna);
 			indice++;
 		}
 	}
@@ -359,7 +417,7 @@ public class ComparativoComunalHabilidadView extends AFormView implements
 			}
 		});
 		columna0.setPrefWidth(100);
-		tblEvaluaciones.getColumns().add(columna0);
+		tblHabilidades.getColumns().add(columna0);
 
 		int indice = 1;
 		for (String evaluacion : titulosColumnas) {
@@ -376,21 +434,19 @@ public class ComparativoComunalHabilidadView extends AFormView implements
 				}
 			});
 			columna.setPrefWidth(100);
-			tblEvaluaciones.getColumns().add(columna);
+			tblHabilidades.getColumns().add(columna);
 			indice++;
 		}
 	}
 
-	
 	@Override
 	public void handle(ActionEvent event) {
 		Object source = event.getSource();
-		if (source == mnuExportarHabilidad) {
+		if (source == mnuExportarEjesTematicos) {
 			// ExportadorDeTablasAExcel
 			// .convertirDatosALibroDeExcel(tblEjesTematicos);
-		} else if (source == mnuExportarEvaluacion) {
-			ExcelSheetWriter
-					.convertirDatosALibroDeExcel(tblEvaluaciones);
+		} else if (source == mnuExportarHabilidades) {
+			ExcelSheetWriter.convertirDatosALibroDeExcel(tblHabilidades);
 		}
 	}
 }

@@ -7,7 +7,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="485.0" prefWidth="687.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.AsignaturasView">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.AsignaturasView">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
@@ -71,7 +71,7 @@
                      <center>
                         <AnchorPane prefHeight="395.0" prefWidth="453.0" BorderPane.alignment="CENTER">
                            <children>
-                              <TableView id="tblAsignaturas" fx:id="tblAsignatura" prefHeight="392.0" prefWidth="444.0" AnchorPane.bottomAnchor="28.0">
+                              <TableView id="tblAsignaturas" fx:id="tblAsignatura" prefHeight="392.0" prefWidth="444.0" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="2.0">
                                 <columns>
                                     <TableColumn fx:id="colId" prefWidth="75.0" text="Identificador" />
                                   <TableColumn fx:id="colNombre" prefWidth="296.0" text="Nombre" />
@@ -81,6 +81,8 @@
                                       <items>
                                         <MenuItem fx:id="mnItemModificar" mnemonicParsing="false" text="Modificar" />
                                           <MenuItem fx:id="mnItemEliminar" mnemonicParsing="false" text="Eliminar" />
+                                          <SeparatorMenuItem mnemonicParsing="false" />
+                                          <MenuItem fx:id="menuExportar" mnemonicParsing="false" text="Exportar a Excel" />
                                       </items>
                                     </ContextMenu>
                                  </contextMenu>

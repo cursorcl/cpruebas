@@ -78,85 +78,91 @@ public class ComparativoComunalEjeView extends AFormView implements
 	private boolean llegaOnFound = false;
 	private boolean llegaOnDataArrived = false;
 	private ArrayList<String> titulosColumnas;
+	private Prueba prueba;
 
 	@Override
 	public void onFound(IEntity entity) {
 		if (entity instanceof Prueba) {
-			Prueba prueba = (Prueba) entity;
+			prueba = (Prueba) entity;
 			llegaOnFound = true;
-			llenarDatosTabla(prueba);
+		}
+		procesaDatosReporte();
+	}
+
+	@Override
+	public void onDataArrived(List<Object> list) {
+		if (list != null && !list.isEmpty()) {
+			Object entity = list.get(0);
+			if (entity instanceof EvaluacionEjeTematico) {
+				llegaOnDataArrived = true;
+				mEvaluaciones = new HashMap<Long, EvaluacionEjeTematico>();
+				for (Object object : list) {
+					EvaluacionEjeTematico eje = (EvaluacionEjeTematico) object;
+					mEvaluaciones.put(eje.getId(), eje);
+				}
+			}
+		}
+		procesaDatosReporte();
+	}
+
+	private void procesaDatosReporte() {
+		if (llegaOnDataArrived && llegaOnFound) {
+			llenarDatosTabla();
 			desplegarDatosEjesTematicos();
 			desplegarDatosEvaluaciones();
 		}
 	}
 
-	private void llenarDatosTabla(Prueba prueba) {
+	private void llenarDatosTabla() {
+		StringBuffer buffer = new StringBuffer();
+		buffer.append(prueba.getAsignatura());
+		buffer.append(" ");
+		buffer.append(prueba.getCurso());
+		lblTitulo.setText(buffer.toString());
 
-		if (llegaOnFound && llegaOnDataArrived) {
-			StringBuffer buffer = new StringBuffer();
-			buffer.append(prueba.getAsignatura());
-			buffer.append(" ");
-			buffer.append(prueba.getCurso());
-			lblTitulo.setText(buffer.toString());
+		mapaEjesTematicos = new HashMap<EjeTematico, HashMap<String, OTPreguntasEjes>>();
+		mapEvaAlumnos = new HashMap<EvaluacionEjeTematico, HashMap<String, OTPreguntasEvaluacion>>();
+		HashMap<String, OTPreguntasEjes> mapaColegios = null;
 
-			mapaEjesTematicos = new HashMap<EjeTematico, HashMap<String, OTPreguntasEjes>>();
-			mapEvaAlumnos = new HashMap<EvaluacionEjeTematico, HashMap<String, OTPreguntasEvaluacion>>();
-			HashMap<String, OTPreguntasEjes> mapaColegios = null;
+		List<EvaluacionPrueba> listaEvaluaciones = prueba.getEvaluaciones();
 
-			List<EvaluacionPrueba> listaEvaluaciones = prueba.getEvaluaciones();
+		creacionColumnasEjesTematicos(listaEvaluaciones);
+		creacionColumnasEvaluaciones(listaEvaluaciones);
 
-			creacionColumnasEjesTematicos(listaEvaluaciones);
-			creacionColumnasEvaluaciones(listaEvaluaciones);
+		// ********** generar datos ejes tematicos y evaluaciones
 
-			// ********** generar datos ejes tematicos y evaluaciones
+		for (EvaluacionPrueba evaluacionPrueba : listaEvaluaciones) {
+			String colegioCurso = evaluacionPrueba.getColegiocurso();
 
-			for (EvaluacionPrueba evaluacionPrueba : listaEvaluaciones) {
-				String colegioCurso = evaluacionPrueba.getColegiocurso();
+			List<PruebaRendida> pruebasRendidas = evaluacionPrueba
+					.getPruebasRendidas();
+			List<RespuestasEsperadasPrueba> respuestasEsperadas = prueba
+					.getRespuestas();
 
-				List<PruebaRendida> pruebasRendidas = evaluacionPrueba
-						.getPruebasRendidas();
-				List<RespuestasEsperadasPrueba> respuestasEsperadas = prueba
-						.getRespuestas();
+			for (PruebaRendida pruebaRendida : pruebasRendidas) {
+				generaDatosEvaluacion(pruebaRendida, colegioCurso);
 
-				for (PruebaRendida pruebaRendida : pruebasRendidas) {
-					generaDatosEvaluacion(pruebaRendida, colegioCurso);
+				String respuesta = pruebaRendida.getRespuestas();
+				char[] cRespuesta = respuesta.toCharArray();
 
-					String respuesta = pruebaRendida.getRespuestas();
-					char[] cRespuesta = respuesta.toCharArray();
+				for (RespuestasEsperadasPrueba respuestasEsperadasPrueba : respuestasEsperadas) {
 
-					for (RespuestasEsperadasPrueba respuestasEsperadasPrueba : respuestasEsperadas) {
+					EjeTematico ejeTematico = respuestasEsperadasPrueba
+							.getEjeTematico();
+					Integer numeroPreg = respuestasEsperadasPrueba.getNumero();
+					if (mapaEjesTematicos.containsKey(ejeTematico)) {
+						HashMap<String, OTPreguntasEjes> mapa = mapaEjesTematicos
+								.get(ejeTematico);
 
-						EjeTematico ejeTematico = respuestasEsperadasPrueba
-								.getEjeTematico();
-						Integer numeroPreg = respuestasEsperadasPrueba
-								.getNumero();
-						if (mapaEjesTematicos.containsKey(ejeTematico)) {
-							HashMap<String, OTPreguntasEjes> mapa = mapaEjesTematicos
-									.get(ejeTematico);
+						if (mapa.containsKey(colegioCurso)) {
+							OTPreguntasEjes otPregunta = mapa.get(colegioCurso);
 
-							if (mapa.containsKey(colegioCurso)) {
-								OTPreguntasEjes otPregunta = mapa
-										.get(colegioCurso);
-
-								if (cRespuesta[numeroPreg - 1] == respuestasEsperadasPrueba
-										.getRespuesta().toCharArray()[0]) {
-									otPregunta
-											.setBuenas(otPregunta.getBuenas() + 1);
-								}
-								otPregunta.setTotal(otPregunta.getTotal() + 1);
-							} else {
-								OTPreguntasEjes otPreguntas = new OTPreguntasEjes();
-								otPreguntas.setEjeTematico(ejeTematico);
-								if (cRespuesta[numeroPreg - 1] == respuestasEsperadasPrueba
-										.getRespuesta().toCharArray()[0]) {
-									otPreguntas.setBuenas(1);
-								} else {
-									otPreguntas.setBuenas(0);
-								}
-								otPreguntas.setTotal(1);
-
-								mapa.put(colegioCurso, otPreguntas);
+							if (cRespuesta[numeroPreg - 1] == respuestasEsperadasPrueba
+									.getRespuesta().toCharArray()[0]) {
+								otPregunta
+										.setBuenas(otPregunta.getBuenas() + 1);
 							}
+							otPregunta.setTotal(otPregunta.getTotal() + 1);
 						} else {
 							OTPreguntasEjes otPreguntas = new OTPreguntasEjes();
 							otPreguntas.setEjeTematico(ejeTematico);
@@ -168,13 +174,26 @@ public class ComparativoComunalEjeView extends AFormView implements
 							}
 							otPreguntas.setTotal(1);
 
-							mapaColegios = new HashMap<String, OTPreguntasEjes>();
-							mapaColegios.put(colegioCurso, otPreguntas);
-							mapaEjesTematicos.put(ejeTematico, mapaColegios);
+							mapa.put(colegioCurso, otPreguntas);
 						}
+					} else {
+						OTPreguntasEjes otPreguntas = new OTPreguntasEjes();
+						otPreguntas.setEjeTematico(ejeTematico);
+						if (cRespuesta[numeroPreg - 1] == respuestasEsperadasPrueba
+								.getRespuesta().toCharArray()[0]) {
+							otPreguntas.setBuenas(1);
+						} else {
+							otPreguntas.setBuenas(0);
+						}
+						otPreguntas.setTotal(1);
+
+						mapaColegios = new HashMap<String, OTPreguntasEjes>();
+						mapaColegios.put(colegioCurso, otPreguntas);
+						mapaEjesTematicos.put(ejeTematico, mapaColegios);
 					}
 				}
 			}
+
 		}
 	}
 
@@ -356,21 +375,6 @@ public class ComparativoComunalEjeView extends AFormView implements
 			columna.setPrefWidth(100);
 			tblEvaluacionEjesTematicos.getColumns().add(columna);
 			indice++;
-		}
-	}
-
-	@Override
-	public void onDataArrived(List<Object> list) {
-		llegaOnDataArrived = true;
-		if (list != null && !list.isEmpty()) {
-			Object entity = list.get(0);
-			if (entity instanceof EvaluacionEjeTematico) {
-				mEvaluaciones = new HashMap<Long, EvaluacionEjeTematico>();
-				for (Object object : list) {
-					EvaluacionEjeTematico eje = (EvaluacionEjeTematico) object;
-					mEvaluaciones.put(eje.getId(), eje);
-				}
-			}
 		}
 	}
 

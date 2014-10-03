@@ -7,7 +7,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="485.0" prefWidth="687.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.ProfesoresView">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.ProfesoresView">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
@@ -29,7 +29,7 @@
                      </accelerator>
                   </MenuItem>
                   <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem fx:id="mnuExportar" mnemonicParsing="false" text="Exportar Profesor" />
+                  <MenuItem fx:id="mnuExportar" mnemonicParsing="false" text="Exportar a excel" />
                   <MenuItem fx:id="mnuImportar" mnemonicParsing="false" text="Importar Profesor" />
                   <SeparatorMenuItem mnemonicParsing="false" />
                   <MenuItem mnemonicParsing="false" text="Cerrar" />
@@ -74,14 +74,12 @@
                            </children>
                         </AnchorPane>
                      </top>
-                     <bottom>
-                        <Pagination prefHeight="42.0" prefWidth="244.0" BorderPane.alignment="CENTER" />
-                     </bottom>
-                     <right>
-                        <ScrollPane prefHeight="360.0" prefWidth="459.0" BorderPane.alignment="CENTER">
-                           <content>
-                              <TableView id="tblProfesores" fx:id="tblProfesores">
+                     <center>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                           <children>
+                              <TableView id="tblProfesores" fx:id="tblProfesores" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="2.0">
                                 <columns>
+                                    <TableColumn fx:id="colId" prefWidth="75.0" text="Identificacion" />
                                   <TableColumn fx:id="colRut" prefWidth="100.0" text="Rut" />
                                   <TableColumn fx:id="colPaterno" prefWidth="107.0" text="A.Paterno" />
                                     <TableColumn fx:id="colMaterno" prefWidth="100.0" text="A.Materno" />
@@ -92,6 +90,8 @@
                                       <items>
                                         <MenuItem fx:id="mnItemModificar" mnemonicParsing="false" text="Modificar" />
                                           <MenuItem fx:id="mnItemEliminar" mnemonicParsing="false" text="Eliminar" />
+                                          <SeparatorMenuItem mnemonicParsing="false" />
+                                          <MenuItem fx:id="menuExportar" mnemonicParsing="false" text="Exportar a Excel" />
                                       </items>
                                     </ContextMenu>
                                  </contextMenu>
@@ -99,9 +99,9 @@
                                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                  </columnResizePolicy>
                               </TableView>
-                           </content>
-                        </ScrollPane>
-                     </right>
+                           </children>
+                        </AnchorPane>
+                     </center>
                   </BorderPane>
                </children>
             </AnchorPane>

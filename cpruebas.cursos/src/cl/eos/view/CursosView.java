@@ -23,6 +23,7 @@ import cl.eos.interfaces.entity.IEntity;
 import cl.eos.persistence.models.Colegio;
 import cl.eos.persistence.models.Curso;
 import cl.eos.persistence.models.Ciclo;
+import cl.eos.persistence.models.TipoCurso;
 import cl.eos.util.ExcelSheetWriter;
 
 public class CursosView extends AFormView implements EventHandler<ActionEvent> {
@@ -63,10 +64,16 @@ public class CursosView extends AFormView implements EventHandler<ActionEvent> {
 	private ComboBox<Colegio> cmbColegio;
 
 	@FXML
+	private ComboBox<TipoCurso> cmbTipoCurso;
+
+	@FXML
 	private Label lblError;
 
 	@FXML
 	private TableView<Curso> tblCurso;
+
+	@FXML
+	private TableColumn<Curso, Long> colId;
 
 	@FXML
 	private TableColumn<Curso, String> colNombre;
@@ -76,6 +83,9 @@ public class CursosView extends AFormView implements EventHandler<ActionEvent> {
 
 	@FXML
 	private TableColumn<Curso, String> colColegio;
+
+	@FXML
+	private TableColumn<Curso, String> colTpCurso;
 
 	public CursosView() {
 		setTitle("Cursos");
@@ -103,6 +113,7 @@ public class CursosView extends AFormView implements EventHandler<ActionEvent> {
 			txtNombre.setText(curso.getName());
 			cmbNivel.setValue(curso.getCiclo());
 			cmbColegio.setValue(curso.getColegio());
+			cmbTipoCurso.setValue(curso.getTipoCurso());
 		}
 	}
 
@@ -154,6 +165,7 @@ public class CursosView extends AFormView implements EventHandler<ActionEvent> {
 			curso.setName(txtNombre.getText());
 			curso.setCiclo(cmbNivel.getValue());
 			curso.setColegio(cmbColegio.getValue());
+			curso.setTipoCurso(cmbTipoCurso.getValue());
 			save(curso);
 		} else {
 			lblError.getStyleClass().add("bad");
@@ -164,12 +176,15 @@ public class CursosView extends AFormView implements EventHandler<ActionEvent> {
 
 	private void inicializaTabla() {
 		tblCurso.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+		colId.setCellValueFactory(new PropertyValueFactory<Curso, Long>("id"));
 		colNombre.setCellValueFactory(new PropertyValueFactory<Curso, String>(
 				"name"));
 		colColegio.setCellValueFactory(new PropertyValueFactory<Curso, String>(
 				"colegio"));
 		colNivel.setCellValueFactory(new PropertyValueFactory<Curso, String>(
 				"ciclo"));
+		colTpCurso.setCellValueFactory(new PropertyValueFactory<Curso, String>(
+				"tipoCurso"));
 	}
 
 	private void limpiarControles() {
@@ -177,6 +192,7 @@ public class CursosView extends AFormView implements EventHandler<ActionEvent> {
 		cmbNivel.getSelectionModel().clearSelection();
 		cmbColegio.getSelectionModel().clearSelection();
 		tblCurso.getSelectionModel().clearSelection();
+		cmbTipoCurso.getSelectionModel().clearSelection();
 		select(null);
 	}
 
@@ -230,6 +246,13 @@ public class CursosView extends AFormView implements EventHandler<ActionEvent> {
 					oList.add((Ciclo) iEntity);
 				}
 				cmbNivel.setItems(oList);
+			} else if (entity instanceof TipoCurso) {
+				ObservableList<TipoCurso> oList = FXCollections
+						.observableArrayList();
+				for (Object iEntity : list) {
+					oList.add((TipoCurso) iEntity);
+				}
+				cmbTipoCurso.setItems(oList);
 			}
 		}
 	}

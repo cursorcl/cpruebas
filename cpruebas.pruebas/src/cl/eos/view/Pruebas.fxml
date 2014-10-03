@@ -163,7 +163,7 @@
                      <center>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                            <children>
-                              <TableView id="tblListadoPruebas" fx:id="tblListadoPruebas" prefHeight="400.0" prefWidth="696.0" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="2.0">
+                              <TableView id="tblListadoPruebas" fx:id="tblListadoPruebas" layoutX="-41.0" layoutY="-41.0" prefHeight="400.0" prefWidth="696.0" AnchorPane.bottomAnchor="45.0" AnchorPane.leftAnchor="-41.0" AnchorPane.rightAnchor="45.0" AnchorPane.topAnchor="-41.0">
                                 <columns>
                                   <TableColumn fx:id="fechaCol" text="Fecha" />
                                     <TableColumn fx:id="nameCol" prefWidth="155.0" text="Nombre" />
@@ -184,7 +184,7 @@
                                           <MenuItem fx:id="mnuComparativoComunal" mnemonicParsing="false" text="Comparativo comunal ejes temáticos" />
                                           <MenuItem fx:id="mnuComparativoComunalHab" mnemonicParsing="false" text="Comparativo comunal habilidades" />
                                           <MenuItem fx:id="mnuComunalEje" mnemonicParsing="false" text="Comunal ejes temáticos" />
-                                          <MenuItem fx:id="mnuComunalHabilidad" mnemonicParsing="false" text="Comunal habilidades" />
+                                          <MenuItem fx:id="mnuResumenPME" mnemonicParsing="false" text="Resumen general PME" />
                                       </items>
                                     </ContextMenu>
                                  </contextMenu>

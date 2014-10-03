@@ -28,13 +28,11 @@ import cl.eos.persistence.models.Prueba;
 import cl.eos.persistence.models.PruebaRendida;
 import cl.eos.persistence.models.TipoCurso;
 
-public class ComunalCursoHabilidad extends AFormView implements
+public class ComunalCursoView extends AFormView implements
 		EventHandler<ActionEvent> {
 
 	@FXML
 	private Label lblTitulo;
-	private boolean llegaOnDataArrived;
-	private boolean llegaOnFound;
 	@FXML
 	private TableView tblEvaluaciones;
 	@FXML
@@ -43,19 +41,14 @@ public class ComunalCursoHabilidad extends AFormView implements
 	private HashMap<Long, EvaluacionEjeTematico> mEvaluaciones;
 	private Map<EvaluacionEjeTematico, HashMap<String, OTPreguntasEvaluacion>> mapEvaAlumnos = null;
 	private ArrayList<String> titulosColumnas;
+	private boolean llegaOnDAEvaluacion;
+	private boolean llegaOnDAPrueba;
 
-	public ComunalCursoHabilidad() {
-		// TODO Auto-generated constructor stub
+	public ComunalCursoView() {
 	}
 
 	@Override
 	public void handle(ActionEvent arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void onFound(IEntity entity) {
 
 	}
 
@@ -93,7 +86,8 @@ public class ComunalCursoHabilidad extends AFormView implements
 
 		// Total evaluados
 		float total = 0;
-		for (HashMap<String, OTPreguntasEvaluacion> resultados : mapEvaAlumnos.values()) {
+		for (HashMap<String, OTPreguntasEvaluacion> resultados : mapEvaAlumnos
+				.values()) {
 
 			for (String string : titulosColumnas) {
 				OTPreguntasEvaluacion otPregunta = resultados.get(string);
@@ -114,9 +108,11 @@ public class ComunalCursoHabilidad extends AFormView implements
 				Prueba prueba = (Prueba) objeto;
 				String tipoCurso = prueba.getCurso().getName();
 
-				List<EvaluacionPrueba> listaEvaluaciones = prueba.getEvaluaciones();
+				List<EvaluacionPrueba> listaEvaluaciones = prueba
+						.getEvaluaciones();
 				for (EvaluacionPrueba evaluacionPrueba : listaEvaluaciones) {
-					int totalAlumnos = evaluacionPrueba.getCurso().getAlumnos().size();
+					int totalAlumnos = evaluacionPrueba.getCurso().getAlumnos()
+							.size();
 					if (totalInformados.containsKey(tipoCurso)) {
 						total = totalInformados.get(tipoCurso) + totalAlumnos;
 						totalInformados.replace(tipoCurso, total);
@@ -156,7 +152,7 @@ public class ComunalCursoHabilidad extends AFormView implements
 		for (Object object : list) {
 			if (object instanceof Prueba) {
 				Prueba prueba = (Prueba) object;
-				if (llegaOnFound && llegaOnDataArrived) {
+				if (llegaOnDAPrueba && llegaOnDAEvaluacion) {
 					StringBuffer buffer = new StringBuffer();
 					buffer.append(prueba.getAsignatura());
 					buffer.append(" ");
@@ -326,10 +322,10 @@ public class ComunalCursoHabilidad extends AFormView implements
 
 	@Override
 	public void onDataArrived(List<Object> list) {
-		llegaOnDataArrived = true;
 		if (list != null && !list.isEmpty()) {
 			Object entity = list.get(0);
 			if (entity instanceof EvaluacionEjeTematico) {
+				llegaOnDAEvaluacion = true;
 				mEvaluaciones = new HashMap<Long, EvaluacionEjeTematico>();
 				for (Object object : list) {
 					EvaluacionEjeTematico eje = (EvaluacionEjeTematico) object;
@@ -338,10 +334,14 @@ public class ComunalCursoHabilidad extends AFormView implements
 			}
 
 			if (entity instanceof Prueba) {
-				llegaOnFound = true;
+				llegaOnDAPrueba = true;
+			}
+			if (llegaOnDAEvaluacion && llegaOnDAPrueba) {
 				llenarDatosTabla(list);
 				desplegarDatosEvaluaciones();
 				desplegarDatosTotales(list);
+				llegaOnDAEvaluacion = false;
+				llegaOnDAPrueba = false;
 			}
 		}
 	}

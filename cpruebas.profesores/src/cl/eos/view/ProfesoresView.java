@@ -18,6 +18,7 @@ import javafx.scene.input.MouseEvent;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.persistence.models.Profesor;
+import cl.eos.util.ExcelSheetWriter;
 import cl.eos.util.Utils;
 
 public class ProfesoresView extends AFormView implements
@@ -30,6 +31,9 @@ public class ProfesoresView extends AFormView implements
 
 	@FXML
 	private MenuItem mnItemModificar;
+	
+	@FXML
+	private MenuItem mnuAgregar;
 
 	@FXML
 	private MenuItem mnuGrabar;
@@ -39,6 +43,12 @@ public class ProfesoresView extends AFormView implements
 
 	@FXML
 	private MenuItem mnuModificar;
+
+	@FXML
+	private MenuItem menuExportar;
+
+	@FXML
+	private MenuItem mnuExportar;
 
 	@FXML
 	private TextField txtRut;
@@ -57,6 +67,9 @@ public class ProfesoresView extends AFormView implements
 
 	@FXML
 	private TableView<Profesor> tblProfesores;
+
+	@FXML
+	private TableColumn<Profesor, Long> colId;
 
 	@FXML
 	private TableColumn<Profesor, String> colRut;
@@ -78,12 +91,14 @@ public class ProfesoresView extends AFormView implements
 	public void initialize() {
 		inicializaTabla();
 		accionClicTabla();
-
+		mnuAgregar.setOnAction(this);
 		mnuGrabar.setOnAction(this);
 		mnuModificar.setOnAction(this);
 		mnuEliminar.setOnAction(this);
 		mnItemEliminar.setOnAction(this);
 		mnItemModificar.setOnAction(this);
+		mnuExportar.setOnAction(this);
+		menuExportar.setOnAction(this);
 	}
 
 	private void accionClicTabla() {
@@ -157,6 +172,7 @@ public class ProfesoresView extends AFormView implements
 	private void inicializaTabla() {
 		tblProfesores.getSelectionModel().setSelectionMode(
 				SelectionMode.MULTIPLE);
+		colId.setCellValueFactory(new PropertyValueFactory<Profesor, Long>("id"));
 		colRut.setCellValueFactory(new PropertyValueFactory<Profesor, String>(
 				"rut"));
 		colPaterno
@@ -267,12 +283,16 @@ public class ProfesoresView extends AFormView implements
 	@Override
 	public void handle(ActionEvent event) {
 		Object source = event.getSource();
-		if (source == mnuModificar || source == mnItemModificar) {
+		if (source == mnuAgregar) {
+			limpiarControles();
+		} else if (source == mnuModificar || source == mnItemModificar) {
 			accionModificar();
 		} else if (source == mnuGrabar) {
 			accionGrabar();
 		} else if (source == mnuEliminar || source == mnItemEliminar) {
 			accionEliminar();
+		} else if (source == mnuExportar || source == menuExportar) {
+			ExcelSheetWriter.convertirDatosALibroDeExcel(tblProfesores);
 		}
 	}
 }

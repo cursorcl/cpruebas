@@ -1,14 +1,9 @@
 package cl.eos.view;
 
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.List;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -21,9 +16,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-
-import javax.imageio.ImageIO;
-
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.persistence.models.Colegio;
@@ -155,11 +147,11 @@ public class ColegiosView extends AFormView implements
 			txtNombre.setText(colegio.getName());
 			txtDireccion.setText(colegio.getDireccion());
 
-			ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(
-					colegio.getImage());
-			javafx.scene.image.Image image = new javafx.scene.image.Image(
-					byteArrayInputStream);
-			imgColegio.setImage(image);
+//			ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(
+//					colegio.getImage());
+//			javafx.scene.image.Image image = new javafx.scene.image.Image(
+//					byteArrayInputStream);
+//			imgColegio.setImage(image);
 		}
 	}
 
@@ -185,16 +177,16 @@ public class ColegiosView extends AFormView implements
 			}
 			colegio.setName(txtNombre.getText());
 			colegio.setDireccion(txtDireccion.getText());
-			BufferedImage bufferImg = SwingFXUtils.fromFXImage(
-					imgColegio.getImage(), null);
+//			BufferedImage bufferImg = SwingFXUtils.fromFXImage(
+//					imgColegio.getImage(), null);
 
-			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-			try {
-				ImageIO.write(bufferImg, "png", outputStream);
-				colegio.setImage(outputStream.toByteArray());
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+//			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+//			try {
+//				ImageIO.write(bufferImg, "png", outputStream);
+//				colegio.setImage(outputStream.toByteArray());
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
 			save(colegio);
 		} else {
 			lblError.getStyleClass().add("bad");
@@ -206,14 +198,14 @@ public class ColegiosView extends AFormView implements
 	private void limpiarControles() {
 		txtNombre.clear();
 		txtDireccion.clear();
-		imgColegio.setImage(null);
+		//imgColegio.setImage(null);
 		select(null);
 		tblColegio.getSelectionModel().clearSelection();
 	}
 
 	@Override
 	public void onSaved(IEntity otObject) {
-		System.out.println("Elemento grabando:" + otObject.toString());
+		//System.out.println("Elemento grabando:" + otObject.toString());
 		int indice = tblColegio.getItems().lastIndexOf(otObject);
 		if (indice != -1) {
 			tblColegio.getItems().remove(otObject);
@@ -225,7 +217,7 @@ public class ColegiosView extends AFormView implements
 
 	@Override
 	public void onDeleted(IEntity entity) {
-		System.out.println("Elementoeliminando:" + entity.toString());
+		//System.out.println("Elementoeliminando:" + entity.toString());
 		tblColegio.getItems().remove(entity);
 	}
 

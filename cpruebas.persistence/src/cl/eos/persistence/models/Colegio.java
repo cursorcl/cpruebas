@@ -1,6 +1,5 @@
 package cl.eos.persistence.models;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -20,8 +19,8 @@ public class Colegio implements IEntity {
 	private Long id;
 	private String name;
 	
-	@Column(name="image", columnDefinition="blob")
-	private byte[] image;
+//	@Column(name="image", columnDefinition="blob")
+//	private byte[] image;
 	
 	private String direccion;
 	
@@ -51,13 +50,14 @@ public class Colegio implements IEntity {
 		return true;
 	}
 
-	public byte[] getImage() {
-		return image;
-	}
-
-	public void setImage(byte[] image) {
-		this.image = image;
-	}
+	//
+	// public byte[] getImage() {
+	// return image;
+	// }
+	//
+	// public void setImage(byte[] image) {
+	// this.image = image;
+	// }
 
 	public String getDireccion() {
 		return direccion;

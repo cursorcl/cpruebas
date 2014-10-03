@@ -18,26 +18,35 @@ import javafx.scene.input.MouseEvent;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.persistence.models.Habilidad;
+import cl.eos.util.ExcelSheetWriter;
 
 public class HabilidadesView extends AFormView implements
 		EventHandler<ActionEvent> {
 
 	private static final int LARGO_CAMPO_TEXT = 100;
-
+	@FXML
+	private MenuItem mnuAgregar;
+	
 	@FXML
 	private MenuItem mnuGrabar;
 
 	@FXML
-	private MenuItem mnItemEliminar;
+	private MenuItem menuEliminar;
 
 	@FXML
-	private MenuItem mnItemModificar;
+	private MenuItem menuModificar;
 
 	@FXML
 	private MenuItem mnuEliminar;
 
 	@FXML
 	private MenuItem mnuModificar;
+
+	@FXML
+	private MenuItem menuExportar;
+
+	@FXML
+	private MenuItem mnuExportar;
 
 	@FXML
 	private Label lblError;
@@ -50,6 +59,9 @@ public class HabilidadesView extends AFormView implements
 
 	@FXML
 	private TableView<Habilidad> tblHabilidades;
+
+	@FXML
+	private TableColumn<Habilidad, Long> colId;
 
 	@FXML
 	private TableColumn<Habilidad, String> colNombre;
@@ -65,17 +77,21 @@ public class HabilidadesView extends AFormView implements
 	public void initialize() {
 		inicializaTabla();
 		accionClicTabla();
-
+		mnuAgregar.setOnAction(this);
 		mnuGrabar.setOnAction(this);
 		mnuModificar.setOnAction(this);
 		mnuEliminar.setOnAction(this);
-		mnItemEliminar.setOnAction(this);
-		mnItemModificar.setOnAction(this);
+		menuEliminar.setOnAction(this);
+		menuModificar.setOnAction(this);
+		menuExportar.setOnAction(this);
+		mnuExportar.setOnAction(this);
 	}
 
 	private void inicializaTabla() {
 		tblHabilidades.getSelectionModel().setSelectionMode(
 				SelectionMode.MULTIPLE);
+		colId.setCellValueFactory(new PropertyValueFactory<Habilidad, Long>(
+				"id"));
 		colNombre
 				.setCellValueFactory(new PropertyValueFactory<Habilidad, String>(
 						"name"));
@@ -138,12 +154,12 @@ public class HabilidadesView extends AFormView implements
 						.getSelectionModel().getSelectedItems();
 
 				if (itemsSelec.size() > 1) {
-					mnItemModificar.setDisable(true);
-					mnItemEliminar.setDisable(false);
+					menuModificar.setDisable(true);
+					menuEliminar.setDisable(false);
 				} else if (itemsSelec.size() == 1) {
 					select((IEntity) itemsSelec.get(0));
-					mnItemModificar.setDisable(false);
-					mnItemEliminar.setDisable(false);
+					menuModificar.setDisable(false);
+					menuEliminar.setDisable(false);
 				}
 			}
 		});
@@ -216,12 +232,17 @@ public class HabilidadesView extends AFormView implements
 	@Override
 	public void handle(ActionEvent event) {
 		Object source = event.getSource();
-		if (source == mnuModificar || source == mnItemModificar) {
+		if (source == mnuAgregar) {
+			limpiarControles();
+		} else
+		if (source == mnuModificar || source == menuModificar) {
 			accionModificar();
 		} else if (source == mnuGrabar) {
 			accionGrabar();
-		} else if (source == mnuEliminar || source == mnItemEliminar) {
+		} else if (source == mnuEliminar || source == menuEliminar) {
 			accionEliminar();
+		} else if (source == mnuExportar || source == menuExportar) {
+			ExcelSheetWriter.convertirDatosALibroDeExcel(tblHabilidades);
 		}
 	}
 }

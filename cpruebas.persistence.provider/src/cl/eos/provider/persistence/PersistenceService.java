@@ -13,8 +13,6 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
-import org.controlsfx.dialog.Dialogs;
-
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.interfaces.entity.IPersistenceListener;
 import cl.eos.persistence.IPersistenceService;
@@ -293,16 +291,16 @@ public class PersistenceService implements IPersistenceService {
 						int indice = 1;
 						Query query = eManager.createNativeQuery(insert);
 						if (query != null) {
+							eManager.getTransaction().begin();
 							List<Object> columnas = ((List<Object>) fila);
 							for (int i = 0; i < columnas.size(); i++) {
-								eManager.getTransaction().begin();
 								query.setParameter(indice++, columnas.get(i));
-								query.executeUpdate();
-								eManager.getTransaction().commit();
 							}
+							query.executeUpdate();
+							eManager.getTransaction().commit();
 						}
 					}
-					
+
 				} catch (Exception e) {
 					e.printStackTrace();
 					eManager.getTransaction().rollback();

@@ -4,8 +4,6 @@ import java.awt.MenuContainer;
 import java.io.File;
 import java.util.List;
 
-import org.controlsfx.dialog.Dialogs;
-
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -13,10 +11,11 @@ import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.ProgressBar;
-import javafx.scene.control.ProgressIndicator;
 import javafx.stage.FileChooser;
 import jfxtras.labs.scene.control.BreadcrumbBar;
+
+import org.controlsfx.dialog.Dialogs;
+
 import cl.eos.imp.view.WindowManager;
 import cl.eos.interfaces.IActivator;
 import cl.eos.provider.persistence.PersistenceServiceFactory;

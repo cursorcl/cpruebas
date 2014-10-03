@@ -7,7 +7,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="485.0" prefWidth="687.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.CursosView">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.CursosView">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
@@ -61,19 +61,30 @@
                   <ComboBox fx:id="cmbColegio" prefHeight="25.0" prefWidth="204.0" promptText="Colegio" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="100.0" />
                   <Label prefHeight="17.0" prefWidth="206.0" text="Ciclo" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="130.0" />
                   <ComboBox id="cmbNivel" fx:id="cmbNivel" prefHeight="23.0" prefWidth="302.0" promptText="Ciclo" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="150.0" />
+                  <Label layoutX="20.0" layoutY="186.0" text="Tipo curso" AnchorPane.topAnchor="180.0" />
+                  <ComboBox fx:id="cmbTipoCurso" layoutX="20.0" layoutY="203.0" prefWidth="150.0" promptText="Tipo curso" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="200.0" />
                </children>
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
                   <BorderPane prefHeight="459.0" prefWidth="370.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <top>
+                        <AnchorPane prefHeight="53.0" prefWidth="370.0" BorderPane.alignment="CENTER">
+                           <children>
+                              <TextField layoutX="272.0" layoutY="15.0" prefHeight="23.0" prefWidth="167.0" promptText="Buscar" />
+                           </children>
+                        </AnchorPane>
+                     </top>
                      <center>
-                        <ScrollPane prefHeight="311.0" prefWidth="370.0" BorderPane.alignment="CENTER">
-                           <content>
-                              <TableView id="tblCursos" fx:id="tblCurso" prefHeight="400.0" prefWidth="440.0">
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                           <children>
+                              <TableView id="tblCursos" fx:id="tblCurso" prefHeight="400.0" prefWidth="440.0" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="2.0">
                                 <columns>
+                                    <TableColumn fx:id="colId" prefWidth="75.0" text="Identificador" />
                                   <TableColumn fx:id="colNombre" prefWidth="194.0" text="Nombre" />
                                     <TableColumn fx:id="colColegio" prefWidth="75.0" text="Colegio" />
                                     <TableColumn fx:id="colNivel" prefWidth="150.0" text="Nivel" />
+                                    <TableColumn fx:id="colTpCurso" prefWidth="75.0" text="Tipo curso" />
                                 </columns>
                                  <contextMenu>
                                     <ContextMenu>
@@ -89,16 +100,9 @@
                                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                  </columnResizePolicy>
                               </TableView>
-                           </content>
-                        </ScrollPane>
-                     </center>
-                     <top>
-                        <AnchorPane prefHeight="53.0" prefWidth="370.0" BorderPane.alignment="CENTER">
-                           <children>
-                              <TextField layoutX="272.0" layoutY="15.0" prefHeight="23.0" prefWidth="167.0" promptText="Buscar" />
                            </children>
                         </AnchorPane>
-                     </top>
+                     </center>
                   </BorderPane>
                </children>
             </AnchorPane>

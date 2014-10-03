@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.Date;
 
 import javafx.scene.control.TableColumn;
@@ -39,7 +40,8 @@ public final class ExcelSheetWriter {
 	public static void convertirDatosALibroDeExcel(
 			TableView<? extends IEntity> tabla) {
 		final Workbook wbWork = crearLibroConDatosDeTabla(tabla);
-		final String nombreDoc = "wb-" + ".xls";
+		long time = Calendar.getInstance().getTimeInMillis();
+		final String nombreDoc = "wb" + time + ".xls";
 		FileOutputStream fileOut = null;
 		try {
 			fileOut = new FileOutputStream(nombreDoc);

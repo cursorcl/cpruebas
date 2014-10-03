@@ -27,6 +27,7 @@ import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.persistence.models.Asignatura;
 import cl.eos.persistence.models.Curso;
+import cl.eos.persistence.models.EjeTematico;
 import cl.eos.persistence.models.EvaluacionEjeTematico;
 import cl.eos.persistence.models.Habilidad;
 import cl.eos.persistence.models.NivelEvaluacion;
@@ -113,15 +114,15 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 	@FXML
 	private MenuItem mnuComunalEje;
 	@FXML
-	private MenuItem mnuComunalHabilidad;
+	private MenuItem mnuResumenPME;
 
 	private EvaluacionPruebaView evaluacionPrueba;
 	private DefinePruebaViewController definePrueba;
 	private Prueba prueba;
 	private ComparativoComunalEjeView comparativoComunal;
 	private ComparativoComunalHabilidadView comparativoComunalHabilidad;
-	private ComunalCursoEjeTematico comunalEje;
-	private ComunalCursoHabilidad comunalHabilidad;
+	private ComunalCursoView comunalEje;
+	private ResumenGeneralPMEView resumenGeneralPME;
 
 	public PruebasView() {
 		setTitle("Pruebas");
@@ -192,7 +193,8 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 		mnuComparativoComunal.setOnAction(this);
 		mnuComparativoComunalHab.setOnAction(this);
 		mnuComunalEje.setOnAction(this);
-		mnuComunalHabilidad.setOnAction(this);
+		mnuResumenPME.setOnAction(this);
+		
 	}
 
 	@Override
@@ -356,28 +358,29 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 			handlerComparativoComunalHab();
 		} else if (source == mnuComunalEje) {
 			handlerComunalEje();
-		} else if (source == mnuComunalHabilidad) {
-			handlerComunalHabilidad();
+		} else if (source == mnuResumenPME) {
+			handlerResumenPME();
 		}
 	}
 
-	private void handlerComunalHabilidad() {
-		if (comunalHabilidad == null) {
-			comunalHabilidad = (ComunalCursoHabilidad) show("/cl/eos/view/ComunalHabilidad.fxml");
+	private void handlerResumenPME() {
+		if (resumenGeneralPME == null) {
+			resumenGeneralPME = (ResumenGeneralPMEView) show("/cl/eos/view/ResumenGeneralPME.fxml");
 		} else {
-			show(comunalHabilidad);
+			show(resumenGeneralPME);
 		}
 		Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem();
 		if (prueba != null) {
 			controller.findById(Prueba.class, prueba.getId());
-			controller.findAll(EvaluacionEjeTematico.class);
-			controller.findAll(Curso.class);
+			controller.findAll(EjeTematico.class);
+			controller.findAll(Habilidad.class);
+			controller.findAll(NivelEvaluacion.class);
 		}
 	}
 	
 	private void handlerComunalEje() {
 		if (comunalEje == null) {
-			comunalEje = (ComunalCursoEjeTematico) show("/cl/eos/view/ComunalEje.fxml");
+			comunalEje = (ComunalCursoView) show("/cl/eos/view/ComunalEje.fxml");
 		} else {
 			show(comunalEje);
 		}
@@ -385,7 +388,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 		if (prueba != null) {
 			controller.findByAllId(Prueba.class, prueba.toArray());
 			controller.findAll(EvaluacionEjeTematico.class);
-			controller.findAll(Curso.class);
+//			controller.findAll(Curso.class);
 		}
 	}
 

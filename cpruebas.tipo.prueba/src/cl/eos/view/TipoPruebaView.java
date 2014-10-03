@@ -18,10 +18,14 @@ import javafx.scene.input.MouseEvent;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.persistence.models.TipoPrueba;
+import cl.eos.util.ExcelSheetWriter;
 
 public class TipoPruebaView extends AFormView implements
 		EventHandler<ActionEvent> {
 	private static final int LARGO_CAMPO_TEXT = 100;
+
+	@FXML
+	private MenuItem mnuAgregar;
 
 	@FXML
 	private MenuItem mnuGrabar;
@@ -39,6 +43,12 @@ public class TipoPruebaView extends AFormView implements
 	private MenuItem mnuModificar;
 
 	@FXML
+	private MenuItem menuExportar;
+
+	@FXML
+	private MenuItem mnuExportar;
+
+	@FXML
 	private TextField txtNombre;
 
 	@FXML
@@ -46,6 +56,9 @@ public class TipoPruebaView extends AFormView implements
 
 	@FXML
 	private TableView<TipoPrueba> tblTipoPrueba;
+
+	@FXML
+	private TableColumn<TipoPrueba, Long> colId;
 
 	@FXML
 	private TableColumn<TipoPrueba, String> colNombre;
@@ -58,17 +71,21 @@ public class TipoPruebaView extends AFormView implements
 	public void initialize() {
 		inicializaTabla();
 		accionClicTabla();
-
+		mnuAgregar.setOnAction(this);
 		mnuGrabar.setOnAction(this);
 		mnuModificar.setOnAction(this);
 		mnuEliminar.setOnAction(this);
 		mnItemEliminar.setOnAction(this);
 		mnItemModificar.setOnAction(this);
+		menuExportar.setOnAction(this);
+		mnuExportar.setOnAction(this);
 	}
 
 	private void inicializaTabla() {
 		tblTipoPrueba.getSelectionModel().setSelectionMode(
 				SelectionMode.MULTIPLE);
+		colId.setCellValueFactory(new PropertyValueFactory<TipoPrueba, Long>(
+				"id"));
 		colNombre
 				.setCellValueFactory(new PropertyValueFactory<TipoPrueba, String>(
 						"name"));
@@ -191,12 +208,18 @@ public class TipoPruebaView extends AFormView implements
 	@Override
 	public void handle(ActionEvent event) {
 		Object source = event.getSource();
-		if (source == mnuModificar || source == mnItemModificar) {
+		if (source == mnuAgregar) {
+			limpiarControles();
+		} else if (source == mnuModificar || source == mnItemModificar) {
 			accionModificar();
 		} else if (source == mnuGrabar) {
 			accionGrabar();
 		} else if (source == mnuEliminar || source == mnItemEliminar) {
 			accionEliminar();
+		} else if (source == mnuExportar || source == menuExportar) {
+			ExcelSheetWriter.convertirDatosALibroDeExcel(tblTipoPrueba);
 		}
 	}
+
+	
 }
