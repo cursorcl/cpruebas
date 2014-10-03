@@ -6,6 +6,7 @@ import cl.eos.util.Utils;
 public class OTPruebaRendida {
 
 	private PruebaRendida pruebaRendida;
+	private String nivel;
 
 	public OTPruebaRendida(PruebaRendida pruebaRendida) {
 		this.pruebaRendida = pruebaRendida;
@@ -48,9 +49,12 @@ public class OTPruebaRendida {
 	}
 	public String getNivel()
 	{
-		return "NN";
+		return  nivel;
 	}
-
+	public void setNivel(String nivel)
+	{
+		this.nivel = nivel;
+	}
 	public PruebaRendida getPruebaRendida() {
 		return pruebaRendida;
 	}
