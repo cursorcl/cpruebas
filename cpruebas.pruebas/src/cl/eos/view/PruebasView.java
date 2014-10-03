@@ -27,10 +27,8 @@ import jfxtras.labs.scene.control.BigDecimalField;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.persistence.models.Asignatura;
-import cl.eos.persistence.models.Curso;
-import cl.eos.persistence.models.EjeTematico;
-import cl.eos.persistence.models.EvaluacionEjeTematico;
 import cl.eos.persistence.models.Colegio;
+import cl.eos.persistence.models.EvaluacionEjeTematico;
 import cl.eos.persistence.models.Habilidad;
 import cl.eos.persistence.models.NivelEvaluacion;
 import cl.eos.persistence.models.Profesor;
@@ -115,8 +113,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 
 	@FXML
 	private MenuItem mnuComunalEje;
-	@FXML
-	private MenuItem mnuResumenPME;
+	
 	@FXML
 	private MenuItem mnuNueva;
 	@FXML
@@ -128,7 +125,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 	private ComparativoComunalEjeView comparativoComunal;
 	private ComparativoComunalHabilidadView comparativoComunalHabilidad;
 	private ComunalCursoView comunalEje;
-	private ResumenGeneralPMEView resumenGeneralPME;
+	
 	private EvaluarPruebaView evaluarPruebaView;
 	private ImprimirPruebaView imprimirPrueba;
 
@@ -201,7 +198,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 		mnuComparativoComunal.setOnAction(this);
 		mnuComparativoComunalHab.setOnAction(this);
 		mnuComunalEje.setOnAction(this);
-		mnuResumenPME.setOnAction(this);
+		
 
 		mnuImprimirPrueba.setOnAction(this);
 		mnuNueva.setOnAction(this);
@@ -367,29 +364,13 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 			handlerComparativoComunalHab();
 		} else if (source == mnuComunalEje) {
 			handlerComunalEje();
-		} else if (source == mnuResumenPME) {
-			handlerResumenPME();
-		} else if (source == mnuImprimirPrueba) {
+		}  else if (source == mnuImprimirPrueba) {
 			handlerImrpimirPrueba();
 		} else if (source == mnuNueva) {
 			handlerNuevaPrueba();
 		}
 	}
 
-	private void handlerResumenPME() {
-		if (resumenGeneralPME == null) {
-			resumenGeneralPME = (ResumenGeneralPMEView) show("/cl/eos/view/ResumenGeneralPME.fxml");
-		} else {
-			show(resumenGeneralPME);
-		}
-		Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem();
-		if (prueba != null) {
-			controller.findById(Prueba.class, prueba.getId());
-			controller.findAll(EjeTematico.class);
-			controller.findAll(Habilidad.class);
-			controller.findAll(NivelEvaluacion.class);
-		}
-	}
 
 	private void handlerComunalEje() {
 		if (comunalEje == null) {

@@ -1,6 +1,5 @@
 package cl.eos.view;
 
-import java.awt.TextField;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,12 +19,12 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.util.Callback;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.ot.OTPreguntasEjes;
 import cl.eos.ot.OTPreguntasEvaluacion;
-import cl.eos.persistence.models.Curso;
 import cl.eos.persistence.models.EjeTematico;
 import cl.eos.persistence.models.EvaluacionEjeTematico;
 import cl.eos.persistence.models.EvaluacionPrueba;
@@ -35,6 +34,7 @@ import cl.eos.persistence.models.Prueba;
 import cl.eos.persistence.models.PruebaRendida;
 import cl.eos.persistence.models.RespuestasEsperadasPrueba;
 import cl.eos.util.ExcelSheetWriter;
+import cl.eos.util.Utils;
 
 public class ResumenGeneralPMEView extends AFormView implements
 		EventHandler<ActionEvent> {
@@ -79,6 +79,8 @@ public class ResumenGeneralPMEView extends AFormView implements
 	private TextField txtNivel;
 	@FXML
 	private TextField txtLogro;
+	@FXML
+	private TextField txtEvaluados;
 
 	private Map<EjeTematico, HashMap<String, OTPreguntasEjes>> mapaEjesTematicos;
 	private Map<EvaluacionEjeTematico, HashMap<String, OTPreguntasEvaluacion>> mapEvaAlumnos = null;
@@ -115,7 +117,7 @@ public class ResumenGeneralPMEView extends AFormView implements
 	private boolean llegaOnDAEje = false;
 	private boolean llegaOnDAHabilidad = false;
 	private boolean llegaOnDANivel = false;
-	private Prueba prueba;
+	private EvaluacionPrueba evaluacionPrueba;
 
 	private void procesaDatosReporte() {
 		if (llegaOnDAEje && llegaOnDAHabilidad && llegaOnDANivel
@@ -128,8 +130,8 @@ public class ResumenGeneralPMEView extends AFormView implements
 
 	@Override
 	public void onFound(IEntity entity) {
-		if (entity instanceof Prueba) {
-			prueba = (Prueba) entity;
+		if (entity instanceof EvaluacionPrueba) {
+			evaluacionPrueba = (EvaluacionPrueba) entity;
 			llegaOnFound = true;
 		}
 		procesaDatosReporte();
@@ -171,92 +173,114 @@ public class ResumenGeneralPMEView extends AFormView implements
 	}
 
 	private void llenarDatosTabla() {
-			StringBuffer buffer = new StringBuffer();
-			buffer.append(prueba.getName());
-			buffer.append(" ");
-			buffer.append(prueba.getAsignatura().getName());
-			buffer.append(" ");
-			buffer.append(prueba.getCurso().getName());
-			lblTitulo.setText(buffer.toString());
+		StringBuffer buffer = new StringBuffer();
+		buffer.append(evaluacionPrueba.getName());
+		buffer.append(" ");
+		buffer.append(evaluacionPrueba.getAsignatura());
+		buffer.append(" ");
+		buffer.append(evaluacionPrueba.getCurso().getName());
+		lblTitulo.setText(buffer.toString());
 
-			mapaEjesTematicos = new HashMap<EjeTematico, HashMap<String, OTPreguntasEjes>>();
-			mapEvaAlumnos = new HashMap<EvaluacionEjeTematico, HashMap<String, OTPreguntasEvaluacion>>();
-			HashMap<String, OTPreguntasEjes> mapaColegios = null;
+		mapaEjesTematicos = new HashMap<EjeTematico, HashMap<String, OTPreguntasEjes>>();
+		mapEvaAlumnos = new HashMap<EvaluacionEjeTematico, HashMap<String, OTPreguntasEvaluacion>>();
+		Map<NivelEvaluacion, Integer> mapaNivel = new HashMap<NivelEvaluacion, Integer>();
+		
+		HashMap<String, OTPreguntasEjes> mapaColegios = null;
 
-			List<EvaluacionPrueba> listaEvaluaciones = prueba.getEvaluaciones();
+		List<PruebaRendida> listaEvaluaciones = evaluacionPrueba
+				.getPruebasRendidas();
+		int totalAlumnos= evaluacionPrueba.getPruebasRendidas().size();
+		int totalPreguntas = evaluacionPrueba.getPrueba().getNroPreguntas();
+		
+		txtEvaluados.setText(String.valueOf(totalAlumnos));
 
-//			creacionColumnasEjesTematicos(listaEvaluaciones);
-//			creacionColumnasEvaluaciones(listaEvaluaciones);
+		float sumaNotas = 0;
+		float sumaLogro=0;
+		for (PruebaRendida evaluacionPrueba : listaEvaluaciones) {
 
-			// ********** generar datos ejes tematicos y evaluaciones
-
-			for (EvaluacionPrueba evaluacionPrueba : listaEvaluaciones) {
-				String colegioCurso = evaluacionPrueba.getColegiocurso();
-
-				List<PruebaRendida> pruebasRendidas = evaluacionPrueba
-						.getPruebasRendidas();
-				List<RespuestasEsperadasPrueba> respuestasEsperadas = prueba
-						.getRespuestas();
-
-				for (PruebaRendida pruebaRendida : pruebasRendidas) {
-					generaDatosEvaluacion(pruebaRendida, colegioCurso);
-
-					String respuesta = pruebaRendida.getRespuestas();
-					char[] cRespuesta = respuesta.toCharArray();
-
-					for (RespuestasEsperadasPrueba respuestasEsperadasPrueba : respuestasEsperadas) {
-
-						EjeTematico ejeTematico = respuestasEsperadasPrueba
-								.getEjeTematico();
-						Integer numeroPreg = respuestasEsperadasPrueba
-								.getNumero();
-						if (mapaEjesTematicos.containsKey(ejeTematico)) {
-							HashMap<String, OTPreguntasEjes> mapa = mapaEjesTematicos
-									.get(ejeTematico);
-
-							if (mapa.containsKey(colegioCurso)) {
-								OTPreguntasEjes otPregunta = mapa
-										.get(colegioCurso);
-
-								if (cRespuesta[numeroPreg - 1] == respuestasEsperadasPrueba
-										.getRespuesta().toCharArray()[0]) {
-									otPregunta
-											.setBuenas(otPregunta.getBuenas() + 1);
-								}
-								otPregunta.setTotal(otPregunta.getTotal() + 1);
-							} else {
-								OTPreguntasEjes otPreguntas = new OTPreguntasEjes();
-								otPreguntas.setEjeTematico(ejeTematico);
-								if (cRespuesta[numeroPreg - 1] == respuestasEsperadasPrueba
-										.getRespuesta().toCharArray()[0]) {
-									otPreguntas.setBuenas(1);
-								} else {
-									otPreguntas.setBuenas(0);
-								}
-								otPreguntas.setTotal(1);
-
-								mapa.put(colegioCurso, otPreguntas);
-							}
-						} else {
-							OTPreguntasEjes otPreguntas = new OTPreguntasEjes();
-							otPreguntas.setEjeTematico(ejeTematico);
-							if (cRespuesta[numeroPreg - 1] == respuestasEsperadasPrueba
-									.getRespuesta().toCharArray()[0]) {
-								otPreguntas.setBuenas(1);
-							} else {
-								otPreguntas.setBuenas(0);
-							}
-							otPreguntas.setTotal(1);
-
-							mapaColegios = new HashMap<String, OTPreguntasEjes>();
-							mapaColegios.put(colegioCurso, otPreguntas);
-							mapaEjesTematicos.put(ejeTematico, mapaColegios);
-						}
-					}
-				}
-			}
+			sumaNotas = sumaNotas + evaluacionPrueba.getNota();
+			
+			int logro = evaluacionPrueba.getBuenas()/totalPreguntas;
+			sumaLogro = sumaLogro + logro;
+			
+			
+			
+			
+//			String colegioCurso = evaluacionPrueba.getColegiocurso();
+//			List<RespuestasEsperadasPrueba> respuestasEsperadas = evaluacionPrueba
+//					.getRespuestas();
+//
+//			for (PruebaRendida pruebaRendida : pruebasRendidas) {
+//				generaDatosEvaluacion(pruebaRendida, colegioCurso);
+//
+//				String respuesta = pruebaRendida.getRespuestas();
+//				char[] cRespuesta = respuesta.toCharArray();
+//
+//				foor (RespuestasEsperadasPrueba respuestasEsperadasPrueba : respuestasEsperadas) {
+//
+//					EjeTematico ejeTematico = respuestasEsperadasPrueba
+//							.getEjeTematico();
+//					Integer numeroPreg = respuestasEsperadasPrueba.getNumero();
+//					if (mapaEjesTematicos.containsKey(ejeTematico)) {
+//						HashMap<String, OTPreguntasEjes> mapa = mapaEjesTematicos
+//								.get(ejeTematico);
+//
+//						if (mapa.containsKey(colegioCurso)) {
+//							OTPreguntasEjes otPregunta = mapa.get(colegioCurso);
+//
+//							if (cRespuesta[numeroPreg - 1] == respuestasEsperadasPrueba
+//									.getRespuesta().toCharArray()[0]) {
+//								otPregunta
+//										.setBuenas(otPregunta.getBuenas() + 1);
+//							}
+//							otPregunta.setTotal(otPregunta.getTotal() + 1);
+//						} else {
+//							OTPreguntasEjes otPreguntas = new OTPreguntasEjes();
+//							otPreguntas.setEjeTematico(ejeTematico);
+//							if (cRespuesta[numeroPreg - 1] == respuestasEsperadasPrueba
+//									.getRespuesta().toCharArray()[0]) {
+//								otPreguntas.setBuenas(1);
+//							} else {
+//								otPreguntas.setBuenas(0);
+//							}
+//							otPreguntas.setTotal(1);
+//
+//							mapa.put(colegioCurso, otPreguntas);
+//						}
+//					} else {
+//						OTPreguntasEjes otPreguntas = new OTPreguntasEjes();
+//						otPreguntas.setEjeTematico(ejeTematico);
+//						if (cRespuesta[numeroPreg - 1] == respuestasEsperadasPrueba
+//								.getRespuesta().toCharArray()[0]) {
+//							otPreguntas.setBuenas(1);
+//						} else {
+//							otPreguntas.setBuenas(0);
+//						}
+//						otPreguntas.setTotal(1);
+//
+//						mapaColegios = new HashMap<String, OTPreguntasEjes>();
+//						mapaColegios.put(colegioCurso, otPreguntas);
+//						mapaEjesTematicos.put(ejeTematico, mapaColegios);
+//					}
+//				}
+		//	}
 		}
-	
+		
+		//Asignar promedio.
+		float promedio = sumaNotas/totalAlumnos;
+		txtPromedio.setText(String.valueOf(promedio));
+		//Asignar puntaje
+		int puntaje = Utils.getPuntaje(promedio);
+		txtPuntaje.setText(String.valueOf(puntaje));
+		//Asignar promedio logro
+		float promedioLogro = sumaLogro/totalAlumnos;
+		txtLogro.setText(String.valueOf(promedio));
+		
+		for (NivelEvaluacion   nivel: mNivel.values()) {
+			
+		}
+		
+	}
 
 	private void generaDatosEvaluacion(PruebaRendida pruebaRendida,
 			String colegioCurso) {
@@ -264,48 +288,48 @@ public class ResumenGeneralPMEView extends AFormView implements
 		HashMap<String, OTPreguntasEvaluacion> mapaOT = new HashMap<String, OTPreguntasEvaluacion>();
 
 		Float pBuenas = pruebaRendida.getPbuenas();
-//		for (Entry<Long, EvaluacionEjeTematico> mEvaluacion : mEvaluaciones
-//				.entrySet()) {
-//
-//			EvaluacionEjeTematico evaluacionAl = mEvaluacion.getValue();
-//			if (mapEvaAlumnos.containsKey(evaluacionAl)) {
-//				HashMap<String, OTPreguntasEvaluacion> evaluacion = mapEvaAlumnos
-//						.get(evaluacionAl);
-//				if (evaluacion.containsKey(colegioCurso)) {
-//					OTPreguntasEvaluacion otPreguntas = evaluacion
-//							.get(colegioCurso);
-//
-//					if (pBuenas >= evaluacionAl.getNroRangoMin()
-//							&& pBuenas <= evaluacionAl.getNroRangoMax()) {
-//						otPreguntas.setAlumnos(otPreguntas.getAlumnos() + 1);
-//					}
-//				} else {
-//
-//					OTPreguntasEvaluacion pregunta = new OTPreguntasEvaluacion();
-//					if (pBuenas >= evaluacionAl.getNroRangoMin()
-//							&& pBuenas <= evaluacionAl.getNroRangoMax()) {
-//						pregunta.setAlumnos(1);
-//					} else {
-//						pregunta.setAlumnos(0);
-//					}
-//					pregunta.setEvaluacion(evaluacionAl);
-//					evaluacion.put(colegioCurso, pregunta);
-//				}
-//			} else {
-//				OTPreguntasEvaluacion pregunta = new OTPreguntasEvaluacion();
-//				if (pBuenas >= evaluacionAl.getNroRangoMin()
-//						&& pBuenas <= evaluacionAl.getNroRangoMax()) {
-//					pregunta.setAlumnos(1);
-//				} else {
-//					pregunta.setAlumnos(0);
-//				}
-//				pregunta.setEvaluacion(evaluacionAl);
-//
-//				mapaOT = new HashMap<String, OTPreguntasEvaluacion>();
-//				mapaOT.put(colegioCurso, pregunta);
-//				mapEvaAlumnos.put(evaluacionAl, mapaOT);
-//			}
-//		}
+		// for (Entry<Long, EvaluacionEjeTematico> mEvaluacion : mEvaluaciones
+		// .entrySet()) {
+		//
+		// EvaluacionEjeTematico evaluacionAl = mEvaluacion.getValue();
+		// if (mapEvaAlumnos.containsKey(evaluacionAl)) {
+		// HashMap<String, OTPreguntasEvaluacion> evaluacion = mapEvaAlumnos
+		// .get(evaluacionAl);
+		// if (evaluacion.containsKey(colegioCurso)) {
+		// OTPreguntasEvaluacion otPreguntas = evaluacion
+		// .get(colegioCurso);
+		//
+		// if (pBuenas >= evaluacionAl.getNroRangoMin()
+		// && pBuenas <= evaluacionAl.getNroRangoMax()) {
+		// otPreguntas.setAlumnos(otPreguntas.getAlumnos() + 1);
+		// }
+		// } else {
+		//
+		// OTPreguntasEvaluacion pregunta = new OTPreguntasEvaluacion();
+		// if (pBuenas >= evaluacionAl.getNroRangoMin()
+		// && pBuenas <= evaluacionAl.getNroRangoMax()) {
+		// pregunta.setAlumnos(1);
+		// } else {
+		// pregunta.setAlumnos(0);
+		// }
+		// pregunta.setEvaluacion(evaluacionAl);
+		// evaluacion.put(colegioCurso, pregunta);
+		// }
+		// } else {
+		// OTPreguntasEvaluacion pregunta = new OTPreguntasEvaluacion();
+		// if (pBuenas >= evaluacionAl.getNroRangoMin()
+		// && pBuenas <= evaluacionAl.getNroRangoMax()) {
+		// pregunta.setAlumnos(1);
+		// } else {
+		// pregunta.setAlumnos(0);
+		// }
+		// pregunta.setEvaluacion(evaluacionAl);
+		//
+		// mapaOT = new HashMap<String, OTPreguntasEvaluacion>();
+		// mapaOT.put(colegioCurso, pregunta);
+		// mapEvaAlumnos.put(evaluacionAl, mapaOT);
+		// }
+		// }
 
 	}
 

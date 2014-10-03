@@ -18,7 +18,11 @@ import org.controlsfx.dialog.Dialogs;
 
 import cl.eos.imp.view.AFormView;
 import cl.eos.persistence.models.Curso;
+import cl.eos.persistence.models.EjeTematico;
 import cl.eos.persistence.models.EvaluacionPrueba;
+import cl.eos.persistence.models.Habilidad;
+import cl.eos.persistence.models.NivelEvaluacion;
+import cl.eos.persistence.models.Prueba;
 import cl.eos.persistence.models.TipoPrueba;
 
 public class EvaluacionPruebaView extends AFormView implements
@@ -54,7 +58,6 @@ public class EvaluacionPruebaView extends AFormView implements
 	private MenuItem mnuRespuestasHabilidad;
 	@FXML
 	private MenuItem mnuRespuestasEje;
-
 	@FXML
 	private MenuItem menuResumenGeneral;
 	@FXML
@@ -65,6 +68,8 @@ public class EvaluacionPruebaView extends AFormView implements
 	private MenuItem menuRespuestasHabilidad;
 	@FXML
 	private MenuItem menuRespuestasEje;
+	@FXML
+	private MenuItem mnuResumenPME;
 
 	private EvaluacionPrueba evaluacionPrueba;
 	private ResumenGeneralView resumenGeneral;
@@ -72,6 +77,7 @@ public class EvaluacionPruebaView extends AFormView implements
 	private ResumenRespuestaView resumenRespuestas;
 	private ResumenHabilidadesView resumeHabilidad;
 	private ResumenEjesTematicosView resumeEjeTematico;
+	private ResumenGeneralPMEView resumenGeneralPME;
 
 	public EvaluacionPruebaView() {
 		// TODO Auto-generated constructor stub
@@ -90,6 +96,7 @@ public class EvaluacionPruebaView extends AFormView implements
 		menuRespuestasPregunta.setOnAction(this);
 		menuRespuestasHabilidad.setOnAction(this);
 		menuRespuestasEje.setOnAction(this);
+		mnuResumenPME.setOnAction(this);
 
 		tblListadoPruebas.getSelectionModel().setSelectionMode(
 				SelectionMode.MULTIPLE);
@@ -152,6 +159,8 @@ public class EvaluacionPruebaView extends AFormView implements
 			handleResumenHabilidad();
 		} else if (source == mnuRespuestasEje || source == menuRespuestasEje) {
 			handleResumenEje();
+		} else if (source == mnuResumenPME) {
+			handlerResumenPME();
 		}
 	}
 
@@ -248,6 +257,22 @@ public class EvaluacionPruebaView extends AFormView implements
 					.masthead(resumenRespuestas.getName())
 					.message("Debe seleccionar registro a procesar")
 					.showInformation();
+		}
+	}
+
+	private void handlerResumenPME() {
+		if (resumenGeneralPME == null) {
+			resumenGeneralPME = (ResumenGeneralPMEView) show("/cl/eos/view/ResumenGeneralPME.fxml");
+		} else {
+			show(resumenGeneralPME);
+		}
+		EvaluacionPrueba prueba = tblListadoPruebas.getSelectionModel()
+				.getSelectedItem();
+		if (prueba != null) {
+			controller.findById(Prueba.class, prueba.getId());
+			controller.findAll(EjeTematico.class);
+			controller.findAll(Habilidad.class);
+			controller.findAll(NivelEvaluacion.class);
 		}
 	}
 }
