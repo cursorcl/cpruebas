@@ -123,16 +123,6 @@ public class DefinePruebaViewController extends AFormView {
 
 		habCol.setCellValueFactory(new PropertyValueFactory<RegistroDefinePrueba, Habilidad>(
 				"habilidad"));
-		// habCol
-		// .setCellFactory(new Callback<TableColumn<RegistroDefinePrueba,
-		// Habilidad>,
-		// TableCell<RegistroDefinePrueba, Habilidad>>() {
-		// @Override
-		// public TableCell<RegistroDefinePrueba, Habilidad> call(
-		// TableColumn<RegistroDefinePrueba, Habilidad> p) {
-		// return new HabilidadDND();
-		// }
-		// });
 		ejeCol.setCellValueFactory(new PropertyValueFactory<RegistroDefinePrueba, EjeTematico>(
 				"ejeTematico"));
 		habilidadCol
