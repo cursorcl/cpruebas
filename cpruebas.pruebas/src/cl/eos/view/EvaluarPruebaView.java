@@ -246,42 +246,50 @@ public class EvaluarPruebaView extends AFormView {
     public void handle(ActionEvent event) {
       evalPrueba = null;
       Curso curso = cmbCursos.getSelectionModel().getSelectedItem();
-      Colegio colegio = cmbColegios.getSelectionModel().getSelectedItem();
-      Profesor profesor = cmbProfesor.getSelectionModel().getSelectedItem();
-      List<EvaluacionPrueba> listEvaluaciones = prueba.getEvaluaciones();
-      if (listEvaluaciones != null && !listEvaluaciones.isEmpty()) {
-        for (EvaluacionPrueba evaluacion : listEvaluaciones) {
-          if (evaluacion.getPrueba().equals(prueba) && evaluacion.getColegio().equals(colegio)
-              && evaluacion.getCurso().equals(curso)) {
-            evalPrueba = evaluacion;
-            break;
+      if (curso != null) {
+        Colegio colegio = cmbColegios.getSelectionModel().getSelectedItem();
+        Profesor profesor = cmbProfesor.getSelectionModel().getSelectedItem();
+        List<EvaluacionPrueba> listEvaluaciones = prueba.getEvaluaciones();
+        if (listEvaluaciones != null && !listEvaluaciones.isEmpty()) {
+          for (EvaluacionPrueba evaluacion : listEvaluaciones) {
+            if (evaluacion.getPrueba().equals(prueba) && evaluacion.getColegio().equals(colegio)
+                && evaluacion.getCurso().equals(curso)) {
+              evalPrueba = evaluacion;
+              break;
+            }
           }
         }
-      }
-      ObservableList<OTPruebaRendida> oList = FXCollections.observableArrayList();
-      if (evalPrueba == null) {
+        ObservableList<OTPruebaRendida> oList = FXCollections.observableArrayList();
+        if (evalPrueba == null) {
 
-        // Tengo que crear la evaluacion Prueba.
-        evalPrueba = new EvaluacionPrueba();
-        evalPrueba.setColegio(colegio);
-        evalPrueba.setCurso(curso);
-        evalPrueba.setPrueba(prueba);
-        evalPrueba.setProfesor(profesor);
-        evalPrueba.setFecha(dtpFecha.getValue().toEpochDay());
-        evalPrueba.setPruebasRendidas(new ArrayList<PruebaRendida>());
-        for (Alumno alumno : curso.getAlumnos()) {
-          PruebaRendida pRendida = new PruebaRendida();
-          pRendida.setAlumno(alumno);
-          pRendida.setEvaluacionPrueba(evalPrueba);
-          evalPrueba.getPruebasRendidas().add(pRendida);
-          oList.add(new OTPruebaRendida(pRendida));
+          // Tengo que crear la evaluacion Prueba.
+          evalPrueba = new EvaluacionPrueba();
+          evalPrueba.setColegio(colegio);
+          evalPrueba.setCurso(curso);
+          evalPrueba.setPrueba(prueba);
+          evalPrueba.setProfesor(profesor);
+          evalPrueba.setFecha(dtpFecha.getValue().toEpochDay());
+          evalPrueba.setPruebasRendidas(new ArrayList<PruebaRendida>());
+          if (curso.getAlumnos() != null && !curso.getAlumnos().isEmpty()) {
+            for (Alumno alumno : curso.getAlumnos()) {
+              PruebaRendida pRendida = new PruebaRendida();
+              pRendida.setAlumno(alumno);
+              pRendida.setEvaluacionPrueba(evalPrueba);
+              evalPrueba.getPruebasRendidas().add(pRendida);
+              oList.add(new OTPruebaRendida(pRendida));
+            }
+          }
+          tblListadoPruebas.setItems(oList);
+        } else {
+          for (PruebaRendida pRendida : evalPrueba.getPruebasRendidas()) {
+            oList.add(new OTPruebaRendida(pRendida));
+          }
+          tblListadoPruebas.setItems(oList);
         }
-        tblListadoPruebas.setItems(oList);
-      } else {
-        for (PruebaRendida pRendida : evalPrueba.getPruebasRendidas()) {
-          oList.add(new OTPruebaRendida(pRendida));
-        }
-        tblListadoPruebas.setItems(oList);
+      }
+      else
+      {
+        tblListadoPruebas.getItems().clear();
       }
     }
   }
@@ -289,6 +297,8 @@ public class EvaluarPruebaView extends AFormView {
   protected void handlerGrabar() {
     evalPrueba.setProfesor(cmbProfesor.getSelectionModel().getSelectedItem());
     if (validate()) {
+      String s = String.format("%s-%s-%s-%s", evalPrueba.getAsignatura(), evalPrueba.getColegio(), evalPrueba.getCurso(), evalPrueba.getFechaLocal().toString());
+      evalPrueba.setName(s);
       save(evalPrueba);
     }
   }
