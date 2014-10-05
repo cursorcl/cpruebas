@@ -101,8 +101,8 @@ public class EvaluarPruebaView extends AFormView {
     cmbColegios.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent event) {
+        cmbCursos.getItems().clear();
         Colegio colegio = cmbColegios.getSelectionModel().getSelectedItem();
-
         Map<String, Object> parameters = new HashMap<String, Object>();
         parameters.put("tcursoId", prueba.getCurso().getId());
         parameters.put("colegioId", colegio.getId());
@@ -244,6 +244,7 @@ public class EvaluarPruebaView extends AFormView {
   private class EHandlerCmbCurso implements EventHandler<ActionEvent> {
     @Override
     public void handle(ActionEvent event) {
+      evalPrueba = null;
       Curso curso = cmbCursos.getSelectionModel().getSelectedItem();
       Colegio colegio = cmbColegios.getSelectionModel().getSelectedItem();
       Profesor profesor = cmbProfesor.getSelectionModel().getSelectedItem();

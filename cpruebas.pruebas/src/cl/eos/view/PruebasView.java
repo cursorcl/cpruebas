@@ -138,14 +138,10 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
   public void initialize() {
     lblError.setText(" ");
     tblListadoPruebas.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-    // tblListadoPruebas.setRowFactory(new PruebaRowFactoryStyle());
     fechaCol.setCellValueFactory(new PropertyValueFactory<Prueba, LocalDate>("fechaLocal"));
     nameCol.setCellValueFactory(new PropertyValueFactory<Prueba, String>("name"));
     asignaturaCol.setCellValueFactory(new PropertyValueFactory<Prueba, String>("asignatura"));
     profesorCol.setCellValueFactory(new PropertyValueFactory<Prueba, String>("profesor"));
-    // formasCol
-    // .setCellValueFactory(new PropertyValueFactory<Prueba, Integer>(
-    // "nroFormas"));
 
     cursoCol.setCellValueFactory(new PropertyValueFactory<Prueba, String>("curso"));
     nroPreguntasCol.setCellValueFactory(new PropertyValueFactory<Prueba, Integer>("nroPreguntas"));
