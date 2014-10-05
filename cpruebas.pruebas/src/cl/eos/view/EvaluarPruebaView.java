@@ -14,6 +14,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableCell;
@@ -43,6 +44,9 @@ import cl.eos.view.ots.OTPruebaRendida;
 public class EvaluarPruebaView extends AFormView {
 
   private Prueba prueba;
+  private EvaluacionPrueba evalPrueba = null;
+  @FXML
+  private Label lblError;
   @FXML
   private TableView<OTPruebaRendida> tblListadoPruebas;
   @FXML
@@ -244,7 +248,6 @@ public class EvaluarPruebaView extends AFormView {
       Colegio colegio = cmbColegios.getSelectionModel().getSelectedItem();
       Profesor profesor = cmbProfesor.getSelectionModel().getSelectedItem();
       List<EvaluacionPrueba> listEvaluaciones = prueba.getEvaluaciones();
-      EvaluacionPrueba evalPrueba = null;
       if (listEvaluaciones != null && !listEvaluaciones.isEmpty()) {
         for (EvaluacionPrueba evaluacion : listEvaluaciones) {
           if (evaluacion.getPrueba().equals(prueba) && evaluacion.getColegio().equals(colegio)
@@ -254,8 +257,9 @@ public class EvaluarPruebaView extends AFormView {
           }
         }
       }
+      ObservableList<OTPruebaRendida> oList = FXCollections.observableArrayList();
       if (evalPrueba == null) {
-        ObservableList<OTPruebaRendida> oList = FXCollections.observableArrayList();
+
         // Tengo que crear la evaluacion Prueba.
         evalPrueba = new EvaluacionPrueba();
         evalPrueba.setColegio(colegio);
@@ -267,23 +271,61 @@ public class EvaluarPruebaView extends AFormView {
         for (Alumno alumno : curso.getAlumnos()) {
           PruebaRendida pRendida = new PruebaRendida();
           pRendida.setAlumno(alumno);
+          pRendida.setEvaluacionPrueba(evalPrueba);
           evalPrueba.getPruebasRendidas().add(pRendida);
           oList.add(new OTPruebaRendida(pRendida));
         }
-
         tblListadoPruebas.setItems(oList);
       } else {
-
+        for (PruebaRendida pRendida : evalPrueba.getPruebasRendidas()) {
+          oList.add(new OTPruebaRendida(pRendida));
+        }
+        tblListadoPruebas.setItems(oList);
       }
     }
   }
 
   protected void handlerGrabar() {
-
-    ObservableList<OTPruebaRendida> oList = tblListadoPruebas.getItems();
-    for (OTPruebaRendida pRendida : oList) {
-      save(pRendida.getPruebaRendida());
+    evalPrueba.setProfesor(cmbProfesor.getSelectionModel().getSelectedItem());
+    if (validate()) {
+      save(evalPrueba);
     }
   }
 
+  @Override
+  public boolean validate() {
+    boolean valid = true;
+    if (cmbColegios.getValue() == null) {
+      valid = false;
+      cmbColegios.getStyleClass().add("bad");
+    }
+    if (cmbCursos.getValue() == null) {
+      valid = false;
+      cmbCursos.getStyleClass().add("bad");
+    }
+    if (cmbProfesor.getValue() == null) {
+      valid = false;
+      cmbProfesor.getStyleClass().add("bad");
+    }
+    if (dtpFecha.getValue() == null) {
+      valid = false;
+      dtpFecha.getStyleClass().add("bad");
+    }
+    if (valid) {
+      lblError.setText(" ");
+      removeAllStyles();
+    } else {
+      lblError.getStyleClass().add("bad");
+      lblError.setText("Corregir campos destacados en color rojo");
+    }
+    return valid;
+  }
+
+  private void removeAllStyles() {
+    removeAllStyle(lblError);
+    removeAllStyle(cmbColegios);
+    removeAllStyle(cmbProfesor);
+    removeAllStyle(cmbCursos);
+    removeAllStyle(dtpFecha);
+  }
 }

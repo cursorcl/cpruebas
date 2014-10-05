@@ -21,6 +21,13 @@ public class OTPruebaRendida {
 
   public OTPruebaRendida(PruebaRendida pruebaRendida) {
     this.pruebaRendida = pruebaRendida;
+    this.buenas.set(pruebaRendida.getBuenas());
+    this.omitidas.set(pruebaRendida.getOmitidas());
+    this.malas.set(pruebaRendida.getMalas());
+    this.respuestas.set(pruebaRendida.getRespuestas());
+    this.nota.set(pruebaRendida.getNota());
+    this.puntaje.set(Utils.getPuntaje(this.nota.floatValue()));
+    this.nivel.set(pruebaRendida.getRango());
   }
 
   public String getPaterno() {
@@ -39,12 +46,14 @@ public class OTPruebaRendida {
   public RangoEvaluacion getNivel() {
     return nivel.get();
   }
-  public SimpleObjectProperty<RangoEvaluacion> nivelProperty()
-  {
+
+  public SimpleObjectProperty<RangoEvaluacion> nivelProperty() {
     return nivel;
   }
+
   public void setNivel(RangoEvaluacion nivel) {
     this.nivel.set(nivel);
+    this.pruebaRendida.setRango(nivel);
   }
 
   public PruebaRendida getPruebaRendida() {

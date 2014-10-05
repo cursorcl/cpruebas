@@ -26,12 +26,12 @@
             </MenuBar>
             <AnchorPane prefHeight="108.0" prefWidth="1087.0" styleClass="sample-page" BorderPane.alignment="CENTER">
                <children>
-                  <ComboBox fx:id="cmbCursos" layoutX="173.0" layoutY="76.0" prefWidth="150.0" promptText="Curso" />
-                  <Label layoutX="15.0" layoutY="61.0" text="Colegio" />
+                  <ComboBox fx:id="cmbCursos" disable="true" layoutX="332.0" layoutY="78.0" prefWidth="150.0" promptText="Curso" />
+                  <Label layoutX="174.0" layoutY="62.0" text="Colegio" />
                   <DatePicker fx:id="dtpFecha" layoutX="491.0" layoutY="75.0" />
                   <Label layoutX="492.0" layoutY="61.0" text="Fecha" />
-                  <Label layoutX="175.0" layoutY="62.0" text="Curso" />
-                  <ComboBox fx:id="cmbColegios" layoutX="14.0" layoutY="76.0" prefWidth="150.0" promptText="Colegio" />
+                  <Label layoutX="334.0" layoutY="63.0" text="Curso" />
+                  <ComboBox fx:id="cmbColegios" layoutX="173.0" layoutY="78.0" prefWidth="150.0" promptText="Colegio" />
                   <TextField fx:id="txtName" disable="true" editable="false" layoutX="14.0" layoutY="26.0" prefHeight="25.0" prefWidth="259.0" promptText="Nombre Prueba" />
                   <TextField fx:id="txtAsignatura" disable="true" editable="false" layoutX="285.0" layoutY="26.0" prefHeight="25.0" prefWidth="373.0" promptText="Asignatura" />
                   <Label layoutX="15.0" layoutY="9.0" text="Nombre de la prueba" />
@@ -40,8 +40,9 @@
                   <ListView fx:id="lstHabilidad" disable="true" layoutX="870.0" layoutY="24.0" prefHeight="76.0" prefWidth="200.0" />
                   <Label layoutX="668.0" layoutY="9.0" text="Ejes temáticos" />
                   <Label layoutX="873.0" layoutY="9.0" text="Habilidades" />
-                  <ComboBox fx:id="cmbProfesor" layoutX="329.0" layoutY="76.0" prefHeight="23.0" prefWidth="155.0" promptText="Profesor" />
-                  <Label layoutX="331.0" layoutY="62.0" text="Profesor" />
+                  <ComboBox fx:id="cmbProfesor" layoutX="15.0" layoutY="75.0" prefWidth="150.0" promptText="Profesor" />
+                  <Label layoutX="15.0" layoutY="61.0" text="Profesor" />
+                  <Label fx:id="lblError" layoutX="411.0" layoutY="9.0" prefHeight="17.0" prefWidth="246.0" />
                </children>
             </AnchorPane>
          </children>

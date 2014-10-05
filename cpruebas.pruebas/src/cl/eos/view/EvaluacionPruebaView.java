@@ -21,7 +21,6 @@ import cl.eos.persistence.models.Curso;
 import cl.eos.persistence.models.EjeTematico;
 import cl.eos.persistence.models.EvaluacionPrueba;
 import cl.eos.persistence.models.Habilidad;
-import cl.eos.persistence.models.NivelEvaluacion;
 import cl.eos.persistence.models.Prueba;
 import cl.eos.persistence.models.RangoEvaluacion;
 import cl.eos.persistence.models.TipoPrueba;
@@ -70,7 +69,7 @@ public class EvaluacionPruebaView extends AFormView implements
 	@FXML
 	private MenuItem menuRespuestasEje;
 	@FXML
-	private MenuItem mnuResumenPME;
+	//private MenuItem mnuResumenPME;
 
 	private EvaluacionPrueba evaluacionPrueba;
 	private ResumenGeneralView resumenGeneral;
@@ -97,7 +96,7 @@ public class EvaluacionPruebaView extends AFormView implements
 		menuRespuestasPregunta.setOnAction(this);
 		menuRespuestasHabilidad.setOnAction(this);
 		menuRespuestasEje.setOnAction(this);
-		mnuResumenPME.setOnAction(this);
+		//mnuResumenPME.setOnAction(this);
 
 		tblListadoPruebas.getSelectionModel().setSelectionMode(
 				SelectionMode.MULTIPLE);
@@ -160,8 +159,8 @@ public class EvaluacionPruebaView extends AFormView implements
 			handleResumenHabilidad();
 		} else if (source == mnuRespuestasEje || source == menuRespuestasEje) {
 			handleResumenEje();
-		} else if (source == mnuResumenPME) {
-			handlerResumenPME();
+//		} else if (source == mnuResumenPME) {
+//			handlerResumenPME();
 		}
 	}
 

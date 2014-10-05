@@ -1,9 +1,11 @@
 package cl.eos.persistence.models;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.util.Utils;
@@ -28,6 +30,11 @@ public class PruebaRendida implements IEntity {
   private Integer malas;
   private Integer omitidas;
   private Float nota;
+  
+  @ManyToOne(fetch = FetchType.LAZY)
+  private EvaluacionPrueba evaluacionPrueba;
+  
+  private RangoEvaluacion rango;
 
   /**
    * Corresponde a la forma asociada a la prueba del alumno.
@@ -159,4 +166,21 @@ public class PruebaRendida implements IEntity {
     return (float) (Utils.getPuntaje(getNota().floatValue()) / Utils.MAX_PUNTAJE);
   }
 
+  public EvaluacionPrueba getEvaluacionPrueba() {
+    return evaluacionPrueba;
+  }
+
+  public void setEvaluacionPrueba(EvaluacionPrueba evaluacionPrueba) {
+    this.evaluacionPrueba = evaluacionPrueba;
+  }
+
+  public RangoEvaluacion getRango() {
+    return rango;
+  }
+
+  public void setRango(RangoEvaluacion rango) {
+    this.rango = rango;
+  }
+
+  
 }

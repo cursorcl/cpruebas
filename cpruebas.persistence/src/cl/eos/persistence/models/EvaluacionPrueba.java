@@ -3,6 +3,7 @@ package cl.eos.persistence.models;
 import java.time.LocalDate;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 
 import cl.eos.interfaces.entity.IEntity;
 
@@ -32,6 +34,7 @@ public class EvaluacionPrueba implements IEntity {
 	private Prueba prueba;
 
 	private Curso curso;
+	@OneToMany(mappedBy = "evaluacionPrueba", cascade = CascadeType.ALL)
 	private List<PruebaRendida> pruebasRendidas;
 	private Long fecha;
 	private Profesor profesor;
