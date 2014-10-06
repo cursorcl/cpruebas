@@ -18,11 +18,7 @@ import org.controlsfx.dialog.Dialogs;
 
 import cl.eos.imp.view.AFormView;
 import cl.eos.persistence.models.Curso;
-import cl.eos.persistence.models.EjeTematico;
 import cl.eos.persistence.models.EvaluacionPrueba;
-import cl.eos.persistence.models.Habilidad;
-import cl.eos.persistence.models.NivelEvaluacion;
-import cl.eos.persistence.models.Prueba;
 import cl.eos.persistence.models.RangoEvaluacion;
 import cl.eos.persistence.models.TipoPrueba;
 
@@ -267,12 +263,10 @@ public class EvaluacionPruebaView extends AFormView implements
 		} else {
 			show(resumenGeneralPME);
 		}
-		EvaluacionPrueba prueba = tblListadoPruebas.getSelectionModel()
+		EvaluacionPrueba evaluacion = tblListadoPruebas.getSelectionModel()
 				.getSelectedItem();
-		if (prueba != null) {
-			controller.findById(Prueba.class, prueba.getId());
-			controller.findAll(EjeTematico.class);
-			controller.findAll(Habilidad.class);
+		if (evaluacion != null) {
+			controller.findById(EvaluacionPrueba.class, evaluacion.getId());
 			controller.findAll(RangoEvaluacion.class);
 		}
 	}

@@ -13,6 +13,7 @@
         <menus>
             <Menu mnemonicParsing="false" text="Archivo">
                <items>
+                  <MenuItem fx:id="mnuAgregar" mnemonicParsing="false" text="Agregar Profesor" />
                   <MenuItem id="mnuGrabar" fx:id="mnuGrabar" mnemonicParsing="false" text="Grabar Profesor">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="G" control="DOWN" meta="UP" shift="UP" shortcut="UP" />

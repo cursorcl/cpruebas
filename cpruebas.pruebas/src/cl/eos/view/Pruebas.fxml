@@ -183,7 +183,6 @@
                                           <MenuItem fx:id="mnuComparativoComunal" mnemonicParsing="false" text="Comparativo comunal ejes temáticos" />
                                           <MenuItem fx:id="mnuComparativoComunalHab" mnemonicParsing="false" text="Comparativo comunal habilidades" />
                                           <MenuItem fx:id="mnuComunalEje" mnemonicParsing="false" text="Comunal ejes temáticos" />
-                                          <MenuItem fx:id="mnuResumenPME" mnemonicParsing="false" text="Resumen general PME" />
                                       </items>
                                     </ContextMenu>
                                  </contextMenu>

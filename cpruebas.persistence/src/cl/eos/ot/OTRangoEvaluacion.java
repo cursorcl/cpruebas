@@ -7,6 +7,10 @@ public class OTRangoEvaluacion {
 	private RangoEvaluacion rango;
 	private int cantidad;
 	private float logrado;
+	
+	public String getName(){
+		return rango.getName();
+	}
 	public RangoEvaluacion getRango() {
 		return rango;
 	}

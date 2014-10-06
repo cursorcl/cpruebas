@@ -387,7 +387,6 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 		if (prueba != null) {
 			controller.findByAllId(Prueba.class, prueba.toArray());
 			controller.findAll(EvaluacionEjeTematico.class);
-			// controller.findAll(Curso.class);
 		}
 	}
 

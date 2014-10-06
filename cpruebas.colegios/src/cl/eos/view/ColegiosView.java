@@ -19,7 +19,7 @@ import javafx.scene.input.MouseEvent;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.persistence.models.Colegio;
-import cl.eos.util.ExcelSheetWriter;
+import cl.eos.util.ExcelSheetWriterEntity;
 
 public class ColegiosView extends AFormView implements
 		EventHandler<ActionEvent> {
@@ -270,7 +270,7 @@ public class ColegiosView extends AFormView implements
 			// } else if (source == btnImagen) {
 			// accionButtonImagen();
 		} else if (source == mnuExportar || source == menuExportar) {
-			ExcelSheetWriter.convertirDatosALibroDeExcel(tblColegio);
+			ExcelSheetWriterEntity.convertirDatosALibroDeExcel(tblColegio);
 		}
 	}
 
