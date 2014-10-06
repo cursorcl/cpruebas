@@ -103,10 +103,12 @@ public class EvaluarPruebaView extends AFormView {
       public void handle(ActionEvent event) {
         cmbCursos.getItems().clear();
         Colegio colegio = cmbColegios.getSelectionModel().getSelectedItem();
-        Map<String, Object> parameters = new HashMap<String, Object>();
-        parameters.put("tcursoId", prueba.getCurso().getId());
-        parameters.put("colegioId", colegio.getId());
-        controller.find("Curso.findByTipoColegio", parameters);
+        if (colegio != null) {
+          Map<String, Object> parameters = new HashMap<String, Object>();
+          parameters.put("tcursoId", prueba.getCurso().getId());
+          parameters.put("colegioId", colegio.getId());
+          controller.find("Curso.findByTipoColegio", parameters);
+        }
       }
     });
     cmbCursos.setOnAction(new EHandlerCmbCurso());
@@ -194,6 +196,10 @@ public class EvaluarPruebaView extends AFormView {
   @Override
   public void onFound(IEntity entity) {
     if (entity instanceof Prueba) {
+      tblListadoPruebas.getItems().clear();
+      cmbColegios.getSelectionModel().clearSelection();
+      cmbProfesor.getSelectionModel().clearSelection();
+      cmbCursos.getSelectionModel().clearSelection();
       prueba = (Prueba) entity;
       txtName.setText(prueba.getName());
       txtAsignatura.setText(prueba.getAsignatura().getName());
@@ -278,6 +284,7 @@ public class EvaluarPruebaView extends AFormView {
               evalPrueba.getPruebasRendidas().add(pRendida);
               oList.add(new OTPruebaRendida(pRendida));
             }
+            prueba.getEvaluaciones().add(evalPrueba);
           }
           tblListadoPruebas.setItems(oList);
         } else {
@@ -286,9 +293,7 @@ public class EvaluarPruebaView extends AFormView {
           }
           tblListadoPruebas.setItems(oList);
         }
-      }
-      else
-      {
+      } else {
         tblListadoPruebas.getItems().clear();
       }
     }
@@ -297,9 +302,11 @@ public class EvaluarPruebaView extends AFormView {
   protected void handlerGrabar() {
     evalPrueba.setProfesor(cmbProfesor.getSelectionModel().getSelectedItem());
     if (validate()) {
-      String s = String.format("%s-%s-%s-%s", evalPrueba.getAsignatura(), evalPrueba.getColegio(), evalPrueba.getCurso(), evalPrueba.getFechaLocal().toString());
+      String s =
+          String.format("%s-%s-%s-%s", evalPrueba.getAsignatura(), evalPrueba.getColegio(),
+              evalPrueba.getCurso(), evalPrueba.getFechaLocal().toString());
       evalPrueba.setName(s);
-      save(evalPrueba);
+      save(prueba);
     }
   }
 

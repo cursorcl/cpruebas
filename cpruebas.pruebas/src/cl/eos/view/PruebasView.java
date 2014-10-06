@@ -2,6 +2,7 @@ package cl.eos.view;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +28,10 @@ import jfxtras.labs.scene.control.BigDecimalField;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.persistence.models.Asignatura;
+// github.com/cursorcl/cpruebas
+import cl.eos.persistence.models.Colegio;
+import cl.eos.persistence.models.EvaluacionEjeTematico;
+import cl.eos.persistence.models.Habilidad;
 import cl.eos.persistence.models.NivelEvaluacion;
 import cl.eos.persistence.models.Profesor;
 import cl.eos.persistence.models.Prueba;
@@ -34,10 +39,7 @@ import cl.eos.persistence.models.Prueba.Estado;
 import cl.eos.persistence.models.TipoCurso;
 import cl.eos.persistence.models.TipoPrueba;
 import cl.eos.view.editablecells.PruebaCellFactory;
-// github.com/cursorcl/cpruebas
-import cl.eos.persistence.models.Colegio;
-import cl.eos.persistence.models.EvaluacionEjeTematico;
-import cl.eos.persistence.models.Habilidad;
+import cl.eos.view.ots.OTPrueba;
 
 public class PruebasView extends AFormView implements EventHandler<ActionEvent> {
 
@@ -46,25 +48,25 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
   @FXML
   private AnchorPane pnlEdition;
   @FXML
-  private TableView<Prueba> tblListadoPruebas;
+  private TableView<OTPrueba> tblListadoPruebas;
   @FXML
-  private TableColumn<Prueba, LocalDate> fechaCol;
+  private TableColumn<OTPrueba, LocalDate> fechaCol;
   @FXML
-  private TableColumn<Prueba, String> cursoCol;
+  private TableColumn<OTPrueba, String> cursoCol;
   @FXML
-  private TableColumn<Prueba, String> nameCol;
+  private TableColumn<OTPrueba, String> nameCol;
   @FXML
-  private TableColumn<Prueba, String> asignaturaCol;
+  private TableColumn<OTPrueba, String> asignaturaCol;
   @FXML
-  private TableColumn<Prueba, String> profesorCol;
+  private TableColumn<OTPrueba, String> profesorCol;
   @FXML
-  private TableColumn<Prueba, Integer> nroPreguntasCol;
+  private TableColumn<OTPrueba, Integer> nroPreguntasCol;
   @FXML
-  private TableColumn<Prueba, Integer> formasCol;
+  private TableColumn<OTPrueba, Integer> formasCol;
   @FXML
-  private TableColumn<Prueba, Integer> alternativasCol;
+  private TableColumn<OTPrueba, Integer> alternativasCol;
   @FXML
-  private TableColumn<Prueba, Estado> estadoCol;
+  private TableColumn<OTPrueba, Estado> estadoCol;
   @FXML
   private ComboBox<TipoPrueba> cmbTipoPrueba;
   @FXML
@@ -138,15 +140,16 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
   public void initialize() {
     lblError.setText(" ");
     tblListadoPruebas.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-    fechaCol.setCellValueFactory(new PropertyValueFactory<Prueba, LocalDate>("fechaLocal"));
-    nameCol.setCellValueFactory(new PropertyValueFactory<Prueba, String>("name"));
-    asignaturaCol.setCellValueFactory(new PropertyValueFactory<Prueba, String>("asignatura"));
-    profesorCol.setCellValueFactory(new PropertyValueFactory<Prueba, String>("profesor"));
+    fechaCol.setCellValueFactory(new PropertyValueFactory<OTPrueba, LocalDate>("fechaLocal"));
+    nameCol.setCellValueFactory(new PropertyValueFactory<OTPrueba, String>("name"));
+    asignaturaCol.setCellValueFactory(new PropertyValueFactory<OTPrueba, String>("asignatura"));
+    profesorCol.setCellValueFactory(new PropertyValueFactory<OTPrueba, String>("profesor"));
 
-    cursoCol.setCellValueFactory(new PropertyValueFactory<Prueba, String>("curso"));
-    nroPreguntasCol.setCellValueFactory(new PropertyValueFactory<Prueba, Integer>("nroPreguntas"));
+    cursoCol.setCellValueFactory(new PropertyValueFactory<OTPrueba, String>("curso"));
+    nroPreguntasCol
+        .setCellValueFactory(new PropertyValueFactory<OTPrueba, Integer>("nroPreguntas"));
 
-    estadoCol.setCellValueFactory(new PropertyValueFactory<Prueba, Estado>("estado"));
+    estadoCol.setCellValueFactory(new PropertyValueFactory<OTPrueba, Estado>("estado"));
 
     estadoCol.setCellFactory(new PruebaCellFactory());
 
@@ -199,9 +202,9 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
     if (list != null && !list.isEmpty()) {
       Object entity = list.get(0);
       if (entity instanceof Prueba) {
-        ObservableList<Prueba> pruebas = FXCollections.observableArrayList();
+        ObservableList<OTPrueba> pruebas = FXCollections.observableArrayList();
         for (Object lEntity : list) {
-          pruebas.add((Prueba) lEntity);
+          pruebas.add(new OTPrueba((Prueba) lEntity));
         }
         tblListadoPruebas.setItems(pruebas);
       }
@@ -246,12 +249,12 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
   @Override
   public void onSaved(IEntity otObject) {
     if (otObject instanceof Prueba) {
-      int indice = tblListadoPruebas.getItems().lastIndexOf(otObject);
+      OTPrueba ot = new OTPrueba((Prueba) otObject);
+      int indice = tblListadoPruebas.getItems().lastIndexOf(ot);
       if (indice != -1) {
-        tblListadoPruebas.getItems().remove(otObject);
-        tblListadoPruebas.getItems().add(indice, (Prueba) otObject);
+        tblListadoPruebas.getItems().set(indice, ot);
       } else {
-        tblListadoPruebas.getItems().add((Prueba) otObject);
+        tblListadoPruebas.getItems().add(ot);
       }
       limpiarCampos();
       prueba = null;
@@ -369,9 +372,14 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
     } else {
       show(comunalEje, true);
     }
-    ObservableList<Prueba> prueba = tblListadoPruebas.getSelectionModel().getSelectedItems();
-    if (prueba != null) {
-      controller.findByAllId(Prueba.class, prueba.toArray());
+    ObservableList<OTPrueba> otPruebas = tblListadoPruebas.getSelectionModel().getSelectedItems();
+    if (otPruebas != null) {
+      Prueba[] pruebas = new Prueba[otPruebas.size()];
+      int n = 0;
+      for (OTPrueba ot : otPruebas) {
+        pruebas[n++] = ot.getPrueba();
+      }
+      controller.findByAllId(Prueba.class, pruebas);
       controller.findAll(EvaluacionEjeTematico.class);
       // controller.findAll(Curso.class);
     }
@@ -384,10 +392,12 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
     } else {
       show(comparativoComunal, true);
     }
-    Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem();
-    if (prueba != null) {
-      controller.findById(Prueba.class, prueba.getId());
-      controller.findAll(EvaluacionEjeTematico.class);
+    if (tblListadoPruebas.getSelectionModel().getSelectedItem() != null) {
+      Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
+      if (prueba != null) {
+        controller.findById(Prueba.class, prueba.getId());
+        controller.findAll(EvaluacionEjeTematico.class);
+      }
     }
   }
 
@@ -408,15 +418,17 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
     } else {
       show(imprimirPrueba, true);
     }
-    Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem();
-    if (prueba != null) {
-      controller.findById(Prueba.class, prueba.getId());
-      Map<String, Object> parameters = new HashMap<String, Object>();
-      parameters.put("idAsignatura", prueba.getAsignatura().getId());
-      controller.find("EjeTematico.findByAsigntura", parameters);
-      controller.findAll(Habilidad.class);
-      controller.findAll(Profesor.class);
-      controller.findAll(Colegio.class);
+    if (tblListadoPruebas.getSelectionModel().getSelectedItem() != null) {
+      Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
+      if (prueba != null) {
+        controller.findById(Prueba.class, prueba.getId());
+        Map<String, Object> parameters = new HashMap<String, Object>();
+        parameters.put("idAsignatura", prueba.getAsignatura().getId());
+        controller.find("EjeTematico.findByAsigntura", parameters);
+        controller.findAll(Habilidad.class);
+        controller.findAll(Profesor.class);
+        controller.findAll(Colegio.class);
+      }
     }
   }
 
@@ -428,10 +440,12 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
     } else {
       show(comparativoComunalHabilidad, true);
     }
-    Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem();
-    if (prueba != null) {
-      controller.findById(Prueba.class, prueba.getId());
-      controller.findAll(EvaluacionEjeTematico.class);
+    if (tblListadoPruebas.getSelectionModel().getSelectedItem() != null) {
+      Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
+      if (prueba != null) {
+        controller.findById(Prueba.class, prueba.getId());
+        controller.findAll(EvaluacionEjeTematico.class);
+      }
     }
   }
 
@@ -441,11 +455,13 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
     } else {
       show(evaluarPruebaView, true);
     }
-    Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem();
-    if (prueba != null) {
-      controller.findById(Prueba.class, prueba.getId());
-      controller.findAll(Colegio.class);
-      controller.findAll(Profesor.class);
+    if (tblListadoPruebas.getSelectionModel().getSelectedItem() != null) {
+      Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
+      if (prueba != null) {
+        controller.findById(Prueba.class, prueba.getId());
+        controller.findAll(Colegio.class);
+        controller.findAll(Profesor.class);
+      }
     }
   }
 
@@ -455,13 +471,15 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
     } else {
       show(definePrueba, true);
     }
-    Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem();
-    if (prueba != null) {
-      controller.findById(Prueba.class, prueba.getId());
-      Map<String, Object> parameters = new HashMap<String, Object>();
-      parameters.put("idAsignatura", prueba.getAsignatura().getId());
-      controller.find("EjeTematico.findByAsigntura", parameters);
-      controller.findAll(Habilidad.class);
+    if (tblListadoPruebas.getSelectionModel().getSelectedItem() != null) {
+      Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
+      if (prueba != null) {
+        controller.findById(Prueba.class, prueba.getId());
+        Map<String, Object> parameters = new HashMap<String, Object>();
+        parameters.put("idAsignatura", prueba.getAsignatura().getId());
+        controller.find("EjeTematico.findByAsigntura", parameters);
+        controller.findAll(Habilidad.class);
+      }
     }
   }
 
@@ -471,19 +489,27 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
     } else {
       show(evaluacionPrueba, true);
     }
-    Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem();
-    Map<String, Object> parameters = new HashMap<String, Object>();
-    parameters.put("idPrueba", prueba.getId());
-    controller.find("EvaluacionPrueba.findByPrueba", parameters);
+    if (tblListadoPruebas.getSelectionModel().getSelectedItem() != null) {
+      Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
+      Map<String, Object> parameters = new HashMap<String, Object>();
+      parameters.put("idPrueba", prueba.getId());
+      controller.find("EvaluacionPrueba.findByPrueba", parameters);
+    }
   }
 
   private void handleEliminar() {
 
-    ObservableList<Prueba> pruebasSeleccionadas =
+    ObservableList<OTPrueba> otSeleccionados =
         tblListadoPruebas.getSelectionModel().getSelectedItems();
-    delete(pruebasSeleccionadas);
-    tblListadoPruebas.getSelectionModel().clearSelection();
-    limpiarCampos();
+    if (otSeleccionados != null && !otSeleccionados.isEmpty()) {
+      List<Prueba> pruebas = new ArrayList<Prueba>(otSeleccionados.size());
+      for (OTPrueba ot : otSeleccionados) {
+        pruebas.add(ot.getPrueba());
+      }
+      delete(pruebas);
+      tblListadoPruebas.getSelectionModel().clearSelection();
+      limpiarCampos();
+    }
   }
 
   private void handleGrabar() {
@@ -511,21 +537,23 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
   }
 
   private void handleModificar() {
-    prueba = tblListadoPruebas.getSelectionModel().getSelectedItem();
+    if (tblListadoPruebas.getSelectionModel().getSelectedItem() != null) {
+      prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
 
-    if (prueba != null) {
-      bigDecimaNroAlternativas.setNumber(new BigDecimal(prueba.getAlternativas()));
-      cmbAsignatura.getSelectionModel().select(prueba.getAsignatura());
-      cmbCurso.getSelectionModel().select(prueba.getCurso());
-      dpFecha.setValue(prueba.getFechaLocal());
-      bigDecimalForma.setNumber(new BigDecimal(prueba.getNroFormas()));
-      txtName.setText(prueba.getName());
-      cmbNivelEvaluacion.getSelectionModel().select(prueba.getNivelEvaluacion());
-      cmbProfesor.getSelectionModel().select(prueba.getProfesor());
-      bigDecimalPuntajePregunta.setNumber(new BigDecimal(prueba.getPuntajeBase()));
-      bigDecimalNroPreguntas.setNumber(new BigDecimal(prueba.getNroPreguntas()));
-      cmbTipoPrueba.getSelectionModel().select(prueba.getTipoPrueba());
-      prueba.setExigencia(bigDecimalExigencia.getNumber().intValue());
+      if (prueba != null) {
+        bigDecimaNroAlternativas.setNumber(new BigDecimal(prueba.getAlternativas()));
+        cmbAsignatura.getSelectionModel().select(prueba.getAsignatura());
+        cmbCurso.getSelectionModel().select(prueba.getCurso());
+        dpFecha.setValue(prueba.getFechaLocal());
+        bigDecimalForma.setNumber(new BigDecimal(prueba.getNroFormas()));
+        txtName.setText(prueba.getName());
+        cmbNivelEvaluacion.getSelectionModel().select(prueba.getNivelEvaluacion());
+        cmbProfesor.getSelectionModel().select(prueba.getProfesor());
+        bigDecimalPuntajePregunta.setNumber(new BigDecimal(prueba.getPuntajeBase()));
+        bigDecimalNroPreguntas.setNumber(new BigDecimal(prueba.getNroPreguntas()));
+        cmbTipoPrueba.getSelectionModel().select(prueba.getTipoPrueba());
+        prueba.setExigencia(bigDecimalExigencia.getNumber().intValue());
+      }
     }
   }
 

@@ -20,7 +20,7 @@ public class Main extends Application {
 						.getController();
 				controller.setStage(primaryStage);
 
-				Scene scene = new Scene(root, 1024, 768);
+				Scene scene = new Scene(root, 1200, 800);
 				scene.getStylesheets().add(
 						getClass().getResource("ensemble2.css")
 								.toExternalForm());
