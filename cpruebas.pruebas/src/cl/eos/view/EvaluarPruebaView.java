@@ -1,5 +1,6 @@
 package cl.eos.view;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,7 +12,6 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -23,8 +23,12 @@ import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.FileChooser;
 import javafx.util.Callback;
+import cl.eos.PruebasActivator;
 import cl.eos.imp.view.AFormView;
+import cl.eos.imp.view.WindowManager;
+import cl.eos.interfaces.IActivator;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.persistence.models.Alumno;
 import cl.eos.persistence.models.Colegio;
@@ -86,9 +90,12 @@ public class EvaluarPruebaView extends AFormView {
   @FXML
   private ListView<Habilidad> lstHabilidad;
   @FXML
-  private Button btnScanner;
+  private MenuItem mnuScanner;
   @FXML
   private MenuItem mnuGrabar;
+  @FXML
+  private MenuItem mnuVolver;
+
 
   public EvaluarPruebaView() {
     setTitle("Evaluar");
@@ -96,6 +103,9 @@ public class EvaluarPruebaView extends AFormView {
 
   @FXML
   public void initialize() {
+    mnuScanner.setDisable(true);
+    mnuGrabar.setDisable(true);
+
     cmbCursos.setDisable(true);
     dtpFecha.setValue(LocalDate.now());
     cmbColegios.setOnAction(new EventHandler<ActionEvent>() {
@@ -120,7 +130,22 @@ public class EvaluarPruebaView extends AFormView {
         handlerGrabar();
       }
     });
+    mnuScanner.setOnAction(new EventHandler<ActionEvent>() {
 
+      @Override
+      public void handle(ActionEvent event) {
+        handlerLeerImagenes();
+
+      }
+    });
+    mnuVolver.setOnAction(new EventHandler<ActionEvent>() {
+
+      @Override
+      public void handle(ActionEvent event) {
+        IActivator activator = new PruebasActivator();
+        WindowManager.getInstance().show(activator.getView());
+      }
+    });
   }
 
   private void definirTablaListadoPruebas() {
@@ -293,6 +318,8 @@ public class EvaluarPruebaView extends AFormView {
           }
           tblListadoPruebas.setItems(oList);
         }
+        mnuGrabar.setDisable(false);
+        mnuScanner.setDisable(false);
       } else {
         tblListadoPruebas.getItems().clear();
       }
@@ -307,6 +334,13 @@ public class EvaluarPruebaView extends AFormView {
               evalPrueba.getCurso(), evalPrueba.getFechaLocal().toString());
       evalPrueba.setName(s);
       save(prueba);
+
+      mnuGrabar.setDisable(true);
+      mnuScanner.setDisable(true);
+      cmbProfesor.getSelectionModel().clearSelection();
+      cmbColegios.getSelectionModel().clearSelection();
+      cmbCursos.getItems().clear();
+      cmbProfesor.requestFocus();
     }
   }
 
@@ -345,5 +379,20 @@ public class EvaluarPruebaView extends AFormView {
     removeAllStyle(cmbProfesor);
     removeAllStyle(cmbCursos);
     removeAllStyle(dtpFecha);
+  }
+  
+  
+  protected void handlerLeerImagenes() {
+    FileChooser fileChooser = new FileChooser();
+    FileChooser.ExtensionFilter pngExtFilter =
+        new FileChooser.ExtensionFilter("PNG files (*.png)", "*.png");
+    fileChooser.getExtensionFilters().add(pngExtFilter);
+    FileChooser.ExtensionFilter jpgExtFilter =
+        new FileChooser.ExtensionFilter("JPG files (*.jpg)", "*.jpg");
+    fileChooser.getExtensionFilters().add(jpgExtFilter);
+    fileChooser.setTitle("Seleccione Imégenes Respuesta");
+    List<File> files = fileChooser.showOpenMultipleDialog(null);
+
+    TareaProcesaEvaluacionScanner procesador = new TareaProcesaEvaluacionScanner(prueba, cmbCursos.getValue(), files);
   }
 }
