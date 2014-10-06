@@ -14,12 +14,12 @@
 	<children>
 		<BorderPane prefHeight="200.0" prefWidth="200.0">
 			<top>
-            <AnchorPane fx:id="pnlWindow" prefHeight="65.0" prefWidth="1024.0">
+            <AnchorPane fx:id="pnlWindow" prefHeight="67.0" prefWidth="1024.0">
                <children>
 						<Pane id="SearchBox" prefHeight="52.0" prefWidth="198.0">
 							<children>
 								<Button id="clearButton" layoutX="173.0" layoutY="24.0" mnemonicParsing="false" visible="false" />
-                        <ImageView fitHeight="62.0" fitWidth="61.0" layoutX="2.0" layoutY="2.0">
+                        <ImageView fitHeight="64.0" fitWidth="374.0" layoutX="2.0" layoutY="2.0">
                            <image>
                               <Image url="@images/logo128.png" />
                            </image>
@@ -43,17 +43,6 @@
 									<children>
 										<MenuBar id="mnuPrincipal">
 											<menus>
-												<Menu mnemonicParsing="false" text="Archivo">
-													<items>
-														<MenuItem id="mnuGrabar" mnemonicParsing="false" text="Grabar" />
-														<MenuItem fx:id="mnuCerrarAplicacion" mnemonicParsing="false" text="Cerrar" />
-													</items>
-												</Menu>
-												<Menu mnemonicParsing="false" text="Edición">
-													<items>
-														<MenuItem mnemonicParsing="false" text="Delete" />
-													</items>
-												</Menu>
                                     <Menu mnemonicParsing="false" text="Pruebas">
                                       <items>
                                         <MenuItem fx:id="mnuHacerPrueba" mnemonicParsing="false" text="Generar Prueba" />
@@ -107,14 +96,8 @@
                                              </accelerator></MenuItem>
 													</items>
 												</Menu>
-												<Menu mnemonicParsing="false" text="Reportes">
-													<items>
-														<MenuItem mnemonicParsing="false" text="Action 1" />
-													</items>
-												</Menu>
                                     <Menu mnemonicParsing="false" text="Configurar">
                                       <items>
-                                        <MenuItem fx:id="mnuItemGeneraBD" mnemonicParsing="false" text="Generar BD." />
                                           <MenuItem fx:id="mnuImportar" mnemonicParsing="false" text="Importar Excel" />
                                       </items>
                                     </Menu>

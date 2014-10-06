@@ -21,6 +21,7 @@ public interface IWindowManager {
    */
   void show(final IView window);
   void add(final IView window);
+  void setHomeView(final IView window);
 
   /**
    * Saca una ventana de la visualizaci�n.
