@@ -24,7 +24,7 @@ import cl.eos.persistence.models.Colegio;
 import cl.eos.persistence.models.Curso;
 import cl.eos.persistence.models.Ciclo;
 import cl.eos.persistence.models.TipoCurso;
-import cl.eos.util.ExcelSheetWriter;
+import cl.eos.util.ExcelSheetWriterEntity;
 
 public class CursosView extends AFormView implements EventHandler<ActionEvent> {
 
@@ -286,7 +286,7 @@ public class CursosView extends AFormView implements EventHandler<ActionEvent> {
 		} else if (source == mnuEliminar || source == mnItemEliminar) {
 			accionEliminar();
 		} else if (source == mnuExportar || source == menuExportar) {
-			ExcelSheetWriter.convertirDatosALibroDeExcel(tblCurso);
+			ExcelSheetWriterEntity.convertirDatosALibroDeExcel(tblCurso);
 		}
 
 	}

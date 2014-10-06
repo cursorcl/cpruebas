@@ -36,16 +36,23 @@
                         </AnchorPane>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0">
                            <children>
-                              <Label layoutX="34.0" layoutY="14.0" text="NIVEL" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="20.0">
+                              <Label layoutX="34.0" layoutY="14.0" text="RANGOS DE NIVEL" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="20.0">
                                  <font>
                                     <Font name="System Bold" size="12.0" />
                                  </font></Label>
-                              <TableView fx:id="tblNIveles" layoutX="10.0" layoutY="8.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="40.0">
+                              <TableView fx:id="tblRangos" layoutX="2.0" layoutY="37.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="37.0">
                                 <columns>
-                                  <TableColumn fx:id="colNivel" prefWidth="155.0" text="Nivel" />
-                                  <TableColumn fx:id="colNivelCantidad" prefWidth="67.0" text="Cantidad" />
-                                    <TableColumn fx:id="colNivelLogro" prefWidth="99.0" text="\% Logro" />
+                                  <TableColumn fx:id="colRango" prefWidth="155.0" text="Rango" />
+                                  <TableColumn fx:id="colRangoCantidad" prefWidth="67.0" text="Cantidad" />
+                                    <TableColumn fx:id="colRangolLogro" prefWidth="99.0" text="\% Logro" />
                                 </columns>
+                                 <contextMenu>
+                                    <ContextMenu>
+                                      <items>
+                                        <MenuItem fx:id="mnuExportarRangos" mnemonicParsing="false" text="Exportar a excel" />
+                                      </items>
+                                    </ContextMenu>
+                                 </contextMenu>
                               </TableView>
                            </children>
                         </AnchorPane>
@@ -59,6 +66,13 @@
                                 <columns>
                                   <TableColumn prefWidth="75.0" text="C1" />
                                 </columns>
+                                 <contextMenu>
+                                    <ContextMenu>
+                                      <items>
+                                        <MenuItem fx:id="mnuExportarReporte" mnemonicParsing="false" text="Exportar a excel" />
+                                      </items>
+                                    </ContextMenu>
+                                 </contextMenu>
                               </TableView>
                            </children>
                         </AnchorPane>
@@ -77,6 +91,13 @@
                                   <TableColumn fx:id="colEje" prefWidth="325.0" text="Eje temático" />
                                   <TableColumn fx:id="colEjeLogro" prefWidth="207.0" text="\% Logro" />
                                 </columns>
+                                 <contextMenu>
+                                    <ContextMenu>
+                                      <items>
+                                        <MenuItem fx:id="mnuExportarEjesTematicos" mnemonicParsing="false" text="Exportar a excel" />
+                                      </items>
+                                    </ContextMenu>
+                                 </contextMenu>
                               </TableView>
                               <Label layoutX="27.0" layoutY="14.0" text="EJE TEMATICO" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="20.0">
                                  <font>
@@ -87,11 +108,18 @@
                         </AnchorPane>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                            <children>
-                              <TableView prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="40.0">
+                              <TableView fx:id="tblHabilidades" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="40.0">
                                 <columns>
                                   <TableColumn fx:id="colHabilidad" prefWidth="378.0" text="Habilidad " />
                                   <TableColumn fx:id="colHabilidadLogro" prefWidth="153.0" text="\% Logro" />
                                 </columns>
+                                 <contextMenu>
+                                    <ContextMenu>
+                                      <items>
+                                        <MenuItem fx:id="mnuExportarHabilidades" mnemonicParsing="false" text="Exportar a excel" />
+                                      </items>
+                                    </ContextMenu>
+                                 </contextMenu>
                               </TableView>
                               <Label layoutX="23.0" layoutY="14.0" text="HABILIDAD" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="20.0">
                                  <font>

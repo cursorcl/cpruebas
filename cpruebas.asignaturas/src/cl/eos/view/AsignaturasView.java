@@ -18,7 +18,7 @@ import javafx.scene.input.MouseEvent;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.persistence.models.Asignatura;
-import cl.eos.util.ExcelSheetWriter;
+import cl.eos.util.ExcelSheetWriterEntity;
 
 public class AsignaturasView extends AFormView implements
 		EventHandler<ActionEvent> {
@@ -214,7 +214,7 @@ public class AsignaturasView extends AFormView implements
 		} else if (source == mnuEliminar || source == mnItemEliminar) {
 			accionEliminar();
 		} else if (source == mnuExportar || source == menuExportar) {
-			ExcelSheetWriter.convertirDatosALibroDeExcel(tblAsignatura);
+			ExcelSheetWriterEntity.convertirDatosALibroDeExcel(tblAsignatura);
 		}
 	}
 

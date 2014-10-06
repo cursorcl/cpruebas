@@ -21,7 +21,7 @@ import cl.eos.interfaces.entity.IEntity;
 import cl.eos.persistence.models.Asignatura;
 import cl.eos.persistence.models.EjeTematico;
 import cl.eos.persistence.models.TipoPrueba;
-import cl.eos.util.ExcelSheetWriter;
+import cl.eos.util.ExcelSheetWriterEntity;
 
 public class EjesTematicosView extends AFormView implements
 		EventHandler<ActionEvent> {
@@ -37,6 +37,7 @@ public class EjesTematicosView extends AFormView implements
 
 	@FXML
 	private MenuItem mnuModificar;
+	
 	@FXML
 	private MenuItem menuEliminar;
 
@@ -64,6 +65,8 @@ public class EjesTematicosView extends AFormView implements
 	private TableView<EjeTematico> tblEjesTematicos;
 
 	@FXML
+	private TableColumn<EjeTematico, Float> colId;
+	@FXML
 	private TableColumn<EjeTematico, String> colNombre;
 
 	@FXML
@@ -85,6 +88,8 @@ public class EjesTematicosView extends AFormView implements
 		mnuGrabar.setOnAction(this);
 		mnuModificar.setOnAction(this);
 		mnuEliminar.setOnAction(this);
+		menuModificar.setOnAction(this);
+		menuEliminar.setOnAction(this);
 		menuExportar.setOnAction(this);
 		mnuExportar.setOnAction(this);
 
@@ -173,6 +178,9 @@ public class EjesTematicosView extends AFormView implements
 	private void inicializaTabla() {
 		tblEjesTematicos.getSelectionModel().setSelectionMode(
 				SelectionMode.MULTIPLE);
+		colId
+		.setCellValueFactory(new PropertyValueFactory<EjeTematico, Float>(
+				"id"));
 		colNombre
 				.setCellValueFactory(new PropertyValueFactory<EjeTematico, String>(
 						"name"));
@@ -235,7 +243,7 @@ public class EjesTematicosView extends AFormView implements
 		} else if (source == mnuEliminar || source == menuEliminar) {
 			accionEliminar();
 		} else if (source == mnuExportar || source == menuExportar) {
-			ExcelSheetWriter.convertirDatosALibroDeExcel(tblEjesTematicos);
+			ExcelSheetWriterEntity.convertirDatosALibroDeExcel(tblEjesTematicos);
 		}
 
 	}

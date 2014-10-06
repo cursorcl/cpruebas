@@ -30,7 +30,8 @@ import cl.eos.persistence.models.Habilidad;
 import cl.eos.persistence.models.Prueba;
 import cl.eos.persistence.models.PruebaRendida;
 import cl.eos.persistence.models.RespuestasEsperadasPrueba;
-import cl.eos.util.ExcelSheetWriter;
+import cl.eos.util.ExcelSheetWriterEntity;
+import cl.eos.util.ExcelSheetWriterObj;
 
 public class ComparativoComunalHabilidadView extends AFormView implements
 		EventHandler<ActionEvent> {
@@ -88,7 +89,7 @@ public class ComparativoComunalHabilidadView extends AFormView implements
 		}
 		procesaDatosReporte();
 	}
-	
+
 	@Override
 	public void onDataArrived(List<Object> list) {
 		if (list != null && !list.isEmpty()) {
@@ -112,6 +113,7 @@ public class ComparativoComunalHabilidadView extends AFormView implements
 			desplegarDatosEvaluaciones();
 		}
 	}
+
 	private void llenarDatosTabla() {
 
 		if (llegaOnFound && llegaOnDataArrived) {
@@ -381,16 +383,13 @@ public class ComparativoComunalHabilidadView extends AFormView implements
 		}
 	}
 
-	
 	@Override
 	public void handle(ActionEvent event) {
 		Object source = event.getSource();
 		if (source == mnuExportarHabilidad) {
-			// ExportadorDeTablasAExcel
-			// .convertirDatosALibroDeExcel(tblEjesTematicos);
+			ExcelSheetWriterObj.convertirDatosALibroDeExcel(tblHabilidades);
 		} else if (source == mnuExportarEvaluacion) {
-			ExcelSheetWriter
-					.convertirDatosALibroDeExcel(tblEvaluaciones);
+			ExcelSheetWriterObj.convertirDatosALibroDeExcel(tblEvaluaciones);
 		}
 	}
 }

@@ -30,7 +30,7 @@ import cl.eos.persistence.models.EvaluacionPrueba;
 import cl.eos.persistence.models.Prueba;
 import cl.eos.persistence.models.PruebaRendida;
 import cl.eos.persistence.models.RespuestasEsperadasPrueba;
-import cl.eos.util.ExcelSheetWriter;
+import cl.eos.util.ExcelSheetWriterObj;
 
 public class ComparativoComunalEjeView extends AFormView implements
 		EventHandler<ActionEvent> {
@@ -382,10 +382,9 @@ public class ComparativoComunalEjeView extends AFormView implements
 	public void handle(ActionEvent event) {
 		Object source = event.getSource();
 		if (source == mnuExportarEjesTematicos) {
-			// ExportadorDeTablasAExcel
-			// .convertirDatosALibroDeExcel(tblEjesTematicos);
+			ExcelSheetWriterObj.convertirDatosALibroDeExcel(tblEjesTematicos);
 		} else if (source == mnuExportarEvaluacion) {
-			ExcelSheetWriter
+			ExcelSheetWriterObj
 					.convertirDatosALibroDeExcel(tblEvaluacionEjesTematicos);
 		}
 	}
