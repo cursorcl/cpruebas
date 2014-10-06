@@ -26,22 +26,23 @@
             </MenuBar>
             <AnchorPane prefHeight="108.0" prefWidth="1087.0" styleClass="sample-page" BorderPane.alignment="CENTER">
                <children>
-                  <ComboBox fx:id="cmbCursos" layoutX="173.0" layoutY="76.0" prefWidth="150.0" promptText="Curso" />
-                  <Label layoutX="15.0" layoutY="61.0" text="Colegio" />
-                  <DatePicker fx:id="dtpFecha" layoutX="491.0" layoutY="75.0" />
+                  <Label layoutX="174.0" layoutY="62.0" text="Colegio" />
                   <Label layoutX="492.0" layoutY="61.0" text="Fecha" />
-                  <Label layoutX="175.0" layoutY="62.0" text="Curso" />
-                  <ComboBox fx:id="cmbColegios" layoutX="14.0" layoutY="76.0" prefWidth="150.0" promptText="Colegio" />
-                  <TextField fx:id="txtName" layoutX="14.0" layoutY="26.0" prefHeight="25.0" prefWidth="259.0" promptText="Nombre Prueba" />
-                  <TextField fx:id="txtAsignatura" layoutX="285.0" layoutY="26.0" prefHeight="25.0" prefWidth="373.0" promptText="Asignatura" />
+                  <Label layoutX="334.0" layoutY="63.0" text="Curso" />
+                  <ComboBox fx:id="cmbProfesor" layoutX="15.0" layoutY="78.0" prefWidth="150.0" promptText="Profesor" />
+                  <ComboBox fx:id="cmbColegios" layoutX="173.0" layoutY="78.0" prefWidth="150.0" promptText="Colegio" />
+                  <ComboBox fx:id="cmbCursos" disable="true" layoutX="332.0" layoutY="78.0" prefWidth="150.0" promptText="Curso" />
+                  <DatePicker fx:id="dtpFecha" layoutX="491.0" layoutY="75.0" />
+                  <TextField fx:id="txtName" disable="true" editable="false" focusTraversable="false" layoutX="14.0" layoutY="26.0" prefHeight="25.0" prefWidth="259.0" promptText="Nombre Prueba" />
+                  <TextField fx:id="txtAsignatura" disable="true" editable="false" focusTraversable="false" layoutX="285.0" layoutY="26.0" prefHeight="25.0" prefWidth="373.0" promptText="Asignatura" />
                   <Label layoutX="15.0" layoutY="9.0" text="Nombre de la prueba" />
                   <Label layoutX="285.0" layoutY="9.0" text="Asignatura" />
-                  <ListView fx:id="lstEjes" layoutX="668.0" layoutY="26.0" prefHeight="73.0" prefWidth="200.0" />
-                  <ListView fx:id="lstHabilidad" layoutX="870.0" layoutY="24.0" prefHeight="76.0" prefWidth="200.0" />
+                  <ListView fx:id="lstEjes" disable="true" focusTraversable="false" layoutX="668.0" layoutY="26.0" prefHeight="73.0" prefWidth="200.0" />
+                  <ListView fx:id="lstHabilidad" disable="true" focusTraversable="false" layoutX="870.0" layoutY="24.0" prefHeight="76.0" prefWidth="200.0" />
                   <Label layoutX="668.0" layoutY="9.0" text="Ejes temáticos" />
                   <Label layoutX="873.0" layoutY="9.0" text="Habilidades" />
-                  <ComboBox fx:id="cmbProfesor" layoutX="329.0" layoutY="76.0" prefHeight="23.0" prefWidth="155.0" promptText="Profesor" />
-                  <Label layoutX="331.0" layoutY="62.0" text="Profesor" />
+                  <Label layoutX="15.0" layoutY="62.0" text="Profesor" />
+                  <Label fx:id="lblError" layoutX="411.0" layoutY="9.0" prefHeight="17.0" prefWidth="246.0" />
                </children>
             </AnchorPane>
          </children>
@@ -52,16 +53,16 @@
          <children>
             <TableView id="tblListadoPruebas" fx:id="tblListadoPruebas" prefHeight="400.0" prefWidth="696.0" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="2.0">
               <columns>
-                  <TableColumn fx:id="paternoCol" prefWidth="94.0" text="Paterno" />
-                <TableColumn fx:id="maternoCol" prefWidth="110.0" text="Materno" />
-                  <TableColumn fx:id="nombresCol" prefWidth="105.0" text="Nombres" />
-                  <TableColumn fx:id="respuestasCol" prefWidth="417.0" text="Respuestas" />
-                  <TableColumn fx:id="buenasCol" prefWidth="58.0" text="Buenas" />
-                  <TableColumn fx:id="malasCol" prefWidth="61.0" text="Malas" />
-                  <TableColumn fx:id="omitidasCol" prefWidth="57.0" text="Omitidas" />
-                  <TableColumn fx:id="notaCol" prefWidth="50.0" text="Nota" />
-                  <TableColumn fx:id="puntajeCol" prefWidth="59.0" text="Puntaje" />
-                  <TableColumn fx:id="nivelCol" prefWidth="61.0" text="Nivel" />
+                  <TableColumn fx:id="paternoCol" editable="false" resizable="false" text="Paterno" />
+                <TableColumn fx:id="maternoCol" editable="false" prefWidth="100.0" resizable="false" style="-fx-alignment: CENTER;" text="Materno" />
+                  <TableColumn fx:id="nombresCol" editable="false" prefWidth="113.0" resizable="false" text="Nombres" />
+                  <TableColumn fx:id="respuestasCol" prefWidth="423.0" resizable="false" text="Respuestas" />
+                  <TableColumn fx:id="buenasCol" editable="false" prefWidth="54.0" resizable="false" style="-fx-alignment: CENTER;" text="Buenas" />
+                  <TableColumn fx:id="malasCol" editable="false" prefWidth="47.0" resizable="false" style="-fx-alignment: CENTER;" text="Malas" />
+                  <TableColumn fx:id="omitidasCol" editable="false" prefWidth="63.0" resizable="false" style="-fx-alignment: CENTER;" text="Omitidas" />
+                  <TableColumn fx:id="notaCol" editable="false" prefWidth="53.0" resizable="false" style="-fx-alignment: CENTER;" text="Nota" />
+                  <TableColumn fx:id="puntajeCol" editable="false" prefWidth="52.0" resizable="false" style="-fx-alignment: CENTER;" text="Puntaje" />
+                  <TableColumn fx:id="nivelCol" editable="false" prefWidth="79.0" resizable="false" style="-fx-alignment: CENTER;" text="Nivel" />
               </columns>
                <contextMenu>
                   <ContextMenu>

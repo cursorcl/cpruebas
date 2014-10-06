@@ -5,24 +5,24 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.util.Callback;
-import cl.eos.persistence.models.Prueba;
 import cl.eos.persistence.models.Prueba.Estado;
+import cl.eos.view.ots.OTPrueba;
 
 public class PruebaCellFactory implements
-    Callback<TableColumn<Prueba, Estado>, TableCell<Prueba, Estado>> {
+    Callback<TableColumn<OTPrueba, Estado>, TableCell<OTPrueba, Estado>> {
 
   @Override
-  public TableCell<Prueba, Estado> call(TableColumn<Prueba, Estado> p) {
+  public TableCell<OTPrueba, Estado> call(TableColumn<OTPrueba, Estado> p) {
 
-    TableCell<Prueba, Estado> cell = new TableCell<Prueba, Estado>() {
+    TableCell<OTPrueba, Estado> cell = new TableCell<OTPrueba, Estado>() {
       @SuppressWarnings("unchecked")
       @Override
       public void updateItem(Estado item, boolean empty) {
         super.updateItem(item, empty);
         setText(empty ? null : getString());
         setGraphic(null);
-        TableRow<Prueba> currentRow = getTableRow();
-        Prueba currentPrueba = currentRow == null ? null : (Prueba) currentRow.getItem();
+        TableRow<OTPrueba> currentRow = getTableRow();
+        OTPrueba currentPrueba = currentRow == null ? null : (OTPrueba) currentRow.getItem();
         if (currentPrueba != null) {
           Estado estado = currentPrueba.getEstado();
           clearPriorityStyle();
@@ -44,17 +44,19 @@ public class PruebaCellFactory implements
         styleClasses.remove("priorityHigh");
       }
 
-      private void setEstadoStyle(Estado priority) {
-        switch (priority) {
-          case CREADA:
-            getStyleClass().add("priorityLow");
-            break;
-          case DEFINIDA:
-            getStyleClass().add("priorityMedium");
-            break;
-          case EVALUADA:
-            getStyleClass().add("priorityHigh");
-            break;
+      private void setEstadoStyle(Estado estado) {
+        if (estado != null) {
+          switch (estado) {
+            case CREADA:
+              getStyleClass().add("priorityLow");
+              break;
+            case DEFINIDA:
+              getStyleClass().add("priorityMedium");
+              break;
+            case EVALUADA:
+              getStyleClass().add("priorityHigh");
+              break;
+          }
         }
       }
 
