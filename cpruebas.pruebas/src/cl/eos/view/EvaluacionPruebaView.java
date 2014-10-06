@@ -77,7 +77,7 @@ public class EvaluacionPruebaView extends AFormView implements
 	private ResumenGeneralPMEView resumenGeneralPME;
 
 	public EvaluacionPruebaView() {
-		// TODO Auto-generated constructor stub
+		setTitle("Listar Evaluaciones");
 	}
 
 	@FXML
