@@ -45,7 +45,7 @@
 											<menus>
                                     <Menu mnemonicParsing="false" text="Pruebas">
                                       <items>
-                                        <MenuItem fx:id="mnuHacerPrueba" mnemonicParsing="false" text="Generar Prueba" />
+                                        <MenuItem fx:id="mnuHacerPrueba" mnemonicParsing="false" text="Listado de Pruebas" />
                                       
                                       </items>
                                     </Menu>
@@ -94,13 +94,10 @@
                                              <accelerator>
                                                 <KeyCodeCombination alt="UP" code="N" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                                              </accelerator></MenuItem>
+                                          <SeparatorMenuItem mnemonicParsing="false" />
+                                          <MenuItem fx:id="mnuImportar" mnemonicParsing="false" text="Importar" />
 													</items>
 												</Menu>
-                                    <Menu mnemonicParsing="false" text="Configurar">
-                                      <items>
-                                          <MenuItem fx:id="mnuImportar" mnemonicParsing="false" text="Importar Excel" />
-                                      </items>
-                                    </Menu>
 												<Menu mnemonicParsing="false" text="Ayuda">
 													<items>
 														<MenuItem mnemonicParsing="false" text="About" />

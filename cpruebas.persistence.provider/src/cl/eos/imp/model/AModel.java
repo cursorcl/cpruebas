@@ -81,7 +81,6 @@ public abstract class AModel implements IModel {
 		}
 		return result;
 	}
-	
 
 	@Override
 	public void find(String namedQuery, Map<String, Object> parameters,
@@ -103,7 +102,7 @@ public abstract class AModel implements IModel {
 		PersistenceServiceFactory.getPersistenceService().findByName(
 				entityClazz, name, listener);
 	}
- 
+
 	@Override
 	public void findAll(Class<? extends IEntity> entityClazz) {
 		if (controller != null && controller instanceof IPersistenceListener) {
@@ -128,19 +127,23 @@ public abstract class AModel implements IModel {
 	@Override
 	public void findByAllId(Class<? extends IEntity> entityClazz, Object[] id) {
 		if (controller != null && controller instanceof IPersistenceListener) {
-		
-			PersistenceServiceFactory.getPersistenceService().findByAllId(entityClazz,
-					id,  (IPersistenceListener) controller);
+
+			PersistenceServiceFactory.getPersistenceService().findByAllId(
+					entityClazz, id, (IPersistenceListener) controller);
 		}
 	}
-	
+
+	public void findByAllId(Class<? extends IEntity> entityClazz, Object[] id,
+			IPersistenceListener listener) {
+		PersistenceServiceFactory.getPersistenceService().findByAllId(
+				entityClazz, id, listener);
+	}
+
 	@Override
 	public void findByName(Class<? extends IEntity> entityClazz, String name) {
 		if (controller != null && controller instanceof IPersistenceListener) {
 			findByName(entityClazz, name, (IPersistenceListener) controller);
 		}
 	}
-	
-	
 
 }

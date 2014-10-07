@@ -20,7 +20,6 @@ public interface IWindowManager {
    * @param window la ventana que se va a agregar.
    */
   void show(final IView window);
-  void add(final IView window);
   void setHomeView(final IView window);
 
   /**

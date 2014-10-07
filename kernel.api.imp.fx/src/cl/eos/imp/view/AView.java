@@ -127,23 +127,11 @@ public abstract class AView implements IView {
 
 	}
 
-	public void show(IView pane, boolean addBreadcrumb) {
-		if (addBreadcrumb) {
-			WindowManager.getInstance().add(pane);
-		} else {
-			WindowManager.getInstance().show(pane);
-		}
-	}
-
 	public void show(IView pane) {
-		show(pane, false);
+		WindowManager.getInstance().show(pane);
 	}
 
 	public IView show(String fxml) {
-		return show(fxml, false);
-	}
-
-	public IView show(String fxml, boolean addBreadcrumb) {
 		IView view = null;
 		URL url = AView.class.getResource(fxml);
 		FXMLLoader fxmlLoader = new FXMLLoader();
@@ -156,11 +144,7 @@ public abstract class AView implements IView {
 			e.printStackTrace();
 		}
 		if (view != null) {
-			if (addBreadcrumb) {
-				WindowManager.getInstance().add(view);
-			} else {
-				WindowManager.getInstance().show(view);
-			}
+			WindowManager.getInstance().show(view);
 		}
 		return view;
 	}
