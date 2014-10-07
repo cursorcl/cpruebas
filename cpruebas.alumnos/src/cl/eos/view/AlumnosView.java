@@ -23,7 +23,7 @@ import cl.eos.interfaces.entity.IEntity;
 import cl.eos.persistence.models.Alumno;
 import cl.eos.persistence.models.Colegio;
 import cl.eos.persistence.models.Curso;
-import cl.eos.util.ExcelSheetWriterEntity;
+import cl.eos.util.ExcelSheetWriterObj;
 import cl.eos.util.Utils;
 
 public class AlumnosView extends AFormView implements EventHandler<ActionEvent> {
@@ -365,7 +365,8 @@ public class AlumnosView extends AFormView implements EventHandler<ActionEvent> 
 		} else if (source == mnuAgregar ) {
 			limpiarControles();
 		} else if (source == mnuExportar || source == menuExportar) {
-			ExcelSheetWriterEntity.convertirDatosALibroDeExcel(tblAlumnos);
+			tblAlumnos.setId("Alumnos");
+			ExcelSheetWriterObj.convertirDatosALibroDeExcel(tblAlumnos);
 		}
 		
 	}

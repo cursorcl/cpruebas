@@ -492,10 +492,12 @@ public class ResumenGeneralPMEView extends AFormView implements
 		if (source == mnuExportarEjesTematicos
 				|| source == mnuExportarHabilidades
 				|| source == mnuExportarRangos || source == mnuExportarReporte) {
+			
 			tblEjesTematicos.setId("Eje Temático");
 			tblHabilidades.setId("Habilidades");
 			tblRangos.setId("Rango");
 			tblReportePME.setId("Reporte PME");
+			
 			List<TableView<? extends Object>> listaTablas = new LinkedList<>();
 			listaTablas.add((TableView<? extends Object>) tblEjesTematicos);
 			listaTablas.add((TableView<? extends Object>) tblHabilidades);

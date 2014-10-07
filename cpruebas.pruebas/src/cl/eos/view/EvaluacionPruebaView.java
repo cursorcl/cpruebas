@@ -21,7 +21,7 @@ import cl.eos.persistence.models.Curso;
 import cl.eos.persistence.models.EvaluacionPrueba;
 import cl.eos.persistence.models.RangoEvaluacion;
 import cl.eos.persistence.models.TipoPrueba;
-import cl.eos.util.ExcelSheetWriterEntity;
+import cl.eos.util.ExcelSheetWriterObj;
 
 public class EvaluacionPruebaView extends AFormView implements
 		EventHandler<ActionEvent> {
@@ -172,7 +172,8 @@ public class EvaluacionPruebaView extends AFormView implements
 	}
 
 	private void handlerResumenExcel() {
-		ExcelSheetWriterEntity.convertirDatosALibroDeExcel(tblListadoPruebas);
+		tblListadoPruebas.setId("Listado de pruebas");
+		ExcelSheetWriterObj.convertirDatosALibroDeExcel(tblListadoPruebas);
 
 	}
 

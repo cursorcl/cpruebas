@@ -18,7 +18,7 @@ import javafx.scene.input.MouseEvent;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.persistence.models.Habilidad;
-import cl.eos.util.ExcelSheetWriterEntity;
+import cl.eos.util.ExcelSheetWriterObj;
 
 public class HabilidadesView extends AFormView implements
 		EventHandler<ActionEvent> {
@@ -254,7 +254,8 @@ public class HabilidadesView extends AFormView implements
 		} else if (source == mnuEliminar || source == menuEliminar) {
 			accionEliminar();
 		} else if (source == mnuExportar || source == menuExportar) {
-			ExcelSheetWriterEntity.convertirDatosALibroDeExcel(tblHabilidades);
+			tblHabilidades.setId("Habilidades");
+			ExcelSheetWriterObj.convertirDatosALibroDeExcel(tblHabilidades);
 		}
 	}
 }

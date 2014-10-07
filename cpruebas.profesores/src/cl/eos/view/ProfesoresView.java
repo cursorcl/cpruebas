@@ -18,7 +18,7 @@ import javafx.scene.input.MouseEvent;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.persistence.models.Profesor;
-import cl.eos.util.ExcelSheetWriterEntity;
+import cl.eos.util.ExcelSheetWriterObj;
 import cl.eos.util.Utils;
 
 public class ProfesoresView extends AFormView implements
@@ -304,7 +304,8 @@ public class ProfesoresView extends AFormView implements
 		} else if (source == mnuEliminar || source == mnItemEliminar) {
 			accionEliminar();
 		} else if (source == mnuExportar || source == menuExportar) {
-			ExcelSheetWriterEntity.convertirDatosALibroDeExcel(tblProfesores);
+			tblProfesores.setId("Profesores");
+			ExcelSheetWriterObj.convertirDatosALibroDeExcel(tblProfesores);
 		}
 	}
 }

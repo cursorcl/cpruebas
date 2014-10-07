@@ -2,8 +2,6 @@ package cl.eos.view;
 
 import java.util.List;
 
-import org.controlsfx.dialog.Dialogs;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -18,13 +16,16 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+
+import org.controlsfx.dialog.Dialogs;
+
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
+import cl.eos.persistence.models.Ciclo;
 import cl.eos.persistence.models.Colegio;
 import cl.eos.persistence.models.Curso;
-import cl.eos.persistence.models.Ciclo;
 import cl.eos.persistence.models.TipoCurso;
-import cl.eos.util.ExcelSheetWriterEntity;
+import cl.eos.util.ExcelSheetWriterObj;
 
 public class CursosView extends AFormView implements EventHandler<ActionEvent> {
 
@@ -297,7 +298,8 @@ public class CursosView extends AFormView implements EventHandler<ActionEvent> {
 		} else if (source == mnuEliminar || source == mnItemEliminar) {
 			accionEliminar();
 		} else if (source == mnuExportar || source == menuExportar) {
-			ExcelSheetWriterEntity.convertirDatosALibroDeExcel(tblCurso);
+			tblCurso.setId("Cursos");
+			ExcelSheetWriterObj.convertirDatosALibroDeExcel(tblCurso);
 		}
 
 	}
