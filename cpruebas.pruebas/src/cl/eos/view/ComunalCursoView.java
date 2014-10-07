@@ -47,11 +47,6 @@ public class ComunalCursoView extends AFormView implements
 	public ComunalCursoView() {
 	}
 
-	@Override
-	public void handle(ActionEvent arg0) {
-
-	}
-
 	private void desplegarDatosEvaluaciones() {
 		ObservableList<ObservableList> registros = FXCollections
 				.observableArrayList();
@@ -344,6 +339,12 @@ public class ComunalCursoView extends AFormView implements
 				llegaOnDAPrueba = false;
 			}
 		}
+	}
+
+	@Override
+	public void handle(ActionEvent event) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

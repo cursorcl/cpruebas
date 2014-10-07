@@ -5,6 +5,7 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -25,7 +26,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Callback;
-import jdk.nashorn.internal.runtime.ListAdapter;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.ot.OTPreguntasEjes;
@@ -445,7 +445,7 @@ public class ResumenGeneralPMEView extends AFormView implements
 		ObservableList<String> row = null;
 		for (RangoEvaluacion rango : listaRangos) {
 			Map<EjeTematico, OTReporte> mEjeTematico = mapReporte.get(rango);
-		
+
 			row = FXCollections.observableArrayList();
 			row.add(rango.getName());
 
@@ -489,14 +489,19 @@ public class ResumenGeneralPMEView extends AFormView implements
 	@Override
 	public void handle(ActionEvent event) {
 		Object source = event.getSource();
-		if (source == mnuExportarEjesTematicos) {
-			ExcelSheetWriterObj.convertirDatosALibroDeExcel(tblEjesTematicos);
-		} else if (source == mnuExportarHabilidades) {
-			ExcelSheetWriterObj.convertirDatosALibroDeExcel(tblHabilidades);
-		} else if (source == mnuExportarRangos) {
-			ExcelSheetWriterObj.convertirDatosALibroDeExcel(tblRangos);
-		} else if (source == mnuExportarReporte) {
-			ExcelSheetWriterObj.convertirDatosALibroDeExcel(tblReportePME);
+		if (source == mnuExportarEjesTematicos
+				|| source == mnuExportarHabilidades
+				|| source == mnuExportarRangos || source == mnuExportarReporte) {
+			tblEjesTematicos.setId("Eje Temático");
+			tblHabilidades.setId("Habilidades");
+			tblRangos.setId("Rango");
+			tblReportePME.setId("Reporte PME");
+			List<TableView<? extends Object>> listaTablas = new LinkedList<>();
+			listaTablas.add((TableView<? extends Object>) tblEjesTematicos);
+			listaTablas.add((TableView<? extends Object>) tblHabilidades);
+			listaTablas.add((TableView<? extends Object>) tblRangos);
+			listaTablas.add((TableView<? extends Object>) tblReportePME);
+			ExcelSheetWriterObj.convertirDatosALibroDeExcel(listaTablas);
 		}
 	}
 }

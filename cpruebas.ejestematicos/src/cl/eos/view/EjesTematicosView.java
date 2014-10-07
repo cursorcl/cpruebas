@@ -93,6 +93,11 @@ public class EjesTematicosView extends AFormView implements
 		menuExportar.setOnAction(this);
 		mnuExportar.setOnAction(this);
 
+		mnuModificar.setDisable(true);
+		mnuEliminar.setDisable(true);
+		menuEliminar.setDisable(true);
+		menuModificar.setDisable(true);
+		
 	}
 
 	private void accionGrabar() {
@@ -140,10 +145,16 @@ public class EjesTematicosView extends AFormView implements
 				if (itemsSelec.size() > 1) {
 					mnuModificar.setDisable(false);
 					mnuEliminar.setDisable(true);
+					
+					menuModificar.setDisable(false);
+					menuEliminar.setDisable(true);
 				} else if (itemsSelec.size() == 1) {
 					select((IEntity) itemsSelec.get(0));
-					mnuModificar.setDisable(true);
-					mnuEliminar.setDisable(true);
+					mnuModificar.setDisable(false);
+					mnuEliminar.setDisable(false);
+					
+					menuModificar.setDisable(false);
+					menuEliminar.setDisable(false);
 				}
 			}
 		});

@@ -85,6 +85,11 @@ public class HabilidadesView extends AFormView implements
 		menuModificar.setOnAction(this);
 		menuExportar.setOnAction(this);
 		mnuExportar.setOnAction(this);
+		
+		mnuModificar.setDisable(true);
+		mnuEliminar.setDisable(true);
+		menuEliminar.setDisable(true);
+		menuModificar.setDisable(true);
 	}
 
 	private void inicializaTabla() {
@@ -156,10 +161,17 @@ public class HabilidadesView extends AFormView implements
 				if (itemsSelec.size() > 1) {
 					menuModificar.setDisable(true);
 					menuEliminar.setDisable(false);
+					
+					mnuModificar.setDisable(true);
+					mnuEliminar.setDisable(false);
+					
 				} else if (itemsSelec.size() == 1) {
 					select((IEntity) itemsSelec.get(0));
 					menuModificar.setDisable(false);
 					menuEliminar.setDisable(false);
+					
+					mnuModificar.setDisable(false);
+					mnuEliminar.setDisable(false);
 				}
 			}
 		});

@@ -144,7 +144,7 @@
                   </Label>
                </children>
             </HBox>
-            <Label fx:id="lblTitulo" layoutX="638.0" layoutY="2.0" prefHeight="32.0" prefWidth="441.0">
+            <Label fx:id="lblTitulo" alignment="CENTER" layoutX="638.0" layoutY="2.0" prefHeight="32.0" prefWidth="441.0">
                <font>
                   <Font size="21.0" />
                </font>
