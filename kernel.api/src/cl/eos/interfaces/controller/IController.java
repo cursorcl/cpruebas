@@ -11,12 +11,11 @@ import cl.eos.interfaces.view.IView;
 public interface IController {
 
 	/**
-	 * Este metodo debe ser implementado por todos los controladores.
-	 * Se puede utilizar para pedir la informacion desde el repositorio.
+	 * Este metodo debe ser implementado por todos los controladores. Se puede
+	 * utilizar para pedir la informacion desde el repositorio.
 	 */
 	void initialize();
-	
-	
+
 	void add(IEntity entity);
 
 	/**
@@ -42,7 +41,7 @@ public interface IController {
 	void delete(IEntity entity);
 
 	void delete(List<? extends IEntity> entity);
-	
+
 	/**
 	 * Metodo que selecciona el objeto. El controlador debe notificar que el
 	 * objeto esta seleccionado a todas la vistas.
@@ -60,53 +59,41 @@ public interface IController {
 	 */
 	IModel getModel();
 
-	/**
-	 * Agrega una vista, no se valida si la vista esta repetida.
-	 * 
-	 * @param view
-	 *            La vista a ser agregada.
-	 */
 	void addView(IView view);
-
-	/**
-	 * Elimina la vista.
-	 * 
-	 * @param view
-	 *            Vista a ser eliminada.
-	 */
 	void removeView(IView view);
 
-	/**
-	 * Obtiene la lista
-	 * 
-	 * @return
-	 */
 	List<IView> getViews();
 
 	void notifyFound(IEntity entity);
-
 	void notifySaved(IEntity entity);
-
 	void notifyDeleted(IEntity entity);
-	
 	void notifyChangeStatus(Object status);
 	
+	void find(String namedQuery, Map<String, Object> parameters);
 	void find(String namedQuery, Map<String, Object> parameters,
 			IPersistenceListener listener);
-
-	void findById(Class<? extends IEntity> entityClazz, Long id,
-			IPersistenceListener listener);
-
-	void findByName(Class<? extends IEntity> entityClazz, String name,
-			IPersistenceListener listener);
-
-	void findAll(Class<? extends IEntity> entityClazz);
-
-	void find(String namedQuery, Map<String, Object> parameters);
-
-	void findById(Class<? extends IEntity> entityClazz, Long id);
-	
-	void findByAllId(Class<? extends IEntity> entityClazz, Object[] objects);
+	void find(String namedQuery, Map<String, Object> parameters, IView ... view);
 
 	void findByName(Class<? extends IEntity> entityClazz, String name);
+	void findByName(Class<? extends IEntity> entityClazz, String name,
+			IPersistenceListener listener);
+	void findByName(Class<? extends IEntity> entityClazz, String name,
+			IView ... view);
+
+	void findById(Class<? extends IEntity> entityClazz, Long id);
+	void findById(Class<? extends IEntity> entityClazz, Long id,
+			IPersistenceListener listener);
+	void findById(Class<? extends IEntity> entityClazz, Long id, IView ... view);
+
+	void findAll(Class<? extends IEntity> entityClazz);
+	void findAll(Class<? extends IEntity> entityClazz,
+			IPersistenceListener listener);
+	void findAll(Class<? extends IEntity> entityClazz, IView ... view);
+
+	void findByAllId(Class<? extends IEntity> entityClazz, Object[] objects);
+	void findByAllId(Class<? extends IEntity> entityClazz, Object[] objects,
+			IPersistenceListener listener);
+	void findByAllId(Class<? extends IEntity> entityClazz, Object[] objects,
+			IView ... view);
+
 }

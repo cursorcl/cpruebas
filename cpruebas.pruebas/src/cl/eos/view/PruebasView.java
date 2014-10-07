@@ -94,6 +94,8 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 	@FXML
 	private TextField txtName;
 	@FXML
+	private TextField filterField;
+	@FXML
 	private MenuItem mnuGrabar;
 	@FXML
 	private MenuItem mnuModificar;
@@ -216,7 +218,18 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 				for (Object lEntity : list) {
 					pruebas.add(new OTPrueba((Prueba) lEntity));
 				}
-				tblListadoPruebas.setItems(pruebas);
+				 tblListadoPruebas.setItems(pruebas);
+//				FilteredList<OTPrueba> filteredItems = new FilteredList<OTPrueba>(
+//						pruebas, p -> true);
+//				tblListadoPruebas.setItems(filteredItems);
+//				filterField.setOnAction(new EventHandler<ActionEvent>() {
+//					public void handle(ActionEvent event) {
+//						filteredItems.setPredicate(ot ->
+//						ot.getName().contains(
+//						filterField.getText()));
+//					}
+//				});
+
 			}
 			if (entity instanceof TipoPrueba) {
 				ObservableList<TipoPrueba> tipoPruebas = FXCollections
@@ -382,10 +395,9 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 
 	private void handlerComunalEje() {
 		if (comunalEje == null) {
-			comunalEje = (ComunalCursoView) show(
-					"/cl/eos/view/ComunalEje.fxml", true);
+			comunalEje = (ComunalCursoView) show("/cl/eos/view/ComunalEje.fxml");
 		} else {
-			show(comunalEje, true);
+			show(comunalEje);
 		}
 		ObservableList<OTPrueba> otPruebas = tblListadoPruebas
 				.getSelectionModel().getSelectedItems();
@@ -395,18 +407,17 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 			for (OTPrueba ot : otPruebas) {
 				pruebas[n++] = ot.getPrueba();
 			}
-			controller.findByAllId(Prueba.class, pruebas);
-			controller.findAll(EvaluacionEjeTematico.class);
+			controller.findByAllId(Prueba.class, pruebas, comunalEje);
+			controller.findAll(EvaluacionEjeTematico.class, comunalEje);
 			// controller.findAll(Curso.class);
 		}
 	}
 
 	private void handlerComparativoComunal() {
 		if (comparativoComunal == null) {
-			comparativoComunal = (ComparativoComunalEjeView) show(
-					"/cl/eos/view/ComparativoComunalEje.fxml", true);
+			comparativoComunal = (ComparativoComunalEjeView) show("/cl/eos/view/ComparativoComunalEje.fxml");
 		} else {
-			show(comparativoComunal, true);
+			show(comparativoComunal);
 		}
 		if (tblListadoPruebas.getSelectionModel().getSelectedItem() != null) {
 			Prueba prueba = tblListadoPruebas.getSelectionModel()
@@ -431,10 +442,9 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 
 	private void handlerImrpimirPrueba() {
 		if (imprimirPrueba == null) {
-			imprimirPrueba = (ImprimirPruebaView) show(
-					"/cl/eos/view/ImprimirPrueba.fxml", true);
+			imprimirPrueba = (ImprimirPruebaView) show("/cl/eos/view/ImprimirPrueba.fxml");
 		} else {
-			show(imprimirPrueba, true);
+			show(imprimirPrueba);
 		}
 		if (tblListadoPruebas.getSelectionModel().getSelectedItem() != null) {
 			Prueba prueba = tblListadoPruebas.getSelectionModel()
@@ -453,10 +463,9 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 
 	private void handlerComparativoComunalHab() {
 		if (comparativoComunalHabilidad == null) {
-			comparativoComunalHabilidad = (ComparativoComunalHabilidadView) show(
-					"/cl/eos/view/ComparativoComunalHabilidad.fxml", true);
+			comparativoComunalHabilidad = (ComparativoComunalHabilidadView) show("/cl/eos/view/ComparativoComunalHabilidad.fxml");
 		} else {
-			show(comparativoComunalHabilidad, true);
+			show(comparativoComunalHabilidad);
 		}
 		if (tblListadoPruebas.getSelectionModel().getSelectedItem() != null) {
 			Prueba prueba = tblListadoPruebas.getSelectionModel()
@@ -470,10 +479,9 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 
 	private void handlerEvaluar() {
 		if (evaluarPruebaView == null) {
-			evaluarPruebaView = (EvaluarPruebaView) show(
-					"/cl/eos/view/EvaluarPrueba.fxml", true);
+			evaluarPruebaView = (EvaluarPruebaView) show("/cl/eos/view/EvaluarPrueba.fxml");
 		} else {
-			show(evaluarPruebaView, true);
+			show(evaluarPruebaView);
 		}
 		if (tblListadoPruebas.getSelectionModel().getSelectedItem() != null) {
 			Prueba prueba = tblListadoPruebas.getSelectionModel()
@@ -488,10 +496,9 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 
 	private void handlerDefinirPrueba() {
 		if (definePrueba == null) {
-			definePrueba = (DefinePruebaViewController) show(
-					"/cl/eos/view/DefinePruebaView.fxml", true);
+			definePrueba = (DefinePruebaViewController) show("/cl/eos/view/DefinePruebaView.fxml");
 		} else {
-			show(definePrueba, true);
+			show(definePrueba);
 		}
 		if (tblListadoPruebas.getSelectionModel().getSelectedItem() != null) {
 			Prueba prueba = tblListadoPruebas.getSelectionModel()
@@ -508,10 +515,9 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 
 	private void handlerListaEvaluaciones() {
 		if (evaluacionPrueba == null) {
-			evaluacionPrueba = (EvaluacionPruebaView) show(
-					"/cl/eos/view/EvaluacionPrueba.fxml", true);
+			evaluacionPrueba = (EvaluacionPruebaView) show("/cl/eos/view/EvaluacionPrueba.fxml");
 		} else {
-			show(evaluacionPrueba, true);
+			show(evaluacionPrueba);
 		}
 		if (tblListadoPruebas.getSelectionModel().getSelectedItem() != null) {
 			Prueba prueba = tblListadoPruebas.getSelectionModel()

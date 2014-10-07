@@ -46,4 +46,5 @@ public interface IModel {
 	IEntity get(Long id);
 	
 	void findByAllId(Class<? extends IEntity> entityClazz, Object[] id);
+	void findByAllId(Class<? extends IEntity> entityClazz, Object[] id, IPersistenceListener listener);
 }
