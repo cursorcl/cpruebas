@@ -6,6 +6,6 @@
 	<classpathentry kind="lib" path="lib/mysql-connector-java-5.1.9-bin.jar"/>
 	<classpathentry kind="lib" path="lib/toplink-essentials.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/kernel.api"/>
-	<classpathentry kind="lib" path="O:/cpruebas/jars/controlsfx-8.0.6_20.jar"/>
+	<classpathentry kind="lib" path="C:/desarrollo/cpruebas/jars/controlsfx-8.0.6_20.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
