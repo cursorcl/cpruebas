@@ -28,7 +28,10 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.util.Callback;
+import cl.eos.PruebasActivator;
 import cl.eos.imp.view.AFormView;
+import cl.eos.imp.view.WindowManager;
+import cl.eos.interfaces.IActivator;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.persistence.models.EjeTematico;
 import cl.eos.persistence.models.Formas;
@@ -163,7 +166,10 @@ public class DefinePruebaViewController extends AFormView {
     });
     mnuVolver.setOnAction(new EventHandler<ActionEvent>() {
       @Override
-      public void handle(ActionEvent event) {}
+      public void handle(ActionEvent event) {
+        IActivator activator = new PruebasActivator();
+        WindowManager.getInstance().show(activator.getView());
+      }
     });
     txtRespuestas.textProperty().addListener(new ChangeListener<String>() {
       @Override

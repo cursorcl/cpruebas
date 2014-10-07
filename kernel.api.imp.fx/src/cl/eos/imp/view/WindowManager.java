@@ -113,4 +113,17 @@ public class WindowManager implements IWindowManager {
 				});
 	}
 
+	@Override
+	public void setHomeView(IView window) {
+		if (group != null) {
+			WindowsView w = new WindowsView();
+			w.setView(window);
+			w.setId(window.getName());
+			w.setText(window.getTitle());
+			w.setContent((Parent) window.getPanel());
+			w.setVisible(true);
+			breadCrum.addHome(w);
+		}
+	}
+
 }

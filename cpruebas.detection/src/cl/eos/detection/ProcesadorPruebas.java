@@ -1,23 +1,15 @@
 package cl.eos.detection;
 
-import georegression.struct.point.Point2D_I32;
-
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Area;
-import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-
-import javafx.scene.shape.Path;
 
 import javax.imageio.ImageIO;
 
@@ -38,6 +30,7 @@ import boofcv.struct.image.ImageUInt8;
 
 public class ProcesadorPruebas {
 
+  
 	private MarvinImagePlugin moravec;
 
 	/**
@@ -52,7 +45,19 @@ public class ProcesadorPruebas {
 				.loadImagePlugin("org.marvinproject.image.corner.moravec");
 	}
 
-	public List<Contour> process(BufferedImage image) {
+	public OTResultadoScanner process(File file)
+	{
+	  OTResultadoScanner result = new OTResultadoScanner();
+	  try {
+      BufferedImage image = ImageIO.read(file);
+      process(image);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+	  
+	  return result;
+	}
+	private List<Contour> process(BufferedImage image) {
 		BufferedImage imgScaled = rectifyScale(image);
 		BufferedImage imgRotated = imgScaled; //rectifyRotation(imgScaled);
 

@@ -16,10 +16,10 @@
               <menus>
                 <Menu mnemonicParsing="false" text="Archivo">
                   <items>
-                        <MenuItem mnemonicParsing="false" text="Obtener de Scanner" />
+                        <MenuItem fx:id="mnuScanner" mnemonicParsing="false" text="Obtener de Scanner" />
                         <MenuItem fx:id="mnuGrabar" mnemonicParsing="false" text="Grabar Resultado" />
                         <SeparatorMenuItem mnemonicParsing="false" />
-                    <MenuItem mnemonicParsing="false" text="Volver" />
+                    <MenuItem fx:id="mnuVolver" mnemonicParsing="false" text="Volver" />
                   </items>
                 </Menu>
               </menus>
