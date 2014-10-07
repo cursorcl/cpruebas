@@ -1,5 +1,7 @@
 package cl.eos.view;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,6 +37,7 @@ import cl.eos.util.ExcelSheetWriterObj;
 public class ComparativoComunalEjeView extends AFormView implements
 		EventHandler<ActionEvent> {
 
+	private NumberFormat formatter = new DecimalFormat("#0.00");
 	@FXML
 	private Label lblTitulo;
 	@FXML
@@ -263,7 +266,7 @@ public class ComparativoComunalEjeView extends AFormView implements
 
 			for (String string : titulosColumnas) {
 				OTPreguntasEjes otPregunta = resultados.get(string);
-				row.add(String.valueOf(otPregunta.getLogrado()));
+				row.add(formatter.format(otPregunta.getLogrado()));
 			}
 
 			registros.add(row);

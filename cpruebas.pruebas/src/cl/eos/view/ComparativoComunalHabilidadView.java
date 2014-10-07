@@ -30,7 +30,6 @@ import cl.eos.persistence.models.Habilidad;
 import cl.eos.persistence.models.Prueba;
 import cl.eos.persistence.models.PruebaRendida;
 import cl.eos.persistence.models.RespuestasEsperadasPrueba;
-import cl.eos.util.ExcelSheetWriterEntity;
 import cl.eos.util.ExcelSheetWriterObj;
 
 public class ComparativoComunalHabilidadView extends AFormView implements
@@ -62,8 +61,8 @@ public class ComparativoComunalHabilidadView extends AFormView implements
 		this.setTitle("Resumen comparativo comunal habilidad");
 		inicializarTablaHabilidades();
 		inicializarTablaEvaluacion();
-		// mnuExportarEjesTematicos.setOnAction(this);
-		// mnuExportarEvaluacion.setOnAction(this);
+		mnuExportarHabilidad.setOnAction(this);
+		mnuExportarEvaluacion.setOnAction(this);
 	}
 
 	private void inicializarTablaHabilidades() {

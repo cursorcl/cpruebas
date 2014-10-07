@@ -63,9 +63,6 @@
                                     <Font name="System Bold" size="12.0" />
                                  </font></Label>
                               <TableView fx:id="tblReportePME" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="40.0">
-                                <columns>
-                                  <TableColumn prefWidth="75.0" text="C1" />
-                                </columns>
                                  <contextMenu>
                                     <ContextMenu>
                                       <items>
