@@ -1,5 +1,6 @@
 package cl.eos.view;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import javafx.collections.FXCollections;
@@ -20,7 +21,7 @@ import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.persistence.models.EvaluacionPrueba;
 import cl.eos.persistence.models.PruebaRendida;
-import cl.eos.util.ExcelSheetWriterEntity;
+import cl.eos.util.ExcelSheetWriterObj;
 
 public class ResumenAlumnoView extends AFormView implements
 		EventHandler<ActionEvent> {
@@ -199,10 +200,16 @@ public class ResumenAlumnoView extends AFormView implements
 	@Override
 	public void handle(ActionEvent event) {
 		Object source = event.getSource();
-		if (source == mnuExportarRespuestas) {
-			ExcelSheetWriterEntity.convertirDatosALibroDeExcel(tblRespuestas);
-		} else if (source == mnuExportarAlumnos) {
-			ExcelSheetWriterEntity.convertirDatosALibroDeExcel(tblAlumnos);
-		}
+		if (source == mnuExportarRespuestas || source == mnuExportarAlumnos) {
+			
+			tblAlumnos.setId("Alumnos");
+			tblRespuestas.setId("Respuestas");
+			
+			List<TableView<? extends Object>> listaTablas = new LinkedList<>();
+			listaTablas.add((TableView<? extends Object>) tblAlumnos);
+			listaTablas.add((TableView<? extends Object>) tblRespuestas);
+			
+			ExcelSheetWriterObj.convertirDatosALibroDeExcel(listaTablas);
+		} 
 	}
 }

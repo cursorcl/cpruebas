@@ -18,7 +18,7 @@ import javafx.scene.input.MouseEvent;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.persistence.models.Habilidad;
-import cl.eos.util.ExcelSheetWriterEntity;
+import cl.eos.util.ExcelSheetWriterObj;
 
 public class HabilidadesView extends AFormView implements
 		EventHandler<ActionEvent> {
@@ -85,6 +85,11 @@ public class HabilidadesView extends AFormView implements
 		menuModificar.setOnAction(this);
 		menuExportar.setOnAction(this);
 		mnuExportar.setOnAction(this);
+		
+		mnuModificar.setDisable(true);
+		mnuEliminar.setDisable(true);
+		menuEliminar.setDisable(true);
+		menuModificar.setDisable(true);
 	}
 
 	private void inicializaTabla() {
@@ -156,10 +161,17 @@ public class HabilidadesView extends AFormView implements
 				if (itemsSelec.size() > 1) {
 					menuModificar.setDisable(true);
 					menuEliminar.setDisable(false);
+					
+					mnuModificar.setDisable(true);
+					mnuEliminar.setDisable(false);
+					
 				} else if (itemsSelec.size() == 1) {
 					select((IEntity) itemsSelec.get(0));
 					menuModificar.setDisable(false);
 					menuEliminar.setDisable(false);
+					
+					mnuModificar.setDisable(false);
+					mnuEliminar.setDisable(false);
 				}
 			}
 		});
@@ -242,7 +254,8 @@ public class HabilidadesView extends AFormView implements
 		} else if (source == mnuEliminar || source == menuEliminar) {
 			accionEliminar();
 		} else if (source == mnuExportar || source == menuExportar) {
-			ExcelSheetWriterEntity.convertirDatosALibroDeExcel(tblHabilidades);
+			tblHabilidades.setId("Habilidades");
+			ExcelSheetWriterObj.convertirDatosALibroDeExcel(tblHabilidades);
 		}
 	}
 }

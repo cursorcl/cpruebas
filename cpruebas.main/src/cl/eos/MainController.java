@@ -169,9 +169,10 @@ public class MainController {
 		// });
 
 		mnuImportar.setOnAction(new EventHandler<ActionEvent>() {
+			
 			@Override
 			public void handle(ActionEvent event) {
-				importarExcel();
+				importarExcel();				
 			}
 		});
 	}

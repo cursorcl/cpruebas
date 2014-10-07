@@ -5,7 +5,7 @@ import java.text.NumberFormat;
 
 public class OTResultado {
 	private String nombre;
-	private String logrado;
+	private double logrado;
 
 	public String getNombre() {
 		return nombre;
@@ -20,7 +20,7 @@ public class OTResultado {
 		return formatter.format(logrado);
 	}
 
-	public void setLogrado(String logrado) {
+	public void setLogrado(double logrado) {
 		this.logrado = logrado;
 	}
 

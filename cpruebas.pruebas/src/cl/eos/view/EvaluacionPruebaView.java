@@ -21,6 +21,7 @@ import cl.eos.persistence.models.Curso;
 import cl.eos.persistence.models.EvaluacionPrueba;
 import cl.eos.persistence.models.RangoEvaluacion;
 import cl.eos.persistence.models.TipoPrueba;
+import cl.eos.util.ExcelSheetWriterObj;
 
 public class EvaluacionPruebaView extends AFormView implements
 		EventHandler<ActionEvent> {
@@ -67,6 +68,10 @@ public class EvaluacionPruebaView extends AFormView implements
 	private MenuItem menuRespuestasEje;
 	@FXML
 	private MenuItem mnuResumenPME;
+	@FXML
+	private MenuItem mnuExportarExcel;
+	@FXML
+	private MenuItem menuExportarExcel;
 
 	private EvaluacionPrueba evaluacionPrueba;
 	private ResumenGeneralView resumenGeneral;
@@ -77,7 +82,7 @@ public class EvaluacionPruebaView extends AFormView implements
 	private ResumenGeneralPMEView resumenGeneralPME;
 
 	public EvaluacionPruebaView() {
-		setTitle("Listar Evaluaciones");
+		setTitle("Listado de evaluaciones");
 	}
 
 	@FXML
@@ -94,6 +99,8 @@ public class EvaluacionPruebaView extends AFormView implements
 		menuRespuestasHabilidad.setOnAction(this);
 		menuRespuestasEje.setOnAction(this);
 		mnuResumenPME.setOnAction(this);
+		mnuExportarExcel.setOnAction(this);
+		menuExportarExcel.setOnAction(this);
 
 		tblListadoPruebas.getSelectionModel().setSelectionMode(
 				SelectionMode.MULTIPLE);
@@ -158,7 +165,16 @@ public class EvaluacionPruebaView extends AFormView implements
 			handleResumenEje();
 		} else if (source == mnuResumenPME) {
 			handlerResumenPME();
+		} else if (source == mnuExportarExcel || source == menuExportarExcel) {
+			handlerResumenExcel();
 		}
+
+	}
+
+	private void handlerResumenExcel() {
+		tblListadoPruebas.setId("Listado de pruebas");
+		ExcelSheetWriterObj.convertirDatosALibroDeExcel(tblListadoPruebas);
+
 	}
 
 	private void handleResumenEje() {

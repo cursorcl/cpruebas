@@ -2,6 +2,7 @@ package cl.eos.view;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -30,7 +31,6 @@ import cl.eos.persistence.models.Habilidad;
 import cl.eos.persistence.models.Prueba;
 import cl.eos.persistence.models.PruebaRendida;
 import cl.eos.persistence.models.RespuestasEsperadasPrueba;
-import cl.eos.util.ExcelSheetWriterEntity;
 import cl.eos.util.ExcelSheetWriterObj;
 
 public class ComparativoComunalHabilidadView extends AFormView implements
@@ -62,8 +62,8 @@ public class ComparativoComunalHabilidadView extends AFormView implements
 		this.setTitle("Resumen comparativo comunal habilidad");
 		inicializarTablaHabilidades();
 		inicializarTablaEvaluacion();
-		// mnuExportarEjesTematicos.setOnAction(this);
-		// mnuExportarEvaluacion.setOnAction(this);
+		mnuExportarHabilidad.setOnAction(this);
+		mnuExportarEvaluacion.setOnAction(this);
 	}
 
 	private void inicializarTablaHabilidades() {
@@ -386,10 +386,15 @@ public class ComparativoComunalHabilidadView extends AFormView implements
 	@Override
 	public void handle(ActionEvent event) {
 		Object source = event.getSource();
-		if (source == mnuExportarHabilidad) {
+		if (source == mnuExportarHabilidad || source == mnuExportarEvaluacion) {
+			
+			tblHabilidades.setId("Ejes temáticos");
+			tblEvaluaciones.setId("Evaluación");
+			
+			List<TableView<? extends Object>> listaTablas = new LinkedList<>();
+			listaTablas.add((TableView<? extends Object>) tblHabilidades);
+			listaTablas.add((TableView<? extends Object>) tblEvaluaciones);
 			ExcelSheetWriterObj.convertirDatosALibroDeExcel(tblHabilidades);
-		} else if (source == mnuExportarEvaluacion) {
-			ExcelSheetWriterObj.convertirDatosALibroDeExcel(tblEvaluaciones);
-		}
+		} 
 	}
 }

@@ -21,7 +21,7 @@ import cl.eos.interfaces.entity.IEntity;
 import cl.eos.persistence.models.Asignatura;
 import cl.eos.persistence.models.EjeTematico;
 import cl.eos.persistence.models.TipoPrueba;
-import cl.eos.util.ExcelSheetWriterEntity;
+import cl.eos.util.ExcelSheetWriterObj;
 
 public class EjesTematicosView extends AFormView implements
 		EventHandler<ActionEvent> {
@@ -93,6 +93,11 @@ public class EjesTematicosView extends AFormView implements
 		menuExportar.setOnAction(this);
 		mnuExportar.setOnAction(this);
 
+		mnuModificar.setDisable(true);
+		mnuEliminar.setDisable(true);
+		menuEliminar.setDisable(true);
+		menuModificar.setDisable(true);
+		
 	}
 
 	private void accionGrabar() {
@@ -140,10 +145,16 @@ public class EjesTematicosView extends AFormView implements
 				if (itemsSelec.size() > 1) {
 					mnuModificar.setDisable(false);
 					mnuEliminar.setDisable(true);
+					
+					menuModificar.setDisable(false);
+					menuEliminar.setDisable(true);
 				} else if (itemsSelec.size() == 1) {
 					select((IEntity) itemsSelec.get(0));
-					mnuModificar.setDisable(true);
-					mnuEliminar.setDisable(true);
+					mnuModificar.setDisable(false);
+					mnuEliminar.setDisable(false);
+					
+					menuModificar.setDisable(false);
+					menuEliminar.setDisable(false);
 				}
 			}
 		});
@@ -243,7 +254,8 @@ public class EjesTematicosView extends AFormView implements
 		} else if (source == mnuEliminar || source == menuEliminar) {
 			accionEliminar();
 		} else if (source == mnuExportar || source == menuExportar) {
-			ExcelSheetWriterEntity.convertirDatosALibroDeExcel(tblEjesTematicos);
+			tblEjesTematicos.setId("Ejes temáticos");
+			ExcelSheetWriterObj.convertirDatosALibroDeExcel(tblEjesTematicos);
 		}
 
 	}

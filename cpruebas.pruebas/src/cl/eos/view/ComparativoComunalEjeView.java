@@ -1,7 +1,10 @@
 package cl.eos.view;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -35,6 +38,7 @@ import cl.eos.util.ExcelSheetWriterObj;
 public class ComparativoComunalEjeView extends AFormView implements
 		EventHandler<ActionEvent> {
 
+	private NumberFormat formatter = new DecimalFormat("#0.00");
 	@FXML
 	private Label lblTitulo;
 	@FXML
@@ -44,7 +48,7 @@ public class ComparativoComunalEjeView extends AFormView implements
 	@FXML
 	private TableView tblEjesTematicos;
 	@FXML
-	private TableView tblEvaluacionEjesTematicos;
+	private TableView tblEvaluaciones;
 
 	private HashMap<EjeTematico, HashMap<String, OTPreguntasEjes>> mapaEjesTematicos;
 
@@ -61,8 +65,9 @@ public class ComparativoComunalEjeView extends AFormView implements
 		this.setTitle("Resumen comparativo comunal ejes temáticas");
 		inicializarTablaEjes();
 		inicializarTablaEvaluacion();
-		// mnuExportarEjesTematicos.setOnAction(this);
-		// mnuExportarEvaluacion.setOnAction(this);
+		
+		mnuExportarEjesTematicos.setOnAction(this);
+		mnuExportarEvaluacion.setOnAction(this);
 	}
 
 	private void inicializarTablaEjes() {
@@ -71,7 +76,7 @@ public class ComparativoComunalEjeView extends AFormView implements
 	}
 
 	private void inicializarTablaEvaluacion() {
-		tblEvaluacionEjesTematicos.getSelectionModel().setSelectionMode(
+		tblEvaluaciones.getSelectionModel().setSelectionMode(
 				SelectionMode.MULTIPLE);
 	}
 
@@ -263,7 +268,7 @@ public class ComparativoComunalEjeView extends AFormView implements
 
 			for (String string : titulosColumnas) {
 				OTPreguntasEjes otPregunta = resultados.get(string);
-				row.add(String.valueOf(otPregunta.getLogrado()));
+				row.add(formatter.format(otPregunta.getLogrado()));
 			}
 
 			registros.add(row);
@@ -306,7 +311,7 @@ public class ComparativoComunalEjeView extends AFormView implements
 		}
 		registroseEva.add(row);
 
-		tblEvaluacionEjesTematicos.setItems(registroseEva);
+		tblEvaluaciones.setItems(registroseEva);
 	}
 
 	private void creacionColumnasEjesTematicos(
@@ -356,7 +361,7 @@ public class ComparativoComunalEjeView extends AFormView implements
 			}
 		});
 		columna0.setPrefWidth(100);
-		tblEvaluacionEjesTematicos.getColumns().add(columna0);
+		tblEvaluaciones.getColumns().add(columna0);
 
 		int indice = 1;
 		for (String evaluacion : titulosColumnas) {
@@ -373,7 +378,7 @@ public class ComparativoComunalEjeView extends AFormView implements
 				}
 			});
 			columna.setPrefWidth(100);
-			tblEvaluacionEjesTematicos.getColumns().add(columna);
+			tblEvaluaciones.getColumns().add(columna);
 			indice++;
 		}
 	}
@@ -381,11 +386,15 @@ public class ComparativoComunalEjeView extends AFormView implements
 	@Override
 	public void handle(ActionEvent event) {
 		Object source = event.getSource();
-		if (source == mnuExportarEjesTematicos) {
-			ExcelSheetWriterObj.convertirDatosALibroDeExcel(tblEjesTematicos);
-		} else if (source == mnuExportarEvaluacion) {
-			ExcelSheetWriterObj
-					.convertirDatosALibroDeExcel(tblEvaluacionEjesTematicos);
-		}
+		if (source == mnuExportarEjesTematicos || source == mnuExportarEvaluacion) {
+			
+			tblEjesTematicos.setId("Ejes temáticos");
+			tblEvaluaciones.setId("Evaluación");
+			List<TableView<? extends Object>> listaTablas = new LinkedList<>();
+			listaTablas.add((TableView<? extends Object>) tblEjesTematicos);
+			listaTablas.add((TableView<? extends Object>) tblEvaluaciones);
+			
+			ExcelSheetWriterObj.convertirDatosALibroDeExcel(listaTablas);
+		} 
 	}
 }

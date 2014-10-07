@@ -1,5 +1,6 @@
 package cl.eos.view;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javafx.collections.FXCollections;
@@ -17,8 +18,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
+import cl.eos.ot.OTAsignatura;
 import cl.eos.persistence.models.Asignatura;
-import cl.eos.util.ExcelSheetWriterEntity;
+import cl.eos.util.ExcelSheetWriterObj;
 
 public class AsignaturasView extends AFormView implements
 		EventHandler<ActionEvent> {
@@ -54,11 +56,11 @@ public class AsignaturasView extends AFormView implements
 	private Label lblError;
 
 	@FXML
-	private TableView<Asignatura> tblAsignatura;
+	private TableView<OTAsignatura> tblAsignatura;
 	@FXML
-	private TableColumn<Asignatura, Long> colId;
+	private TableColumn<OTAsignatura, Long> colId;
 	@FXML
-	private TableColumn<Asignatura, String> colNombre;
+	private TableColumn<OTAsignatura, String> colNombre;
 
 	public AsignaturasView() {
 		setTitle("Asignaturas");
@@ -76,20 +78,25 @@ public class AsignaturasView extends AFormView implements
 		mnItemModificar.setOnAction(this);
 		menuExportar.setOnAction(this);
 		mnuExportar.setOnAction(this);
+
+		mnuModificar.setDisable(true);
+		mnuEliminar.setDisable(true);
+		mnItemEliminar.setDisable(true);
+		mnItemModificar.setDisable(true);
 	}
 
 	private void inicializaTabla() {
 		tblAsignatura.getSelectionModel().setSelectionMode(
 				SelectionMode.MULTIPLE);
-		colId.setCellValueFactory(new PropertyValueFactory<Asignatura, Long>(
+		colId.setCellValueFactory(new PropertyValueFactory<OTAsignatura, Long>(
 				"id"));
 		colNombre
-				.setCellValueFactory(new PropertyValueFactory<Asignatura, String>(
+				.setCellValueFactory(new PropertyValueFactory<OTAsignatura, String>(
 						"name"));
 	}
 
 	private void accionModificar() {
-		Asignatura asignatura = tblAsignatura.getSelectionModel()
+		OTAsignatura asignatura = tblAsignatura.getSelectionModel()
 				.getSelectedItem();
 		if (asignatura != null) {
 			txtNombre.setText(asignatura.getName());
@@ -97,9 +104,19 @@ public class AsignaturasView extends AFormView implements
 	}
 
 	private void accionEliminar() {
-		ObservableList<Asignatura> asignaturasSelec = tblAsignatura
+		ObservableList<OTAsignatura> otSeleccionados = tblAsignatura
 				.getSelectionModel().getSelectedItems();
-		delete(asignaturasSelec);
+
+		if (otSeleccionados != null && !otSeleccionados.isEmpty()) {
+			List<Asignatura> pruebas = new ArrayList<Asignatura>(
+					otSeleccionados.size());
+			for (OTAsignatura ot : otSeleccionados) {
+				pruebas.add(ot.getAsignatura());
+			}
+			delete(pruebas);
+			tblAsignatura.getSelectionModel().clearSelection();
+			limpiarControles();
+		}
 		tblAsignatura.getSelectionModel().clearSelection();
 	}
 
@@ -111,8 +128,9 @@ public class AsignaturasView extends AFormView implements
 				lblError.setText(" ");
 			}
 			Asignatura asignatura = null;
-			if (entitySelected != null && entitySelected instanceof Asignatura) {
-				asignatura = (Asignatura) entitySelected;
+			if (entitySelected != null
+					&& entitySelected instanceof Asignatura) {
+				asignatura = ((Asignatura) entitySelected);
 			} else {
 				asignatura = new Asignatura();
 			}
@@ -130,15 +148,22 @@ public class AsignaturasView extends AFormView implements
 		tblAsignatura.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				ObservableList<Asignatura> itemsSelec = tblAsignatura
+				ObservableList<OTAsignatura> itemsSelec = tblAsignatura
 						.getSelectionModel().getSelectedItems();
 				if (itemsSelec.size() > 1) {
 					mnItemModificar.setDisable(true);
 					mnItemEliminar.setDisable(false);
+
+					mnuModificar.setDisable(true);
+					mnuEliminar.setDisable(false);
+
 				} else if (itemsSelec.size() == 1) {
-					select((IEntity) itemsSelec.get(0));
+					select((IEntity) itemsSelec.get(0).getAsignatura());
 					mnItemModificar.setDisable(false);
 					mnItemEliminar.setDisable(false);
+
+					mnuModificar.setDisable(false);
+					mnuEliminar.setDisable(false);
 				}
 			}
 		});
@@ -147,17 +172,17 @@ public class AsignaturasView extends AFormView implements
 	private void limpiarControles() {
 		txtNombre.clear();
 		select(null);
+		tblAsignatura.getSelectionModel().clearSelection();
 	}
 
 	@Override
 	public void onSaved(IEntity otObject) {
-		System.out.println("Elemento grabando:" + otObject.toString());
-		int indice = tblAsignatura.getItems().lastIndexOf(otObject);
+		OTAsignatura otAsignatura = new OTAsignatura((Asignatura) otObject);
+		int indice = tblAsignatura.getItems().lastIndexOf(otAsignatura);
 		if (indice != -1) {
-			tblAsignatura.getItems().remove(otObject);
-			tblAsignatura.getItems().add(indice, (Asignatura) otObject);
+			tblAsignatura.getItems().set(indice, otAsignatura);
 		} else {
-			tblAsignatura.getItems().add((Asignatura) otObject);
+			tblAsignatura.getItems().add(otAsignatura);
 		}
 	}
 
@@ -192,10 +217,10 @@ public class AsignaturasView extends AFormView implements
 		if (list != null && !list.isEmpty()) {
 			Object entity = list.get(0);
 			if (entity instanceof Asignatura) {
-				ObservableList<Asignatura> oList = FXCollections
+				ObservableList<OTAsignatura> oList = FXCollections
 						.observableArrayList();
 				for (Object iEntity : list) {
-					oList.add((Asignatura) iEntity);
+					oList.add(new OTAsignatura((Asignatura) iEntity));
 				}
 				tblAsignatura.setItems(oList);
 			}
@@ -214,7 +239,8 @@ public class AsignaturasView extends AFormView implements
 		} else if (source == mnuEliminar || source == mnItemEliminar) {
 			accionEliminar();
 		} else if (source == mnuExportar || source == menuExportar) {
-			ExcelSheetWriterEntity.convertirDatosALibroDeExcel(tblAsignatura);
+			tblAsignatura.setId("OTAsignatura");
+			ExcelSheetWriterObj.convertirDatosALibroDeExcel(tblAsignatura);
 		}
 	}
 
