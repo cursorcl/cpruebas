@@ -10,6 +10,7 @@ import java.util.Map;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -218,17 +219,17 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 				for (Object lEntity : list) {
 					pruebas.add(new OTPrueba((Prueba) lEntity));
 				}
-				 tblListadoPruebas.setItems(pruebas);
-//				FilteredList<OTPrueba> filteredItems = new FilteredList<OTPrueba>(
-//						pruebas, p -> true);
-//				tblListadoPruebas.setItems(filteredItems);
-//				filterField.setOnAction(new EventHandler<ActionEvent>() {
-//					public void handle(ActionEvent event) {
-//						filteredItems.setPredicate(ot ->
-//						ot.getName().contains(
-//						filterField.getText()));
-//					}
-//				});
+//				 tblListadoPruebas.setItems(pruebas);
+				FilteredList<OTPrueba> filteredItems = new FilteredList<OTPrueba>(
+						pruebas, p -> true);
+				tblListadoPruebas.setItems(filteredItems);
+				filterField.setOnAction(new EventHandler<ActionEvent>() {
+					public void handle(ActionEvent event) {
+						filteredItems.setPredicate(ot ->
+						ot.getName().contains(
+						filterField.getText()));
+					}
+				});
 
 			}
 			if (entity instanceof TipoPrueba) {
