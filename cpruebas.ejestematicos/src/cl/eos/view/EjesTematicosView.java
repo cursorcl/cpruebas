@@ -1,5 +1,6 @@
 package cl.eos.view;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javafx.collections.FXCollections;
@@ -16,8 +17,12 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+
+import org.controlsfx.dialog.Dialogs;
+
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
+import cl.eos.ot.OTEjeTematico;
 import cl.eos.persistence.models.Asignatura;
 import cl.eos.persistence.models.EjeTematico;
 import cl.eos.persistence.models.TipoPrueba;
@@ -37,7 +42,7 @@ public class EjesTematicosView extends AFormView implements
 
 	@FXML
 	private MenuItem mnuModificar;
-	
+
 	@FXML
 	private MenuItem menuEliminar;
 
@@ -62,18 +67,18 @@ public class EjesTematicosView extends AFormView implements
 	private Label lblError;
 
 	@FXML
-	private TableView<EjeTematico> tblEjesTematicos;
+	private TableView<OTEjeTematico> tblEjesTematicos;
 
 	@FXML
-	private TableColumn<EjeTematico, Float> colId;
+	private TableColumn<OTEjeTematico, Float> colId;
 	@FXML
-	private TableColumn<EjeTematico, String> colNombre;
+	private TableColumn<OTEjeTematico, String> colNombre;
 
 	@FXML
-	private TableColumn<EjeTematico, String> colTipoPrueba;
+	private TableColumn<OTEjeTematico, String> colTipoPrueba;
 
 	@FXML
-	private TableColumn<EjeTematico, String> colEnsayo;
+	private TableColumn<OTEjeTematico, String> colEnsayo;
 
 	public EjesTematicosView() {
 		setTitle("Ejes Temáticos");
@@ -97,11 +102,10 @@ public class EjesTematicosView extends AFormView implements
 		mnuEliminar.setDisable(true);
 		menuEliminar.setDisable(true);
 		menuModificar.setDisable(true);
-		
+
 	}
 
 	private void accionGrabar() {
-
 		IEntity entitySelected = getSelectedEntity();
 		removeAllStyles();
 		if (validate()) {
@@ -126,7 +130,7 @@ public class EjesTematicosView extends AFormView implements
 	}
 
 	private void accionModificar() {
-		EjeTematico ejeTematico = tblEjesTematicos.getSelectionModel()
+		OTEjeTematico ejeTematico = tblEjesTematicos.getSelectionModel()
 				.getSelectedItem();
 		if (ejeTematico != null) {
 			txtNombre.setText(ejeTematico.getName());
@@ -139,20 +143,20 @@ public class EjesTematicosView extends AFormView implements
 		tblEjesTematicos.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				ObservableList<EjeTematico> itemsSelec = tblEjesTematicos
+				ObservableList<OTEjeTematico> itemsSelec = tblEjesTematicos
 						.getSelectionModel().getSelectedItems();
 
 				if (itemsSelec.size() > 1) {
 					mnuModificar.setDisable(false);
 					mnuEliminar.setDisable(true);
-					
+
 					menuModificar.setDisable(false);
 					menuEliminar.setDisable(true);
 				} else if (itemsSelec.size() == 1) {
 					select((IEntity) itemsSelec.get(0));
 					mnuModificar.setDisable(false);
 					mnuEliminar.setDisable(false);
-					
+
 					menuModificar.setDisable(false);
 					menuEliminar.setDisable(false);
 				}
@@ -169,12 +173,13 @@ public class EjesTematicosView extends AFormView implements
 
 	@Override
 	public void onSaved(IEntity otObject) {
+		OTEjeTematico ejeTematico = new OTEjeTematico((EjeTematico) otObject);
 		int indice = tblEjesTematicos.getItems().lastIndexOf(otObject);
 		if (indice != -1) {
 			tblEjesTematicos.getItems().remove(otObject);
-			tblEjesTematicos.getItems().add(indice, (EjeTematico) otObject);
+			tblEjesTematicos.getItems().add(indice, ejeTematico);
 		} else {
-			tblEjesTematicos.getItems().add((EjeTematico) otObject);
+			tblEjesTematicos.getItems().add(ejeTematico);
 		}
 		System.out.println("Elemento grabando:" + otObject.toString());
 	}
@@ -189,27 +194,40 @@ public class EjesTematicosView extends AFormView implements
 	private void inicializaTabla() {
 		tblEjesTematicos.getSelectionModel().setSelectionMode(
 				SelectionMode.MULTIPLE);
-		colId
-		.setCellValueFactory(new PropertyValueFactory<EjeTematico, Float>(
+		colId.setCellValueFactory(new PropertyValueFactory<OTEjeTematico, Float>(
 				"id"));
 		colNombre
-				.setCellValueFactory(new PropertyValueFactory<EjeTematico, String>(
+				.setCellValueFactory(new PropertyValueFactory<OTEjeTematico, String>(
 						"name"));
 		colEnsayo
-				.setCellValueFactory(new PropertyValueFactory<EjeTematico, String>(
+				.setCellValueFactory(new PropertyValueFactory<OTEjeTematico, String>(
 						"asignatura"));
 		colTipoPrueba
-				.setCellValueFactory(new PropertyValueFactory<EjeTematico, String>(
+				.setCellValueFactory(new PropertyValueFactory<OTEjeTematico, String>(
 						"tipoprueba"));
 	}
 
 	private void accionEliminar() {
-		ObservableList<EjeTematico> ejesTematicosSelec = tblEjesTematicos
+		ObservableList<OTEjeTematico> otSeleccionados = tblEjesTematicos
 				.getSelectionModel().getSelectedItems();
-		for (EjeTematico ejeTematicoSel : ejesTematicosSelec) {
-			delete(ejeTematicoSel);
+		if (otSeleccionados.size() == 0) {
+			Dialogs.create().owner(null).title("Selección registro")
+					.masthead(this.getName())
+					.message("Debe seleccionar registro a procesar")
+					.showInformation();
+		} else {
+
+			if (otSeleccionados != null && !otSeleccionados.isEmpty()) {
+				List<EjeTematico> ejeTematico = new ArrayList<EjeTematico>(
+						otSeleccionados.size());
+				for (OTEjeTematico ot : otSeleccionados) {
+					ejeTematico.add(ot.getEjeTematico());
+				}
+				delete(ejeTematico);
+				tblEjesTematicos.getSelectionModel().clearSelection();
+				limpiarControles();
+			}
 		}
-		tblEjesTematicos.getSelectionModel().clearSelection();
 	}
 
 	@Override
@@ -217,12 +235,13 @@ public class EjesTematicosView extends AFormView implements
 		if (list != null && !list.isEmpty()) {
 			Object entity = list.get(0);
 			if (entity instanceof EjeTematico) {
-				ObservableList<EjeTematico> value = FXCollections
+				ObservableList<OTEjeTematico> value = FXCollections
 						.observableArrayList();
 				for (Object iEntity : list) {
-					value.add((EjeTematico) iEntity);
+					value.add(new OTEjeTematico((EjeTematico) iEntity));
 				}
 				tblEjesTematicos.setItems(value);
+				
 			} else if (entity instanceof TipoPrueba) {
 				ObservableList<TipoPrueba> oList = FXCollections
 						.observableArrayList();

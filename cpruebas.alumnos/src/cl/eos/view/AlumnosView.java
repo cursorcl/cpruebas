@@ -1,8 +1,9 @@
 package cl.eos.view;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+
+import org.controlsfx.dialog.Dialogs;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -20,6 +21,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
+import cl.eos.ot.OTAlumno;
 import cl.eos.persistence.models.Alumno;
 import cl.eos.persistence.models.Colegio;
 import cl.eos.persistence.models.Curso;
@@ -32,7 +34,7 @@ public class AlumnosView extends AFormView implements EventHandler<ActionEvent> 
 
 	@FXML
 	private MenuItem mnuAgregar;
-	
+
 	@FXML
 	private MenuItem mnuGrabar;
 
@@ -47,13 +49,13 @@ public class AlumnosView extends AFormView implements EventHandler<ActionEvent> 
 
 	@FXML
 	private MenuItem mnuModificar;
-	
+
 	@FXML
 	private MenuItem menuExportar;
-	
+
 	@FXML
 	private MenuItem mnuExportar;
-	
+
 	@FXML
 	private MenuItem mnuImportar;
 
@@ -82,25 +84,25 @@ public class AlumnosView extends AFormView implements EventHandler<ActionEvent> 
 	private Label lblError;
 
 	@FXML
-	private TableView<Alumno> tblAlumnos;
+	private TableView<OTAlumno> tblAlumnos;
 
 	@FXML
-	private TableColumn<Alumno, Long> colId;
-	
-	@FXML
-	private TableColumn<Alumno, String> colRut;
+	private TableColumn<OTAlumno, Long> colId;
 
 	@FXML
-	private TableColumn<Alumno, String> colName;
+	private TableColumn<OTAlumno, String> colRut;
 
 	@FXML
-	private TableColumn<Alumno, String> colPaterno;
+	private TableColumn<OTAlumno, String> colName;
 
 	@FXML
-	private TableColumn<Alumno, String> colMaterno;
+	private TableColumn<OTAlumno, String> colPaterno;
 
 	@FXML
-	private TableColumn<Alumno, String> colCurso;
+	private TableColumn<OTAlumno, String> colMaterno;
+
+	@FXML
+	private TableColumn<OTAlumno, String> colCurso;
 
 	public AlumnosView() {
 
@@ -111,29 +113,29 @@ public class AlumnosView extends AFormView implements EventHandler<ActionEvent> 
 		setTitle("Alumnos");
 		inicializaTabla();
 		accionClicTabla();
-		
+
 		mnuAgregar.setOnAction(this);
 		mnuGrabar.setOnAction(this);
 		mnuModificar.setOnAction(this);
 		mnuEliminar.setOnAction(this);
 		mnItemEliminar.setOnAction(this);
 		mnItemModificar.setOnAction(this);
-		
+
 		mnuExportar.setOnAction(this);
 		menuExportar.setOnAction(this);
 		mnuImportar.setOnAction(this);
-		
+
 		mnItemModificar.setDisable(true);
 		mnuModificar.setDisable(true);
 		mnuEliminar.setDisable(true);
-		mnItemEliminar.setDisable(true);		
+		mnItemEliminar.setDisable(true);
 	}
 
 	private void accionClicTabla() {
 		tblAlumnos.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				ObservableList<Alumno> itemsSelec = tblAlumnos
+				ObservableList<OTAlumno> itemsSelec = tblAlumnos
 						.getSelectionModel().getSelectedItems();
 
 				if (itemsSelec.size() > 1) {
@@ -142,7 +144,7 @@ public class AlumnosView extends AFormView implements EventHandler<ActionEvent> 
 					mnuModificar.setDisable(true);
 					mnuEliminar.setDisable(false);
 				} else if (itemsSelec.size() == 1) {
-					select((IEntity) itemsSelec.get(0));
+					select((IEntity) itemsSelec.get(0).getAlumno());
 					mnItemModificar.setDisable(false);
 					mnItemEliminar.setDisable(false);
 					mnuModificar.setDisable(false);
@@ -153,7 +155,7 @@ public class AlumnosView extends AFormView implements EventHandler<ActionEvent> 
 	}
 
 	private void accionModificar() {
-		Alumno alumno = tblAlumnos.getSelectionModel().getSelectedItem();
+		OTAlumno alumno = tblAlumnos.getSelectionModel().getSelectedItem();
 		if (alumno != null) {
 			txtRut.setText(alumno.getRut());
 			txtNombres.setText(alumno.getName());
@@ -166,11 +168,27 @@ public class AlumnosView extends AFormView implements EventHandler<ActionEvent> 
 	}
 
 	private void accionEliminar() {
-		ObservableList<Alumno> alumnosSelec = tblAlumnos.getSelectionModel()
-				.getSelectedItems();
-		delete(alumnosSelec);
-		
-		limpiarControles();
+		ObservableList<OTAlumno> otSeleccionados = tblAlumnos
+				.getSelectionModel().getSelectedItems();
+
+		if (otSeleccionados.size() == 0) {
+			Dialogs.create().owner(null).title("Selección registro")
+					.masthead(this.getName())
+					.message("Debe seleccionar registro a procesar")
+					.showInformation();
+		} else {
+
+			if (otSeleccionados != null && !otSeleccionados.isEmpty()) {
+				List<Alumno> alumno = new ArrayList<Alumno>(
+						otSeleccionados.size());
+				for (OTAlumno ot : otSeleccionados) {
+					alumno.add(ot.getAlumno());
+				}
+				delete(alumno);
+				tblAlumnos.getSelectionModel().clearSelection();
+				limpiarControles();
+			}
+		}
 	}
 
 	private void accionGrabar() {
@@ -215,21 +233,19 @@ public class AlumnosView extends AFormView implements EventHandler<ActionEvent> 
 
 	private void inicializaTabla() {
 		tblAlumnos.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-		colId.setCellValueFactory(new PropertyValueFactory<Alumno, Long>(
-				"id"));
-		colRut.setCellValueFactory(new PropertyValueFactory<Alumno, String>(
+		colId.setCellValueFactory(new PropertyValueFactory<OTAlumno, Long>("id"));
+		colRut.setCellValueFactory(new PropertyValueFactory<OTAlumno, String>(
 				"rut"));
-		colName.setCellValueFactory(new PropertyValueFactory<Alumno, String>(
+		colName.setCellValueFactory(new PropertyValueFactory<OTAlumno, String>(
 				"name"));
 		colPaterno
-				.setCellValueFactory(new PropertyValueFactory<Alumno, String>(
+				.setCellValueFactory(new PropertyValueFactory<OTAlumno, String>(
 						"paterno"));
 		colMaterno
-				.setCellValueFactory(new PropertyValueFactory<Alumno, String>(
+				.setCellValueFactory(new PropertyValueFactory<OTAlumno, String>(
 						"materno"));
-		colCurso.setCellValueFactory(new PropertyValueFactory<Alumno, String>(
+		colCurso.setCellValueFactory(new PropertyValueFactory<OTAlumno, String>(
 				"curso"));
-
 	}
 
 	private void removeAllStyles() {
@@ -244,19 +260,18 @@ public class AlumnosView extends AFormView implements EventHandler<ActionEvent> 
 
 	@Override
 	public void onSaved(IEntity otObject) {
-		System.out.println("Elemento grabando:" + otObject.toString());
+		OTAlumno otAlumno = new OTAlumno((Alumno) otObject);
 		int indice = tblAlumnos.getItems().lastIndexOf(otObject);
 		if (indice != -1) {
 			tblAlumnos.getItems().remove(otObject);
-			tblAlumnos.getItems().add(indice, (Alumno) otObject);
+			tblAlumnos.getItems().add(indice, otAlumno);
 		} else {
-			tblAlumnos.getItems().add((Alumno) otObject);
+			tblAlumnos.getItems().add(otAlumno);
 		}
 	}
 
 	@Override
 	public void onDeleted(IEntity entity) {
-		System.out.println("Elementoeliminando:" + entity.toString());
 		tblAlumnos.getItems().remove(entity);
 	}
 
@@ -300,9 +315,6 @@ public class AlumnosView extends AFormView implements EventHandler<ActionEvent> 
 			txtAMaterno.getStyleClass().add("bad");
 			valida = false;
 		}
-		Map<String, Object> param = new HashMap<String, Object>();
-		// param.put("dato", direccion);
-		controller.find("Alumno.preguntita", param);
 		return valida;
 	}
 
@@ -329,10 +341,10 @@ public class AlumnosView extends AFormView implements EventHandler<ActionEvent> 
 		if (list != null && !list.isEmpty()) {
 			Object entity = list.get(0);
 			if (entity instanceof Alumno) {
-				ObservableList<Alumno> oList = FXCollections
+				ObservableList<OTAlumno> oList = FXCollections
 						.observableArrayList();
 				for (Object iEntity : list) {
-					oList.add((Alumno) iEntity);
+					oList.add(new OTAlumno((Alumno) iEntity));
 				}
 				tblAlumnos.setItems(oList);
 			} else if (entity instanceof Curso) {
@@ -362,12 +374,12 @@ public class AlumnosView extends AFormView implements EventHandler<ActionEvent> 
 			accionGrabar();
 		} else if (source == mnuEliminar || source == mnItemEliminar) {
 			accionEliminar();
-		} else if (source == mnuAgregar ) {
+		} else if (source == mnuAgregar) {
 			limpiarControles();
 		} else if (source == mnuExportar || source == menuExportar) {
 			tblAlumnos.setId("Alumnos");
 			ExcelSheetWriterObj.convertirDatosALibroDeExcel(tblAlumnos);
 		}
-		
+
 	}
 }

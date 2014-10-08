@@ -1,5 +1,6 @@
 package cl.eos.view;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javafx.collections.FXCollections;
@@ -15,8 +16,12 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+
+import org.controlsfx.dialog.Dialogs;
+
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
+import cl.eos.ot.OTProfesor;
 import cl.eos.persistence.models.Profesor;
 import cl.eos.util.ExcelSheetWriterObj;
 import cl.eos.util.Utils;
@@ -31,7 +36,7 @@ public class ProfesoresView extends AFormView implements
 
 	@FXML
 	private MenuItem mnItemModificar;
-	
+
 	@FXML
 	private MenuItem mnuAgregar;
 
@@ -66,22 +71,22 @@ public class ProfesoresView extends AFormView implements
 	private Label lblError;
 
 	@FXML
-	private TableView<Profesor> tblProfesores;
+	private TableView<OTProfesor> tblProfesores;
 
 	@FXML
-	private TableColumn<Profesor, Long> colId;
+	private TableColumn<OTProfesor, Long> colId;
 
 	@FXML
-	private TableColumn<Profesor, String> colRut;
+	private TableColumn<OTProfesor, String> colRut;
 
 	@FXML
-	private TableColumn<Profesor, String> colPaterno;
+	private TableColumn<OTProfesor, String> colPaterno;
 
 	@FXML
-	private TableColumn<Profesor, String> colMaterno;
+	private TableColumn<OTProfesor, String> colMaterno;
 
 	@FXML
-	private TableColumn<Profesor, String> ColNombres;
+	private TableColumn<OTProfesor, String> ColNombres;
 
 	public ProfesoresView() {
 		setTitle("Profesores");
@@ -99,7 +104,7 @@ public class ProfesoresView extends AFormView implements
 		mnItemModificar.setOnAction(this);
 		mnuExportar.setOnAction(this);
 		menuExportar.setOnAction(this);
-		
+
 		mnuModificar.setDisable(true);
 		mnuEliminar.setDisable(true);
 		mnItemEliminar.setDisable(true);
@@ -110,20 +115,20 @@ public class ProfesoresView extends AFormView implements
 		tblProfesores.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				ObservableList<Profesor> itemsSelec = tblProfesores
+				ObservableList<OTProfesor> itemsSelec = tblProfesores
 						.getSelectionModel().getSelectedItems();
 				if (itemsSelec.size() > 1) {
 					mnItemModificar.setDisable(true);
 					mnItemEliminar.setDisable(false);
-					
+
 					mnuModificar.setDisable(true);
 					mnuEliminar.setDisable(false);
-					
+
 				} else if (itemsSelec.size() == 1) {
 					select((IEntity) itemsSelec.get(0));
 					mnItemModificar.setDisable(false);
 					mnItemEliminar.setDisable(false);
-					
+
 					mnuModificar.setDisable(false);
 					mnuEliminar.setDisable(false);
 				}
@@ -132,7 +137,8 @@ public class ProfesoresView extends AFormView implements
 	}
 
 	private void accionModificar() {
-		Profesor Profesor = tblProfesores.getSelectionModel().getSelectedItem();
+		OTProfesor Profesor = tblProfesores.getSelectionModel()
+				.getSelectedItem();
 		if (Profesor != null) {
 			txtRut.setText(Profesor.getRut());
 			txtNombres.setText(Profesor.getName());
@@ -142,10 +148,26 @@ public class ProfesoresView extends AFormView implements
 	}
 
 	private void accionEliminar() {
-		ObservableList<Profesor> ProfesorsSelec = tblProfesores
+		ObservableList<OTProfesor> otSeleccionados = tblProfesores
 				.getSelectionModel().getSelectedItems();
-		delete(ProfesorsSelec);
-		tblProfesores.getSelectionModel().clearSelection();
+		if (otSeleccionados.size() == 0) {
+			Dialogs.create().owner(null).title("Selección registro")
+					.masthead(this.getName())
+					.message("Debe seleccionar registro a procesar")
+					.showInformation();
+		} else {
+
+			if (otSeleccionados != null && !otSeleccionados.isEmpty()) {
+				List<Profesor> profesor = new ArrayList<Profesor>(
+						otSeleccionados.size());
+				for (OTProfesor ot : otSeleccionados) {
+					profesor.add(ot.getProfesor());
+				}
+				delete(profesor);
+				tblProfesores.getSelectionModel().clearSelection();
+				limpiarControles();
+			}
+		}
 	}
 
 	private void accionGrabar() {
@@ -184,19 +206,19 @@ public class ProfesoresView extends AFormView implements
 	private void inicializaTabla() {
 		tblProfesores.getSelectionModel().setSelectionMode(
 				SelectionMode.MULTIPLE);
-		colId.setCellValueFactory(new PropertyValueFactory<Profesor, Long>("id"));
-		colRut.setCellValueFactory(new PropertyValueFactory<Profesor, String>(
+		colId.setCellValueFactory(new PropertyValueFactory<OTProfesor, Long>(
+				"id"));
+		colRut.setCellValueFactory(new PropertyValueFactory<OTProfesor, String>(
 				"rut"));
 		colPaterno
-				.setCellValueFactory(new PropertyValueFactory<Profesor, String>(
+				.setCellValueFactory(new PropertyValueFactory<OTProfesor, String>(
 						"paterno"));
 		colMaterno
-				.setCellValueFactory(new PropertyValueFactory<Profesor, String>(
+				.setCellValueFactory(new PropertyValueFactory<OTProfesor, String>(
 						"materno"));
 		ColNombres
-				.setCellValueFactory(new PropertyValueFactory<Profesor, String>(
+				.setCellValueFactory(new PropertyValueFactory<OTProfesor, String>(
 						"name"));
-
 	}
 
 	private void removeAllStyles() {
@@ -210,12 +232,13 @@ public class ProfesoresView extends AFormView implements
 	@Override
 	public void onSaved(IEntity otObject) {
 		System.out.println("Elemento grabando:" + otObject.toString());
+		OTProfesor profesor = new OTProfesor((Profesor) otObject);
 		int indice = tblProfesores.getItems().lastIndexOf(otObject);
 		if (indice != -1) {
 			tblProfesores.getItems().remove(otObject);
-			tblProfesores.getItems().add(indice, (Profesor) otObject);
+			tblProfesores.getItems().add(indice, profesor);
 		} else {
-			tblProfesores.getItems().add((Profesor) otObject);
+			tblProfesores.getItems().add(profesor);
 		}
 	}
 
@@ -282,10 +305,10 @@ public class ProfesoresView extends AFormView implements
 		if (list != null && !list.isEmpty()) {
 			Object entity = list.get(0);
 			if (entity instanceof Profesor) {
-				ObservableList<Profesor> oList = FXCollections
+				ObservableList<OTProfesor> oList = FXCollections
 						.observableArrayList();
 				for (Object iEntity : list) {
-					oList.add((Profesor) iEntity);
+					oList.add(new OTProfesor((Profesor) iEntity));
 				}
 				tblProfesores.setItems(oList);
 			}

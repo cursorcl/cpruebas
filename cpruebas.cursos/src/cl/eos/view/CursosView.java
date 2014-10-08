@@ -1,5 +1,6 @@
 package cl.eos.view;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javafx.collections.FXCollections;
@@ -21,6 +22,7 @@ import org.controlsfx.dialog.Dialogs;
 
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
+import cl.eos.ot.OTCurso;
 import cl.eos.persistence.models.Ciclo;
 import cl.eos.persistence.models.Colegio;
 import cl.eos.persistence.models.Curso;
@@ -71,22 +73,22 @@ public class CursosView extends AFormView implements EventHandler<ActionEvent> {
 	private Label lblError;
 
 	@FXML
-	private TableView<Curso> tblCurso;
+	private TableView<OTCurso> tblCurso;
 
 	@FXML
-	private TableColumn<Curso, Long> colId;
+	private TableColumn<OTCurso, Long> colId;
 
 	@FXML
-	private TableColumn<Curso, String> colNombre;
+	private TableColumn<OTCurso, String> colNombre;
 
 	@FXML
-	private TableColumn<Curso, String> colNivel;
+	private TableColumn<OTCurso, String> colNivel;
 
 	@FXML
-	private TableColumn<Curso, String> colColegio;
+	private TableColumn<OTCurso, String> colColegio;
 
 	@FXML
-	private TableColumn<Curso, String> colTpCurso;
+	private TableColumn<OTCurso, String> colTpCurso;
 
 	public CursosView() {
 		setTitle("Cursos");
@@ -105,8 +107,7 @@ public class CursosView extends AFormView implements EventHandler<ActionEvent> {
 		mnItemModificar.setOnAction(this);
 		menuExportar.setOnAction(this);
 		mnuExportar.setOnAction(this);
-		
-		
+
 		mnuModificar.setDisable(true);
 		mnuEliminar.setDisable(true);
 		mnItemEliminar.setDisable(true);
@@ -114,7 +115,7 @@ public class CursosView extends AFormView implements EventHandler<ActionEvent> {
 	}
 
 	private void accionModificar() {
-		Curso curso = tblCurso.getSelectionModel().getSelectedItem();
+		OTCurso curso = tblCurso.getSelectionModel().getSelectedItem();
 		if (curso != null) {
 			txtNombre.setText(curso.getName());
 			cmbNivel.setValue(curso.getCiclo());
@@ -124,16 +125,24 @@ public class CursosView extends AFormView implements EventHandler<ActionEvent> {
 	}
 
 	private void accionEliminar() {
-		ObservableList<Curso> cursosSelec = tblCurso.getSelectionModel()
+		ObservableList<OTCurso> otSeleccionados = tblCurso.getSelectionModel()
 				.getSelectedItems();
-		if (cursosSelec.size() == 0) {
+		if (otSeleccionados.size() == 0) {
 			Dialogs.create().owner(null).title("Selección registro")
 					.masthead(this.getName())
 					.message("Debe seleccionar registro a procesar")
 					.showInformation();
 		} else {
-			delete(cursosSelec);
-			tblCurso.getSelectionModel().clearSelection();
+
+			if (otSeleccionados != null && !otSeleccionados.isEmpty()) {
+				List<Curso> curso = new ArrayList<Curso>(otSeleccionados.size());
+				for (OTCurso ot : otSeleccionados) {
+					curso.add(ot.getCurso());
+				}
+				delete(curso);
+				tblCurso.getSelectionModel().clearSelection();
+				limpiarControles();
+			}
 		}
 	}
 
@@ -141,19 +150,19 @@ public class CursosView extends AFormView implements EventHandler<ActionEvent> {
 		tblCurso.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				ObservableList<Curso> itemsSelec = tblCurso.getSelectionModel()
-						.getSelectedItems();
+				ObservableList<OTCurso> itemsSelec = tblCurso
+						.getSelectionModel().getSelectedItems();
 				if (itemsSelec.size() > 1) {
 					mnItemModificar.setDisable(true);
 					mnItemEliminar.setDisable(false);
-					
+
 					mnuModificar.setDisable(true);
 					mnuEliminar.setDisable(false);
 				} else if (itemsSelec.size() == 1) {
 					select((IEntity) itemsSelec.get(0));
 					mnItemModificar.setDisable(false);
 					mnItemEliminar.setDisable(false);
-					
+
 					mnuModificar.setDisable(false);
 					mnuEliminar.setDisable(false);
 				}
@@ -188,15 +197,18 @@ public class CursosView extends AFormView implements EventHandler<ActionEvent> {
 
 	private void inicializaTabla() {
 		tblCurso.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-		colId.setCellValueFactory(new PropertyValueFactory<Curso, Long>("id"));
-		colNombre.setCellValueFactory(new PropertyValueFactory<Curso, String>(
-				"name"));
-		colColegio.setCellValueFactory(new PropertyValueFactory<Curso, String>(
-				"colegio"));
-		colNivel.setCellValueFactory(new PropertyValueFactory<Curso, String>(
+		colId.setCellValueFactory(new PropertyValueFactory<OTCurso, Long>("id"));
+		colNombre
+				.setCellValueFactory(new PropertyValueFactory<OTCurso, String>(
+						"name"));
+		colColegio
+				.setCellValueFactory(new PropertyValueFactory<OTCurso, String>(
+						"colegio"));
+		colNivel.setCellValueFactory(new PropertyValueFactory<OTCurso, String>(
 				"ciclo"));
-		colTpCurso.setCellValueFactory(new PropertyValueFactory<Curso, String>(
-				"tipoCurso"));
+		colTpCurso
+				.setCellValueFactory(new PropertyValueFactory<OTCurso, String>(
+						"tipoCurso"));
 	}
 
 	private void limpiarControles() {
@@ -238,10 +250,10 @@ public class CursosView extends AFormView implements EventHandler<ActionEvent> {
 		if (list != null && !list.isEmpty()) {
 			Object entity = list.get(0);
 			if (entity instanceof Curso) {
-				ObservableList<Curso> value = FXCollections
+				ObservableList<OTCurso> value = FXCollections
 						.observableArrayList();
 				for (Object iEntity : list) {
-					value.add((Curso) iEntity);
+					value.add(new OTCurso((Curso) iEntity));
 				}
 				tblCurso.setItems(value);
 			} else if (entity instanceof Colegio) {
@@ -271,12 +283,13 @@ public class CursosView extends AFormView implements EventHandler<ActionEvent> {
 
 	@Override
 	public void onSaved(IEntity otObject) {
+		OTCurso otCurso = new OTCurso((Curso) otObject);
 		int indice = tblCurso.getItems().lastIndexOf(otObject);
 		if (indice != -1) {
 			tblCurso.getItems().remove(otObject);
-			tblCurso.getItems().add(indice, (Curso) otObject);
+			tblCurso.getItems().add(indice, otCurso);
 		} else {
-			tblCurso.getItems().add((Curso) otObject);
+			tblCurso.getItems().add(otCurso);
 		}
 		limpiarControles();
 	}

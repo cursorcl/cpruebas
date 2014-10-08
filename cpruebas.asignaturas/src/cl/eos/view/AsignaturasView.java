@@ -108,16 +108,15 @@ public class AsignaturasView extends AFormView implements
 				.getSelectionModel().getSelectedItems();
 
 		if (otSeleccionados != null && !otSeleccionados.isEmpty()) {
-			List<Asignatura> pruebas = new ArrayList<Asignatura>(
+			List<Asignatura> asignatura = new ArrayList<Asignatura>(
 					otSeleccionados.size());
 			for (OTAsignatura ot : otSeleccionados) {
-				pruebas.add(ot.getAsignatura());
+				asignatura.add(ot.getAsignatura());
 			}
-			delete(pruebas);
+			delete(asignatura);
 			tblAsignatura.getSelectionModel().clearSelection();
 			limpiarControles();
 		}
-		tblAsignatura.getSelectionModel().clearSelection();
 	}
 
 	private void accionGrabar() {
@@ -128,8 +127,7 @@ public class AsignaturasView extends AFormView implements
 				lblError.setText(" ");
 			}
 			Asignatura asignatura = null;
-			if (entitySelected != null
-					&& entitySelected instanceof Asignatura) {
+			if (entitySelected != null && entitySelected instanceof Asignatura) {
 				asignatura = ((Asignatura) entitySelected);
 			} else {
 				asignatura = new Asignatura();

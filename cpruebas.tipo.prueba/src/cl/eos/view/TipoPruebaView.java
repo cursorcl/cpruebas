@@ -1,5 +1,6 @@
 package cl.eos.view;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javafx.collections.FXCollections;
@@ -15,8 +16,12 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+
+import org.controlsfx.dialog.Dialogs;
+
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
+import cl.eos.ot.OTTipoPrueba;
 import cl.eos.persistence.models.TipoPrueba;
 import cl.eos.util.ExcelSheetWriterObj;
 
@@ -55,13 +60,13 @@ public class TipoPruebaView extends AFormView implements
 	private Label lblError;
 
 	@FXML
-	private TableView<TipoPrueba> tblTipoPrueba;
+	private TableView<OTTipoPrueba> tblTipoPrueba;
 
 	@FXML
-	private TableColumn<TipoPrueba, Long> colId;
+	private TableColumn<OTTipoPrueba, Long> colId;
 
 	@FXML
-	private TableColumn<TipoPrueba, String> colNombre;
+	private TableColumn<OTTipoPrueba, String> colNombre;
 
 	public TipoPruebaView() {
 		setTitle("Tipo Prueba");
@@ -79,7 +84,7 @@ public class TipoPruebaView extends AFormView implements
 		mnItemModificar.setOnAction(this);
 		menuExportar.setOnAction(this);
 		mnuExportar.setOnAction(this);
-		
+
 		mnuModificar.setDisable(true);
 		mnuEliminar.setDisable(true);
 		mnItemEliminar.setDisable(true);
@@ -89,15 +94,15 @@ public class TipoPruebaView extends AFormView implements
 	private void inicializaTabla() {
 		tblTipoPrueba.getSelectionModel().setSelectionMode(
 				SelectionMode.MULTIPLE);
-		colId.setCellValueFactory(new PropertyValueFactory<TipoPrueba, Long>(
+		colId.setCellValueFactory(new PropertyValueFactory<OTTipoPrueba, Long>(
 				"id"));
 		colNombre
-				.setCellValueFactory(new PropertyValueFactory<TipoPrueba, String>(
+				.setCellValueFactory(new PropertyValueFactory<OTTipoPrueba, String>(
 						"name"));
 	}
 
 	private void accionModificar() {
-		TipoPrueba tipoPrueba = tblTipoPrueba.getSelectionModel()
+		OTTipoPrueba tipoPrueba = tblTipoPrueba.getSelectionModel()
 				.getSelectedItem();
 		if (tipoPrueba != null) {
 			txtNombre.setText(tipoPrueba.getName());
@@ -105,10 +110,26 @@ public class TipoPruebaView extends AFormView implements
 	}
 
 	private void accionEliminar() {
-		ObservableList<TipoPrueba> tipoPruebaSelec = tblTipoPrueba
+		ObservableList<OTTipoPrueba> otSeleccionados = tblTipoPrueba
 				.getSelectionModel().getSelectedItems();
-		delete(tipoPruebaSelec);
-		tblTipoPrueba.getSelectionModel().clearSelection();
+		if (otSeleccionados.size() == 0) {
+			Dialogs.create().owner(null).title("Selección registro")
+					.masthead(this.getName())
+					.message("Debe seleccionar registro a procesar")
+					.showInformation();
+		} else {
+
+			if (otSeleccionados != null && !otSeleccionados.isEmpty()) {
+				List<TipoPrueba> tipoPrueba = new ArrayList<TipoPrueba>(
+						otSeleccionados.size());
+				for (OTTipoPrueba ot : otSeleccionados) {
+					tipoPrueba.add(ot.getTipoPrueba());
+				}
+				delete(tipoPrueba);
+				tblTipoPrueba.getSelectionModel().clearSelection();
+				limpiarControles();
+			}
+		}
 	}
 
 	private void accionGrabar() {
@@ -138,19 +159,19 @@ public class TipoPruebaView extends AFormView implements
 		tblTipoPrueba.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				ObservableList<TipoPrueba> itemsSelec = tblTipoPrueba
+				ObservableList<OTTipoPrueba> itemsSelec = tblTipoPrueba
 						.getSelectionModel().getSelectedItems();
 				if (itemsSelec.size() > 1) {
 					mnItemModificar.setDisable(true);
 					mnItemEliminar.setDisable(false);
-					
+
 					mnuModificar.setDisable(true);
 					mnuEliminar.setDisable(false);
 				} else if (itemsSelec.size() == 1) {
 					select((IEntity) itemsSelec.get(0));
 					mnItemModificar.setDisable(false);
 					mnItemEliminar.setDisable(false);
-					
+
 					mnuModificar.setDisable(false);
 					mnuEliminar.setDisable(false);
 				}
@@ -165,12 +186,13 @@ public class TipoPruebaView extends AFormView implements
 
 	@Override
 	public void onSaved(IEntity otObject) {
+		OTTipoPrueba tipoPrueba = new OTTipoPrueba((TipoPrueba) otObject);
 		int indice = tblTipoPrueba.getItems().lastIndexOf(otObject);
 		if (indice != -1) {
 			tblTipoPrueba.getItems().remove(otObject);
-			tblTipoPrueba.getItems().add(indice, (TipoPrueba) otObject);
+			tblTipoPrueba.getItems().add(indice, tipoPrueba);
 		} else {
-			tblTipoPrueba.getItems().add((TipoPrueba) otObject);
+			tblTipoPrueba.getItems().add(tipoPrueba);
 		}
 	}
 
@@ -204,10 +226,10 @@ public class TipoPruebaView extends AFormView implements
 		if (list != null && !list.isEmpty()) {
 			Object entity = list.get(0);
 			if (entity instanceof TipoPrueba) {
-				ObservableList<TipoPrueba> oList = FXCollections
+				ObservableList<OTTipoPrueba> oList = FXCollections
 						.observableArrayList();
 				for (Object iEntity : list) {
-					oList.add((TipoPrueba) iEntity);
+					oList.add(new OTTipoPrueba((TipoPrueba) iEntity));
 				}
 				tblTipoPrueba.setItems(oList);
 			}

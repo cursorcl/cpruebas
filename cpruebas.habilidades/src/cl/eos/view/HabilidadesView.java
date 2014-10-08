@@ -1,5 +1,6 @@
 package cl.eos.view;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javafx.collections.FXCollections;
@@ -15,8 +16,12 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+
+import org.controlsfx.dialog.Dialogs;
+
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
+import cl.eos.ot.OTHabilidad;
 import cl.eos.persistence.models.Habilidad;
 import cl.eos.util.ExcelSheetWriterObj;
 
@@ -26,7 +31,7 @@ public class HabilidadesView extends AFormView implements
 	private static final int LARGO_CAMPO_TEXT = 100;
 	@FXML
 	private MenuItem mnuAgregar;
-	
+
 	@FXML
 	private MenuItem mnuGrabar;
 
@@ -58,16 +63,16 @@ public class HabilidadesView extends AFormView implements
 	private TextField txtDescripcion;
 
 	@FXML
-	private TableView<Habilidad> tblHabilidades;
+	private TableView<OTHabilidad> tblHabilidades;
 
 	@FXML
-	private TableColumn<Habilidad, Long> colId;
+	private TableColumn<OTHabilidad, Long> colId;
 
 	@FXML
-	private TableColumn<Habilidad, String> colNombre;
+	private TableColumn<OTHabilidad, String> colNombre;
 
 	@FXML
-	private TableColumn<Habilidad, String> colDescripcion;
+	private TableColumn<OTHabilidad, String> colDescripcion;
 
 	public HabilidadesView() {
 		setTitle("Habilidades");
@@ -85,7 +90,7 @@ public class HabilidadesView extends AFormView implements
 		menuModificar.setOnAction(this);
 		menuExportar.setOnAction(this);
 		mnuExportar.setOnAction(this);
-		
+
 		mnuModificar.setDisable(true);
 		mnuEliminar.setDisable(true);
 		menuEliminar.setDisable(true);
@@ -95,13 +100,13 @@ public class HabilidadesView extends AFormView implements
 	private void inicializaTabla() {
 		tblHabilidades.getSelectionModel().setSelectionMode(
 				SelectionMode.MULTIPLE);
-		colId.setCellValueFactory(new PropertyValueFactory<Habilidad, Long>(
+		colId.setCellValueFactory(new PropertyValueFactory<OTHabilidad, Long>(
 				"id"));
 		colNombre
-				.setCellValueFactory(new PropertyValueFactory<Habilidad, String>(
+				.setCellValueFactory(new PropertyValueFactory<OTHabilidad, String>(
 						"name"));
 		colDescripcion
-				.setCellValueFactory(new PropertyValueFactory<Habilidad, String>(
+				.setCellValueFactory(new PropertyValueFactory<OTHabilidad, String>(
 						"descripcion"));
 	}
 
@@ -136,14 +141,30 @@ public class HabilidadesView extends AFormView implements
 	}
 
 	private void accionEliminar() {
-		ObservableList<Habilidad> habilidadesSelec = tblHabilidades
+		ObservableList<OTHabilidad> otSeleccionados = tblHabilidades
 				.getSelectionModel().getSelectedItems();
-		delete(habilidadesSelec);
-		tblHabilidades.getSelectionModel().clearSelection();
+		if (otSeleccionados.size() == 0) {
+			Dialogs.create().owner(null).title("Selección registro")
+					.masthead(this.getName())
+					.message("Debe seleccionar registro a procesar")
+					.showInformation();
+		} else {
+
+			if (otSeleccionados != null && !otSeleccionados.isEmpty()) {
+				List<Habilidad> habilidad = new ArrayList<Habilidad>(
+						otSeleccionados.size());
+				for (OTHabilidad ot : otSeleccionados) {
+					habilidad.add(ot.getHabilidad());
+				}
+				delete(habilidad);
+				tblHabilidades.getSelectionModel().clearSelection();
+				limpiarControles();
+			}
+		}
 	}
 
 	private void accionModificar() {
-		Habilidad habilidades = tblHabilidades.getSelectionModel()
+		OTHabilidad habilidades = tblHabilidades.getSelectionModel()
 				.getSelectedItem();
 		if (habilidades != null) {
 			txtNombre.setText(habilidades.getName());
@@ -155,21 +176,21 @@ public class HabilidadesView extends AFormView implements
 		tblHabilidades.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				ObservableList<Habilidad> itemsSelec = tblHabilidades
+				ObservableList<OTHabilidad> itemsSelec = tblHabilidades
 						.getSelectionModel().getSelectedItems();
 
 				if (itemsSelec.size() > 1) {
 					menuModificar.setDisable(true);
 					menuEliminar.setDisable(false);
-					
+
 					mnuModificar.setDisable(true);
 					mnuEliminar.setDisable(false);
-					
+
 				} else if (itemsSelec.size() == 1) {
 					select((IEntity) itemsSelec.get(0));
 					menuModificar.setDisable(false);
 					menuEliminar.setDisable(false);
-					
+
 					mnuModificar.setDisable(false);
 					mnuEliminar.setDisable(false);
 				}
@@ -185,13 +206,13 @@ public class HabilidadesView extends AFormView implements
 
 	@Override
 	public void onSaved(IEntity otObject) {
-		System.out.println("Elemento grabando:" + otObject.toString());
+		OTHabilidad habilidad = new OTHabilidad((Habilidad) otObject);
 		int indice = tblHabilidades.getItems().lastIndexOf(otObject);
 		if (indice != -1) {
 			tblHabilidades.getItems().remove(otObject);
-			tblHabilidades.getItems().add(indice, (Habilidad) otObject);
+			tblHabilidades.getItems().add(indice, habilidad);
 		} else {
-			tblHabilidades.getItems().add((Habilidad) otObject);
+			tblHabilidades.getItems().add(habilidad);
 		}
 
 	}
@@ -231,10 +252,10 @@ public class HabilidadesView extends AFormView implements
 		if (list != null && !list.isEmpty()) {
 			Object entity = list.get(0);
 			if (entity instanceof Habilidad) {
-				ObservableList<Habilidad> oList = FXCollections
+				ObservableList<OTHabilidad> oList = FXCollections
 						.observableArrayList();
 				for (Object iEntity : list) {
-					oList.add((Habilidad) iEntity);
+					oList.add(new OTHabilidad((Habilidad) iEntity));
 				}
 				tblHabilidades.setItems(oList);
 			}
@@ -246,8 +267,7 @@ public class HabilidadesView extends AFormView implements
 		Object source = event.getSource();
 		if (source == mnuAgregar) {
 			limpiarControles();
-		} else
-		if (source == mnuModificar || source == menuModificar) {
+		} else if (source == mnuModificar || source == menuModificar) {
 			accionModificar();
 		} else if (source == mnuGrabar) {
 			accionGrabar();
