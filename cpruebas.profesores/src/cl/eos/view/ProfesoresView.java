@@ -125,7 +125,7 @@ public class ProfesoresView extends AFormView implements
 					mnuEliminar.setDisable(false);
 
 				} else if (itemsSelec.size() == 1) {
-					select((IEntity) itemsSelec.get(0));
+					select((IEntity) itemsSelec.get(0).getProfesor());
 					mnItemModificar.setDisable(false);
 					mnItemEliminar.setDisable(false);
 
@@ -231,12 +231,10 @@ public class ProfesoresView extends AFormView implements
 
 	@Override
 	public void onSaved(IEntity otObject) {
-		System.out.println("Elemento grabando:" + otObject.toString());
 		OTProfesor profesor = new OTProfesor((Profesor) otObject);
-		int indice = tblProfesores.getItems().lastIndexOf(otObject);
+		int indice = tblProfesores.getItems().lastIndexOf(profesor);
 		if (indice != -1) {
-			tblProfesores.getItems().remove(otObject);
-			tblProfesores.getItems().add(indice, profesor);
+			tblProfesores.getItems().set(indice, profesor);
 		} else {
 			tblProfesores.getItems().add(profesor);
 		}

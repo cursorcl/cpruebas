@@ -261,10 +261,9 @@ public class AlumnosView extends AFormView implements EventHandler<ActionEvent> 
 	@Override
 	public void onSaved(IEntity otObject) {
 		OTAlumno otAlumno = new OTAlumno((Alumno) otObject);
-		int indice = tblAlumnos.getItems().lastIndexOf(otObject);
+		int indice = tblAlumnos.getItems().lastIndexOf(otAlumno);
 		if (indice != -1) {
-			tblAlumnos.getItems().remove(otObject);
-			tblAlumnos.getItems().add(indice, otAlumno);
+			tblAlumnos.getItems().set(indice, otAlumno);
 		} else {
 			tblAlumnos.getItems().add(otAlumno);
 		}

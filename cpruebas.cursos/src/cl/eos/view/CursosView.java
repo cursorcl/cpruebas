@@ -159,7 +159,7 @@ public class CursosView extends AFormView implements EventHandler<ActionEvent> {
 					mnuModificar.setDisable(true);
 					mnuEliminar.setDisable(false);
 				} else if (itemsSelec.size() == 1) {
-					select((IEntity) itemsSelec.get(0));
+					select((IEntity) itemsSelec.get(0).getCurso());
 					mnItemModificar.setDisable(false);
 					mnItemEliminar.setDisable(false);
 
@@ -284,10 +284,9 @@ public class CursosView extends AFormView implements EventHandler<ActionEvent> {
 	@Override
 	public void onSaved(IEntity otObject) {
 		OTCurso otCurso = new OTCurso((Curso) otObject);
-		int indice = tblCurso.getItems().lastIndexOf(otObject);
+		int indice = tblCurso.getItems().lastIndexOf(otCurso);
 		if (indice != -1) {
-			tblCurso.getItems().remove(otObject);
-			tblCurso.getItems().add(indice, otCurso);
+			tblCurso.getItems().set(indice, otCurso);
 		} else {
 			tblCurso.getItems().add(otCurso);
 		}

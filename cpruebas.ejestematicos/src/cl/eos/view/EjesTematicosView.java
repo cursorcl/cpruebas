@@ -153,7 +153,7 @@ public class EjesTematicosView extends AFormView implements
 					menuModificar.setDisable(false);
 					menuEliminar.setDisable(true);
 				} else if (itemsSelec.size() == 1) {
-					select((IEntity) itemsSelec.get(0));
+					select((IEntity) itemsSelec.get(0).getEjeTematico());
 					mnuModificar.setDisable(false);
 					mnuEliminar.setDisable(false);
 
@@ -174,14 +174,12 @@ public class EjesTematicosView extends AFormView implements
 	@Override
 	public void onSaved(IEntity otObject) {
 		OTEjeTematico ejeTematico = new OTEjeTematico((EjeTematico) otObject);
-		int indice = tblEjesTematicos.getItems().lastIndexOf(otObject);
+		int indice = tblEjesTematicos.getItems().lastIndexOf(ejeTematico);
 		if (indice != -1) {
-			tblEjesTematicos.getItems().remove(otObject);
-			tblEjesTematicos.getItems().add(indice, ejeTematico);
+			tblEjesTematicos.getItems().set(indice, ejeTematico);
 		} else {
 			tblEjesTematicos.getItems().add(ejeTematico);
 		}
-		System.out.println("Elemento grabando:" + otObject.toString());
 	}
 
 	private void limpiarControles() {

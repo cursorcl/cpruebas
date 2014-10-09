@@ -168,7 +168,7 @@ public class TipoPruebaView extends AFormView implements
 					mnuModificar.setDisable(true);
 					mnuEliminar.setDisable(false);
 				} else if (itemsSelec.size() == 1) {
-					select((IEntity) itemsSelec.get(0));
+					select((IEntity) itemsSelec.get(0).getTipoPrueba());
 					mnItemModificar.setDisable(false);
 					mnItemEliminar.setDisable(false);
 
@@ -187,10 +187,9 @@ public class TipoPruebaView extends AFormView implements
 	@Override
 	public void onSaved(IEntity otObject) {
 		OTTipoPrueba tipoPrueba = new OTTipoPrueba((TipoPrueba) otObject);
-		int indice = tblTipoPrueba.getItems().lastIndexOf(otObject);
+		int indice = tblTipoPrueba.getItems().lastIndexOf(tipoPrueba);
 		if (indice != -1) {
-			tblTipoPrueba.getItems().remove(otObject);
-			tblTipoPrueba.getItems().add(indice, tipoPrueba);
+			tblTipoPrueba.getItems().set(indice, tipoPrueba);
 		} else {
 			tblTipoPrueba.getItems().add(tipoPrueba);
 		}

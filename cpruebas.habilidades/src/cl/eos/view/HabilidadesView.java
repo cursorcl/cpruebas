@@ -187,7 +187,7 @@ public class HabilidadesView extends AFormView implements
 					mnuEliminar.setDisable(false);
 
 				} else if (itemsSelec.size() == 1) {
-					select((IEntity) itemsSelec.get(0));
+					select((IEntity) itemsSelec.get(0).getHabilidad());
 					menuModificar.setDisable(false);
 					menuEliminar.setDisable(false);
 
@@ -207,10 +207,9 @@ public class HabilidadesView extends AFormView implements
 	@Override
 	public void onSaved(IEntity otObject) {
 		OTHabilidad habilidad = new OTHabilidad((Habilidad) otObject);
-		int indice = tblHabilidades.getItems().lastIndexOf(otObject);
+		int indice = tblHabilidades.getItems().lastIndexOf(habilidad);
 		if (indice != -1) {
-			tblHabilidades.getItems().remove(otObject);
-			tblHabilidades.getItems().add(indice, habilidad);
+			tblHabilidades.getItems().set(indice, habilidad);
 		} else {
 			tblHabilidades.getItems().add(habilidad);
 		}

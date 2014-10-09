@@ -134,7 +134,7 @@ public class ColegiosView extends AFormView implements
 					mnuModificar.setDisable(true);
 					mnuEliminar.setDisable(false);
 				} else if (itemsSelec.size() == 1) {
-					select((IEntity) itemsSelec.get(0));
+					select((IEntity) itemsSelec.get(0).getColegio());
 					mnItemModificar.setDisable(false);
 					mnItemEliminar.setDisable(false);
 
@@ -237,10 +237,9 @@ public class ColegiosView extends AFormView implements
 	@Override
 	public void onSaved(IEntity otObject) {
 		OTColegio otColegio = new OTColegio((Colegio) otObject);
-		int indice = tblColegio.getItems().lastIndexOf(otObject);
+		int indice = tblColegio.getItems().lastIndexOf(otColegio);
 		if (indice != -1) {
-			tblColegio.getItems().remove(otObject);
-			tblColegio.getItems().add(indice, otColegio);
+			tblColegio.getItems().set(indice, otColegio);
 		} else {
 			tblColegio.getItems().add(otColegio);
 		}
