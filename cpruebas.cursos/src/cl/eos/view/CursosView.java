@@ -2,8 +2,6 @@ package cl.eos.view;
 
 import java.util.List;
 
-import org.controlsfx.dialog.Dialogs;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -18,13 +16,16 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+
+import org.controlsfx.dialog.Dialogs;
+
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
+import cl.eos.persistence.models.Ciclo;
 import cl.eos.persistence.models.Colegio;
 import cl.eos.persistence.models.Curso;
-import cl.eos.persistence.models.Ciclo;
 import cl.eos.persistence.models.TipoCurso;
-import cl.eos.util.ExcelSheetWriterEntity;
+import cl.eos.util.ExcelSheetWriterObj;
 
 public class CursosView extends AFormView implements EventHandler<ActionEvent> {
 
@@ -104,7 +105,12 @@ public class CursosView extends AFormView implements EventHandler<ActionEvent> {
 		mnItemModificar.setOnAction(this);
 		menuExportar.setOnAction(this);
 		mnuExportar.setOnAction(this);
-
+		
+		
+		mnuModificar.setDisable(true);
+		mnuEliminar.setDisable(true);
+		mnItemEliminar.setDisable(true);
+		mnItemModificar.setDisable(true);
 	}
 
 	private void accionModificar() {
@@ -140,10 +146,16 @@ public class CursosView extends AFormView implements EventHandler<ActionEvent> {
 				if (itemsSelec.size() > 1) {
 					mnItemModificar.setDisable(true);
 					mnItemEliminar.setDisable(false);
+					
+					mnuModificar.setDisable(true);
+					mnuEliminar.setDisable(false);
 				} else if (itemsSelec.size() == 1) {
 					select((IEntity) itemsSelec.get(0));
 					mnItemModificar.setDisable(false);
 					mnItemEliminar.setDisable(false);
+					
+					mnuModificar.setDisable(false);
+					mnuEliminar.setDisable(false);
 				}
 			}
 		});
@@ -286,7 +298,8 @@ public class CursosView extends AFormView implements EventHandler<ActionEvent> {
 		} else if (source == mnuEliminar || source == mnItemEliminar) {
 			accionEliminar();
 		} else if (source == mnuExportar || source == menuExportar) {
-			ExcelSheetWriterEntity.convertirDatosALibroDeExcel(tblCurso);
+			tblCurso.setId("Cursos");
+			ExcelSheetWriterObj.convertirDatosALibroDeExcel(tblCurso);
 		}
 
 	}

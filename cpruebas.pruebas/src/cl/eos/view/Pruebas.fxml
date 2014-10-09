@@ -10,7 +10,7 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="519.0" prefWidth="1087.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.PruebasView">
    <top>
-      <VBox>
+      <VBox prefHeight="24.0" prefWidth="1087.0">
          <children>
             <MenuBar BorderPane.alignment="CENTER">
               <menus>
@@ -166,7 +166,7 @@
                      <top>
                         <AnchorPane prefHeight="53.0" prefWidth="370.0" BorderPane.alignment="CENTER">
                            <children>
-                              <TextField layoutX="417.0" layoutY="15.0" prefHeight="23.0" prefWidth="186.0" promptText="Buscar" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="18.0" AnchorPane.topAnchor="15.0" />
+                              <TextField fx:id="filterField" layoutX="417.0" layoutY="15.0" prefHeight="23.0" prefWidth="186.0" promptText="Buscar" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="18.0" AnchorPane.topAnchor="15.0" />
                            </children>
                         </AnchorPane>
                      </top>

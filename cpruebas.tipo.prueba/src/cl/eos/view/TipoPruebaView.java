@@ -18,7 +18,7 @@ import javafx.scene.input.MouseEvent;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.persistence.models.TipoPrueba;
-import cl.eos.util.ExcelSheetWriterEntity;
+import cl.eos.util.ExcelSheetWriterObj;
 
 public class TipoPruebaView extends AFormView implements
 		EventHandler<ActionEvent> {
@@ -79,6 +79,11 @@ public class TipoPruebaView extends AFormView implements
 		mnItemModificar.setOnAction(this);
 		menuExportar.setOnAction(this);
 		mnuExportar.setOnAction(this);
+		
+		mnuModificar.setDisable(true);
+		mnuEliminar.setDisable(true);
+		mnItemEliminar.setDisable(true);
+		mnItemModificar.setDisable(true);
 	}
 
 	private void inicializaTabla() {
@@ -138,10 +143,16 @@ public class TipoPruebaView extends AFormView implements
 				if (itemsSelec.size() > 1) {
 					mnItemModificar.setDisable(true);
 					mnItemEliminar.setDisable(false);
+					
+					mnuModificar.setDisable(true);
+					mnuEliminar.setDisable(false);
 				} else if (itemsSelec.size() == 1) {
 					select((IEntity) itemsSelec.get(0));
 					mnItemModificar.setDisable(false);
 					mnItemEliminar.setDisable(false);
+					
+					mnuModificar.setDisable(false);
+					mnuEliminar.setDisable(false);
 				}
 			}
 		});
@@ -154,7 +165,6 @@ public class TipoPruebaView extends AFormView implements
 
 	@Override
 	public void onSaved(IEntity otObject) {
-		System.out.println("Elemento grabando:" + otObject.toString());
 		int indice = tblTipoPrueba.getItems().lastIndexOf(otObject);
 		if (indice != -1) {
 			tblTipoPrueba.getItems().remove(otObject);
@@ -166,7 +176,6 @@ public class TipoPruebaView extends AFormView implements
 
 	@Override
 	public void onDeleted(IEntity entity) {
-		System.out.println("Elementoeliminando:" + entity.toString());
 		tblTipoPrueba.getItems().remove(entity);
 	}
 
@@ -217,9 +226,9 @@ public class TipoPruebaView extends AFormView implements
 		} else if (source == mnuEliminar || source == mnItemEliminar) {
 			accionEliminar();
 		} else if (source == mnuExportar || source == menuExportar) {
-			ExcelSheetWriterEntity.convertirDatosALibroDeExcel(tblTipoPrueba);
+			tblTipoPrueba.setId("Tipo prueba");
+			ExcelSheetWriterObj.convertirDatosALibroDeExcel(tblTipoPrueba);
 		}
 	}
 
-	
 }

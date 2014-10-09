@@ -23,12 +23,16 @@ import cl.eos.interfaces.entity.IEntity;
 import cl.eos.persistence.models.Alumno;
 import cl.eos.persistence.models.Colegio;
 import cl.eos.persistence.models.Curso;
+import cl.eos.util.ExcelSheetWriterObj;
 import cl.eos.util.Utils;
 
 public class AlumnosView extends AFormView implements EventHandler<ActionEvent> {
 
 	private static final int LARGO_CAMPO_TEXT = 100;
 
+	@FXML
+	private MenuItem mnuAgregar;
+	
 	@FXML
 	private MenuItem mnuGrabar;
 
@@ -43,6 +47,15 @@ public class AlumnosView extends AFormView implements EventHandler<ActionEvent> 
 
 	@FXML
 	private MenuItem mnuModificar;
+	
+	@FXML
+	private MenuItem menuExportar;
+	
+	@FXML
+	private MenuItem mnuExportar;
+	
+	@FXML
+	private MenuItem mnuImportar;
 
 	@FXML
 	private TextField txtRut;
@@ -98,12 +111,22 @@ public class AlumnosView extends AFormView implements EventHandler<ActionEvent> 
 		setTitle("Alumnos");
 		inicializaTabla();
 		accionClicTabla();
-
+		
+		mnuAgregar.setOnAction(this);
 		mnuGrabar.setOnAction(this);
 		mnuModificar.setOnAction(this);
 		mnuEliminar.setOnAction(this);
 		mnItemEliminar.setOnAction(this);
 		mnItemModificar.setOnAction(this);
+		
+		mnuExportar.setOnAction(this);
+		menuExportar.setOnAction(this);
+		mnuImportar.setOnAction(this);
+		
+		mnItemModificar.setDisable(true);
+		mnuModificar.setDisable(true);
+		mnuEliminar.setDisable(true);
+		mnItemEliminar.setDisable(true);		
 	}
 
 	private void accionClicTabla() {
@@ -116,10 +139,14 @@ public class AlumnosView extends AFormView implements EventHandler<ActionEvent> 
 				if (itemsSelec.size() > 1) {
 					mnItemModificar.setDisable(true);
 					mnItemEliminar.setDisable(false);
+					mnuModificar.setDisable(true);
+					mnuEliminar.setDisable(false);
 				} else if (itemsSelec.size() == 1) {
 					select((IEntity) itemsSelec.get(0));
 					mnItemModificar.setDisable(false);
 					mnItemEliminar.setDisable(false);
+					mnuModificar.setDisable(false);
+					mnuEliminar.setDisable(false);
 				}
 			}
 		});
@@ -142,7 +169,7 @@ public class AlumnosView extends AFormView implements EventHandler<ActionEvent> 
 		ObservableList<Alumno> alumnosSelec = tblAlumnos.getSelectionModel()
 				.getSelectedItems();
 		delete(alumnosSelec);
-		tblAlumnos.getSelectionModel().clearSelection();
+		
 		limpiarControles();
 	}
 
@@ -182,6 +209,7 @@ public class AlumnosView extends AFormView implements EventHandler<ActionEvent> 
 		txtDireccion.clear();
 		cmbColegio.getSelectionModel().clearSelection();
 		cmbCurso.getSelectionModel().clearSelection();
+		tblAlumnos.getSelectionModel().clearSelection();
 		select(null);
 	}
 
@@ -334,6 +362,12 @@ public class AlumnosView extends AFormView implements EventHandler<ActionEvent> 
 			accionGrabar();
 		} else if (source == mnuEliminar || source == mnItemEliminar) {
 			accionEliminar();
+		} else if (source == mnuAgregar ) {
+			limpiarControles();
+		} else if (source == mnuExportar || source == menuExportar) {
+			tblAlumnos.setId("Alumnos");
+			ExcelSheetWriterObj.convertirDatosALibroDeExcel(tblAlumnos);
 		}
+		
 	}
 }

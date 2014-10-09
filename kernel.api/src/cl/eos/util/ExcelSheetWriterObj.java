@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -20,8 +21,6 @@ import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-
-import cl.eos.interfaces.entity.IEntity;
 
 /**
  * Clase que permite exportar a excel datos asociados a las tablas.
@@ -39,7 +38,22 @@ public final class ExcelSheetWriterObj {
 
 	public static void convertirDatosALibroDeExcel(
 			TableView<? extends Object> tabla) {
-		final Workbook wbWork = crearLibroConDatosDeTabla(tabla);
+		final Workbook wbook = new HSSFWorkbook();
+		crearLibroConDatosDeTabla(tabla, wbook);
+		crearDocExcel(wbook);
+	}
+
+	public static void convertirDatosALibroDeExcel(
+			List<TableView<? extends Object>> listaTablas) {
+		final Workbook wbook = new HSSFWorkbook();
+		for (TableView<? extends Object> tableView : listaTablas) {
+
+			crearLibroConDatosDeTabla(tableView, wbook);
+		}
+		crearDocExcel(wbook);
+	}
+
+	private static void crearDocExcel(final Workbook wbWork) {
 		long time = Calendar.getInstance().getTimeInMillis();
 		final String nombreDoc = "wb" + time + ".xls";
 		FileOutputStream fileOut = null;
@@ -64,19 +78,23 @@ public final class ExcelSheetWriterObj {
 	 * Metodo que permite la creacion de los datos de la tabla en un libro de
 	 * excel.
 	 * 
+	 * @param wbook
+	 * 
 	 * @param modelo
 	 *            modelo de tabla.
 	 * @return workbook libro de excel.
 	 */
-	private static Workbook crearLibroConDatosDeTabla(
-			final TableView<? extends Object> tabla) {
-		final Workbook wbwork = crearDatosHeader(tabla);
-		return crearDatosTabla(tabla, wbwork);
+	private static void crearLibroConDatosDeTabla(
+			final TableView<? extends Object> tabla, Workbook wbook) {
+		final Workbook workbook = wbook;
+		crearDatosHeader(tabla, workbook);
+		crearDatosTabla(tabla, workbook);
 	}
 
-	private static Workbook crearDatosHeader(TableView<? extends Object> tabla) {
-		final Workbook wbook = new HSSFWorkbook();
-		final Sheet sheet1 = wbook.createSheet("Listado");
+	private static void crearDatosHeader(TableView<? extends Object> tabla,
+			Workbook wbook) {
+
+		final Sheet sheet1 = wbook.createSheet(tabla.getId());
 		final CellStyle style = wbook.createCellStyle();
 
 		style.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
@@ -88,7 +106,7 @@ public final class ExcelSheetWriterObj {
 			cell.setCellValue(tabla.getColumns().get(indice).getText());
 			cell.setCellStyle(style);
 		}
-		return wbook;
+
 	}
 
 	/**
@@ -100,16 +118,15 @@ public final class ExcelSheetWriterObj {
 	 *            libro de excel.
 	 * @return workbook libro de excel modificado.
 	 */
-	private static Workbook crearDatosTabla(TableView<? extends Object> tabla,
+	private static void crearDatosTabla(TableView<? extends Object> tabla,
 			final Workbook wbook) {
 		final Workbook workbook = wbook;
-		final Sheet sheet1 = workbook.getSheetAt(0);
+		final Sheet sheet1 = workbook.getSheet(tabla.getId());
 
 		for (int indiceFila = 0; indiceFila < tabla.getItems().size(); indiceFila++) {
 			final Row fila = sheet1.createRow(indiceFila + 1);
 			recorrerColumnas(tabla, indiceFila, fila);
 		}
-		return workbook;
 	}
 
 	/**

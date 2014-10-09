@@ -18,7 +18,7 @@ import javafx.scene.input.MouseEvent;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.persistence.models.Profesor;
-import cl.eos.util.ExcelSheetWriterEntity;
+import cl.eos.util.ExcelSheetWriterObj;
 import cl.eos.util.Utils;
 
 public class ProfesoresView extends AFormView implements
@@ -99,6 +99,11 @@ public class ProfesoresView extends AFormView implements
 		mnItemModificar.setOnAction(this);
 		mnuExportar.setOnAction(this);
 		menuExportar.setOnAction(this);
+		
+		mnuModificar.setDisable(true);
+		mnuEliminar.setDisable(true);
+		mnItemEliminar.setDisable(true);
+		mnItemModificar.setDisable(true);
 	}
 
 	private void accionClicTabla() {
@@ -110,10 +115,17 @@ public class ProfesoresView extends AFormView implements
 				if (itemsSelec.size() > 1) {
 					mnItemModificar.setDisable(true);
 					mnItemEliminar.setDisable(false);
+					
+					mnuModificar.setDisable(true);
+					mnuEliminar.setDisable(false);
+					
 				} else if (itemsSelec.size() == 1) {
 					select((IEntity) itemsSelec.get(0));
 					mnItemModificar.setDisable(false);
 					mnItemEliminar.setDisable(false);
+					
+					mnuModificar.setDisable(false);
+					mnuEliminar.setDisable(false);
 				}
 			}
 		});
@@ -292,7 +304,8 @@ public class ProfesoresView extends AFormView implements
 		} else if (source == mnuEliminar || source == mnItemEliminar) {
 			accionEliminar();
 		} else if (source == mnuExportar || source == menuExportar) {
-			ExcelSheetWriterEntity.convertirDatosALibroDeExcel(tblProfesores);
+			tblProfesores.setId("Profesores");
+			ExcelSheetWriterObj.convertirDatosALibroDeExcel(tblProfesores);
 		}
 	}
 }

@@ -40,25 +40,26 @@ public class WindowManager implements IWindowManager {
 			w.setText(window.getTitle());
 			w.setContent((Parent) window.getPanel());
 			w.setVisible(true);
-			breadCrum.removeItem(breadCrum.itemsProperty().size() - 1);
-			breadCrum.addItem(window.getTitle(), w);
+			// breadCrum.removeItem(breadCrum.itemsProperty().size() - 1);
+			BreadcrumbItem item = null;
+			int n = 0;
+			for (n = 0; n < breadCrum.itemsProperty().getSize(); n++) {
+				BreadcrumbItem bItem = breadCrum.itemsProperty().get(n);
+				if (bItem.getText().equals(window.getTitle())) {
+					item = bItem;
+					break;
+				}
+			}
+			if (item != null) {
+				while (breadCrum.itemsProperty().getSize() > (n+1)) {
+					breadCrum
+							.removeItem(breadCrum.itemsProperty().getSize() - 1);
+				}
+			} else {
+				breadCrum.addItem(window.getTitle(), w);
+			}
 			group.getChildren().setAll(w);
 		}
-	}
-
-	@Override
-	public void add(IView window) {
-		if (group != null) {
-			WindowsView w = new WindowsView();
-			w.setView(window);
-			w.setId(window.getName());
-			w.setText(window.getTitle());
-			w.setContent((Parent) window.getPanel());
-			w.setVisible(true);
-			breadCrum.addItem(window.getTitle(), w);
-			group.getChildren().setAll(w);
-		}
-
 	}
 
 	@Override
@@ -111,6 +112,19 @@ public class WindowManager implements IWindowManager {
 						group.getChildren().setAll(node);
 					}
 				});
+	}
+
+	@Override
+	public void setHomeView(IView window) {
+		if (group != null) {
+			WindowsView w = new WindowsView();
+			w.setView(window);
+			w.setId(window.getName());
+			w.setText(window.getTitle());
+			w.setContent((Parent) window.getPanel());
+			w.setVisible(true);
+			breadCrum.addHome(w);
+		}
 	}
 
 }

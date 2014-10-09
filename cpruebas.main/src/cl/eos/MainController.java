@@ -4,18 +4,19 @@ import java.awt.MenuContainer;
 import java.io.File;
 import java.util.List;
 
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
-import javafx.stage.FileChooser;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import jfxtras.labs.scene.control.BreadcrumbBar;
+
 import org.controlsfx.dialog.Dialogs;
+
 import cl.eos.imp.view.WindowButtons;
 import cl.eos.imp.view.WindowManager;
 import cl.eos.interfaces.IActivator;
@@ -76,6 +77,9 @@ public class MainController {
 		try {
 			WindowManager.getInstance().setRoot(groupRoot);
 			WindowManager.getInstance().setBreadcrumbBar(breadCrumb);
+			IActivator activator = new PruebasActivator();
+			WindowManager.getInstance().setHomeView(activator.getView());
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -142,13 +146,6 @@ public class MainController {
 				WindowManager.getInstance().show(activator.getView());
 			}
 		});
-		mnuItemGeneraBD.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent arg0) {
-				PersistenceServiceFactory.getPersistenceService();
-			}
-		});
-
 		mnuTipoPrueba.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
@@ -163,18 +160,19 @@ public class MainController {
 				WindowManager.getInstance().show(activator.getView());
 			}
 		});
-		mnuCerrarAplicacion.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent event) {
-				Platform.exit();
-			}
-		});
+		// mnuCerrarAplicacion.setOnAction(new EventHandler<ActionEvent>() {
+		//
+		// @Override
+		// public void handle(ActionEvent event) {
+		// Platform.exit();
+		// }
+		// });
 
 		mnuImportar.setOnAction(new EventHandler<ActionEvent>() {
+			
 			@Override
 			public void handle(ActionEvent event) {
-				importarExcel();
+				importarExcel();				
 			}
 		});
 	}

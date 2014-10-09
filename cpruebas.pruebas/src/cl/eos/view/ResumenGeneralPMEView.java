@@ -5,6 +5,7 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -20,21 +21,19 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Callback;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.ot.OTPreguntasEjes;
-import cl.eos.ot.OTPreguntasEvaluacion;
 import cl.eos.ot.OTPreguntasHabilidad;
 import cl.eos.ot.OTRangoEvaluacion;
 import cl.eos.ot.OTReporte;
 import cl.eos.ot.OTResultado;
 import cl.eos.persistence.models.EjeTematico;
-import cl.eos.persistence.models.EvaluacionEjeTematico;
 import cl.eos.persistence.models.EvaluacionPrueba;
 import cl.eos.persistence.models.Habilidad;
 import cl.eos.persistence.models.NivelEvaluacion;
@@ -100,7 +99,11 @@ public class ResumenGeneralPMEView extends AFormView implements
 	private Map<EjeTematico, Float> mapaEjesCurso = new HashMap<EjeTematico, Float>();
 	private Map<Habilidad, Float> mapaHabilidadesCurso = new HashMap<Habilidad, Float>();
 	private Map<RangoEvaluacion, OTRangoEvaluacion> mRango;
-	Map<RangoEvaluacion, Map<EjeTematico, OTReporte>> mapReporte;
+	private Map<RangoEvaluacion, Map<EjeTematico, OTReporte>> mapReporte;
+	private boolean llegaOnFound = false;
+	private EvaluacionPrueba evaluacionPrueba;
+	private ArrayList<EjeTematico> titulosColumnas = new ArrayList<>();
+	private List<RangoEvaluacion> listaRangos;
 
 	public ResumenGeneralPMEView() {
 
@@ -108,7 +111,6 @@ public class ResumenGeneralPMEView extends AFormView implements
 
 	@FXML
 	public void initialize() {
-		this.setTitle("Resumen General por curso");
 		inicializarTablaEjes();
 		inicializarTablaHabilidades();
 		inicializarTablaEvaluacines();
@@ -151,10 +153,6 @@ public class ResumenGeneralPMEView extends AFormView implements
 						"logrado"));
 	}
 
-	private boolean llegaOnFound = false;
-	private EvaluacionPrueba evaluacionPrueba;
-	private ArrayList<String> titulosColumnas;
-
 	private void procesaDatosReporte() {
 		if (llegaOnFound) {
 			llenarDatosTabla();
@@ -165,10 +163,10 @@ public class ResumenGeneralPMEView extends AFormView implements
 	public void onFound(IEntity entity) {
 		if (entity instanceof EvaluacionPrueba) {
 			evaluacionPrueba = (EvaluacionPrueba) entity;
-			List<RangoEvaluacion> list = evaluacionPrueba.getPrueba()
-					.getNivelEvaluacion().getRangos();
+			listaRangos = evaluacionPrueba.getPrueba().getNivelEvaluacion()
+					.getRangos();
 			mRango = new HashMap<RangoEvaluacion, OTRangoEvaluacion>();
-			for (RangoEvaluacion rango : list) {
+			for (RangoEvaluacion rango : listaRangos) {
 				OTRangoEvaluacion otRango = new OTRangoEvaluacion();
 				otRango.setRango(rango);
 				mRango.put(rango, otRango);
@@ -216,7 +214,7 @@ public class ResumenGeneralPMEView extends AFormView implements
 			generaContenidosHabilidades(pRendida, respuestasEsperadas);
 
 		}
-
+		generaContenidosReportes(nivelEvaluacion);
 		generarDespliegueContenidosGenerales(totalAlumnos, nivelEvaluacion,
 				sumaNotas, sumaLogro);
 		generarDespliegueContenidosRangos();
@@ -280,7 +278,7 @@ public class ResumenGeneralPMEView extends AFormView implements
 			List<RespuestasEsperadasPrueba> respuestasEsperadas,
 			NivelEvaluacion nivelEvaluacion) {
 
-		Map<EjeTematico, OTPreguntasEjes> mapaEjeAlumno = new HashMap<EjeTematico, OTPreguntasEjes>();
+		Map<EjeTematico, OTPreguntasEjes> mapaEjesAlumno = new HashMap<EjeTematico, OTPreguntasEjes>();
 
 		String respuesta = pruebaRendida.getRespuestas();
 		char[] cRespuesta = respuesta.toCharArray();
@@ -291,8 +289,8 @@ public class ResumenGeneralPMEView extends AFormView implements
 					.getEjeTematico();
 
 			Integer numeroPreg = respuestasEsperadasPrueba.getNumero();
-			if (mapaEjeAlumno.containsKey(ejeTematico)) {
-				OTPreguntasEjes otPregunta = mapaEjeAlumno.get(ejeTematico);
+			if (mapaEjesAlumno.containsKey(ejeTematico)) {
+				OTPreguntasEjes otPregunta = mapaEjesAlumno.get(ejeTematico);
 
 				if (cRespuesta[numeroPreg - 1] == respuestasEsperadasPrueba
 						.getRespuesta().toCharArray()[0]) {
@@ -309,11 +307,29 @@ public class ResumenGeneralPMEView extends AFormView implements
 					otPreguntas.setBuenas(0);
 				}
 				otPreguntas.setTotal(1);
-				mapaEjeAlumno.put(ejeTematico, otPreguntas);
-				titulosColumnas.add(ejeTematico.getName());
+				mapaEjesAlumno.put(ejeTematico, otPreguntas);
+				if (!titulosColumnas.contains(ejeTematico)) {
+					titulosColumnas.add(ejeTematico);
+				}
 			}
 		}
 
+		for (OTPreguntasEjes otAlumno : mapaEjesAlumno.values()) {
+
+			float valor = otAlumno.getLogrado();
+			if (mapaEjesCurso.containsKey(otAlumno.getEjeTematico())) {
+
+				Float totalValor = mapaEjesCurso.get(otAlumno.getEjeTematico());
+				totalValor = totalValor + valor;
+
+			} else {
+				mapaEjesCurso.put(otAlumno.getEjeTematico(), valor);
+			}
+		}
+
+	}
+
+	private void generaContenidosReportes(NivelEvaluacion nivelEvaluacion) {
 		// genera datos de reportes
 		mapReporte = new HashMap<RangoEvaluacion, Map<EjeTematico, OTReporte>>();
 		for (Entry<EjeTematico, Float> otEje : mapaEjesCurso.entrySet()) {
@@ -363,10 +379,10 @@ public class ResumenGeneralPMEView extends AFormView implements
 		tblReportePME.getColumns().add(columna0);
 
 		int indice = 1;
-		for (String titulo : titulosColumnas) {
+		for (EjeTematico titulo : titulosColumnas) {
 			// Columnas
 			final int col = indice;
-			TableColumn columna = new TableColumn(titulo);
+			TableColumn columna = new TableColumn(titulo.getName());
 			columna.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
 				public ObservableValue<String> call(
 						CellDataFeatures<ObservableList, String> param) {
@@ -402,7 +418,7 @@ public class ResumenGeneralPMEView extends AFormView implements
 			OTResultado resultado = new OTResultado();
 			resultado.setNombre(lEntity.getKey().getName());
 			float valor = lEntity.getValue() / totalAlumnos;
-			resultado.setLogrado(String.valueOf(valor));
+			resultado.setLogrado(valor);
 			mapa.add(resultado);
 		}
 		tblEjesTematicos.setItems(mapa);
@@ -416,7 +432,7 @@ public class ResumenGeneralPMEView extends AFormView implements
 			OTResultado resultado = new OTResultado();
 			resultado.setNombre(lEntity.getKey().getName());
 			float valor = lEntity.getValue() / totalAlumnos;
-			resultado.setLogrado(String.valueOf(valor));
+			resultado.setLogrado(valor);
 			mapa.add(resultado);
 		}
 		tblHabilidades.setItems(mapa);
@@ -427,18 +443,25 @@ public class ResumenGeneralPMEView extends AFormView implements
 				.observableArrayList();
 
 		ObservableList<String> row = null;
-		int total = 0;
-		for (Entry<RangoEvaluacion, Map<EjeTematico, OTReporte>> mReporte : mapReporte.entrySet()) {
-			 Map<EjeTematico, OTReporte> mEjeTematico = mReporte.getValue();
-			
-			row = FXCollections.observableArrayList();
-			row.add(((RangoEvaluacion)mReporte.getKey()).getName());
+		for (RangoEvaluacion rango : listaRangos) {
+			Map<EjeTematico, OTReporte> mEjeTematico = mapReporte.get(rango);
 
-			ObservableList<OTResultado> m = FXCollections
-					.observableArrayList();
-			for (String columna : titulosColumnas) {
-				OTReporte valor = mEjeTematico.get(columna);
-				row.add(String.valueOf(valor.getTotal()));
+			row = FXCollections.observableArrayList();
+			row.add(rango.getName());
+
+			if (mEjeTematico == null) {
+				for (int i = 0; i < mapaEjesCurso.size(); i++) {
+					row.add(String.valueOf(0));
+				}
+			} else {
+				for (EjeTematico ejeTematico : titulosColumnas) {
+					OTReporte valor = mEjeTematico.get(ejeTematico);
+					if (valor == null) {
+						row.add(String.valueOf(0));
+					} else {
+						row.add(String.valueOf(valor.getTotal()));
+					}
+				}
 			}
 			registroseReporte.add(row);
 		}
@@ -460,20 +483,27 @@ public class ResumenGeneralPMEView extends AFormView implements
 		txtLogro.setText(formatter.format(promedio));
 
 		RangoEvaluacion rango = nivelEvaluacion.getRango(promedioLogro);
-		txtEvaluados.setText(rango.getAbreviacion());
+		txtNivel.setText(rango.getAbreviacion());
 	}
 
 	@Override
 	public void handle(ActionEvent event) {
 		Object source = event.getSource();
-		if (source == mnuExportarEjesTematicos) {
-			ExcelSheetWriterObj.convertirDatosALibroDeExcel(tblEjesTematicos);
-		} else if (source == mnuExportarHabilidades) {
-			ExcelSheetWriterObj.convertirDatosALibroDeExcel(tblHabilidades);
-		} else if (source == mnuExportarRangos) {
-			ExcelSheetWriterObj.convertirDatosALibroDeExcel(tblRangos);
-		} else if (source == mnuExportarReporte) {
-			ExcelSheetWriterObj.convertirDatosALibroDeExcel(tblReportePME);
+		if (source == mnuExportarEjesTematicos
+				|| source == mnuExportarHabilidades
+				|| source == mnuExportarRangos || source == mnuExportarReporte) {
+			
+			tblEjesTematicos.setId("Eje Temático");
+			tblHabilidades.setId("Habilidades");
+			tblRangos.setId("Rango");
+			tblReportePME.setId("Reporte PME");
+			
+			List<TableView<? extends Object>> listaTablas = new LinkedList<>();
+			listaTablas.add((TableView<? extends Object>) tblEjesTematicos);
+			listaTablas.add((TableView<? extends Object>) tblHabilidades);
+			listaTablas.add((TableView<? extends Object>) tblRangos);
+			listaTablas.add((TableView<? extends Object>) tblReportePME);
+			ExcelSheetWriterObj.convertirDatosALibroDeExcel(listaTablas);
 		}
 	}
 }

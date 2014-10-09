@@ -42,7 +42,7 @@ public class ResumenGeneralView extends AFormView {
 	@FXML
 	private TableColumn<OTResumenGeneral, Integer> ColPuntos;
 	@FXML
-	private TableColumn<OTResumenGeneral, Float> colPuntaje;
+	private TableColumn<OTResumenGeneral, String> colPuntaje;
 
 	@FXML
 	private TableView<PruebaRendida> tblAlumnos;
@@ -65,7 +65,7 @@ public class ResumenGeneralView extends AFormView {
 	@FXML
 	private TableColumn<PruebaRendida, Integer> colAPuntaje;
 	@FXML
-	private TableColumn<PruebaRendida, Float> colPPuntaje;
+	private TableColumn<PruebaRendida, String> colPPuntaje;
 	@FXML
 	private TableColumn<PruebaRendida, Float> colANota;
 
@@ -117,8 +117,8 @@ public class ResumenGeneralView extends AFormView {
 				.setCellValueFactory(new PropertyValueFactory<PruebaRendida, Integer>(
 						"puntaje"));
 		colPPuntaje
-				.setCellValueFactory(new PropertyValueFactory<PruebaRendida, Float>(
-						"ppuntaje"));
+				.setCellValueFactory(new PropertyValueFactory<PruebaRendida, String>(
+						"ppuntajes"));
 		colANota.setCellValueFactory(new PropertyValueFactory<PruebaRendida, Float>(
 				"nota"));
 
@@ -138,7 +138,7 @@ public class ResumenGeneralView extends AFormView {
 				.setCellValueFactory(new PropertyValueFactory<OTResumenGeneral, Integer>(
 						"puntaje"));
 		colPuntaje
-				.setCellValueFactory(new PropertyValueFactory<OTResumenGeneral, Float>(
+				.setCellValueFactory(new PropertyValueFactory<OTResumenGeneral, String>(
 						"ppuntaje"));
 
 	}

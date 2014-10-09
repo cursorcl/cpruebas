@@ -19,7 +19,7 @@ import javafx.scene.input.MouseEvent;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.persistence.models.Colegio;
-import cl.eos.util.ExcelSheetWriterEntity;
+import cl.eos.util.ExcelSheetWriterObj;
 
 public class ColegiosView extends AFormView implements
 		EventHandler<ActionEvent> {
@@ -92,6 +92,12 @@ public class ColegiosView extends AFormView implements
 		mnItemModificar.setOnAction(this);
 		mnuExportar.setOnAction(this);
 		menuExportar.setOnAction(this);
+		
+		mnuModificar.setDisable(true);
+		mnuEliminar.setDisable(true);
+		mnItemEliminar.setDisable(true);
+		mnItemModificar.setDisable(true);
+		
 //		btnImagen.setOnAction(this);
 	}
 
@@ -117,14 +123,19 @@ public class ColegiosView extends AFormView implements
 			public void handle(MouseEvent event) {
 				ObservableList<Colegio> itemsSelec = tblColegio
 						.getSelectionModel().getSelectedItems();
-
 				if (itemsSelec.size() > 1) {
 					mnItemModificar.setDisable(true);
 					mnItemEliminar.setDisable(false);
+					
+					mnuModificar.setDisable(true);
+					mnuEliminar.setDisable(false);
 				} else if (itemsSelec.size() == 1) {
 					select((IEntity) itemsSelec.get(0));
 					mnItemModificar.setDisable(false);
 					mnItemEliminar.setDisable(false);
+					
+					mnuModificar.setDisable(false);
+					mnuEliminar.setDisable(false);
 				}
 			}
 		});
@@ -146,7 +157,6 @@ public class ColegiosView extends AFormView implements
 		if (colegio != null) {
 			txtNombre.setText(colegio.getName());
 			txtDireccion.setText(colegio.getDireccion());
-
 //			ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(
 //					colegio.getImage());
 //			javafx.scene.image.Image image = new javafx.scene.image.Image(
@@ -205,7 +215,6 @@ public class ColegiosView extends AFormView implements
 
 	@Override
 	public void onSaved(IEntity otObject) {
-		//System.out.println("Elemento grabando:" + otObject.toString());
 		int indice = tblColegio.getItems().lastIndexOf(otObject);
 		if (indice != -1) {
 			tblColegio.getItems().remove(otObject);
@@ -217,7 +226,6 @@ public class ColegiosView extends AFormView implements
 
 	@Override
 	public void onDeleted(IEntity entity) {
-		//System.out.println("Elementoeliminando:" + entity.toString());
 		tblColegio.getItems().remove(entity);
 	}
 
@@ -270,7 +278,8 @@ public class ColegiosView extends AFormView implements
 			// } else if (source == btnImagen) {
 			// accionButtonImagen();
 		} else if (source == mnuExportar || source == menuExportar) {
-			ExcelSheetWriterEntity.convertirDatosALibroDeExcel(tblColegio);
+			tblColegio.setId("Colegio");
+			ExcelSheetWriterObj.convertirDatosALibroDeExcel(tblColegio);
 		}
 	}
 

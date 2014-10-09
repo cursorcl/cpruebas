@@ -1,5 +1,8 @@
 package cl.eos.ot;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+
 public class OTResumenGeneral {
 
 	private String name;
@@ -42,8 +45,9 @@ public class OTResumenGeneral {
 		this.pbuenas = pBuenas;
 	}
 
-	public Float getPpuntaje() {
-		return ppuntaje;
+	public String getPpuntaje() {
+		NumberFormat formatter = new DecimalFormat("#0,00");
+		return formatter.format(ppuntaje);
 	}
 
 	public void setPpuntaje(Float pPuntaje) {
