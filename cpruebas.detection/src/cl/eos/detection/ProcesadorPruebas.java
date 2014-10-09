@@ -1,11 +1,10 @@
 package cl.eos.detection;
 
-import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Point2D;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -55,6 +54,12 @@ public class ProcesadorPruebas {
 		}
 
 		return result;
+	}
+
+	public BufferedImage rectify(BufferedImage image) {
+		BufferedImage imgScaled = rectifyScale(image);
+		BufferedImage imgRotated = rectifyRotation(imgScaled);
+		return imgRotated;
 	}
 
 	private List<Contour> process(BufferedImage image) {
@@ -199,14 +204,10 @@ public class ProcesadorPruebas {
 		// return res;
 	}
 
-	private BufferedImage rectifyScale(MarvinImage mImage) {
-		Double[] factors = getFactorsScaling(mImage);
-		return scale(factors[0], factors[1], mImage);
-	}
-
 	private BufferedImage rectifyScale(BufferedImage bImage) {
 
-		BufferedImage rImage = new BufferedImage(746, 968, bImage.getType());
+		BufferedImage rImage = new BufferedImage(612, 792, bImage.getType());
+//		BufferedImage rImage = new BufferedImage(746, 968, bImage.getType());
 		Graphics2D g2 = (Graphics2D) rImage.getGraphics();
 		g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
 				RenderingHints.VALUE_INTERPOLATION_BICUBIC);
@@ -220,7 +221,6 @@ public class ProcesadorPruebas {
 		MarvinAttributes attr = new MarvinAttributes();
 		moravec.setAttribute("threshold", 2000);
 		moravec.process(mImage, null, attr);
-		// {upLeft, upRight, bottomRight, bottomLeft}
 		Point[] bounds = boundaries(attr);
 		int lWidth = bounds[1].x - bounds[0].x;
 		int lHeight = bounds[3].y - bounds[0].y;
@@ -233,34 +233,9 @@ public class ProcesadorPruebas {
 		return factors;
 	}
 
-	private BufferedImage rectifyRotation(MarvinImage mImage) {
-		double angle = getAngleRotation(mImage);
-		return rotate(angle, mImage.getBufferedImage());
-	}
-
 	private BufferedImage rectifyRotation(BufferedImage mImage) {
 		double angle = getAngleRotation(mImage);
 		return rotate(angle, mImage);
-	}
-
-	/**
-	 * Obtiene el angulo de rotacion de la imagen. Debe encontrar las marcas
-	 * realizadas a la hoja.
-	 * 
-	 * @param image
-	 *            La imagen que se va a procesar.
-	 * @return El angulo de correción a aplicar a la imagen.
-	 */
-	private double getAngleRotation(MarvinImage image) {
-		MarvinAttributes attr = new MarvinAttributes();
-
-		moravec.setAttribute("threshold", 2000);
-		moravec.process(image, null, attr);
-
-		Point[] boundaries = boundaries(attr);
-		return (Math.atan2((boundaries[1].y * -1) - (boundaries[0].y * -1),
-				boundaries[1].x - boundaries[0].x) * 180 / Math.PI);
-
 	}
 
 	private double getAngleRotation(BufferedImage bImage) {
@@ -271,7 +246,7 @@ public class ProcesadorPruebas {
 
 		Point[] boundaries = boundaries(attr);
 		return (Math.atan2((boundaries[1].y * -1) - (boundaries[0].y * -1),
-				boundaries[1].x - boundaries[0].x) * 180 / Math.PI);
+				boundaries[1].x - boundaries[0].x) *180.0 /  Math.PI);
 
 	}
 
@@ -374,68 +349,153 @@ public class ProcesadorPruebas {
 	}
 
 	public static void main(String[] args) {
-		MarvinImagePlugin moravec = MarvinPluginLoader
-				.loadImagePlugin("org.marvinproject.image.corner.moravec");
-
-		BufferedImage bImage;
 		try {
-			bImage = ImageIO.read(new File("./res/actual.png"));
-
-			MarvinAttributes attr = new MarvinAttributes();
-			MarvinImage image = new MarvinImage(bImage);
-			moravec.setAttribute("threshold", 2000);
-			moravec.process(image, null, attr);
-
-			Point upLeft = new Point(-1, -1);
-			Point upRight = new Point(-1, -1);
-			Point bottomLeft = new Point(-1, -1);
-			Point bottomRight = new Point(-1, -1);
-			double ulDistance = 9999, blDistance = 9999, urDistance = 9999, brDistance = 9999;
-			double tempDistance = -1;
-			int[][] cornernessMap = (int[][]) attr.get("cornernessMap");
-
-			for (int x = 0; x < cornernessMap.length; x++) {
-				for (int y = 0; y < cornernessMap[0].length; y++) {
-					if (cornernessMap[x][y] > 0) {
-						if ((tempDistance = Point.distance(x, y, 0, 0)) < ulDistance) {
-							upLeft.x = x;
-							upLeft.y = y;
-							ulDistance = tempDistance;
-						}
-						if ((tempDistance = Point.distance(x, y,
-								cornernessMap.length, 0)) < urDistance) {
-							upRight.x = x;
-							upRight.y = y;
-							urDistance = tempDistance;
-						}
-						if ((tempDistance = Point.distance(x, y, 0,
-								cornernessMap[0].length)) < blDistance) {
-							bottomLeft.x = x;
-							bottomLeft.y = y;
-							blDistance = tempDistance;
-						}
-						if ((tempDistance = Point.distance(x, y,
-								cornernessMap.length, cornernessMap[0].length)) < brDistance) {
-							bottomRight.x = x;
-							bottomRight.y = y;
-							brDistance = tempDistance;
-						}
-					}
-				}
-			}
-			Graphics2D g2 = (Graphics2D)bImage.getGraphics();
-			g2.setColor(Color.RED);
-			g2.fillRect(upLeft.x-1, upLeft.y-1, 2, 2);
-			g2.fillRect(upRight.x-1, upRight.y-1, 2, 2);
-			g2.fillRect(bottomRight.x-1, bottomRight.y-1, 2, 2);
-			g2.fillRect(bottomLeft.x-1, bottomLeft.y-1, 2, 2);
-			// ImageIO.write(draw, "png", new File("./res/test.png"));
-			ShowImages.showWindow(bImage, "ejemplo");
-			//
-			// }
+			BufferedImage image = ImageIO.read(new File("./res/prueba_1.png"));
+			
+			
+			
+			
+			ProcesadorPruebas pr = new ProcesadorPruebas();
+			image = pr.rectify(image);
+			
+			pr.extractResponse(image);
+			
+			ShowImages.showWindow(image, "ejemplo");
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
+		
 	}
+	
+	
+	private static final int RUT_ROW = 74;
+	private static final int[] RUT_COLS = { 57, 73, 91, 106, 121, 140, 156,
+			171, 191 };
+	private static final int FORMA_ROW = 66;
+	private static final int[] FORMA_COLS = { 229, 244, 259 };
+	private static final Point RUT_POINT = new Point(40, 88);
+
+	private final int FIRST_ROW = 350;
+	private final int FIRST_COL = 55;
+	private final int GROUP_SIZE = 5;
+
+	private final int CIRCLE_WIDTH = 10;
+	private final int STEP_ROW = (CIRCLE_WIDTH + CIRCLE_WIDTH / 3);
+	private final int STEP_COL = CIRCLE_WIDTH / 2;
+
+	private final String[] TITLE_LETER = { "A", "B", "C", "D", "E" };
+
+	private final Font LETTERS_FONT = new Font("Arial", Font.PLAIN, 10);
+	private final Font OPTIONS_FONT = new Font("Arial", Font.PLAIN, 8);
+	
+
+	public void extractResponse(BufferedImage image) {
+		Graphics2D g2 = (Graphics2D)image.getGraphics();
+		int row = FIRST_ROW;
+		int col = FIRST_COL;
+		int colAlternativas = 5;
+		for(int n = 1; n <= 45; n++)
+		{
+			if (n % GROUP_SIZE == 1) {
+				if (n % 25 == 1) {
+					row = FIRST_ROW;
+					if (n != 1) {
+						col = col + (STEP_COL + CIRCLE_WIDTH)
+								* (colAlternativas + 2);
+					}
+				} else {
+					row += STEP_ROW * 2;
+				}
+				row += STEP_ROW / 2;
+			} else {
+				row += STEP_ROW;
+			}
+			// Aqui saco el pedazo.
+			int c = col;
+			c = c + CIRCLE_WIDTH + STEP_COL * 2;
+			int ci = c - 1;
+			int ri = row -1;
+			c = c + (CIRCLE_WIDTH + STEP_COL) * colAlternativas;
+			int cf = c + 1;
+			int rf = row + CIRCLE_WIDTH+ 1;
+			BufferedImage img = image.getSubimage(ci, ri, cf - ci, rf -ri);
+			try {
+				ImageIO.write(img, "png", new File("./res/R" + n + ".png"));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
+		}
+		
+	}
+	
+//	public static void main(String[] args) {
+//		MarvinImagePlugin moravec = MarvinPluginLoader
+//				.loadImagePlugin("org.marvinproject.image.corner.moravec");
+//
+//		BufferedImage bImage;
+//		try {
+//			bImage = ImageIO.read(new File("./res/actual.png"));
+//
+//			MarvinAttributes attr = new MarvinAttributes();
+//			MarvinImage image = new MarvinImage(bImage);
+//			moravec.setAttribute("threshold", 2000);
+//			moravec.process(image, null, attr);
+//
+//			Point upLeft = new Point(-1, -1);
+//			Point upRight = new Point(-1, -1);
+//			Point bottomLeft = new Point(-1, -1);
+//			Point bottomRight = new Point(-1, -1);
+//			double ulDistance = 9999, blDistance = 9999, urDistance = 9999, brDistance = 9999;
+//			double tempDistance = -1;
+//			int[][] cornernessMap = (int[][]) attr.get("cornernessMap");
+//
+//			for (int x = 0; x < cornernessMap.length; x++) {
+//				for (int y = 0; y < cornernessMap[0].length; y++) {
+//					if (cornernessMap[x][y] > 0) {
+//						if ((tempDistance = Point.distance(x, y, 0, 0)) < ulDistance) {
+//							upLeft.x = x;
+//							upLeft.y = y;
+//							ulDistance = tempDistance;
+//						}
+//						if ((tempDistance = Point.distance(x, y,
+//								cornernessMap.length, 0)) < urDistance) {
+//							upRight.x = x;
+//							upRight.y = y;
+//							urDistance = tempDistance;
+//						}
+//						if ((tempDistance = Point.distance(x, y, 0,
+//								cornernessMap[0].length)) < blDistance) {
+//							bottomLeft.x = x;
+//							bottomLeft.y = y;
+//							blDistance = tempDistance;
+//						}
+//						if ((tempDistance = Point.distance(x, y,
+//								cornernessMap.length, cornernessMap[0].length)) < brDistance) {
+//							bottomRight.x = x;
+//							bottomRight.y = y;
+//							brDistance = tempDistance;
+//						}
+//					}
+//				}
+//			}
+//			Graphics2D g2 = (Graphics2D) bImage.getGraphics();
+//			g2.setColor(Color.RED);
+//			g2.fillRect(upLeft.x - 1, upLeft.y - 1, 2, 2);
+//			g2.fillRect(upRight.x - 1, upRight.y - 1, 2, 2);
+//			g2.fillRect(bottomRight.x - 1, bottomRight.y - 1, 2, 2);
+//			g2.fillRect(bottomLeft.x - 1, bottomLeft.y - 1, 2, 2);
+//			// ImageIO.write(draw, "png", new File("./res/test.png"));
+//			ShowImages.showWindow(bImage, "ejemplo");
+//			//
+//			// }
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//
+//	}
+	
 }

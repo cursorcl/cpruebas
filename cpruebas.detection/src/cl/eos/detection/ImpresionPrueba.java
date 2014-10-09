@@ -85,8 +85,7 @@ public class ImpresionPrueba {
 		PDDocument doc = null;
 		respEsperadas = prueba.getRespuestas();
 		nroAlternativas = prueba.getAlternativas();
-		colAlternativas = tienePregutasVFoCALC() ? Math.max(4,
-				prueba.getAlternativas()) : prueba.getAlternativas();
+		colAlternativas = 5; //tienePregutasVFoCALC() ? Math.max(4,prueba.getAlternativas()) : prueba.getAlternativas();
 		try {
 			BufferedImage imageEmpty = ImageIO.read(new File(
 					"./res/cpruebas.vacia.png"));
