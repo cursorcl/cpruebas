@@ -1,5 +1,6 @@
 package cl.eos.detection;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.RenderingHints;
@@ -30,7 +31,6 @@ import boofcv.struct.image.ImageUInt8;
 
 public class ProcesadorPruebas {
 
-  
 	private MarvinImagePlugin moravec;
 
 	/**
@@ -45,21 +45,21 @@ public class ProcesadorPruebas {
 				.loadImagePlugin("org.marvinproject.image.corner.moravec");
 	}
 
-	public OTResultadoScanner process(File file)
-	{
-	  OTResultadoScanner result = new OTResultadoScanner();
-	  try {
-      BufferedImage image = ImageIO.read(file);
-      process(image);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-	  
-	  return result;
+	public OTResultadoScanner process(File file) {
+		OTResultadoScanner result = new OTResultadoScanner();
+		try {
+			BufferedImage image = ImageIO.read(file);
+			process(image);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return result;
 	}
+
 	private List<Contour> process(BufferedImage image) {
 		BufferedImage imgScaled = rectifyScale(image);
-		BufferedImage imgRotated = imgScaled; //rectifyRotation(imgScaled);
+		BufferedImage imgRotated = imgScaled; // rectifyRotation(imgScaled);
 
 		ImageFloat32 input = ConvertBufferedImage.convertFromSingle(imgRotated,
 				null, ImageFloat32.class);
@@ -67,8 +67,8 @@ public class ProcesadorPruebas {
 		ImageUInt8 binary = new ImageUInt8(input.width, input.height);
 		ImageSInt32 label = new ImageSInt32(input.width, input.height);
 		ThresholdImageOps.threshold(input, binary, (float) 145, true);
-		binary  = BinaryImageOps.dilate4(binary, 1, null);
-//		ImageUInt8 nBinary = BinaryImageOps.removePointNoise(binary, null);
+		binary = BinaryImageOps.dilate4(binary, 1, null);
+		// ImageUInt8 nBinary = BinaryImageOps.removePointNoise(binary, null);
 		ImageUInt8 eroded = BinaryImageOps.erode4(binary, 4, null);
 		ImageUInt8 filtered = BinaryImageOps.dilate4(eroded, 3, null);
 		List<Contour> contours = BinaryImageOps.contour(filtered,
@@ -80,37 +80,40 @@ public class ProcesadorPruebas {
 				contours, colorExternal, colorInternal, input.width,
 				input.height, null);
 
-//		if (contours != null && !contours.isEmpty()) {
-//			List<Path2D> paths = new ArrayList<Path2D>();
-//			for (Contour contour : contours) {
-//				Path2D path = new Path2D.Double();
-//
-//				for (int n = 0; n < contour.external.size(); n++) {
-//					Point2D_I32 point = contour.external.get(n);
-//					if (n == 0) {
-//						path.moveTo(point.x, point.y);
-//					} else {
-//						path.lineTo(point.x, point.y);
-//					}
-//				}
-//				path.closePath();
-//				paths.add(path);
-//			}
-//			Graphics2D g2D = (Graphics2D) imgRotated.getGraphics();
-//			g2D.setColor(Color.red);
-//			for (Path2D pth : paths) {
-//				g2D.draw(pth);
-//			}
-			
-//		}
+		// if (contours != null && !contours.isEmpty()) {
+		// List<Path2D> paths = new ArrayList<Path2D>();
+		// for (Contour contour : contours) {
+		// Path2D path = new Path2D.Double();
+		//
+		// for (int n = 0; n < contour.external.size(); n++) {
+		// Point2D_I32 point = contour.external.get(n);
+		// if (n == 0) {
+		// path.moveTo(point.x, point.y);
+		// } else {
+		// path.lineTo(point.x, point.y);
+		// }
+		// }
+		// path.closePath();
+		// paths.add(path);
+		// }
+		// Graphics2D g2D = (Graphics2D) imgRotated.getGraphics();
+		// g2D.setColor(Color.red);
+		// for (Path2D pth : paths) {
+		// g2D.draw(pth);
+		// }
+
+		// }
 		try {
-			//ImageIO.write(imgRotated, "png", new File("./res/rotada.png"));
+			// ImageIO.write(imgRotated, "png", new File("./res/rotada.png"));
 			ImageIO.write(visualContour, "png", new File("./res/contornos.png"));
-			
-			BufferedImage thresold =  VisualizeBinaryData.renderBinary(binary, null);
-			BufferedImage erode =  VisualizeBinaryData.renderBinary(eroded, null);
-			BufferedImage filter =  VisualizeBinaryData.renderBinary(filtered, null);
-			
+
+			BufferedImage thresold = VisualizeBinaryData.renderBinary(binary,
+					null);
+			BufferedImage erode = VisualizeBinaryData
+					.renderBinary(eroded, null);
+			BufferedImage filter = VisualizeBinaryData.renderBinary(filtered,
+					null);
+
 			ShowImages.showWindow(imgRotated, "ORIGEN");
 			ShowImages.showWindow(thresold, "THRESOLD");
 			ShowImages.showWindow(erode, "ERODE");
@@ -205,7 +208,8 @@ public class ProcesadorPruebas {
 
 		BufferedImage rImage = new BufferedImage(746, 968, bImage.getType());
 		Graphics2D g2 = (Graphics2D) rImage.getGraphics();
-		g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+		g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+				RenderingHints.VALUE_INTERPOLATION_BICUBIC);
 		g2.drawImage(bImage, 0, 0, rImage.getWidth() - 1,
 				rImage.getHeight() - 1, null);
 		return rImage;
@@ -370,43 +374,63 @@ public class ProcesadorPruebas {
 	}
 
 	public static void main(String[] args) {
-		ProcesadorPruebas processor = new ProcesadorPruebas();
-		// processor.diference();
-		BufferedImage image;
+		MarvinImagePlugin moravec = MarvinPluginLoader
+				.loadImagePlugin("org.marvinproject.image.corner.moravec");
+
+		BufferedImage bImage;
 		try {
-			Point2D p = new Point2D.Double(76.0, 61.0);
-			image = ImageIO.read(new File("./res/actual.png"));
-			List<Contour> contours = processor.process(image);
-			// List<Path2D> paths = new ArrayList<Path2D>();
-			// if (contours != null && !contours.isEmpty()) {
-			// for (Contour contour : contours) {
-			// Path2D path = new Path2D.Double();
-			//
-			// path.setWindingRule(Path2D.WIND_EVEN_ODD);
-			// for (int n = 0; n < contour.external.size(); n++) {
-			// Point2D_I32 point = contour.external.get(n);
-			// if (n == 0) {
-			// path.moveTo(point.x, point.y);
-			// } else {
-			// path.lineTo(point.x, point.y);
-			// }
-			// }
-			// path.closePath();
-			// paths.add(path);
-			// }
-			// BufferedImage draw = ImageIO.read(new File("./res/actual.png"));
-			// Graphics2D g2D = (Graphics2D) draw.getGraphics();
-			// g2D.setColor(Color.BLUE);
-			// g2D.drawRect((int) (p.getX() - 1), (int) (p.getY() - 1), 2, 2);
-			// g2D.setColor(Color.red);
-			// for (Path2D path : paths) {
-			// g2D.draw(path);
-			// if (path.contains(p)) {
-			// System.out.println("Encontrado:" + path);
-			// }
-			// }
+			bImage = ImageIO.read(new File("./res/actual.png"));
+
+			MarvinAttributes attr = new MarvinAttributes();
+			MarvinImage image = new MarvinImage(bImage);
+			moravec.setAttribute("threshold", 2000);
+			moravec.process(image, null, attr);
+
+			Point upLeft = new Point(-1, -1);
+			Point upRight = new Point(-1, -1);
+			Point bottomLeft = new Point(-1, -1);
+			Point bottomRight = new Point(-1, -1);
+			double ulDistance = 9999, blDistance = 9999, urDistance = 9999, brDistance = 9999;
+			double tempDistance = -1;
+			int[][] cornernessMap = (int[][]) attr.get("cornernessMap");
+
+			for (int x = 0; x < cornernessMap.length; x++) {
+				for (int y = 0; y < cornernessMap[0].length; y++) {
+					if (cornernessMap[x][y] > 0) {
+						if ((tempDistance = Point.distance(x, y, 0, 0)) < ulDistance) {
+							upLeft.x = x;
+							upLeft.y = y;
+							ulDistance = tempDistance;
+						}
+						if ((tempDistance = Point.distance(x, y,
+								cornernessMap.length, 0)) < urDistance) {
+							upRight.x = x;
+							upRight.y = y;
+							urDistance = tempDistance;
+						}
+						if ((tempDistance = Point.distance(x, y, 0,
+								cornernessMap[0].length)) < blDistance) {
+							bottomLeft.x = x;
+							bottomLeft.y = y;
+							blDistance = tempDistance;
+						}
+						if ((tempDistance = Point.distance(x, y,
+								cornernessMap.length, cornernessMap[0].length)) < brDistance) {
+							bottomRight.x = x;
+							bottomRight.y = y;
+							brDistance = tempDistance;
+						}
+					}
+				}
+			}
+			Graphics2D g2 = (Graphics2D)bImage.getGraphics();
+			g2.setColor(Color.RED);
+			g2.fillRect(upLeft.x-1, upLeft.y-1, 2, 2);
+			g2.fillRect(upRight.x-1, upRight.y-1, 2, 2);
+			g2.fillRect(bottomRight.x-1, bottomRight.y-1, 2, 2);
+			g2.fillRect(bottomLeft.x-1, bottomLeft.y-1, 2, 2);
 			// ImageIO.write(draw, "png", new File("./res/test.png"));
-			// ShowImages.showWindow(draw, "ejemplo");
+			ShowImages.showWindow(bImage, "ejemplo");
 			//
 			// }
 		} catch (IOException e) {
