@@ -85,7 +85,9 @@ public class ImpresionPrueba {
 		PDDocument doc = null;
 		respEsperadas = prueba.getRespuestas();
 		nroAlternativas = prueba.getAlternativas();
-		colAlternativas = 5; //tienePregutasVFoCALC() ? Math.max(4,prueba.getAlternativas()) : prueba.getAlternativas();
+		colAlternativas = 5; // tienePregutasVFoCALC() ?
+								// Math.max(4,prueba.getAlternativas()) :
+								// prueba.getAlternativas();
 		try {
 			BufferedImage imageEmpty = ImageIO.read(new File(
 					"./res/cpruebas.vacia.png"));
@@ -212,7 +214,7 @@ public class ImpresionPrueba {
 
 		for (String sIdx : nOrden) {
 			RespuestasEsperadasPrueba resp = respEsperadas.get(Integer
-					.parseInt(sIdx)-1);
+					.parseInt(sIdx) - 1);
 			if (n % GROUP_SIZE == 1) {
 				if (n % 25 == 1) {
 					row = FIRST_ROW;
@@ -222,6 +224,9 @@ public class ImpresionPrueba {
 					}
 				} else {
 					row += STEP_ROW * 2;
+				}
+				if (n < 25) {
+					drawMarks();
 				}
 				drawTitle();
 				row += STEP_ROW / 2;
@@ -261,6 +266,10 @@ public class ImpresionPrueba {
 				}
 				drawTitle();
 				row += STEP_ROW / 2;
+				if (n < 25) {
+					drawMarks();
+				}
+
 			} else {
 				row += STEP_ROW;
 			}
@@ -279,6 +288,13 @@ public class ImpresionPrueba {
 			n++;
 		}
 		return image;
+	}
+
+	private void drawMarks() {
+
+		g2.fillRect(17, row + HEIGHT_FONT, 15, 5);
+		g2.fillRect(578, row + HEIGHT_FONT, 15, 5);
+
 	}
 
 	private boolean tienePregutasVFoCALC() {

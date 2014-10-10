@@ -87,8 +87,8 @@ public class ExampleTemplateMatching {
   public static void main(String args[]) {
 
     // Load image and templates
-    ImageFloat32 image = UtilImageIO.loadImage("./res/actual.png", ImageFloat32.class);
-    ImageFloat32 templateX = UtilImageIO.loadImage("./res/others/x.png", ImageFloat32.class);
+    ImageFloat32 image = UtilImageIO.loadImage("./res/prueba_001.png", ImageFloat32.class);
+    ImageFloat32 templateX = UtilImageIO.loadImage("./res/pattern.png", ImageFloat32.class);
 
     // create output image to show results
     BufferedImage output = new BufferedImage(image.width, image.height, BufferedImage.TYPE_INT_BGR);

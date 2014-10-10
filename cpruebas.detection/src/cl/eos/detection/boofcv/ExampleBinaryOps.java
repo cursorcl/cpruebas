@@ -1,12 +1,23 @@
 package cl.eos.detection.boofcv;
 
 import georegression.struct.line.LineSegment2D_F32;
+import georegression.struct.point.Point2D_I32;
 
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
+import javax.imageio.ImageIO;
+
 import boofcv.abst.feature.detect.line.DetectLineSegmentsGridRansac;
+import boofcv.alg.distort.DistortImageOps;
+import boofcv.alg.distort.PixelTransformAffine_F32;
+import boofcv.alg.distort.impl.DistortSupport;
 import boofcv.alg.filter.binary.BinaryImageOps;
 import boofcv.alg.filter.binary.Contour;
 import boofcv.alg.filter.binary.ThresholdImageOps;
@@ -22,64 +33,90 @@ import boofcv.struct.image.ImageFloat32;
 import boofcv.struct.image.ImageInt8;
 import boofcv.struct.image.ImageSInt32;
 import boofcv.struct.image.ImageUInt8;
+import boofcv.struct.image.MultiSpectral;
 
 /**
- * Demonstrates how to create binary images by thresholding, applying binary morphological
- * operations, and then extracting detected features by finding their contours.
+ * Demonstrates how to create binary images by thresholding, applying binary
+ * morphological operations, and then extracting detected features by finding
+ * their contours.
  *
  * @author Peter Abeles
  */
 public class ExampleBinaryOps {
 
-  public static void main(String args[]) {
-    // load and convert the image into a usable format
-    BufferedImage image = UtilImageIO.loadImage(ExampleBinaryOps.class.getResource("002.png"));
-    
+	public static void main(String args[]) {
+		for (int m = 1; m < 5; m++) {
+			BufferedImage limage = UtilImageIO.loadImage("./res/prueba_00" + m
+					+ ".png");
+			
+			float  cx = limage.getWidth() / 2f;
+			float cy = limage.getHeight() / 2f;
+			BufferedImage image = limage.getSubimage(0, 1450, 150, 1700);
 
-    
-    // convert into a usable format
-    ImageFloat32 input = ConvertBufferedImage.convertFromSingle(image, null, ImageFloat32.class);
-    
-    ImageUInt8 binary = new ImageUInt8(input.width, input.height);
-    ImageSInt32 label = new ImageSInt32(input.width, input.height);
-    // the mean pixel value is often a reasonable threshold when creating a binary image
-    double mean = ImageStatistics.mean(input);
+			ImageFloat32 input = ConvertBufferedImage.convertFromSingle(image,
+					null, ImageFloat32.class);
 
-    // create a binary image by thresholding
-    // ThresholdImageOps.threshold(input, binary, (float) mean, true);
-    ThresholdImageOps.threshold(input, binary, (float) 145, true);
-    ImageUInt8 nBinary = BinaryImageOps.removePointNoise(binary, null);
-    
+			ImageUInt8 binary = new ImageUInt8(input.width, input.height);
+			ImageSInt32 label = new ImageSInt32(input.width, input.height);
+			ThresholdImageOps.threshold(input, binary, (float) 145, true);
+			ImageUInt8 filtered = BinaryImageOps.erode8(binary, 8, null);
+			filtered = BinaryImageOps.dilate8(filtered, 8, null);
 
-    // remove small blobs through erosion and dilation
-    // The null in the input indicates that it should internally declare the work image it needs
-    // this is less efficient, but easier to code.
+			List<Contour> contours = BinaryImageOps.contour(filtered,
+					ConnectRule.EIGHT, label);
 
-    ImageUInt8 filtered = BinaryImageOps.erode4(nBinary, 3, null);
-    // ImageUInt8 filtered = BinaryImageOps.erode8(binary, 3, null);
-    filtered = BinaryImageOps.dilate4(filtered, 3, null);
+			int[] x = new int[contours.size()];
+			int[] y = new int[contours.size()];
+			int n = 0;
+			for (Contour contour : contours) {
+				int minX = Integer.MAX_VALUE;
+				int minY = Integer.MAX_VALUE;
+				for (Point2D_I32 point : contour.external) {
+					if (point.x < minX) {
+						minX = point.x;
+					}
+					if (point.y < minY) {
+						minY = point.y;
+					}
+				}
+				x[n] = minX;
+				y[n] = minY;
+				n++;
+			}
 
-    // Detect blobs inside the image using an 8-connect rule
-    List<Contour> contours = BinaryImageOps.contour(filtered, ConnectRule.EIGHT, label);
+			int dx = x[n - 1] - x[0];
+			int dy = y[n - 1] - y[0];
 
-    
-   
-    // colors of contours
-    int colorExternal = 0xFFFFFF;
-    int colorInternal = 0xFF2020;
+			double radian = Math.atan2(dy, dx);
 
-    // display the results
-    BufferedImage visualBinary = VisualizeBinaryData.renderBinary(binary, null);
-    BufferedImage visualFiltered = VisualizeBinaryData.renderBinary(filtered, null);
-    BufferedImage visualLabel = VisualizeBinaryData.renderLabeledBG(label, contours.size(), null);
-    BufferedImage visualContour =
-        VisualizeBinaryData.renderContours(contours, colorExternal, colorInternal, input.width,
-            input.height, null);
+			System.out.println("Angulo=" + radian);
+			int colorExternal = 0xFFFFFF;
+			int colorInternal = 0xFF2020;
 
-    ShowImages.showWindow(visualBinary, "Binary Original");
-//    ShowImages.showWindow(visualFiltered, "Binary Filtered");
-//    ShowImages.showWindow(visualLabel, "Labeled Blobs");
-    ShowImages.showWindow(visualContour, "Contours");
-  }
+			BufferedImage visualContour = VisualizeBinaryData.renderContours(
+					contours, colorExternal, colorInternal, input.width,
+					input.height, null);
 
+			Graphics2D g = (Graphics2D) visualContour.getGraphics();
+			g.setColor(Color.RED);
+			g.drawPolyline(x, y, contours.size());
+			g.dispose();
+			try {
+				ImageIO.write(visualContour, "png", new File("./res/output" + m
+						+ ".png"));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+			
+			MultiSpectral<ImageFloat32> distLeft =
+					ConvertBufferedImage.convertFromMulti(limage, null,true, ImageFloat32.class);
+			
+			MultiSpectral<ImageFloat32> rectLeft = new MultiSpectral<ImageFloat32>(ImageFloat32.class,
+					distLeft.getWidth(),distLeft.getHeight(),distLeft.getNumBands());
+			DistortImageOps.rotate(distLeft, rectLeft, boofcv.alg.interpolate.TypeInterpolate.BICUBIC, radian);
+			
+		}
+		// ShowImages.showWindow(visualContour, "Contours");
+	}
 }
