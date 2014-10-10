@@ -1,5 +1,6 @@
 package cl.eos.detection;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -57,8 +58,8 @@ public class ProcesadorPruebas {
 	}
 
 	public BufferedImage rectify(BufferedImage image) {
-		BufferedImage imgScaled = rectifyScale(image);
-		BufferedImage imgRotated = rectifyRotation(imgScaled);
+		//BufferedImage imgScaled = rectifyScale(image);
+		BufferedImage imgRotated = rectifyRotation(image);
 		return imgRotated;
 	}
 
@@ -239,14 +240,38 @@ public class ProcesadorPruebas {
 	}
 
 	private double getAngleRotation(BufferedImage bImage) {
+		
+
+		
+		BufferedImage lImage =  bImage.getSubimage(0, 0, bImage.getWidth(), 210);
+		
+		
 		MarvinAttributes attr = new MarvinAttributes();
-		MarvinImage image = new MarvinImage(bImage);
+		MarvinImage image = new MarvinImage(lImage);
 		moravec.setAttribute("threshold", 2000);
 		moravec.process(image, null, attr);
 
-		Point[] boundaries = boundaries(attr);
-		return (Math.atan2((boundaries[1].y * -1) - (boundaries[0].y * -1),
-				boundaries[1].x - boundaries[0].x) *180.0 /  Math.PI);
+		
+		
+		
+		Point[] b = boundaries(attr);
+		
+		Graphics2D g = (Graphics2D)bImage.getGraphics();
+		g.setColor(Color.RED);
+		g.setBackground(Color.RED);
+		g.fillRect(b[0].x - 3, b[0].y-3, 7, 7);
+		g.fillRect(b[1].x - 3, b[1].y-3, 7, 7);
+		try {
+			ImageIO.write(bImage, "png", new File("./res/bounds.png"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		double radian  = Math.atan2((b[1].y * -1) - (b[0].y * -1),
+				b[1].x - b[0].x);
+		
+		return radian * 180.0 /  Math.PI;
 
 	}
 
@@ -296,6 +321,10 @@ public class ProcesadorPruebas {
 				}
 			}
 		}
+		System.out.println("upLeft=" + upLeft);
+		System.out.println("upRight=" + upRight);
+		System.out.println("bottomRight=" + bottomRight);
+		System.out.println("bottomLeft=" + bottomLeft);
 		return new Point[] { upLeft, upRight, bottomRight, bottomLeft };
 	}
 
@@ -310,7 +339,7 @@ public class ProcesadorPruebas {
 		AffineTransform tx = AffineTransform.getRotateInstance(
 				rotationRequired, locationX, locationY);
 		AffineTransformOp op = new AffineTransformOp(tx,
-				AffineTransformOp.TYPE_BILINEAR);
+				AffineTransformOp.TYPE_BICUBIC);
 		BufferedImage result = new BufferedImage(image.getWidth(),
 				image.getHeight(), image.getType());
 		Graphics2D g2d = (Graphics2D) result.getGraphics();
@@ -353,12 +382,10 @@ public class ProcesadorPruebas {
 			BufferedImage image = ImageIO.read(new File("./res/prueba_1.png"));
 			
 			
-			
-			
 			ProcesadorPruebas pr = new ProcesadorPruebas();
 			image = pr.rectify(image);
-			
-			pr.extractResponse(image);
+			ImageIO.write(image, "png", new File("./res/prueba_1_res.png"));
+			//pr.extractResponse(image);
 			
 			ShowImages.showWindow(image, "ejemplo");
 			
@@ -369,13 +396,6 @@ public class ProcesadorPruebas {
 	}
 	
 	
-	private static final int RUT_ROW = 74;
-	private static final int[] RUT_COLS = { 57, 73, 91, 106, 121, 140, 156,
-			171, 191 };
-	private static final int FORMA_ROW = 66;
-	private static final int[] FORMA_COLS = { 229, 244, 259 };
-	private static final Point RUT_POINT = new Point(40, 88);
-
 	private final int FIRST_ROW = 350;
 	private final int FIRST_COL = 55;
 	private final int GROUP_SIZE = 5;
@@ -384,14 +404,8 @@ public class ProcesadorPruebas {
 	private final int STEP_ROW = (CIRCLE_WIDTH + CIRCLE_WIDTH / 3);
 	private final int STEP_COL = CIRCLE_WIDTH / 2;
 
-	private final String[] TITLE_LETER = { "A", "B", "C", "D", "E" };
-
-	private final Font LETTERS_FONT = new Font("Arial", Font.PLAIN, 10);
-	private final Font OPTIONS_FONT = new Font("Arial", Font.PLAIN, 8);
-	
 
 	public void extractResponse(BufferedImage image) {
-		Graphics2D g2 = (Graphics2D)image.getGraphics();
 		int row = FIRST_ROW;
 		int col = FIRST_COL;
 		int colAlternativas = 5;
