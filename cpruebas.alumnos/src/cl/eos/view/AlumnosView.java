@@ -144,7 +144,7 @@ public class AlumnosView extends AFormView implements EventHandler<ActionEvent> 
 					mnuModificar.setDisable(true);
 					mnuEliminar.setDisable(false);
 				} else if (itemsSelec.size() == 1) {
-					select((IEntity) itemsSelec.get(0).getAlumno());
+					
 					mnItemModificar.setDisable(false);
 					mnItemEliminar.setDisable(false);
 					mnuModificar.setDisable(false);
@@ -164,6 +164,7 @@ public class AlumnosView extends AFormView implements EventHandler<ActionEvent> 
 			txtDireccion.setText(alumno.getDireccion());
 			cmbColegio.setValue(alumno.getColegio());
 			cmbCurso.setValue(alumno.getCurso());
+			select((IEntity) alumno.getAlumno());
 		}
 	}
 
@@ -271,7 +272,7 @@ public class AlumnosView extends AFormView implements EventHandler<ActionEvent> 
 
 	@Override
 	public void onDeleted(IEntity entity) {
-		tblAlumnos.getItems().remove(entity);
+		tblAlumnos.getItems().remove(new OTAlumno((Alumno) entity));
 	}
 
 	@Override

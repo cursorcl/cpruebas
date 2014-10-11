@@ -13,6 +13,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
+import cl.eos.exception.ExceptionBD;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.interfaces.entity.IPersistenceListener;
 import cl.eos.persistence.IPersistenceService;
@@ -265,11 +266,11 @@ public class PersistenceService implements IPersistenceService {
 
 	@Override
 	public void insert(final String entity, final List<Object> list,
-			final IPersistenceListener listener) {
+			final IPersistenceListener listener)  {
 
 		final Task<List<Object>> task = new Task<List<Object>>() {
 			@Override
-			protected List<Object> call() throws Exception {
+			protected List<Object> call() throws Exception, ExceptionBD {
 				List<Object> lresults = null;
 
 				StringBuffer string = new StringBuffer();
@@ -301,9 +302,9 @@ public class PersistenceService implements IPersistenceService {
 						}
 					}
 
-				} catch (Exception e) {
-					e.printStackTrace();
+				} catch (Exception e) {					
 					eManager.getTransaction().rollback();
+					throw new ExceptionBD(e.getMessage());
 				}
 				return lresults;
 			}

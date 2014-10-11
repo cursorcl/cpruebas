@@ -133,8 +133,7 @@ public class ColegiosView extends AFormView implements
 
 					mnuModificar.setDisable(true);
 					mnuEliminar.setDisable(false);
-				} else if (itemsSelec.size() == 1) {
-					select((IEntity) itemsSelec.get(0).getColegio());
+				} else if (itemsSelec.size() == 1) {					
 					mnItemModificar.setDisable(false);
 					mnItemEliminar.setDisable(false);
 
@@ -162,6 +161,7 @@ public class ColegiosView extends AFormView implements
 		if (colegio != null) {
 			txtNombre.setText(colegio.getName());
 			txtDireccion.setText(colegio.getDireccion());
+			select((IEntity) colegio.getColegio());
 			// ByteArrayInputStream byteArrayInputStream = new
 			// ByteArrayInputStream(
 			// colegio.getImage());
@@ -247,7 +247,7 @@ public class ColegiosView extends AFormView implements
 
 	@Override
 	public void onDeleted(IEntity entity) {
-		tblColegio.getItems().remove(entity);
+		tblColegio.getItems().remove(new OTColegio((Colegio) entity));
 	}
 
 	public boolean validate() {
