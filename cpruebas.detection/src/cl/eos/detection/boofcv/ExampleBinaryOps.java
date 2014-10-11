@@ -26,23 +26,33 @@ import boofcv.struct.image.ImageSInt32;
 import boofcv.struct.image.ImageUInt8;
 
 /**
- * Imagen escaneada en una resolucion de 300dpi. 
- * 1) 
- * 1.l) El primer rectangulo oscuro está en 58,1541 
- * 1.2) La primera columna de circulo a leer está en 290,1528 y la segunda en 710, 1528 
- * 1.3) Los circulos tienen una dimension de 44 pixeles 
- * 1.4) La separacion entre ciruclos de un bloque es 6 pixeles.
+ * Imagen escaneada en una resolucion de 300dpi. 1) 1.l) El primer rectangulo
+ * oscuro está en 58,1541 1.2) La primera columna de circulo a leer está en
+ * 290,1528 y la segunda en 710, 1528 1.3) Los circulos tienen una dimension de
+ * 44 pixeles 1.4) La separacion entre ciruclos de un bloque es 6 pixeles.
  * 
- * 2) 
- * 2.1) 58,1541 (+335) 
- * 2.2) 58,1876 (+334) 
- * 2.3) 58,2210 (+334) 
- * 2.4) 58,2544 (+333) 
- * 2.5) 58,2877
+ * 2) 2.1) 58,1541 (+335) 2.2) 58,1876 (+334) 2.3) 58,2210 (+334) 2.4) 58,2544
+ * (+333) 2.5) 58,2877
  *
- *	
+ *
  */
 public class ExampleBinaryOps {
+
+	/**
+	 * Delta x entre las primeras columnas de circulos.
+	 */
+	public static int DELTA_X_FIRST_CIRCLES = 420;
+	/**
+	 * Delta x entre el rectangulo y la primara corrida de circulos.
+	 */
+	public static int DELTA_X = 232;
+	/**
+	 * Delta y entre el rectangulo y la primara corrida de circulos.
+	 */
+	public static int DELTA_Y_FIRST_CIRCLE = -13;
+	public static int CIRCLE_SIZE = 44;
+	public static int CIRCLE_Y_SPCAES = 6;
+	public static int BASE = 1425;
 
 	public static void main(String args[]) {
 		for (int m = 5; m < 6; m++) {
@@ -54,15 +64,29 @@ public class ExampleBinaryOps {
 
 	public static void process(BufferedImage limage) {
 		BufferedImage rotated = rectify(limage);
+		try {
+			ImageIO.write(rotated, "png", new File("./res/rotada_.png"));
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		Point[] points = getMarksInit(rotated);
-	
+
 		int x = points[0].x;
 		int y = points[0].y;
-		for(int n = 0; n < 5;  n++)
-		{
-			
+		for (int n = 0; n < 5; n++) {
+			int left = x + DELTA_X - 1;
+			int top = y + DELTA_Y_FIRST_CIRCLE - 1 + n * 50 + BASE;
+			BufferedImage img = limage.getSubimage(left, top, CIRCLE_SIZE * 5,
+					CIRCLE_SIZE + 2);
+			try {
+				ImageIO.write(img, "png", new File("./res/resp" + (n + 1)
+						+ ".png"));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
 		}
-		
 	}
 
 	private static BufferedImage rectify(BufferedImage limage) {
@@ -73,6 +97,8 @@ public class ExampleBinaryOps {
 
 	private static Point[] getMarksInit(BufferedImage image) {
 		List<Contour> contours = getContours(image);
+		double angle = getRotationAngle(contours);
+		System.out.println("Rotación en MarksInit=" + angle);
 		Point[] points = new Point[contours.size()];
 		int n = 0;
 		for (Contour contour : contours) {
@@ -86,8 +112,7 @@ public class ExampleBinaryOps {
 					minY = point.y;
 				}
 			}
-			points[n].x = minX;
-			points[n].y = minY;
+			points[n] = new Point(minX, minY);
 			n++;
 		}
 		return points;
@@ -157,7 +182,8 @@ public class ExampleBinaryOps {
 		BufferedImage result = new BufferedImage(image.getWidth(),
 				image.getHeight(), image.getType());
 		Graphics2D g2d = (Graphics2D) result.getGraphics();
-
+		g2d.setColor(Color.WHITE);
+		g2d.fillRect(0, 0, image.getWidth(), image.getHeight());
 		// Se dibuja la imagen rotada.
 		g2d.drawImage(op.filter(image, null), drawLocationX, drawLocationY,
 				null);
