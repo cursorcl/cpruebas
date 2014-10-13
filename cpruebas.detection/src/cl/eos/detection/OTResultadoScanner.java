@@ -36,6 +36,13 @@ public class OTResultadoScanner {
   public void setRespuestas(String respuestas) {
     this.respuestas = respuestas;
   }
+
+
+  @Override
+  public String toString() {
+    return "OTResultadoScanner [rut=" + rut + ", forma=" + forma + ", respuestas=" + respuestas
+        + "]";
+  }
   
   
 }

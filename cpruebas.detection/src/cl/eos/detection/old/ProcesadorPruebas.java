@@ -1,4 +1,4 @@
-package cl.eos.detection;
+package cl.eos.detection.old;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -14,6 +14,7 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
+import cl.eos.detection.OTResultadoScanner;
 import marvin.image.MarvinImage;
 import marvin.plugin.MarvinImagePlugin;
 import marvin.util.MarvinAttributes;
