@@ -42,7 +42,7 @@ public class ExtractorResultadosPruebas {
   /**
    * Delta x entre las primeras columnas de circulos.
    */
-  public static int DELTA_X_FIRST_CIRCLES = 421;
+  public static int DELTA_X_FIRST_CIRCLES = 418;
   /**
    * Delta x entre el rectangulo y la primara corrida de circulos.
    */
@@ -51,7 +51,7 @@ public class ExtractorResultadosPruebas {
    * Delta y entre el rectangulo y la primara corrida de circulos.
    */
 
-  public static int DELTA_Y_FIRST_CIRCLE_RESP = -12;
+  public static int DELTA_Y_FIRST_CIRCLE_RESP = -17;
   public static int CIRCLE_SIZE = 44;
   public static int CIRCLE_Y_SPCAES = 6;
   public static int CIRCLE_X_SPCAES = 16;
@@ -64,8 +64,8 @@ public class ExtractorResultadosPruebas {
   private static String RESPUESTAS[] = {"O", "A", "B", "C", "D", "E", "V", "F", "B", "M"};
 
   // Son las diferencias del inicio del círculo con inicio rectángulo
-  public static int[] CIRCLE_X_RUT_DIFF = {287 - XRUTREF, 348 - XRUTREF, 418 - XRUTREF,
-      477 - XRUTREF, 536 - XRUTREF, 606 - XRUTREF, 673 - XRUTREF, 732 - XRUTREF, 810 - XRUTREF};
+  public static int[] CIRCLE_X_RUT_DIFF = {286 - XRUTREF, 348 - XRUTREF, 418 - XRUTREF,
+      477 - XRUTREF, 536 - XRUTREF, 611 - XRUTREF, 675 - XRUTREF, 736 - XRUTREF, 816 - XRUTREF};
   // Espaciamiento entre inicios de circulo del rut
   public static int CIRCLE_Y_RUT_DIFF = 48;
   private Recognizer recognizerRespustas;
@@ -93,12 +93,12 @@ public class ExtractorResultadosPruebas {
       Point[] pRefRespuestas = Arrays.copyOfRange(pointsReference, 1, pointsReference.length);
       String respuestas = getRespuestas(pRefRespuestas, rotated, nroPreguntas);
 
-      // Point pRefRut = pointsReference[0];
-      // String rut = getRut(pRefRut, rotated);
+       Point pRefRut = pointsReference[0];
+       String rut = getRut(pRefRut, rotated);
 
       resultado.setForma(1);
       resultado.setRespuestas(respuestas);
-      resultado.setRut("10613781-1");
+      resultado.setRut(rut);
     return resultado;
   }
   
@@ -117,12 +117,12 @@ public class ExtractorResultadosPruebas {
     Point[] pRefRespuestas = Arrays.copyOfRange(pointsReference, 1, pointsReference.length);
     String respuestas = getRespuestas(pRefRespuestas, rotated, nroPreguntas);
 
-    // Point pRefRut = pointsReference[0];
-    // String rut = getRut(pRefRut, rotated);
+    Point pRefRut = pointsReference[0];
+    String rut = getRut(pRefRut, rotated);
 
     resultado.setForma(1);
-    resultado.setRespuestas(respuestas);
-    resultado.setRut("10613781-1");
+    resultado.setRespuestas("");
+    resultado.setRut(rut);
     return resultado;
   }
 
@@ -170,28 +170,43 @@ public class ExtractorResultadosPruebas {
 
       for (int n = 0; n < GROUP_SIZE; n++) {
         int left = x + DELTA_X - 4 + col * DELTA_X_FIRST_CIRCLES;
-        int top = y + DELTA_Y_FIRST_CIRCLE_RESP - 1 + BASE + n * 50;
+        int top = y + DELTA_Y_FIRST_CIRCLE_RESP  + BASE + n * 52;
         BufferedImage img =
             image
                 .getSubimage(left, top, CIRCLE_SIZE * 5 + CIRCLE_X_SPCAES * 4 + 4, CIRCLE_SIZE + 8);
-        double[] match = recognizerRespustas.match(img);
-        double max = Double.MIN_VALUE;
-        int idxMax = -1;
-        for (int m = 0; m < match.length; m++) {
-          if (match[m] > max) {
-            max = match[m];
-            idxMax = m;
-          }
-        }
-        if (idxMax != -1) {
-          resp.append(RESPUESTAS[idxMax]);
-        }
+        
+        try {
+			ImageIO.write(img, "png", new File("./res/resp" + pregunta + ".png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+//        String respuesta  = getRespuesta(img);
+//        resp.append(respuesta);
+        pregunta++;
       }
     }
     return resp.toString();
   }
 
-  /**
+  private String getRespuesta(BufferedImage img) {
+	  String resp = "O";
+      double[] match = recognizerRespustas.match(img);
+      double max = Double.MIN_VALUE;
+      int idxMax = -1;
+      for (int m = 0; m < match.length; m++) {
+        if (match[m] > max) {
+          max = match[m];
+          idxMax = m;
+        }
+      }
+      if (idxMax != -1) {
+        resp = RESPUESTAS[idxMax];
+      }
+	return resp;
+}
+
+
+/**
    * Rotacion de la imagen. Este metodo realiza la corrección de la imagen. En esta version
    * solamente enderza la imagen.
    * 
@@ -317,10 +332,10 @@ public class ExtractorResultadosPruebas {
     try {
       ExtractorResultadosPruebas extractor = new ExtractorResultadosPruebas();
 
-      for (int n = 0; n < 4; n++) {
-        BufferedImage image = ImageIO.read(new File("./res/prueba_00" + (n + 1) + ".png"));
+//      for (int n = 0; n < 4; n++) {
+        BufferedImage image = ImageIO.read(new File("./res/prueba_002.png"));
         System.out.println(extractor.process(image, 45));
-      }
+//      }
 
     } catch (IOException e) {
       e.printStackTrace();
