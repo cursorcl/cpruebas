@@ -84,6 +84,24 @@ public class ExtractorResultadosPruebas {
   }
 
 
+  public OTResultadoScanner process(File archivo, int nroPreguntas) throws IOException {
+    BufferedImage limage;
+      limage = ImageIO.read(archivo);
+      OTResultadoScanner resultado = new OTResultadoScanner();
+      BufferedImage rotated = rectificarImagen(limage);
+      Point[] pointsReference = obtenerPuntosReferencia(rotated);
+      Point[] pRefRespuestas = Arrays.copyOfRange(pointsReference, 1, pointsReference.length);
+      String respuestas = getRespuestas(pRefRespuestas, rotated, nroPreguntas);
+
+      // Point pRefRut = pointsReference[0];
+      // String rut = getRut(pRefRut, rotated);
+
+      resultado.setForma(1);
+      resultado.setRespuestas(respuestas);
+      resultado.setRut("10613781-1");
+    return resultado;
+  }
+  
   /**
    * Metodo que realiza el procesamiento de una prueba, obtiene el rut y las respuestas. Por ahora
    * la forma ratorn 1.

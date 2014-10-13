@@ -37,6 +37,7 @@ import cl.eos.persistence.models.EjeTematico;
 import cl.eos.persistence.models.Formas;
 import cl.eos.persistence.models.Habilidad;
 import cl.eos.persistence.models.Prueba;
+import cl.eos.persistence.models.Prueba.Estado;
 import cl.eos.persistence.models.RespuestasEsperadasPrueba;
 import cl.eos.persistence.util.Comparadores;
 import cl.eos.view.dnd.EjeTematicoDND;
@@ -290,6 +291,7 @@ public class DefinePruebaViewController extends AFormView {
     if (entity instanceof Prueba) {
       registros = FXCollections.observableArrayList();
       prueba = (Prueba) entity;
+      
 
       respsValidas = VALID_LETTERS.substring(0, prueba.getAlternativas());
       respuestaCol
@@ -305,11 +307,33 @@ public class DefinePruebaViewController extends AFormView {
 
       txtRespuestas.setText("");
       if (prueba.getRespuestas() != null && !prueba.getRespuestas().isEmpty()) {
+        
+        
         StringBuffer resps = new StringBuffer();
         List<RespuestasEsperadasPrueba> respuestas = new ArrayList<RespuestasEsperadasPrueba>();
+        
+        int nroPreguntas = prueba.getNroPreguntas();
+        int oldNroPreguntas = prueba.getRespuestas().size();
         for (RespuestasEsperadasPrueba respuesta : prueba.getRespuestas()) {
           respuestas.add(respuesta);
         }
+        if(nroPreguntas > oldNroPreguntas)
+        {
+          for(int n = oldNroPreguntas + 1; n < nroPreguntas; n++)
+          {
+            RespuestasEsperadasPrueba resp = new RespuestasEsperadasPrueba();
+            resp.setNumero(n);
+            respuestas.add(resp);
+          }
+        }
+        else if(nroPreguntas < oldNroPreguntas)
+        {
+          while(respuestas.size() > nroPreguntas)
+          {
+            respuestas.remove(respuestas);
+          }
+        }
+        
         Collections.sort(respuestas, Comparadores.compararRespuestasEsperadas());
         for (RespuestasEsperadasPrueba respuesta : respuestas) {
           RegistroDefinePrueba registro = new RegistroDefinePrueba();

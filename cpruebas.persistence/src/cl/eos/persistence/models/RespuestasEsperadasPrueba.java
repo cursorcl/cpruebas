@@ -29,9 +29,9 @@ public class RespuestasEsperadasPrueba implements IEntity {
   private Prueba prueba;
 
   private Integer numero;
-  private String respuesta;
-  private Boolean verdaderoFalso;
-  private Boolean mental;
+  private String respuesta = "N";
+  private Boolean verdaderoFalso = Boolean.FALSE;
+  private Boolean mental = Boolean.FALSE;
   private Habilidad habilidad;
   private EjeTematico ejeTematico;
 
