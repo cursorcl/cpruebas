@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Qué hay aquí!</title>
+</head>
+<body>
+
+<h2>Resumen</h2>
+
+El código en esta carpeta contiene lo necesario para generar, entrenar, salvar y
+cargar una red neural que reconozca imágenes.
+
+<p><hr />
+<b>IMPORTANTE</b>:<br />
+Notar que por alguna razón desconocida (al interior de la librería de redes
+neurales), es preciso aumentar el tamaño del stack para salvar y cargar redes
+desde archivo, lo que se puede lograr con el argumento <b>-Xss&lt;value&gt;</b>
+a la VM.<br />
+El valor <b>-Xss64m</b> parece ser suficiente.
+<hr /></p>
+
+<h2>Creación de la red</h2>
+
+La aplicación <b><code>cl.triton.card.TrainerPlus</code></b> levanta un panel
+donde se puede crear, entrenar, probar y salvar redes neurales.
+
+<p>
+Parece ser que la dimensión predefinida (64 x 24) de la entrada es suficiente
+para el objeto de reconocer (al menos) 10 tipos de imágenes distintas del
+interés actual.<br />
+Este valor se podría poder cambiar en los spinner <b><i>antes</i></b> de crear
+la red.
+</p>
+
+La secuencia que funciona es:
+<ol>
+<li>Definir el tamaño de la entrada (que representa la dimensión a la cual se
+van a escalar las imágenes) y crear la red (botón <code>Create network</code>).
+La creación puede demorar un tanto, paciencia por favor.
+</li>
+<li>Cargar las imágenes a entrenar (botón <code>Load Image</code>, la imagen se
+muestra en el panel central) y por cada una indicar el índice que se desea
+recuperar (spin <code>Training output</code>) y (<i>sólo</i>) entonces agregar
+esa imagen al set de entrenamiento (botón <code>Add training set</code>).<br />
+Cada vez que se agrega una muestra, crece el valor al costado derecho del botón,
+indicando el número de muestras actualmente en el set de entrenamiento.
+</li>
+<li>Una vez que se han agregado todas las muestras (puede agregarse más de una
+para cada salida deseada) <b>y sólo entonces</b> se <i>entrena</i> la red (botón
+<code>Train</code>). El entrenamiento puede demorar un resto, paciencia por
+favor.
+</li>
+<li>Una vez entrenada la red, conviene probarla con algunas imágenes, tanto
+pertenecientes al set de entrenamiento como otras diferentes, para chequear los
+resultados. Para ello cargar la imagen con <code>Load Image</code> y pruébela
+con <code>Recognize</code>.<br />
+El resultado se muestra en el arreglo de valores que aparece bajo la imagen,
+ordenados desde el índice cero (0) en adelante. El rango de valores debe estar
+entre cero (no hay calce) y uno (calce <i>perfecto</i>).<br />
+Se supone que el que tiene el máximo lejos sobre el resto es el índice resultado.
+</li>
+<li><b>Salve la red</b> en un archivo (botón <code>Save network</code>).<br />
+Aunque al comienzo es entretenido, después es una lata estar repitiendo la
+cuestión.
+</li>
+</ol>
+
+<p>
+Este entrenador asume que se parte desde cero. Ignoro si es posible (y,
+por ahora, me da lo mismo) si se pueden agregar nuevos datos y re-entrenar una
+red ya entrenada y cosas por el estilo.<br />
+Total, no demora ni tanto y se hace una sola vez (o pocas veces, en el peor
+caso).
+</p>
+
+<h2>Uso en producción</h2>
+
+Una función de reconocimiento está representada en la interfaz
+<code>cl.cursor.card.Recognizer</code>, que debería parecerse a:
+
+<pre>
+public interface Recognizer
+{
+  /**
+   * Recognize an image.<br />
+   * If the recognition process resolve a solution into the given tolerance,
+   * then that answer index is returned, else -1.
+   * 
+   * @param image
+   *          The image to be recognized.
+   * @param tolerance
+   *          The tolerance to admit a solution. A value in percentage that
+   *          should be done between the best solution versus the others.
+   * @return The index of the best solution if into tolerance, -1 otherwise.
+   */
+  int recognize(Image image, double tolerance);
+
+  /**
+   * Test the image and return the recognition result.
+   * 
+   * @param image
+   *          The image to be recognized.
+   * @return The recognition process output.
+   */
+  double[] match(Image image);
+}
+</pre>
+
+<p>
+Supongo que se explica por sí sola. Por si acaso, hay que darle una imagen al
+método <code>recognize</code>, que devuelve el índice reconocido, <i>et
+voilá</i>.<br />
+El parámetro <code>tolerance</code> es cuánto se está dispuesto a transar en la
+resolución del reconocimiento. Una tolerancia de <code>0.5</code> expresa que el
+mejor valor obtenido debe superar al resto al menos por el 50% de su valor
+(normalmente es mucho mejor que eso).
+</p>
+
+Para generar una instancia de la interfaz anterior, basta usar el archivo
+salvado con la red entrenada en algo así como:
+<pre>
+  Recognizer recognizer = RecognizerFactory.create(file-with-the-trained-net);
+</pre>
+
+<p>
+La aplicación <code>cl.cursor.card.testbed.TestTrainedRecognizer</code> prueba
+exactamente eso. Es casi lo más simple que se puede hacer para probar el
+concepto.
+</p>
+
+<hr />
+<b>DISCLAIMER</b><br />
+Este software se facilita así como está sólo al destinatario del mensaje que lo
+adjunte y sin ninguna garantía de índole alguna.<br />
+Cualquier otro uso tendrá mi más absoluto repudio por toda la eternidad.
+<p>
+Saludos!
+</p>
+
+</body>
+</html>

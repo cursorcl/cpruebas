@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -380,8 +382,8 @@ public class EvaluarPruebaView extends AFormView {
     removeAllStyle(cmbCursos);
     removeAllStyle(dtpFecha);
   }
-  
-  
+
+
   protected void handlerLeerImagenes() {
     FileChooser fileChooser = new FileChooser();
     FileChooser.ExtensionFilter pngExtFilter =
@@ -393,6 +395,10 @@ public class EvaluarPruebaView extends AFormView {
     fileChooser.setTitle("Seleccione Imégenes Respuesta");
     List<File> files = fileChooser.showOpenMultipleDialog(null);
 
-    TareaProcesaEvaluacionScanner procesador = new TareaProcesaEvaluacionScanner(prueba, cmbCursos.getValue(), files);
+    TareaProcesaEvaluacionScanner procesador =
+        new TareaProcesaEvaluacionScanner(prueba, cmbCursos.getValue(), files);
+    ExecutorService service = Executors.newFixedThreadPool(1);
+    service.execute(procesador);
+
   }
 }
