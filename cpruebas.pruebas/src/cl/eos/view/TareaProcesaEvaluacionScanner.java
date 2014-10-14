@@ -6,8 +6,8 @@ import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
+import cl.eos.detection.ExtractorResultadosPruebas;
 import cl.eos.detection.OTResultadoScanner;
-import cl.eos.detection.ProcesadorPruebas;
 import cl.eos.persistence.models.Curso;
 import cl.eos.persistence.models.Prueba;
 import cl.eos.persistence.models.PruebaRendida;
@@ -35,17 +35,21 @@ public class TareaProcesaEvaluacionScanner extends Task<ObservableList<PruebaRen
 	@Override
 	protected ObservableList<PruebaRendida> call() throws Exception {
 		updateMessage("Procesando Pruebas");
-		ProcesadorPruebas procesador = new ProcesadorPruebas();
+		ExtractorResultadosPruebas procesador =  new ExtractorResultadosPruebas();
         ObservableList<PruebaRendida> results = FXCollections
             .observableArrayList();
+        int max = archivos.size();
+        int n = 1;
 		for(File archivo: archivos)
 		{
-		  OTResultadoScanner resultado = procesador.process(archivo);
+		  OTResultadoScanner resultado = procesador.process(archivo, prueba.getNroPreguntas());
 		  if(resultado != null)
 		  {
 		    PruebaRendida rendida = new PruebaRendida();
+		    
 		    //rendida.setAlumno(alumno);
 		    rendida.setRespuestas(resultado.getRespuestas());
+		    updateProgress(n++, max);
 		  }
 		}
 		return results;
