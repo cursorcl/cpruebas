@@ -22,6 +22,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import jfxtras.labs.scene.control.BigDecimalField;
@@ -197,6 +198,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
     mnuComunalEje.setOnAction(this);
     mnuImprimirPrueba.setOnAction(this);
     mnuNueva.setOnAction(this);
+    accionClicTabla();
   }
 
   @Override
@@ -392,6 +394,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
       for (OTPrueba ot : otPruebas) {
         pruebas[n++] = ot.getPrueba();
       }
+      System.out.println("Cantidad pruebas " + pruebas.length);
       controller.findByAllId(Prueba.class, pruebas, comunalEje);
       controller.findAll(EvaluacionEjeTematico.class, comunalEje);
     }
@@ -603,4 +606,43 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
     dpFecha.setValue(LocalDate.now());
     txtName.setText(null);
   }
+  
+  private void accionClicTabla() {
+		tblListadoPruebas.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				ObservableList<OTPrueba> itemsSelec = tblListadoPruebas
+						.getSelectionModel().getSelectedItems();
+
+				if (itemsSelec.size() > 1) {
+					mnuModificar.setDisable(true);
+					mnuEliminar.setDisable(false);
+					mnuPopupModificar.setDisable(true);
+					mnuPopupEliminar.setDisable(false);
+					
+					mnuImprimirPrueba.setDisable(true);
+					mnuListaEvaluaciones.setDisable(true);
+					mnuDefinirPrueba.setDisable(true);
+					mnuEvaluarPrueba.setDisable(true);
+					mnuComunalEje.setDisable(false);
+					mnuComparativoComunal.setDisable(true);
+					mnuComparativoComunalHab.setDisable(true);
+					
+				} else if (itemsSelec.size() == 1) {
+					
+					mnuModificar.setDisable(false);
+					mnuEliminar.setDisable(false);
+					mnuPopupModificar.setDisable(false);
+					mnuPopupEliminar.setDisable(false);
+					mnuImprimirPrueba.setDisable(false);
+					mnuListaEvaluaciones.setDisable(false);
+					mnuDefinirPrueba.setDisable(false);
+					mnuEvaluarPrueba.setDisable(false);
+					mnuComunalEje.setDisable(false);
+					mnuComparativoComunal.setDisable(false);
+					mnuComparativoComunalHab.setDisable(false);
+				}
+			}
+		});
+	}
 }
