@@ -23,7 +23,9 @@ public class ImageInputProvider implements InputProvider {
 
   ImageInput imgi = null;
 
-  public ImageInputProvider() {}
+  public ImageInputProvider() {
+	  
+  }
 
   public void resetSize(int iwidth, int iheight) {
     this.width = iwidth;
