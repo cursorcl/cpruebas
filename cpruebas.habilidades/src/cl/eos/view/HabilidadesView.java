@@ -138,7 +138,7 @@ public class HabilidadesView extends AFormView implements
 		txtNombre.clear();
 		txtDescripcion.clear();
 		select(null);
-	}
+		tblHabilidades.getSelectionModel().clearSelection();	}
 
 	private void accionEliminar() {
 		ObservableList<OTHabilidad> otSeleccionados = tblHabilidades
@@ -169,6 +169,7 @@ public class HabilidadesView extends AFormView implements
 		if (habilidades != null) {
 			txtNombre.setText(habilidades.getName());
 			txtDescripcion.setText(habilidades.getDescripcion());
+			select((IEntity) habilidades.getHabilidad());
 		}
 	}
 
@@ -187,7 +188,7 @@ public class HabilidadesView extends AFormView implements
 					mnuEliminar.setDisable(false);
 
 				} else if (itemsSelec.size() == 1) {
-					select((IEntity) itemsSelec.get(0).getHabilidad());
+					
 					menuModificar.setDisable(false);
 					menuEliminar.setDisable(false);
 
@@ -218,8 +219,7 @@ public class HabilidadesView extends AFormView implements
 
 	@Override
 	public void onDeleted(IEntity entity) {
-		System.out.println("Elementoeliminando:" + entity.toString());
-		tblHabilidades.getItems().remove(entity);
+		tblHabilidades.getItems().remove(new OTHabilidad((Habilidad) entity));
 	}
 
 	@Override

@@ -122,6 +122,13 @@ public class Utils {
 		return correctas;
 	}
 
+	 public static String getFileExtension(File file) {
+	        String fileName = file.getName();
+	        if(fileName.lastIndexOf(".") != -1 && fileName.lastIndexOf(".") != 0)
+	        return fileName.substring(fileName.lastIndexOf(".")+1);
+	        else return "";
+	    }
+	
 	public static void main(String[] args) {
 		System.out.println(Math.round(getPuntaje(6.2f)));
 		System.out.println(Math.round(getPuntaje(6.43f)));

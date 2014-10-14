@@ -11,7 +11,7 @@ import javax.persistence.NamedQuery;
 import cl.eos.interfaces.entity.IEntity;
 
 @Entity(name = "tipoprueba")
-@NamedQueries({ @NamedQuery(name = "TipoPrueba.findAll", query = "SELECT e FROM tipoprueba e") })
+@NamedQueries({ @NamedQuery(name = "TipoPrueba.findAll", query = "SELECT e FROM tipoprueba e order by e.name") })
 public class TipoPrueba implements IEntity {
 
 	private static final long serialVersionUID = 1L;

@@ -2,17 +2,21 @@ package cl.eos.view;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -26,8 +30,10 @@ import cl.eos.persistence.models.EvaluacionPrueba;
 import cl.eos.persistence.models.Prueba;
 import cl.eos.persistence.models.PruebaRendida;
 import cl.eos.persistence.models.RespuestasEsperadasPrueba;
+import cl.eos.util.ExcelSheetWriterObj;
 
-public class ResumenEjesTematicosView extends AFormView {
+public class ResumenEjesTematicosView extends AFormView  implements
+EventHandler<ActionEvent>{
 
 	@FXML
 	private TableView<OTPreguntasEjes> tblEjesTematicos;
@@ -36,9 +42,9 @@ public class ResumenEjesTematicosView extends AFormView {
 	@FXML
 	private TableColumn<OTPreguntasEjes, String> colDescripcion;
 	@FXML
-	private TableColumn<OTPreguntasEjes, Float> colLogrado;
+	private TableColumn<OTPreguntasEjes, String> colLogrado;
 	@FXML
-	private TableColumn<OTPreguntasEjes, Float> colNoLogrado;
+	private TableColumn<OTPreguntasEjes, String> colNoLogrado;
 
 	@FXML
 	private TextField txtPrueba;
@@ -55,6 +61,9 @@ public class ResumenEjesTematicosView extends AFormView {
 	private BarChart<String, Number> graficoBarra = new BarChart<String, Number>(
 			yAxis, xAxis);
 
+	@FXML
+	private MenuItem mnuExportarEjes;
+
 	private HashMap<EjeTematico, OTPreguntasEjes> mapaEjesTematicos;
 
 	public ResumenEjesTematicosView() {
@@ -69,6 +78,7 @@ public class ResumenEjesTematicosView extends AFormView {
 		graficoBarra.setTitle("Gráfico Respuestas por ejes temáticos");
 		xAxis.setLabel("Country");
 		yAxis.setLabel("Value");
+		mnuExportarEjes.setOnAction(this);
 	}
 
 	private void inicializarTablaEjes() {
@@ -81,42 +91,46 @@ public class ResumenEjesTematicosView extends AFormView {
 				.setCellValueFactory(new PropertyValueFactory<OTPreguntasEjes, String>(
 						"descripcion"));
 		colLogrado
-				.setCellValueFactory(new PropertyValueFactory<OTPreguntasEjes, Float>(
-						"logrado"));
+				.setCellValueFactory(new PropertyValueFactory<OTPreguntasEjes, String>(
+						"slogrado"));
 		colNoLogrado
-				.setCellValueFactory(new PropertyValueFactory<OTPreguntasEjes, Float>(
-						"nologrado"));
+				.setCellValueFactory(new PropertyValueFactory<OTPreguntasEjes, String>(
+						"snlogrado"));
 	}
 
 	private void accionClicTabla() {
-		tblEjesTematicos.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<OTPreguntasEjes>() {
+		tblEjesTematicos.getSelectionModel().selectedItemProperty()
+				.addListener(new ChangeListener<OTPreguntasEjes>() {
 
-			@Override
-			public void changed(ObservableValue<? extends OTPreguntasEjes> observable,
-					OTPreguntasEjes oldValue, OTPreguntasEjes newValue) {
-				ObservableList<OTPreguntasEjes> itemsSelec = tblEjesTematicos
-						.getSelectionModel().getSelectedItems();
+					@Override
+					public void changed(
+							ObservableValue<? extends OTPreguntasEjes> observable,
+							OTPreguntasEjes oldValue, OTPreguntasEjes newValue) {
+						ObservableList<OTPreguntasEjes> itemsSelec = tblEjesTematicos
+								.getSelectionModel().getSelectedItems();
 
-				if (itemsSelec.size() == 1) {
-					OTPreguntasEjes ejeTematico = itemsSelec.get(0);
-					txtEjeTematico.setText(ejeTematico.getName());
+						if (itemsSelec.size() == 1) {
+							OTPreguntasEjes ejeTematico = itemsSelec.get(0);
+							txtEjeTematico.setText(ejeTematico.getName());
 
-					Float porcentajeLogrado = ejeTematico.getLogrado();
-					Float porcentajeNologrado = ejeTematico.getNologrado();
+							Float porcentajeLogrado = ejeTematico.getLogrado();
+							Float porcentajeNologrado = ejeTematico
+									.getNologrado();
 
-					XYChart.Series series1 = new XYChart.Series();
-					series1.setName("Porcentaje de Respuestas");
-					series1.getData().add(
-							new XYChart.Data<String, Float>("Logrado",
-									porcentajeLogrado));
-					series1.getData().add(
-							new XYChart.Data<String, Float>("No Logrado",
-									porcentajeNologrado));
-					graficoBarra.getData().clear();
-					graficoBarra.getData().add(series1);
-			}}
-		});
-		
+							XYChart.Series series1 = new XYChart.Series();
+							series1.setName("Porcentaje de Respuestas");
+							series1.getData().add(
+									new XYChart.Data<String, Float>("Logrado",
+											porcentajeLogrado));
+							series1.getData().add(
+									new XYChart.Data<String, Float>(
+											"No Logrado", porcentajeNologrado));
+							graficoBarra.getData().clear();
+							graficoBarra.getData().add(series1);
+						}
+					}
+				});
+
 	}
 
 	@Override
@@ -173,7 +187,7 @@ public class ResumenEjesTematicosView extends AFormView {
 					Integer valor = 1;
 					OTPreguntasEjes otPreguntas = new OTPreguntasEjes();
 					otPreguntas.setEjeTematico(ejeTematico);
-					if (cRespuesta[numeroPreg-1] == respuestasEsperadasPrueba
+					if (cRespuesta[numeroPreg - 1] == respuestasEsperadasPrueba
 							.getRespuesta().toCharArray()[0]) {
 						otPreguntas.setBuenas(valor);
 					} else {
@@ -184,5 +198,20 @@ public class ResumenEjesTematicosView extends AFormView {
 				}
 			}
 		}
+	}
+
+	@Override
+	public void handle(ActionEvent event) {
+		Object source = event.getSource();
+		if (source == mnuExportarEjes) {
+
+			tblEjesTematicos.setId("Ejes temáticos");
+
+			List<TableView<? extends Object>> listaTablas = new LinkedList<>();
+			listaTablas.add((TableView<? extends Object>) tblEjesTematicos);
+
+			ExcelSheetWriterObj.convertirDatosALibroDeExcel(listaTablas);
+		}
+		
 	}
 }

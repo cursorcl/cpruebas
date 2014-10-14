@@ -7,7 +7,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.AlumnosView">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="1087.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.AlumnosView">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
@@ -32,8 +32,6 @@
                   <SeparatorMenuItem mnemonicParsing="false" />
                   <MenuItem fx:id="mnuExportar" mnemonicParsing="false" text="Exportar Alumno" />
                   <MenuItem fx:id="mnuImportar" mnemonicParsing="false" text="Importar Alumno" visible="false" />
-                  <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem fx:id="mnuCerrar1" mnemonicParsing="false" text="Cerrar" />
                </items>
             </Menu>
           <Menu mnemonicParsing="false" text="Help" visible="false">
@@ -45,9 +43,9 @@
       </MenuBar>
    </top>
    <center>
-      <SplitPane dividerPositions="0.3343065693430657" prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <SplitPane dividerPositions="0.2313364055299539" prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <items>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="473.0" prefWidth="285.0">
                <children>
                   <Label id="lblError" fx:id="lblError" prefHeight="17.0" prefWidth="208.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="10.0" />
                   <Label text="Colegio" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="30.0" />
@@ -70,7 +68,7 @@
                <children>
                   <BorderPane prefHeight="459.0" prefWidth="370.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <top>
-                        <AnchorPane prefHeight="53.0" prefWidth="370.0" BorderPane.alignment="CENTER">
+                        <AnchorPane prefHeight="53.0" prefWidth="770.0" BorderPane.alignment="CENTER">
                            <children>
                               <TextField layoutX="272.0" layoutY="15.0" prefHeight="23.0" prefWidth="167.0" promptText="Buscar" />
                            </children>
@@ -86,6 +84,7 @@
                                   <TableColumn id="colPaterno" fx:id="colPaterno" prefWidth="75.0" text="A.Paterno" />
                                     <TableColumn id="colMaterno" fx:id="colMaterno" prefWidth="75.0" text="A.Materno" />
                                     <TableColumn id="colName" fx:id="colName" prefWidth="133.0" text="Nombres" />
+                                    <TableColumn fx:id="colColegio" prefWidth="75.0" text="Colegio" />
                                     <TableColumn id="colCurso" fx:id="colCurso" prefWidth="87.0" text="Curso" />
                                 </columns>
                                  <contextMenu>

@@ -125,7 +125,7 @@ public class ProfesoresView extends AFormView implements
 					mnuEliminar.setDisable(false);
 
 				} else if (itemsSelec.size() == 1) {
-					select((IEntity) itemsSelec.get(0).getProfesor());
+					
 					mnItemModificar.setDisable(false);
 					mnItemEliminar.setDisable(false);
 
@@ -137,13 +137,14 @@ public class ProfesoresView extends AFormView implements
 	}
 
 	private void accionModificar() {
-		OTProfesor Profesor = tblProfesores.getSelectionModel()
+		OTProfesor profesor = tblProfesores.getSelectionModel()
 				.getSelectedItem();
-		if (Profesor != null) {
-			txtRut.setText(Profesor.getRut());
-			txtNombres.setText(Profesor.getName());
-			txtAPaterno.setText(Profesor.getPaterno());
-			txtAMaterno.setText(Profesor.getMaterno());
+		if (profesor != null) {
+			txtRut.setText(profesor.getRut());
+			txtNombres.setText(profesor.getName());
+			txtAPaterno.setText(profesor.getPaterno());
+			txtAMaterno.setText(profesor.getMaterno());
+			select((IEntity) profesor.getProfesor());
 		}
 	}
 
@@ -242,8 +243,7 @@ public class ProfesoresView extends AFormView implements
 
 	@Override
 	public void onDeleted(IEntity entity) {
-		System.out.println("Elementoeliminando:" + entity.toString());
-		tblProfesores.getItems().remove(entity);
+		tblProfesores.getItems().remove(new OTProfesor((Profesor) entity));
 	}
 
 	@Override

@@ -48,7 +48,7 @@ public class ComparativoComunalEjeView extends AFormView implements
 	@FXML
 	private TableView tblEjesTematicos;
 	@FXML
-	private TableView tblEvaluaciones;
+	private TableView tblEvaluacionEjesTematicos;
 
 	private HashMap<EjeTematico, HashMap<String, OTPreguntasEjes>> mapaEjesTematicos;
 
@@ -76,7 +76,7 @@ public class ComparativoComunalEjeView extends AFormView implements
 	}
 
 	private void inicializarTablaEvaluacion() {
-		tblEvaluaciones.getSelectionModel().setSelectionMode(
+		tblEvaluacionEjesTematicos.getSelectionModel().setSelectionMode(
 				SelectionMode.MULTIPLE);
 	}
 
@@ -311,7 +311,7 @@ public class ComparativoComunalEjeView extends AFormView implements
 		}
 		registroseEva.add(row);
 
-		tblEvaluaciones.setItems(registroseEva);
+		tblEvaluacionEjesTematicos.setItems(registroseEva);
 	}
 
 	private void creacionColumnasEjesTematicos(
@@ -361,7 +361,7 @@ public class ComparativoComunalEjeView extends AFormView implements
 			}
 		});
 		columna0.setPrefWidth(100);
-		tblEvaluaciones.getColumns().add(columna0);
+		tblEvaluacionEjesTematicos.getColumns().add(columna0);
 
 		int indice = 1;
 		for (String evaluacion : titulosColumnas) {
@@ -378,7 +378,7 @@ public class ComparativoComunalEjeView extends AFormView implements
 				}
 			});
 			columna.setPrefWidth(100);
-			tblEvaluaciones.getColumns().add(columna);
+			tblEvaluacionEjesTematicos.getColumns().add(columna);
 			indice++;
 		}
 	}
@@ -389,10 +389,10 @@ public class ComparativoComunalEjeView extends AFormView implements
 		if (source == mnuExportarEjesTematicos || source == mnuExportarEvaluacion) {
 			
 			tblEjesTematicos.setId("Ejes temáticos");
-			tblEvaluaciones.setId("Evaluación");
+			tblEvaluacionEjesTematicos.setId("Evaluación");
 			List<TableView<? extends Object>> listaTablas = new LinkedList<>();
 			listaTablas.add((TableView<? extends Object>) tblEjesTematicos);
-			listaTablas.add((TableView<? extends Object>) tblEvaluaciones);
+			listaTablas.add((TableView<? extends Object>) tblEvaluacionEjesTematicos);
 			
 			ExcelSheetWriterObj.convertirDatosALibroDeExcel(listaTablas);
 		} 

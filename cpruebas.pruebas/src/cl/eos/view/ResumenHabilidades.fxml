@@ -44,6 +44,13 @@
                               <TableColumn fx:id="colLogrado" prefWidth="75.0" text="\%Logrado" />
                               <TableColumn fx:id="colNoLogrado" prefWidth="75.0" text="\% No logrado" />
                            </columns>
+                           <contextMenu>
+                              <ContextMenu>
+                                <items>
+                                  <MenuItem fx:id="mnuExportarHabilidad" mnemonicParsing="false" text="Exportar a excel" />
+                                </items>
+                              </ContextMenu>
+                           </contextMenu>
                         </TableView>
                         <Label layoutX="9.0" layoutY="133.0" text="Habilidad " AnchorPane.leftAnchor="5.0" />
                         <TextField fx:id="txtHabilidad" editable="false" layoutX="6.0" layoutY="150.0" prefHeight="25.0" prefWidth="536.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" />

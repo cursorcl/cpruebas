@@ -106,7 +106,7 @@ public class ResumenGeneralPMEView extends AFormView implements
 	private List<RangoEvaluacion> listaRangos;
 
 	public ResumenGeneralPMEView() {
-
+		setTitle("Resumen general P.M.E.");
 	}
 
 	@FXML

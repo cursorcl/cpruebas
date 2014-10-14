@@ -9,12 +9,12 @@ import cl.eos.persistence.models.TipoPrueba;
 
 public class OTEjeTematico {
 
-	private SimpleLongProperty id;
-	private SimpleStringProperty name;
-	private SimpleObjectProperty<TipoPrueba> tipoprueba;
-	private SimpleObjectProperty<Asignatura> asignatura;
+	private SimpleLongProperty id = new SimpleLongProperty();
+	private SimpleStringProperty name = new SimpleStringProperty();
+	private SimpleObjectProperty<TipoPrueba> tipoprueba = new SimpleObjectProperty<TipoPrueba>();
+	private SimpleObjectProperty<Asignatura> asignatura = new SimpleObjectProperty<Asignatura>();
 	private EjeTematico ejeTematico;
-	
+
 	public OTEjeTematico(EjeTematico ejeTematico) {
 		this.ejeTematico = ejeTematico;
 		this.id.set(ejeTematico.getId());
@@ -22,7 +22,7 @@ public class OTEjeTematico {
 		this.tipoprueba.set(ejeTematico.getTipoprueba());
 		this.asignatura.set(ejeTematico.getAsignatura());
 	}
-	
+
 	public OTEjeTematico() {
 		// TODO Auto-generated constructor stub
 	}
@@ -105,10 +105,9 @@ public class OTEjeTematico {
 		if (id == null) {
 			if (other.id != null)
 				return false;
-		}  else if (id.get() != other.id.get())
+		} else if (id.get() != other.id.get())
 			return false;
 		return true;
 	}
-	
-	
+
 }

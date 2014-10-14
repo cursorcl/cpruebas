@@ -136,6 +136,7 @@ public class EjesTematicosView extends AFormView implements
 			txtNombre.setText(ejeTematico.getName());
 			cmbAsignatura.setValue(ejeTematico.getAsignatura());
 			cmbTipoPrueba.setValue(ejeTematico.getTipoprueba());
+			select((IEntity) ejeTematico.getEjeTematico());
 		}
 	}
 
@@ -147,13 +148,13 @@ public class EjesTematicosView extends AFormView implements
 						.getSelectionModel().getSelectedItems();
 
 				if (itemsSelec.size() > 1) {
-					mnuModificar.setDisable(false);
-					mnuEliminar.setDisable(true);
+					mnuModificar.setDisable(true);
+					mnuEliminar.setDisable(false);
 
-					menuModificar.setDisable(false);
-					menuEliminar.setDisable(true);
+					menuModificar.setDisable(true);
+					menuEliminar.setDisable(false);
 				} else if (itemsSelec.size() == 1) {
-					select((IEntity) itemsSelec.get(0).getEjeTematico());
+				
 					mnuModificar.setDisable(false);
 					mnuEliminar.setDisable(false);
 
@@ -275,5 +276,10 @@ public class EjesTematicosView extends AFormView implements
 			ExcelSheetWriterObj.convertirDatosALibroDeExcel(tblEjesTematicos);
 		}
 
+	}
+	
+	@Override
+	public void onDeleted(IEntity entity) {
+		tblEjesTematicos.getItems().remove(new OTEjeTematico((EjeTematico) entity));
 	}
 }

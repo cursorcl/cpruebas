@@ -1,5 +1,7 @@
 package cl.eos.view;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -36,6 +38,7 @@ import cl.eos.util.ExcelSheetWriterObj;
 public class ComparativoComunalHabilidadView extends AFormView implements
 		EventHandler<ActionEvent> {
 
+	private NumberFormat formatter = new DecimalFormat("#0.00");
 	@FXML
 	private Label lblTitulo;
 	@FXML
@@ -268,7 +271,7 @@ public class ComparativoComunalHabilidadView extends AFormView implements
 
 			for (String string : titulosColumnas) {
 				OTPreguntasHabilidad otPregunta = resultados.get(string);
-				row.add(String.valueOf(otPregunta.getLogrado()));
+				row.add(formatter.format(otPregunta.getLogrado()));
 			}
 
 			registros.add(row);
@@ -388,13 +391,13 @@ public class ComparativoComunalHabilidadView extends AFormView implements
 		Object source = event.getSource();
 		if (source == mnuExportarHabilidad || source == mnuExportarEvaluacion) {
 			
-			tblHabilidades.setId("Ejes temáticos");
+			tblHabilidades.setId("Habilidades");
 			tblEvaluaciones.setId("Evaluación");
 			
 			List<TableView<? extends Object>> listaTablas = new LinkedList<>();
 			listaTablas.add((TableView<? extends Object>) tblHabilidades);
 			listaTablas.add((TableView<? extends Object>) tblEvaluaciones);
-			ExcelSheetWriterObj.convertirDatosALibroDeExcel(tblHabilidades);
+			ExcelSheetWriterObj.convertirDatosALibroDeExcel(listaTablas);
 		} 
 	}
 }

@@ -327,14 +327,16 @@ public class ComunalCursoView extends AFormView implements
 					mEvaluaciones.put(eje.getId(), eje);
 				}
 			}
-
+			List<Object> listaPruebas=null;
 			if (entity instanceof Prueba) {
 				llegaOnDAPrueba = true;
+				 listaPruebas = list;
 			}
+			
 			if (llegaOnDAEvaluacion && llegaOnDAPrueba) {
-				llenarDatosTabla(list);
+				llenarDatosTabla(listaPruebas);
 				desplegarDatosEvaluaciones();
-				desplegarDatosTotales(list);
+				desplegarDatosTotales(listaPruebas);
 				llegaOnDAEvaluacion = false;
 				llegaOnDAPrueba = false;
 			}
