@@ -4,7 +4,10 @@
 package cl.cursor.card.impl;
 
 import java.awt.Image;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.neuroph.core.NeuralNetwork;
@@ -23,14 +26,23 @@ public class CopyOfNeuralNetworkRecognizer implements Recognizer
   final NeuralNetwork<?> network;
   final ImagePanel imgp = new ImagePanel();
 
-  public CopyOfNeuralNetworkRecognizer(File file)
+  public CopyOfNeuralNetworkRecognizer(File file) throws IOException
   {
-//    InputStream istrm = new FileInputStream(file);
-//    network = NeuralNetwork.load(istrm);
-//    istrm.close();
+    // the (first) file with the grid size
+    BufferedReader brdr = new BufferedReader(new FileReader(file));
+    String[] grdsz = brdr.readLine().split(" ");
+    String nnfilename = brdr.readLine();
 
-    network = NeuralNetwork.createFromFile(file);
-    imgp.resetSize(64, 24);
+    int width = Integer.parseInt(grdsz[0]);
+    int height = Integer.parseInt(grdsz[1]);
+    imgp.resetSize(width, height);
+
+    log.info(String.format("grid is read as %d x %d", width, height));
+
+    File nnFile = new File(file.getParent(), nnfilename);
+    network = NeuralNetwork.createFromFile(nnFile);
+
+//    imgp.resetSize(64, 24);
   }
 
   @Override
