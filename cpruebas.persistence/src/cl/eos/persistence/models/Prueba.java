@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -46,10 +47,10 @@ public class Prueba implements IEntity {
 	private String responses;
 	private Integer exigencia;
 
-	@OneToMany(mappedBy = "prueba", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "prueba", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<Formas> formas;
 
-	@OneToMany(mappedBy = "prueba", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "prueba", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<RespuestasEsperadasPrueba> respuestas;
 
 	@OneToMany(mappedBy = "prueba", cascade = CascadeType.ALL)

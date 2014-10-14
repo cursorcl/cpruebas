@@ -3,6 +3,7 @@ package cl.eos.persistence;
 import java.util.List;
 import java.util.Map;
 
+import cl.eos.exception.ExceptionBD;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.interfaces.entity.IPersistenceListener;
 
@@ -85,6 +86,6 @@ public interface IPersistenceService {
 
 	void disconnect();
 
-	void insert(String entity, List<Object> list, IPersistenceListener listener);
+	void insert(String entity, List<Object> list, IPersistenceListener listener) throws ExceptionBD;
 
 }

@@ -5,11 +5,14 @@ import java.util.List;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -21,8 +24,10 @@ import cl.eos.ot.OTRespuestaPreguntas;
 import cl.eos.ot.OTRespuestasPorcentaje;
 import cl.eos.persistence.models.EvaluacionPrueba;
 import cl.eos.persistence.models.PruebaRendida;
+import cl.eos.util.ExcelSheetWriterObj;
 
-public class ResumenRespuestaView extends AFormView {
+public class ResumenRespuestaView extends AFormView implements
+EventHandler<ActionEvent>{
 
 	@FXML
 	private TableView<OTRespuestaPreguntas> tblPreguntas;
@@ -57,6 +62,9 @@ public class ResumenRespuestaView extends AFormView {
 	@FXML
 	private BarChart<String, Number> graficoBarra = new BarChart<String, Number>(
 			yAxis, xAxis);
+	
+	@FXML
+	private MenuItem mnuExportarRespuestas;
 
 	private LinkedList<OTRespuestaPreguntas> listaRespuestas;
 	private LinkedList<OTRespuestasPorcentaje> listaPorcentaje;
@@ -73,6 +81,7 @@ public class ResumenRespuestaView extends AFormView {
 		graficoBarra.setTitle("Gráfico Respuestas por pregunta");
 		xAxis.setLabel("Country");
 		yAxis.setLabel("Value");
+		mnuExportarRespuestas.setOnAction(this);
 	}
 
 	private void inicializarTablaRespuestas() {
@@ -166,7 +175,7 @@ public class ResumenRespuestaView extends AFormView {
 		}
 
 		listaRespuestas = new LinkedList<OTRespuestaPreguntas>();
-		for (int i = 0; i < nroPreguntas - 1; i++) {
+		for (int i = 0; i < nroPreguntas ; i++) {
 			OTRespuestaPreguntas otRespuesta = new OTRespuestaPreguntas();
 			otRespuesta.setName(String.valueOf(i + 1));
 			otRespuesta.setBuenas(sBuenas[i]);
@@ -179,19 +188,19 @@ public class ResumenRespuestaView extends AFormView {
 		OTRespuestasPorcentaje respuestaPorcentajeB = new OTRespuestasPorcentaje();
 		respuestaPorcentajeB.setTitulo("Buenas");
 		float porcentajeBuenas = (float) (buenas / nroPreguntas);
-		respuestaPorcentajeB.setPorcentaje(porcentajeBuenas);
+		respuestaPorcentajeB.setPorcentaje(porcentajeBuenas*100);
 		listaPorcentaje.add(respuestaPorcentajeB);
 
 		OTRespuestasPorcentaje respuestaPorcentajeM = new OTRespuestasPorcentaje();
 		respuestaPorcentajeM.setTitulo("Malas");
 		float porcentajeMalas = (float) (malas / nroPreguntas);
-		respuestaPorcentajeM.setPorcentaje(porcentajeMalas);
+		respuestaPorcentajeM.setPorcentaje(porcentajeMalas*100);
 		listaPorcentaje.add(respuestaPorcentajeM);
 
 		OTRespuestasPorcentaje respuestaPorcentaje = new OTRespuestasPorcentaje();
 		respuestaPorcentaje.setTitulo("Omitidas");
 		float porcentajeOmitidas = (float) (omitidas / nroPreguntas);
-		respuestaPorcentaje.setPorcentaje(porcentajeOmitidas);
+		respuestaPorcentaje.setPorcentaje(porcentajeOmitidas*100);
 		listaPorcentaje.add(respuestaPorcentaje);
 		
 		XYChart.Series series1 = new XYChart.Series();
@@ -200,5 +209,21 @@ public class ResumenRespuestaView extends AFormView {
 		series1.getData().add(new XYChart.Data<String, Float>("Malas", porcentajeMalas));
 		series1.getData().add(new XYChart.Data<String, Float>("Omitidas",porcentajeOmitidas));
 		graficoBarra.getData().add(series1);
+	}
+
+	@Override
+	public void handle(ActionEvent event) {
+		Object source = event.getSource();
+		if (source == mnuExportarRespuestas) {
+			
+			tblPreguntas.setId("Alumnos");
+			tblPorcentaje.setId("Porcentaje");
+			
+			List<TableView<? extends Object>> listaTablas = new LinkedList<>();
+			listaTablas.add((TableView<? extends Object>) tblPreguntas);
+			listaTablas.add((TableView<? extends Object>) tblPorcentaje);
+			
+			ExcelSheetWriterObj.convertirDatosALibroDeExcel(listaTablas);
+		} 
 	}
 }
