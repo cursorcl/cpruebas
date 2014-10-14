@@ -187,7 +187,7 @@ public class EvaluacionPruebaView extends AFormView implements
 				.getSelectedItem();
 		if (evaluacionPrueba != null) {
 			controller.findById(EvaluacionPrueba.class,
-					evaluacionPrueba.getId());
+					evaluacionPrueba.getId(), resumeEjeTematico);
 		} else {
 			Dialogs.create().owner(null).title("Selección registro")
 					.masthead(resumeEjeTematico.getName())
@@ -207,7 +207,7 @@ public class EvaluacionPruebaView extends AFormView implements
 				.getSelectedItem();
 		if (evaluacionPrueba != null) {
 			controller.findById(EvaluacionPrueba.class,
-					evaluacionPrueba.getId());
+					evaluacionPrueba.getId(), resumeHabilidad);
 		} else {
 			Dialogs.create().owner(null).title("Selección registro")
 					.masthead(resumeHabilidad.getName())
@@ -226,7 +226,7 @@ public class EvaluacionPruebaView extends AFormView implements
 				.getSelectedItem();
 		if (evaluacionPrueba != null) {
 			controller.findById(EvaluacionPrueba.class,
-					evaluacionPrueba.getId());
+					evaluacionPrueba.getId(), resumenAlumno);
 		} else {
 			Dialogs.create().owner(null).title("Selección registro")
 					.masthead(resumenAlumno.getName())
@@ -245,7 +245,7 @@ public class EvaluacionPruebaView extends AFormView implements
 				.getSelectedItem();
 		if (evaluacionPrueba != null) {
 			controller.findById(EvaluacionPrueba.class,
-					evaluacionPrueba.getId());
+					evaluacionPrueba.getId(), resumenGeneral);
 		} else {
 			Dialogs.create().owner(null).title("Selección registro")
 					.masthead(resumenGeneral.getName())
@@ -264,7 +264,7 @@ public class EvaluacionPruebaView extends AFormView implements
 				.getSelectedItem();
 		if (evaluacionPrueba != null) {
 			controller.findById(EvaluacionPrueba.class,
-					evaluacionPrueba.getId());
+					evaluacionPrueba.getId(), resumenRespuestas);
 		} else {
 			Dialogs.create().owner(null).title("Selección registro")
 					.masthead(resumenRespuestas.getName())
@@ -282,7 +282,8 @@ public class EvaluacionPruebaView extends AFormView implements
 		EvaluacionPrueba evaluacion = tblListadoPruebas.getSelectionModel()
 				.getSelectedItem();
 		if (evaluacion != null) {
-			controller.findById(EvaluacionPrueba.class, evaluacion.getId());
+			controller.findById(EvaluacionPrueba.class, evaluacion.getId(),
+					resumenGeneralPME);
 			controller.findAll(RangoEvaluacion.class);
 		}
 	}

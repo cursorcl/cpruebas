@@ -121,6 +121,7 @@ public class CursosView extends AFormView implements EventHandler<ActionEvent> {
 			cmbNivel.setValue(curso.getCiclo());
 			cmbColegio.setValue(curso.getColegio());
 			cmbTipoCurso.setValue(curso.getTipoCurso());
+			select((IEntity) curso.getCurso());
 		}
 	}
 
@@ -159,7 +160,7 @@ public class CursosView extends AFormView implements EventHandler<ActionEvent> {
 					mnuModificar.setDisable(true);
 					mnuEliminar.setDisable(false);
 				} else if (itemsSelec.size() == 1) {
-					select((IEntity) itemsSelec.get(0).getCurso());
+					
 					mnItemModificar.setDisable(false);
 					mnItemEliminar.setDisable(false);
 
@@ -295,7 +296,7 @@ public class CursosView extends AFormView implements EventHandler<ActionEvent> {
 
 	@Override
 	public void onDeleted(IEntity entity) {
-		tblCurso.getItems().remove(entity);
+		tblCurso.getItems().remove(new OTCurso((Curso) entity));
 	}
 
 	@Override

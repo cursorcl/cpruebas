@@ -10,7 +10,7 @@ import javax.persistence.NamedQuery;
 import cl.eos.interfaces.entity.IEntity;
 
 @Entity(name = "habilidad")
-@NamedQueries({@NamedQuery(name = "Habilidad.findAll", query = "SELECT e FROM habilidad e")})
+@NamedQueries({@NamedQuery(name = "Habilidad.findAll", query = "SELECT e FROM habilidad e order by e.name")})
 public class Habilidad implements IEntity {
   private static final long serialVersionUID = 1L;
   @Id

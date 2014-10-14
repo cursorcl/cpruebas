@@ -6,9 +6,9 @@ import cl.eos.persistence.models.Habilidad;
 
 public class OTHabilidad {
 
-	private SimpleLongProperty id;
-	private SimpleStringProperty name;
-	private SimpleStringProperty descripcion;
+	private SimpleLongProperty id = new SimpleLongProperty();
+	private SimpleStringProperty name = new SimpleStringProperty();
+	private SimpleStringProperty descripcion = new SimpleStringProperty();
 	private Habilidad habilidad;
 
 	public OTHabilidad(Habilidad habilidad) {
