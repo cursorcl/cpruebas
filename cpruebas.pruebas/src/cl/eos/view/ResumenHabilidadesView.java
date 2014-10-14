@@ -174,8 +174,9 @@ public class ResumenHabilidadesView extends AFormView implements
 				if (mapaHabilidades.containsKey(hab)) {
 
 					OTPreguntasHabilidad otPreguntas = mapaHabilidades.get(hab);
-					if (cRespuesta[numeroPreg - 1] == respuestasEsperadasPrueba
-							.getRespuesta().toCharArray()[0]) {
+					if (String.valueOf(cRespuesta[numeroPreg - 1]).toUpperCase().equals(
+							String.valueOf(respuestasEsperadasPrueba.getRespuesta().toCharArray()[0]).toCharArray()))
+					{
 						otPreguntas.setBuenas(otPreguntas.getBuenas() + 1);
 					}
 					otPreguntas.setTotal(otPreguntas.getTotal() + 1);
@@ -184,8 +185,9 @@ public class ResumenHabilidadesView extends AFormView implements
 					Integer valor = 1;
 					OTPreguntasHabilidad otPreguntas = new OTPreguntasHabilidad();
 					otPreguntas.setHabilidad(hab);
-					if (cRespuesta[numeroPreg - 1] == respuestasEsperadasPrueba
-							.getRespuesta().toCharArray()[0]) {
+					if (String.valueOf(cRespuesta[numeroPreg - 1]).toUpperCase().equals(
+							String.valueOf(respuestasEsperadasPrueba.getRespuesta().toCharArray()[0]).toCharArray()))
+					{
 						otPreguntas.setBuenas(valor);
 					} else {
 						otPreguntas.setBuenas(0);
