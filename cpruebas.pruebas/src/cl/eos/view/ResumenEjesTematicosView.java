@@ -177,8 +177,9 @@ EventHandler<ActionEvent>{
 
 					OTPreguntasEjes otPreguntas = mapaEjesTematicos
 							.get(ejeTematico);
-					if (cRespuesta[numeroPreg - 1] == respuestasEsperadasPrueba
-							.getRespuesta().toCharArray()[0]) {
+					if (String.valueOf(cRespuesta[numeroPreg - 1]).toUpperCase().equals(
+							String.valueOf(respuestasEsperadasPrueba.getRespuesta().toCharArray()[0]).toUpperCase())) 
+					{
 						otPreguntas.setBuenas(otPreguntas.getBuenas() + 1);
 					}
 					otPreguntas.setTotal(otPreguntas.getTotal() + 1);
@@ -187,8 +188,9 @@ EventHandler<ActionEvent>{
 					Integer valor = 1;
 					OTPreguntasEjes otPreguntas = new OTPreguntasEjes();
 					otPreguntas.setEjeTematico(ejeTematico);
-					if (cRespuesta[numeroPreg - 1] == respuestasEsperadasPrueba
-							.getRespuesta().toCharArray()[0]) {
+					if (String.valueOf(cRespuesta[numeroPreg - 1]).toUpperCase().equals(
+							String.valueOf(respuestasEsperadasPrueba.getRespuesta().toCharArray()[0]).toUpperCase()))
+					{
 						otPreguntas.setBuenas(valor);
 					} else {
 						otPreguntas.setBuenas(0);

@@ -164,7 +164,7 @@ EventHandler<ActionEvent>{
 				if (cRespuesta[i] == ' ') {
 					sOmitidas[i] = sOmitidas[i] + 1;
 					omitidas = omitidas + 1;
-				} else if (cRespuesta[i] == cResponses[i]) {
+				} else if (String.valueOf(cRespuesta[i]).toUpperCase().equals(String.valueOf(cResponses[i]).toUpperCase())) {
 					sBuenas[i] = sBuenas[i] + 1;
 					buenas = buenas + 1;
 				} else {
