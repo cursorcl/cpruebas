@@ -47,6 +47,9 @@ public class TrainerPlus extends JFrame
   public static void main(String[] args)
   {
     UtilLineLogging.initialize(null);
+
+    System.setProperty("java.util.Arrays.useLegacyMergeSort", "true");
+
     javax.swing.SwingUtilities.invokeLater(new Runnable()
     {
       @Override
