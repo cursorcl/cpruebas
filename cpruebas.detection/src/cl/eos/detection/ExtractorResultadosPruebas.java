@@ -174,6 +174,12 @@ public class ExtractorResultadosPruebas {
         BufferedImage img =
             image
                 .getSubimage(left, top, CIRCLE_SIZE * 5 + CIRCLE_X_SPCAES * 4 + 4, CIRCLE_SIZE + 8);
+        try {
+			ImageIO.write(img, "png", new File("./res/resp" + pregunta + ".png"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         String respuesta  = getRespuesta(img);
         resp.append(respuesta);
         pregunta++;
