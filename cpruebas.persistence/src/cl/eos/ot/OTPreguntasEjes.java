@@ -1,9 +1,13 @@
 package cl.eos.ot;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+
 import cl.eos.persistence.models.EjeTematico;
 
 public class OTPreguntasEjes {
 
+	NumberFormat formatter = new DecimalFormat("#0.00"); 
 	private EjeTematico ejeTematico;
 	private Integer buenas;
 	private Integer total;
@@ -47,5 +51,16 @@ public class OTPreguntasEjes {
 	public Float getNologrado(){
 		Float valor = (float) total-(float) buenas;
 		return (float) ((valor/(float )total)*100f);
+	}
+	
+	public String getSlogrado(){
+		float valor = ((float )buenas/(float )total)*100f;
+		return formatter.format(valor);
+	}
+	
+	public String getSnlogrado(){
+		Float valor = (float) total-(float) buenas;
+		float pvalor =  (float) ((valor/(float )total)*100f);
+		return formatter.format(pvalor);
 	}
 }
