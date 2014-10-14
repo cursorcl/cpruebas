@@ -86,6 +86,10 @@ public class EvaluarPruebaView extends AFormView {
 	@FXML
 	private TextField txtAsignatura;
 	@FXML
+	private TextField txtNroPreguntas;
+	@FXML
+	private TextField txtNroAlternativas;
+	@FXML
 	private DatePicker dtpFecha;
 	@FXML
 	private ListView<EjeTematico> lstEjes;
@@ -242,6 +246,8 @@ public class EvaluarPruebaView extends AFormView {
 
 	@Override
 	public void onFound(IEntity entity) {
+		txtNroAlternativas.setText("");
+		txtNroPreguntas.setText("");
 		if (entity instanceof Prueba) {
 			tblListadoPruebas.getItems().clear();
 			cmbColegios.getSelectionModel().clearSelection();
@@ -249,6 +255,8 @@ public class EvaluarPruebaView extends AFormView {
 			cmbCursos.getSelectionModel().clearSelection();
 			prueba = (Prueba) entity;
 			txtName.setText(prueba.getName());
+			txtNroAlternativas.setText(prueba.getAlternativas().toString());
+			txtNroPreguntas.setText(prueba.getNroPreguntas().toString());
 			txtAsignatura.setText(prueba.getAsignatura().getName());
 			List<RespuestasEsperadasPrueba> respuestas = prueba.getRespuestas();
 			ObservableList<EjeTematico> lEjes = FXCollections
@@ -364,13 +372,15 @@ public class EvaluarPruebaView extends AFormView {
 		evalPrueba.setProfesor(cmbProfesor.getSelectionModel()
 				.getSelectedItem());
 		if (validate()) {
-			if (prueba.getEvaluaciones().contains(evalPrueba)) {
+			if (!prueba.getEvaluaciones().contains(evalPrueba)) {
 				prueba.getEvaluaciones().add(evalPrueba);
 			}
 			String s = String.format("%s-%s-%s-%s", evalPrueba.getAsignatura(),
 					evalPrueba.getColegio(), evalPrueba.getCurso(), evalPrueba
 							.getFechaLocal().toString());
 			evalPrueba.setName(s);
+			prueba.getFormas().size();
+			prueba.getRespuestas().size();
 			save(prueba);
 
 			mnuGrabar.setDisable(true);

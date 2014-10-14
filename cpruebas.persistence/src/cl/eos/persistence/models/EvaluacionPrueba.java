@@ -34,7 +34,7 @@ public class EvaluacionPrueba implements IEntity {
 	private Prueba prueba;
 
 	private Curso curso;
-	@OneToMany(mappedBy = "evaluacionPrueba", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "evaluacionPrueba", cascade = CascadeType.ALL)
 	private List<PruebaRendida> pruebasRendidas;
 	private Long fecha;
 	private Profesor profesor;

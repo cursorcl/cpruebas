@@ -27,22 +27,26 @@
             <AnchorPane prefHeight="108.0" prefWidth="1087.0" styleClass="sample-page" BorderPane.alignment="CENTER">
                <children>
                   <Label layoutX="174.0" layoutY="62.0" text="Colegio" />
-                  <Label layoutX="492.0" layoutY="61.0" text="Fecha" />
+                  <Label layoutX="492.0" layoutY="63.0" text="Fecha" />
                   <Label layoutX="334.0" layoutY="63.0" text="Curso" />
                   <ComboBox fx:id="cmbProfesor" layoutX="15.0" layoutY="78.0" prefWidth="150.0" promptText="Profesor" />
                   <ComboBox fx:id="cmbColegios" layoutX="173.0" layoutY="78.0" prefWidth="150.0" promptText="Colegio" />
                   <ComboBox fx:id="cmbCursos" disable="true" layoutX="332.0" layoutY="78.0" prefWidth="150.0" promptText="Curso" />
-                  <DatePicker fx:id="dtpFecha" layoutX="491.0" layoutY="75.0" />
-                  <TextField fx:id="txtName" disable="true" editable="false" focusTraversable="false" layoutX="14.0" layoutY="26.0" prefHeight="25.0" prefWidth="259.0" promptText="Nombre Prueba" />
-                  <TextField fx:id="txtAsignatura" disable="true" editable="false" focusTraversable="false" layoutX="285.0" layoutY="26.0" prefHeight="25.0" prefWidth="373.0" promptText="Asignatura" />
+                  <DatePicker fx:id="dtpFecha" layoutX="491.0" layoutY="78.0" />
+                  <TextField fx:id="txtName" disable="true" editable="false" focusTraversable="false" layoutX="14.0" layoutY="26.0" prefHeight="25.0" prefWidth="228.0" promptText="Nombre Prueba" />
+                  <TextField fx:id="txtAsignatura" disable="true" editable="false" focusTraversable="false" layoutX="249.0" layoutY="26.0" prefHeight="25.0" prefWidth="234.0" promptText="Asignatura" />
                   <Label layoutX="15.0" layoutY="9.0" text="Nombre de la prueba" />
-                  <Label layoutX="285.0" layoutY="9.0" text="Asignatura" />
+                  <Label layoutX="249.0" layoutY="7.0" text="Asignatura" />
                   <ListView fx:id="lstEjes" disable="true" focusTraversable="false" layoutX="668.0" layoutY="26.0" prefHeight="73.0" prefWidth="200.0" />
                   <ListView fx:id="lstHabilidad" disable="true" focusTraversable="false" layoutX="870.0" layoutY="24.0" prefHeight="76.0" prefWidth="200.0" />
                   <Label layoutX="668.0" layoutY="9.0" text="Ejes temáticos" />
                   <Label layoutX="873.0" layoutY="9.0" text="Habilidades" />
                   <Label layoutX="15.0" layoutY="62.0" text="Profesor" />
                   <Label fx:id="lblError" layoutX="411.0" layoutY="9.0" prefHeight="17.0" prefWidth="246.0" />
+                  <Label layoutX="495.0" layoutY="7.0" text="#Preguntas" />
+                  <TextField fx:id="txtNroPreguntas" disable="true" editable="false" focusTraversable="false" layoutX="492.0" layoutY="27.0" prefHeight="23.0" prefWidth="63.0" promptText="#Preg" />
+                  <Label layoutX="571.0" layoutY="10.0" text="#Alternativas" />
+                  <TextField fx:id="txtNroAlternativas" disable="true" editable="false" focusTraversable="false" layoutX="569.0" layoutY="27.0" prefHeight="23.0" prefWidth="69.0" promptText="#Altern" />
                </children>
             </AnchorPane>
          </children>
