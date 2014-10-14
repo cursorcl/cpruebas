@@ -34,7 +34,7 @@ public class PruebaRendida implements IEntity {
 	private Integer omitidas;
 	private Float nota;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	private EvaluacionPrueba evaluacionPrueba;
 
 	private RangoEvaluacion rango;

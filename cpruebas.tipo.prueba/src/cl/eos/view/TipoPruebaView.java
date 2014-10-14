@@ -106,6 +106,7 @@ public class TipoPruebaView extends AFormView implements
 				.getSelectedItem();
 		if (tipoPrueba != null) {
 			txtNombre.setText(tipoPrueba.getName());
+			select((IEntity) tipoPrueba.getTipoPrueba());
 		}
 	}
 
@@ -168,7 +169,7 @@ public class TipoPruebaView extends AFormView implements
 					mnuModificar.setDisable(true);
 					mnuEliminar.setDisable(false);
 				} else if (itemsSelec.size() == 1) {
-					select((IEntity) itemsSelec.get(0).getTipoPrueba());
+
 					mnItemModificar.setDisable(false);
 					mnItemEliminar.setDisable(false);
 
@@ -197,7 +198,7 @@ public class TipoPruebaView extends AFormView implements
 
 	@Override
 	public void onDeleted(IEntity entity) {
-		tblTipoPrueba.getItems().remove(entity);
+		tblTipoPrueba.getItems().remove(new OTTipoPrueba((TipoPrueba) entity));
 	}
 
 	private void removeAllStyles() {

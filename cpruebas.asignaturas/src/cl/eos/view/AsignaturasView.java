@@ -100,6 +100,7 @@ public class AsignaturasView extends AFormView implements
 				.getSelectedItem();
 		if (asignatura != null) {
 			txtNombre.setText(asignatura.getName());
+			select((IEntity) asignatura.getAsignatura());
 		}
 	}
 
@@ -156,7 +157,7 @@ public class AsignaturasView extends AFormView implements
 					mnuEliminar.setDisable(false);
 
 				} else if (itemsSelec.size() == 1) {
-					select((IEntity) itemsSelec.get(0).getAsignatura());
+					
 					mnItemModificar.setDisable(false);
 					mnItemEliminar.setDisable(false);
 
@@ -186,8 +187,7 @@ public class AsignaturasView extends AFormView implements
 
 	@Override
 	public void onDeleted(IEntity entity) {
-		System.out.println("Elementoeliminando:" + entity.toString());
-		tblAsignatura.getItems().remove(entity);
+		tblAsignatura.getItems().remove(new OTAsignatura((Asignatura) entity));
 	}
 
 	private void removeAllStyles() {

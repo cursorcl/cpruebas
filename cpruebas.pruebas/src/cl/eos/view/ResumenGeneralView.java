@@ -5,7 +5,10 @@ import java.util.List;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -16,8 +19,10 @@ import cl.eos.interfaces.entity.IEntity;
 import cl.eos.ot.OTResumenGeneral;
 import cl.eos.persistence.models.EvaluacionPrueba;
 import cl.eos.persistence.models.PruebaRendida;
+import cl.eos.util.ExcelSheetWriterObj;
 
-public class ResumenGeneralView extends AFormView {
+public class ResumenGeneralView extends AFormView implements
+EventHandler<ActionEvent> {
 	@FXML
 	private TextField txtPrueba;
 	@FXML
@@ -68,6 +73,11 @@ public class ResumenGeneralView extends AFormView {
 	private TableColumn<PruebaRendida, String> colPPuntaje;
 	@FXML
 	private TableColumn<PruebaRendida, Float> colANota;
+	@FXML
+	private MenuItem mnuExportarAlumnos;
+	@FXML
+	private MenuItem mnuExportarResumen;
+	
 
 	private Float notaMin = 7f;
 	private Float notaMax = 0f;
@@ -87,6 +97,8 @@ public class ResumenGeneralView extends AFormView {
 		this.setTitle("Resumren de respuestas generales");
 		inicializarTablaResumen();
 		inicializarTablaAlumnos();
+		mnuExportarAlumnos.setOnAction(this);
+		mnuExportarResumen.setOnAction(this);
 	}
 
 	private void inicializarTablaAlumnos() {
@@ -234,5 +246,22 @@ public class ResumenGeneralView extends AFormView {
 		ObservableList<OTResumenGeneral> oList = FXCollections
 				.observableArrayList(listaResumen);
 		tblResumen.setItems(oList);
+	}
+
+	@Override
+	public void handle(ActionEvent event) {
+		Object source = event.getSource();
+		if (source == mnuExportarResumen || source == mnuExportarAlumnos) {
+			
+			tblAlumnos.setId("Alumnos");
+			tblResumen.setId("Resumen");
+			
+			List<TableView<? extends Object>> listaTablas = new LinkedList<>();
+			listaTablas.add((TableView<? extends Object>) tblAlumnos);
+			listaTablas.add((TableView<? extends Object>) tblResumen);
+			
+			ExcelSheetWriterObj.convertirDatosALibroDeExcel(listaTablas);
+		} 
+		
 	}
 }

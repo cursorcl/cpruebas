@@ -15,17 +15,16 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
-import cl.cursor.card.Recognizer;
-import cl.cursor.card.RecognizerFactory;
 import boofcv.alg.filter.binary.BinaryImageOps;
 import boofcv.alg.filter.binary.Contour;
 import boofcv.alg.filter.binary.ThresholdImageOps;
 import boofcv.core.image.ConvertBufferedImage;
-import boofcv.io.image.UtilImageIO;
 import boofcv.struct.ConnectRule;
 import boofcv.struct.image.ImageFloat32;
 import boofcv.struct.image.ImageSInt32;
 import boofcv.struct.image.ImageUInt8;
+import cl.cursor.card.Recognizer;
+import cl.cursor.card.RecognizerFactory;
 
 /**
  * Imagen escaneada en una resolucion de 300dpi. 1) 1.l) El primer rectangulo oscuro está en 58,1541
@@ -61,7 +60,8 @@ public class ExtractorResultadosPruebas {
   public static int prueba = 1;
   public static int XRUTREF = 145;
 
-  private static String RESPUESTAS[] = {"O", "A", "B", "C", "D", "E", "V", "F", "B", "M"};
+  private static String RESPUESTAS[] = {"A", "B", "C", "D", "E", "V", "F", "O", "M"};
+  private static String RUT[] = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "K"};
 
   // Son las diferencias del inicio del círculo con inicio rectángulo
   public static int[] CIRCLE_X_RUT_DIFF = {286 - XRUTREF, 348 - XRUTREF, 418 - XRUTREF,
@@ -80,7 +80,7 @@ public class ExtractorResultadosPruebas {
    */
   public ExtractorResultadosPruebas() throws IOException {
     recognizerRespustas = RecognizerFactory.create(new File("./res/red_respuestas.red"));
-    // recognizerRut = RecognizerFactory.create(new File("./res/red_rut.red"));
+    recognizerRut = RecognizerFactory.create(new File("./res/red_rut.red"));
   }
 
 
@@ -121,7 +121,7 @@ public class ExtractorResultadosPruebas {
     String rut = getRut(pRefRut, rotated);
 
     resultado.setForma(1);
-    resultado.setRespuestas("");
+    resultado.setRespuestas(respuestas);
     resultado.setRut(rut);
     return resultado;
   }
@@ -133,19 +133,19 @@ public class ExtractorResultadosPruebas {
    * @param image Imagen de la prueba que se procesa.
    * @return String con el rut que viene referenciado en la prueba.
    */
-  private static String getRut(Point pRefRut, BufferedImage image) {
+  private String getRut(Point pRefRut, BufferedImage image) {
     int x = pRefRut.x;
-
+    StringBuffer strRut = new StringBuffer("");
     for (int n = 0; n < CIRCLE_X_RUT_DIFF.length; n++) {
       int y = pRefRut.y;
       BufferedImage rut = image.getSubimage(x + CIRCLE_X_RUT_DIFF[n] - 2, y - 2, 49, 48 * 11);
-      try {
-        ImageIO.write(rut, "png", new File("./res/rut" + n + ".png"));
-      } catch (IOException e) {
-        e.printStackTrace();
+      int idx = recognizerRut.recognize(rut, 0.75);
+      if(idx != -1)
+      {
+    	  strRut.append(RUT[idx]);
       }
     }
-    return "10613781-1";
+    return strRut.toString();
   }
 
   /**
@@ -174,14 +174,8 @@ public class ExtractorResultadosPruebas {
         BufferedImage img =
             image
                 .getSubimage(left, top, CIRCLE_SIZE * 5 + CIRCLE_X_SPCAES * 4 + 4, CIRCLE_SIZE + 8);
-        
-        try {
-			ImageIO.write(img, "png", new File("./res/resp" + pregunta + ".png"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-//        String respuesta  = getRespuesta(img);
-//        resp.append(respuesta);
+        String respuesta  = getRespuesta(img);
+        resp.append(respuesta);
         pregunta++;
       }
     }
@@ -190,17 +184,13 @@ public class ExtractorResultadosPruebas {
 
   private String getRespuesta(BufferedImage img) {
 	  String resp = "O";
-      double[] match = recognizerRespustas.match(img);
-      double max = Double.MIN_VALUE;
-      int idxMax = -1;
-      for (int m = 0; m < match.length; m++) {
-        if (match[m] > max) {
-          max = match[m];
-          idxMax = m;
-        }
+      int  idx = recognizerRespustas.recognize(img, 0.75);
+      if (idx != -1) {
+        resp = RESPUESTAS[idx];
       }
-      if (idxMax != -1) {
-        resp = RESPUESTAS[idxMax];
+      else
+      {
+        resp = "M";
       }
 	return resp;
 }

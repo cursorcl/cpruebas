@@ -32,8 +32,6 @@
                   <SeparatorMenuItem mnemonicParsing="false" />
                   <MenuItem fx:id="mnuExportar" mnemonicParsing="false" text="Exportar a excel" />
                   <MenuItem fx:id="mnuImportar" mnemonicParsing="false" text="Importar Profesor" visible="false" />
-                  <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem mnemonicParsing="false" text="Cerrar" />
                </items>
             </Menu>
           <Menu mnemonicParsing="false" text="Help" visible="false">

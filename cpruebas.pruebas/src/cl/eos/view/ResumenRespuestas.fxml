@@ -44,6 +44,13 @@
                               <TableColumn fx:id="colMalas" prefWidth="75.0" text="Malas" />
                               <TableColumn fx:id="colOmitidas" prefWidth="75.0" text="Omitidas" />
                            </columns>
+                           <contextMenu>
+                              <ContextMenu>
+                                <items>
+                                  <MenuItem fx:id="mnuExportarRespuestas" mnemonicParsing="false" text="Exportar a excel" />
+                                </items>
+                              </ContextMenu>
+                           </contextMenu>
                         </TableView>
                         <Label layoutX="5.0" layoutY="142.0" text="Nro. Preguntas" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="140.0" />
                         <TextField fx:id="txtNroPreguntas" layoutX="93.0" layoutY="138.0" prefHeight="25.0" prefWidth="74.0" />

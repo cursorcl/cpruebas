@@ -17,14 +17,18 @@ import jfxtras.labs.scene.control.BreadcrumbBar;
 
 import org.controlsfx.dialog.Dialogs;
 
+import cl.eos.exception.ExceptionBD;
 import cl.eos.imp.view.WindowButtons;
 import cl.eos.imp.view.WindowManager;
 import cl.eos.interfaces.IActivator;
 import cl.eos.provider.persistence.PersistenceServiceFactory;
 import cl.eos.util.ExcelSheetReader;
+import cl.eos.util.ExcelSheetReaderx;
+import cl.eos.util.Utils;
 
 public class MainController {
 
+	private static final String EXTENSION_XLSX = "xlsx";
 	@FXML
 	private MenuContainer mnuPrincipal;
 	@FXML
@@ -169,10 +173,10 @@ public class MainController {
 		// });
 
 		mnuImportar.setOnAction(new EventHandler<ActionEvent>() {
-			
+
 			@Override
 			public void handle(ActionEvent event) {
-				importarExcel();				
+				importarExcel();
 			}
 		});
 	}
@@ -180,24 +184,38 @@ public class MainController {
 	protected void importarExcel() {
 		FileChooser fileChooser = new FileChooser();
 		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(
-				"XLS files (*.xls)", "*.xls");
+				"XLS files (*.xls), (*.xlsx)", "*.xls", "*.xlsx");
 		fileChooser.getExtensionFilters().add(extFilter);
+		
 		File file = fileChooser.showOpenDialog(null);
-		ExcelSheetReader excel = new ExcelSheetReader();
-
-		List lista = excel.readExcelFile(file);
-		String[] datosFile = file.getName().split(".xls");
-		PersistenceServiceFactory.getPersistenceService().insert(datosFile[0],
-				lista, null);
-		Dialogs.create()
-				.owner(null)
-				.title("Importación desde excel")
-				.masthead("")
-				.message(
-						"Ha finalizado proceso de importación de ["
-								+ lista.size() + "] registros para tabla ["
-								+ datosFile[0] + "]").showInformation();
-		System.out.println(file);
+		if (file != null) {
+			List lista = null;
+			String extension = Utils.getFileExtension(file);
+			if (extension.equals(EXTENSION_XLSX)){
+				ExcelSheetReaderx excel = new ExcelSheetReaderx();
+				lista = excel.readExcelFile(file);
+			}
+			else{
+				ExcelSheetReader excel = new ExcelSheetReader();
+				lista = excel.readExcelFile(file);
+			}
+			String[] datosFile = file.getName().split("."+extension);
+			try {
+				PersistenceServiceFactory.getPersistenceService().insert(
+						datosFile[0], lista, null);
+				Dialogs.create()
+						.owner(null)
+						.title("Importación desde excel")
+						.masthead("")
+						.message(
+								"Ha finalizado proceso de importación de ["
+										+ lista.size()
+										+ "] registros para tabla ["
+										+ datosFile[0] + "]").showInformation();
+			} catch (ExceptionBD e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	public Group getGroup() {

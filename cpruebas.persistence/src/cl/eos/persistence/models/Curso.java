@@ -16,7 +16,7 @@ import cl.eos.interfaces.entity.IEntity;
 
 @Entity(name = "curso")
 @NamedQueries({
-		@NamedQuery(name = "Curso.findAll", query = "SELECT e FROM curso e"),
+		@NamedQuery(name = "Curso.findAll", query = "SELECT e FROM curso e order by e.name"),
 		@NamedQuery(name = "Curso.findByTipo", query = "SELECT e FROM curso e where e.tipoCurso.id = :tcursoId"),
 		@NamedQuery(name = "Curso.findByColegio", query = "SELECT e FROM curso e where e.colegio.id = :coelgioId"),
 		@NamedQuery(name = "Curso.findByTipoColegio", query = "SELECT e FROM curso e where e.colegio.id = :colegioId and e.tipoCurso.id = :tcursoId")
