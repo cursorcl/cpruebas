@@ -100,9 +100,13 @@ public class AlumnosView extends AFormView implements EventHandler<ActionEvent> 
 
 	@FXML
 	private TableColumn<OTAlumno, String> colMaterno;
+	@FXML
+	private TableColumn<OTAlumno, String> colColegio;
 
 	@FXML
 	private TableColumn<OTAlumno, String> colCurso;
+
+	private ObservableList<Curso> oListCursos;
 
 	public AlumnosView() {
 
@@ -129,6 +133,8 @@ public class AlumnosView extends AFormView implements EventHandler<ActionEvent> 
 		mnuModificar.setDisable(true);
 		mnuEliminar.setDisable(true);
 		mnItemEliminar.setDisable(true);
+
+		cmbColegio.setOnAction(this);
 	}
 
 	private void accionClicTabla() {
@@ -144,7 +150,7 @@ public class AlumnosView extends AFormView implements EventHandler<ActionEvent> 
 					mnuModificar.setDisable(true);
 					mnuEliminar.setDisable(false);
 				} else if (itemsSelec.size() == 1) {
-					
+
 					mnItemModificar.setDisable(false);
 					mnItemEliminar.setDisable(false);
 					mnuModificar.setDisable(false);
@@ -245,6 +251,9 @@ public class AlumnosView extends AFormView implements EventHandler<ActionEvent> 
 		colMaterno
 				.setCellValueFactory(new PropertyValueFactory<OTAlumno, String>(
 						"materno"));
+		colColegio
+				.setCellValueFactory(new PropertyValueFactory<OTAlumno, String>(
+						"colegio"));
 		colCurso.setCellValueFactory(new PropertyValueFactory<OTAlumno, String>(
 				"curso"));
 	}
@@ -348,12 +357,11 @@ public class AlumnosView extends AFormView implements EventHandler<ActionEvent> 
 				}
 				tblAlumnos.setItems(oList);
 			} else if (entity instanceof Curso) {
-				ObservableList<Curso> oList = FXCollections
-						.observableArrayList();
+				oListCursos = FXCollections.observableArrayList();
 				for (Object iEntity : list) {
-					oList.add((Curso) iEntity);
+					oListCursos.add((Curso) iEntity);
 				}
-				cmbCurso.setItems(oList);
+				asignaCursos();
 			} else if (entity instanceof Colegio) {
 				ObservableList<Colegio> oList = FXCollections
 						.observableArrayList();
@@ -379,6 +387,22 @@ public class AlumnosView extends AFormView implements EventHandler<ActionEvent> 
 		} else if (source == mnuExportar || source == menuExportar) {
 			tblAlumnos.setId("Alumnos");
 			ExcelSheetWriterObj.convertirDatosALibroDeExcel(tblAlumnos);
+		} else if (source == cmbColegio) {
+			asignaCursos();
+		}
+
+	}
+
+	private void asignaCursos() {
+		Colegio colegioSeleccionado = cmbColegio.getValue();
+		if (colegioSeleccionado != null) {
+			ObservableList<Curso> oList = FXCollections.observableArrayList();
+			for (Curso object : oListCursos) {
+				if (object.getColegio().equals(colegioSeleccionado)) {
+					oList.add(object);
+				}
+			}
+			cmbCurso.setItems(oList);
 		}
 
 	}
