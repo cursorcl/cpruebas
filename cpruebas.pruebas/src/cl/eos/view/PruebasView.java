@@ -98,8 +98,6 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
   @FXML
   private TextField txtName;
   @FXML
-  private TextField filterField;
-  @FXML
   private MenuItem mnuGrabar;
   @FXML
   private MenuItem mnuModificar;
@@ -212,17 +210,6 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
           pruebas.add(new OTPrueba((Prueba) lEntity));
         }
         tblListadoPruebas.setItems(pruebas);
-        // FilteredList<OTPrueba> filteredItems = new FilteredList<OTPrueba>(
-        // pruebas, p -> true);
-        // tblListadoPruebas.setItems(filteredItems);
-        // filterField.setOnAction(new EventHandler<ActionEvent>() {
-        // public void handle(ActionEvent event) {
-        // filteredItems.setPredicate(ot ->
-        // ot.getName().contains(
-        // filterField.getText()));
-        // }
-        // });
-
       }
       if (entity instanceof TipoPrueba) {
         ObservableList<TipoPrueba> tipoPruebas = FXCollections.observableArrayList();

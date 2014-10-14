@@ -47,10 +47,10 @@ public class Prueba implements IEntity {
 	private String responses;
 	private Integer exigencia;
 
-	@OneToMany(mappedBy = "prueba", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "prueba", cascade = CascadeType.ALL)
 	private List<Formas> formas;
 
-	@OneToMany(mappedBy = "prueba", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "prueba", cascade = CascadeType.ALL)
 	private List<RespuestasEsperadasPrueba> respuestas;
 
 	@OneToMany(mappedBy = "prueba", cascade = CascadeType.ALL)
