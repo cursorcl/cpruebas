@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 import org.neuroph.core.NeuralNetwork;
 
 import cl.cursor.card.Recognizer;
-import cl.triton.card.ImagePanel;
+import cl.triton.card.ImageInputProvider;
 
 /**
  * @author ayachan
@@ -21,14 +21,10 @@ public class NeuralNetworkRecognizer implements Recognizer
       Logger.getLogger(NeuralNetworkRecognizer.class.getName());
 
   final NeuralNetwork<?> network;
-  final ImagePanel imgp = new ImagePanel();
+  final ImageInputProvider imgp = new ImageInputProvider();
 
   public NeuralNetworkRecognizer(File file)
   {
-//    InputStream istrm = new FileInputStream(file);
-//    network = NeuralNetwork.load(istrm);
-//    istrm.close();
-
     network = NeuralNetwork.createFromFile(file);
     imgp.resetSize(64, 24);
   }

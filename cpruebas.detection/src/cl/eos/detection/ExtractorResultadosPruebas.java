@@ -61,7 +61,7 @@ public class ExtractorResultadosPruebas {
   public static int prueba = 1;
   public static int XRUTREF = 145;
 
-  private static String RESPUESTAS[] = {"O", "A", "B", "C", "D", "E", "V", "F", "B", "M"};
+  private static String RESPUESTAS[] = {"A", "B", "C", "D", "E", "V", "F", "O", "M"};
 
   // Son las diferencias del inicio del círculo con inicio rectángulo
   public static int[] CIRCLE_X_RUT_DIFF = {286 - XRUTREF, 348 - XRUTREF, 418 - XRUTREF,
@@ -80,7 +80,7 @@ public class ExtractorResultadosPruebas {
    */
   public ExtractorResultadosPruebas() throws IOException {
     recognizerRespustas = RecognizerFactory.create(new File("./res/red_respuestas.red"));
-    // recognizerRut = RecognizerFactory.create(new File("./res/red_rut.red"));
+    recognizerRut = RecognizerFactory.create(new File("./res/red_rut.red"));
   }
 
 
@@ -121,7 +121,7 @@ public class ExtractorResultadosPruebas {
     String rut = getRut(pRefRut, rotated);
 
     resultado.setForma(1);
-    resultado.setRespuestas("");
+    resultado.setRespuestas(respuestas);
     resultado.setRut(rut);
     return resultado;
   }
@@ -175,13 +175,13 @@ public class ExtractorResultadosPruebas {
             image
                 .getSubimage(left, top, CIRCLE_SIZE * 5 + CIRCLE_X_SPCAES * 4 + 4, CIRCLE_SIZE + 8);
         
-        try {
-			ImageIO.write(img, "png", new File("./res/resp" + pregunta + ".png"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-//        String respuesta  = getRespuesta(img);
-//        resp.append(respuesta);
+//        try {
+//			ImageIO.write(img, "png", new File("./res/resp" + pregunta + ".png"));
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+        String respuesta  = getRespuesta(img);
+        resp.append(respuesta);
         pregunta++;
       }
     }
@@ -190,17 +190,13 @@ public class ExtractorResultadosPruebas {
 
   private String getRespuesta(BufferedImage img) {
 	  String resp = "O";
-      double[] match = recognizerRespustas.match(img);
-      double max = Double.MIN_VALUE;
-      int idxMax = -1;
-      for (int m = 0; m < match.length; m++) {
-        if (match[m] > max) {
-          max = match[m];
-          idxMax = m;
-        }
+      int  idx = recognizerRespustas.recognize(img, 0.75);
+      if (idx != -1) {
+        resp = RESPUESTAS[idx];
       }
-      if (idxMax != -1) {
-        resp = RESPUESTAS[idxMax];
+      else
+      {
+        resp = "M";
       }
 	return resp;
 }
