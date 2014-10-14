@@ -175,7 +175,7 @@ EventHandler<ActionEvent>{
 		}
 
 		listaRespuestas = new LinkedList<OTRespuestaPreguntas>();
-		for (int i = 0; i < nroPreguntas - 1; i++) {
+		for (int i = 0; i < nroPreguntas ; i++) {
 			OTRespuestaPreguntas otRespuesta = new OTRespuestaPreguntas();
 			otRespuesta.setName(String.valueOf(i + 1));
 			otRespuesta.setBuenas(sBuenas[i]);
@@ -188,19 +188,19 @@ EventHandler<ActionEvent>{
 		OTRespuestasPorcentaje respuestaPorcentajeB = new OTRespuestasPorcentaje();
 		respuestaPorcentajeB.setTitulo("Buenas");
 		float porcentajeBuenas = (float) (buenas / nroPreguntas);
-		respuestaPorcentajeB.setPorcentaje(porcentajeBuenas);
+		respuestaPorcentajeB.setPorcentaje(porcentajeBuenas*100);
 		listaPorcentaje.add(respuestaPorcentajeB);
 
 		OTRespuestasPorcentaje respuestaPorcentajeM = new OTRespuestasPorcentaje();
 		respuestaPorcentajeM.setTitulo("Malas");
 		float porcentajeMalas = (float) (malas / nroPreguntas);
-		respuestaPorcentajeM.setPorcentaje(porcentajeMalas);
+		respuestaPorcentajeM.setPorcentaje(porcentajeMalas*100);
 		listaPorcentaje.add(respuestaPorcentajeM);
 
 		OTRespuestasPorcentaje respuestaPorcentaje = new OTRespuestasPorcentaje();
 		respuestaPorcentaje.setTitulo("Omitidas");
 		float porcentajeOmitidas = (float) (omitidas / nroPreguntas);
-		respuestaPorcentaje.setPorcentaje(porcentajeOmitidas);
+		respuestaPorcentaje.setPorcentaje(porcentajeOmitidas*100);
 		listaPorcentaje.add(respuestaPorcentaje);
 		
 		XYChart.Series series1 = new XYChart.Series();
