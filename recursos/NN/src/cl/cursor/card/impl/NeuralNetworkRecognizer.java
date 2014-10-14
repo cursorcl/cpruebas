@@ -4,80 +4,99 @@
 package cl.cursor.card.impl;
 
 import java.awt.Image;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.neuroph.core.NeuralNetwork;
 
 import cl.cursor.card.Recognizer;
-import cl.triton.card.ImageInputProvider;
+import cl.triton.card.ImagePanel;
 
 /**
  * @author ayachan
  */
-public class NeuralNetworkRecognizer implements Recognizer {
-	static final Logger log = Logger.getLogger(NeuralNetworkRecognizer.class
-			.getName());
+public class NeuralNetworkRecognizer implements Recognizer
+{
+  static final Logger log =
+      Logger.getLogger(NeuralNetworkRecognizer.class.getName());
 
-	final NeuralNetwork<?> network;
-	final ImageInputProvider imgp = new ImageInputProvider();
+  final NeuralNetwork<?> network;
+  final ImagePanel imgp = new ImagePanel();
 
-	public NeuralNetworkRecognizer(File file) {
-		this(file, 64, 24);
-	}
+  public NeuralNetworkRecognizer(File file) throws IOException
+  {
+    // the (first) file with the grid size
+    BufferedReader brdr = new BufferedReader(new FileReader(file));
+    String[] grdsz = brdr.readLine().split(" ");
+    String nnfilename = brdr.readLine();
 
-	public NeuralNetworkRecognizer(File file, int width, int height) {
-		network = NeuralNetwork.createFromFile(file);
-		imgp.resetSize(width, height);
-	}
+    int width = Integer.parseInt(grdsz[0]);
+    int height = Integer.parseInt(grdsz[1]);
+    imgp.resetSize(width, height);
 
-	@Override
-	public int recognize(Image image, double tolerance) {
-		double[] output = match(image);
+    log.info(String.format("grid is read as %d x %d", width, height));
 
-		StringBuffer sb = new StringBuffer();
-		for (int n = 0; n < output.length; n++) {
-			if (sb.length() > 0)
-				sb.append(", ");
-			sb.append(String.format("[%2d]: %.3f", n, output[n]));
-		}
-		log.info(sb.toString());
+    File nnFile = new File(file.getParent(), nnfilename);
+    network = NeuralNetwork.createFromFile(nnFile);
 
-		int bestIndex = -1;
-		double bestValue = Double.MIN_VALUE;
-		double bestOther = Double.MIN_VALUE;
+//    imgp.resetSize(64, 24);
+  }
 
-		for (int n = 0; n < output.length; n++) {
-			if (output[n] > bestValue) {
-				// (keep the second place value)
-				if (bestValue > bestOther)
-					bestOther = bestValue;
+  @Override
+  public int recognize(Image image, double tolerance)
+  {
+    double[] output = match(image);
 
-				bestIndex = n;
-				bestValue = output[n];
-			}
-		}
+    StringBuffer sb = new StringBuffer();
+    for (int n=0; n<output.length; n++)
+    {
+      if (sb.length() > 0)
+        sb.append(", ");
+      sb.append(String.format("[%2d]: %.3f", n, output[n]));
+    }
+    log.info(sb.toString());
 
-		double outputTolerance = Math.abs(bestValue - bestOther) / bestValue;
-		log.info(String.format("tolerance between %.3f and %.3f is %.2f",
-				bestValue, bestOther, outputTolerance));
+    int bestIndex = -1;
+    double bestValue = Double.MIN_VALUE;
+    double bestOther = Double.MIN_VALUE;
 
-		return (outputTolerance > tolerance) ? bestIndex : -1;
-	}
+    for (int n=0; n<output.length; n++)
+    {
+      if (output[n] > bestValue)
+      {
+        // (keep the second place value)
+        if (bestValue > bestOther)
+          bestOther = bestValue;
 
-	@Override
-	public double[] match(Image image) {
-		// set the image
-		imgp.setImage(image);
+        bestIndex = n;
+        bestValue = output[n];
+      }
+    }
 
-		// the input
-		double[] input = new double[imgp.getInputSize()];
-		for (int n = 0; n < imgp.getInputSize(); n++)
-			input[n] = imgp.getInput(n);
+    double outputTolerance = Math.abs(bestValue - bestOther) / bestValue;
+    log.info(String.format("tolerance between %.3f and %.3f is %.2f",
+        bestValue, bestOther, outputTolerance));
 
-		// the evaluation
-		network.setInput(input);
-		network.calculate();
-		return network.getOutput();
-	}
+    return (outputTolerance > tolerance) ? bestIndex : -1;
+  }
+
+  @Override
+  public double[] match(Image image)
+  {
+    // set the image
+    imgp.setImage(image);
+
+    // the input
+    double[] input = new double[imgp.getInputSize()];
+    for (int n=0; n<imgp.getInputSize(); n++)
+      input[n] = imgp.getInput(n);
+
+    // the evaluation
+    network.setInput(input);
+    network.calculate();
+    return network.getOutput();
+  }
 }
