@@ -34,7 +34,7 @@ public class PruebaRendida implements IEntity {
 	private Integer omitidas;
 	private Float nota;
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne
 	private EvaluacionPrueba evaluacionPrueba;
 
 	private RangoEvaluacion rango;
