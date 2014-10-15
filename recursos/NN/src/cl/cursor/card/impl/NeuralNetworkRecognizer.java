@@ -13,7 +13,8 @@ import java.util.logging.Logger;
 import org.neuroph.core.NeuralNetwork;
 
 import cl.cursor.card.Recognizer;
-import cl.triton.card.ImagePanel;
+import cl.sisdef.util.Pair;
+import cl.triton.card.ImageInputProvider;
 
 /**
  * @author ayachan
@@ -24,7 +25,8 @@ public class NeuralNetworkRecognizer implements Recognizer
       Logger.getLogger(NeuralNetworkRecognizer.class.getName());
 
   final NeuralNetwork<?> network;
-  final ImagePanel imgp = new ImagePanel();
+  final int width;
+  final int height;
 
   public NeuralNetworkRecognizer(File file) throws IOException
   {
@@ -33,20 +35,17 @@ public class NeuralNetworkRecognizer implements Recognizer
     String[] grdsz = brdr.readLine().split(" ");
     String nnfilename = brdr.readLine();
 
-    int width = Integer.parseInt(grdsz[0]);
-    int height = Integer.parseInt(grdsz[1]);
-    imgp.resetSize(width, height);
+    width = Integer.parseInt(grdsz[0]);
+    height = Integer.parseInt(grdsz[1]);
 
     log.info(String.format("grid is read as %d x %d", width, height));
 
     File nnFile = new File(file.getParent(), nnfilename);
     network = NeuralNetwork.createFromFile(nnFile);
-
-//    imgp.resetSize(64, 24);
   }
 
   @Override
-  public int recognize(Image image, double tolerance)
+  public Pair<Integer, Pair<Double, Double>> recognize(Image image, double tolerance)
   {
     double[] output = match(image);
 
@@ -60,8 +59,8 @@ public class NeuralNetworkRecognizer implements Recognizer
     log.info(sb.toString());
 
     int bestIndex = -1;
-    double bestValue = Double.MIN_VALUE;
-    double bestOther = Double.MIN_VALUE;
+    double bestValue = Double.NEGATIVE_INFINITY;
+    double bestOther = Double.NEGATIVE_INFINITY;
 
     for (int n=0; n<output.length; n++)
     {
@@ -74,25 +73,33 @@ public class NeuralNetworkRecognizer implements Recognizer
         bestIndex = n;
         bestValue = output[n];
       }
+      else if (output[n] > bestOther)
+        bestOther = output[n];
+      else
+        ;
     }
 
     double outputTolerance = Math.abs(bestValue - bestOther) / bestValue;
     log.info(String.format("tolerance between %.3f and %.3f is %.2f",
         bestValue, bestOther, outputTolerance));
 
-    return (outputTolerance > tolerance) ? bestIndex : -1;
+    int result = (outputTolerance > tolerance) ? bestIndex : -1;
+
+//    Pair<Double, Double> second = new Pair<Double, Double>(bestValue, outputTolerance);
+    return new Pair<Integer, Pair<Double, Double>>(
+        result, new Pair<Double, Double>(bestValue, outputTolerance));
   }
 
   @Override
   public double[] match(Image image)
   {
     // set the image
-    imgp.setImage(image);
+    ImageInputProvider iip = new ImageInputProvider(image, width, height);
 
     // the input
-    double[] input = new double[imgp.getInputSize()];
-    for (int n=0; n<imgp.getInputSize(); n++)
-      input[n] = imgp.getInput(n);
+    double[] input = new double[iip.getInputSize()];
+    for (int n=0; n<iip.getInputSize(); n++)
+      input[n] = iip.getInput(n);
 
     // the evaluation
     network.setInput(input);

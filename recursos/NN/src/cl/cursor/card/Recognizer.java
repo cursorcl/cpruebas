@@ -5,6 +5,8 @@ package cl.cursor.card;
 
 import java.awt.Image;
 
+import cl.sisdef.util.Pair;
+
 /**
  * A pattern recognizer.
  * 
@@ -25,7 +27,7 @@ public interface Recognizer
    *          should be done between the best solution versus the others.
    * @return The index of the best solution if into tolerance, -1 otherwise.
    */
-  int recognize(Image image, double tolerance);
+  Pair<Integer, Pair<Double, Double>> recognize(Image image, double tolerance);
 
   /**
    * Test the image and return the recognition result.
