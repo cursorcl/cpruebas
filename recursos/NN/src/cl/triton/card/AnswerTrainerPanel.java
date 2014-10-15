@@ -12,8 +12,10 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -27,6 +29,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JToolBar;
+import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -34,8 +37,14 @@ import javax.swing.event.ChangeListener;
 import org.neuroph.core.NeuralNetwork;
 import org.neuroph.core.data.DataSet;
 import org.neuroph.core.data.DataSetRow;
+import org.neuroph.core.events.LearningEvent;
+import org.neuroph.core.events.LearningEventListener;
+import org.neuroph.core.events.NeuralNetworkEvent;
+import org.neuroph.core.events.NeuralNetworkEventListener;
+import org.neuroph.core.exceptions.VectorSizeMismatchException;
 import org.neuroph.nnet.MultiLayerPerceptron;
 import org.neuroph.nnet.learning.BackPropagation;
+import org.neuroph.nnet.learning.MomentumBackpropagation;
 
 import cl.sisdef.util.UtilForm;
 
@@ -43,7 +52,8 @@ import cl.sisdef.util.UtilForm;
  * @author Turbo7
  */
 public class AnswerTrainerPanel extends JPanel
-    implements ActionListener, ChangeListener
+    implements ActionListener, ChangeListener,
+        NeuralNetworkEventListener, LearningEventListener
 {
   private static final long serialVersionUID = 1L;
 
@@ -60,12 +70,17 @@ public class AnswerTrainerPanel extends JPanel
 
   JButton button_createNetwork = null;
 
+  JButton button_loadImageSet = null;
+
   JButton button_loadImage = null;
   JSpinner spin_imageOutput = null;
   JButton button_addTrainingSet = null;
   JLabel label_trainingSetSize = null;
 
   JButton button_train = null;
+  JLabel label_trainIteration = null;
+  JLabel label_trainNetworkError = null;
+
   JButton button_recognize = null;
 
   JButton button_noise = null;
@@ -158,9 +173,20 @@ public class AnswerTrainerPanel extends JPanel
 
     button_createNetwork = UtilForm.createButton(
         "Create network", "create the multi layer perceptron network", null, null, this, null);
+
     button_train = UtilForm.createButton(
         "Train", "train the network with the current training set", null, null, this, null);
     button_train.setEnabled(false);
+    label_trainIteration = UtilForm.createLabel(" ",
+        SwingConstants.CENTER, SwingConstants.CENTER, "Train iteration", null,
+        null);
+//        UtilForm.createBorder(BevelBorder.LOWERED));
+    label_trainIteration.setPreferredSize(new Dimension(30, 40));
+    label_trainNetworkError = UtilForm.createLabel(" ",
+        SwingConstants.CENTER, SwingConstants.CENTER, "Network error", null,
+        UtilForm.createBorder(BevelBorder.LOWERED));
+    label_trainNetworkError.setPreferredSize(new Dimension(50, 40));
+
     button_recognize = UtilForm.createButton(
         "Recognize", "recognize the current image!", null, null, this, null);
     button_recognize.setEnabled(false);
@@ -168,6 +194,9 @@ public class AnswerTrainerPanel extends JPanel
     button_saveNetwork = UtilForm.createButton(
         "Save network", "save the trained network in a file", null, null, this, null);
     button_saveNetwork.setEnabled(false);
+
+    button_loadImageSet = UtilForm.createButton(
+        "Load set", "load a set of images to train", null, null, this, null);
 
     button_loadImage = UtilForm.createButton(
         "Load Image", "load an image to train or recognize", null, null, this, null);
@@ -187,6 +216,9 @@ public class AnswerTrainerPanel extends JPanel
     nntb.add(button_createNetwork);
     nntb.addSeparator();
     nntb.add(button_train);
+    nntb.add(label_trainIteration);
+    nntb.add(label_trainNetworkError);
+    nntb.addSeparator();
     nntb.add(button_recognize);
     nntb.addSeparator();
     nntb.add(button_saveNetwork);
@@ -258,6 +290,9 @@ public class AnswerTrainerPanel extends JPanel
           (imgp.getInputWidth() * imgp.getInputHeight() + outputLength) / 2 + 1;
       neuralNetwork = new MultiLayerPerceptron(
           imgp.getInputWidth() * imgp.getInputHeight(), innerCellsCount, outputLength);
+      neuralNetwork.addListener(this);
+      neuralNetwork.getLearningRule().addListener(this);
+
       dataset = new DataSet(imgp.getInputWidth() * imgp.getInputHeight(), outputLength);
 
       setCursor(null);
@@ -291,6 +326,8 @@ public class AnswerTrainerPanel extends JPanel
       }
 
       JToolBar nmtb = new JToolBar();
+      nmtb.add(button_loadImageSet);
+      nmtb.addSeparator();
       nmtb.add(button_loadImage);
       nmtb.add(spin_imageOutput);
       nmtb.add(button_addTrainingSet);
@@ -330,6 +367,71 @@ public class AnswerTrainerPanel extends JPanel
       }
     }
 
+    else if (event.getSource() == button_loadImageSet)
+    {
+      fileChooser.setDialogTitle("Choose the image catalog");
+      int result = fileChooser.showOpenDialog(this);
+      if (result != JFileChooser.APPROVE_OPTION)
+        return;
+
+      setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+
+      try
+      {
+        BufferedReader brdr = new BufferedReader(
+            new FileReader(fileChooser.getSelectedFile()));
+        String line = null;
+        while ( (line = brdr.readLine()) != null)
+        {
+          String[] imgspec = line.split(",");
+          if (imgspec.length != 2)
+          {
+            log.warning(String.format("Invalid format <output>, <file>: '%s'",
+                line));
+            continue;
+          }
+          int imgout = Integer.parseInt(imgspec[0].trim());
+          String imgname = imgspec[1].trim();
+          File imgfile = new File(fileChooser.getSelectedFile().getParent(), imgname);
+          if (imgfile.exists() == false)
+          {
+            log.warning(String.format("Image file '%s' does not exist",
+                imgfile.getAbsolutePath()));
+            continue;
+          }
+
+          // add this image
+          lastImage = ImageIO.read(imgfile);
+          imgp.setImage(lastImage);
+          spin_imageOutput.setValue(imgout);
+
+          lastElement = evalCurrentDataset();
+
+          dataset.addRow(lastElement.getDatasetRow());
+          label_trainingSetSize.setText(Integer.toString(dataset.getRows().size()));
+        }
+      }
+      catch (NumberFormatException e)
+      {
+        log.warning(e.toString());
+      }
+      catch (VectorSizeMismatchException e)
+      {
+        log.warning(e.toString());
+      }
+      catch (FileNotFoundException e)
+      {
+        log.warning(e.toString());
+      }
+      catch (IOException e)
+      {
+        log.warning(e.toString());
+      }
+
+      setCursor(null);
+      Toolkit.getDefaultToolkit().beep();
+    }
+
     else if (event.getSource() == button_addTrainingSet)
     {
       lastElement = evalCurrentDataset();
@@ -340,9 +442,19 @@ public class AnswerTrainerPanel extends JPanel
 
     else if (event.getSource() == button_train)
     {
+      button_train.setEnabled(false);
+
       setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
-      neuralNetwork.learn(dataset);
+      // run in a thread to avoid swing lock
+      new Thread(new Runnable()
+      {
+        @Override
+        public void run()
+        {
+          neuralNetwork.learn(dataset);
+        }
+      }).start();
 
       button_recognize.setEnabled(true);
       button_saveNetwork.setEnabled(true);
@@ -400,82 +512,37 @@ public class AnswerTrainerPanel extends JPanel
 
   }
 
-//  /**
-//   * @return The data set row corresponding to the current image
-//   */
-//  DataSetRow getImageDatasetRow()
-//  {
-//    // the input
-//    double[] input = new double[imgp.getInputSize()];
-//    for (int n=0; n<imgp.getInputSize(); n++)
-//      input[n] = imgp.getInput(n);
-//
-//    // the output
-//    double[] output = new double[10];
-//    for (int n=0; n<10; n++)
-//      output[n] = (learningTargetValue == n) ? 1.0 : 0.0;
-//
-//    return new DataSetRow(input, output);
-//  }
-
   @Override
   public void stateChanged(ChangeEvent event)
   {
     // TODO Auto-generated method stub
-    
+
   }
 
-//  void setImage(String number, String fontReference)
-//  {
-//    // build the image
-//    lastImage = new BufferedImage(96, 128, BufferedImage.TYPE_INT_RGB);
-//    Graphics2D g2d = lastImage.createGraphics();
-//    g2d.setColor(Color.WHITE);
-//    g2d.fillRect(0, 0, lastImage.getWidth(), lastImage.getHeight());
-//    g2d.setFont(new Font(fontReference, Font.PLAIN, 128));
-//    g2d.setColor(Color.BLACK);
+  @Override
+  public void handleLearningEvent(LearningEvent event)
+  {
+    if ( (event.getSource() instanceof MomentumBackpropagation) == true)
+    {
+      MomentumBackpropagation mbp = (MomentumBackpropagation) event.getSource();
+      label_trainIteration.setText(Integer.toString(mbp.getCurrentIteration()));
+      label_trainIteration.invalidate();
+      label_trainNetworkError.setText(
+          String.format("%.4f", mbp.getTotalNetworkError()));
+      label_trainNetworkError.invalidate();
 //
-//    FontMetrics fm = g2d.getFontMetrics();
-////    int totalWidth = (fm.stringWidth(number) * 2) + 4;
-//    int totalWidth = fm.stringWidth(number) + 4;
-//
-//    // Baseline
-//    int x = (lastImage.getWidth() - totalWidth) / 2;
-//    int y = (lastImage.getHeight() - fm.getHeight()) / 2;
-//
-////    g2d.drawString(number, x, y + ((fm.getDescent() + fm.getAscent()) / 2));
-//
-//    // Absolute...
-////    x += fm.stringWidth(number) + 2;
-//    y = ((lastImage.getHeight() - fm.getHeight()) / 2) + fm.getAscent();
-//    g2d.drawString(number, x, y);
-//
-//
-//    g2d.dispose();
-//    // to the preview
-//    preview.setIcon(new ImageIcon(lastImage));
-//    // paste to the grid
-//    imgp.setImage(lastImage);
-//  }
-//
-//  final NumberActionListener numberActionListener = new NumberActionListener();
-//  class NumberActionListener implements ActionListener
-//  {
-//    @Override
-//    public void actionPerformed(ActionEvent e)
-//    {
-//      /*
-//       * generate the number image in the current form and set the input grid
-//       * pattern
-//       */
-//
-//      // get the reference
-//      JButton reference = (JButton)e.getSource();
-//      // the number
-//      String number = reference.getText();
-//
-//      setImage(number, reference.getFont().getFontName());
-//    }
-//  }
+//      log.info(String.format(
+//          "learning: iter: %d, rate: %f, momentum: %f, error: %f",
+//          mbp.getCurrentIteration(), mbp.getLearningRate(), mbp.getMomentum(),
+//          mbp.getTotalNetworkError()));
+    }
+    else
+      log.info(event.toString());
+  }
 
+  @Override
+  public void handleNeuralNetworkEvent(NeuralNetworkEvent event)
+  {
+    log.info(event.toString());
+  }
 }
