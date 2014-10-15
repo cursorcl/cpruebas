@@ -19,12 +19,11 @@ import boofcv.alg.filter.binary.BinaryImageOps;
 import boofcv.alg.filter.binary.Contour;
 import boofcv.alg.filter.binary.ThresholdImageOps;
 import boofcv.core.image.ConvertBufferedImage;
+import boofcv.gui.binary.VisualizeBinaryData;
 import boofcv.struct.ConnectRule;
 import boofcv.struct.image.ImageFloat32;
 import boofcv.struct.image.ImageSInt32;
 import boofcv.struct.image.ImageUInt8;
-import cl.cursor.card.Recognizer;
-import cl.cursor.card.RecognizerFactory;
 
 /**
  * Imagen escaneada en una resolucion de 300dpi. 1) 1.l) El primer rectangulo oscuro está en 58,1541
@@ -85,8 +84,10 @@ public class ExtractorImagenesPruebas {
       limage = ImageIO.read(archivo);
       OTResultadoScanner resultado = new OTResultadoScanner();
       BufferedImage rotated = rectificarImagen(limage);
+      
       Point[] pointsReference = obtenerPuntosReferencia(rotated);
       Point[] pRefRespuestas = Arrays.copyOfRange(pointsReference, 1, pointsReference.length);
+      
       String respuestas = getRespuestas(pRefRespuestas, rotated, nroPreguntas);
 
        Point pRefRut = pointsReference[0];
@@ -134,6 +135,7 @@ public class ExtractorImagenesPruebas {
     for (int n = 0; n < CIRCLE_X_RUT_DIFF.length; n++) {
       int y = pRefRut.y;
       BufferedImage rut = image.getSubimage(x + CIRCLE_X_RUT_DIFF[n] - 2, y - 2, 49, 48 * 11);
+      rut =  prepararImage(rut);
       try {
 		ImageIO.write(rut, "png", new File("./res/rut" + n + ".png"));
 	} catch (IOException e) {
@@ -167,6 +169,7 @@ public class ExtractorImagenesPruebas {
         BufferedImage img =
             image
                 .getSubimage(left, top, CIRCLE_SIZE * 5 + CIRCLE_X_SPCAES * 4 + 4, CIRCLE_SIZE + 8);
+        img = prepararImage(img);
         try {
 			ImageIO.write(img, "png", new File("./res/resp" + pregunta + ".png"));
 		} catch (IOException e) {
@@ -178,7 +181,17 @@ public class ExtractorImagenesPruebas {
     return "";
   }
 
-
+  public BufferedImage prepararImage(BufferedImage image)
+  {
+    ImageFloat32 input = ConvertBufferedImage.convertFromSingle(image, null, ImageFloat32.class);
+    ImageUInt8 binary = new ImageUInt8(input.width, input.height);
+    ThresholdImageOps.threshold(input, binary, (float) 145, false);
+    ImageUInt8 eroded = BinaryImageOps.erode4(binary, 3, null);
+    ImageUInt8 filtered = BinaryImageOps.dilate4(eroded, 15, null);
+    eroded = BinaryImageOps.erode4(filtered, 12, null);
+    BufferedImage bImage = VisualizeBinaryData.renderBinary(eroded, null);
+    return bImage;
+  }
 /**
    * Rotacion de la imagen. Este metodo realiza la corrección de la imagen. En esta version
    * solamente enderza la imagen.
@@ -306,7 +319,7 @@ public class ExtractorImagenesPruebas {
       ExtractorImagenesPruebas extractor = new ExtractorImagenesPruebas();
 
 //      for (int n = 0; n < 4; n++) {
-        BufferedImage image = ImageIO.read(new File("./res/prueba_003.png"));
+        BufferedImage image = ImageIO.read(new File("./res/prueba_002.png"));
         System.out.println(extractor.process(image, 45));
 //      }
 
