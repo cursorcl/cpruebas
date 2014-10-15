@@ -351,16 +351,5 @@ public class ExtractorResultadosPruebas {
     } catch (IOException e) {
       e.printStackTrace();
     }
-//    String fileName = "bad-10";
-//    BufferedImage image = ImageIO.read(new File("./res/patrones/" + fileName + ".png"));
-//    ImageFloat32 input = ConvertBufferedImage.convertFromSingle(image, null, ImageFloat32.class);
-//    ImageUInt8 binary = new ImageUInt8(input.width, input.height);
-//    ThresholdImageOps.threshold(input, binary, (float) 145, false);
-//    ImageUInt8 eroded = BinaryImageOps.erode4(binary, 3, null);
-//    ImageUInt8 filtered = BinaryImageOps.dilate4(eroded, 10, null);
-//    eroded = BinaryImageOps.erode4(filtered, 7, null);
-//    BufferedImage bImage = VisualizeBinaryData.renderBinary(eroded, null);
-//    ImageIO.write(bImage, "png", new File("./res/patrones/" + fileName + "-test.png"));
-    
   }
 }
