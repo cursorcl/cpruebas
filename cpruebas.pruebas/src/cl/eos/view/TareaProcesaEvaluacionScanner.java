@@ -15,7 +15,6 @@ import cl.eos.persistence.models.PruebaRendida;
 import cl.eos.persistence.models.RangoEvaluacion;
 import cl.eos.persistence.models.RespuestasEsperadasPrueba;
 import cl.eos.util.Utils;
-import cl.eos.view.ots.OTPruebaRendida;
 
 /**
  * Esta clase es la que recibe una carpeta donde debe extraer las imagenes que
