@@ -156,7 +156,7 @@ public class AnswerTrainerPanel extends JPanel
 
     Dimension spinSize = new Dimension(90, 40);
     spin_inputMatrixWidth = UtilForm.createSpinner(
-        64, 16, 512, 1, "input width", null,
+        64, 13, 512, 1, "input width", null,
         UtilForm.createBorder("Input width", null),
         this);
     spin_inputMatrixWidth.setPreferredSize(spinSize);
