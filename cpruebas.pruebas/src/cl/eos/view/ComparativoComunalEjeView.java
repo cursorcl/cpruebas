@@ -65,7 +65,7 @@ public class ComparativoComunalEjeView extends AFormView implements
 		this.setTitle("Resumen comparativo comunal ejes temáticas");
 		inicializarTablaEjes();
 		inicializarTablaEvaluacion();
-		
+
 		mnuExportarEjesTematicos.setOnAction(this);
 		mnuExportarEvaluacion.setOnAction(this);
 	}
@@ -115,6 +115,8 @@ public class ComparativoComunalEjeView extends AFormView implements
 			llenarDatosTabla();
 			desplegarDatosEjesTematicos();
 			desplegarDatosEvaluaciones();
+			llegaOnDataArrived = false;
+			llegaOnFound = false;
 		}
 	}
 
@@ -386,15 +388,17 @@ public class ComparativoComunalEjeView extends AFormView implements
 	@Override
 	public void handle(ActionEvent event) {
 		Object source = event.getSource();
-		if (source == mnuExportarEjesTematicos || source == mnuExportarEvaluacion) {
-			
+		if (source == mnuExportarEjesTematicos
+				|| source == mnuExportarEvaluacion) {
+
 			tblEjesTematicos.setId("Ejes temáticos");
 			tblEvaluacionEjesTematicos.setId("Evaluación");
 			List<TableView<? extends Object>> listaTablas = new LinkedList<>();
 			listaTablas.add((TableView<? extends Object>) tblEjesTematicos);
-			listaTablas.add((TableView<? extends Object>) tblEvaluacionEjesTematicos);
-			
+			listaTablas
+					.add((TableView<? extends Object>) tblEvaluacionEjesTematicos);
+
 			ExcelSheetWriterObj.convertirDatosALibroDeExcel(listaTablas);
-		} 
+		}
 	}
 }
