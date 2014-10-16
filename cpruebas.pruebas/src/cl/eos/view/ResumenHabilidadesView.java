@@ -118,7 +118,7 @@ public class ResumenHabilidadesView extends AFormView implements
 									.getNologrado();
 
 							XYChart.Series series1 = new XYChart.Series();
-							series1.setName("Porcentaje de Respuestas");
+							//series1.setName("Porcentaje de Respuestas");
 							series1.getData().add(
 									new XYChart.Data<String, Float>("Logrado",
 											porcentajeLogrado));
@@ -175,7 +175,7 @@ public class ResumenHabilidadesView extends AFormView implements
 
 					OTPreguntasHabilidad otPreguntas = mapaHabilidades.get(hab);
 					if (String.valueOf(cRespuesta[numeroPreg - 1]).toUpperCase().equals(
-							String.valueOf(respuestasEsperadasPrueba.getRespuesta().toCharArray()[0]).toCharArray()))
+							String.valueOf(respuestasEsperadasPrueba.getRespuesta().toCharArray()[0]).toUpperCase()))
 					{
 						otPreguntas.setBuenas(otPreguntas.getBuenas() + 1);
 					}
@@ -186,7 +186,7 @@ public class ResumenHabilidadesView extends AFormView implements
 					OTPreguntasHabilidad otPreguntas = new OTPreguntasHabilidad();
 					otPreguntas.setHabilidad(hab);
 					if (String.valueOf(cRespuesta[numeroPreg - 1]).toUpperCase().equals(
-							String.valueOf(respuestasEsperadasPrueba.getRespuesta().toCharArray()[0]).toCharArray()))
+							String.valueOf(respuestasEsperadasPrueba.getRespuesta().toCharArray()[0]).toUpperCase()))
 					{
 						otPreguntas.setBuenas(valor);
 					} else {
