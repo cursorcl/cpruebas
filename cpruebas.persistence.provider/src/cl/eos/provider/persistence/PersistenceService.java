@@ -13,11 +13,14 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
+import org.controlsfx.dialog.Dialogs;
+
 import cl.eos.exception.ExceptionBD;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.interfaces.entity.IPersistenceListener;
 import cl.eos.persistence.IPersistenceService;
 import cl.eos.persistence.models.Prueba;
+import cl.eos.util.Pair;
 
 /**
  * Instancia de servicio para almacenamiento.
@@ -266,15 +269,14 @@ public class PersistenceService implements IPersistenceService {
 
 	@Override
 	public void insert(final String entity, final List<Object> list,
-			final IPersistenceListener listener)  {
+			final IPersistenceListener listener) {
 
-		final Task<List<Object>> task = new Task<List<Object>>() {
+		final Task<Pair<String, Integer>> task = new Task<Pair<String, Integer>>() {
 			@Override
-			protected List<Object> call() throws Exception, ExceptionBD {
-				List<Object> lresults = null;
-
+			protected Pair<String, Integer> call() throws Exception,
+					ExceptionBD {
+				String name = entity;
 				StringBuffer string = new StringBuffer();
-
 				List<Object> filas = list;
 				if (filas.size() > 0) {
 					List columnas = (List) filas.get(0);
@@ -282,6 +284,8 @@ public class PersistenceService implements IPersistenceService {
 						string.append("?,");
 					}
 				}
+				Pair<String, Integer> pair = new Pair<String, Integer>(name,
+						filas.size());
 				int largo = string.lastIndexOf(",");
 				String parametros = string.substring(0, largo);
 
@@ -302,20 +306,32 @@ public class PersistenceService implements IPersistenceService {
 						}
 					}
 
-				} catch (Exception e) {					
+				} catch (Exception e) {
 					eManager.getTransaction().rollback();
 					throw new ExceptionBD(e.getMessage());
 				}
-				return lresults;
+
+				return pair;
 			}
 		};
-		task.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED,
-				new EventHandler<WorkerStateEvent>() {
-					@Override
-					public void handle(WorkerStateEvent t) {
-						// listener.onFindAllFinished(task.getValue());
-					}
-				});
+
+		task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+			@Override
+			public void handle(WorkerStateEvent arg0) {
+				Pair<String, Integer> pair = task.getValue();
+				Dialogs.create()
+						.owner(null)
+						.title("Importación desde excel")
+						.masthead("")
+						.message(
+								"Ha finalizado proceso de importación de ["
+										+ pair.getSecond()
+										+ "] registros para tabla ["
+										+ pair.getFirst() + "]")
+						.showInformation();
+
+			}
+		});
 		new Thread(task).start();
 
 	}
