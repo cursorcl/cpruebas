@@ -3,8 +3,11 @@ package cl.eos.ot;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
+import cl.eos.util.Utils;
+
 public class OTResumenGeneral {
 
+	NumberFormat formatter = null;
 	private String name;
 	private Float nota;
 	private Float pbuenas;
@@ -19,6 +22,8 @@ public class OTResumenGeneral {
 		this.pbuenas = pBuenas;
 		this.ppuntaje = pPuntaje;
 		this.puntaje = puntaje;
+		char sep = Utils.getDecimalSeparator();
+		formatter = new DecimalFormat("#0" + sep + "00");
 	}
 
 	public String getName() {
@@ -37,8 +42,8 @@ public class OTResumenGeneral {
 		this.nota = nota;
 	}
 
-	public Float getPbuenas() {
-		return pbuenas;
+	public String getPbuenas() {
+		return formatter.format(pbuenas * 100f);
 	}
 
 	public void setPbuenas(Float pBuenas) {
@@ -46,7 +51,6 @@ public class OTResumenGeneral {
 	}
 
 	public String getPpuntaje() {
-		NumberFormat formatter = new DecimalFormat("#0,00");
 		return formatter.format(ppuntaje);
 	}
 
