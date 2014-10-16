@@ -203,15 +203,7 @@ public class MainController {
 			try {
 				PersistenceServiceFactory.getPersistenceService().insert(
 						datosFile[0], lista, null);
-				Dialogs.create()
-						.owner(null)
-						.title("Importación desde excel")
-						.masthead("")
-						.message(
-								"Ha finalizado proceso de importación de ["
-										+ lista.size()
-										+ "] registros para tabla ["
-										+ datosFile[0] + "]").showInformation();
+				
 			} catch (ExceptionBD e) {
 				e.printStackTrace();
 			}

@@ -24,7 +24,7 @@ public class OTRangoEvaluacion {
 		this.cantidad = cantidad;
 	}
 	public float getLogrado() {
-		return logrado;
+		return logrado*100;
 	}
 	public void setLogrado(float logrado) {
 		this.logrado = logrado;

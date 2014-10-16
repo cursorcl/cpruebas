@@ -2,6 +2,7 @@ package cl.eos.view;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -19,7 +20,6 @@ import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.util.Callback;
 import cl.eos.imp.view.AFormView;
-import cl.eos.interfaces.entity.IEntity;
 import cl.eos.ot.EEvaluados;
 import cl.eos.ot.OTPreguntasEvaluacion;
 import cl.eos.persistence.models.EvaluacionEjeTematico;
@@ -39,12 +39,19 @@ public class ComunalCursoView extends AFormView implements
 	private TableView tblTotales;
 
 	private HashMap<Long, EvaluacionEjeTematico> mEvaluaciones;
-	private Map<EvaluacionEjeTematico, HashMap<String, OTPreguntasEvaluacion>> mapEvaAlumnos = null;
+
 	private ArrayList<String> titulosColumnas;
 	private boolean llegaOnDAEvaluacion;
 	private boolean llegaOnDAPrueba;
+	private List<Object> listaPruebas;
 
 	public ComunalCursoView() {
+		setTitle("Resumen comunal");
+	}
+
+	@FXML
+	public void initialize() {
+
 	}
 
 	private void desplegarDatosEvaluaciones() {
@@ -70,7 +77,7 @@ public class ComunalCursoView extends AFormView implements
 		tblEvaluaciones.setItems(registros);
 	}
 
-	private void desplegarDatosTotales(List<Object> list) {
+	private void desplegarDatosTotales() {
 
 		Map<String, Float> totalEvaluados = new HashMap<String, Float>();
 		Map<String, Float> totalInformados = new HashMap<String, Float>();
@@ -98,7 +105,7 @@ public class ComunalCursoView extends AFormView implements
 		}
 
 		// Total informados
-		for (Object objeto : list) {
+		for (Object objeto : listaPruebas) {
 			if (objeto instanceof Prueba) {
 				Prueba prueba = (Prueba) objeto;
 				String tipoCurso = prueba.getCurso().getName();
@@ -143,79 +150,61 @@ public class ComunalCursoView extends AFormView implements
 		tblTotales.setItems(registroseEva);
 	}
 
-	private void llenarDatosTabla(List<Object> list) {
-		for (Object object : list) {
+	private List<EvaluacionPrueba> listaEvaluacionesTitulos = new LinkedList<EvaluacionPrueba>();
+	private Map<EvaluacionEjeTematico, HashMap<String, OTPreguntasEvaluacion>> mapEvaAlumnos = new HashMap<EvaluacionEjeTematico, HashMap<String, OTPreguntasEvaluacion>>();
+
+	private void llenarDatosTabla() {
+		for (Object object : listaPruebas) {
 			if (object instanceof Prueba) {
 				Prueba prueba = (Prueba) object;
-				if (llegaOnDAPrueba && llegaOnDAEvaluacion) {
-					StringBuffer buffer = new StringBuffer();
-					buffer.append(prueba.getAsignatura());
-					buffer.append(" ");
-					buffer.append(prueba.getCurso());
-					lblTitulo.setText(buffer.toString());
 
-					mapEvaAlumnos = new HashMap<EvaluacionEjeTematico, HashMap<String, OTPreguntasEvaluacion>>();
+				StringBuffer buffer = new StringBuffer();
+				buffer.append(prueba.getAsignatura());
+				buffer.append(" ");
+				buffer.append(prueba.getCurso());
+				lblTitulo.setText(buffer.toString());
 
-					List<EvaluacionPrueba> listaEvaluaciones = prueba
-							.getEvaluaciones();
+				List<EvaluacionPrueba> listaEvaluaciones = prueba
+						.getEvaluaciones();
 
-					creacionColumnasEvaluaciones(listaEvaluaciones);
-					creacionColumnasTotalesEvaluaciones(listaEvaluaciones);
+				listaEvaluacionesTitulos.addAll(listaEvaluaciones);
 
-					// ********** generar datos evaluaciones y totales.
+				// ********** generar datos evaluaciones y totales.
 
-					for (EvaluacionPrueba evaluacionPrueba : listaEvaluaciones) {
-						TipoCurso tipoCurso = evaluacionPrueba.getCurso()
-								.getTipoCurso();
-						String nameTpCurso = tipoCurso.getName();
+				for (EvaluacionPrueba evaluacionPrueba : listaEvaluaciones) {
+					TipoCurso tipoCurso = evaluacionPrueba.getCurso()
+							.getTipoCurso();
+					String nameTpCurso = tipoCurso.getName();
 
-						HashMap<String, OTPreguntasEvaluacion> mapaOT = new HashMap<String, OTPreguntasEvaluacion>();
-						for (PruebaRendida pruebaRendida : evaluacionPrueba
-								.getPruebasRendidas()) {
+					HashMap<String, OTPreguntasEvaluacion> mapaOT = new HashMap<String, OTPreguntasEvaluacion>();
+					for (PruebaRendida pruebaRendida : evaluacionPrueba
+							.getPruebasRendidas()) {
 
-							Float pBuenas = pruebaRendida.getPbuenas();
-							for (Entry<Long, EvaluacionEjeTematico> mEvaluacion : mEvaluaciones
-									.entrySet()) {
+						Float pBuenas = pruebaRendida.getPbuenas();
+						for (Entry<Long, EvaluacionEjeTematico> mEvaluacion : mEvaluaciones
+								.entrySet()) {
 
-								EvaluacionEjeTematico evaluacionAl = mEvaluacion
-										.getValue();
-								if (mapEvaAlumnos.containsKey(evaluacionAl)) {
-									HashMap<String, OTPreguntasEvaluacion> evaluacion = mapEvaAlumnos
-											.get(evaluacionAl);
-									if (evaluacion.containsKey(nameTpCurso)) {
-										OTPreguntasEvaluacion otPreguntas = evaluacion
-												.get(nameTpCurso);
+							EvaluacionEjeTematico evaluacionAl = mEvaluacion
+									.getValue();
+							if (mapEvaAlumnos.containsKey(evaluacionAl)) {
+								HashMap<String, OTPreguntasEvaluacion> evaluacion = mapEvaAlumnos
+										.get(evaluacionAl);
+								if (evaluacion.containsKey(nameTpCurso)) {
+									OTPreguntasEvaluacion otPreguntas = evaluacion
+											.get(nameTpCurso);
 
-										if (pBuenas >= evaluacionAl
-												.getNroRangoMin()
-												&& pBuenas <= evaluacionAl
-														.getNroRangoMax()) {
-											otPreguntas.setAlumnos(otPreguntas
-													.getAlumnos() + 1);
-										}
-										System.out.println("name tp "
-												+ nameTpCurso + " "
-												+ evaluacionAl.getName() + " "
-												+ otPreguntas.getAlumnos());
-									} else {
-
-										OTPreguntasEvaluacion pregunta = new OTPreguntasEvaluacion();
-										if (pBuenas >= evaluacionAl
-												.getNroRangoMin()
-												&& pBuenas <= evaluacionAl
-														.getNroRangoMax()) {
-											pregunta.setAlumnos(1);
-										} else {
-											pregunta.setAlumnos(0);
-										}
-										pregunta.setEvaluacion(evaluacionAl);
-										evaluacion.put(nameTpCurso, pregunta);
-										System.out.println("name tp "
-												+ nameTpCurso + " "
-												+ evaluacionAl.getName() + " "
-												+ pregunta.getAlumnos());
+									if (pBuenas >= evaluacionAl
+											.getNroRangoMin()
+											&& pBuenas <= evaluacionAl
+													.getNroRangoMax()) {
+										otPreguntas.setAlumnos(otPreguntas
+												.getAlumnos() + 1);
 									}
+									System.out.println("name tp " + nameTpCurso
+											+ " " + evaluacionAl.getName()
+											+ " " + otPreguntas.getAlumnos());
 								} else {
+
 									OTPreguntasEvaluacion pregunta = new OTPreguntasEvaluacion();
 									if (pBuenas >= evaluacionAl
 											.getNroRangoMin()
@@ -226,17 +215,30 @@ public class ComunalCursoView extends AFormView implements
 										pregunta.setAlumnos(0);
 									}
 									pregunta.setEvaluacion(evaluacionAl);
-
-									mapaOT = new HashMap<String, OTPreguntasEvaluacion>();
-									mapaOT.put(nameTpCurso, pregunta);
-									mapEvaAlumnos.put(evaluacionAl, mapaOT);
+									evaluacion.put(nameTpCurso, pregunta);
 									System.out.println("name tp " + nameTpCurso
 											+ " " + evaluacionAl.getName()
 											+ " " + pregunta.getAlumnos());
 								}
+							} else {
+								OTPreguntasEvaluacion pregunta = new OTPreguntasEvaluacion();
+								if (pBuenas >= evaluacionAl.getNroRangoMin()
+										&& pBuenas <= evaluacionAl
+												.getNroRangoMax()) {
+									pregunta.setAlumnos(1);
+								} else {
+									pregunta.setAlumnos(0);
+								}
+								pregunta.setEvaluacion(evaluacionAl);
+
+								mapaOT = new HashMap<String, OTPreguntasEvaluacion>();
+								mapaOT.put(nameTpCurso, pregunta);
+								mapEvaAlumnos.put(evaluacionAl, mapaOT);
+								System.out.println("name tp " + nameTpCurso
+										+ " " + evaluacionAl.getName() + " "
+										+ pregunta.getAlumnos());
 							}
 						}
-
 					}
 				}
 			}
@@ -327,26 +329,34 @@ public class ComunalCursoView extends AFormView implements
 					mEvaluaciones.put(eje.getId(), eje);
 				}
 			}
-			List<Object> listaPruebas=null;
 			if (entity instanceof Prueba) {
 				llegaOnDAPrueba = true;
-				 listaPruebas = list;
+				listaPruebas = list;
 			}
-			
+
 			if (llegaOnDAEvaluacion && llegaOnDAPrueba) {
-				llenarDatosTabla(listaPruebas);
+				inicializarComponentes();
+				llenarDatosTabla();
+				creacionColumnasEvaluaciones(listaEvaluacionesTitulos);
+				creacionColumnasTotalesEvaluaciones(listaEvaluacionesTitulos);
 				desplegarDatosEvaluaciones();
-				desplegarDatosTotales(listaPruebas);
+				desplegarDatosTotales();
 				llegaOnDAEvaluacion = false;
 				llegaOnDAPrueba = false;
 			}
 		}
 	}
 
+	private void inicializarComponentes() {
+		tblEvaluaciones.getColumns().clear();
+		tblTotales.getColumns().clear();
+		listaEvaluacionesTitulos.clear();
+	}
+
 	@Override
 	public void handle(ActionEvent event) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }
