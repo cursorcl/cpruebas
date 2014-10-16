@@ -94,7 +94,7 @@ EventHandler<ActionEvent> {
 
 	@FXML
 	public void initialize() {
-		this.setTitle("Resumren de respuestas generales");
+		this.setTitle("Resumen de respuestas generales");
 		inicializarTablaResumen();
 		inicializarTablaAlumnos();
 		mnuExportarAlumnos.setOnAction(this);
