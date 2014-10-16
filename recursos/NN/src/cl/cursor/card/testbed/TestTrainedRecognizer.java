@@ -11,6 +11,8 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
@@ -23,6 +25,7 @@ import javax.swing.SwingConstants;
 
 import cl.cursor.card.Recognizer;
 import cl.cursor.card.RecognizerFactory;
+import cl.sisdef.util.Pair;
 import cl.sisdef.util.UtilForm;
 import cl.sisdef.util.UtilLineLogging;
 
@@ -44,7 +47,8 @@ public class TestTrainedRecognizer extends JFrame implements ActionListener
 
   JLabel label_result = null;
 
-  Recognizer recognizer = null;
+  List<Recognizer> recognizerList = new ArrayList<Recognizer>();
+//  Recognizer recognizer = null;
 
   TestTrainedRecognizer(String title)
   {
@@ -88,7 +92,10 @@ public class TestTrainedRecognizer extends JFrame implements ActionListener
       {
         setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
-        recognizer = RecognizerFactory.create(fileChooser.getSelectedFile());
+        Recognizer recognizer =
+            RecognizerFactory.create(fileChooser.getSelectedFile());
+        recognizerList.add(recognizer);
+
         button_loadImage.setEnabled(recognizer != null);
 
         setCursor(null);
@@ -123,9 +130,23 @@ public class TestTrainedRecognizer extends JFrame implements ActionListener
 
   void recognize(Image image)
   {
-    int result = recognizer.recognize(image, 0.5);
-    label_result.setText(String.format(
-        "<html>and the answer is ...<br /><b>index %d</b></html>", result));
+    StringBuffer sb = new StringBuffer();
+    sb.append("<html><ul>\n");
+    for (int n=0; n<recognizerList.size(); n++)
+    {
+      Pair<Integer, Pair<Double, Double>> result =
+          recognizerList.get(n).recognize(image, 0.5);
+      sb.append(String.format("<li>net %2d: index %2d (%.3f, %.3f)</li>\n",
+          n, result.getFirst(),
+          result.getSecond().getFirst(), result.getSecond().getSecond()));
+    }
+    sb.append("</ul></html>");
+    label_result.setText(sb.toString());
+
+//
+//    int result = recognizer.recognize(image, 0.5);
+//    label_result.setText(String.format(
+//        "<html>and the answer is ...<br /><b>index %d</b></html>", result));
   }
 
   static void createAndShowGUI()
