@@ -11,8 +11,12 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
+import org.controlsfx.dialog.Dialogs;
 
 public class ExcelSheetReader {
+
+	private File fileNameLocal = null;
+
 	/**
 	 * This method is used to read the data's from an excel file.
 	 * 
@@ -20,6 +24,7 @@ public class ExcelSheetReader {
 	 *            - Name of the excel file.
 	 */
 	public List readExcelFile(File fileName) {
+		fileNameLocal = fileName;
 		/**
 		 * Create a new instance for cellDataList
 		 */
@@ -28,7 +33,8 @@ public class ExcelSheetReader {
 			/**
 			 * Create a new instance for FileInputStream class
 			 */
-			FileInputStream fileInputStream = new FileInputStream(fileName.getAbsoluteFile());
+			FileInputStream fileInputStream = new FileInputStream(
+					fileName.getAbsoluteFile());
 			/**
 			 * Create a new instance for POIFSFileSystem class
 			 */
@@ -42,25 +48,56 @@ public class ExcelSheetReader {
 			 * Iterate the rows and cells of the spreadsheet to get all the
 			 * datas.
 			 */
+			int contColumnas = 0;
 			Iterator rowIterator = hssfSheet.rowIterator();
 			while (rowIterator.hasNext()) {
 				HSSFRow hssfRow = (HSSFRow) rowIterator.next();
-				Iterator iterator = hssfRow.cellIterator();
-				List cellTempList = new ArrayList();
-				while (iterator.hasNext()) {
-					HSSFCell hssfCell = (HSSFCell) iterator.next();
-					cellTempList.add(hssfCell.getStringCellValue());
+				if (hssfRow.getRowNum() == 0) {
+					Iterator iterator = hssfRow.cellIterator();
+					while (iterator.hasNext()) {
+						HSSFCell hssfCell = (HSSFCell) iterator.next();
+						contColumnas++;
+					}
+				} else {
+					Iterator iterator = hssfRow.cellIterator();
+					List cellTempList = new ArrayList();
+					while (iterator.hasNext()) {
+						HSSFCell hssfCell = (HSSFCell) iterator.next();
+						if (hssfCell.getCellType() == HSSFCell.CELL_TYPE_BLANK) {
+							cellTempList.add(" ");
+						} else if (hssfCell.getCellType() == HSSFCell.CELL_TYPE_STRING) {
+							cellTempList.add(hssfCell.getStringCellValue());
+						} else if (hssfCell.getCellType() == HSSFCell.CELL_TYPE_NUMERIC) {
+							cellTempList.add(hssfCell.getNumericCellValue());
+						}
+					}
+					if (cellTempList.size() != contColumnas) {
+						Dialogs.create()
+								.owner(null)
+								.title("Importación desde excel")
+								.masthead("")
+								.message(
+										"Archivo " + fileNameLocal.getName()
+												+ " incompleto. \n"
+												+ "Se esperan " + contColumnas
+												+ " columna(s), llegaron "
+												+ cellTempList.size()
+												+ " columna(s).")
+								.showInformation();
+						break;
+					} else {
+						cellDataList.add(cellTempList);
+					}
 				}
-				cellDataList.add(cellTempList);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		/**
 		 * Call the printToConsole method to print the cell data in the console.
 		 */
-		//printToConsole(cellDataList);
+		// printToConsole(cellDataList);
 		return cellDataList;
 	}
 
@@ -83,8 +120,8 @@ public class ExcelSheetReader {
 	}
 
 	public static void main(String[] args) {
-//		String fileName = "C:" + File.separator + "APP" + File.separator
-//				+ "ciclo.xls";
-//		new ExcelSheetReader().readExcelFile(fileName);
+		// String fileName = "C:" + File.separator + "APP" + File.separator
+		// + "ciclo.xls";
+		// new ExcelSheetReader().readExcelFile(fileName);
 	}
 }
