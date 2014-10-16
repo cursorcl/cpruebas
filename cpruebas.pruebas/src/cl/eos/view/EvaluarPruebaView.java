@@ -9,8 +9,11 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import org.controlsfx.dialog.Dialogs;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -19,12 +22,14 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.util.Callback;
 import cl.eos.PruebasActivator;
@@ -101,6 +106,11 @@ public class EvaluarPruebaView extends AFormView {
 	private MenuItem mnuGrabar;
 	@FXML
 	private MenuItem mnuVolver;
+
+	@FXML
+	private BorderPane mainPane;
+
+	private ExecutorService service = Executors.newFixedThreadPool(1);
 
 	public EvaluarPruebaView() {
 		setTitle("Evaluar");
@@ -442,7 +452,42 @@ public class EvaluarPruebaView extends AFormView {
 
 		TareaProcesaEvaluacionScanner procesador = new TareaProcesaEvaluacionScanner(
 				prueba, cmbCursos.getValue(), files);
-		ExecutorService service = Executors.newFixedThreadPool(1);
+
+		procesador.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+
+			@Override
+			public void handle(WorkerStateEvent event) {
+				ObservableList<PruebaRendida> pruebas = procesador.getValue();
+				//Aqui tengo que procesar
+			}
+		});
+		procesador.setOnFailed(new EventHandler<WorkerStateEvent>() {
+			@Override
+			public void handle(WorkerStateEvent event) {
+				// Algo falló por lo tanto hay que avisar.
+				Dialogs.create().owner(null)
+						.title("Importación no completada.")
+						.masthead("No se ha podido completar la importación.")
+						.message("Revise las imagenes que se quieren importar")
+						.showError();
+			}
+		});
+
+		procesador.setOnCancelled(new EventHandler<WorkerStateEvent>() {
+			@Override
+			public void handle(WorkerStateEvent event) {
+				Dialogs.create()
+						.owner(null)
+						.title("Importación no completada.")
+						.masthead("La importación ha sido cancelada.")
+						.message(
+								"La operación ha sido cancelada por el usuario.")
+						.showInformation();
+
+			}
+		});
+		ProgressBar bar = new ProgressBar();
+		bar.progressProperty().bind(procesador.progressProperty());
 		service.execute(procesador);
 
 	}

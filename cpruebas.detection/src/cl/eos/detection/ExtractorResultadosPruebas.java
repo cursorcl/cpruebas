@@ -19,12 +19,14 @@ import boofcv.alg.filter.binary.BinaryImageOps;
 import boofcv.alg.filter.binary.Contour;
 import boofcv.alg.filter.binary.ThresholdImageOps;
 import boofcv.core.image.ConvertBufferedImage;
+import boofcv.gui.binary.VisualizeBinaryData;
 import boofcv.struct.ConnectRule;
 import boofcv.struct.image.ImageFloat32;
 import boofcv.struct.image.ImageSInt32;
 import boofcv.struct.image.ImageUInt8;
 import cl.cursor.card.Recognizer;
 import cl.cursor.card.RecognizerFactory;
+import cl.sisdef.util.Pair;
 
 /**
  * Imagen escaneada en una resolucion de 300dpi. 1) 1.l) El primer rectangulo oscuro está en 58,1541
@@ -60,7 +62,7 @@ public class ExtractorResultadosPruebas {
   public static int prueba = 1;
   public static int XRUTREF = 145;
 
-  private static String RESPUESTAS[] = {"A", "B", "C", "D", "E", "V", "F", "O", "M"};
+  private static String RESPUESTAS[] = {"A", "B", "C", "D", "E", "O"};
   private static String RUT[] = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "K"};
 
   // Son las diferencias del inicio del círculo con inicio rectángulo
@@ -86,22 +88,22 @@ public class ExtractorResultadosPruebas {
 
   public OTResultadoScanner process(File archivo, int nroPreguntas) throws IOException {
     BufferedImage limage;
-      limage = ImageIO.read(archivo);
-      OTResultadoScanner resultado = new OTResultadoScanner();
-      BufferedImage rotated = rectificarImagen(limage);
-      Point[] pointsReference = obtenerPuntosReferencia(rotated);
-      Point[] pRefRespuestas = Arrays.copyOfRange(pointsReference, 1, pointsReference.length);
-      String respuestas = getRespuestas(pRefRespuestas, rotated, nroPreguntas);
+    limage = ImageIO.read(archivo);
+    OTResultadoScanner resultado = new OTResultadoScanner();
+    BufferedImage rotated = rectificarImagen(limage);
+    Point[] pointsReference = obtenerPuntosReferencia(rotated);
+    Point[] pRefRespuestas = Arrays.copyOfRange(pointsReference, 1, pointsReference.length);
+    String respuestas = getRespuestas(pRefRespuestas, rotated, nroPreguntas);
 
-       Point pRefRut = pointsReference[0];
-       String rut = getRut(pRefRut, rotated);
+    Point pRefRut = pointsReference[0];
+    String rut = getRut(pRefRut, rotated);
 
-      resultado.setForma(1);
-      resultado.setRespuestas(respuestas);
-      resultado.setRut(rut);
+    resultado.setForma(1);
+    resultado.setRespuestas(respuestas);
+    resultado.setRut(rut);
     return resultado;
   }
-  
+
   /**
    * Metodo que realiza el procesamiento de una prueba, obtiene el rut y las respuestas. Por ahora
    * la forma ratorn 1.
@@ -139,10 +141,11 @@ public class ExtractorResultadosPruebas {
     for (int n = 0; n < CIRCLE_X_RUT_DIFF.length; n++) {
       int y = pRefRut.y;
       BufferedImage rut = image.getSubimage(x + CIRCLE_X_RUT_DIFF[n] - 2, y - 2, 49, 48 * 11);
-      int idx = recognizerRut.recognize(rut, 0.75);
-      if(idx != -1)
-      {
-    	  strRut.append(RUT[idx]);
+      rut = prepararImage(rut);
+      Pair<Integer, Pair<Double, Double>> result = recognizerRut.recognize(rut, 0.75);
+      int idx = result.getFirst();
+      if (idx != -1) {
+        strRut.append(RUT[idx]);
       }
     }
     return strRut.toString();
@@ -170,11 +173,18 @@ public class ExtractorResultadosPruebas {
 
       for (int n = 0; n < GROUP_SIZE; n++) {
         int left = x + DELTA_X - 4 + col * DELTA_X_FIRST_CIRCLES;
-        int top = y + DELTA_Y_FIRST_CIRCLE_RESP  + BASE + n * 52;
+        int top = y + DELTA_Y_FIRST_CIRCLE_RESP + BASE + n * 52;
         BufferedImage img =
             image
                 .getSubimage(left, top, CIRCLE_SIZE * 5 + CIRCLE_X_SPCAES * 4 + 4, CIRCLE_SIZE + 8);
-        String respuesta  = getRespuesta(img);
+        image = prepararImage(image);
+        try {
+          ImageIO.write(img, "png", new File("./res/resp" + pregunta + ".png"));
+        } catch (IOException e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        }
+        String respuesta = getRespuesta(img);
         resp.append(respuesta);
         pregunta++;
       }
@@ -183,20 +193,31 @@ public class ExtractorResultadosPruebas {
   }
 
   private String getRespuesta(BufferedImage img) {
-	  String resp = "O";
-      int  idx = recognizerRespustas.recognize(img, 0.75);
-      if (idx != -1) {
-        resp = RESPUESTAS[idx];
-      }
-      else
-      {
-        resp = "M";
-      }
-	return resp;
-}
+    String resp = "O";
 
+    Pair<Integer, Pair<Double, Double>> result = recognizerRespustas.recognize(img, 0.90);
+    int idx = result.getFirst();
+    if (idx != -1) {
+      resp = RESPUESTAS[idx];
+    } else {
+      resp = "M";
+    }
+    return resp;
+  }
 
-/**
+  public BufferedImage prepararImage(BufferedImage image)
+  {
+    ImageFloat32 input = ConvertBufferedImage.convertFromSingle(image, null, ImageFloat32.class);
+    ImageUInt8 binary = new ImageUInt8(input.width, input.height);
+    ThresholdImageOps.threshold(input, binary, (float) 145, false);
+    ImageUInt8 eroded = BinaryImageOps.erode4(binary, 3, null);
+    ImageUInt8 filtered = BinaryImageOps.dilate4(eroded, 15, null);
+    eroded = BinaryImageOps.erode4(filtered, 12, null);
+    BufferedImage bImage = VisualizeBinaryData.renderBinary(eroded, null);
+    return bImage;
+  }
+
+  /**
    * Rotacion de la imagen. Este metodo realiza la corrección de la imagen. En esta version
    * solamente enderza la imagen.
    * 
@@ -318,14 +339,14 @@ public class ExtractorResultadosPruebas {
   }
 
 
-  public static void main(String args[]) {
+  public static void main(String args[]) throws IOException {
     try {
       ExtractorResultadosPruebas extractor = new ExtractorResultadosPruebas();
 
-//      for (int n = 0; n < 4; n++) {
-        BufferedImage image = ImageIO.read(new File("./res/prueba_002.png"));
-        System.out.println(extractor.process(image, 45));
-//      }
+      // for (int n = 0; n < 4; n++) {
+      BufferedImage image = ImageIO.read(new File("./res/prueba_002.png"));
+      System.out.println(extractor.process(image, 45));
+      // }
 
     } catch (IOException e) {
       e.printStackTrace();
