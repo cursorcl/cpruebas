@@ -227,7 +227,7 @@ public class EvaluarPruebaView extends AFormView {
       RespuestasEsperadasPrueba resp = respuestas.get(n);
       String userResp = value.substring(n, n + 1);
       String validResp = resp.getRespuesta();
-      if (userResp.toUpperCase().equals("*")) {
+      if (userResp.toUpperCase().equals("O")) {
         otRendida.setOmitidas(otRendida.getOmitidas() + 1);
       } else if (userResp.toUpperCase().equals(validResp.toUpperCase())) {
         otRendida.setBuenas(otRendida.getBuenas() + 1);
@@ -346,8 +346,6 @@ public class EvaluarPruebaView extends AFormView {
             if (evalPrueba.getPruebasRendidas().contains(pRendida)) {
               int idx = evalPrueba.getPruebasRendidas().indexOf(pRendida);
               pRendida = evalPrueba.getPruebasRendidas().get(idx);
-            } else {
-              evalPrueba.getPruebasRendidas().add(pRendida);
             }
             oList.add(new OTPruebaRendida(pRendida));
           }
@@ -368,6 +366,32 @@ public class EvaluarPruebaView extends AFormView {
       if (!prueba.getEvaluaciones().contains(evalPrueba)) {
         prueba.getEvaluaciones().add(evalPrueba);
       }
+
+      ObservableList<OTPruebaRendida> otDeLaTabla = tblListadoPruebas.getItems();
+      for (OTPruebaRendida ot : otDeLaTabla) {
+        if (ot.getRespuestas() != null && !ot.getRespuestas().trim().isEmpty()) {
+          int idx = evalPrueba.getPruebasRendidas().indexOf(ot.getPruebaRendida());
+          if (idx != -1) {
+            PruebaRendida nPr = ot.getPruebaRendida();
+            PruebaRendida oPr = evalPrueba.getPruebasRendidas().get(idx);
+            oPr.setBuenas(nPr.getBuenas());
+            oPr.setMalas(nPr.getMalas());
+            oPr.setOmitidas(nPr.getOmitidas());
+            oPr.setRespuestas(nPr.getRespuestas());
+            oPr.setRango(nPr.getRango());
+            evalPrueba.getPruebasRendidas().set(idx, ot.getPruebaRendida());
+          } else {
+            evalPrueba.getPruebasRendidas().add(ot.getPruebaRendida());
+          }
+
+        } else {
+          int idx = evalPrueba.getPruebasRendidas().indexOf(ot.getPruebaRendida());
+          if (idx != -1) {
+            evalPrueba.getPruebasRendidas().remove(idx);
+          }
+        }
+      }
+
       String s =
           String.format("%s-%s-%s-%s", evalPrueba.getAsignatura(), evalPrueba.getColegio(),
               evalPrueba.getCurso(), evalPrueba.getFechaLocal().toString());
@@ -433,9 +457,6 @@ public class EvaluarPruebaView extends AFormView {
     fileChooser.setTitle("Seleccione Imégenes Respuesta");
     List<File> files = fileChooser.showOpenMultipleDialog(null);
 
-    // Se limpia la lista de alumnos de la tabla.
-    tblListadoPruebas.getItems().clear();
-
     Task<ObservableList<PruebaRendida>> task = new Task<ObservableList<PruebaRendida>>() {
       @Override
       protected ObservableList<PruebaRendida> call() throws Exception {
@@ -448,6 +469,7 @@ public class EvaluarPruebaView extends AFormView {
           PruebaRendida pRendida;
           try {
             pRendida = obtenerPruebaRendida(resultado);
+            pRendida.setEvaluacionPrueba(evalPrueba);
             results.add(pRendida);
             updateProgress(n++, max);
           } catch (CPruebasException e) {
@@ -463,13 +485,20 @@ public class EvaluarPruebaView extends AFormView {
         ObservableList<PruebaRendida> pruebas = task.getValue();
         if (pruebas != null && !pruebas.isEmpty()) {
           for (PruebaRendida pr : pruebas) {
-            evalPrueba.getPruebasRendidas().add(pr);
             OTPruebaRendida ot = new OTPruebaRendida(pr);
-            tblListadoPruebas.getItems().add(ot);
+            int idx = tblListadoPruebas.getItems().indexOf(ot);
+            if (idx == -1) {
+              tblListadoPruebas.getItems().add(ot);
+            } else {
+              OTPruebaRendida oPr = tblListadoPruebas.getItems().get(idx);
+              oPr.setBuenas(pr.getBuenas());
+              oPr.setMalas(pr.getMalas());
+              oPr.setOmitidas(pr.getOmitidas());
+              oPr.setRespuestas(pr.getRespuestas());
+              oPr.setNivel(pr.getRango());
+              tblListadoPruebas.getItems().set(idx, oPr);
+            }
           }
-        }
-        if (!prueba.getEvaluaciones().contains(evalPrueba)) {
-          prueba.getEvaluaciones().add(evalPrueba);
         }
       }
     });
