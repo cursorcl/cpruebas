@@ -72,6 +72,7 @@ public class ExtractorResultadosPruebas {
   public static int CIRCLE_Y_RUT_DIFF = 48;
   private Recognizer recognizerRespustas;
   private Recognizer recognizerRut;
+  private static ExtractorResultadosPruebas instance;
 
 
 
@@ -80,28 +81,22 @@ public class ExtractorResultadosPruebas {
    * 
    * @throws IOException Error al leer las redes.
    */
-  public ExtractorResultadosPruebas() throws IOException {
+  private ExtractorResultadosPruebas() throws IOException {
     recognizerRespustas = RecognizerFactory.create(new File("./res/red_respuestas.red"));
     recognizerRut = RecognizerFactory.create(new File("./res/red_rut.red"));
   }
 
+  public static ExtractorResultadosPruebas getInstance() throws IOException
+  {
+    if(instance == null)
+    {
+      instance = new ExtractorResultadosPruebas();
+    }
+    return instance;
+  }
 
   public OTResultadoScanner process(File archivo, int nroPreguntas) throws IOException {
-    BufferedImage limage;
-    limage = ImageIO.read(archivo);
-    OTResultadoScanner resultado = new OTResultadoScanner();
-    BufferedImage rotated = rectificarImagen(limage);
-    Point[] pointsReference = obtenerPuntosReferencia(rotated);
-    Point[] pRefRespuestas = Arrays.copyOfRange(pointsReference, 1, pointsReference.length);
-    String respuestas = getRespuestas(pRefRespuestas, rotated, nroPreguntas);
-
-    Point pRefRut = pointsReference[0];
-    String rut = getRut(pRefRut, rotated);
-
-    resultado.setForma(1);
-    resultado.setRespuestas(respuestas);
-    resultado.setRut(rut);
-    return resultado;
+    return process(ImageIO.read(archivo), nroPreguntas);
   }
 
   /**
@@ -195,7 +190,7 @@ public class ExtractorResultadosPruebas {
   private String getRespuesta(BufferedImage img) {
     String resp = "O";
 
-    Pair<Integer, Pair<Double, Double>> result = recognizerRespustas.recognize(img, 0.90);
+    Pair<Integer, Pair<Double, Double>> result = recognizerRespustas.recognize(img, 0.80);
     int idx = result.getFirst();
     if (idx != -1) {
       resp = RESPUESTAS[idx];
@@ -344,7 +339,7 @@ public class ExtractorResultadosPruebas {
       ExtractorResultadosPruebas extractor = new ExtractorResultadosPruebas();
 
       // for (int n = 0; n < 4; n++) {
-      BufferedImage image = ImageIO.read(new File("./res/prueba_002.png"));
+      BufferedImage image = ImageIO.read(new File("./res/prueba_001.png"));
       System.out.println(extractor.process(image, 45));
       // }
 
