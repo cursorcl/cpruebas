@@ -95,13 +95,13 @@ public class EditingCellRespuestasEvaluar extends
 						RespuestasEsperadasPrueba resp = prueba.getRespuestas()
 								.get(len - 1);
 						if (resp.getVerdaderoFalso()) {
-							validValue = "VF*".contains(s.toUpperCase());
+							validValue = "VFO".contains(s.toUpperCase());
 						} else if (resp.getMental()) {
-							validValue = "BM*".contains(s.toUpperCase());
+							validValue = "BMO".contains(s.toUpperCase());
 						} else {
 							String sValido = "ABCDE".substring(0,
 									prueba.getAlternativas())
-									+ "*";
+									+ "O";
 							validValue = sValido.contains(s.toUpperCase());
 						}
 						if (!validValue) {
