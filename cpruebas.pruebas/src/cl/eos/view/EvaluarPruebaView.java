@@ -504,7 +504,9 @@ public class EvaluarPruebaView extends AFormView {
     });
     Dialogs dlg = Dialogs.create();
     dlg.title("Procesando imágenes");
-    dlg.masthead(null);
+    dlg.masthead("");
+    dlg.message("Esto tomará algunos minutos.");
+    
     dlg.showWorkerProgress(task);
     Executors.newSingleThreadExecutor().execute(task);
   }
