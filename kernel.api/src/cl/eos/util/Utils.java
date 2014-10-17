@@ -3,6 +3,8 @@ package cl.eos.util;
 import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.Iterator;
 
 import javax.imageio.ImageIO;
@@ -134,5 +136,12 @@ public class Utils {
 		System.out.println(Math.round(getPuntaje(6.43f)));
 		System.out.println(Math.round(getPuntaje(6.545f)));
 		System.out.println(Math.round(getPuntaje(4.2f)));
+	} 
+	
+	public static char getDecimalSeparator(){
+		DecimalFormat format=(DecimalFormat) DecimalFormat.getInstance();
+		DecimalFormatSymbols symbols=format.getDecimalFormatSymbols();
+		char sep=symbols.getDecimalSeparator();
+		return sep;
 	}
 }
