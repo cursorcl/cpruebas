@@ -145,4 +145,31 @@ public class OTPruebaRendida {
     return buenas.getValue();
   }
 
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((pruebaRendida == null) ? 0 : pruebaRendida.hashCode());
+    return result;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    OTPruebaRendida other = (OTPruebaRendida) obj;
+    if (pruebaRendida == null) {
+      if (other.pruebaRendida != null)
+        return false;
+    } else if (!pruebaRendida.equals(other.pruebaRendida))
+      return false;
+    return true;
+  }
+
+  
+  
 }
