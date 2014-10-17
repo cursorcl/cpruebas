@@ -320,11 +320,11 @@ public class ImpresionPrueba {
     g2.drawString(String.valueOf(nro), c, row + HEIGHT_FONT);
     c = c + CIRCLE_WIDTH + STEP_COL * 2;
 
-    g2.drawString("V", c, row + HEIGHT_FONT);
+    g2.drawString("B", c, row + HEIGHT_FONT);
     c = c + CIRCLE_WIDTH + STEP_COL;
     g2.drawOval(c, row, CIRCLE_WIDTH, CIRCLE_WIDTH);
     c = c + CIRCLE_WIDTH + STEP_COL;
-    g2.drawString("F", c, row + HEIGHT_FONT);
+    g2.drawString("M", c, row + HEIGHT_FONT);
     c = c + CIRCLE_WIDTH + STEP_COL;
     g2.drawOval(c, row, CIRCLE_WIDTH, CIRCLE_WIDTH);
     g2.setFont(LETTERS_FONT);
