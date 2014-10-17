@@ -9,7 +9,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import javafx.collections.FXCollections;
@@ -118,8 +117,7 @@ public class EvaluarPruebaView extends AFormView {
 
   @FXML
   private BorderPane mainPane;
-
-  private ExecutorService service = Executors.newFixedThreadPool(1);
+  private ArrayList<RespuestasEsperadasPrueba> respuestas;
 
   public EvaluarPruebaView() {
     setTitle("Evaluar");
@@ -219,15 +217,14 @@ public class EvaluarPruebaView extends AFormView {
   }
 
   protected void evaluar(String value, OTPruebaRendida otRendida) {
-    List<RespuestasEsperadasPrueba> respEsperadas = prueba.getRespuestas();
-    Collections.sort(respEsperadas, Comparadores.compararRespuestasEsperadas());
-    
-    int nMax = Math.min(value.length(), respEsperadas.size());
-    otRendida.setOmitidas(Math.abs(value.length() - respEsperadas.size()));
+
+    int nroPreguntas = respuestas.size();
+    int nMax = Math.min(value.length(), nroPreguntas);
+    otRendida.setOmitidas(Math.abs(value.length() - nroPreguntas));
     otRendida.setBuenas(0);
     otRendida.setMalas(0);
     for (int n = 0; n < nMax; n++) {
-      RespuestasEsperadasPrueba resp = respEsperadas.get(n);
+      RespuestasEsperadasPrueba resp = respuestas.get(n);
       String userResp = value.substring(n, n + 1);
       String validResp = resp.getRespuesta();
       if (userResp.toUpperCase().equals("*")) {
@@ -238,7 +235,6 @@ public class EvaluarPruebaView extends AFormView {
         otRendida.setMalas(otRendida.getMalas() + 1);
       }
     }
-    int nroPreguntas = respEsperadas.size();
     float porcDificultad = prueba.getExigencia() == null ? 60f : prueba.getExigencia();
     float notaMinima = 1.0f;
     otRendida
@@ -255,16 +251,20 @@ public class EvaluarPruebaView extends AFormView {
     txtNroAlternativas.setText("");
     txtNroPreguntas.setText("");
     if (entity instanceof Prueba) {
+
       tblListadoPruebas.getItems().clear();
       cmbColegios.getSelectionModel().clearSelection();
       cmbProfesor.getSelectionModel().clearSelection();
       cmbCursos.getSelectionModel().clearSelection();
       prueba = (Prueba) entity;
+      respuestas = new ArrayList<RespuestasEsperadasPrueba>(prueba.getRespuestas());
+      Collections.sort(respuestas, Comparadores.compararRespuestasEsperadas());
+
+
       txtName.setText(prueba.getName());
       txtNroAlternativas.setText(prueba.getAlternativas().toString());
       txtNroPreguntas.setText(prueba.getNroPreguntas().toString());
       txtAsignatura.setText(prueba.getAsignatura().getName());
-      List<RespuestasEsperadasPrueba> respuestas = prueba.getRespuestas();
       ObservableList<EjeTematico> lEjes = FXCollections.observableArrayList();
       ObservableList<Habilidad> lHabilidad = FXCollections.observableArrayList();
 
@@ -321,13 +321,13 @@ public class EvaluarPruebaView extends AFormView {
           for (EvaluacionPrueba evaluacion : listEvaluaciones) {
             if (evaluacion.getColegio().equals(colegio) && evaluacion.getCurso().equals(curso)) {
               evalPrueba = evaluacion;
+              evalPrueba.getPruebasRendidas().isEmpty();
               break;
             }
           }
         }
         ObservableList<OTPruebaRendida> oList = FXCollections.observableArrayList();
         if (evalPrueba == null) {
-
           // Tengo que crear la evaluacion Prueba.
           evalPrueba = new EvaluacionPrueba();
           evalPrueba.setColegio(colegio);
@@ -336,20 +336,20 @@ public class EvaluarPruebaView extends AFormView {
           evalPrueba.setProfesor(profesor);
           evalPrueba.setFecha(dtpFecha.getValue().toEpochDay());
           evalPrueba.setPruebasRendidas(new ArrayList<PruebaRendida>());
-
         }
 
         if (curso.getAlumnos() != null && !curso.getAlumnos().isEmpty()) {
           for (Alumno alumno : curso.getAlumnos()) {
-
             PruebaRendida pRendida = new PruebaRendida();
             pRendida.setAlumno(alumno);
             pRendida.setEvaluacionPrueba(evalPrueba);
-            evalPrueba.getPruebasRendidas().add(pRendida);
-            OTPruebaRendida ot = new OTPruebaRendida(pRendida);
-            if (!oList.contains(ot)) {
-              oList.add(ot);
+            if (evalPrueba.getPruebasRendidas().contains(pRendida)) {
+              int idx = evalPrueba.getPruebasRendidas().indexOf(pRendida);
+              pRendida = evalPrueba.getPruebasRendidas().get(idx);
+            } else {
+              evalPrueba.getPruebasRendidas().add(pRendida);
             }
+            oList.add(new OTPruebaRendida(pRendida));
           }
         }
         FXCollections.sort(oList, comparaPruebaRendida());
@@ -435,7 +435,7 @@ public class EvaluarPruebaView extends AFormView {
 
     // Se limpia la lista de alumnos de la tabla.
     tblListadoPruebas.getItems().clear();
-    
+
     Task<ObservableList<PruebaRendida>> task = new Task<ObservableList<PruebaRendida>>() {
       @Override
       protected ObservableList<PruebaRendida> call() throws Exception {
@@ -460,29 +460,28 @@ public class EvaluarPruebaView extends AFormView {
     task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
       @Override
       public void handle(WorkerStateEvent event) {
-          ObservableList<PruebaRendida> pruebas = task.getValue();
-          if(pruebas != null &&  !pruebas.isEmpty())
-          {
-              for(PruebaRendida pr : pruebas)
-              {
-                evalPrueba.getPruebasRendidas().add(pr);
-                OTPruebaRendida ot = new OTPruebaRendida(pr);
-                tblListadoPruebas.getItems().add(ot);
-              }
+        ObservableList<PruebaRendida> pruebas = task.getValue();
+        if (pruebas != null && !pruebas.isEmpty()) {
+          for (PruebaRendida pr : pruebas) {
+            evalPrueba.getPruebasRendidas().add(pr);
+            OTPruebaRendida ot = new OTPruebaRendida(pr);
+            tblListadoPruebas.getItems().add(ot);
           }
-          if (!prueba.getEvaluaciones().contains(evalPrueba)) {
-            prueba.getEvaluaciones().add(evalPrueba);            
-          }
-          save(prueba);
+        }
+        if (!prueba.getEvaluaciones().contains(evalPrueba)) {
+          prueba.getEvaluaciones().add(evalPrueba);
+        }
       }
     });
     Dialogs dlg = Dialogs.create();
+    dlg.title("Procesando imágenes");
     dlg.masthead(null);
-
+    dlg.showWorkerProgress(task);
+    Executors.newSingleThreadExecutor().execute(task);
   }
 
   private PruebaRendida obtenerPruebaRendida(OTResultadoScanner resultado) throws CPruebasException {
-    List<RespuestasEsperadasPrueba> respuestas = prueba.getRespuestas();
+
     Curso curso = cmbCursos.getValue();
     PruebaRendida pRendida = null;
 
@@ -512,15 +511,10 @@ public class EvaluarPruebaView extends AFormView {
             malas++;
           } else {
             if (rEsperada.getMental()) {
-              if ("B".equalsIgnoreCase(letter)) { // la respuesta
-                // es buena.
+              if ("B".equalsIgnoreCase(letter)) {
                 strResps.replace(n, n + 1, "B");
                 buenas++;
-              } else if ("D".equalsIgnoreCase(letter)) // la
-              // respuesta
-              // es
-              // mala.
-              {
+              } else if ("D".equalsIgnoreCase(letter)) {
                 strResps.replace(n, n + 1, "M");
                 malas++;
               }
