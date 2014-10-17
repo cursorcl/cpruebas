@@ -67,7 +67,7 @@ public class OTPruebaRendida {
 
 
   public Float getNota() {
-    return pruebaRendida.getNota() != null ? pruebaRendida.getNota() : 0F;
+    return  Utils.redondeo2Decimales(pruebaRendida.getNota() != null ? pruebaRendida.getNota() : 0F);
   }
 
   public SimpleFloatProperty notaProperty() {
