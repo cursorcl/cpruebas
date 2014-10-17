@@ -42,9 +42,9 @@ EventHandler<ActionEvent>{
 	@FXML
 	private TableColumn<OTPreguntasEjes, String> colDescripcion;
 	@FXML
-	private TableColumn<OTPreguntasEjes, String> colLogrado;
+	private TableColumn<OTPreguntasEjes, Float> colLogrado;
 	@FXML
-	private TableColumn<OTPreguntasEjes, String> colNoLogrado;
+	private TableColumn<OTPreguntasEjes, Float> colNoLogrado;
 
 	@FXML
 	private TextField txtPrueba;
@@ -91,10 +91,10 @@ EventHandler<ActionEvent>{
 				.setCellValueFactory(new PropertyValueFactory<OTPreguntasEjes, String>(
 						"descripcion"));
 		colLogrado
-				.setCellValueFactory(new PropertyValueFactory<OTPreguntasEjes, String>(
+				.setCellValueFactory(new PropertyValueFactory<OTPreguntasEjes, Float>(
 						"slogrado"));
 		colNoLogrado
-				.setCellValueFactory(new PropertyValueFactory<OTPreguntasEjes, String>(
+				.setCellValueFactory(new PropertyValueFactory<OTPreguntasEjes, Float>(
 						"snlogrado"));
 	}
 
