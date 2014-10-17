@@ -663,15 +663,34 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 					mnuPopupModificar.setDisable(false);
 					mnuPopupEliminar.setDisable(false);
 					mnuImprimirPrueba.setDisable(false);
-					mnuDefinirPrueba.setDisable(false);
-					mnuEvaluarPrueba.setDisable(false);
-					boolean estadoPrueba = prueba.getEstado().equals(
+					boolean estadoDefinida = prueba.getEstado().equals(
+							Estado.DEFINIDA);
+					boolean estadoEvaluada = prueba.getEstado().equals(
 							Estado.EVALUADA);
-					mnuListaEvaluaciones.setDisable(!estadoPrueba);
-					mnuComunalEje.setDisable(!estadoPrueba);
-					mnuComparativoComunal.setDisable(!estadoPrueba);
-					mnuComparativoComunalHab.setDisable(!estadoPrueba);
-
+					boolean estadoCreada = prueba.getEstado().equals(
+							Estado.CREADA);
+					
+					if (estadoDefinida) {
+						mnuEvaluarPrueba.setDisable(!estadoDefinida);
+						mnuListaEvaluaciones.setDisable(estadoDefinida);
+						mnuComunalEje.setDisable(estadoDefinida);
+						mnuComparativoComunal.setDisable(estadoDefinida);
+						mnuComparativoComunalHab.setDisable(estadoDefinida);
+					} else if (estadoEvaluada) {
+						mnuEvaluarPrueba.setDisable(!estadoEvaluada);
+						mnuDefinirPrueba.setDisable(estadoEvaluada);
+						mnuListaEvaluaciones.setDisable(!estadoEvaluada);
+						mnuComunalEje.setDisable(!estadoEvaluada);
+						mnuComparativoComunal.setDisable(!estadoEvaluada);
+						mnuComparativoComunalHab.setDisable(!estadoEvaluada);
+					} else if (estadoCreada) {
+						mnuEvaluarPrueba.setDisable(estadoCreada);
+						mnuDefinirPrueba.setDisable(!estadoCreada);
+						mnuListaEvaluaciones.setDisable(estadoCreada);
+						mnuComunalEje.setDisable(estadoCreada);
+						mnuComparativoComunal.setDisable(estadoCreada);
+						mnuComparativoComunalHab.setDisable(estadoCreada);
+					}
 				}
 			}
 		});

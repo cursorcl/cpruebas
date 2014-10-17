@@ -1,8 +1,5 @@
 package cl.eos.persistence.models;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -157,21 +154,22 @@ public class PruebaRendida implements IEntity {
 
   public Float getPbuenas() {
     Float totalRespuestas = (float) (this.malas + this.buenas + this.omitidas);
-    return ((float) this.buenas) / totalRespuestas * 100f;
+    float valor = ((float) this.buenas) / totalRespuestas * 100f;
+    return Utils.redondeo2Decimales(valor);
   }
 
   public Integer getPuntaje() {
     return (Integer) Utils.getPuntaje(getNota().floatValue());
   }
 
-  public Float getPpuntaje() {
-    return (float) (Utils.getPuntaje(getNota().floatValue()) / Utils.MAX_PUNTAJE);
+  public Float getPpuntaje() { 
+    float valor = ((float) (Utils.getPuntaje(getNota().floatValue()) / Utils.MAX_PUNTAJE))*100f;
+    return Utils.redondeo2Decimales(valor);
   }
 
-  public String getPpuntajes() {
-    NumberFormat formatter = new DecimalFormat("#0,00");
-    float valor = (float) (Utils.getPuntaje(getNota().floatValue()) / Utils.MAX_PUNTAJE);
-    return formatter.format(valor);
+  public Float getPpuntajes() {   
+    float valor = ((float) (Utils.getPuntaje(getNota().floatValue()) / Utils.MAX_PUNTAJE))*100f;
+    return Utils.redondeo2Decimales(valor);
 
   }
 
