@@ -9,7 +9,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import javafx.collections.FXCollections;
@@ -322,13 +321,13 @@ public class EvaluarPruebaView extends AFormView {
           for (EvaluacionPrueba evaluacion : listEvaluaciones) {
             if (evaluacion.getColegio().equals(colegio) && evaluacion.getCurso().equals(curso)) {
               evalPrueba = evaluacion;
+              evalPrueba.getPruebasRendidas().isEmpty();
               break;
             }
           }
         }
         ObservableList<OTPruebaRendida> oList = FXCollections.observableArrayList();
         if (evalPrueba == null) {
-
           // Tengo que crear la evaluacion Prueba.
           evalPrueba = new EvaluacionPrueba();
           evalPrueba.setColegio(colegio);
@@ -337,20 +336,20 @@ public class EvaluarPruebaView extends AFormView {
           evalPrueba.setProfesor(profesor);
           evalPrueba.setFecha(dtpFecha.getValue().toEpochDay());
           evalPrueba.setPruebasRendidas(new ArrayList<PruebaRendida>());
-
         }
 
         if (curso.getAlumnos() != null && !curso.getAlumnos().isEmpty()) {
           for (Alumno alumno : curso.getAlumnos()) {
-
             PruebaRendida pRendida = new PruebaRendida();
             pRendida.setAlumno(alumno);
             pRendida.setEvaluacionPrueba(evalPrueba);
-            evalPrueba.getPruebasRendidas().add(pRendida);
-            OTPruebaRendida ot = new OTPruebaRendida(pRendida);
-            if (!oList.contains(ot)) {
-              oList.add(ot);
+            if (evalPrueba.getPruebasRendidas().contains(pRendida)) {
+              int idx = evalPrueba.getPruebasRendidas().indexOf(pRendida);
+              pRendida = evalPrueba.getPruebasRendidas().get(idx);
+            } else {
+              evalPrueba.getPruebasRendidas().add(pRendida);
             }
+            oList.add(new OTPruebaRendida(pRendida));
           }
         }
         FXCollections.sort(oList, comparaPruebaRendida());
@@ -472,10 +471,10 @@ public class EvaluarPruebaView extends AFormView {
         if (!prueba.getEvaluaciones().contains(evalPrueba)) {
           prueba.getEvaluaciones().add(evalPrueba);
         }
-        save(prueba);
       }
     });
     Dialogs dlg = Dialogs.create();
+    dlg.title("Procesando imágenes");
     dlg.masthead(null);
     dlg.showWorkerProgress(task);
     Executors.newSingleThreadExecutor().execute(task);
