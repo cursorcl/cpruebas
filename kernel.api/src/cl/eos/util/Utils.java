@@ -124,24 +124,33 @@ public class Utils {
 		return correctas;
 	}
 
-	 public static String getFileExtension(File file) {
-	        String fileName = file.getName();
-	        if(fileName.lastIndexOf(".") != -1 && fileName.lastIndexOf(".") != 0)
-	        return fileName.substring(fileName.lastIndexOf(".")+1);
-	        else return "";
-	    }
-	
+	public static String getFileExtension(File file) {
+		String fileName = file.getName();
+		if (fileName.lastIndexOf(".") != -1 && fileName.lastIndexOf(".") != 0)
+			return fileName.substring(fileName.lastIndexOf(".") + 1);
+		else
+			return "";
+	}
+
 	public static void main(String[] args) {
 		System.out.println(Math.round(getPuntaje(6.2f)));
 		System.out.println(Math.round(getPuntaje(6.43f)));
 		System.out.println(Math.round(getPuntaje(6.545f)));
 		System.out.println(Math.round(getPuntaje(4.2f)));
-	} 
-	
-	public static char getDecimalSeparator(){
-		DecimalFormat format=(DecimalFormat) DecimalFormat.getInstance();
-		DecimalFormatSymbols symbols=format.getDecimalFormatSymbols();
-		char sep=symbols.getDecimalSeparator();
+	}
+
+	public static char getDecimalSeparator() {
+		DecimalFormat format = (DecimalFormat) DecimalFormat.getInstance();
+		DecimalFormatSymbols symbols = format.getDecimalFormatSymbols();
+		char sep = symbols.getDecimalSeparator();
 		return sep;
+	}
+
+	public static float redondeo2Decimales(float parametro) {
+		return Math.round(parametro * 100f) / 100f;
+	}
+
+	public static double redondeo2Decimales(double parametro) {
+		return Math.round(parametro * 100d) / 100d;
 	}
 }
