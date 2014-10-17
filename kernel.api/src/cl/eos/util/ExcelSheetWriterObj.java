@@ -161,6 +161,8 @@ public final class ExcelSheetWriterObj {
 				cell.setCellValue((Long) valor);
 			} else if (valor instanceof Double) {
 				cell.setCellValue((Double) valor);
+			} else if (valor instanceof Float) {
+				cell.setCellValue((Float) valor);
 			} else if ((valor instanceof ImageIcon) || (valor == null)
 					|| valor instanceof Color) {
 				cell.setCellValue("");

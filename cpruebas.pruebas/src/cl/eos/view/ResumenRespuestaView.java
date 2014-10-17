@@ -25,9 +25,10 @@ import cl.eos.ot.OTRespuestasPorcentaje;
 import cl.eos.persistence.models.EvaluacionPrueba;
 import cl.eos.persistence.models.PruebaRendida;
 import cl.eos.util.ExcelSheetWriterObj;
+import cl.eos.util.Utils;
 
 public class ResumenRespuestaView extends AFormView implements
-EventHandler<ActionEvent>{
+		EventHandler<ActionEvent> {
 
 	@FXML
 	private TableView<OTRespuestaPreguntas> tblPreguntas;
@@ -62,7 +63,7 @@ EventHandler<ActionEvent>{
 	@FXML
 	private BarChart<String, Number> graficoBarra = new BarChart<String, Number>(
 			yAxis, xAxis);
-	
+
 	@FXML
 	private MenuItem mnuExportarRespuestas;
 
@@ -70,7 +71,7 @@ EventHandler<ActionEvent>{
 	private LinkedList<OTRespuestasPorcentaje> listaPorcentaje;
 
 	public ResumenRespuestaView() {
-		
+
 	}
 
 	@FXML
@@ -117,11 +118,11 @@ EventHandler<ActionEvent>{
 
 			txtAsignatura.setText(((EvaluacionPrueba) entity).getAsignatura());
 			txtCurso.setText(((EvaluacionPrueba) entity).getCurso().getName());
-			txtNroPreguntas.setText(String.valueOf(((EvaluacionPrueba) entity)
-					.getPrueba().getNroPreguntas()));
+			String nroPreguntas = String.valueOf(((EvaluacionPrueba) entity)
+					.getPrueba().getNroPreguntas());
+			txtNroPreguntas.setText(nroPreguntas);
 			txtPrueba
 					.setText(((EvaluacionPrueba) entity).getPrueba().getName());
-			txtPuntaje.setText(null);
 
 			obtenerResultados((EvaluacionPrueba) entity);
 
@@ -143,6 +144,7 @@ EventHandler<ActionEvent>{
 	private void obtenerResultados(EvaluacionPrueba entity) {
 		List<PruebaRendida> pruebasRendidas = entity.getPruebasRendidas();
 		Integer nroPreguntas = entity.getPrueba().getNroPreguntas();
+
 		Integer buenas = 0;
 		Integer malas = 0;
 		Integer omitidas = 0;
@@ -164,7 +166,8 @@ EventHandler<ActionEvent>{
 				if (cRespuesta[i] == ' ') {
 					sOmitidas[i] = sOmitidas[i] + 1;
 					omitidas = omitidas + 1;
-				} else if (String.valueOf(cRespuesta[i]).toUpperCase().equals(String.valueOf(cResponses[i]).toUpperCase())) {
+				} else if (String.valueOf(cRespuesta[i]).toUpperCase()
+						.equals(String.valueOf(cResponses[i]).toUpperCase())) {
 					sBuenas[i] = sBuenas[i] + 1;
 					buenas = buenas + 1;
 				} else {
@@ -173,9 +176,16 @@ EventHandler<ActionEvent>{
 				}
 			}
 		}
+		
+		float nroAlumnos = pruebasRendidas.size();
+		float nota = Utils.getNota(nroPreguntas, (float) entity.getPrueba()
+				.getExigencia(), buenas, (float) entity.getPrueba()
+				.getPuntajeBase());
+
+		txtPuntaje.setText(String.valueOf(Utils.getPuntaje(nota)));
 
 		listaRespuestas = new LinkedList<OTRespuestaPreguntas>();
-		for (int i = 0; i < nroPreguntas ; i++) {
+		for (int i = 0; i < nroPreguntas; i++) {
 			OTRespuestaPreguntas otRespuesta = new OTRespuestaPreguntas();
 			otRespuesta.setName(String.valueOf(i + 1));
 			otRespuesta.setBuenas(sBuenas[i]);
@@ -187,27 +197,31 @@ EventHandler<ActionEvent>{
 		listaPorcentaje = new LinkedList<OTRespuestasPorcentaje>();
 		OTRespuestasPorcentaje respuestaPorcentajeB = new OTRespuestasPorcentaje();
 		respuestaPorcentajeB.setTitulo("Buenas");
-		float porcentajeBuenas = (float) (buenas / nroPreguntas);
-		respuestaPorcentajeB.setPorcentaje(porcentajeBuenas*100);
+		float porcentajeBuenas = (float) ((buenas /nroAlumnos)/ nroPreguntas);
+		respuestaPorcentajeB.setPorcentaje(porcentajeBuenas * 100);
 		listaPorcentaje.add(respuestaPorcentajeB);
 
 		OTRespuestasPorcentaje respuestaPorcentajeM = new OTRespuestasPorcentaje();
 		respuestaPorcentajeM.setTitulo("Malas");
-		float porcentajeMalas = (float) (malas / nroPreguntas);
-		respuestaPorcentajeM.setPorcentaje(porcentajeMalas*100);
+		float porcentajeMalas = (float) ((malas/nroAlumnos) / nroPreguntas);
+		respuestaPorcentajeM.setPorcentaje(porcentajeMalas * 100);
 		listaPorcentaje.add(respuestaPorcentajeM);
 
 		OTRespuestasPorcentaje respuestaPorcentaje = new OTRespuestasPorcentaje();
 		respuestaPorcentaje.setTitulo("Omitidas");
-		float porcentajeOmitidas = (float) (omitidas / nroPreguntas);
-		respuestaPorcentaje.setPorcentaje(porcentajeOmitidas*100);
+		float porcentajeOmitidas = (float) ((omitidas / nroAlumnos)/ nroPreguntas);
+		respuestaPorcentaje.setPorcentaje(porcentajeOmitidas * 100);
 		listaPorcentaje.add(respuestaPorcentaje);
-		
+
 		XYChart.Series series1 = new XYChart.Series();
 		series1.setName("Porcentaje de Respuestas");
-		series1.getData().add(new XYChart.Data<String, Float>("Buenas", porcentajeBuenas));
-		series1.getData().add(new XYChart.Data<String, Float>("Malas", porcentajeMalas));
-		series1.getData().add(new XYChart.Data<String, Float>("Omitidas",porcentajeOmitidas));
+		series1.getData().add(
+				new XYChart.Data<String, Float>("Buenas", porcentajeBuenas));
+		series1.getData().add(
+				new XYChart.Data<String, Float>("Malas", porcentajeMalas));
+		series1.getData()
+				.add(new XYChart.Data<String, Float>("Omitidas",
+						porcentajeOmitidas));
 		graficoBarra.getData().add(series1);
 	}
 
@@ -215,15 +229,15 @@ EventHandler<ActionEvent>{
 	public void handle(ActionEvent event) {
 		Object source = event.getSource();
 		if (source == mnuExportarRespuestas) {
-			
+
 			tblPreguntas.setId("Alumnos");
 			tblPorcentaje.setId("Porcentaje");
-			
+
 			List<TableView<? extends Object>> listaTablas = new LinkedList<>();
 			listaTablas.add((TableView<? extends Object>) tblPreguntas);
 			listaTablas.add((TableView<? extends Object>) tblPorcentaje);
-			
+
 			ExcelSheetWriterObj.convertirDatosALibroDeExcel(listaTablas);
-		} 
+		}
 	}
 }
