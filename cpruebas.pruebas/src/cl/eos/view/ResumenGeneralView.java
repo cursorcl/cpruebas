@@ -70,7 +70,7 @@ EventHandler<ActionEvent> {
 	@FXML
 	private TableColumn<PruebaRendida, Integer> colAPuntaje;
 	@FXML
-	private TableColumn<PruebaRendida, String> colPPuntaje;
+	private TableColumn<PruebaRendida, Float> colPPuntaje;
 	@FXML
 	private TableColumn<PruebaRendida, Float> colANota;
 	@FXML
@@ -129,7 +129,7 @@ EventHandler<ActionEvent> {
 				.setCellValueFactory(new PropertyValueFactory<PruebaRendida, Integer>(
 						"puntaje"));
 		colPPuntaje
-				.setCellValueFactory(new PropertyValueFactory<PruebaRendida, String>(
+				.setCellValueFactory(new PropertyValueFactory<PruebaRendida, Float>(
 						"ppuntajes"));
 		colANota.setCellValueFactory(new PropertyValueFactory<PruebaRendida, Float>(
 				"nota"));
