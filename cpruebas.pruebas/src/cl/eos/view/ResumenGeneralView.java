@@ -79,14 +79,14 @@ EventHandler<ActionEvent> {
 	private MenuItem mnuExportarResumen;
 	
 
-	private Float notaMin = 7f;
-	private Float notaMax = 0f;
-	private Float pbuenasMin = 100f;
-	private Float pbuenasMax = 0f;
-	private Float ppuntajeMin = 100f;
-	private Float ppuntajeMax = 0f;
-	private Integer puntajeMin = 100;
-	private Integer puntajeMax = 0;
+	private Float notaMin = Float.MAX_VALUE;
+	private Float notaMax = Float.MIN_VALUE;
+	private Float pbuenasMin = Float.MAX_VALUE;
+	private Float pbuenasMax = Float.MIN_VALUE;
+	private Float ppuntajeMin = Float.MAX_VALUE;
+	private Float ppuntajeMax =Float.MIN_VALUE;
+	private Integer puntajeMin = Integer.MAX_VALUE;
+	private Integer puntajeMax = Integer.MIN_VALUE;
 
 	public ResumenGeneralView() {
 		// TODO Auto-generated constructor stub

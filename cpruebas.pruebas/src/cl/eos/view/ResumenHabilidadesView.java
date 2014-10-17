@@ -155,7 +155,7 @@ public class ResumenHabilidadesView extends AFormView implements
 
 	private void obtenerResultados(EvaluacionPrueba entity) {
 		List<PruebaRendida> pruebasRendidas = entity.getPruebasRendidas();
-
+		
 		mapaHabilidades = new HashMap<Habilidad, OTPreguntasHabilidad>();
 
 		Prueba prueba = entity.getPrueba();

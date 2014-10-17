@@ -189,7 +189,7 @@ public class ResumenGeneralPMEView extends AFormView implements
 				.getPruebasRendidas();
 
 		int totalAlumnos = evaluacionPrueba.getPruebasRendidas().size();
-		int totalPreguntas = evaluacionPrueba.getPrueba().getNroPreguntas();
+		float totalPreguntas = evaluacionPrueba.getPrueba().getNroPreguntas();
 
 		Prueba prueba = evaluacionPrueba.getPrueba();
 		NivelEvaluacion nivelEvaluacion = prueba.getNivelEvaluacion();
@@ -202,7 +202,7 @@ public class ResumenGeneralPMEView extends AFormView implements
 
 			sumaNotas = sumaNotas + pRendida.getNota();
 
-			int logro = (pRendida.getBuenas() / totalPreguntas)*100;
+			float logro = (pRendida.getBuenas() / totalPreguntas)*100f;
 			sumaLogro = sumaLogro + logro;
 
 			RangoEvaluacion rango = nivelEvaluacion.getRango(logro);

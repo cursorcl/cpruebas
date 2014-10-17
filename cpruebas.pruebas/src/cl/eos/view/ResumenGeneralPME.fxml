@@ -137,7 +137,7 @@
          <children>
             <HBox>
                <children>
-                  <Label fx:id="lblTitulo" alignment="CENTER" contentDisplay="CENTER" prefHeight="35.0" prefWidth="1084.0" textAlignment="CENTER">
+                  <Label fx:id="lblTitulo" alignment="CENTER" contentDisplay="CENTER" prefHeight="35.0" prefWidth="1084.0">
                      <font>
                         <Font name="System Bold" size="20.0" />
                      </font>
