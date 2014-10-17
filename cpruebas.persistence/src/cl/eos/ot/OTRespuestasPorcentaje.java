@@ -1,5 +1,7 @@
 package cl.eos.ot;
 
+import cl.eos.util.Utils;
+
 public class OTRespuestasPorcentaje {
 
 	private String titulo;
@@ -14,7 +16,7 @@ public class OTRespuestasPorcentaje {
 	}
 
 	public Float getPorcentaje() {
-		return porcentaje;
+		return Utils.redondeo2Decimales(porcentaje);
 	}
 
 	public void setPorcentaje(Float porcentaje) {

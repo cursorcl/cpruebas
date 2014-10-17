@@ -41,8 +41,8 @@
                            <columns>
                               <TableColumn fx:id="colNombre" prefWidth="75.0" text="Nombre eje temático" />
                               <TableColumn fx:id="colDescripcion" prefWidth="175.0" text="Descripción general curso" />
-                              <TableColumn fx:id="colLogrado" prefWidth="60.0" text="\%Logrado" />
-                              <TableColumn fx:id="colNoLogrado" prefWidth="75.0" text="\% No logrado" />
+                              <TableColumn fx:id="colLogrado" prefWidth="60.0" style="-fx-alignment: CENTER;" text="\%Logrado" />
+                              <TableColumn fx:id="colNoLogrado" prefWidth="75.0" style="-fx-alignment: CENTER;" text="\% No logrado" />
                            </columns>
                            <contextMenu>
                               <ContextMenu>
