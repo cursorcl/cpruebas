@@ -1,7 +1,6 @@
 package cl.eos.ot;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
+import cl.eos.util.Utils;
 
 public class OTResultado {
 	private String nombre;
@@ -15,9 +14,8 @@ public class OTResultado {
 		this.nombre = nombre;
 	}
 
-	public String getLogrado() {
-		NumberFormat formatter = new DecimalFormat("#0.00");     
-		return formatter.format(logrado);
+	public Double getLogrado() {
+		return Utils.redondeo2Decimales(logrado);
 	}
 
 	public void setLogrado(double logrado) {
