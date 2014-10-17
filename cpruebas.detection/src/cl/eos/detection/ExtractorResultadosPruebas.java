@@ -82,7 +82,7 @@ public class ExtractorResultadosPruebas {
    * @throws IOException Error al leer las redes.
    */
   private ExtractorResultadosPruebas() throws IOException {
-    recognizerRespustas = RecognizerFactory.create(new File("./res/red_respuestas.red"));
+    recognizerRespustas = RecognizerFactory.create(new File("./res/red_respuestas_26x72.red"));
     recognizerRut = RecognizerFactory.create(new File("./res/red_rut.red"));
   }
 
@@ -190,7 +190,7 @@ public class ExtractorResultadosPruebas {
   private String getRespuesta(BufferedImage img) {
     String resp = "O";
 
-    Pair<Integer, Pair<Double, Double>> result = recognizerRespustas.recognize(img, 0.80);
+    Pair<Integer, Pair<Double, Double>> result = recognizerRespustas.recognize(img, 0.95); // Red pequña 0.8
     int idx = result.getFirst();
     if (idx != -1) {
       resp = RESPUESTAS[idx];
@@ -339,7 +339,7 @@ public class ExtractorResultadosPruebas {
       ExtractorResultadosPruebas extractor = new ExtractorResultadosPruebas();
 
       // for (int n = 0; n < 4; n++) {
-      BufferedImage image = ImageIO.read(new File("./res/prueba_001.png"));
+      BufferedImage image = ImageIO.read(new File("./res/prueba_002.png"));
       System.out.println(extractor.process(image, 45));
       // }
 
