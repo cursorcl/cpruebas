@@ -26,11 +26,7 @@
                         </ImageView>
 							</children>
 						</Pane>
-                  <AnchorPane id="SearchBox" layoutX="720.0" layoutY="1.0" prefHeight="62.0" prefWidth="191.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="32.0" AnchorPane.topAnchor="1.0">
-                     <children>
-      								<TextField layoutX="5.0" layoutY="18.0" prefHeight="24.0" prefWidth="181.0" promptText="Buscar" AnchorPane.bottomAnchor="9.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" />
-                     </children>
-                  </AnchorPane>
+                  <AnchorPane id="SearchBox" layoutX="720.0" layoutY="1.0" prefHeight="62.0" prefWidth="191.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="32.0" AnchorPane.topAnchor="1.0" />
                </children>
             </AnchorPane>
 			</top>
