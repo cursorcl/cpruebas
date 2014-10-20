@@ -34,7 +34,7 @@ public class NeuralNetworkRecognizer implements Recognizer
     BufferedReader brdr = new BufferedReader(new FileReader(file));
     String[] grdsz = brdr.readLine().split(" ");
     String nnfilename = brdr.readLine();
-    brdr.close();
+
     width = Integer.parseInt(grdsz[0]);
     height = Integer.parseInt(grdsz[1]);
 
