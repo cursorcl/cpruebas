@@ -135,7 +135,7 @@ public class TestTrainedRecognizer extends JFrame implements ActionListener
     for (int n=0; n<recognizerList.size(); n++)
     {
       Pair<Integer, Pair<Double, Double>> result =
-          recognizerList.get(n).recognize(image, 0.5);
+          recognizerList.get(n).recognize(image, 0.98);
       sb.append(String.format("<li>net %2d: index %2d (%.3f, %.3f)</li>\n",
           n, result.getFirst(),
           result.getSecond().getFirst(), result.getSecond().getSecond()));
@@ -167,6 +167,8 @@ public class TestTrainedRecognizer extends JFrame implements ActionListener
   public static void main(String[] args)
   {
     UtilLineLogging.initialize(null);
+    System.setProperty("java.util.Arrays.useLegacyMergeSort", "true");
+
     javax.swing.SwingUtilities.invokeLater(new Runnable()
     {
       @Override

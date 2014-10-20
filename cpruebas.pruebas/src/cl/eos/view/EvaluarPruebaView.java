@@ -36,7 +36,7 @@ import javafx.util.Callback;
 import org.controlsfx.dialog.Dialogs;
 
 import cl.eos.PruebasActivator;
-import cl.eos.detection.ExtractorResultadosPruebas;
+import cl.eos.detection.ExtractorResultadosPrueba;
 import cl.eos.detection.OTResultadoScanner;
 import cl.eos.exceptions.CPruebasException;
 import cl.eos.imp.view.AFormView;
@@ -463,7 +463,7 @@ public class EvaluarPruebaView extends AFormView {
         int max = prueba.getNroPreguntas();
         int n = 1;
         ObservableList<PruebaRendida> results = FXCollections.observableArrayList();
-        ExtractorResultadosPruebas procesador = ExtractorResultadosPruebas.getInstance();
+        ExtractorResultadosPrueba procesador = ExtractorResultadosPrueba.getInstance();
         for (File archivo : files) {
           OTResultadoScanner resultado = procesador.process(archivo, max);
           PruebaRendida pRendida;

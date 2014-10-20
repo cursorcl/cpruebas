@@ -7,7 +7,7 @@ import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
-import cl.eos.detection.ExtractorResultadosPruebas;
+import cl.eos.detection.ExtractorResultadosPrueba;
 import cl.eos.detection.OTResultadoScanner;
 import cl.eos.persistence.models.Alumno;
 import cl.eos.persistence.models.Curso;
@@ -30,14 +30,14 @@ public class TareaProcesaEvaluacionScanner extends Task<ObservableList<PruebaRen
   private Curso curso;
   private Prueba prueba;
   private List<File> archivos;
-  private ExtractorResultadosPruebas procesador;
+  private ExtractorResultadosPrueba procesador;
 
   public TareaProcesaEvaluacionScanner(Prueba prueba, Curso curso, List<File> archivos)
       throws IOException {
     this.prueba = prueba;
     this.curso = curso;
     this.archivos = archivos;
-    procesador = ExtractorResultadosPruebas.getInstance();
+    procesador = ExtractorResultadosPrueba.getInstance();
   }
 
   @Override
