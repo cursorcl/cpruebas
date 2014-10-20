@@ -1,2 +1,2 @@
-13 36
-red_respuestas.red.nn
+26 72
+red.nn
