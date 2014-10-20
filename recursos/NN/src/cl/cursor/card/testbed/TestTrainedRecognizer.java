@@ -167,6 +167,8 @@ public class TestTrainedRecognizer extends JFrame implements ActionListener
   public static void main(String[] args)
   {
     UtilLineLogging.initialize(null);
+    System.setProperty("java.util.Arrays.useLegacyMergeSort", "true");
+
     javax.swing.SwingUtilities.invokeLater(new Runnable()
     {
       @Override
