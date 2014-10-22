@@ -23,6 +23,7 @@ import boofcv.core.image.ConvertBufferedImage;
 import boofcv.gui.binary.VisualizeBinaryData;
 import boofcv.struct.image.ImageFloat32;
 import boofcv.struct.image.ImageUInt8;
+import cl.eos.detection.processors.panels.ShowImages;
 
 import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
@@ -327,12 +328,6 @@ public class TestParameters extends JDialog {
 			ImageIO.write(bImage, "png",
 					new File(textImagen.getText() + ".png"));
 
-			if (show != null) {
-				show.dispose();
-			}
-			show = new ShowImages();
-			show.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			show.mostrar(textImagen.getText(), textImagen.getText() + ".png");
 
 		} catch (IOException e) {
 			e.printStackTrace();

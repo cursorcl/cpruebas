@@ -1,15 +1,18 @@
-package cl.eos.detection;
+package cl.eos.detection.processors.panels;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.image.BufferedImage;
 
-import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JSplitPane;
-import java.awt.Window.Type;
+
+import net.miginfocom.swing.MigLayout;
 
 public class ShowImages extends JDialog {
 
@@ -30,8 +33,9 @@ public class ShowImages extends JDialog {
 		});
 	}
 
-	JLabel lblSource;
-	JLabel lblTarget;
+	private JSplitPane splitPane;
+	private JPanel panel;
+	private JLabel lblParameters;
 
 	/**
 	 * Create the dialog.
@@ -42,18 +46,12 @@ public class ShowImages extends JDialog {
 		setBounds(100, 100, 820, 625);
 		getContentPane().setLayout(new BorderLayout(0, 0));
 
-		JSplitPane splitPane = new JSplitPane();
+		splitPane = new JSplitPane();
 		splitPane.setDividerSize(2);
 		splitPane.setContinuousLayout(true);
 		getContentPane().add(splitPane, BorderLayout.CENTER);
+		getContentPane().add(getPanel(), BorderLayout.NORTH);
 
-		lblSource = new JLabel("New label");
-
-		splitPane.setLeftComponent(lblSource);
-
-		lblTarget = new JLabel("New label");
-		splitPane.setRightComponent(lblTarget);
-		splitPane.setDividerLocation(400);
 		this.addComponentListener(new ComponentAdapter() {
 
 			@Override
@@ -65,13 +63,33 @@ public class ShowImages extends JDialog {
 		});
 	}
 
-	public void mostrar(String source, String target) {
-		ImageIcon imSource = new ImageIcon(source);
-		ImageIcon imTarget = new ImageIcon(target);
-		lblSource.setIcon(imSource);
-		lblTarget.setIcon(imTarget);
-		repaint();
+	public void mostrar(BufferedImage source, BufferedImage target) {
+		
+		splitPane.setLeftComponent(new ScalablePane(source));
+		splitPane.setRightComponent(new ScalablePane(target));
+		
 		setVisible(true);
+		
 	}
 
+	private JPanel getPanel() {
+		if (panel == null) {
+			panel = new JPanel();
+			panel.setPreferredSize(new Dimension(10, 30));
+			panel.setLayout(new MigLayout("", "[grow]", "[]"));
+			panel.add(getLblParameters(), "cell 0 0,aligny top");
+		}
+		return panel;
+	}
+	private JLabel getLblParameters() {
+		if (lblParameters == null) {
+			lblParameters = new JLabel("Parametros");
+		}
+		return lblParameters;
+	}
+	
+	public void setParameters(String parameters)
+	{
+		lblParameters.setText(parameters);
+	}
 }
