@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.processing.Processor;
 import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
@@ -58,7 +57,12 @@ public class FrameProcesamiento extends JFrame {
 	private JButton btnImagenes;
 	protected PnlSeleccionaImagen pnlSelecciona;
 	protected ShowImages show;
-
+	private JPanel pnlResultados;
+	private JLabel lblRespuestasRescatadas;
+	private JLabel lblRespuestas;
+	private JButton btnEscogerRed;
+	private JButton btnEjecutarRed;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -79,19 +83,23 @@ public class FrameProcesamiento extends JFrame {
 	 * Create the frame.
 	 */
 	public FrameProcesamiento() {
-		setTitle("Pre Procesador Imagnes");
+		setTitle("Pre Procesador Imágenes");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 689, 297);
+		setBounds(100, 100, 700, 365);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 		contentPane.add(getSplitPane(), BorderLayout.CENTER);
+		contentPane.add(getPnlResultados(), BorderLayout.SOUTH);
 		fillListPorcessor();
 	}
 
 	private void fillListPorcessor() {
 		listProcessorModel.addElement(new ThresholdValue());
+		listProcessorModel.addElement(new ThresholdMean());
+		listProcessorModel.addElement(new ThresholdAdaptiveSquare());
+		
 		listProcessorModel.addElement(new Dilate4());
 		listProcessorModel.addElement(new Dilate8());
 		listProcessorModel.addElement(new Erode4());
@@ -121,8 +129,8 @@ public class FrameProcesamiento extends JFrame {
 			panel.add(getBtnAdd(), "cell 1 1");
 			panel.add(getListAdded(), "cell 2 1 1 3,grow");
 			panel.add(getBtnDel(), "cell 1 2");
-			panel.add(getBtnImagenes(), "cell 0 4");
-			panel.add(getBtnProcesar(), "cell 2 4,alignx right");
+			panel.add(getBtnImagenes(), "cell 0 4,growx");
+			panel.add(getBtnProcesar(), "cell 2 4,growx");
 		}
 		return panel;
 	}
@@ -285,14 +293,13 @@ public class FrameProcesamiento extends JFrame {
 					}
 				}
 			});
-
 		}
 		return btnProcesar;
 	}
 
 	private JButton getBtnImagenes() {
 		if (btnImagenes == null) {
-			btnImagenes = new JButton("Imagenes");
+			btnImagenes = new JButton("Escoger imágenes");
 			btnImagenes.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					if (pnlSelecciona == null) {
@@ -305,5 +312,41 @@ public class FrameProcesamiento extends JFrame {
 			});
 		}
 		return btnImagenes;
+	}
+	private JPanel getPnlResultados() {
+		if (pnlResultados == null) {
+			pnlResultados = new JPanel();
+			pnlResultados.setPreferredSize(new Dimension(10, 50));
+			pnlResultados.setLayout(new MigLayout("", "[][][grow][][][]", "[]"));
+			pnlResultados.add(getLblRespuestasRescatadas(), "cell 0 0");
+			pnlResultados.add(getLblRespuestas(), "cell 2 0");
+			pnlResultados.add(getBtnEscogerRed(), "cell 4 0");
+			pnlResultados.add(getBtnEjecutarRed(), "cell 5 0");
+		}
+		return pnlResultados;
+	}
+	private JLabel getLblRespuestasRescatadas() {
+		if (lblRespuestasRescatadas == null) {
+			lblRespuestasRescatadas = new JLabel("Respuestas Rescatadas");
+		}
+		return lblRespuestasRescatadas;
+	}
+	private JLabel getLblRespuestas() {
+		if (lblRespuestas == null) {
+			lblRespuestas = new JLabel("ABCDE");
+		}
+		return lblRespuestas;
+	}
+	private JButton getBtnEscogerRed() {
+		if (btnEscogerRed == null) {
+			btnEscogerRed = new JButton("Escoger Red");
+		}
+		return btnEscogerRed;
+	}
+	private JButton getBtnEjecutarRed() {
+		if (btnEjecutarRed == null) {
+			btnEjecutarRed = new JButton("Ejecutar Red");
+		}
+		return btnEjecutarRed;
 	}
 }

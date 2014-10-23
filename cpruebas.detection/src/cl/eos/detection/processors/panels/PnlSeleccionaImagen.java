@@ -3,8 +3,12 @@ package cl.eos.detection.processors.panels;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -14,7 +18,6 @@ import javax.swing.JPanel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import cl.eos.detection.processors.base.IProcessor;
 import net.miginfocom.swing.MigLayout;
 
 public class PnlSeleccionaImagen extends JPanel {
@@ -30,7 +33,7 @@ public class PnlSeleccionaImagen extends JPanel {
 	 * Create the panel.
 	 */
 	public PnlSeleccionaImagen() {
-		setLayout(new MigLayout("", "[361.00px][]", "[26.00px][][][grow]"));
+		setLayout(new MigLayout("", "[196.00px,grow][]", "[26.00px][][][grow]"));
 		add(getListArchivos(), "cell 0 0 1 4,grow");
 		add(getBtnAdd(), "cell 1 0,grow");
 		add(getBtnDel(), "cell 1 1,grow");
@@ -58,7 +61,26 @@ public class PnlSeleccionaImagen extends JPanel {
 			btnAdd = new JButton("+");
 			btnAdd.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+					Properties prop = new Properties();
+					File file = new File("lastDir.properties");
+					if(file.exists())
+					{
+						try {
+							prop.load(new FileInputStream(file));
+						} catch (IOException e1) {
+							e1.printStackTrace();
+						}
+						String lastDir = prop.getProperty("DIR");
+						fCh.setCurrentDirectory(new File(lastDir));
+					}
+					
 					if (fCh.showOpenDialog(PnlSeleccionaImagen.this) == JFileChooser.APPROVE_OPTION) {
+						prop.put("DIR", fCh.getCurrentDirectory().getAbsolutePath());
+						try {
+							prop.store(new FileOutputStream(file), "EOS");
+						} catch (IOException e1) {
+							e1.printStackTrace();
+						}
 						model.addElement(fCh.getSelectedFile());
 					}
 				}
