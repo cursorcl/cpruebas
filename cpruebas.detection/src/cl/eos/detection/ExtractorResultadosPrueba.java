@@ -74,10 +74,10 @@ public class ExtractorResultadosPrueba extends AExtractorResultados {
       ExtractorResultadosPrueba extractor = new ExtractorResultadosPrueba();
 
 //      for (String fileName : fileNames) {
-        String fileName = "prueba_005.png";
+        String fileName = "prueba_006.png";
         BufferedImage image = ImageIO.read(new File("./res/" + fileName));
         System.out.print(fileName + " ");
-        System.out.println(extractor.process(image, 45));
+        System.out.println(extractor.process(image, 30));
 //      }
 
     } catch (IOException e) {

@@ -147,7 +147,19 @@ public abstract OTResultadoScanner process(BufferedImage image, int nroPreguntas
         } catch (IOException e) {
           e.printStackTrace();
         }
+        
+		img = fillCirlces(img);
+		try {
+			ImageIO.write(img, "png", new File("o:/res/respuestas/PC"
+					+ pregunta + ".png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+        
         String respuesta = getRespuesta(img);
+        
+        
+        
         resp.append(respuesta);
         pregunta++;
       }
@@ -157,7 +169,6 @@ public abstract OTResultadoScanner process(BufferedImage image, int nroPreguntas
 
   protected final String getRespuesta(BufferedImage img) {
     String resp = "O";
-    img = fillCirlces(img);
     Pair<Integer, Pair<Double, Double>> result = recognizerRespustas.recognize(img, 0.9); // Red pequeña 0.8
     int idx = result.getFirst();
     if (idx != -1) {
@@ -172,13 +183,14 @@ public abstract OTResultadoScanner process(BufferedImage image, int nroPreguntas
   {
     ImageFloat32 input = ConvertBufferedImage.convertFromSingle(image, null, ImageFloat32.class);
     ImageUInt8 binary = new ImageUInt8(input.width, input.height);
-    ThresholdImageOps.threshold(input, binary, (float) 160, false);
+    ThresholdImageOps.threshold(input, binary, (float) 180, false);
     ImageUInt8 output = BinaryImageOps.erode4(binary, 2, null);
-    output = BinaryImageOps.dilate4(output, 6, null);
-    output = BinaryImageOps.erode4(output, 3, null);
-    output = BinaryImageOps.dilate4(output, 8, null);
-    output = BinaryImageOps.erode4(output, 10, null);
+    output = BinaryImageOps.dilate4(output, 7, null);
+    output = BinaryImageOps.erode4(output, 2, null);
+    output = BinaryImageOps.dilate4(output, 5, null);
+    output = BinaryImageOps.erode4(output, 8, null);
     BufferedImage bImage = VisualizeBinaryData.renderBinary(output, null);
+    
     return bImage;
   }
 
@@ -309,6 +321,7 @@ public abstract OTResultadoScanner process(BufferedImage image, int nroPreguntas
   
   protected static int[] X = {2, 60, 119, 178, 239};
   
+  static int resC = 0;
   protected BufferedImage fillCirlces(BufferedImage bImage)
   {
     Graphics2D g2d = (Graphics2D) bImage.getGraphics();
@@ -331,6 +344,8 @@ public abstract OTResultadoScanner process(BufferedImage image, int nroPreguntas
       g.dispose();
       ImageFloat32 img32 = ConvertBufferedImage.convertFromSingle(subImage, null, ImageFloat32.class);
       double value = ImageStatistics.mean(img32);
+      System.out.println(value);
+      g2d.drawOval(X[n], 1, 45, 48);
       if(value < 180)
       {
         g2d.fillOval(X[n], 1, 45, 48);
