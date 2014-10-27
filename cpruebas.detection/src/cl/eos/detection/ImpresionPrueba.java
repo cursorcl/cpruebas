@@ -389,7 +389,7 @@ public class ImpresionPrueba {
               RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
       g2.setRenderingHints(rh);
       g2.drawImage(imageEmpty, 0, 0, imageEmpty.getWidth(), imageEmpty.getHeight(), null);
-
+      ImageIO.write(image, "png", new File("./res/patron.png"));
       PDDocument doc = new PDDocument();
       try {
         PDPage page = new PDPage();

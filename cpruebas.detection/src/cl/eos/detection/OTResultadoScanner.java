@@ -1,5 +1,9 @@
 package cl.eos.detection;
 
+import java.util.Arrays;
+
+import com.google.common.base.Splitter;
+
 public class OTResultadoScanner {
 
   private String rut;
@@ -40,7 +44,8 @@ public class OTResultadoScanner {
 
   @Override
   public String toString() {
-    return "OTResultadoScanner [rut=" + rut + ", forma=" + forma + ", respuestas=" + respuestas
+    
+    return "OTResultadoScanner [rut=" + rut + ", forma=" + forma + ", respuestas=" + Splitter.fixedLength(5).split(respuestas)
         + "]";
   }
   
