@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executors;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -33,10 +34,11 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.util.Callback;
 
+import org.controlsfx.dialog.Dialog.Actions;
 import org.controlsfx.dialog.Dialogs;
 
 import cl.eos.PruebasActivator;
-import cl.eos.detection.ExtractorResultadosPruebas;
+import cl.eos.detection.ExtractorResultadosPrueba;
 import cl.eos.detection.OTResultadoScanner;
 import cl.eos.exceptions.CPruebasException;
 import cl.eos.imp.view.AFormView;
@@ -216,18 +218,18 @@ public class EvaluarPruebaView extends AFormView {
         });
   }
 
-  protected void evaluar(String value, OTPruebaRendida otRendida) {
+  protected void evaluar(String respsAlumno, OTPruebaRendida otRendida) {
 
     int nroPreguntas = respuestas.size();
-    int nMax = Math.min(value.length(), nroPreguntas);
-    otRendida.setOmitidas(Math.abs(value.length() - nroPreguntas));
+    int nMax = Math.min(respsAlumno.length(), nroPreguntas);
+    otRendida.setOmitidas(Math.abs(respsAlumno.length() - nroPreguntas));
     otRendida.setBuenas(0);
     otRendida.setMalas(0);
     for (int n = 0; n < nMax; n++) {
       RespuestasEsperadasPrueba resp = respuestas.get(n);
-      String userResp = value.substring(n, n + 1);
+      String userResp = respsAlumno.substring(n, n + 1);
       String validResp = resp.getRespuesta();
-      if (userResp.toUpperCase().equals("*")) {
+      if (userResp.toUpperCase().equals("O")) {
         otRendida.setOmitidas(otRendida.getOmitidas() + 1);
       } else if (userResp.toUpperCase().equals(validResp.toUpperCase())) {
         otRendida.setBuenas(otRendida.getBuenas() + 1);
@@ -346,8 +348,6 @@ public class EvaluarPruebaView extends AFormView {
             if (evalPrueba.getPruebasRendidas().contains(pRendida)) {
               int idx = evalPrueba.getPruebasRendidas().indexOf(pRendida);
               pRendida = evalPrueba.getPruebasRendidas().get(idx);
-            } else {
-              evalPrueba.getPruebasRendidas().add(pRendida);
             }
             oList.add(new OTPruebaRendida(pRendida));
           }
@@ -368,6 +368,32 @@ public class EvaluarPruebaView extends AFormView {
       if (!prueba.getEvaluaciones().contains(evalPrueba)) {
         prueba.getEvaluaciones().add(evalPrueba);
       }
+
+      ObservableList<OTPruebaRendida> otDeLaTabla = tblListadoPruebas.getItems();
+      for (OTPruebaRendida ot : otDeLaTabla) {
+        if (ot.getRespuestas() != null && !ot.getRespuestas().trim().isEmpty()) {
+          int idx = evalPrueba.getPruebasRendidas().indexOf(ot.getPruebaRendida());
+          if (idx != -1) {
+            PruebaRendida nPr = ot.getPruebaRendida();
+            PruebaRendida oPr = evalPrueba.getPruebasRendidas().get(idx);
+            oPr.setBuenas(nPr.getBuenas());
+            oPr.setMalas(nPr.getMalas());
+            oPr.setOmitidas(nPr.getOmitidas());
+            oPr.setRespuestas(nPr.getRespuestas());
+            oPr.setRango(nPr.getRango());
+            evalPrueba.getPruebasRendidas().set(idx, ot.getPruebaRendida());
+          } else {
+            evalPrueba.getPruebasRendidas().add(ot.getPruebaRendida());
+          }
+
+        } else {
+          int idx = evalPrueba.getPruebasRendidas().indexOf(ot.getPruebaRendida());
+          if (idx != -1) {
+            evalPrueba.getPruebasRendidas().remove(idx);
+          }
+        }
+      }
+
       String s =
           String.format("%s-%s-%s-%s", evalPrueba.getAsignatura(), evalPrueba.getColegio(),
               evalPrueba.getCurso(), evalPrueba.getFechaLocal().toString());
@@ -424,60 +450,75 @@ public class EvaluarPruebaView extends AFormView {
 
   protected void handlerLeerImagenes() throws IOException {
     FileChooser fileChooser = new FileChooser();
-    FileChooser.ExtensionFilter pngExtFilter =
-        new FileChooser.ExtensionFilter("PNG files (*.png)", "*.png");
-    fileChooser.getExtensionFilters().add(pngExtFilter);
-    FileChooser.ExtensionFilter jpgExtFilter =
-        new FileChooser.ExtensionFilter("JPG files (*.jpg)", "*.jpg");
-    fileChooser.getExtensionFilters().add(jpgExtFilter);
+
+    FileChooser.ExtensionFilter imageExtFilter =
+        new FileChooser.ExtensionFilter("Archivos de Imágenes ", "*.png", "*.jpg");
+    fileChooser.getExtensionFilters().add(imageExtFilter);
+
     fileChooser.setTitle("Seleccione Imégenes Respuesta");
     List<File> files = fileChooser.showOpenMultipleDialog(null);
+    if (files != null && !files.isEmpty()) {
+      final Dialogs dlg = Dialogs.create();
+      dlg.title("Procesando pruebas");
+      dlg.masthead(null);
+      dlg.message("Esto tomará algunos minutos.");
 
-    // Se limpia la lista de alumnos de la tabla.
-    tblListadoPruebas.getItems().clear();
+      Task<ObservableList<PruebaRendida>> task = new Task<ObservableList<PruebaRendida>>() {
+        @Override
+        protected ObservableList<PruebaRendida> call() throws Exception {
+          int max = prueba.getNroPreguntas();
+          int n = 1;
+          ObservableList<PruebaRendida> results = FXCollections.observableArrayList();
+          ExtractorResultadosPrueba procesador = ExtractorResultadosPrueba.getInstance();
+          for (File archivo : files) {
+            OTResultadoScanner resultado = procesador.process(archivo, max);
+            PruebaRendida pRendida;
+            try {
+              pRendida = obtenerPruebaRendida(resultado);
+              pRendida.setEvaluacionPrueba(evalPrueba);
+              results.add(pRendida);
+              updateMessage("Procesado:" + pRendida.getAlumno().toString());
+              updateProgress(n++, files.size());
+            } catch (CPruebasException e) {
 
-    Task<ObservableList<PruebaRendida>> task = new Task<ObservableList<PruebaRendida>>() {
-      @Override
-      protected ObservableList<PruebaRendida> call() throws Exception {
-        int max = prueba.getNroPreguntas();
-        int n = 1;
-        ObservableList<PruebaRendida> results = FXCollections.observableArrayList();
-        ExtractorResultadosPruebas procesador = ExtractorResultadosPruebas.getInstance();
-        for (File archivo : files) {
-          OTResultadoScanner resultado = procesador.process(archivo, max);
-          PruebaRendida pRendida;
-          try {
-            pRendida = obtenerPruebaRendida(resultado);
-            results.add(pRendida);
-            updateProgress(n++, max);
-          } catch (CPruebasException e) {
-
+            }
+          }
+          return results;
+        }
+      };
+      task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+        @Override
+        public void handle(WorkerStateEvent event) {
+          ObservableList<PruebaRendida> pruebas = task.getValue();
+          if (pruebas != null && !pruebas.isEmpty()) {
+            for (PruebaRendida pr : pruebas) {
+              OTPruebaRendida ot = new OTPruebaRendida(pr);
+              int idx = tblListadoPruebas.getItems().indexOf(ot);
+              if (idx == -1) {
+                tblListadoPruebas.getItems().add(ot);
+              } else {
+                OTPruebaRendida oPr = tblListadoPruebas.getItems().get(idx);
+                oPr.setBuenas(pr.getBuenas());
+                oPr.setMalas(pr.getMalas());
+                oPr.setOmitidas(pr.getOmitidas());
+                oPr.setRespuestas(pr.getRespuestas());
+                oPr.setNivel(pr.getRango());
+                oPr.setNota(pr.getNota());
+                oPr.setPuntaje(Utils.getPuntaje(pr.getNota()));
+                tblListadoPruebas.getItems().set(idx, oPr);
+              }
+            }
+            Dialogs info = Dialogs.create();
+            dlg.title("Proceso finalizado");
+            dlg.masthead("Se ha procesado " + pruebas.size() + " pruebas.");
+            dlg.message("Recuerde grabar los resultados.");
+            info.showInformation();
           }
         }
-        return results;
-      }
-    };
-    task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
-      @Override
-      public void handle(WorkerStateEvent event) {
-        ObservableList<PruebaRendida> pruebas = task.getValue();
-        if (pruebas != null && !pruebas.isEmpty()) {
-          for (PruebaRendida pr : pruebas) {
-            evalPrueba.getPruebasRendidas().add(pr);
-            OTPruebaRendida ot = new OTPruebaRendida(pr);
-            tblListadoPruebas.getItems().add(ot);
-          }
-        }
-        if (!prueba.getEvaluaciones().contains(evalPrueba)) {
-          prueba.getEvaluaciones().add(evalPrueba);
-        }
-      }
-    });
-    Dialogs dlg = Dialogs.create();
-    dlg.title("Procesando imágenes");
-    dlg.masthead(null);
-    dlg.showWorkerProgress(task);
-    Executors.newSingleThreadExecutor().execute(task);
+      });
+      dlg.showWorkerProgress(task);
+      Executors.newSingleThreadExecutor().execute(task);
+    }
   }
 
   private PruebaRendida obtenerPruebaRendida(OTResultadoScanner resultado) throws CPruebasException {
@@ -495,7 +536,6 @@ public class EvaluarPruebaView extends AFormView {
       if (alumno == null) {
         throw new CPruebasException(String.format("El rut: %s no pertenece al curso", rut));
       } else {
-        System.out.println("Procesando:" + alumno);
         StringBuilder strResps = new StringBuilder(resultado.getRespuestas());
 
         int buenas = 0;
@@ -512,10 +552,12 @@ public class EvaluarPruebaView extends AFormView {
           } else {
             if (rEsperada.getMental()) {
               if ("B".equalsIgnoreCase(letter)) {
-                strResps.replace(n, n + 1, "B");
+                strResps.replace(n, n + 1, "+");
                 buenas++;
               } else if ("D".equalsIgnoreCase(letter)) {
-                strResps.replace(n, n + 1, "M");
+                strResps.replace(n, n + 1, "-");
+                malas++;
+              } else {
                 malas++;
               }
             } else if (rEsperada.getVerdaderoFalso()) {

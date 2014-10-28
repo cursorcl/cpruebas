@@ -20,7 +20,7 @@ import cl.eos.ot.OTResumenGeneral;
 import cl.eos.persistence.models.EvaluacionPrueba;
 import cl.eos.persistence.models.PruebaRendida;
 import cl.eos.util.ExcelSheetWriterObj;
-
+// TODO Auto-generated constructor stub
 public class ResumenGeneralView extends AFormView implements
 EventHandler<ActionEvent> {
 	@FXML

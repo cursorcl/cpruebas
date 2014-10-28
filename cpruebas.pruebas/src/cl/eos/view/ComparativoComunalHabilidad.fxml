@@ -36,7 +36,7 @@
       </SplitPane>
    </center>
    <top>
-      <Pane maxHeight="40.0" BorderPane.alignment="CENTER">
+      <Pane maxHeight="40.0" styleClass="sample-page" BorderPane.alignment="CENTER">
          <children>
             <HBox>
                <children>

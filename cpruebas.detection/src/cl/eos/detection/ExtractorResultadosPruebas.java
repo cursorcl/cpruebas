@@ -6,6 +6,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Ellipse2D;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -18,6 +19,7 @@ import javax.imageio.ImageIO;
 import boofcv.alg.filter.binary.BinaryImageOps;
 import boofcv.alg.filter.binary.Contour;
 import boofcv.alg.filter.binary.ThresholdImageOps;
+import boofcv.alg.misc.ImageStatistics;
 import boofcv.core.image.ConvertBufferedImage;
 import boofcv.gui.binary.VisualizeBinaryData;
 import boofcv.struct.ConnectRule;
@@ -190,7 +192,7 @@ public class ExtractorResultadosPruebas {
   private String getRespuesta(BufferedImage img) {
     String resp = "O";
 
-    Pair<Integer, Pair<Double, Double>> result = recognizerRespustas.recognize(img, 0.80);
+    Pair<Integer, Pair<Double, Double>> result = recognizerRespustas.recognize(img, 0.80); // Red pequña 0.8
     int idx = result.getFirst();
     if (idx != -1) {
       resp = RESPUESTAS[idx];
@@ -333,13 +335,15 @@ public class ExtractorResultadosPruebas {
     return result;
   }
 
+  
+  
 
   public static void main(String args[]) throws IOException {
     try {
       ExtractorResultadosPruebas extractor = new ExtractorResultadosPruebas();
 
       // for (int n = 0; n < 4; n++) {
-      BufferedImage image = ImageIO.read(new File("./res/prueba_001.png"));
+      BufferedImage image = ImageIO.read(new File("./res/prueba02.jpg"));
       System.out.println(extractor.process(image, 45));
       // }
 

@@ -57,8 +57,8 @@ public class ImpresionPrueba {
 
   private final String[] TITLE_LETER = {"A", "B", "C", "D", "E"};
 
-  private final Font LETTERS_FONT = new Font("Arial", Font.PLAIN, 10);
-  private final Font OPTIONS_FONT = new Font("Arial", Font.PLAIN, 8);
+  private final Font LETTERS_FONT = new Font("Courier", Font.PLAIN, 10);
+  private final Font OPTIONS_FONT = new Font("Courier", Font.PLAIN, 6);
 
   private int nroAlternativas;
   private int HEIGHT_FONT;
@@ -111,6 +111,7 @@ public class ImpresionPrueba {
         g2.fillRect(0, 0, imageEmpty.getWidth(), imageEmpty.getHeight());
         g2.drawImage(imageEmpty, 0, 0, null);
         g2.setColor(Color.BLACK);
+        g2.setFont(LETTERS_FONT);
         row = FIRST_ROW;
         col = FIRST_COL;
         nro = 1;
@@ -169,7 +170,7 @@ public class ImpresionPrueba {
       String str = String.valueOf(ch).toUpperCase();
       g2.drawString(str, RUT_COLS[idxCol] + 2, RUT_ROW);
 
-      int idxRow = str.equals("K") ? 11 : Integer.valueOf(str);
+      int idxRow = str.equals("K") ? 10 : Integer.valueOf(str);
       int y = RUT_POINT.y + idxRow * (CIRCLE_WIDTH + 2);
       g2.fillOval(RUT_COLS[idxCol], y, CIRCLE_WIDTH, CIRCLE_WIDTH);
       idxCol++;
@@ -186,7 +187,6 @@ public class ImpresionPrueba {
         if (n == -1) {
           if (m == 0) {
             g2.fillRect(21, y, 15, 5);
-            
           }
           if (m != 10) {
             g2.drawString(String.valueOf(m), x, y + HEIGHT_FONT);
@@ -316,15 +316,15 @@ public class ImpresionPrueba {
 
   private void drawCalcLine() {
     int c = col;
-    g2.setFont(OPTIONS_FONT);
+    
     g2.drawString(String.valueOf(nro), c, row + HEIGHT_FONT);
     c = c + CIRCLE_WIDTH + STEP_COL * 2;
-
-    g2.drawString("V", c, row + HEIGHT_FONT);
+    g2.setFont(OPTIONS_FONT);
+    g2.drawString("B", c, row + HEIGHT_FONT);
     c = c + CIRCLE_WIDTH + STEP_COL;
     g2.drawOval(c, row, CIRCLE_WIDTH, CIRCLE_WIDTH);
     c = c + CIRCLE_WIDTH + STEP_COL;
-    g2.drawString("F", c, row + HEIGHT_FONT);
+    g2.drawString("M", c, row + HEIGHT_FONT);
     c = c + CIRCLE_WIDTH + STEP_COL;
     g2.drawOval(c, row, CIRCLE_WIDTH, CIRCLE_WIDTH);
     g2.setFont(LETTERS_FONT);
@@ -332,10 +332,10 @@ public class ImpresionPrueba {
 
   private void drawVFLine() {
     int c = col;
-    g2.setFont(OPTIONS_FONT);
+    
     g2.drawString(String.valueOf(nro), c, row + HEIGHT_FONT);
     c = c + CIRCLE_WIDTH + STEP_COL * 2;
-
+    g2.setFont(OPTIONS_FONT);
     g2.drawString("V", c, row + HEIGHT_FONT);
     c = c + CIRCLE_WIDTH + STEP_COL;
     g2.drawOval(c, row, CIRCLE_WIDTH, CIRCLE_WIDTH);
@@ -389,7 +389,7 @@ public class ImpresionPrueba {
               RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
       g2.setRenderingHints(rh);
       g2.drawImage(imageEmpty, 0, 0, imageEmpty.getWidth(), imageEmpty.getHeight(), null);
-
+      ImageIO.write(image, "png", new File("./res/patron.png"));
       PDDocument doc = new PDDocument();
       try {
         PDPage page = new PDPage();

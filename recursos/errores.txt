@@ -1,0 +1,391 @@
+Resumen respuesta alumno
+	No permite seleccionar la segunda-_> fila de la tabla inferior
+Resultado por habilidades
+	Desaparece el gráfico
+Listado de eje tematico
+	se cae
+	
+	[TopLink Info]: 2014.10.18 10:41:01.662--ServerSession(1156094022)--TopLink, version: Oracle TopLink Essentials - 2.0 (Build b46-beta3 (05/09/2007))
+[TopLink Info]: 2014.10.18 10:41:02.736--ServerSession(1156094022)--file:/O:/cpruebas/cpruebas.persistence.provider/bin/-cpruebas login successful
+[TopLink Warning]: 2014.10.18 10:41:02.858--ServerSession(1156094022)--Exception [TOPLINK-4002] (Oracle TopLink Essentials - 2.0 (Build b46-beta3 (05/09/2007))): oracle.toplink.essentials.exceptions.DatabaseException
+Internal Exception: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'pruebarendida' already exists
+Error Code: 1050
+Call: CREATE TABLE PRUEBARENDIDA (ID BIGINT AUTO_INCREMENT NOT NULL, OMITIDAS INTEGER, NOTA FLOAT, RESPUESTAS VARCHAR(255), FORMA INTEGER, MALAS INTEGER, BUENAS INTEGER, NAME VARCHAR(255), RANGO_ID BIGINT, ALUMNO_ID BIGINT, EVALUACIONPRUEBA_ID BIGINT, PRIMARY KEY (ID))
+Query: DataModifyQuery()
+[TopLink Warning]: 2014.10.18 10:41:02.877--ServerSession(1156094022)--Exception [TOPLINK-4002] (Oracle TopLink Essentials - 2.0 (Build b46-beta3 (05/09/2007))): oracle.toplink.essentials.exceptions.DatabaseException
+Internal Exception: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'habilidad' already exists
+Error Code: 1050
+Call: CREATE TABLE HABILIDAD (ID BIGINT AUTO_INCREMENT NOT NULL, NAME VARCHAR(255), DESCRIPCION VARCHAR(255), PRIMARY KEY (ID))
+Query: DataModifyQuery()
+[TopLink Warning]: 2014.10.18 10:41:02.899--ServerSession(1156094022)--Exception [TOPLINK-4002] (Oracle TopLink Essentials - 2.0 (Build b46-beta3 (05/09/2007))): oracle.toplink.essentials.exceptions.DatabaseException
+Internal Exception: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'formas' already exists
+Error Code: 1050
+Call: CREATE TABLE FORMAS (ID BIGINT AUTO_INCREMENT NOT NULL, FORMA INTEGER, ORDEN VARCHAR(255), NAME VARCHAR(100), PRUEBA_ID BIGINT, PRIMARY KEY (ID))
+Query: DataModifyQuery()
+[TopLink Warning]: 2014.10.18 10:41:02.972--ServerSession(1156094022)--Exception [TOPLINK-4002] (Oracle TopLink Essentials - 2.0 (Build b46-beta3 (05/09/2007))): oracle.toplink.essentials.exceptions.DatabaseException
+Internal Exception: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'curso' already exists
+Error Code: 1050
+Call: CREATE TABLE CURSO (ID BIGINT AUTO_INCREMENT NOT NULL, NAME VARCHAR(255), TIPOCURSO_ID BIGINT, CICLO_ID BIGINT, COLEGIO_ID BIGINT, PRIMARY KEY (ID))
+Query: DataModifyQuery()
+[TopLink Warning]: 2014.10.18 10:41:03.025--ServerSession(1156094022)--Exception [TOPLINK-4002] (Oracle TopLink Essentials - 2.0 (Build b46-beta3 (05/09/2007))): oracle.toplink.essentials.exceptions.DatabaseException
+Internal Exception: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'alumno' already exists
+Error Code: 1050
+Call: CREATE TABLE ALUMNO (ID BIGINT AUTO_INCREMENT NOT NULL, PATERNO VARCHAR(255), MATERNO VARCHAR(255), RUT VARCHAR(255), DIRECCION VARCHAR(255), NAME VARCHAR(255), CURSO_ID BIGINT, COLEGIO_ID BIGINT, PRIMARY KEY (ID))
+Query: DataModifyQuery()
+[TopLink Warning]: 2014.10.18 10:41:03.088--ServerSession(1156094022)--Exception [TOPLINK-4002] (Oracle TopLink Essentials - 2.0 (Build b46-beta3 (05/09/2007))): oracle.toplink.essentials.exceptions.DatabaseException
+Internal Exception: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'ejetematico' already exists
+Error Code: 1050
+Call: CREATE TABLE EJETEMATICO (ID BIGINT AUTO_INCREMENT NOT NULL, NAME VARCHAR(255), ASIGNATURA_ID BIGINT, TIPOPRUEBA_ID BIGINT, PRIMARY KEY (ID))
+Query: DataModifyQuery()
+[TopLink Warning]: 2014.10.18 10:41:03.109--ServerSession(1156094022)--Exception [TOPLINK-4002] (Oracle TopLink Essentials - 2.0 (Build b46-beta3 (05/09/2007))): oracle.toplink.essentials.exceptions.DatabaseException
+Internal Exception: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'asignatura' already exists
+Error Code: 1050
+Call: CREATE TABLE ASIGNATURA (ID BIGINT AUTO_INCREMENT NOT NULL, NAME VARCHAR(255), PRIMARY KEY (ID))
+Query: DataModifyQuery()
+[TopLink Warning]: 2014.10.18 10:41:03.124--ServerSession(1156094022)--Exception [TOPLINK-4002] (Oracle TopLink Essentials - 2.0 (Build b46-beta3 (05/09/2007))): oracle.toplink.essentials.exceptions.DatabaseException
+Internal Exception: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'evaluacionprueba' already exists
+Error Code: 1050
+Call: CREATE TABLE EVALUACIONPRUEBA (ID BIGINT AUTO_INCREMENT NOT NULL, NAME VARCHAR(100), FECHA BIGINT, PRUEBA_ID BIGINT, PROFESOR_ID BIGINT, COLEGIO_ID BIGINT, CURSO_ID BIGINT, PRIMARY KEY (ID))
+Query: DataModifyQuery()
+[TopLink Warning]: 2014.10.18 10:41:03.156--ServerSession(1156094022)--Exception [TOPLINK-4002] (Oracle TopLink Essentials - 2.0 (Build b46-beta3 (05/09/2007))): oracle.toplink.essentials.exceptions.DatabaseException
+Internal Exception: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'respuestasesperadasprueba' already exists
+Error Code: 1050
+Call: CREATE TABLE RESPUESTASESPERADASPRUEBA (ID BIGINT AUTO_INCREMENT NOT NULL, NUMERO INTEGER, NAME VARCHAR(255), VERDADEROFALSO TINYINT(1) default 0, RESPUESTA VARCHAR(255), MENTAL TINYINT(1) default 0, PRUEBA_ID BIGINT, HABILIDAD_ID BIGINT, EJETEMATICO_ID BIGINT, PRIMARY KEY (ID))
+Query: DataModifyQuery()
+[TopLink Warning]: 2014.10.18 10:41:03.177--ServerSession(1156094022)--Exception [TOPLINK-4002] (Oracle TopLink Essentials - 2.0 (Build b46-beta3 (05/09/2007))): oracle.toplink.essentials.exceptions.DatabaseException
+Internal Exception: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'tipocurso' already exists
+Error Code: 1050
+Call: CREATE TABLE TIPOCURSO (ID BIGINT AUTO_INCREMENT NOT NULL, NAME VARCHAR(100), PRIMARY KEY (ID))
+Query: DataModifyQuery()
+[TopLink Warning]: 2014.10.18 10:41:03.206--ServerSession(1156094022)--Exception [TOPLINK-4002] (Oracle TopLink Essentials - 2.0 (Build b46-beta3 (05/09/2007))): oracle.toplink.essentials.exceptions.DatabaseException
+Internal Exception: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'profesor' already exists
+Error Code: 1050
+Call: CREATE TABLE PROFESOR (ID BIGINT AUTO_INCREMENT NOT NULL, NAME VARCHAR(255), PATERNO VARCHAR(255), RUT VARCHAR(255), MATERNO VARCHAR(255), PRIMARY KEY (ID))
+Query: DataModifyQuery()
+[TopLink Warning]: 2014.10.18 10:41:03.249--ServerSession(1156094022)--Exception [TOPLINK-4002] (Oracle TopLink Essentials - 2.0 (Build b46-beta3 (05/09/2007))): oracle.toplink.essentials.exceptions.DatabaseException
+Internal Exception: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'evaluacionejetematico' already exists
+Error Code: 1050
+Call: CREATE TABLE EVALUACIONEJETEMATICO (ID BIGINT NOT NULL, NAME VARCHAR(255), NRORANGOMIN FLOAT, NRORANGOMAX FLOAT, PRIMARY KEY (ID))
+Query: DataModifyQuery()
+[TopLink Warning]: 2014.10.18 10:41:03.262--ServerSession(1156094022)--Exception [TOPLINK-4002] (Oracle TopLink Essentials - 2.0 (Build b46-beta3 (05/09/2007))): oracle.toplink.essentials.exceptions.DatabaseException
+Internal Exception: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'tipoprueba' already exists
+Error Code: 1050
+Call: CREATE TABLE TIPOPRUEBA (ID BIGINT AUTO_INCREMENT NOT NULL, NAME VARCHAR(100), PRIMARY KEY (ID))
+Query: DataModifyQuery()
+[TopLink Warning]: 2014.10.18 10:41:03.289--ServerSession(1156094022)--Exception [TOPLINK-4002] (Oracle TopLink Essentials - 2.0 (Build b46-beta3 (05/09/2007))): oracle.toplink.essentials.exceptions.DatabaseException
+Internal Exception: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'nivelevaluacion_rangoevaluacion' already exists
+Error Code: 1050
+Call: CREATE TABLE NIVELEVALUACION_RANGOEVALUACION (nivelevaluacion_ID BIGINT NOT NULL, rangos_ID BIGINT NOT NULL, PRIMARY KEY (nivelevaluacion_ID, rangos_ID))
+Query: DataModifyQuery()
+[TopLink Warning]: 2014.10.18 10:41:03.326--ServerSession(1156094022)--Exception [TOPLINK-4002] (Oracle TopLink Essentials - 2.0 (Build b46-beta3 (05/09/2007))): oracle.toplink.essentials.exceptions.DatabaseException
+Internal Exception: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'ciclo' already exists
+Error Code: 1050
+Call: CREATE TABLE CICLO (ID BIGINT AUTO_INCREMENT NOT NULL, NAME VARCHAR(255), PRIMARY KEY (ID))
+Query: DataModifyQuery()
+[TopLink Warning]: 2014.10.18 10:41:03.349--ServerSession(1156094022)--Exception [TOPLINK-4002] (Oracle TopLink Essentials - 2.0 (Build b46-beta3 (05/09/2007))): oracle.toplink.essentials.exceptions.DatabaseException
+Internal Exception: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'colegio' already exists
+Error Code: 1050
+Call: CREATE TABLE COLEGIO (ID BIGINT AUTO_INCREMENT NOT NULL, NAME VARCHAR(255), DIRECCION VARCHAR(255), PRIMARY KEY (ID))
+Query: DataModifyQuery()
+[TopLink Warning]: 2014.10.18 10:41:03.356--ServerSession(1156094022)--Exception [TOPLINK-4002] (Oracle TopLink Essentials - 2.0 (Build b46-beta3 (05/09/2007))): oracle.toplink.essentials.exceptions.DatabaseException
+Internal Exception: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'rangoevaluacion' already exists
+Error Code: 1050
+Call: CREATE TABLE RANGOEVALUACION (ID BIGINT AUTO_INCREMENT NOT NULL, ABREVIACION VARCHAR(255), MINIMO FLOAT, NAME VARCHAR(255), MAXIMO FLOAT, PRIMARY KEY (ID))
+Query: DataModifyQuery()
+[TopLink Warning]: 2014.10.18 10:41:03.379--ServerSession(1156094022)--Exception [TOPLINK-4002] (Oracle TopLink Essentials - 2.0 (Build b46-beta3 (05/09/2007))): oracle.toplink.essentials.exceptions.DatabaseException
+Internal Exception: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'nivelevaluacion' already exists
+Error Code: 1050
+Call: CREATE TABLE NIVELEVALUACION (ID BIGINT AUTO_INCREMENT NOT NULL, NAME VARCHAR(255), NRORANGOS INTEGER, PRIMARY KEY (ID))
+Query: DataModifyQuery()
+[TopLink Warning]: 2014.10.18 10:41:03.402--ServerSession(1156094022)--Exception [TOPLINK-4002] (Oracle TopLink Essentials - 2.0 (Build b46-beta3 (05/09/2007))): oracle.toplink.essentials.exceptions.DatabaseException
+Internal Exception: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Table 'prueba' already exists
+Error Code: 1050
+Call: CREATE TABLE PRUEBA (ID BIGINT AUTO_INCREMENT NOT NULL, EXIGENCIA INTEGER, ALTERNATIVAS INTEGER, FECHA BIGINT, PUNTAJEBASE INTEGER, NROFORMAS INTEGER, RESPONSES VARCHAR(255), NROPREGUNTAS INTEGER, NAME VARCHAR(100), ASIGNATURA_ID BIGINT, CURSO_ID BIGINT, TIPOPRUEBA_ID BIGINT, PROFESOR_ID BIGINT, NIVELEVALUACION_ID BIGINT, PRIMARY KEY (ID))
+Query: DataModifyQuery()
+[TopLink Warning]: 2014.10.18 10:41:03.496--ServerSession(1156094022)--Exception [TOPLINK-4002] (Oracle TopLink Essentials - 2.0 (Build b46-beta3 (05/09/2007))): oracle.toplink.essentials.exceptions.DatabaseException
+Internal Exception: java.sql.SQLException: Can't create table 'cpruebas.#sql-794_2' (errno: 121)
+Error Code: 1005
+Call: ALTER TABLE PRUEBARENDIDA ADD CONSTRAINT FK_PRUEBARENDIDA_ALUMNO_ID FOREIGN KEY (ALUMNO_ID) REFERENCES ALUMNO (ID)
+Query: DataModifyQuery()
+[TopLink Warning]: 2014.10.18 10:41:03.595--ServerSession(1156094022)--Exception [TOPLINK-4002] (Oracle TopLink Essentials - 2.0 (Build b46-beta3 (05/09/2007))): oracle.toplink.essentials.exceptions.DatabaseException
+Internal Exception: java.sql.SQLException: Can't create table 'cpruebas.#sql-794_3' (errno: 121)
+Error Code: 1005
+Call: ALTER TABLE FORMAS ADD CONSTRAINT FK_FORMAS_PRUEBA_ID FOREIGN KEY (PRUEBA_ID) REFERENCES PRUEBA (ID)
+Query: DataModifyQuery()
+[TopLink Warning]: 2014.10.18 10:41:03.683--ServerSession(1156094022)--Exception [TOPLINK-4002] (Oracle TopLink Essentials - 2.0 (Build b46-beta3 (05/09/2007))): oracle.toplink.essentials.exceptions.DatabaseException
+Internal Exception: java.sql.SQLException: Can't create table 'cpruebas.#sql-794_2' (errno: 121)
+Error Code: 1005
+Call: ALTER TABLE CURSO ADD CONSTRAINT FK_CURSO_COLEGIO_ID FOREIGN KEY (COLEGIO_ID) REFERENCES COLEGIO (ID)
+Query: DataModifyQuery()
+[TopLink Warning]: 2014.10.18 10:41:03.767--ServerSession(1156094022)--Exception [TOPLINK-4002] (Oracle TopLink Essentials - 2.0 (Build b46-beta3 (05/09/2007))): oracle.toplink.essentials.exceptions.DatabaseException
+Internal Exception: java.sql.SQLException: Can't create table 'cpruebas.#sql-794_3' (errno: 121)
+Error Code: 1005
+Call: ALTER TABLE ALUMNO ADD CONSTRAINT FK_ALUMNO_CURSO_ID FOREIGN KEY (CURSO_ID) REFERENCES CURSO (ID)
+Query: DataModifyQuery()
+[TopLink Warning]: 2014.10.18 10:41:03.835--ServerSession(1156094022)--Exception [TOPLINK-4002] (Oracle TopLink Essentials - 2.0 (Build b46-beta3 (05/09/2007))): oracle.toplink.essentials.exceptions.DatabaseException
+Internal Exception: java.sql.SQLException: Can't create table 'cpruebas.#sql-794_2' (errno: 121)
+Error Code: 1005
+Call: ALTER TABLE EJETEMATICO ADD CONSTRAINT FK_EJETEMATICO_ASIGNATURA_ID FOREIGN KEY (ASIGNATURA_ID) REFERENCES ASIGNATURA (ID)
+Query: DataModifyQuery()
+[TopLink Warning]: 2014.10.18 10:41:03.918--ServerSession(1156094022)--Exception [TOPLINK-4002] (Oracle TopLink Essentials - 2.0 (Build b46-beta3 (05/09/2007))): oracle.toplink.essentials.exceptions.DatabaseException
+Internal Exception: java.sql.SQLException: Can't create table 'cpruebas.#sql-794_3' (errno: 121)
+Error Code: 1005
+Call: ALTER TABLE EVALUACIONPRUEBA ADD CONSTRAINT FK_EVALUACIONPRUEBA_COLEGIO_ID FOREIGN KEY (COLEGIO_ID) REFERENCES COLEGIO (ID)
+Query: DataModifyQuery()
+[TopLink Warning]: 2014.10.18 10:41:03.993--ServerSession(1156094022)--Exception [TOPLINK-4002] (Oracle TopLink Essentials - 2.0 (Build b46-beta3 (05/09/2007))): oracle.toplink.essentials.exceptions.DatabaseException
+Internal Exception: java.sql.SQLException: Can't create table 'cpruebas.#sql-794_2' (errno: 121)
+Error Code: 1005
+Call: ALTER TABLE RESPUESTASESPERADASPRUEBA ADD CONSTRAINT FK_RESPUESTASESPERADASPRUEBA_HABILIDAD_ID FOREIGN KEY (HABILIDAD_ID) REFERENCES HABILIDAD (ID)
+Query: DataModifyQuery()
+[TopLink Warning]: 2014.10.18 10:41:04.067--ServerSession(1156094022)--Exception [TOPLINK-4002] (Oracle TopLink Essentials - 2.0 (Build b46-beta3 (05/09/2007))): oracle.toplink.essentials.exceptions.DatabaseException
+Internal Exception: java.sql.SQLException: Can't create table 'cpruebas.#sql-794_3' (errno: 121)
+Error Code: 1005
+Call: ALTER TABLE NIVELEVALUACION_RANGOEVALUACION ADD CONSTRAINT FK_NIVELEVALUACION_RANGOEVALUACION_rangos_ID FOREIGN KEY (rangos_ID) REFERENCES RANGOEVALUACION (ID)
+Query: DataModifyQuery()
+[TopLink Warning]: 2014.10.18 10:41:04.149--ServerSession(1156094022)--Exception [TOPLINK-4002] (Oracle TopLink Essentials - 2.0 (Build b46-beta3 (05/09/2007))): oracle.toplink.essentials.exceptions.DatabaseException
+Internal Exception: java.sql.SQLException: Can't create table 'cpruebas.#sql-794_2' (errno: 121)
+Error Code: 1005
+Call: ALTER TABLE PRUEBA ADD CONSTRAINT FK_PRUEBA_ASIGNATURA_ID FOREIGN KEY (ASIGNATURA_ID) REFERENCES ASIGNATURA (ID)
+Query: DataModifyQuery()
+oct 18, 2014 10:41:05 AM javafx.scene.control.Control impl_processCSS
+SEVERE: The -fx-skin property has not been defined in CSS for BreadcrumbItem@c0aa8c0[styleClass=breadcrumbitem] and createDefaultSkin() returned null.
+Cantidad pruebas 4
+name tp Primero Básico Alumnos(as) desarrollados 0
+name tp Primero Básico Alumnos(as) parcialmente desarrollado 0
+name tp Primero Básico Alumnos(as) no desarrollados 0
+name tp Primero Básico Alumnos(as) desarrollados 1
+name tp Primero Básico Alumnos(as) parcialmente desarrollado 0
+name tp Primero Básico Alumnos(as) no desarrollados 0
+name tp Primero Básico Alumnos(as) desarrollados 1
+name tp Primero Básico Alumnos(as) parcialmente desarrollado 0
+name tp Primero Básico Alumnos(as) no desarrollados 1
+name tp Primero Básico Alumnos(as) desarrollados 1
+name tp Primero Básico Alumnos(as) parcialmente desarrollado 1
+name tp Primero Básico Alumnos(as) no desarrollados 1
+name tp Segundo Básico Alumnos(as) desarrollados 1
+name tp Segundo Básico Alumnos(as) parcialmente desarrollado 0
+name tp Segundo Básico Alumnos(as) no desarrollados 0
+Exception in thread "JavaFX Application Thread" java.lang.NullPointerException
+	at cl.eos.view.ComunalCursoView.desplegarDatosTotales(ComunalCursoView.java:145)
+	at cl.eos.view.ComunalCursoView.onDataArrived(ComunalCursoView.java:343)
+	at cl.eos.imp.controller.AController$3.onFindAllFinished(AController.java:238)
+	at cl.eos.provider.persistence.PersistenceService$2.handle(PersistenceService.java:112)
+	at cl.eos.provider.persistence.PersistenceService$2.handle(PersistenceService.java:1)
+	at com.sun.javafx.event.CompositeEventHandler$NormalEventHandlerRecord.handleBubblingEvent(CompositeEventHandler.java:218)
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:80)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:238)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:191)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:54)
+	at javafx.event.Event.fireEvent(Event.java:198)
+	at javafx.concurrent.EventHelper.fireEvent(EventHelper.java:219)
+	at javafx.concurrent.Task.fireEvent(Task.java:1342)
+	at javafx.concurrent.Task.setState(Task.java:720)
+	at javafx.concurrent.Task$TaskCallable.lambda$call$443(Task.java:1420)
+	at javafx.concurrent.Task$TaskCallable$$Lambda$73/1823265.run(Unknown Source)
+	at com.sun.javafx.application.PlatformImpl.lambda$null$164(PlatformImpl.java:292)
+	at com.sun.javafx.application.PlatformImpl$$Lambda$47/1467200268.run(Unknown Source)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at com.sun.javafx.application.PlatformImpl.lambda$runLater$165(PlatformImpl.java:291)
+	at com.sun.javafx.application.PlatformImpl$$Lambda$45/1775282465.run(Unknown Source)
+	at com.sun.glass.ui.InvokeLaterDispatcher$Future.run(InvokeLaterDispatcher.java:95)
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at com.sun.glass.ui.win.WinApplication.lambda$null$141(WinApplication.java:102)
+	at com.sun.glass.ui.win.WinApplication$$Lambda$37/1109371569.run(Unknown Source)
+	at java.lang.Thread.run(Thread.java:745)
+name tp Primero Básico Alumnos(as) desarrollados 1
+name tp Primero Básico Alumnos(as) parcialmente desarrollado 1
+name tp Primero Básico Alumnos(as) no desarrollados 1
+name tp Primero Básico Alumnos(as) desarrollados 2
+name tp Primero Básico Alumnos(as) parcialmente desarrollado 1
+name tp Primero Básico Alumnos(as) no desarrollados 1
+name tp Primero Básico Alumnos(as) desarrollados 2
+name tp Primero Básico Alumnos(as) parcialmente desarrollado 1
+name tp Primero Básico Alumnos(as) no desarrollados 2
+name tp Primero Básico Alumnos(as) desarrollados 2
+name tp Primero Básico Alumnos(as) parcialmente desarrollado 2
+name tp Primero Básico Alumnos(as) no desarrollados 2
+name tp Segundo Básico Alumnos(as) desarrollados 2
+name tp Segundo Básico Alumnos(as) parcialmente desarrollado 0
+name tp Segundo Básico Alumnos(as) no desarrollados 0
+Exception in thread "JavaFX Application Thread" java.lang.NullPointerException
+	at cl.eos.view.ComunalCursoView.desplegarDatosTotales(ComunalCursoView.java:145)
+	at cl.eos.view.ComunalCursoView.onDataArrived(ComunalCursoView.java:343)
+	at cl.eos.imp.controller.AController.onFindFinished(AController.java:155)
+	at cl.eos.provider.persistence.PersistenceService$4.handle(PersistenceService.java:152)
+	at cl.eos.provider.persistence.PersistenceService$4.handle(PersistenceService.java:1)
+	at com.sun.javafx.event.CompositeEventHandler$NormalEventHandlerRecord.handleBubblingEvent(CompositeEventHandler.java:218)
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:80)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:238)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:191)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:54)
+	at javafx.event.Event.fireEvent(Event.java:198)
+	at javafx.concurrent.EventHelper.fireEvent(EventHelper.java:219)
+	at javafx.concurrent.Task.fireEvent(Task.java:1342)
+	at javafx.concurrent.Task.setState(Task.java:720)
+	at javafx.concurrent.Task$TaskCallable.lambda$call$443(Task.java:1420)
+	at javafx.concurrent.Task$TaskCallable$$Lambda$73/1823265.run(Unknown Source)
+	at com.sun.javafx.application.PlatformImpl.lambda$null$164(PlatformImpl.java:292)
+	at com.sun.javafx.application.PlatformImpl$$Lambda$47/1467200268.run(Unknown Source)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at com.sun.javafx.application.PlatformImpl.lambda$runLater$165(PlatformImpl.java:291)
+	at com.sun.javafx.application.PlatformImpl$$Lambda$45/1775282465.run(Unknown Source)
+	at com.sun.glass.ui.InvokeLaterDispatcher$Future.run(InvokeLaterDispatcher.java:95)
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at com.sun.glass.ui.win.WinApplication.lambda$null$141(WinApplication.java:102)
+	at com.sun.glass.ui.win.WinApplication$$Lambda$37/1109371569.run(Unknown Source)
+	at java.lang.Thread.run(Thread.java:745)
+name tp Primero Básico Alumnos(as) desarrollados 2
+name tp Primero Básico Alumnos(as) parcialmente desarrollado 2
+name tp Primero Básico Alumnos(as) no desarrollados 2
+name tp Primero Básico Alumnos(as) desarrollados 3
+name tp Primero Básico Alumnos(as) parcialmente desarrollado 2
+name tp Primero Básico Alumnos(as) no desarrollados 2
+name tp Primero Básico Alumnos(as) desarrollados 3
+name tp Primero Básico Alumnos(as) parcialmente desarrollado 2
+name tp Primero Básico Alumnos(as) no desarrollados 3
+name tp Primero Básico Alumnos(as) desarrollados 3
+name tp Primero Básico Alumnos(as) parcialmente desarrollado 3
+name tp Primero Básico Alumnos(as) no desarrollados 3
+name tp Segundo Básico Alumnos(as) desarrollados 3
+name tp Segundo Básico Alumnos(as) parcialmente desarrollado 0
+name tp Segundo Básico Alumnos(as) no desarrollados 0
+Exception in thread "JavaFX Application Thread" java.lang.NullPointerException
+	at cl.eos.view.ComunalCursoView.desplegarDatosTotales(ComunalCursoView.java:145)
+	at cl.eos.view.ComunalCursoView.onDataArrived(ComunalCursoView.java:343)
+	at cl.eos.imp.controller.AController.onFindAllFinished(AController.java:146)
+	at cl.eos.provider.persistence.PersistenceService$2.handle(PersistenceService.java:112)
+	at cl.eos.provider.persistence.PersistenceService$2.handle(PersistenceService.java:1)
+	at com.sun.javafx.event.CompositeEventHandler$NormalEventHandlerRecord.handleBubblingEvent(CompositeEventHandler.java:218)
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:80)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:238)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:191)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:54)
+	at javafx.event.Event.fireEvent(Event.java:198)
+	at javafx.concurrent.EventHelper.fireEvent(EventHelper.java:219)
+	at javafx.concurrent.Task.fireEvent(Task.java:1342)
+	at javafx.concurrent.Task.setState(Task.java:720)
+	at javafx.concurrent.Task$TaskCallable.lambda$call$443(Task.java:1420)
+	at javafx.concurrent.Task$TaskCallable$$Lambda$73/1823265.run(Unknown Source)
+	at com.sun.javafx.application.PlatformImpl.lambda$null$164(PlatformImpl.java:292)
+	at com.sun.javafx.application.PlatformImpl$$Lambda$47/1467200268.run(Unknown Source)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at com.sun.javafx.application.PlatformImpl.lambda$runLater$165(PlatformImpl.java:291)
+	at com.sun.javafx.application.PlatformImpl$$Lambda$45/1775282465.run(Unknown Source)
+	at com.sun.glass.ui.InvokeLaterDispatcher$Future.run(InvokeLaterDispatcher.java:95)
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at com.sun.glass.ui.win.WinApplication.lambda$null$141(WinApplication.java:102)
+	at com.sun.glass.ui.win.WinApplication$$Lambda$37/1109371569.run(Unknown Source)
+	at java.lang.Thread.run(Thread.java:745)
+name tp Primero Básico Alumnos(as) desarrollados 3
+name tp Primero Básico Alumnos(as) parcialmente desarrollado 3
+name tp Primero Básico Alumnos(as) no desarrollados 3
+name tp Primero Básico Alumnos(as) desarrollados 4
+name tp Primero Básico Alumnos(as) parcialmente desarrollado 3
+name tp Primero Básico Alumnos(as) no desarrollados 3
+name tp Primero Básico Alumnos(as) desarrollados 4
+name tp Primero Básico Alumnos(as) parcialmente desarrollado 3
+name tp Primero Básico Alumnos(as) no desarrollados 4
+name tp Primero Básico Alumnos(as) desarrollados 4
+name tp Primero Básico Alumnos(as) parcialmente desarrollado 4
+name tp Primero Básico Alumnos(as) no desarrollados 4
+name tp Segundo Básico Alumnos(as) desarrollados 4
+name tp Segundo Básico Alumnos(as) parcialmente desarrollado 0
+name tp Segundo Básico Alumnos(as) no desarrollados 0
+name tp Primero Básico Alumnos(as) desarrollados 4
+name tp Primero Básico Alumnos(as) parcialmente desarrollado 4
+name tp Primero Básico Alumnos(as) no desarrollados 4
+name tp Primero Básico Alumnos(as) desarrollados 5
+name tp Primero Básico Alumnos(as) parcialmente desarrollado 4
+name tp Primero Básico Alumnos(as) no desarrollados 4
+name tp Primero Básico Alumnos(as) desarrollados 5
+name tp Primero Básico Alumnos(as) parcialmente desarrollado 4
+name tp Primero Básico Alumnos(as) no desarrollados 5
+name tp Primero Básico Alumnos(as) desarrollados 5
+name tp Primero Básico Alumnos(as) parcialmente desarrollado 5
+name tp Primero Básico Alumnos(as) no desarrollados 5
+name tp Segundo Básico Alumnos(as) desarrollados 5
+name tp Segundo Básico Alumnos(as) parcialmente desarrollado 0
+name tp Segundo Básico Alumnos(as) no desarrollados 0
+Exception in thread "JavaFX Application Thread" java.lang.NullPointerException
+	at cl.eos.view.ComunalCursoView.desplegarDatosTotales(ComunalCursoView.java:145)
+	at cl.eos.view.ComunalCursoView.onDataArrived(ComunalCursoView.java:343)
+	at cl.eos.imp.controller.AController.onFindFinished(AController.java:155)
+	at cl.eos.provider.persistence.PersistenceService$4.handle(PersistenceService.java:152)
+	at cl.eos.provider.persistence.PersistenceService$4.handle(PersistenceService.java:1)
+	at com.sun.javafx.event.CompositeEventHandler$NormalEventHandlerRecord.handleBubblingEvent(CompositeEventHandler.java:218)
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:80)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:238)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:191)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:54)
+	at javafx.event.Event.fireEvent(Event.java:198)
+	at javafx.concurrent.EventHelper.fireEvent(EventHelper.java:219)
+	at javafx.concurrent.Task.fireEvent(Task.java:1342)
+	at javafx.concurrent.Task.setState(Task.java:720)
+	at javafx.concurrent.Task$TaskCallable.lambda$call$443(Task.java:1420)
+	at javafx.concurrent.Task$TaskCallable$$Lambda$73/1823265.run(Unknown Source)
+	at com.sun.javafx.application.PlatformImpl.lambda$null$164(PlatformImpl.java:292)
+	at com.sun.javafx.application.PlatformImpl$$Lambda$47/1467200268.run(Unknown Source)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at com.sun.javafx.application.PlatformImpl.lambda$runLater$165(PlatformImpl.java:291)
+	at com.sun.javafx.application.PlatformImpl$$Lambda$45/1775282465.run(Unknown Source)
+	at com.sun.glass.ui.InvokeLaterDispatcher$Future.run(InvokeLaterDispatcher.java:95)
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at com.sun.glass.ui.win.WinApplication.lambda$null$141(WinApplication.java:102)
+	at com.sun.glass.ui.win.WinApplication$$Lambda$37/1109371569.run(Unknown Source)
+	at java.lang.Thread.run(Thread.java:745)
+Exception in thread "JavaFX Application Thread" java.lang.NullPointerException
+	at cl.eos.view.ComunalCursoView.desplegarDatosTotales(ComunalCursoView.java:145)
+	at cl.eos.view.ComunalCursoView.onDataArrived(ComunalCursoView.java:343)
+	at cl.eos.imp.controller.AController.onFindAllFinished(AController.java:146)
+	at cl.eos.provider.persistence.PersistenceService$2.handle(PersistenceService.java:112)
+	at cl.eos.provider.persistence.PersistenceService$2.handle(PersistenceService.java:1)
+	at com.sun.javafx.event.CompositeEventHandler$NormalEventHandlerRecord.handleBubblingEvent(CompositeEventHandler.java:218)
+	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:80)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:238)
+	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:191)
+	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
+	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
+	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:54)
+	at javafx.event.Event.fireEvent(Event.java:198)
+	at javafx.concurrent.EventHelper.fireEvent(EventHelper.java:219)
+	at javafx.concurrent.Task.fireEvent(Task.java:1342)
+	at javafx.concurrent.Task.setState(Task.java:720)
+	at javafx.concurrent.Task$TaskCallable.lambda$call$443(Task.java:1420)
+	at javafx.concurrent.Task$TaskCallable$$Lambda$73/1823265.run(Unknown Source)
+	at com.sun.javafx.application.PlatformImpl.lambda$null$164(PlatformImpl.java:292)
+	at com.sun.javafx.application.PlatformImpl$$Lambda$47/1467200268.run(Unknown Source)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at com.sun.javafx.application.PlatformImpl.lambda$runLater$165(PlatformImpl.java:291)
+	at com.sun.javafx.application.PlatformImpl$$Lambda$45/1775282465.run(Unknown Source)
+	at com.sun.glass.ui.InvokeLaterDispatcher$Future.run(InvokeLaterDispatcher.java:95)
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at com.sun.glass.ui.win.WinApplication.lambda$null$141(WinApplication.java:102)
+	at com.sun.glass.ui.win.WinApplication$$Lambda$37/1109371569.run(Unknown Source)
+	at java.lang.Thread.run(Thread.java:745)
+
+	Resumen comunal, se vuelve a sumar el contenido.
+	
+	Resumen Comparativo Comunal (hacer mantenedor para cambio de nombre)
+	Alumnos Desarrollados --> Adecuado
+	Alumnos NO Desarrollados --> Insuficiente
+	Alumnos Parcialmente Desarrollados --> Elemental
+	** Evaluar la posibilidad de agregar 1 rango a estos itemes.
+	
+	Eliminar una pregunta en la evaluación (por que está mal planteada por ejemplo).
+	
+	Al escanear no le entregó respuesta a la última Fila
+	Tengo problemas con la conversión de B a V
+	
