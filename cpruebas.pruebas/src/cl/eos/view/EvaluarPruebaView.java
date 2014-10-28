@@ -216,16 +216,16 @@ public class EvaluarPruebaView extends AFormView {
         });
   }
 
-  protected void evaluar(String value, OTPruebaRendida otRendida) {
+  protected void evaluar(String respsAlumno, OTPruebaRendida otRendida) {
 
     int nroPreguntas = respuestas.size();
-    int nMax = Math.min(value.length(), nroPreguntas);
-    otRendida.setOmitidas(Math.abs(value.length() - nroPreguntas));
+    int nMax = Math.min(respsAlumno.length(), nroPreguntas);
+    otRendida.setOmitidas(Math.abs(respsAlumno.length() - nroPreguntas));
     otRendida.setBuenas(0);
     otRendida.setMalas(0);
     for (int n = 0; n < nMax; n++) {
       RespuestasEsperadasPrueba resp = respuestas.get(n);
-      String userResp = value.substring(n, n + 1);
+      String userResp = respsAlumno.substring(n, n + 1);
       String validResp = resp.getRespuesta();
       if (userResp.toUpperCase().equals("O")) {
         otRendida.setOmitidas(otRendida.getOmitidas() + 1);
@@ -526,7 +526,6 @@ public class EvaluarPruebaView extends AFormView {
       if (alumno == null) {
         throw new CPruebasException(String.format("El rut: %s no pertenece al curso", rut));
       } else {
-        System.out.println("Procesando:" + alumno);
         StringBuilder strResps = new StringBuilder(resultado.getRespuestas());
 
         int buenas = 0;
@@ -543,10 +542,10 @@ public class EvaluarPruebaView extends AFormView {
           } else {
             if (rEsperada.getMental()) {
               if ("B".equalsIgnoreCase(letter)) {
-                strResps.replace(n, n + 1, "B");
+                strResps.replace(n, n + 1, "+");
                 buenas++;
               } else if ("D".equalsIgnoreCase(letter)) {
-                strResps.replace(n, n + 1, "M");
+                strResps.replace(n, n + 1, "X");
                 malas++;
               }
             } else if (rEsperada.getVerdaderoFalso()) {

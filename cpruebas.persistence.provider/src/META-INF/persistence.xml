@@ -30,7 +30,7 @@
 			<property name="toplink.jdbc.driver" value="com.mysql.jdbc.Driver" />
 			<!-- property name="toplink.ddl-generation" value="update-tables"/-->
 			<!-- <property name="toplink.ddl-generation" value="create-tables"/> -->
-			<property name="toplink.ddl-generation" value="create-tables" />
+			<!-- <property name="toplink.ddl-generation" value="create-tables" /> -->
 		
 		</properties>
 	</persistence-unit>
