@@ -20,6 +20,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SelectionMode;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
@@ -153,12 +154,6 @@ public class ResumenGeneralPMEView extends AFormView implements
 						"logrado"));
 	}
 
-	private void procesaDatosReporte() {
-		if (llegaOnFound) {
-			llenarDatosTabla();
-		}
-	}
-
 	@Override
 	public void onFound(IEntity entity) {
 		if (entity instanceof EvaluacionPrueba) {
@@ -173,10 +168,14 @@ public class ResumenGeneralPMEView extends AFormView implements
 			}
 			llegaOnFound = true;
 		}
-		procesaDatosReporte();
+		if (llegaOnFound) {
+			llegaOnFound = false;
+			llenarDatosTabla();
+		}
 	}
 
 	private void llenarDatosTabla() {
+		tblReportePME.getColumns().clear();
 		StringBuffer buffer = new StringBuffer();
 		buffer.append(evaluacionPrueba.getName());
 		buffer.append(" ");
@@ -189,7 +188,7 @@ public class ResumenGeneralPMEView extends AFormView implements
 				.getPruebasRendidas();
 
 		int totalAlumnos = evaluacionPrueba.getPruebasRendidas().size();
-		int totalPreguntas = evaluacionPrueba.getPrueba().getNroPreguntas();
+		float totalPreguntas = evaluacionPrueba.getPrueba().getNroPreguntas();
 
 		Prueba prueba = evaluacionPrueba.getPrueba();
 		NivelEvaluacion nivelEvaluacion = prueba.getNivelEvaluacion();
@@ -202,7 +201,7 @@ public class ResumenGeneralPMEView extends AFormView implements
 
 			sumaNotas = sumaNotas + pRendida.getNota();
 
-			int logro = (pRendida.getBuenas() / totalPreguntas)*100;
+			float logro = (pRendida.getBuenas() / totalPreguntas) * 100f;
 			sumaLogro = sumaLogro + logro;
 
 			RangoEvaluacion rango = nivelEvaluacion.getRango(logro);
@@ -370,12 +369,33 @@ public class ResumenGeneralPMEView extends AFormView implements
 		columna0.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
 			public ObservableValue<String> call(
 					CellDataFeatures<ObservableList, String> param) {
-
+				// if (param.getValue().get(0) instanceof String){
 				return new SimpleStringProperty(param.getValue().get(0)
 						.toString());
+				// }
+				// else if (param.getValue().get(1) instanceof Integer){
+				// return null;//new SimpleIntegerProperty((int)
+				// param.getValue().get(1));
+				// }
 			}
 		});
 		columna0.setPrefWidth(100);
+		columna0.setCellFactory(new Callback<TableColumn, TableCell>() {
+
+			public TableCell call(TableColumn param) {
+				TableCell cell = new TableCell() {
+					@Override
+					public void updateItem(Object item, boolean empty) {
+						if (item != null) {
+							setText(item.toString());
+						}
+					}
+				};
+				// cell.setAlignment(Pos.CENTER);
+				return cell;
+			}
+		});
+
 		tblReportePME.getColumns().add(columna0);
 
 		int indice = 1;
@@ -492,12 +512,12 @@ public class ResumenGeneralPMEView extends AFormView implements
 		if (source == mnuExportarEjesTematicos
 				|| source == mnuExportarHabilidades
 				|| source == mnuExportarRangos || source == mnuExportarReporte) {
-			
+
 			tblEjesTematicos.setId("Eje Temático");
 			tblHabilidades.setId("Habilidades");
 			tblRangos.setId("Rango");
 			tblReportePME.setId("Reporte PME");
-			
+
 			List<TableView<? extends Object>> listaTablas = new LinkedList<>();
 			listaTablas.add((TableView<? extends Object>) tblEjesTematicos);
 			listaTablas.add((TableView<? extends Object>) tblHabilidades);

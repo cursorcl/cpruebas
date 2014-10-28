@@ -43,8 +43,8 @@
                               <TableView fx:id="tblRangos" layoutX="2.0" layoutY="37.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="37.0">
                                 <columns>
                                   <TableColumn fx:id="colRango" prefWidth="155.0" text="Rango" />
-                                  <TableColumn fx:id="colRangoCantidad" prefWidth="67.0" text="Cantidad" />
-                                    <TableColumn fx:id="colRangolLogro" prefWidth="99.0" text="\% Logro" />
+                                  <TableColumn fx:id="colRangoCantidad" prefWidth="67.0" style="-fx-alignment: CENTER;" text="Cantidad" />
+                                    <TableColumn fx:id="colRangolLogro" prefWidth="99.0" style="-fx-alignment: CENTER;" text="\% Logro" />
                                 </columns>
                                  <contextMenu>
                                     <ContextMenu>
@@ -86,7 +86,7 @@
                               <TableView fx:id="tblEjesTematicos" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="40.0">
                                 <columns>
                                   <TableColumn fx:id="colEje" prefWidth="325.0" text="Eje temático" />
-                                  <TableColumn fx:id="colEjeLogro" prefWidth="207.0" text="\% Logro" />
+                                  <TableColumn fx:id="colEjeLogro" prefWidth="207.0" style="-fx-alignment: CENTER;" text="\% Logro" />
                                 </columns>
                                  <contextMenu>
                                     <ContextMenu>
@@ -108,7 +108,7 @@
                               <TableView fx:id="tblHabilidades" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="40.0">
                                 <columns>
                                   <TableColumn fx:id="colHabilidad" prefWidth="378.0" text="Habilidad " />
-                                  <TableColumn fx:id="colHabilidadLogro" prefWidth="153.0" text="\% Logro" />
+                                  <TableColumn fx:id="colHabilidadLogro" prefWidth="153.0" style="-fx-alignment: CENTER;" text="\% Logro" />
                                 </columns>
                                  <contextMenu>
                                     <ContextMenu>
@@ -137,7 +137,7 @@
          <children>
             <HBox>
                <children>
-                  <Label fx:id="lblTitulo" alignment="CENTER" contentDisplay="CENTER" prefHeight="35.0" prefWidth="1084.0" textAlignment="CENTER">
+                  <Label fx:id="lblTitulo" alignment="CENTER" contentDisplay="CENTER" prefHeight="35.0" prefWidth="1084.0">
                      <font>
                         <Font name="System Bold" size="20.0" />
                      </font>

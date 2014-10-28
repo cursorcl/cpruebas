@@ -10,19 +10,17 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SelectionMode;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.util.Callback;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.ot.OTResumenGeneral;
 import cl.eos.persistence.models.EvaluacionPrueba;
 import cl.eos.persistence.models.PruebaRendida;
 import cl.eos.util.ExcelSheetWriterObj;
-
+// TODO Auto-generated constructor stub
 public class ResumenGeneralView extends AFormView implements
 EventHandler<ActionEvent> {
 	@FXML
@@ -45,11 +43,11 @@ EventHandler<ActionEvent> {
 	@FXML
 	private TableColumn<OTResumenGeneral, Float> colNotas;
 	@FXML
-	private TableColumn<OTResumenGeneral, String> colBuenas;
+	private TableColumn<OTResumenGeneral, Float> colBuenas;
 	@FXML
 	private TableColumn<OTResumenGeneral, Integer> ColPuntos;
 	@FXML
-	private TableColumn<OTResumenGeneral, String> colPuntaje;
+	private TableColumn<OTResumenGeneral, Float> colPuntaje;
 
 	@FXML
 	private TableView<PruebaRendida> tblAlumnos;
@@ -72,7 +70,7 @@ EventHandler<ActionEvent> {
 	@FXML
 	private TableColumn<PruebaRendida, Integer> colAPuntaje;
 	@FXML
-	private TableColumn<PruebaRendida, String> colPPuntaje;
+	private TableColumn<PruebaRendida, Float> colPPuntaje;
 	@FXML
 	private TableColumn<PruebaRendida, Float> colANota;
 	@FXML
@@ -81,14 +79,14 @@ EventHandler<ActionEvent> {
 	private MenuItem mnuExportarResumen;
 	
 
-	private Float notaMin = 7f;
-	private Float notaMax = 0f;
-	private Float pbuenasMin = 100f;
-	private Float pbuenasMax = 0f;
-	private Float ppuntajeMin = 100f;
-	private Float ppuntajeMax = 0f;
-	private Integer puntajeMin = 100;
-	private Integer puntajeMax = 0;
+	private Float notaMin = Float.MAX_VALUE;
+	private Float notaMax = Float.MIN_VALUE;
+	private Float pbuenasMin = Float.MAX_VALUE;
+	private Float pbuenasMax = Float.MIN_VALUE;
+	private Float ppuntajeMin = Float.MAX_VALUE;
+	private Float ppuntajeMax =Float.MIN_VALUE;
+	private Integer puntajeMin = Integer.MAX_VALUE;
+	private Integer puntajeMax = Integer.MIN_VALUE;
 
 	public ResumenGeneralView() {
 		// TODO Auto-generated constructor stub
@@ -131,7 +129,7 @@ EventHandler<ActionEvent> {
 				.setCellValueFactory(new PropertyValueFactory<PruebaRendida, Integer>(
 						"puntaje"));
 		colPPuntaje
-				.setCellValueFactory(new PropertyValueFactory<PruebaRendida, String>(
+				.setCellValueFactory(new PropertyValueFactory<PruebaRendida, Float>(
 						"ppuntajes"));
 		colANota.setCellValueFactory(new PropertyValueFactory<PruebaRendida, Float>(
 				"nota"));
@@ -146,13 +144,13 @@ EventHandler<ActionEvent> {
 		colNotas.setCellValueFactory(new PropertyValueFactory<OTResumenGeneral, Float>(
 				"nota"));
 		colBuenas
-				.setCellValueFactory(new PropertyValueFactory<OTResumenGeneral, String>(
+				.setCellValueFactory(new PropertyValueFactory<OTResumenGeneral, Float>(
 						"pbuenas"));
 		ColPuntos
 				.setCellValueFactory(new PropertyValueFactory<OTResumenGeneral, Integer>(
 						"puntaje"));
 		colPuntaje
-				.setCellValueFactory(new PropertyValueFactory<OTResumenGeneral, String>(
+				.setCellValueFactory(new PropertyValueFactory<OTResumenGeneral, Float>(
 						"ppuntaje"));
 
 	}

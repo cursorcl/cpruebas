@@ -3,6 +3,8 @@ package cl.eos.view;
 import java.time.LocalDate;
 import java.util.List;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -127,12 +129,13 @@ public class EvaluacionPruebaView extends AFormView implements
 		colExigencia
 				.setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba, Integer>(
 						"exigencia"));
-
+		accionClicTabla();
 	}
 
 	@Override
 	public void onDataArrived(List<Object> list) {
 		if (list != null && !list.isEmpty()) {
+			tblListadoPruebas.getSelectionModel().clearSelection();
 			Object entity = list.get(0);
 			if (entity instanceof EvaluacionPrueba) {
 				ObservableList<EvaluacionPrueba> evaluaciones = FXCollections
@@ -168,7 +171,8 @@ public class EvaluacionPruebaView extends AFormView implements
 		} else if (source == mnuExportarExcel || source == menuExportarExcel) {
 			handlerResumenExcel();
 		}
-
+		tblListadoPruebas.getSelectionModel().clearSelection();
+		System.out.println("Selección "+ tblListadoPruebas.getSelectionModel().getSelectedItems().size());
 	}
 
 	private void handlerResumenExcel() {
@@ -286,5 +290,30 @@ public class EvaluacionPruebaView extends AFormView implements
 					resumenGeneralPME);
 			controller.findAll(RangoEvaluacion.class);
 		}
+		else {
+			Dialogs.create().owner(null).title("Selección registro")
+					.masthead(resumeEjeTematico.getName())
+					.message("Debe seleccionar registro a procesar")
+					.showInformation();
+		}
 	}
+
+	private void accionClicTabla() {
+		tblListadoPruebas.getSelectionModel().selectedItemProperty()
+				.addListener(new ChangeListener<EvaluacionPrueba>() {
+
+					@Override
+					public void changed(
+							ObservableValue<? extends EvaluacionPrueba> arg0,
+							EvaluacionPrueba arg1, EvaluacionPrueba arg2) {
+						ObservableList<EvaluacionPrueba> itemsSelec = tblListadoPruebas
+								.getSelectionModel().getSelectedItems();
+
+						if (itemsSelec.size() == 1) {
+							System.out.println("Un registro seleccionado");
+						}
+					}
+				});
+	}
+
 }

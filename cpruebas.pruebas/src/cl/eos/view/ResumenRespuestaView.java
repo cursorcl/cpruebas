@@ -215,6 +215,7 @@ public class ResumenRespuestaView extends AFormView implements
 
 		XYChart.Series series1 = new XYChart.Series();
 		series1.setName("Porcentaje de Respuestas");
+		series1.getData().clear();
 		series1.getData().add(
 				new XYChart.Data<String, Float>("Buenas", porcentajeBuenas));
 		series1.getData().add(
@@ -222,6 +223,7 @@ public class ResumenRespuestaView extends AFormView implements
 		series1.getData()
 				.add(new XYChart.Data<String, Float>("Omitidas",
 						porcentajeOmitidas));
+		graficoBarra.getData().clear();
 		graficoBarra.getData().add(series1);
 	}
 
