@@ -131,6 +131,7 @@ public class ResumenAlumnoView extends AFormView implements
 	}
 
 	private void inicializarTablaRespuesta() {
+		
 		tblRespuestas.getSelectionModel().setSelectionMode(
 				SelectionMode.MULTIPLE);
 		colRRut.setCellValueFactory(new PropertyValueFactory<PruebaRendida, String>(

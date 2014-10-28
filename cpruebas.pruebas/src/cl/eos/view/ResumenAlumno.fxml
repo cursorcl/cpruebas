@@ -43,9 +43,9 @@
                             <TableColumn id="colPaterno" fx:id="colAPaterno" prefWidth="83.0" text="A.Paterno" />
                               <TableColumn id="colMaterno" fx:id="colAMaterno" prefWidth="190.0" text="A.Materno" />
                               <TableColumn id="colName" fx:id="colAName" prefWidth="232.0" text="Nombres" />
-                              <TableColumn fx:id="colABuenas" prefWidth="75.0" style="-fx-aligment: CENTER;" text="Buenas" />
-                              <TableColumn fx:id="colAMalas" prefWidth="75.0" style="-fx-aligment: CENTER;" text="Malas" />
-                              <TableColumn fx:id="colAOmitidas" prefWidth="75.0" style="-fx-aligment: CENTER;" text="Omitidas" />
+                              <TableColumn fx:id="colABuenas" prefWidth="75.0" style="-fx-aligment:CENTER;" text="Buenas" />
+                              <TableColumn fx:id="colAMalas" prefWidth="75.0" style="-fx-aligment:CENTER;" text="Malas" />
+                              <TableColumn fx:id="colAOmitidas" prefWidth="75.0" style="-fx-aligment:CENTER;" text="Omitidas" />
                           </columns>
                            <columnResizePolicy>
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
