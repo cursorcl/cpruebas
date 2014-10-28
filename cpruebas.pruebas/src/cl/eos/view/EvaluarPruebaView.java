@@ -508,7 +508,6 @@ public class EvaluarPruebaView extends AFormView {
                 tblListadoPruebas.getItems().set(idx, oPr);
               }
             }
-            
             Dialogs info = Dialogs.create();
             dlg.title("Proceso finalizado");
             dlg.masthead("Se ha procesado " + pruebas.size() + " pruebas.");
@@ -558,9 +557,7 @@ public class EvaluarPruebaView extends AFormView {
               } else if ("D".equalsIgnoreCase(letter)) {
                 strResps.replace(n, n + 1, "-");
                 malas++;
-              }
-              else
-              {
+              } else {
                 malas++;
               }
             } else if (rEsperada.getVerdaderoFalso()) {
