@@ -43,11 +43,11 @@ EventHandler<ActionEvent> {
 	@FXML
 	private TableColumn<OTResumenGeneral, Float> colNotas;
 	@FXML
-	private TableColumn<OTResumenGeneral, String> colBuenas;
+	private TableColumn<OTResumenGeneral, Float> colBuenas;
 	@FXML
 	private TableColumn<OTResumenGeneral, Integer> ColPuntos;
 	@FXML
-	private TableColumn<OTResumenGeneral, String> colPuntaje;
+	private TableColumn<OTResumenGeneral, Float> colPuntaje;
 
 	@FXML
 	private TableView<PruebaRendida> tblAlumnos;
@@ -144,13 +144,13 @@ EventHandler<ActionEvent> {
 		colNotas.setCellValueFactory(new PropertyValueFactory<OTResumenGeneral, Float>(
 				"nota"));
 		colBuenas
-				.setCellValueFactory(new PropertyValueFactory<OTResumenGeneral, String>(
+				.setCellValueFactory(new PropertyValueFactory<OTResumenGeneral, Float>(
 						"pbuenas"));
 		ColPuntos
 				.setCellValueFactory(new PropertyValueFactory<OTResumenGeneral, Integer>(
 						"puntaje"));
 		colPuntaje
-				.setCellValueFactory(new PropertyValueFactory<OTResumenGeneral, String>(
+				.setCellValueFactory(new PropertyValueFactory<OTResumenGeneral, Float>(
 						"ppuntaje"));
 
 	}
