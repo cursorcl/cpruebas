@@ -74,7 +74,7 @@ public class ExtractorResultadosPrueba extends AExtractorResultados {
       ExtractorResultadosPrueba extractor = new ExtractorResultadosPrueba();
 
 //      for (String fileName : fileNames) {
-        String fileName = "prueba_006.png";
+        String fileName = "prueba5.png";
         BufferedImage image = ImageIO.read(new File("./res/" + fileName));
         System.out.print(fileName + " ");
         System.out.println(extractor.process(image, 30));
