@@ -170,7 +170,7 @@ public class ImpresionPrueba {
       String str = String.valueOf(ch).toUpperCase();
       g2.drawString(str, RUT_COLS[idxCol] + 2, RUT_ROW);
 
-      int idxRow = str.equals("K") ? 11 : Integer.valueOf(str);
+      int idxRow = str.equals("K") ? 10 : Integer.valueOf(str);
       int y = RUT_POINT.y + idxRow * (CIRCLE_WIDTH + 2);
       g2.fillOval(RUT_COLS[idxCol], y, CIRCLE_WIDTH, CIRCLE_WIDTH);
       idxCol++;
@@ -187,7 +187,6 @@ public class ImpresionPrueba {
         if (n == -1) {
           if (m == 0) {
             g2.fillRect(21, y, 15, 5);
-            
           }
           if (m != 10) {
             g2.drawString(String.valueOf(m), x, y + HEIGHT_FONT);

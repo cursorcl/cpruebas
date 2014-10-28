@@ -100,7 +100,7 @@ public class Alumno implements IEntity {
 	
 	@Override
 	public String toString() {
-		return name;
+		return String.format("%s %s %s", paterno, materno, name);
 	}
 
   @Override

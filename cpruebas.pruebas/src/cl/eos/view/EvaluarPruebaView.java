@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executors;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -33,6 +34,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.util.Callback;
 
+import org.controlsfx.dialog.Dialog.Actions;
 import org.controlsfx.dialog.Dialogs;
 
 import cl.eos.PruebasActivator;
@@ -448,67 +450,76 @@ public class EvaluarPruebaView extends AFormView {
 
   protected void handlerLeerImagenes() throws IOException {
     FileChooser fileChooser = new FileChooser();
-    FileChooser.ExtensionFilter pngExtFilter =
-        new FileChooser.ExtensionFilter("PNG files (*.png)", "*.png");
-    fileChooser.getExtensionFilters().add(pngExtFilter);
-    FileChooser.ExtensionFilter jpgExtFilter =
-        new FileChooser.ExtensionFilter("JPG files (*.jpg)", "*.jpg");
-    fileChooser.getExtensionFilters().add(jpgExtFilter);
+
+    FileChooser.ExtensionFilter imageExtFilter =
+        new FileChooser.ExtensionFilter("Archivos de Imágenes ", "*.png", "*.jpg");
+    fileChooser.getExtensionFilters().add(imageExtFilter);
+
     fileChooser.setTitle("Seleccione Imégenes Respuesta");
     List<File> files = fileChooser.showOpenMultipleDialog(null);
+    if (files != null && !files.isEmpty()) {
+      final Dialogs dlg = Dialogs.create();
+      dlg.title("Procesando pruebas");
+      dlg.masthead(null);
+      dlg.message("Esto tomará algunos minutos.");
 
-    Task<ObservableList<PruebaRendida>> task = new Task<ObservableList<PruebaRendida>>() {
-      @Override
-      protected ObservableList<PruebaRendida> call() throws Exception {
-        int max = prueba.getNroPreguntas();
-        int n = 1;
-        ObservableList<PruebaRendida> results = FXCollections.observableArrayList();
-        ExtractorResultadosPrueba procesador = ExtractorResultadosPrueba.getInstance();
-        for (File archivo : files) {
-          OTResultadoScanner resultado = procesador.process(archivo, max);
-          PruebaRendida pRendida;
-          try {
-            pRendida = obtenerPruebaRendida(resultado);
-            pRendida.setEvaluacionPrueba(evalPrueba);
-            results.add(pRendida);
-            updateProgress(n++, max);
-          } catch (CPruebasException e) {
+      Task<ObservableList<PruebaRendida>> task = new Task<ObservableList<PruebaRendida>>() {
+        @Override
+        protected ObservableList<PruebaRendida> call() throws Exception {
+          int max = prueba.getNroPreguntas();
+          int n = 1;
+          ObservableList<PruebaRendida> results = FXCollections.observableArrayList();
+          ExtractorResultadosPrueba procesador = ExtractorResultadosPrueba.getInstance();
+          for (File archivo : files) {
+            OTResultadoScanner resultado = procesador.process(archivo, max);
+            PruebaRendida pRendida;
+            try {
+              pRendida = obtenerPruebaRendida(resultado);
+              pRendida.setEvaluacionPrueba(evalPrueba);
+              results.add(pRendida);
+              updateMessage("Procesado:" + pRendida.getAlumno().toString());
+              updateProgress(n++, files.size());
+            } catch (CPruebasException e) {
 
-          }
-        }
-        return results;
-      }
-    };
-    task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
-      @Override
-      public void handle(WorkerStateEvent event) {
-        ObservableList<PruebaRendida> pruebas = task.getValue();
-        if (pruebas != null && !pruebas.isEmpty()) {
-          for (PruebaRendida pr : pruebas) {
-            OTPruebaRendida ot = new OTPruebaRendida(pr);
-            int idx = tblListadoPruebas.getItems().indexOf(ot);
-            if (idx == -1) {
-              tblListadoPruebas.getItems().add(ot);
-            } else {
-              OTPruebaRendida oPr = tblListadoPruebas.getItems().get(idx);
-              oPr.setBuenas(pr.getBuenas());
-              oPr.setMalas(pr.getMalas());
-              oPr.setOmitidas(pr.getOmitidas());
-              oPr.setRespuestas(pr.getRespuestas());
-              oPr.setNivel(pr.getRango());
-              tblListadoPruebas.getItems().set(idx, oPr);
             }
           }
+          return results;
         }
-      }
-    });
-    Dialogs dlg = Dialogs.create();
-    dlg.title("Procesando imágenes");
-    dlg.masthead("");
-    dlg.message("Esto tomará algunos minutos.");
-    
-    dlg.showWorkerProgress(task);
-    Executors.newSingleThreadExecutor().execute(task);
+      };
+      task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+        @Override
+        public void handle(WorkerStateEvent event) {
+          ObservableList<PruebaRendida> pruebas = task.getValue();
+          if (pruebas != null && !pruebas.isEmpty()) {
+            for (PruebaRendida pr : pruebas) {
+              OTPruebaRendida ot = new OTPruebaRendida(pr);
+              int idx = tblListadoPruebas.getItems().indexOf(ot);
+              if (idx == -1) {
+                tblListadoPruebas.getItems().add(ot);
+              } else {
+                OTPruebaRendida oPr = tblListadoPruebas.getItems().get(idx);
+                oPr.setBuenas(pr.getBuenas());
+                oPr.setMalas(pr.getMalas());
+                oPr.setOmitidas(pr.getOmitidas());
+                oPr.setRespuestas(pr.getRespuestas());
+                oPr.setNivel(pr.getRango());
+                oPr.setNota(pr.getNota());
+                oPr.setPuntaje(Utils.getPuntaje(pr.getNota()));
+                tblListadoPruebas.getItems().set(idx, oPr);
+              }
+            }
+            
+            Dialogs info = Dialogs.create();
+            dlg.title("Proceso finalizado");
+            dlg.masthead("Se ha procesado " + pruebas.size() + " pruebas.");
+            dlg.message("Recuerde grabar los resultados.");
+            info.showInformation();
+          }
+        }
+      });
+      dlg.showWorkerProgress(task);
+      Executors.newSingleThreadExecutor().execute(task);
+    }
   }
 
   private PruebaRendida obtenerPruebaRendida(OTResultadoScanner resultado) throws CPruebasException {
@@ -545,7 +556,11 @@ public class EvaluarPruebaView extends AFormView {
                 strResps.replace(n, n + 1, "+");
                 buenas++;
               } else if ("D".equalsIgnoreCase(letter)) {
-                strResps.replace(n, n + 1, "X");
+                strResps.replace(n, n + 1, "-");
+                malas++;
+              }
+              else
+              {
                 malas++;
               }
             } else if (rEsperada.getVerdaderoFalso()) {

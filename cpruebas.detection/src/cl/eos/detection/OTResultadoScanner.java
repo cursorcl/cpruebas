@@ -1,7 +1,5 @@
 package cl.eos.detection;
 
-import java.util.Arrays;
-
 import com.google.common.base.Splitter;
 
 public class OTResultadoScanner {
