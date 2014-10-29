@@ -142,23 +142,8 @@ public abstract OTResultadoScanner process(BufferedImage image, int nroPreguntas
             image
                 .getSubimage(left, top, CIRCLE_SIZE * 5 + CIRCLE_X_SPCAES * 4 + 4, CIRCLE_SIZE + 8);
         
-        try {
-          ImageIO.write(img, "png", new File("o:/res/respuestas/P" + pregunta + ".png"));
-        } catch (IOException e) {
-          e.printStackTrace();
-        }
-        
 		img = fillCirlces(img);
-		try {
-			ImageIO.write(img, "png", new File("o:/res/respuestas/PC"
-					+ pregunta + ".png"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-        
         String respuesta = getRespuesta(img);
-        
-        
         
         resp.append(respuesta);
         pregunta++;
@@ -344,7 +329,6 @@ public abstract OTResultadoScanner process(BufferedImage image, int nroPreguntas
       g.dispose();
       ImageFloat32 img32 = ConvertBufferedImage.convertFromSingle(subImage, null, ImageFloat32.class);
       double value = ImageStatistics.mean(img32);
-      System.out.println(value);
       g2d.drawOval(X[n], 1, 45, 48);
       if(value < 180)
       {

@@ -92,7 +92,6 @@ public class EditingCellRespuestasEvaluar extends
 					return;
 				}
 				if (newValue.length() > maxLength) {
-					System.out.println("N " + newValue);
 					selfChage = true;
 					textField.setText(newValue.substring(0, maxLength));
 				} else {
@@ -114,7 +113,6 @@ public class EditingCellRespuestasEvaluar extends
 								validValue = sValido.contains(s.toUpperCase());
 							}
 							if (!validValue) {
-								System.out.println(oldValue);
 								selfChage = true;
 								textField.setText(oldValue);
 								break;

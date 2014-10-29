@@ -524,11 +524,6 @@ public class EvaluarPruebaView extends AFormView {
                 tblListadoPruebas.getItems().set(idx, oPr);
               }
             }
-            Dialogs info = Dialogs.create();
-            dlg.title("Proceso finalizado");
-            dlg.masthead("Se ha procesado " + pruebas.size() + " pruebas.");
-            dlg.message("Recuerde grabar los resultados.");
-            info.showInformation();
           }
         }
       });
