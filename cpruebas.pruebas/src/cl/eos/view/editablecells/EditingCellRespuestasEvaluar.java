@@ -82,30 +82,43 @@ public class EditingCellRespuestasEvaluar extends
 			}
 		});
 		textField.textProperty().addListener(new ChangeListener<String>() {
+			private boolean selfChage = false;
 			@Override
 			public void changed(final ObservableValue<? extends String> ov,
 					final String oldValue, final String newValue) {
+				if(selfChage)
+				{
+					selfChage = false;
+					return;
+				}
 				if (newValue.length() > maxLength) {
+					System.out.println("N " + newValue);
+					selfChage = true;
 					textField.setText(newValue.substring(0, maxLength));
 				} else {
 					boolean validValue = false;
 					int len = newValue.length();
 					if (len > 0) {
-						String s = newValue.substring(len - 1, len);
-						RespuestasEsperadasPrueba resp = prueba.getRespuestas()
-								.get(len - 1);
-						if (resp.getVerdaderoFalso()) {
-							validValue = "VFO".contains(s.toUpperCase());
-						} else if (resp.getMental()) {
-							validValue = "BMO".contains(s.toUpperCase());
-						} else {
-							String sValido = "ABCDE".substring(0,
-									prueba.getAlternativas())
-									+ "O";
-							validValue = sValido.contains(s.toUpperCase());
-						}
-						if (!validValue) {
-							textField.setText(oldValue);
+						for (int n = 0; n < len; n++) {
+							String s = newValue.substring(n, n + 1);
+							RespuestasEsperadasPrueba resp = prueba
+									.getRespuestas().get(n);
+							if (resp.getVerdaderoFalso()) {
+								validValue = "VFO".contains(s.toUpperCase());
+							} else if (resp.getMental()) {
+								validValue = "BMO".contains(s.toUpperCase());
+							} else {
+								String sValido = "ABCDE".substring(0,
+										prueba.getAlternativas())
+										+ "O";
+								validValue = sValido.contains(s.toUpperCase());
+							}
+							if (!validValue) {
+								System.out.println(oldValue);
+								selfChage = true;
+								textField.setText(oldValue);
+								break;
+							}
 						}
 					}
 
