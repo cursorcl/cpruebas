@@ -496,7 +496,8 @@ public class EvaluarPruebaView extends AFormView {
               updateMessage("Procesado:" + pRendida.getAlumno().toString());
               updateProgress(n++, files.size());
             } catch (CPruebasException e) {
-
+            	updateMessage(e.getMessage()); 
+            	
             }
           }
           return results;
@@ -524,6 +525,12 @@ public class EvaluarPruebaView extends AFormView {
                 tblListadoPruebas.getItems().set(idx, oPr);
               }
             }
+//            Dialogs info = Dialogs.create();
+//            info.title("Proceso finalizado");
+//            info.masthead("Se ha procesado " + pruebas.size() + " pruebas.");
+//            info.message("Recuerde grabar los resultados.");
+//            info.owner(tblListadoPruebas);
+//            info.showInformation();
           }
         }
       });
