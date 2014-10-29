@@ -71,7 +71,7 @@
                <contextMenu>
                   <ContextMenu>
                     <items>
-                      <MenuItem mnemonicParsing="false" text="No rindió prueba" />
+                      <MenuItem fx:id="mnuNorinde" mnemonicParsing="false" text="No rindió prueba" />
                     </items>
                   </ContextMenu>
                </contextMenu>

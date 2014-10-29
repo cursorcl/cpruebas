@@ -34,11 +34,11 @@ public class NeuralNetworkRecognizer implements Recognizer
     BufferedReader brdr = new BufferedReader(new FileReader(file));
     String[] grdsz = brdr.readLine().split(" ");
     String nnfilename = brdr.readLine();
-
+    brdr.close();
     width = Integer.parseInt(grdsz[0]);
     height = Integer.parseInt(grdsz[1]);
 
-    log.info(String.format("grid is read as %d x %d", width, height));
+    //log.info(String.format("grid is read as %d x %d", width, height));
 
     File nnFile = new File(file.getParent(), nnfilename);
     network = NeuralNetwork.createFromFile(nnFile);
@@ -49,14 +49,14 @@ public class NeuralNetworkRecognizer implements Recognizer
   {
     double[] output = match(image);
 
-    StringBuffer sb = new StringBuffer();
-    for (int n=0; n<output.length; n++)
-    {
-      if (sb.length() > 0)
-        sb.append(", ");
-      sb.append(String.format("[%2d]: %.3f", n, output[n]));
-    }
-    log.info(sb.toString());
+//    StringBuffer sb = new StringBuffer();
+//    for (int n=0; n<output.length; n++)
+//    {
+//      if (sb.length() > 0)
+//        sb.append(", ");
+//      sb.append(String.format("[%2d]: %.3f", n, output[n]));
+//    }
+//    log.info(sb.toString());
 
     int bestIndex = -1;
     double bestValue = Double.NEGATIVE_INFINITY;
@@ -80,8 +80,8 @@ public class NeuralNetworkRecognizer implements Recognizer
     }
 
     double outputTolerance = Math.abs(bestValue - bestOther) / bestValue;
-    log.info(String.format("tolerance between %.3f and %.3f is %.2f",
-        bestValue, bestOther, outputTolerance));
+//    log.info(String.format("tolerance between %.3f and %.3f is %.2f",
+//        bestValue, bestOther, outputTolerance));
 
     int result = (outputTolerance > tolerance) ? bestIndex : -1;
 

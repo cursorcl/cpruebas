@@ -114,6 +114,9 @@ public class EvaluarPruebaView extends AFormView {
   private MenuItem mnuGrabar;
   @FXML
   private MenuItem mnuVolver;
+  @FXML
+  private MenuItem mnuNorinde;
+  
 
   @FXML
   private BorderPane mainPane;
@@ -152,6 +155,21 @@ public class EvaluarPruebaView extends AFormView {
         handlerGrabar();
       }
     });
+    mnuNorinde.setOnAction(new EventHandler<ActionEvent>() {
+
+		@Override
+		public void handle(ActionEvent event) {
+			OTPruebaRendida pRendida = tblListadoPruebas.getSelectionModel().getSelectedItem();
+			pRendida.setRespuestas("");
+			pRendida.setBuenas(0);
+			pRendida.setMalas(0);
+			pRendida.setOmitidas(0);
+			pRendida.setNota(0f);
+			pRendida.setNivel(null);
+			
+		}
+	});    
+    
     mnuScanner.setOnAction(new EventHandler<ActionEvent>() {
 
       @Override
