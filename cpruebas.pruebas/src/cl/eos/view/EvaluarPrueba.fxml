@@ -39,13 +39,13 @@
                   <Label layoutX="249.0" layoutY="7.0" text="Asignatura" />
                   <ListView fx:id="lstEjes" disable="true" focusTraversable="false" layoutX="668.0" layoutY="26.0" prefHeight="73.0" prefWidth="200.0" />
                   <ListView fx:id="lstHabilidad" disable="true" focusTraversable="false" layoutX="870.0" layoutY="24.0" prefHeight="76.0" prefWidth="200.0" />
-                  <Label layoutX="668.0" layoutY="9.0" text="Ejes temáticos" />
-                  <Label layoutX="873.0" layoutY="9.0" text="Habilidades" />
+                  <Label layoutX="668.0" layoutY="6.0" text="Ejes temáticos" />
+                  <Label layoutX="873.0" layoutY="6.0" text="Habilidades" />
                   <Label layoutX="15.0" layoutY="62.0" text="Profesor" />
                   <Label fx:id="lblError" layoutX="411.0" layoutY="9.0" prefHeight="17.0" prefWidth="246.0" />
                   <Label layoutX="495.0" layoutY="7.0" text="#Preguntas" />
                   <TextField fx:id="txtNroPreguntas" disable="true" editable="false" focusTraversable="false" layoutX="492.0" layoutY="27.0" prefHeight="23.0" prefWidth="63.0" promptText="#Preg" />
-                  <Label layoutX="571.0" layoutY="10.0" text="#Alternativas" />
+                  <Label layoutX="569.0" layoutY="6.0" text="#Alternativas" />
                   <TextField fx:id="txtNroAlternativas" disable="true" editable="false" focusTraversable="false" layoutX="569.0" layoutY="27.0" prefHeight="23.0" prefWidth="69.0" promptText="#Altern" />
                </children>
             </AnchorPane>

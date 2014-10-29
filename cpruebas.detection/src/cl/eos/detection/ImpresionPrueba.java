@@ -83,9 +83,7 @@ public class ImpresionPrueba {
     PDDocument doc = null;
     respEsperadas = prueba.getRespuestas();
     nroAlternativas = prueba.getAlternativas();
-    colAlternativas = 5; // tienePregutasVFoCALC() ?
-    // Math.max(4,prueba.getAlternativas()) :
-    // prueba.getAlternativas();
+    colAlternativas = 5; 
     try {
       BufferedImage imageEmpty = ImageIO.read(new File("./res/cpruebas.vacia.png"));
       image =
@@ -120,7 +118,6 @@ public class ImpresionPrueba {
         drawForma(forma.getForma());
         drawHeader(prueba, alumno, profesor, fecha);
         BufferedImage image = drawAlternativas(forma);
-        ImageIO.write(image, "png", new File("./res/" + alumno.getRut() + ".png"));
         addImageToPdf(image, doc);
       }
       String fileName =
@@ -131,7 +128,6 @@ public class ImpresionPrueba {
       doc.getDocumentInformation().setTitle(fileName);
       doc.getDocumentInformation().setAuthor("EOS");
       doc.save(output);
-      // doc.close();
     } catch (IOException e) {
       e.printStackTrace();
     } catch (COSVisitorException e) {
