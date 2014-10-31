@@ -71,10 +71,10 @@
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
                            <columns>
-                              <TableColumn id="colRut" fx:id="colRRut" prefWidth="130.0" resizable="false" text="Rut" />
-                              <TableColumn id="colPaterno" fx:id="colRPaterno" prefWidth="151.0" resizable="false" text="A.Paterno" />
-                              <TableColumn id="colMaterno" fx:id="colRMaterno" prefWidth="165.0" resizable="false" text="A.Materno" />
-                              <TableColumn id="colName" fx:id="colRName" prefWidth="192.0" resizable="false" text="Nombres" />
+                              <TableColumn id="colRut" fx:id="colRRut" prefWidth="103.0" resizable="false" text="Rut" />
+                              <TableColumn id="colPaterno" fx:id="colRPaterno" prefWidth="134.0" resizable="false" text="A.Paterno" />
+                              <TableColumn id="colMaterno" fx:id="colRMaterno" prefWidth="131.0" resizable="false" text="A.Materno" />
+                              <TableColumn id="colName" fx:id="colRName" prefWidth="166.0" resizable="false" text="Nombres" />
                            </columns>
                            <contextMenu>
                               <ContextMenu>
