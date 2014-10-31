@@ -97,7 +97,7 @@ public class EditingCellRespuestasEvaluar extends
 						if (resp.getVerdaderoFalso()) {
 							validValue = "VFO".contains(s.toUpperCase());
 						} else if (resp.getMental()) {
-							validValue = "BMO".contains(s.toUpperCase());
+							validValue = "-+O".contains(s.toUpperCase());
 						} else {
 							String sValido = "ABCDE".substring(0,
 									prueba.getAlternativas())

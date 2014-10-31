@@ -97,15 +97,7 @@
    <top>
       <Pane maxHeight="40.0" styleClass="sample-page" BorderPane.alignment="CENTER">
          <children>
-            <HBox>
-               <children>
-                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="35.0" prefWidth="776.0" text="DETALLE DE LA PRUEBA POR TIPO RESPUESTA" textAlignment="CENTER">
-                     <font>
-                        <Font name="System Bold" size="20.0" />
-                     </font>
-                  </Label>
-               </children>
-            </HBox>
+            <HBox />
          </children>
       </Pane>
    </top>

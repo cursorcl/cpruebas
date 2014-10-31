@@ -12,7 +12,7 @@
    <center>
       <SplitPane orientation="VERTICAL" prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <items>
-            <SplitPane dividerPositions="0.5069124423963134" prefHeight="114.0" prefWidth="685.0">
+            <SplitPane dividerPositions="0.5889400921658986" prefHeight="114.0" prefWidth="685.0">
               <items>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="403.0" prefWidth="375.0">
                      <children>
@@ -93,15 +93,7 @@
    <top>
       <Pane maxHeight="40.0" BorderPane.alignment="CENTER">
          <children>
-            <HBox>
-               <children>
-                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="35.0" prefWidth="776.0" text=" RESULTADO RESPUESTA POR PRUEBA" textAlignment="CENTER">
-                     <font>
-                        <Font name="System Bold" size="20.0" />
-                     </font>
-                  </Label>
-               </children>
-            </HBox>
+            <HBox />
          </children>
       </Pane>
    </top>

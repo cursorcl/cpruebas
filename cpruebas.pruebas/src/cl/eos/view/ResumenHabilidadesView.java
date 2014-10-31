@@ -118,7 +118,7 @@ public class ResumenHabilidadesView extends AFormView implements
 									.getNologrado();
 
 							XYChart.Series series1 = new XYChart.Series();
-							//series1.setName("Porcentaje de Respuestas");
+							//series1.setName("");
 							series1.getData().add(
 									new XYChart.Data<String, Float>("Logrado",
 											porcentajeLogrado));

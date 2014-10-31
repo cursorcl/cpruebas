@@ -71,6 +71,8 @@ public class EvaluacionPruebaView extends AFormView implements
 	@FXML
 	private MenuItem mnuResumenPME;
 	@FXML
+	private MenuItem menuResumenPME;
+	@FXML
 	private MenuItem mnuExportarExcel;
 	@FXML
 	private MenuItem menuExportarExcel;
@@ -94,13 +96,15 @@ public class EvaluacionPruebaView extends AFormView implements
 		mnuRespuestasPregunta.setOnAction(this);
 		mnuRespuestasHabilidad.setOnAction(this);
 		mnuRespuestasEje.setOnAction(this);
-
+		mnuResumenPME.setOnAction(this);
+		
 		menuResumenGeneral.setOnAction(this);
 		menuResumenAlumno.setOnAction(this);
 		menuRespuestasPregunta.setOnAction(this);
 		menuRespuestasHabilidad.setOnAction(this);
 		menuRespuestasEje.setOnAction(this);
-		mnuResumenPME.setOnAction(this);
+		menuResumenPME.setOnAction(this);
+		
 		mnuExportarExcel.setOnAction(this);
 		menuExportarExcel.setOnAction(this);
 
@@ -166,13 +170,12 @@ public class EvaluacionPruebaView extends AFormView implements
 			handleResumenHabilidad();
 		} else if (source == mnuRespuestasEje || source == menuRespuestasEje) {
 			handleResumenEje();
-		} else if (source == mnuResumenPME) {
+		} else if (source == mnuResumenPME || source == menuResumenPME) {
 			handlerResumenPME();
 		} else if (source == mnuExportarExcel || source == menuExportarExcel) {
 			handlerResumenExcel();
 		}
 		tblListadoPruebas.getSelectionModel().clearSelection();
-		System.out.println("Selección "+ tblListadoPruebas.getSelectionModel().getSelectedItems().size());
 	}
 
 	private void handlerResumenExcel() {
@@ -182,19 +185,19 @@ public class EvaluacionPruebaView extends AFormView implements
 	}
 
 	private void handleResumenEje() {
-		if (resumeEjeTematico == null) {
-			resumeEjeTematico = (ResumenEjesTematicosView) show("/cl/eos/view/ResumenEjesTematicos.fxml");
-		} else {
-			show(resumeEjeTematico);
-		}
 		evaluacionPrueba = tblListadoPruebas.getSelectionModel()
 				.getSelectedItem();
 		if (evaluacionPrueba != null) {
+			if (resumeEjeTematico == null) {
+				resumeEjeTematico = (ResumenEjesTematicosView) show("/cl/eos/view/ResumenEjesTematicos.fxml");
+			} else {
+				show(resumeEjeTematico);
+			}
 			controller.findById(EvaluacionPrueba.class,
 					evaluacionPrueba.getId(), resumeEjeTematico);
 		} else {
 			Dialogs.create().owner(null).title("Selección registro")
-					.masthead(resumeEjeTematico.getName())
+					.masthead("Resumen Respuestas por Ejes Temáticos")
 					.message("Debe seleccionar registro a procesar")
 					.showInformation();
 		}
@@ -202,97 +205,97 @@ public class EvaluacionPruebaView extends AFormView implements
 	}
 
 	private void handleResumenHabilidad() {
-		if (resumeHabilidad == null) {
-			resumeHabilidad = (ResumenHabilidadesView) show("/cl/eos/view/ResumenHabilidades.fxml");
-		} else {
-			show(resumeHabilidad);
-		}
 		evaluacionPrueba = tblListadoPruebas.getSelectionModel()
 				.getSelectedItem();
 		if (evaluacionPrueba != null) {
+			if (resumeHabilidad == null) {
+				resumeHabilidad = (ResumenHabilidadesView) show("/cl/eos/view/ResumenHabilidades.fxml");
+			} else {
+				show(resumeHabilidad);
+			}
 			controller.findById(EvaluacionPrueba.class,
 					evaluacionPrueba.getId(), resumeHabilidad);
 		} else {
 			Dialogs.create().owner(null).title("Selección registro")
-					.masthead(resumeHabilidad.getName())
+					.masthead("Resumen Respuestas por Habilidades")
 					.message("Debe seleccionar registro a procesar")
 					.showInformation();
 		}
 	}
 
 	private void handleResumenAlumno() {
-		if (resumenAlumno == null) {
-			resumenAlumno = (ResumenAlumnoView) show("/cl/eos/view/ResumenAlumno.fxml");
-		} else {
-			show(resumenAlumno);
-		}
 		evaluacionPrueba = tblListadoPruebas.getSelectionModel()
 				.getSelectedItem();
 		if (evaluacionPrueba != null) {
+
+			if (resumenAlumno == null) {
+				resumenAlumno = (ResumenAlumnoView) show("/cl/eos/view/ResumenAlumno.fxml");
+			} else {
+				show(resumenAlumno);
+			}
 			controller.findById(EvaluacionPrueba.class,
 					evaluacionPrueba.getId(), resumenAlumno);
 		} else {
 			Dialogs.create().owner(null).title("Selección registro")
-					.masthead(resumenAlumno.getName())
+					.masthead(null)
 					.message("Debe seleccionar registro a procesar")
 					.showInformation();
 		}
 	}
 
 	private void handleResumenGeneral() {
-		if (resumenGeneral == null) {
-			resumenGeneral = (ResumenGeneralView) show("/cl/eos/view/ResumenGeneral.fxml");
-		} else {
-			show(resumenGeneral);
-		}
 		evaluacionPrueba = tblListadoPruebas.getSelectionModel()
 				.getSelectedItem();
 		if (evaluacionPrueba != null) {
+			if (resumenGeneral == null) {
+				resumenGeneral = (ResumenGeneralView) show("/cl/eos/view/ResumenGeneral.fxml");
+			} else {
+				show(resumenGeneral);
+			}
 			controller.findById(EvaluacionPrueba.class,
 					evaluacionPrueba.getId(), resumenGeneral);
 		} else {
 			Dialogs.create().owner(null).title("Selección registro")
-					.masthead(resumenGeneral.getName())
+					.masthead("Resumen de respuestas generales")
 					.message("Debe seleccionar registro a procesar")
 					.showInformation();
 		}
 	}
 
 	private void handleResumenRespuesta() {
-		if (resumenRespuestas == null) {
-			resumenRespuestas = (ResumenRespuestaView) show("/cl/eos/view/ResumenRespuestas.fxml");
-		} else {
-			show(resumenRespuestas);
-		}
 		evaluacionPrueba = tblListadoPruebas.getSelectionModel()
 				.getSelectedItem();
 		if (evaluacionPrueba != null) {
+			if (resumenRespuestas == null) {
+				resumenRespuestas = (ResumenRespuestaView) show("/cl/eos/view/ResumenRespuestas.fxml");
+			} else {
+				show(resumenRespuestas);
+			}
 			controller.findById(EvaluacionPrueba.class,
 					evaluacionPrueba.getId(), resumenRespuestas);
 		} else {
 			Dialogs.create().owner(null).title("Selección registro")
-					.masthead(resumenRespuestas.getName())
+					.masthead("Resumen de respuestas por pregunta")
 					.message("Debe seleccionar registro a procesar")
 					.showInformation();
 		}
 	}
 
 	private void handlerResumenPME() {
-		if (resumenGeneralPME == null) {
-			resumenGeneralPME = (ResumenGeneralPMEView) show("/cl/eos/view/ResumenGeneralPME.fxml");
-		} else {
-			show(resumenGeneralPME);
-		}
 		EvaluacionPrueba evaluacion = tblListadoPruebas.getSelectionModel()
 				.getSelectedItem();
 		if (evaluacion != null) {
+			if (resumenGeneralPME == null) {
+				resumenGeneralPME = (ResumenGeneralPMEView) show("/cl/eos/view/ResumenGeneralPME.fxml");
+			} else {
+				show(resumenGeneralPME);
+			}
 			controller.findById(EvaluacionPrueba.class, evaluacion.getId(),
 					resumenGeneralPME);
 			controller.findAll(RangoEvaluacion.class);
-		}
-		else {
+		} else {
 			Dialogs.create().owner(null).title("Selección registro")
-					.masthead(resumeEjeTematico.getName())
+					.masthead("Resumen general P.M.E.")
 					.message("Debe seleccionar registro a procesar")
 					.showInformation();
 		}
@@ -310,7 +313,7 @@ public class EvaluacionPruebaView extends AFormView implements
 								.getSelectionModel().getSelectedItems();
 
 						if (itemsSelec.size() == 1) {
-							System.out.println("Un registro seleccionado");
+							//System.out.println("Un registro seleccionado");
 						}
 					}
 				});

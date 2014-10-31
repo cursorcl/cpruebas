@@ -148,6 +148,7 @@ public class ResumenRespuestaView extends AFormView implements
 		Integer buenas = 0;
 		Integer malas = 0;
 		Integer omitidas = 0;
+		Float notas = 0f;
 
 		int[] sBuenas = new int[nroPreguntas];
 		int[] sMalas = new int[nroPreguntas];
@@ -160,7 +161,7 @@ public class ResumenRespuestaView extends AFormView implements
 
 			char[] cResponses = responses.toCharArray();
 			char[] cRespuesta = respuesta.toCharArray();
-
+			int contadorBuenas = 0;
 			for (int i = 0; i < cResponses.length; i++) {
 
 				if (cRespuesta[i] == ' ') {
@@ -170,17 +171,21 @@ public class ResumenRespuestaView extends AFormView implements
 						.equals(String.valueOf(cResponses[i]).toUpperCase())) {
 					sBuenas[i] = sBuenas[i] + 1;
 					buenas = buenas + 1;
+					contadorBuenas++;
 				} else {
 					sMalas[i] = sMalas[i] + 1;
 					malas = malas + 1;
 				}
 			}
+
+			notas = notas
+					+ Utils.getNota(nroPreguntas, (float) entity.getPrueba()
+							.getExigencia(), contadorBuenas, (float) entity
+							.getPrueba().getPuntajeBase());
 		}
-		
+
 		float nroAlumnos = pruebasRendidas.size();
-		float nota = Utils.getNota(nroPreguntas, (float) entity.getPrueba()
-				.getExigencia(), buenas, (float) entity.getPrueba()
-				.getPuntajeBase());
+		float nota = notas / nroAlumnos;
 
 		txtPuntaje.setText(String.valueOf(Utils.getPuntaje(nota)));
 
@@ -197,19 +202,19 @@ public class ResumenRespuestaView extends AFormView implements
 		listaPorcentaje = new LinkedList<OTRespuestasPorcentaje>();
 		OTRespuestasPorcentaje respuestaPorcentajeB = new OTRespuestasPorcentaje();
 		respuestaPorcentajeB.setTitulo("Buenas");
-		float porcentajeBuenas = (float) ((buenas /nroAlumnos)/ nroPreguntas);
+		float porcentajeBuenas = (float) ((buenas / nroAlumnos) / nroPreguntas);
 		respuestaPorcentajeB.setPorcentaje(porcentajeBuenas * 100);
 		listaPorcentaje.add(respuestaPorcentajeB);
 
 		OTRespuestasPorcentaje respuestaPorcentajeM = new OTRespuestasPorcentaje();
 		respuestaPorcentajeM.setTitulo("Malas");
-		float porcentajeMalas = (float) ((malas/nroAlumnos) / nroPreguntas);
+		float porcentajeMalas = (float) ((malas / nroAlumnos) / nroPreguntas);
 		respuestaPorcentajeM.setPorcentaje(porcentajeMalas * 100);
 		listaPorcentaje.add(respuestaPorcentajeM);
 
 		OTRespuestasPorcentaje respuestaPorcentaje = new OTRespuestasPorcentaje();
 		respuestaPorcentaje.setTitulo("Omitidas");
-		float porcentajeOmitidas = (float) ((omitidas / nroAlumnos)/ nroPreguntas);
+		float porcentajeOmitidas = (float) ((omitidas / nroAlumnos) / nroPreguntas);
 		respuestaPorcentaje.setPorcentaje(porcentajeOmitidas * 100);
 		listaPorcentaje.add(respuestaPorcentaje);
 

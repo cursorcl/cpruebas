@@ -139,7 +139,7 @@
                         <Tooltip text="Puntaje base de cada pregunta" />
                      </tooltip>
                   </BigDecimalField>
-                  <Label fx:id="lblError" layoutX="10.0" layoutY="10.0" text="Label" textAlignment="CENTER" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+                  <Label fx:id="lblError" layoutX="10.0" layoutY="10.0" textAlignment="CENTER" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
                      <VBox.margin>
                         <Insets bottom="5.0" left="10.0" right="5.0" top="10.0" />
                      </VBox.margin>

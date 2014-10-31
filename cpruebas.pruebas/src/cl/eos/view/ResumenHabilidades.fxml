@@ -12,7 +12,7 @@
    <center>
       <SplitPane orientation="VERTICAL" prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <items>
-            <SplitPane dividerPositions="0.5069124423963134" prefHeight="114.0" prefWidth="685.0">
+            <SplitPane dividerPositions="0.6967741935483871" prefHeight="114.0" prefWidth="685.0">
               <items>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="403.0" prefWidth="375.0">
                      <children>
@@ -39,10 +39,10 @@
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
                            <columns>
-                              <TableColumn fx:id="colNombre" prefWidth="75.0" text="Nombre habilidad" />
-                              <TableColumn fx:id="colDescripcion" prefWidth="75.0" text="Descripción general curso" />
-                              <TableColumn fx:id="colLogrado" prefWidth="75.0" style="-fx-alignment: CENTER;" text="\%Logrado" />
-                              <TableColumn fx:id="colNoLogrado" prefWidth="75.0" style="-fx-alignment: CENTER;" text="\% No logrado" />
+                              <TableColumn fx:id="colNombre" prefWidth="200.0" resizable="false" text="Nombre habilidad" />
+                              <TableColumn fx:id="colDescripcion" prefWidth="370.0" resizable="false" text="Descripción general curso" />
+                              <TableColumn fx:id="colLogrado" prefWidth="90.0" resizable="false" style="-fx-alignment: CENTER;" text="\%Logrado" />
+                              <TableColumn fx:id="colNoLogrado" prefWidth="90.0" resizable="false" style="-fx-alignment: CENTER;" text="\% No logrado" />
                            </columns>
                            <contextMenu>
                               <ContextMenu>
@@ -60,9 +60,9 @@
                      <children>
                         <BorderPane layoutX="7.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="7.0" AnchorPane.rightAnchor="-7.0" AnchorPane.topAnchor="0.0">
                            <center>
-                              <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                              <AnchorPane prefHeight="483.0" prefWidth="306.0" BorderPane.alignment="CENTER">
                                  <children>
-                                    <BarChart fx:id="graficoBarra" layoutX="8.0" layoutY="173.0" prefHeight="216.0" prefWidth="327.0" title="Respuestas por habilidades">
+                                    <BarChart fx:id="graficoBarra" layoutX="-8.0" layoutY="99.0" prefHeight="216.0" prefWidth="327.0" title="Respuestas por habilidades">
                                       <xAxis>
                                         <CategoryAxis side="BOTTOM" />
                                       </xAxis>
@@ -84,15 +84,7 @@
    <top>
       <Pane maxHeight="40.0" BorderPane.alignment="CENTER">
          <children>
-            <HBox>
-               <children>
-                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="35.0" prefWidth="1080.0" text="RESULTADO RESPUESTA POR HABILIDADES" textAlignment="CENTER">
-                     <font>
-                        <Font name="System Bold" size="20.0" />
-                     </font>
-                  </Label>
-               </children>
-            </HBox>
+            <HBox />
          </children>
       </Pane>
    </top>

@@ -38,7 +38,7 @@ public class OTPreguntasEjes {
 	}
 	
 	public String getDescripcion(){
-		return "Respuestas correctas:" + buenas.toString() +" de " + total.toString();
+		return "Respuestas correctas: " + buenas.toString() +" de " + total.toString();
 	}
 
 	public Float getLogrado(){

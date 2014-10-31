@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executors;
 
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -34,7 +33,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.util.Callback;
 
-import org.controlsfx.dialog.Dialog.Actions;
 import org.controlsfx.dialog.Dialogs;
 
 import cl.eos.PruebasActivator;
@@ -395,7 +393,7 @@ public class EvaluarPruebaView extends AFormView {
       }
 
       String s =
-          String.format("%s-%s-%s-%s", evalPrueba.getAsignatura(), evalPrueba.getColegio(),
+          String.format("%s %s %s %s", evalPrueba.getAsignatura(), evalPrueba.getColegio(),
               evalPrueba.getCurso(), evalPrueba.getFechaLocal().toString());
       evalPrueba.setName(s);
       prueba.getFormas().size();
