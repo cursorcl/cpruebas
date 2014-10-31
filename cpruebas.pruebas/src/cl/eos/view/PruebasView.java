@@ -677,8 +677,9 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 						mnuComparativoComunal.setDisable(estadoDefinida);
 						mnuComparativoComunalHab.setDisable(estadoDefinida);
 					} else if (estadoEvaluada) {
+					  
 						mnuEvaluarPrueba.setDisable(!estadoEvaluada);
-						mnuDefinirPrueba.setDisable(estadoEvaluada);
+						mnuDefinirPrueba.setDisable(!estadoEvaluada);
 						mnuListaEvaluaciones.setDisable(!estadoEvaluada);
 						mnuComunalEje.setDisable(!estadoEvaluada);
 						mnuComparativoComunal.setDisable(!estadoEvaluada);
