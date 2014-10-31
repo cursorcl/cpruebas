@@ -117,7 +117,7 @@ public class PruebaRendida implements IEntity {
   }
 
   public Float getNota() {
-    return nota;
+    return Utils.redondeo2Decimales(nota);
   }
 
   public void setNota(Float nota) {
