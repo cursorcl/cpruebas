@@ -38,12 +38,11 @@ public class LetraRespuesta extends TableCell<PruebaRendida, String> {
 		String cResultado = null;
 		char[] cResponses = responses.toCharArray();
 
-		if (ccar[0] == ' ') {
+		if (ccar[0] == 'O') {
 			cResultado = "O";
-		} else if (ccar[0] == (cResponses[index])) {
+		} else if (ccar[0] == (cResponses[index]) || ccar[0] == '+') {
 			cResultado = "B";
-		}
-		else if (ccar[0] != (cResponses[index])){
+		} else if (ccar[0] != (cResponses[index]) || ccar[0] == '-') {
 			cResultado = "M";
 		}
 		return cResultado;
