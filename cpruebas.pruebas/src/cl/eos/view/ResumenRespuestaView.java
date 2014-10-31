@@ -164,11 +164,12 @@ public class ResumenRespuestaView extends AFormView implements
 			int contadorBuenas = 0;
 			for (int i = 0; i < cResponses.length; i++) {
 
-				if (cRespuesta[i] == ' ') {
+				if (cRespuesta[i] == 'O') {
 					sOmitidas[i] = sOmitidas[i] + 1;
 					omitidas = omitidas + 1;
 				} else if (String.valueOf(cRespuesta[i]).toUpperCase()
-						.equals(String.valueOf(cResponses[i]).toUpperCase())) {
+						.equals(String.valueOf(cResponses[i]).toUpperCase())
+						|| cRespuesta[i] == '+') {
 					sBuenas[i] = sBuenas[i] + 1;
 					buenas = buenas + 1;
 					contadorBuenas++;
