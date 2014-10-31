@@ -37,7 +37,6 @@ import cl.eos.persistence.models.EjeTematico;
 import cl.eos.persistence.models.Formas;
 import cl.eos.persistence.models.Habilidad;
 import cl.eos.persistence.models.Prueba;
-import cl.eos.persistence.models.Prueba.Estado;
 import cl.eos.persistence.models.RespuestasEsperadasPrueba;
 import cl.eos.persistence.util.Comparadores;
 import cl.eos.view.dnd.EjeTematicoDND;
@@ -383,7 +382,7 @@ public class DefinePruebaViewController extends AFormView {
         respuesta.setPrueba(prueba);
         respuestas.add(respuesta);
         numeros.add(registro.getNumero());
-        responses += registro.getRespuesta() == " " ? "V" : registro.getRespuesta();
+        responses += registro.getRespuesta();
       }
       prueba.setRespuestas(respuestas);
       prueba.setResponses(responses);

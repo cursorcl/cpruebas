@@ -16,8 +16,12 @@
               <menus>
                 <Menu mnemonicParsing="false" text="Archivo">
                   <items>
-                    <MenuItem fx:id="mnuAgregar" mnemonicParsing="false" text="Agregar" />
+                    <MenuItem fx:id="mnuAgregar" mnemonicParsing="false" text="Agregar">
+                           <accelerator>
+                              <KeyCodeCombination alt="UP" code="A" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                           </accelerator></MenuItem>
                         <MenuItem fx:id="mnuQuitar" mnemonicParsing="false" text="Quitar" />
+                        <MenuItem fx:id="mnuEliminarTodo" mnemonicParsing="false" text="Eliminar Todo" />
                         <SeparatorMenuItem mnemonicParsing="false" />
                         <MenuItem fx:id="mnuImprimir" mnemonicParsing="false" text="Imprimir">
                            <accelerator>
@@ -65,7 +69,8 @@
                <contextMenu>
                   <ContextMenu>
                     <items>
-                      <MenuItem fx:id="mnuEliminar" mnemonicParsing="false" text="Eliminar" />
+                        <MenuItem fx:id="mnuQuitarPopup" mnemonicParsing="false" text="Quitar" />
+                      <MenuItem fx:id="mnuEliminarTodoPopup" mnemonicParsing="false" text="Eliminar Todo" />
                     </items>
                   </ContextMenu>
                </contextMenu>

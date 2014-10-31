@@ -8,14 +8,14 @@ import javafx.scene.Parent;
 import cl.eos.controller.AlumnosContoller;
 import cl.eos.interfaces.AActivator;
 
-public class AlumnosActivator extends AActivator {
+public class CopyOfAlumnosActivator extends AActivator {
 
-	public AlumnosActivator() {
+	public CopyOfAlumnosActivator() {
 
 		controller = new AlumnosContoller();
 		
-		URL url = AlumnosActivator.class
-				.getResource("/cl/eos/view/AlumnosTableTree.fxml");
+		URL url = CopyOfAlumnosActivator.class
+				.getResource("/cl/eos/view/Alumnos.fxml");
 		FXMLLoader fxmlLoader = new FXMLLoader();
 		try {
 			pane = (Parent) fxmlLoader.load(url.openStream());

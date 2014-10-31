@@ -33,7 +33,7 @@ public class OTAlumno {
 	}
 
 	public OTAlumno() {
-		// TODO Auto-generated constructor stub
+		id.setValue(null);
 	}
 
 	public final SimpleLongProperty idProperty() {
@@ -160,9 +160,20 @@ public class OTAlumno {
 		if (id == null) {
 			if (other.id != null)
 				return false;
-		}  else if (id.get() != other.id.get())
+		} else if (id.get() != other.id.get())
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		String result = "";
+		if (alumno != null) {
+			result = String.format("%s\t%s\t%s %s %s %s", alumno.getColegio()
+					.getName(), alumno.getCurso().getName(), alumno.getRut(),
+					alumno.getPaterno(), alumno.getMaterno(), alumno.getName());
+		}
+		return result;
 	}
 
 }

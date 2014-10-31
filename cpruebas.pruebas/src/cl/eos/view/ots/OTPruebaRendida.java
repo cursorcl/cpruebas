@@ -25,7 +25,7 @@ public class OTPruebaRendida {
     this.omitidas.set(pruebaRendida.getOmitidas());
     this.malas.set(pruebaRendida.getMalas());
     this.respuestas.set(pruebaRendida.getRespuestas());
-    this.nota.set(pruebaRendida.getNota());
+    this.nota.set(Utils.redondeo2Decimales(pruebaRendida.getNota()));
     this.puntaje.set(Utils.getPuntaje(this.nota.floatValue()));
     this.nivel.set(pruebaRendida.getRango());
   }
@@ -67,7 +67,7 @@ public class OTPruebaRendida {
 
 
   public Float getNota() {
-    return  Utils.redondeo2Decimales(nota.floatValue());
+    return  nota.floatValue();
   }
 
   public SimpleFloatProperty notaProperty() {
@@ -75,7 +75,7 @@ public class OTPruebaRendida {
   }
 
   public void setNota(Float nota) {
-    this.nota.set(nota);
+    this.nota.set(Utils.redondeo2Decimales(nota));
     this.pruebaRendida.setNota(nota);
     setPuntaje(Utils.getPuntaje(this.nota.floatValue()));
   }

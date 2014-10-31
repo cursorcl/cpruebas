@@ -82,15 +82,23 @@ public class EditingCellRespuestasEvaluar extends
 			}
 		});
 		textField.textProperty().addListener(new ChangeListener<String>() {
+			private boolean selfChage = false;
 			@Override
 			public void changed(final ObservableValue<? extends String> ov,
 					final String oldValue, final String newValue) {
+				if(selfChage)
+				{
+					selfChage = false;
+					return;
+				}
 				if (newValue.length() > maxLength) {
+					selfChage = true;
 					textField.setText(newValue.substring(0, maxLength));
 				} else {
 					boolean validValue = false;
 					int len = newValue.length();
 					if (len > 0) {
+
 						String s = newValue.substring(len - 1, len);
 						RespuestasEsperadasPrueba resp = prueba.getRespuestas()
 								.get(len - 1);
@@ -106,6 +114,7 @@ public class EditingCellRespuestasEvaluar extends
 						}
 						if (!validValue) {
 							textField.setText(oldValue);
+
 						}
 					}
 

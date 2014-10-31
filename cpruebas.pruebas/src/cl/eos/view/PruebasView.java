@@ -386,11 +386,13 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 	}
 
 	private void handlerComunalEje() {
+
 		//if (comunalEje == null) {
 			comunalEje = (ComunalCursoView) show("/cl/eos/view/ComunalEje.fxml");
 //		} else {
 			show(comunalEje);
 //		}
+
 		ObservableList<OTPrueba> otPruebas = tblListadoPruebas
 				.getSelectionModel().getSelectedItems();
 		if (otPruebas != null) {
@@ -472,11 +474,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 	}
 
 	private void handlerEvaluar() {
-		if (evaluarPruebaView == null) {
-			evaluarPruebaView = (EvaluarPruebaView) show("/cl/eos/view/EvaluarPrueba.fxml");
-		} else {
-			show(evaluarPruebaView);
-		}
+		evaluarPruebaView = (EvaluarPruebaView) show("/cl/eos/view/EvaluarPrueba.fxml");
 		if (tblListadoPruebas.getSelectionModel().getSelectedItem() != null) {
 			Prueba prueba = tblListadoPruebas.getSelectionModel()
 					.getSelectedItem().getPrueba();
@@ -681,8 +679,9 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 						mnuComparativoComunal.setDisable(estadoDefinida);
 						mnuComparativoComunalHab.setDisable(estadoDefinida);
 					} else if (estadoEvaluada) {
+				  
 						mnuEvaluarPrueba.setDisable(!estadoEvaluada);
-						mnuDefinirPrueba.setDisable(estadoEvaluada);
+						mnuDefinirPrueba.setDisable(!estadoEvaluada);
 						mnuListaEvaluaciones.setDisable(!estadoEvaluada);
 						mnuComunalEje.setDisable(!estadoEvaluada);
 						mnuComparativoComunal.setDisable(!estadoEvaluada);

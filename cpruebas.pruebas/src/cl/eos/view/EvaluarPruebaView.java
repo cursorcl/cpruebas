@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executors;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -55,6 +56,7 @@ import cl.eos.persistence.models.PruebaRendida;
 import cl.eos.persistence.models.RangoEvaluacion;
 import cl.eos.persistence.models.RespuestasEsperadasPrueba;
 import cl.eos.persistence.util.Comparadores;
+import cl.eos.util.Pair;
 import cl.eos.util.Utils;
 import cl.eos.view.editablecells.EditingCellRespuestasEvaluar;
 import cl.eos.view.ots.OTPruebaRendida;
@@ -114,6 +116,9 @@ public class EvaluarPruebaView extends AFormView {
   private MenuItem mnuGrabar;
   @FXML
   private MenuItem mnuVolver;
+  @FXML
+  private MenuItem mnuNorinde;
+
 
   @FXML
   private BorderPane mainPane;
@@ -152,6 +157,21 @@ public class EvaluarPruebaView extends AFormView {
         handlerGrabar();
       }
     });
+    mnuNorinde.setOnAction(new EventHandler<ActionEvent>() {
+
+      @Override
+      public void handle(ActionEvent event) {
+        OTPruebaRendida pRendida = tblListadoPruebas.getSelectionModel().getSelectedItem();
+        pRendida.setRespuestas("");
+        pRendida.setBuenas(0);
+        pRendida.setMalas(0);
+        pRendida.setOmitidas(0);
+        pRendida.setNota(0f);
+        pRendida.setNivel(null);
+
+      }
+    });
+
     mnuScanner.setOnAction(new EventHandler<ActionEvent>() {
 
       @Override
@@ -461,34 +481,44 @@ public class EvaluarPruebaView extends AFormView {
       dlg.masthead(null);
       dlg.message("Esto tomará algunos minutos.");
 
-      Task<ObservableList<PruebaRendida>> task = new Task<ObservableList<PruebaRendida>>() {
-        @Override
-        protected ObservableList<PruebaRendida> call() throws Exception {
-          int max = prueba.getNroPreguntas();
-          int n = 1;
-          ObservableList<PruebaRendida> results = FXCollections.observableArrayList();
-          ExtractorResultadosPrueba procesador = ExtractorResultadosPrueba.getInstance();
-          for (File archivo : files) {
-            OTResultadoScanner resultado = procesador.process(archivo, max);
-            PruebaRendida pRendida;
-            try {
-              pRendida = obtenerPruebaRendida(resultado);
-              pRendida.setEvaluacionPrueba(evalPrueba);
-              results.add(pRendida);
-              updateMessage("Procesado:" + pRendida.getAlumno().toString());
-              updateProgress(n++, files.size());
-            } catch (CPruebasException e) {
-
+      Task<Pair<ObservableList<String>, ObservableList<PruebaRendida>>> task =
+          new Task<Pair<ObservableList<String>, ObservableList<PruebaRendida>>>() {
+            @Override
+            protected Pair<ObservableList<String>, ObservableList<PruebaRendida>> call()
+                throws Exception {
+              int max = prueba.getNroPreguntas();
+              int n = 1;
+              Pair<ObservableList<String>, ObservableList<PruebaRendida>> results =
+                  new Pair<ObservableList<String>, ObservableList<PruebaRendida>>();
+              results.setFirst(FXCollections.observableArrayList());
+              results.setSecond(FXCollections.observableArrayList());
+              ExtractorResultadosPrueba procesador = ExtractorResultadosPrueba.getInstance();
+              for (File archivo : files) {
+                OTResultadoScanner resultado = procesador.process(archivo, max);
+                PruebaRendida pRendida;
+                try {
+                  pRendida = obtenerPruebaRendida(resultado);
+                  pRendida.setEvaluacionPrueba(evalPrueba);
+                  results.getSecond().add(pRendida);
+                  updateMessage("Procesado:" + pRendida.getAlumno().toString());
+                  updateProgress(n++, files.size());
+                } catch (CPruebasException e) {
+                  results.getFirst().add(e.getMessage());
+                  updateMessage(e.getMessage());
+                  updateProgress(n++, files.size());
+                }
+              }
+              return results;
             }
-          }
-          return results;
-        }
-      };
+          };
       task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
         @Override
         public void handle(WorkerStateEvent event) {
-          ObservableList<PruebaRendida> pruebas = task.getValue();
+          Pair<ObservableList<String>, ObservableList<PruebaRendida>> res = task.getValue();
+          ObservableList<PruebaRendida> pruebas = res.getSecond();
+          ObservableList<String> malas = res.getFirst();
           if (pruebas != null && !pruebas.isEmpty()) {
+            
             for (PruebaRendida pr : pruebas) {
               OTPruebaRendida ot = new OTPruebaRendida(pr);
               int idx = tblListadoPruebas.getItems().indexOf(ot);
@@ -506,12 +536,26 @@ public class EvaluarPruebaView extends AFormView {
                 tblListadoPruebas.getItems().set(idx, oPr);
               }
             }
-            Dialogs info = Dialogs.create();
-            dlg.title("Proceso finalizado");
-            dlg.masthead("Se ha procesado " + pruebas.size() + " pruebas.");
-            dlg.message("Recuerde grabar los resultados.");
-            info.showInformation();
           }
+          final int nPruebas = pruebas == null ? 0: pruebas.size();
+          final int nMalas = malas == null ? 0 : malas.size();
+
+          Runnable r = new Runnable() {
+
+            @Override
+            public void run() {
+              Dialogs info = Dialogs.create();
+              info.title("Proceso finalizado");
+              info.masthead("Recuerde grabar los resultados.");
+              info.message(String.format(
+                  "Se han procesado %d archivos exitosos de un total de %d.", nPruebas, nPruebas
+                      + nMalas));
+              info.owner(tblListadoPruebas);
+              info.showInformation();
+            }
+
+          };
+          Platform.runLater(r);
         }
       });
       dlg.showWorkerProgress(task);
