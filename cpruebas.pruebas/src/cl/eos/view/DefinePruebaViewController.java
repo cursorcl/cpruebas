@@ -329,7 +329,7 @@ public class DefinePruebaViewController extends AFormView {
         {
           while(respuestas.size() > nroPreguntas)
           {
-            respuestas.remove(respuestas);
+            respuestas.remove(respuestas.size()-1);
           }
         }
         
@@ -420,7 +420,7 @@ public class DefinePruebaViewController extends AFormView {
       valido = valido && !registro.getRespuesta().isEmpty();
       valido =
           valido
-              && ((registro.getMental() && registro.getRespuesta() == " ")
+              && ((registro.getMental() && " ".equals(registro.getRespuesta()))
                   || (registro.getVerdaderoFalso() && "VF".contains(registro.getRespuesta()
                       .toUpperCase())) || (respsValidas.contains(registro.getRespuesta()
                   .toUpperCase())));

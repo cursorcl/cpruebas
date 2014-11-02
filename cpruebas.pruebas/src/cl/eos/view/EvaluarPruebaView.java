@@ -247,6 +247,9 @@ public class EvaluarPruebaView extends AFormView {
       RespuestasEsperadasPrueba resp = respuestas.get(n);
       String userResp = respsAlumno.substring(n, n + 1);
       String validResp = resp.getRespuesta();
+      if (resp.getMental()) {
+        validResp = "+";
+      }
       if (userResp.toUpperCase().equals("O")) {
         otRendida.setOmitidas(otRendida.getOmitidas() + 1);
       } else if (userResp.toUpperCase().equals(validResp.toUpperCase())) {
@@ -518,7 +521,7 @@ public class EvaluarPruebaView extends AFormView {
           ObservableList<PruebaRendida> pruebas = res.getSecond();
           ObservableList<String> malas = res.getFirst();
           if (pruebas != null && !pruebas.isEmpty()) {
-            
+
             for (PruebaRendida pr : pruebas) {
               OTPruebaRendida ot = new OTPruebaRendida(pr);
               int idx = tblListadoPruebas.getItems().indexOf(ot);
@@ -537,7 +540,7 @@ public class EvaluarPruebaView extends AFormView {
               }
             }
           }
-          final int nPruebas = pruebas == null ? 0: pruebas.size();
+          final int nPruebas = pruebas == null ? 0 : pruebas.size();
           final int nMalas = malas == null ? 0 : malas.size();
 
           Runnable r = new Runnable() {

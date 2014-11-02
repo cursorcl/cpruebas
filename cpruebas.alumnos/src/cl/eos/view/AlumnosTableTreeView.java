@@ -17,6 +17,8 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableView;
 import javafx.scene.control.cell.TreeItemPropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
 import org.controlsfx.dialog.Dialogs;
@@ -353,8 +355,6 @@ public class AlumnosTableTreeView extends AFormView implements EventHandler<Acti
 		if (list != null && !list.isEmpty()) {
 			Object entity = list.get(0);
 			if (entity instanceof Alumno) {
-				
-				
 				final TreeItem<OTAlumno> root = 
 				        new TreeItem<>(new OTAlumno());
 				root.setExpanded(true);
@@ -368,14 +368,15 @@ public class AlumnosTableTreeView extends AFormView implements EventHandler<Acti
 					{
 						OTAlumno otColegio = new OTAlumno();
 						otColegio.setColegio(ot.getColegio());
-						itemColegio = new TreeItem<OTAlumno>(otColegio);
+						itemColegio = new TreeItem<OTAlumno>(otColegio, new ImageView(new Image(getClass().getResourceAsStream("school-icon1_16.png"))));
 						root.getChildren().add(itemColegio);
 					}
 					if(itemCurso == null || !ot.getCurso().equals(itemCurso.getValue().getCurso()))
 					{
 						OTAlumno otCurso = new OTAlumno();
 						otCurso.setCurso(ot.getCurso());
-						itemCurso = new TreeItem<OTAlumno>(otCurso);
+						otCurso.setColegio(ot.getColegio());
+						itemCurso = new TreeItem<OTAlumno>(otCurso, new ImageView(new Image(getClass().getResourceAsStream("curso_16.png"))));
 						itemColegio.getChildren().add(itemCurso);
 					}
 					itemCurso.getChildren().add(new TreeItem<OTAlumno>(ot));

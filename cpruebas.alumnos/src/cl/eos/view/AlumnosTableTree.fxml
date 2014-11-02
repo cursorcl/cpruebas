@@ -72,13 +72,13 @@
                            <children>
                               <TreeTableView fx:id="tblAlumnos" layoutX="45.0" layoutY="37.0" prefHeight="473.0" prefWidth="831.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                 <columns>
-                                  <TreeTableColumn fx:id="colColegio" prefWidth="136.0" text="Colegio" />
-                                  <TreeTableColumn fx:id="colCurso" prefWidth="110.0" text="Curso" />
-                                    <TreeTableColumn fx:id="colId" prefWidth="62.0" text="#" visible="false" />
-                                    <TreeTableColumn fx:id="colRut" prefWidth="115.0" text="Rut" />
-                                    <TreeTableColumn fx:id="colPaterno" prefWidth="149.0" text="A.Paterno" />
-                                    <TreeTableColumn fx:id="colMaterno" prefWidth="123.0" text="A.Materno" />
-                                    <TreeTableColumn fx:id="colName" prefWidth="125.0" text="Nombres" />
+                                  <TreeTableColumn fx:id="colColegio" prefWidth="283.0" text="Colegio" />
+                                  <TreeTableColumn fx:id="colCurso" prefWidth="95.0" text="Curso" />
+                                    <TreeTableColumn fx:id="colId" minWidth="0.0" prefWidth="0.0" text="#" visible="false" />
+                                    <TreeTableColumn fx:id="colRut" prefWidth="102.0" text="Rut" />
+                                    <TreeTableColumn fx:id="colPaterno" prefWidth="100.0" text="A.Paterno" />
+                                    <TreeTableColumn fx:id="colMaterno" prefWidth="95.0" text="A.Materno" />
+                                    <TreeTableColumn fx:id="colName" prefWidth="141.0" text="Nombres" />
                                 </columns>
                                  <contextMenu>
                                     <ContextMenu>

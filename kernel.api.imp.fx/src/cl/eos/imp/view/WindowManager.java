@@ -58,6 +58,7 @@ public class WindowManager implements IWindowManager {
 			} else {
 				breadCrum.addItem(window.getTitle(), w);
 			}
+			
 			group.getChildren().setAll(w);
 		}
 	}
