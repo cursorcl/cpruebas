@@ -126,12 +126,13 @@ public class HabilidadesView extends AFormView implements
 			habilidad.setName(txtNombre.getText());
 			habilidad.setDescripcion(txtDescripcion.getText());
 			save(habilidad);
+			limpiarControles();
 
 		} else {
 			lblError.getStyleClass().add("bad");
 			lblError.setText("Corregir campos destacados en color rojo");
 		}
-		limpiarControles();
+		
 	}
 
 	private void limpiarControles() {

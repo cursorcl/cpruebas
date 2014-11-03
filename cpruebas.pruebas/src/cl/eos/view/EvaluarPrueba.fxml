@@ -19,6 +19,7 @@
                         <MenuItem fx:id="mnuScanner" mnemonicParsing="false" text="Obtener de Scanner" />
                         <MenuItem fx:id="mnuGrabar" mnemonicParsing="false" text="Grabar Resultado" />
                         <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem fx:id="menuExportar" mnemonicParsing="false" text="Exportar a excel" />
                     <MenuItem fx:id="mnuVolver" mnemonicParsing="false" text="Volver" />
                   </items>
                 </Menu>
@@ -72,6 +73,7 @@
                   <ContextMenu>
                     <items>
                       <MenuItem fx:id="mnuNorinde" mnemonicParsing="false" text="No rindió prueba" />
+                        <MenuItem fx:id="mnuExportar" mnemonicParsing="false" text="Exportar a excel" />
                     </items>
                   </ContextMenu>
                </contextMenu>

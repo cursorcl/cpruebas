@@ -12,6 +12,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
+import javax.persistence.RollbackException;
 
 import org.controlsfx.dialog.Dialogs;
 
@@ -63,9 +64,13 @@ public class PersistenceService implements IPersistenceService {
 	 */
 	@Override
 	public void delete(IEntity entity) {
-		eManager.getTransaction().begin();
-		eManager.remove(entity);
-		eManager.getTransaction().commit();
+		try {
+			eManager.getTransaction().begin();
+			eManager.remove(entity);
+			eManager.getTransaction().commit();
+		} catch (RollbackException exception) {
+			exception.getLocalizedMessage();
+		}
 	}
 
 	@Override

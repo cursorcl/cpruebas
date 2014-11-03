@@ -122,11 +122,12 @@ public class EjesTematicosView extends AFormView implements
 			ejeTematico.setTipoprueba(cmbTipoPrueba.getValue());
 			ejeTematico.setAsignatura(cmbAsignatura.getValue());
 			save(ejeTematico);
+			limpiarControles();
 		} else {
 			lblError.getStyleClass().add("bad");
 			lblError.setText("Corregir campos destacados en color rojo");
 		}
-		limpiarControles();
+		
 	}
 
 	private void accionModificar() {

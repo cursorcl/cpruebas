@@ -1,5 +1,9 @@
 package cl.eos.view.editablecells;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
@@ -10,6 +14,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import cl.eos.persistence.models.Prueba;
 import cl.eos.persistence.models.RespuestasEsperadasPrueba;
+import cl.eos.persistence.util.Comparadores;
 import cl.eos.view.ots.OTPruebaRendida;
 
 public class EditingCellRespuestasEvaluar extends
@@ -18,10 +23,17 @@ public class EditingCellRespuestasEvaluar extends
 	private TextField textField;
 	private Prueba prueba = null;
 	private int maxLength;
+	private List<RespuestasEsperadasPrueba> listaRespuestas = null;
 
 	public EditingCellRespuestasEvaluar(Prueba prueba) {
 		super();
 		this.prueba = prueba;
+
+		listaRespuestas = new ArrayList<RespuestasEsperadasPrueba>(
+				prueba.getRespuestas());
+		Collections.sort(listaRespuestas,
+				Comparadores.compararRespuestasEsperadas());
+
 		maxLength = prueba.getRespuestas().size();
 	}
 
@@ -83,11 +95,11 @@ public class EditingCellRespuestasEvaluar extends
 		});
 		textField.textProperty().addListener(new ChangeListener<String>() {
 			private boolean selfChage = false;
+
 			@Override
 			public void changed(final ObservableValue<? extends String> ov,
 					final String oldValue, final String newValue) {
-				if(selfChage)
-				{
+				if (selfChage) {
 					selfChage = false;
 					return;
 				}
@@ -100,7 +112,7 @@ public class EditingCellRespuestasEvaluar extends
 					if (len > 0) {
 
 						String s = newValue.substring(len - 1, len);
-						RespuestasEsperadasPrueba resp = prueba.getRespuestas()
+						RespuestasEsperadasPrueba resp = listaRespuestas
 								.get(len - 1);
 						if (resp.getVerdaderoFalso()) {
 							validValue = "VFO".contains(s.toUpperCase());

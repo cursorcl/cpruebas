@@ -219,11 +219,12 @@ public class ColegiosView extends AFormView implements
 			// e.printStackTrace();
 			// }
 			save(colegio);
+			limpiarControles();
 		} else {
 			lblError.getStyleClass().add("bad");
 			lblError.setText("Corregir campos destacados en color rojo");
 		}
-		limpiarControles();
+		
 	}
 
 	private void limpiarControles() {
