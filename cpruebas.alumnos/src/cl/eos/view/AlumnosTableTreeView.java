@@ -8,6 +8,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
@@ -29,6 +30,7 @@ import cl.eos.ot.OTAlumno;
 import cl.eos.persistence.models.Alumno;
 import cl.eos.persistence.models.Colegio;
 import cl.eos.persistence.models.Curso;
+import cl.eos.util.ExcelSheetWriterObj;
 import cl.eos.util.Utils;
 
 public class AlumnosTableTreeView extends AFormView implements
@@ -184,7 +186,7 @@ public class AlumnosTableTreeView extends AFormView implements
 				.getSelectionModel().getSelectedItems();
 
 		if (otSeleccionados.size() == 0) {
-			Dialogs.create().owner(null).title("Selección registro")
+			Dialogs.create().owner(null).title("SelecciÃ³n registro")
 					.masthead(this.getName())
 					.message("Debe seleccionar registro a procesar")
 					.showInformation();
@@ -194,7 +196,9 @@ public class AlumnosTableTreeView extends AFormView implements
 				List<Alumno> alumno = new ArrayList<Alumno>(
 						otSeleccionados.size());
 				for (TreeItem<OTAlumno> ot : otSeleccionados) {
-					alumno.add(ot.getValue().getAlumno());
+					if (ot.getValue().getAlumno() != null) {
+						alumno.add(ot.getValue().getAlumno());
+					}
 				}
 				delete(alumno);
 				tblAlumnos.getSelectionModel().clearSelection();
@@ -224,12 +228,11 @@ public class AlumnosTableTreeView extends AFormView implements
 			alumno.setColegio(cmbColegio.getValue());
 			alumno.setCurso(cmbCurso.getValue());
 			save(alumno);
-			limpiarControles();
 		} else {
 			lblError.getStyleClass().add("bad");
 			lblError.setText("Corregir campos destacados en color rojo");
 		}
-		
+		limpiarControles();
 	}
 
 	private void limpiarControles() {
@@ -263,6 +266,7 @@ public class AlumnosTableTreeView extends AFormView implements
 						"colegio"));
 		colCurso.setCellValueFactory(new TreeItemPropertyValueFactory<OTAlumno, String>(
 				"curso"));
+		tblAlumnos.setShowRoot(false);
 	}
 
 	private void removeAllStyles() {
@@ -281,13 +285,6 @@ public class AlumnosTableTreeView extends AFormView implements
 
 		TreeItem<OTAlumno> root = tblAlumnos.getRoot();
 		addItem(root, otAlumno);
-		// TODO EOS
-		// int indice = tblAlumnos.getItems().lastIndexOf(otAlumno);
-		// if (indice != -1) {
-		// tblAlumnos.getItems().set(indice, otAlumno);
-		// } else {
-		// tblAlumnos.getItems().add(otAlumno);
-		// }
 	}
 
 	private void addItem(TreeItem<OTAlumno> root, OTAlumno otAlumno) {
@@ -321,31 +318,32 @@ public class AlumnosTableTreeView extends AFormView implements
 					otCNuevo.setColegio(otAlumno.getColegio());
 					otCNuevo.setCurso(otAlumno.getCurso());
 					TreeItem<OTAlumno> cursoNuevo = new TreeItem<OTAlumno>(
-							otCNuevo);
+							otCNuevo, getImagenCurso());
 					item.getChildren().add(cursoNuevo);
 					TreeItem<OTAlumno> nuevo = new TreeItem<OTAlumno>(otAlumno);
 					cursoNuevo.getChildren().add(nuevo);
 					founded = true;
 				}
 			}
-			if (!founded) {
-				OTAlumno otLNuevo = new OTAlumno();
-				otLNuevo.setColegio(otAlumno.getColegio());
+		}
+		if (!founded) {
+			OTAlumno otLNuevo = new OTAlumno();
+			otLNuevo.setColegio(otAlumno.getColegio());
 
-				OTAlumno otCNuevo = new OTAlumno();
-				otCNuevo.setColegio(otAlumno.getColegio());
-				otCNuevo.setCurso(otAlumno.getCurso());
+			OTAlumno otCNuevo = new OTAlumno();
+			otCNuevo.setColegio(otAlumno.getColegio());
+			otCNuevo.setCurso(otAlumno.getCurso());
 
-				TreeItem<OTAlumno> colegioNuevo = new TreeItem<OTAlumno>(
-						otLNuevo);
-				root.getChildren().add(colegioNuevo);
+			TreeItem<OTAlumno> colegioNuevo = new TreeItem<OTAlumno>(otLNuevo,
+					getImagenColegio());
+			root.getChildren().add(colegioNuevo);
 
-				TreeItem<OTAlumno> cursoNuevo = new TreeItem<OTAlumno>(otCNuevo);
-				colegioNuevo.getChildren().add(cursoNuevo);
+			TreeItem<OTAlumno> cursoNuevo = new TreeItem<OTAlumno>(otCNuevo,
+					getImagenCurso());
+			colegioNuevo.getChildren().add(cursoNuevo);
 
-				TreeItem<OTAlumno> nuevo = new TreeItem<OTAlumno>(otAlumno);
-				cursoNuevo.getChildren().add(nuevo);
-			}
+			TreeItem<OTAlumno> nuevo = new TreeItem<OTAlumno>(otAlumno);
+			cursoNuevo.getChildren().add(nuevo);
 		}
 	}
 
@@ -366,9 +364,9 @@ public class AlumnosTableTreeView extends AFormView implements
 							if (itemAlumno.getValue().getAlumno()
 									.equals(otAlumno.getAlumno())) {
 								itemCurso.getChildren().remove(index);
-								index++;
 								break;
 							}
+							index++;
 						}
 					}
 				}
@@ -456,9 +454,7 @@ public class AlumnosTableTreeView extends AFormView implements
 						OTAlumno otColegio = new OTAlumno();
 						otColegio.setColegio(ot.getColegio());
 						itemColegio = new TreeItem<OTAlumno>(otColegio,
-								new ImageView(new Image(getClass()
-										.getResourceAsStream(
-												"school-icon1_16.png"))));
+								getImagenColegio());
 						root.getChildren().add(itemColegio);
 					}
 					if (itemCurso == null
@@ -468,8 +464,7 @@ public class AlumnosTableTreeView extends AFormView implements
 						otCurso.setCurso(ot.getCurso());
 						otCurso.setColegio(ot.getColegio());
 						itemCurso = new TreeItem<OTAlumno>(otCurso,
-								new ImageView(new Image(getClass()
-										.getResourceAsStream("curso_16.png"))));
+								getImagenCurso());
 						itemColegio.getChildren().add(itemCurso);
 					}
 					itemCurso.getChildren().add(new TreeItem<OTAlumno>(ot));
@@ -493,6 +488,16 @@ public class AlumnosTableTreeView extends AFormView implements
 		}
 	}
 
+	private Node getImagenCurso() {
+		return new ImageView(new Image(getClass().getResourceAsStream(
+				"curso_16.png")));
+	}
+
+	private Node getImagenColegio() {
+		return new ImageView(new Image(getClass().getResourceAsStream(
+				"school-icon1_16.png")));
+	}
+
 	@Override
 	public void handle(ActionEvent event) {
 		Object source = event.getSource();
@@ -506,7 +511,7 @@ public class AlumnosTableTreeView extends AFormView implements
 			limpiarControles();
 		} else if (source == mnuExportar || source == menuExportar) {
 			tblAlumnos.setId("Alumnos");
-			// ExcelSheetWriterObj.convertirDatosALibroDeExcel(tblAlumnos);
+			ExcelSheetWriterObj.convertirDatosALibroDeExcel(tblAlumnos);
 			// //TODO EOS
 		} else if (source == cmbColegio) {
 			asignaCursos();

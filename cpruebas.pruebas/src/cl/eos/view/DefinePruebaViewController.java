@@ -169,6 +169,18 @@ public class DefinePruebaViewController extends AFormView {
 				ejecutaGrabar();
 			}
 		});
+
+		mnuExportar.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				List<TableView<? extends Object>> listaTablas = new LinkedList<>();
+				listaTablas
+						.add((TableView<? extends Object>) tblRegistroDefinePrueba);
+				listaTablas.add((TableView<? extends Object>) tblEjesTematicos);
+				listaTablas.add((TableView<? extends Object>) tblHabilidades);
+				ExcelSheetWriterObj.convertirDatosALibroDeExcel(listaTablas);
+			}
+		});
 		btnListo.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
@@ -182,17 +194,6 @@ public class DefinePruebaViewController extends AFormView {
 			public void handle(ActionEvent event) {
 				IActivator activator = new PruebasActivator();
 				WindowManager.getInstance().show(activator.getView());
-			}
-		});
-		mnuExportar.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent event) {
-				List<TableView<? extends Object>> listaTablas = new LinkedList<>();
-				listaTablas.add((TableView<? extends Object>) tblRegistroDefinePrueba);
-				listaTablas.add((TableView<? extends Object>) tblEjesTematicos);
-				listaTablas.add((TableView<? extends Object>) tblHabilidades);
-				ExcelSheetWriterObj.convertirDatosALibroDeExcel(listaTablas);
 			}
 		});
 		txtRespuestas.textProperty().addListener(new ChangeListener<String>() {
@@ -396,45 +397,92 @@ public class DefinePruebaViewController extends AFormView {
 
 	protected void ejecutaGrabar() {
 		if (validate()) {
-			List<RespuestasEsperadasPrueba> respuestas = new ArrayList<RespuestasEsperadasPrueba>();
-			List<Integer> numeros = new ArrayList<Integer>();
-			String responses = "";
-			for (RegistroDefinePrueba registro : registros) {
-				RespuestasEsperadasPrueba respuesta = new RespuestasEsperadasPrueba();
+			String responses = txtRespuestas.getText();
+			List<RespuestasEsperadasPrueba> fromPrueba = getRespuestasEsperadas();
+			prueba.setRespuestas(fromPrueba);
+			prueba.setResponses(responses);
+			List<Formas> formas = getFormasPrueba();
+			prueba.setFormas(formas);
+			save(prueba);
+		}
+	}
+
+	private List<Formas> getFormasPrueba() {
+		List<Formas> formas = prueba.getFormas();
+		if (formas == null) {
+			formas = new ArrayList<Formas>();
+		}
+		int nroFormas = prueba.getNroFormas().intValue();
+		while (formas.size() > nroFormas) {
+			formas.remove(nroFormas);
+		}
+		while (formas.size() < nroFormas) {
+			formas.add(new Formas());
+		}
+		List<Integer> numeros = new ArrayList<Integer>();
+		for (int n = 1; n <= prueba.getNroPreguntas(); n++) {
+			numeros.add(new Integer(n));
+		}
+		for (int n = 0; n < nroFormas; n++) {
+			Formas forma = formas.get(n);
+			forma.setForma(n + 1);
+			forma.setName("Forma " + (n + 1));
+			String orden = new String();
+			for (int idx = 0; idx < numeros.size(); idx++) {
+				if (idx > 0) {
+					orden += ",";
+				}
+				orden += numeros.get(idx).toString();
+			}
+			forma.setOrden(orden);
+			forma.setPrueba(prueba);
+			formas.add(forma);
+			Collections.shuffle(numeros);
+		}
+		return formas;
+	}
+
+	private List<RespuestasEsperadasPrueba> getRespuestasEsperadas() {
+		List<RespuestasEsperadasPrueba> fromPrueba = prueba.getRespuestas();
+		if (fromPrueba == null) {
+			fromPrueba = new ArrayList<RespuestasEsperadasPrueba>();
+		}
+
+		int n = 0;
+		while (n < fromPrueba.size() && n < registros.size()) {
+			RegistroDefinePrueba registro = registros.get(n);
+			RespuestasEsperadasPrueba respuesta = fromPrueba.get(n);
+			respuesta.setEjeTematico(registro.getEjeTematico());
+			respuesta.setHabilidad(registro.getHabilidad());
+			respuesta.setMental(registro.getMental());
+			respuesta.setName(registro.getNumero().toString());
+			respuesta.setNumero(registro.getNumero());
+			respuesta.setRespuesta(registro.getRespuesta());
+			respuesta.setVerdaderoFalso(registro.getVerdaderoFalso());
+			n++;
+		}
+		if (fromPrueba.size() < registros.size()) {
+
+			while (n < registros.size()) {
+				RegistroDefinePrueba registro = registros.get(n);
+				RespuestasEsperadasPrueba respuesta = fromPrueba.get(n);
 				respuesta.setEjeTematico(registro.getEjeTematico());
 				respuesta.setHabilidad(registro.getHabilidad());
 				respuesta.setMental(registro.getMental());
 				respuesta.setName(registro.getNumero().toString());
-				respuesta.setNumero(registro.getNumero());
+				respuesta.setNumero(new Integer(n));
 				respuesta.setRespuesta(registro.getRespuesta());
 				respuesta.setVerdaderoFalso(registro.getVerdaderoFalso());
-				respuesta.setPrueba(prueba);
-				respuestas.add(respuesta);
-				numeros.add(registro.getNumero());
-				responses += registro.getRespuesta();
+				fromPrueba.add(respuesta);
+				n++;
 			}
-			prueba.setRespuestas(respuestas);
-			prueba.setResponses(responses);
-			List<Formas> formas = new ArrayList<Formas>();
-			for (int n = 0; n < prueba.getNroFormas().intValue(); n++) {
-				Formas forma = new Formas();
-				forma.setForma(n + 1);
-				forma.setName("Forma " + (n + 1));
-				String orden = new String();
-				for (int idx = 0; idx < numeros.size(); idx++) {
-					if (idx > 0) {
-						orden += ",";
-					}
-					orden += numeros.get(idx).toString();
-				}
-				forma.setOrden(orden);
-				forma.setPrueba(prueba);
-				formas.add(forma);
-				Collections.shuffle(numeros);
+		} else if (fromPrueba.size() > registros.size()) {
+			while (fromPrueba.size() > registros.size()) {
+				fromPrueba.remove(registros.size());
 			}
-			prueba.setFormas(formas);
-			save(prueba);
 		}
+
+		return fromPrueba;
 	}
 
 	@Override
