@@ -465,7 +465,7 @@ public class DefinePruebaViewController extends AFormView {
 
 			while (n < registros.size()) {
 				RegistroDefinePrueba registro = registros.get(n);
-				RespuestasEsperadasPrueba respuesta = fromPrueba.get(n);
+				RespuestasEsperadasPrueba respuesta = new RespuestasEsperadasPrueba();
 				respuesta.setEjeTematico(registro.getEjeTematico());
 				respuesta.setHabilidad(registro.getHabilidad());
 				respuesta.setMental(registro.getMental());
@@ -473,6 +473,7 @@ public class DefinePruebaViewController extends AFormView {
 				respuesta.setNumero(new Integer(n));
 				respuesta.setRespuesta(registro.getRespuesta());
 				respuesta.setVerdaderoFalso(registro.getVerdaderoFalso());
+				respuesta.setPrueba(prueba);
 				fromPrueba.add(respuesta);
 				n++;
 			}

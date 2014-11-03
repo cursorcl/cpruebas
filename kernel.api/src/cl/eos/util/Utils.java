@@ -103,16 +103,44 @@ public class Utils {
 	 * @return Valor del puntaje
 	 */
 	public static int getPuntaje(float nota) {
-		float fNota = ((int) (nota * 10f)) / 10f;
+
+		float[] pjes = getPuntajes4Plus(nota);
+		if (nota < 4f) {
+			pjes = getPuntajes4Minus(nota);
+		}
+		return Math.round((pjes[0] + pjes[1] + pjes[2]) / 3f);
+	}
+
+	/**
+	 * Solo vale cuando es superior a 4.
+	 * 
+	 * @param nota
+	 * @return
+	 */
+	private static float[] getPuntajes4Plus(float nota) {
 		float v1 = (MAX_PUNTAJE - 215f) / 31f; // 4.03225806
 		float v2 = (MAX_PUNTAJE - 210f) / 30f; // 4.33333333
 		float v3 = (MAX_PUNTAJE - 215f) / 33f; // 3.78787879
-		float max = MAX_PUNTAJE;
+		float fNota = ((int) (nota * 10f)) / 10f;
+
 		int n = (int) Math.round(((7.0f - fNota) * 10f));
-		float pje1 = max - v1 * n;
-		float pje2 = max - v2 * n;
-		float pje3 = max - v3 * n;
-		return Math.round((pje1 + pje2 + pje3) / 3f);
+		float max = MAX_PUNTAJE;
+
+		float[] pjes = { max - v1 * n, max - v2 * n, max - v3 * n };
+
+		return pjes;
+	}
+
+	private static float[] getPuntajes4Minus(float nota) {
+		float[] pjes = getPuntajes4Plus(4f);
+		float v1 = ((pjes[0] - 120f) / 39f) * 2f; // 5
+		float v2 = ((pjes[1] - 120f) / 38f) * 1f; // 2
+		float v3 = ((pjes[2] - 120f) / 41f) * 3f; // 8
+		float fNota = ((int) (nota * 10f)) / 10f;
+
+		int n = (int) Math.round(((4.0f - fNota) * 10f));
+		float[] res = { pjes[0] - v1 * n, pjes[1] - v2 * n, pjes[2] - v3 * n };
+		return res;
 	}
 
 	public static Float getCorrectas(String respuestas, String respEsperadas) {

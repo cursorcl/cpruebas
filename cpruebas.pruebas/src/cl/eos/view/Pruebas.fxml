@@ -107,7 +107,7 @@
                         <Tooltip text="Fecha de la prueba" />
                      </tooltip>
                   </DatePicker>
-                  <BigDecimalField fx:id="bigDecimalForma" layoutX="153.0" layoutY="286.0" prefHeight="27.0" prefWidth="115.0" promptText="Forma" AnchorPane.leftAnchor="153.0" AnchorPane.rightAnchor="12.0">
+                  <BigDecimalField fx:id="bigDecimalForma" disable="true" layoutX="153.0" layoutY="286.0" prefHeight="27.0" prefWidth="115.0" promptText="Forma" AnchorPane.leftAnchor="153.0" AnchorPane.rightAnchor="12.0">
                      <VBox.margin>
                         <Insets bottom="5.0" left="10.0" right="10.0" />
                      </VBox.margin>

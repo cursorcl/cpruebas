@@ -681,14 +681,15 @@ public class EvaluarPruebaView extends AFormView {
 								malas++;
 							}
 						} else if (rEsperada.getVerdaderoFalso()) {
-							if ("V".equalsIgnoreCase(rEsperada.getRespuesta())
-									&& "B".equalsIgnoreCase(letter)) {
+							if ("B".equalsIgnoreCase(letter)) {
 								strResps.replace(n, n + 1, "V");
-								buenas++;
-							} else if ("F".equalsIgnoreCase(rEsperada
-									.getRespuesta())
-									&& "D".equalsIgnoreCase(letter)) {
+								letter = "V";
+							} else if ("D".equalsIgnoreCase(letter)) {
 								strResps.replace(n, n + 1, "F");
+								letter = "F";
+							}
+
+							if (rEsperada.getRespuesta().equalsIgnoreCase(letter)) {
 								buenas++;
 							} else {
 								malas++;

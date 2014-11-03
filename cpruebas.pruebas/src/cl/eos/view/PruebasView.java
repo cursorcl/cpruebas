@@ -165,12 +165,12 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
     bigDecimaNroAlternativas.setMinValue(new BigDecimal(3));
     bigDecimaNroAlternativas.setMaxValue(new BigDecimal(5));
     bigDecimaNroAlternativas.setStepwidth(new BigDecimal(1));
-    bigDecimaNroAlternativas.setNumber(new BigDecimal(3));
+    bigDecimaNroAlternativas.setNumber(new BigDecimal(5));
 
     bigDecimalNroPreguntas.setMinValue(new BigDecimal(5));
     bigDecimalNroPreguntas.setMaxValue(new BigDecimal(90));
     bigDecimalNroPreguntas.setStepwidth(new BigDecimal(5));
-    bigDecimalNroPreguntas.setNumber(new BigDecimal(5));
+    bigDecimalNroPreguntas.setNumber(new BigDecimal(30));
 
     bigDecimalPuntajePregunta.setMinValue(new BigDecimal(1));
     bigDecimalPuntajePregunta.setMaxValue(new BigDecimal(3));
@@ -178,7 +178,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
     bigDecimalPuntajePregunta.setNumber(new BigDecimal(1));
 
     bigDecimalExigencia.setMinValue(new BigDecimal(40));
-    bigDecimalExigencia.setMaxValue(new BigDecimal(60));
+    bigDecimalExigencia.setMaxValue(new BigDecimal(80));
     bigDecimalExigencia.setStepwidth(new BigDecimal(10));
     bigDecimalExigencia.setNumber(new BigDecimal(60));
 
