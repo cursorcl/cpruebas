@@ -2,6 +2,7 @@ package cl.eos.view;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 import javafx.beans.value.ChangeListener;
@@ -39,6 +40,7 @@ import cl.eos.persistence.models.Habilidad;
 import cl.eos.persistence.models.Prueba;
 import cl.eos.persistence.models.RespuestasEsperadasPrueba;
 import cl.eos.persistence.util.Comparadores;
+import cl.eos.util.ExcelSheetWriterObj;
 import cl.eos.view.dnd.EjeTematicoDND;
 import cl.eos.view.dnd.HabilidadDND;
 import cl.eos.view.editablecells.EditingCellRespuesta;
@@ -76,6 +78,8 @@ public class DefinePruebaViewController extends AFormView {
 	private MenuItem mnuGrabar;
 	@FXML
 	private MenuItem mnuVolver;
+	@FXML
+	private MenuItem mnuExportar;
 	@FXML
 	private Button btnListo;
 	@FXML
@@ -163,6 +167,18 @@ public class DefinePruebaViewController extends AFormView {
 			@Override
 			public void handle(ActionEvent event) {
 				ejecutaGrabar();
+			}
+		});
+
+		mnuExportar.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				List<TableView<? extends Object>> listaTablas = new LinkedList<>();
+				listaTablas
+						.add((TableView<? extends Object>) tblRegistroDefinePrueba);
+				listaTablas.add((TableView<? extends Object>) tblEjesTematicos);
+				listaTablas.add((TableView<? extends Object>) tblHabilidades);
+				ExcelSheetWriterObj.convertirDatosALibroDeExcel(listaTablas);
 			}
 		});
 		btnListo.setOnAction(new EventHandler<ActionEvent>() {
@@ -400,13 +416,11 @@ public class DefinePruebaViewController extends AFormView {
 		while (formas.size() > nroFormas) {
 			formas.remove(nroFormas);
 		}
-		while(formas.size() < nroFormas)
-		{
+		while (formas.size() < nroFormas) {
 			formas.add(new Formas());
 		}
 		List<Integer> numeros = new ArrayList<Integer>();
-		for(int n = 1; n <=prueba.getNroPreguntas();n++)
-		{
+		for (int n = 1; n <= prueba.getNroPreguntas(); n++) {
 			numeros.add(new Integer(n));
 		}
 		for (int n = 0; n < nroFormas; n++) {

@@ -189,11 +189,12 @@ public class CursosView extends AFormView implements EventHandler<ActionEvent> {
 			curso.setColegio(cmbColegio.getValue());
 			curso.setTipoCurso(cmbTipoCurso.getValue());
 			save(curso);
+			limpiarControles();
 		} else {
 			lblError.getStyleClass().add("bad");
 			lblError.setText("Corregir campos destacados en color rojo");
 		}
-		limpiarControles();
+	
 	}
 
 	private void inicializaTabla() {

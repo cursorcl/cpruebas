@@ -43,7 +43,7 @@ public class Main extends Application {
         });
 
 
-        Scene scene = new Scene(root, 1200, 750);
+        Scene scene = new Scene(root, 1200, 740);
         scene.getStylesheets().add(getClass().getResource("ensemble2.css").toExternalForm());
         primaryStage.setScene(scene);
         primaryStage.initStyle(StageStyle.UNDECORATED);

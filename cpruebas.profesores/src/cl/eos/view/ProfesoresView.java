@@ -189,11 +189,12 @@ public class ProfesoresView extends AFormView implements
 			Profesor.setPaterno(txtAPaterno.getText());
 			Profesor.setMaterno(txtAMaterno.getText());
 			save(Profesor);
+			limpiarControles();
 		} else {
 			lblError.getStyleClass().add("bad");
 			lblError.setText("Corregir campos destacados en color rojo");
 		}
-		limpiarControles();
+		
 	}
 
 	private void limpiarControles() {

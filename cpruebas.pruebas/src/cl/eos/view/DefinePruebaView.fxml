@@ -19,6 +19,7 @@
                               <KeyCodeCombination alt="UP" code="G" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                            </accelerator>
                         </MenuItem>
+                        <MenuItem fx:id="mnuExportar" mnemonicParsing="false" text="Exportar a excel" />
                     <MenuItem fx:id="mnuVolver" mnemonicParsing="false" text="Volver a Pruebas" />
                   </items>
                 </Menu>

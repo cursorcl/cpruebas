@@ -148,12 +148,12 @@ public class TipoPruebaView extends AFormView implements
 			}
 			tipoPrueba.setName(txtNombre.getText());
 			save(tipoPrueba);
-
+			limpiarControles();
 		} else {
 			lblError.getStyleClass().add("bad");
 			lblError.setText("Corregir campos destacados en color rojo");
 		}
-		limpiarControles();
+	
 	}
 
 	private void accionClicTabla() {
