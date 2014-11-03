@@ -40,7 +40,7 @@ CREATE TABLE `alumno` (
   KEY `FK_ALUMNO_COLEGIO_ID` (`COLEGIO_ID`),
   CONSTRAINT `FK_ALUMNO_COLEGIO_ID` FOREIGN KEY (`COLEGIO_ID`) REFERENCES `colegio` (`ID`),
   CONSTRAINT `FK_ALUMNO_CURSO_ID` FOREIGN KEY (`CURSO_ID`) REFERENCES `curso` (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=199 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=200 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `cpruebas`.`alumno`
@@ -143,7 +143,8 @@ INSERT INTO `alumno` (`ID`,`PATERNO`,`MATERNO`,`RUT`,`DIRECCION`,`NAME`,`CURSO_I
  (196,'GALLARDO',' MIRANDA','21185208-9',' ','MARIA JOSE',51,18),
  (197,'LEAL ','MIRANDA','21130572-K',' ','ERNESTO DANIEL',52,18);
 INSERT INTO `alumno` (`ID`,`PATERNO`,`MATERNO`,`RUT`,`DIRECCION`,`NAME`,`CURSO_ID`,`COLEGIO_ID`) VALUES 
- (198,'MARILEO',' MUÑOZ','21198558-5',' ','JUAN PABLO',52,18);
+ (198,'MARILEO',' MUÑOZ','21198558-5',' ','JUAN PABLO',52,18),
+ (199,'Osorio','Espinoza','21652190-0','Su casa','Eliecer Antonio',234,19);
 /*!40000 ALTER TABLE `alumno` ENABLE KEYS */;
 
 
@@ -231,7 +232,7 @@ CREATE TABLE `colegio` (
   `NAME` varchar(255) DEFAULT NULL,
   `DIRECCION` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `cpruebas`.`colegio`
@@ -246,7 +247,8 @@ INSERT INTO `colegio` (`ID`,`NAME`,`DIRECCION`) VALUES
  (5,'ESCUELA MIXTA ATENEA',''),
  (16,'ESCUELA PADRE HURTADO',''),
  (17,'ESCUELA PURISIMA CONCEPCION DE POCILLAS',''),
- (18,'ESCUELA RINCÓN DE PILÉN','');
+ (18,'ESCUELA RINCÓN DE PILÉN',''),
+ (19,'Colegio 1','Colegio 1');
 /*!40000 ALTER TABLE `colegio` ENABLE KEYS */;
 
 
@@ -268,7 +270,7 @@ CREATE TABLE `curso` (
   CONSTRAINT `FK_CURSO_CICLO_ID` FOREIGN KEY (`CICLO_ID`) REFERENCES `ciclo` (`ID`),
   CONSTRAINT `FK_CURSO_COLEGIO_ID` FOREIGN KEY (`COLEGIO_ID`) REFERENCES `colegio` (`ID`),
   CONSTRAINT `FK_CURSO_TIPOCURSO_ID` FOREIGN KEY (`TIPOCURSO_ID`) REFERENCES `tipocurso` (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=234 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=235 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `cpruebas`.`curso`
@@ -327,7 +329,8 @@ INSERT INTO `curso` (`ID`,`NAME`,`TIPOCURSO_ID`,`CICLO_ID`,`COLEGIO_ID`) VALUES
  (50,'Cuarto',4,1,18),
  (51,'Quinto',5,2,18),
  (52,'Sexto',6,2,18),
- (233,'Séptimo',7,2,5);
+ (233,'Séptimo',7,2,5),
+ (234,'Primero A',1,1,19);
 /*!40000 ALTER TABLE `curso` ENABLE KEYS */;
 
 
@@ -479,7 +482,7 @@ CREATE TABLE `formas` (
   PRIMARY KEY (`ID`),
   KEY `FK_FORMAS_PRUEBA_ID` (`PRUEBA_ID`),
   CONSTRAINT `FK_FORMAS_PRUEBA_ID` FOREIGN KEY (`PRUEBA_ID`) REFERENCES `prueba` (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `cpruebas`.`formas`
@@ -487,7 +490,10 @@ CREATE TABLE `formas` (
 
 /*!40000 ALTER TABLE `formas` DISABLE KEYS */;
 INSERT INTO `formas` (`ID`,`FORMA`,`ORDEN`,`NAME`,`PRUEBA_ID`) VALUES 
- (24,1,'1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20','Forma 1',20);
+ (24,1,'1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20','Forma 1',20),
+ (30,1,'1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35','Forma 1',22),
+ (31,1,'1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45','Forma 1',23),
+ (32,1,'1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30','Forma 1',24);
 /*!40000 ALTER TABLE `formas` ENABLE KEYS */;
 
 
@@ -625,7 +631,7 @@ CREATE TABLE `prueba` (
   CONSTRAINT `FK_PRUEBA_NIVELEVALUACION_ID` FOREIGN KEY (`NIVELEVALUACION_ID`) REFERENCES `nivelevaluacion` (`ID`),
   CONSTRAINT `FK_PRUEBA_PROFESOR_ID` FOREIGN KEY (`PROFESOR_ID`) REFERENCES `profesor` (`ID`),
   CONSTRAINT `FK_PRUEBA_TIPOPRUEBA_ID` FOREIGN KEY (`TIPOPRUEBA_ID`) REFERENCES `tipoprueba` (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `cpruebas`.`prueba`
@@ -633,7 +639,10 @@ CREATE TABLE `prueba` (
 
 /*!40000 ALTER TABLE `prueba` DISABLE KEYS */;
 INSERT INTO `prueba` (`ID`,`EXIGENCIA`,`ALTERNATIVAS`,`FECHA`,`PUNTAJEBASE`,`NROFORMAS`,`RESPONSES`,`NROPREGUNTAS`,`NAME`,`ASIGNATURA_ID`,`CURSO_ID`,`TIPOPRUEBA_ID`,`PROFESOR_ID`,`NIVELEVALUACION_ID`) VALUES 
- (20,60,5,16374,1,1,'AAAAAAAAAAAAAAAAAAAA',20,'Prueba 3',16,4,1,2,1);
+ (20,60,5,16374,1,1,'AAAAAAAAAAAAAAAAAAAA',20,'Prueba 3',16,4,1,2,1),
+ (22,60,5,16376,1,1,'          VVVVVVVVVVAAAAAAAAAA     ',35,'Prueba 2',16,4,1,1,1),
+ (23,60,4,16376,1,1,'ACBBVBC ABAVAAVVV  ACBVVAVAA V ACBAABCVF ABCF',45,'Prueba TETS',16,4,1,1,1),
+ (24,60,5,16376,1,1,' BVBBBVB  BVBBBBBBVVCCFCCBVVBB',30,'Prueba REAL',1,1,1,1,1);
 /*!40000 ALTER TABLE `prueba` ENABLE KEYS */;
 
 
@@ -725,7 +734,7 @@ CREATE TABLE `respuestasesperadasprueba` (
   CONSTRAINT `FK_RESPUESTASESPERADASPRUEBA_EJETEMATICO_ID` FOREIGN KEY (`EJETEMATICO_ID`) REFERENCES `ejetematico` (`ID`),
   CONSTRAINT `FK_RESPUESTASESPERADASPRUEBA_HABILIDAD_ID` FOREIGN KEY (`HABILIDAD_ID`) REFERENCES `habilidad` (`ID`),
   CONSTRAINT `FK_RESPUESTASESPERADASPRUEBA_PRUEBA_ID` FOREIGN KEY (`PRUEBA_ID`) REFERENCES `prueba` (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=626 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=911 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `cpruebas`.`respuestasesperadasprueba`
@@ -752,7 +761,121 @@ INSERT INTO `respuestasesperadasprueba` (`ID`,`NUMERO`,`NAME`,`VERDADEROFALSO`,`
  (622,4,'4',0,'A',0,20,1,1),
  (623,7,'7',0,'A',0,20,1,1),
  (624,12,'12',0,'A',0,20,2,5),
- (625,2,'2',0,'A',0,20,1,1);
+ (625,2,'2',0,'A',0,20,1,1),
+ (801,29,'29',0,'A',0,22,9,1),
+ (802,22,'22',0,'A',0,22,9,1),
+ (803,28,'28',0,'A',0,22,9,1),
+ (804,2,'2',0,' ',1,22,9,1),
+ (805,10,'10',0,' ',1,22,9,1),
+ (806,18,'18',1,'V',0,22,9,1),
+ (807,21,'21',0,'A',0,22,9,1),
+ (808,17,'17',1,'V',0,22,9,1),
+ (809,34,'34',0,' ',1,22,9,1);
+INSERT INTO `respuestasesperadasprueba` (`ID`,`NUMERO`,`NAME`,`VERDADEROFALSO`,`RESPUESTA`,`MENTAL`,`PRUEBA_ID`,`HABILIDAD_ID`,`EJETEMATICO_ID`) VALUES 
+ (810,13,'13',1,'V',0,22,9,1),
+ (811,35,'35',0,' ',1,22,9,1),
+ (812,9,'9',0,' ',1,22,9,1),
+ (813,31,'31',0,' ',1,22,9,1),
+ (814,5,'5',0,' ',1,22,9,1),
+ (815,4,'4',0,' ',1,22,9,1),
+ (816,33,'33',0,' ',1,22,9,1),
+ (817,30,'30',0,'A',0,22,9,1),
+ (818,11,'11',1,'V',0,22,9,1),
+ (819,24,'24',0,'A',0,22,9,1),
+ (820,1,'1',0,' ',1,22,9,1),
+ (821,3,'3',0,' ',1,22,9,1),
+ (822,15,'15',1,'V',0,22,9,1),
+ (823,12,'12',1,'V',0,22,9,1),
+ (824,7,'7',0,' ',1,22,9,1),
+ (825,19,'19',1,'V',0,22,9,1),
+ (826,14,'14',1,'V',0,22,9,1),
+ (827,20,'20',1,'V',0,22,9,1),
+ (828,16,'16',1,'V',0,22,9,1),
+ (829,8,'8',0,' ',1,22,9,1),
+ (830,25,'25',0,'A',0,22,9,1),
+ (831,23,'23',0,'A',0,22,9,1),
+ (832,27,'27',0,'A',0,22,9,1),
+ (833,32,'32',0,' ',1,22,9,1),
+ (834,6,'6',0,' ',1,22,9,1),
+ (835,26,'26',0,'A',0,22,9,1),
+ (836,3,'3',0,'B',0,23,1,1),
+ (837,18,'18',0,' ',1,23,2,5),
+ (838,6,'6',0,'B',0,23,1,1);
+INSERT INTO `respuestasesperadasprueba` (`ID`,`NUMERO`,`NAME`,`VERDADEROFALSO`,`RESPUESTA`,`MENTAL`,`PRUEBA_ID`,`HABILIDAD_ID`,`EJETEMATICO_ID`) VALUES 
+ (839,45,'45',1,'F',0,23,4,5),
+ (840,41,'41',0,' ',1,23,4,5),
+ (841,30,'30',1,'V',0,23,3,1),
+ (842,7,'7',0,'C',0,23,1,1),
+ (843,32,'32',0,'A',0,23,3,1),
+ (844,19,'19',0,' ',1,23,2,5),
+ (845,12,'12',1,'V',0,23,1,1),
+ (846,15,'15',1,'V',0,23,2,5),
+ (847,8,'8',0,' ',1,23,1,1),
+ (848,37,'37',0,'B',0,23,4,5),
+ (849,44,'44',0,'C',0,23,4,5),
+ (850,2,'2',0,'C',0,23,1,1),
+ (851,10,'10',0,'B',0,23,1,1),
+ (852,25,'25',0,'A',0,23,2,5),
+ (853,20,'20',0,'A',0,23,2,5),
+ (854,29,'29',0,' ',1,23,3,1),
+ (855,43,'43',0,'B',0,23,4,5),
+ (856,5,'5',1,'V',0,23,1,1),
+ (857,39,'39',1,'V',0,23,4,5),
+ (858,1,'1',0,'A',0,23,1,1),
+ (859,26,'26',1,'V',0,23,2,5),
+ (860,33,'33',0,'C',0,23,3,1),
+ (861,28,'28',0,'A',0,23,3,1),
+ (862,9,'9',0,'A',0,23,1,1),
+ (863,36,'36',0,'A',0,23,4,5),
+ (864,13,'13',0,'A',0,23,2,5),
+ (865,38,'38',0,'C',0,23,4,5),
+ (866,35,'35',0,'A',0,23,4,5),
+ (867,17,'17',1,'V',0,23,2,5);
+INSERT INTO `respuestasesperadasprueba` (`ID`,`NUMERO`,`NAME`,`VERDADEROFALSO`,`RESPUESTA`,`MENTAL`,`PRUEBA_ID`,`HABILIDAD_ID`,`EJETEMATICO_ID`) VALUES 
+ (868,22,'22',0,'B',0,23,2,5),
+ (869,42,'42',0,'A',0,23,4,5),
+ (870,27,'27',0,'A',0,23,3,1),
+ (871,23,'23',1,'V',0,23,2,5),
+ (872,24,'24',1,'V',0,23,2,5),
+ (873,16,'16',1,'V',0,23,2,5),
+ (874,14,'14',0,'A',0,23,2,5),
+ (875,21,'21',0,'C',0,23,2,5),
+ (876,31,'31',0,' ',1,23,3,1),
+ (877,34,'34',0,'B',0,23,3,1),
+ (878,40,'40',1,'F',0,23,4,5),
+ (879,4,'4',0,'B',0,23,1,1),
+ (880,11,'11',0,'A',0,23,1,1),
+ (881,20,'20',1,'V',0,24,2,2),
+ (882,30,'30',0,'B',0,24,2,2),
+ (883,9,'9',0,' ',1,24,1,2),
+ (884,4,'4',0,'B',0,24,1,2),
+ (885,14,'14',0,'B',0,24,1,2),
+ (886,24,'24',0,'C',0,24,2,2),
+ (887,13,'13',0,'B',0,24,1,2),
+ (888,11,'11',0,'B',0,24,1,2),
+ (889,17,'17',0,'B',0,24,1,2),
+ (890,18,'18',0,'B',0,24,1,2),
+ (891,23,'23',1,'F',0,24,2,2),
+ (892,15,'15',0,'B',0,24,1,2),
+ (893,12,'12',1,'V',0,24,1,2),
+ (894,1,'1',0,' ',1,24,1,2),
+ (895,29,'29',0,'B',0,24,2,2),
+ (896,27,'27',1,'V',0,24,2,2);
+INSERT INTO `respuestasesperadasprueba` (`ID`,`NUMERO`,`NAME`,`VERDADEROFALSO`,`RESPUESTA`,`MENTAL`,`PRUEBA_ID`,`HABILIDAD_ID`,`EJETEMATICO_ID`) VALUES 
+ (897,26,'26',0,'B',0,24,2,2),
+ (898,10,'10',0,' ',1,24,1,2),
+ (899,28,'28',1,'V',0,24,2,2),
+ (900,6,'6',0,'B',0,24,1,2),
+ (901,21,'21',0,'C',0,24,2,2),
+ (902,25,'25',0,'C',0,24,2,2),
+ (903,5,'5',0,'B',0,24,1,2),
+ (904,7,'7',1,'V',0,24,1,2),
+ (905,22,'22',0,'C',0,24,2,2),
+ (906,19,'19',1,'V',0,24,2,2),
+ (907,16,'16',0,'B',0,24,1,2),
+ (908,2,'2',0,'B',0,24,1,2),
+ (909,8,'8',0,'B',0,24,1,2),
+ (910,3,'3',1,'V',0,24,1,2);
 /*!40000 ALTER TABLE `respuestasesperadasprueba` ENABLE KEYS */;
 
 
