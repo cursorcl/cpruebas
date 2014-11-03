@@ -11,22 +11,17 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<StackPane id="ModalDimmer" depthTest="DISABLE" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.MainController">
+<StackPane id="ModalDimmer" depthTest="DISABLE" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="740.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.MainController">
 	<children>
 		<BorderPane prefHeight="200.0" prefWidth="200.0">
 			<top>
-            <AnchorPane fx:id="pnlWindow" prefHeight="67.0" prefWidth="1024.0">
+            <AnchorPane fx:id="pnlWindow" prefHeight="62.0" prefWidth="1024.0">
                <children>
-						<Pane id="SearchBox" prefHeight="52.0" prefWidth="198.0">
-							<children>
-								<Button id="clearButton" layoutX="173.0" layoutY="24.0" mnemonicParsing="false" visible="false" />
-                        <ImageView fitHeight="64.0" fitWidth="374.0" layoutX="2.0" layoutY="2.0">
-                           <image>
-                              <Image url="@images/logo128.png" />
-                           </image>
-                        </ImageView>
-							</children>
-						</Pane>
+                  <ImageView fitHeight="60.0" fitWidth="347.0">
+                     <image>
+                        <Image url="@images/logo128.png" />
+                     </image>
+                  </ImageView>
                   <AnchorPane id="SearchBox" layoutX="720.0" layoutY="1.0" prefHeight="62.0" prefWidth="191.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="32.0" AnchorPane.topAnchor="1.0" />
                </children>
             </AnchorPane>
