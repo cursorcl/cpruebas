@@ -102,7 +102,7 @@ public class ResumenGeneralPMEView extends AFormView implements
 	private Map<Habilidad, Float> mapaHabilidadesCurso = new HashMap<Habilidad, Float>();
 	Map<Habilidad, OTPreguntasHabilidad> mapaHabilidadAlumno = new HashMap<Habilidad, OTPreguntasHabilidad>();
 	private Map<RangoEvaluacion, OTRangoEvaluacion> mRango;
-	private Map<RangoEvaluacion, Map<EjeTematico, OTReporte>> mapReporte = new HashMap<RangoEvaluacion, Map<EjeTematico, OTReporte>>();
+	private Map<RangoEvaluacion, List<Map<EjeTematico, OTReporte>>> mapReporte = new HashMap<RangoEvaluacion, List<Map<EjeTematico, OTReporte>>>();
 
 	private boolean llegaOnFound = false;
 	private EvaluacionPrueba evaluacionPrueba;
@@ -337,11 +337,17 @@ public class ResumenGeneralPMEView extends AFormView implements
 			RangoEvaluacion rango = nivelEvaluacion.getRango(promedioLogro);
 
 			if (mapReporte.containsKey(rango)) {
-				Map<EjeTematico, OTReporte> mapEje = mapReporte.get(rango);
-				if (mapEje.containsKey(eje)) {
-					OTReporte otReporte = mapEje.get(eje);
-					otReporte.setTotal(otReporte.getTotal() + 1);
-				} else {
+				List<Map<EjeTematico, OTReporte>> lstMapEje = mapReporte
+						.get(rango);
+				boolean existe = false;
+				for (Map<EjeTematico, OTReporte> map : lstMapEje) {
+					if (map.containsKey(eje)) {
+						OTReporte otReporte = map.get(eje);
+						otReporte.setTotal(otReporte.getTotal() + 1);
+						existe = true;
+					}
+				}
+				if (!existe) {
 					OTReporte otReporte = new OTReporte();
 					otReporte.setRango(rango);
 					otReporte.setTotal(1);
@@ -349,8 +355,10 @@ public class ResumenGeneralPMEView extends AFormView implements
 
 					Map<EjeTematico, OTReporte> nuevo = new HashMap<EjeTematico, OTReporte>();
 					nuevo.put(eje, otReporte);
-					mapReporte.put(rango, nuevo);
+					lstMapEje.add(nuevo);
+					mapReporte.put(rango, lstMapEje);
 				}
+
 			} else {
 				OTReporte reporte = new OTReporte();
 				reporte.setRango(rango);
@@ -358,8 +366,12 @@ public class ResumenGeneralPMEView extends AFormView implements
 				reporte.setEje(eje);
 				Map<EjeTematico, OTReporte> nuevo = new HashMap<EjeTematico, OTReporte>();
 				nuevo.put(eje, reporte);
-				mapReporte.put(rango, nuevo);
+
+				List<Map<EjeTematico, OTReporte>> listaMapas = new LinkedList<Map<EjeTematico, OTReporte>>();
+				listaMapas.add(nuevo);
+				mapReporte.put(rango, listaMapas);
 			}
+
 		}
 
 	}
@@ -469,19 +481,26 @@ public class ResumenGeneralPMEView extends AFormView implements
 
 		ObservableList<String> row = null;
 		for (RangoEvaluacion rango : listaRangos) {
-			Map<EjeTematico, OTReporte> mEjeTematico = mapReporte.get(rango);
+			List<Map<EjeTematico, OTReporte>> lstEjeTematico = mapReporte
+					.get(rango);
 
 			row = FXCollections.observableArrayList();
 			row.add(rango.getName());
 
-			if (mEjeTematico == null) {
+			if (lstEjeTematico == null) {
 				for (int i = 0; i < mapaEjesCurso.size(); i++) {
 					row.add(String.valueOf(0));
 				}
 			} else {
 				for (EjeTematico ejeTematico : titulosColumnas) {
-					OTReporte valor = mEjeTematico.get(ejeTematico);
-					if (valor == null) {
+					OTReporte valor = null;
+					for (Map<EjeTematico, OTReporte> map : lstEjeTematico) {
+						if(map.containsKey(ejeTematico)){
+							valor = map.get(ejeTematico);
+							break;
+						}
+					}
+					if (valor  == null) {
 						row.add(String.valueOf(0));
 					} else {
 						row.add(String.valueOf(valor.getTotal()));
