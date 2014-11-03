@@ -1,7 +1,7 @@
 -- MySQL Administrator dump 1.4
 --
 -- ------------------------------------------------------
--- Server version	5.5.39
+-- Server version	5.5.25a
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -18,11 +18,11 @@
 -- Create schema cpruebas
 --
 
-CREATE DATABASE /*!32312 IF NOT EXISTS*/ cpruebas;
+CREATE DATABASE IF NOT EXISTS cpruebas;
 USE cpruebas;
 
 --
--- Table structure for table `cpruebas`.`alumno`
+-- Definition of table `alumno`
 --
 
 DROP TABLE IF EXISTS `alumno`;
@@ -40,10 +40,10 @@ CREATE TABLE `alumno` (
   KEY `FK_ALUMNO_COLEGIO_ID` (`COLEGIO_ID`),
   CONSTRAINT `FK_ALUMNO_COLEGIO_ID` FOREIGN KEY (`COLEGIO_ID`) REFERENCES `colegio` (`ID`),
   CONSTRAINT `FK_ALUMNO_CURSO_ID` FOREIGN KEY (`CURSO_ID`) REFERENCES `curso` (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=200 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=204 DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `cpruebas`.`alumno`
+-- Dumping data for table `alumno`
 --
 
 /*!40000 ALTER TABLE `alumno` DISABLE KEYS */;
@@ -144,12 +144,16 @@ INSERT INTO `alumno` (`ID`,`PATERNO`,`MATERNO`,`RUT`,`DIRECCION`,`NAME`,`CURSO_I
  (197,'LEAL ','MIRANDA','21130572-K',' ','ERNESTO DANIEL',52,18);
 INSERT INTO `alumno` (`ID`,`PATERNO`,`MATERNO`,`RUT`,`DIRECCION`,`NAME`,`CURSO_ID`,`COLEGIO_ID`) VALUES 
  (198,'MARILEO',' MUÑOZ','21198558-5',' ','JUAN PABLO',52,18),
- (199,'Osorio','Espinoza','21652190-0','Su casa','Eliecer Antonio',234,19);
+ (199,'Osorio','Espinoza','21652190-0','Su casa','Eliecer Antonio',234,19),
+ (200,'Osorio','Espinoza','22148346-4','Su casa','Evelyn Elisa',234,19),
+ (201,'Osorio','Verdugo','10613781-1','Su casa','Eliecer Enrique',234,19),
+ (202,'Osorio','Espinoza','21021606-5','Su casa','Viviana Belén',234,19),
+ (203,'Farías','Zavala','12623503-8','Su casa','Susan Angela',234,19);
 /*!40000 ALTER TABLE `alumno` ENABLE KEYS */;
 
 
 --
--- Table structure for table `cpruebas`.`asignatura`
+-- Definition of table `asignatura`
 --
 
 DROP TABLE IF EXISTS `asignatura`;
@@ -160,7 +164,7 @@ CREATE TABLE `asignatura` (
 ) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `cpruebas`.`asignatura`
+-- Dumping data for table `asignatura`
 --
 
 /*!40000 ALTER TABLE `asignatura` DISABLE KEYS */;
@@ -195,7 +199,7 @@ INSERT INTO `asignatura` (`ID`,`NAME`) VALUES
 
 
 --
--- Table structure for table `cpruebas`.`ciclo`
+-- Definition of table `ciclo`
 --
 
 DROP TABLE IF EXISTS `ciclo`;
@@ -206,7 +210,7 @@ CREATE TABLE `ciclo` (
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `cpruebas`.`ciclo`
+-- Dumping data for table `ciclo`
 --
 
 /*!40000 ALTER TABLE `ciclo` DISABLE KEYS */;
@@ -223,7 +227,7 @@ INSERT INTO `ciclo` (`ID`,`NAME`) VALUES
 
 
 --
--- Table structure for table `cpruebas`.`colegio`
+-- Definition of table `colegio`
 --
 
 DROP TABLE IF EXISTS `colegio`;
@@ -235,7 +239,7 @@ CREATE TABLE `colegio` (
 ) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `cpruebas`.`colegio`
+-- Dumping data for table `colegio`
 --
 
 /*!40000 ALTER TABLE `colegio` DISABLE KEYS */;
@@ -253,7 +257,7 @@ INSERT INTO `colegio` (`ID`,`NAME`,`DIRECCION`) VALUES
 
 
 --
--- Table structure for table `cpruebas`.`curso`
+-- Definition of table `curso`
 --
 
 DROP TABLE IF EXISTS `curso`;
@@ -273,7 +277,7 @@ CREATE TABLE `curso` (
 ) ENGINE=InnoDB AUTO_INCREMENT=235 DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `cpruebas`.`curso`
+-- Dumping data for table `curso`
 --
 
 /*!40000 ALTER TABLE `curso` DISABLE KEYS */;
@@ -335,7 +339,7 @@ INSERT INTO `curso` (`ID`,`NAME`,`TIPOCURSO_ID`,`CICLO_ID`,`COLEGIO_ID`) VALUES
 
 
 --
--- Table structure for table `cpruebas`.`curso_alumno`
+-- Definition of table `curso_alumno`
 --
 
 DROP TABLE IF EXISTS `curso_alumno`;
@@ -349,7 +353,7 @@ CREATE TABLE `curso_alumno` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `cpruebas`.`curso_alumno`
+-- Dumping data for table `curso_alumno`
 --
 
 /*!40000 ALTER TABLE `curso_alumno` DISABLE KEYS */;
@@ -357,7 +361,7 @@ CREATE TABLE `curso_alumno` (
 
 
 --
--- Table structure for table `cpruebas`.`ejetematico`
+-- Definition of table `ejetematico`
 --
 
 DROP TABLE IF EXISTS `ejetematico`;
@@ -374,7 +378,7 @@ CREATE TABLE `ejetematico` (
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `cpruebas`.`ejetematico`
+-- Dumping data for table `ejetematico`
 --
 
 /*!40000 ALTER TABLE `ejetematico` DISABLE KEYS */;
@@ -388,7 +392,7 @@ INSERT INTO `ejetematico` (`ID`,`NAME`,`ASIGNATURA_ID`,`TIPOPRUEBA_ID`) VALUES
 
 
 --
--- Table structure for table `cpruebas`.`evaluacionejetematico`
+-- Definition of table `evaluacionejetematico`
 --
 
 DROP TABLE IF EXISTS `evaluacionejetematico`;
@@ -401,7 +405,7 @@ CREATE TABLE `evaluacionejetematico` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `cpruebas`.`evaluacionejetematico`
+-- Dumping data for table `evaluacionejetematico`
 --
 
 /*!40000 ALTER TABLE `evaluacionejetematico` DISABLE KEYS */;
@@ -413,7 +417,7 @@ INSERT INTO `evaluacionejetematico` (`ID`,`NAME`,`NRORANGOMIN`,`NRORANGOMAX`) VA
 
 
 --
--- Table structure for table `cpruebas`.`evaluacionprueba`
+-- Definition of table `evaluacionprueba`
 --
 
 DROP TABLE IF EXISTS `evaluacionprueba`;
@@ -437,7 +441,7 @@ CREATE TABLE `evaluacionprueba` (
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `cpruebas`.`evaluacionprueba`
+-- Dumping data for table `evaluacionprueba`
 --
 
 /*!40000 ALTER TABLE `evaluacionprueba` DISABLE KEYS */;
@@ -447,7 +451,7 @@ INSERT INTO `evaluacionprueba` (`ID`,`NAME`,`FECHA`,`CURSO_ID`,`PROFESOR_ID`,`CO
 
 
 --
--- Table structure for table `cpruebas`.`evaluacionprueba_pruebarendida`
+-- Definition of table `evaluacionprueba_pruebarendida`
 --
 
 DROP TABLE IF EXISTS `evaluacionprueba_pruebarendida`;
@@ -461,7 +465,7 @@ CREATE TABLE `evaluacionprueba_pruebarendida` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `cpruebas`.`evaluacionprueba_pruebarendida`
+-- Dumping data for table `evaluacionprueba_pruebarendida`
 --
 
 /*!40000 ALTER TABLE `evaluacionprueba_pruebarendida` DISABLE KEYS */;
@@ -469,7 +473,7 @@ CREATE TABLE `evaluacionprueba_pruebarendida` (
 
 
 --
--- Table structure for table `cpruebas`.`formas`
+-- Definition of table `formas`
 --
 
 DROP TABLE IF EXISTS `formas`;
@@ -482,10 +486,10 @@ CREATE TABLE `formas` (
   PRIMARY KEY (`ID`),
   KEY `FK_FORMAS_PRUEBA_ID` (`PRUEBA_ID`),
   CONSTRAINT `FK_FORMAS_PRUEBA_ID` FOREIGN KEY (`PRUEBA_ID`) REFERENCES `prueba` (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `cpruebas`.`formas`
+-- Dumping data for table `formas`
 --
 
 /*!40000 ALTER TABLE `formas` DISABLE KEYS */;
@@ -493,12 +497,13 @@ INSERT INTO `formas` (`ID`,`FORMA`,`ORDEN`,`NAME`,`PRUEBA_ID`) VALUES
  (24,1,'1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20','Forma 1',20),
  (30,1,'1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35','Forma 1',22),
  (31,1,'1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45','Forma 1',23),
- (32,1,'1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30','Forma 1',24);
+ (32,1,'1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30','Forma 1',24),
+ (33,1,'1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30','Forma 1',25);
 /*!40000 ALTER TABLE `formas` ENABLE KEYS */;
 
 
 --
--- Table structure for table `cpruebas`.`habilidad`
+-- Definition of table `habilidad`
 --
 
 DROP TABLE IF EXISTS `habilidad`;
@@ -510,7 +515,7 @@ CREATE TABLE `habilidad` (
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `cpruebas`.`habilidad`
+-- Dumping data for table `habilidad`
 --
 
 /*!40000 ALTER TABLE `habilidad` DISABLE KEYS */;
@@ -525,7 +530,7 @@ INSERT INTO `habilidad` (`ID`,`NAME`,`DESCRIPCION`) VALUES
 
 
 --
--- Table structure for table `cpruebas`.`nivelevaluacion`
+-- Definition of table `nivelevaluacion`
 --
 
 DROP TABLE IF EXISTS `nivelevaluacion`;
@@ -537,7 +542,7 @@ CREATE TABLE `nivelevaluacion` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `cpruebas`.`nivelevaluacion`
+-- Dumping data for table `nivelevaluacion`
 --
 
 /*!40000 ALTER TABLE `nivelevaluacion` DISABLE KEYS */;
@@ -547,7 +552,7 @@ INSERT INTO `nivelevaluacion` (`ID`,`NAME`,`NRORANGOS`) VALUES
 
 
 --
--- Table structure for table `cpruebas`.`nivelevaluacion_rangoevaluacion`
+-- Definition of table `nivelevaluacion_rangoevaluacion`
 --
 
 DROP TABLE IF EXISTS `nivelevaluacion_rangoevaluacion`;
@@ -561,7 +566,7 @@ CREATE TABLE `nivelevaluacion_rangoevaluacion` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `cpruebas`.`nivelevaluacion_rangoevaluacion`
+-- Dumping data for table `nivelevaluacion_rangoevaluacion`
 --
 
 /*!40000 ALTER TABLE `nivelevaluacion_rangoevaluacion` DISABLE KEYS */;
@@ -574,7 +579,7 @@ INSERT INTO `nivelevaluacion_rangoevaluacion` (`nivelevaluacion_ID`,`rangos_ID`)
 
 
 --
--- Table structure for table `cpruebas`.`profesor`
+-- Definition of table `profesor`
 --
 
 DROP TABLE IF EXISTS `profesor`;
@@ -588,7 +593,7 @@ CREATE TABLE `profesor` (
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `cpruebas`.`profesor`
+-- Dumping data for table `profesor`
 --
 
 /*!40000 ALTER TABLE `profesor` DISABLE KEYS */;
@@ -601,7 +606,7 @@ INSERT INTO `profesor` (`ID`,`NAME`,`PATERNO`,`RUT`,`MATERNO`) VALUES
 
 
 --
--- Table structure for table `cpruebas`.`prueba`
+-- Definition of table `prueba`
 --
 
 DROP TABLE IF EXISTS `prueba`;
@@ -631,10 +636,10 @@ CREATE TABLE `prueba` (
   CONSTRAINT `FK_PRUEBA_NIVELEVALUACION_ID` FOREIGN KEY (`NIVELEVALUACION_ID`) REFERENCES `nivelevaluacion` (`ID`),
   CONSTRAINT `FK_PRUEBA_PROFESOR_ID` FOREIGN KEY (`PROFESOR_ID`) REFERENCES `profesor` (`ID`),
   CONSTRAINT `FK_PRUEBA_TIPOPRUEBA_ID` FOREIGN KEY (`TIPOPRUEBA_ID`) REFERENCES `tipoprueba` (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `cpruebas`.`prueba`
+-- Dumping data for table `prueba`
 --
 
 /*!40000 ALTER TABLE `prueba` DISABLE KEYS */;
@@ -642,12 +647,13 @@ INSERT INTO `prueba` (`ID`,`EXIGENCIA`,`ALTERNATIVAS`,`FECHA`,`PUNTAJEBASE`,`NRO
  (20,60,5,16374,1,1,'AAAAAAAAAAAAAAAAAAAA',20,'Prueba 3',16,4,1,2,1),
  (22,60,5,16376,1,1,'          VVVVVVVVVVAAAAAAAAAA     ',35,'Prueba 2',16,4,1,1,1),
  (23,60,4,16376,1,1,'ACBBVBC ABAVAAVVV  ACBVVAVAA V ACBAABCVF ABCF',45,'Prueba TETS',16,4,1,1,1),
- (24,60,5,16376,1,1,' BVBBBVB  BVBBBBBBVVCCFCCBVVBB',30,'Prueba REAL',1,1,1,1,1);
+ (24,60,5,16376,1,1,' BVBBBVB  BVBBBBBBVVCCFCCBVVBB',30,'Prueba REAL',1,1,1,1,1),
+ (25,60,5,16377,1,1,'AAAAAAAAAAAAAABBBBBBBBBBBBBBBB',30,'Prueba Modi',16,4,1,1,1);
 /*!40000 ALTER TABLE `prueba` ENABLE KEYS */;
 
 
 --
--- Table structure for table `cpruebas`.`pruebarendida`
+-- Definition of table `pruebarendida`
 --
 
 DROP TABLE IF EXISTS `pruebarendida`;
@@ -673,7 +679,7 @@ CREATE TABLE `pruebarendida` (
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `cpruebas`.`pruebarendida`
+-- Dumping data for table `pruebarendida`
 --
 
 /*!40000 ALTER TABLE `pruebarendida` DISABLE KEYS */;
@@ -686,7 +692,7 @@ INSERT INTO `pruebarendida` (`ID`,`OMITIDAS`,`NOTA`,`RESPUESTAS`,`FORMA`,`MALAS`
 
 
 --
--- Table structure for table `cpruebas`.`rangoevaluacion`
+-- Definition of table `rangoevaluacion`
 --
 
 DROP TABLE IF EXISTS `rangoevaluacion`;
@@ -700,7 +706,7 @@ CREATE TABLE `rangoevaluacion` (
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `cpruebas`.`rangoevaluacion`
+-- Dumping data for table `rangoevaluacion`
 --
 
 /*!40000 ALTER TABLE `rangoevaluacion` DISABLE KEYS */;
@@ -713,7 +719,7 @@ INSERT INTO `rangoevaluacion` (`ID`,`ABREVIACION`,`MINIMO`,`NAME`,`MAXIMO`) VALU
 
 
 --
--- Table structure for table `cpruebas`.`respuestasesperadasprueba`
+-- Definition of table `respuestasesperadasprueba`
 --
 
 DROP TABLE IF EXISTS `respuestasesperadasprueba`;
@@ -734,10 +740,10 @@ CREATE TABLE `respuestasesperadasprueba` (
   CONSTRAINT `FK_RESPUESTASESPERADASPRUEBA_EJETEMATICO_ID` FOREIGN KEY (`EJETEMATICO_ID`) REFERENCES `ejetematico` (`ID`),
   CONSTRAINT `FK_RESPUESTASESPERADASPRUEBA_HABILIDAD_ID` FOREIGN KEY (`HABILIDAD_ID`) REFERENCES `habilidad` (`ID`),
   CONSTRAINT `FK_RESPUESTASESPERADASPRUEBA_PRUEBA_ID` FOREIGN KEY (`PRUEBA_ID`) REFERENCES `prueba` (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=911 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=971 DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `cpruebas`.`respuestasesperadasprueba`
+-- Dumping data for table `respuestasesperadasprueba`
 --
 
 /*!40000 ALTER TABLE `respuestasesperadasprueba` DISABLE KEYS */;
@@ -875,12 +881,43 @@ INSERT INTO `respuestasesperadasprueba` (`ID`,`NUMERO`,`NAME`,`VERDADEROFALSO`,`
  (907,16,'16',0,'B',0,24,1,2),
  (908,2,'2',0,'B',0,24,1,2),
  (909,8,'8',0,'B',0,24,1,2),
- (910,3,'3',1,'V',0,24,1,2);
+ (910,3,'3',1,'V',0,24,1,2),
+ (941,8,'8',0,'A',0,25,1,1),
+ (942,21,'21',0,'B',0,25,1,1),
+ (943,23,'23',0,'B',0,25,1,1),
+ (944,9,'9',0,'A',0,25,1,1),
+ (945,18,'18',0,'B',0,25,1,1),
+ (946,22,'22',0,'B',0,25,1,1),
+ (947,5,'5',0,'A',0,25,1,1),
+ (948,12,'12',0,'A',0,25,1,1),
+ (949,2,'2',0,'A',0,25,1,1),
+ (950,25,'25',0,'B',0,25,1,1),
+ (951,13,'13',0,'A',0,25,1,1),
+ (952,29,'29',0,'B',0,25,1,1),
+ (953,20,'20',0,'B',0,25,1,1),
+ (954,28,'28',0,'B',0,25,1,1),
+ (955,11,'11',0,'A',0,25,1,1);
+INSERT INTO `respuestasesperadasprueba` (`ID`,`NUMERO`,`NAME`,`VERDADEROFALSO`,`RESPUESTA`,`MENTAL`,`PRUEBA_ID`,`HABILIDAD_ID`,`EJETEMATICO_ID`) VALUES 
+ (956,27,'27',0,'B',0,25,1,1),
+ (957,24,'24',0,'B',0,25,1,1),
+ (958,7,'7',0,'A',0,25,1,1),
+ (959,16,'16',0,'B',0,25,1,1),
+ (960,3,'3',0,'A',0,25,1,1),
+ (961,26,'26',0,'B',0,25,1,1),
+ (962,10,'10',0,'A',0,25,1,1),
+ (963,0,'0',0,'A',0,25,1,1),
+ (964,4,'4',0,'A',0,25,1,1),
+ (965,15,'15',0,'B',0,25,1,1),
+ (966,1,'1',0,'A',0,25,1,1),
+ (967,17,'17',0,'B',0,25,1,1),
+ (968,14,'14',0,'B',0,25,1,1),
+ (969,6,'6',0,'A',0,25,1,1),
+ (970,19,'19',0,'B',0,25,1,1);
 /*!40000 ALTER TABLE `respuestasesperadasprueba` ENABLE KEYS */;
 
 
 --
--- Table structure for table `cpruebas`.`tipocurso`
+-- Definition of table `tipocurso`
 --
 
 DROP TABLE IF EXISTS `tipocurso`;
@@ -891,7 +928,7 @@ CREATE TABLE `tipocurso` (
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `cpruebas`.`tipocurso`
+-- Dumping data for table `tipocurso`
 --
 
 /*!40000 ALTER TABLE `tipocurso` DISABLE KEYS */;
@@ -908,7 +945,7 @@ INSERT INTO `tipocurso` (`ID`,`NAME`) VALUES
 
 
 --
--- Table structure for table `cpruebas`.`tipoprueba`
+-- Definition of table `tipoprueba`
 --
 
 DROP TABLE IF EXISTS `tipoprueba`;
@@ -919,17 +956,17 @@ CREATE TABLE `tipoprueba` (
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `cpruebas`.`tipoprueba`
+-- Dumping data for table `tipoprueba`
 --
 
 /*!40000 ALTER TABLE `tipoprueba` DISABLE KEYS */;
 INSERT INTO `tipoprueba` (`ID`,`NAME`) VALUES 
- (1,'General Modificado'),
- (2,'Simce'),
- (6,'Prueba 1'),
- (7,'Prueba 2'),
- (8,'Prueba 3');
+ (1,'General'),
+ (2,'Simce');
 /*!40000 ALTER TABLE `tipoprueba` ENABLE KEYS */;
+
+
+
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
