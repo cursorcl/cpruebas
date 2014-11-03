@@ -3,6 +3,9 @@ package cl.eos.view;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.controlsfx.dialog.Dialog;
+import org.controlsfx.dialog.Dialogs;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -124,23 +127,31 @@ public class AsignaturasView extends AFormView implements
 		IEntity entitySelected = getSelectedEntity();
 		removeAllStyles();
 		if (validate()) {
-			if (lblError != null) {
-				lblError.setText(" ");
-			}
-			Asignatura asignatura = null;
-			if (entitySelected != null && entitySelected instanceof Asignatura) {
-				asignatura = ((Asignatura) entitySelected);
+			if (validaNombreAsignatura(txtNombre.getText())) {
+//				txtNombre.getStyleClass().add("bad");
+//				lblError.setText("Nombre asignatura repetido");
+				 Dialogs.create().owner(null).title("Información")
+		            .masthead("Asignatura repetida").message("Nombre de astidaignatura repe")
+		            .actions(Dialog.Actions.OK).showInformation();
 			} else {
-				asignatura = new Asignatura();
+				if (lblError != null) {
+					lblError.setText(" ");
+				}
+				Asignatura asignatura = null;
+				if (entitySelected != null
+						&& entitySelected instanceof Asignatura) {
+					asignatura = ((Asignatura) entitySelected);
+				} else {
+					asignatura = new Asignatura();
+				}
+				asignatura.setName(txtNombre.getText());
+				save(asignatura);
+				limpiarControles();
 			}
-			asignatura.setName(txtNombre.getText());
-			save(asignatura);
-
 		} else {
 			lblError.getStyleClass().add("bad");
 			lblError.setText("Corregir campos destacados en color rojo");
 		}
-		limpiarControles();
 	}
 
 	private void accionClicTabla() {
@@ -157,7 +168,6 @@ public class AsignaturasView extends AFormView implements
 					mnuEliminar.setDisable(false);
 
 				} else if (itemsSelec.size() == 1) {
-					
 					mnItemModificar.setDisable(false);
 					mnItemEliminar.setDisable(false);
 
@@ -240,6 +250,20 @@ public class AsignaturasView extends AFormView implements
 			tblAsignatura.setId("OTAsignatura");
 			ExcelSheetWriterObj.convertirDatosALibroDeExcel(tblAsignatura);
 		}
+	}
+
+	private boolean validaNombreAsignatura(final String nombre) {
+		boolean existe = false;
+		ObservableList<OTAsignatura> listaAsignaturas = tblAsignatura
+				.getItems();
+		for (OTAsignatura otAsignatura : listaAsignaturas) {
+			if (otAsignatura.getName().toUpperCase()
+					.equals(nombre.toUpperCase())) {
+				existe = true;
+				break;
+			}
+		}
+		return existe;
 	}
 
 }

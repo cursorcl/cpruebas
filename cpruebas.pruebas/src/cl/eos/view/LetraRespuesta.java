@@ -19,10 +19,16 @@ public class LetraRespuesta extends TableCell<PruebaRendida, String> {
 			setText(null);
 		} else {
 			int index = getTableView().getColumns().indexOf(getTableColumn()) - 4;
-			String caracter = respuesta.substring(index, index + 1);
-			char[] ccar = caracter.toCharArray();
-			String cResp = comparaRespuestas(ccar, index);
-			setText(cResp);
+			if (index < respuesta.length()) {
+				String caracter = respuesta.substring(index, index + 1);
+				char[] ccar = caracter.toCharArray();
+				String cResp = comparaRespuestas(ccar, index);
+				setText(cResp);
+			}
+			else
+			{
+				setText("O");
+			}
 		}
 	}
 
