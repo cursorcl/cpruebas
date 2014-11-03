@@ -11,6 +11,9 @@ import java.util.List;
 
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeTableColumn;
+import javafx.scene.control.TreeTableView;
 
 import javax.swing.ImageIcon;
 
@@ -39,6 +42,14 @@ public final class ExcelSheetWriterObj {
 	public static void convertirDatosALibroDeExcel(
 			TableView<? extends Object> tabla) {
 		final Workbook wbook = new HSSFWorkbook();
+		crearLibroConDatosDeTabla(tabla, wbook);
+		crearDocExcel(wbook);
+	}
+	
+	public static void convertirDatosALibroDeExcel(
+			TreeTableView<? extends Object> tabla) {
+		final Workbook wbook = new HSSFWorkbook();
+		tabla.getRoot().setExpanded(true);
 		crearLibroConDatosDeTabla(tabla, wbook);
 		crearDocExcel(wbook);
 	}
@@ -90,6 +101,13 @@ public final class ExcelSheetWriterObj {
 		crearDatosHeader(tabla, workbook);
 		crearDatosTabla(tabla, workbook);
 	}
+	
+	private static void crearLibroConDatosDeTabla(
+			final TreeTableView<? extends Object> tabla, Workbook wbook) {
+		final Workbook workbook = wbook;
+		crearDatosHeader(tabla, workbook);
+		crearDatosTabla(tabla, workbook);
+	}
 
 	private static void crearDatosHeader(TableView<? extends Object> tabla,
 			Workbook wbook) {
@@ -109,6 +127,24 @@ public final class ExcelSheetWriterObj {
 
 	}
 
+	private static void crearDatosHeader(TreeTableView<? extends Object> tabla,
+			Workbook wbook) {
+
+		final Sheet sheet1 = wbook.createSheet(tabla.getId());
+		final CellStyle style = wbook.createCellStyle();
+
+		style.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
+		style.setFillPattern(CellStyle.SOLID_FOREGROUND);
+
+		final Row filaCabecera = sheet1.createRow(0);
+		for (int indice = 0; indice < tabla.getColumns().size(); indice++) {
+			final Cell cell = filaCabecera.createCell(indice);
+			cell.setCellValue(tabla.getColumns().get(indice).getText());
+			cell.setCellStyle(style);
+		}
+
+	}
+	
 	/**
 	 * Metodo que permite crear los datos en la tabla.
 	 * 
@@ -129,6 +165,75 @@ public final class ExcelSheetWriterObj {
 		}
 	}
 
+	
+	/**
+	 * Metodo que permite crear los datos en la tabla.
+	 * 
+	 * @param modelo
+	 *            modelo de tabla.
+	 * @param wbook
+	 *            libro de excel.
+	 * @return workbook libro de excel modificado.
+	 */
+	private static void crearDatosTabla(TreeTableView<? extends Object> tabla,
+			final Workbook wbook) {
+		final Workbook workbook = wbook;
+		final Sheet sheet1 = workbook.getSheet(tabla.getId());
+		
+		
+		int indiceFila = 0;
+		while(tabla.getTreeItem(indiceFila) != null)
+		{
+			tabla.getTreeItem(indiceFila).setExpanded(true);
+			final Row fila = sheet1.createRow(indiceFila + 1);
+			recorrerColumnas(tabla, indiceFila, fila);
+			indiceFila++;
+		}
+	}
+	/**
+	 * Metodo que permite el recorrido de las columnas.
+	 * 
+	 * @param modelo
+	 *            modelo de tabla.
+	 * @param indiceFila
+	 *            indice de la fila.
+	 * @param fila
+	 *            fila.
+	 */
+	private static void recorrerColumnas(
+			final TreeTableView<? extends Object> tabla, final int indiceFila,
+			final Row fila) {
+		for (int indiceColumna = 0; indiceColumna < tabla.getColumns().size(); indiceColumna++) {
+
+			final Cell cell = fila.createCell(indiceColumna);
+			TreeTableColumn<? extends Object, ?> valores = tabla.getColumns().get(
+					indiceColumna);
+			Object valor = valores.getCellData(indiceFila);
+			if (valor instanceof String) {
+				cell.setCellValue((String) valor);
+			} else if (valor instanceof Boolean) {
+				cell.setCellValue((Boolean) valor);
+			} else if (valor instanceof Date) {
+				// cell.setCellValue(UtilesFechas.formatDate((Date)
+				// valor));
+			} else if (valor instanceof Integer) {
+				cell.setCellValue((Integer) valor);
+			} else if (valor instanceof Long) {
+				cell.setCellValue((Long) valor);
+			} else if (valor instanceof Double) {
+				cell.setCellValue((Double) valor);
+			} else if (valor instanceof Float) {
+				cell.setCellValue((Float) valor);
+			} else if ((valor instanceof ImageIcon) || (valor == null)
+					|| valor instanceof Color) {
+				cell.setCellValue("");
+			} else {
+				cell.setCellValue((String) valor.toString());
+			}
+		}
+	}
+
+	
 	/**
 	 * Metodo que permite el recorrido de las columnas.
 	 * 

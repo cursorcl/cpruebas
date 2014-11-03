@@ -30,6 +30,7 @@ import cl.eos.ot.OTAlumno;
 import cl.eos.persistence.models.Alumno;
 import cl.eos.persistence.models.Colegio;
 import cl.eos.persistence.models.Curso;
+import cl.eos.util.ExcelSheetWriterObj;
 import cl.eos.util.Utils;
 
 public class AlumnosTableTreeView extends AFormView implements
@@ -265,6 +266,7 @@ public class AlumnosTableTreeView extends AFormView implements
 						"colegio"));
 		colCurso.setCellValueFactory(new TreeItemPropertyValueFactory<OTAlumno, String>(
 				"curso"));
+		tblAlumnos.setShowRoot(false);
 	}
 
 	private void removeAllStyles() {
@@ -509,7 +511,7 @@ public class AlumnosTableTreeView extends AFormView implements
 			limpiarControles();
 		} else if (source == mnuExportar || source == menuExportar) {
 			tblAlumnos.setId("Alumnos");
-			// ExcelSheetWriterObj.convertirDatosALibroDeExcel(tblAlumnos);
+			ExcelSheetWriterObj.convertirDatosALibroDeExcel(tblAlumnos);
 			// //TODO EOS
 		} else if (source == cmbColegio) {
 			asignaCursos();
