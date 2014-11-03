@@ -512,11 +512,9 @@ public class AlumnosTableTreeView extends AFormView implements
 		} else if (source == mnuExportar || source == menuExportar) {
 			tblAlumnos.setId("Alumnos");
 			ExcelSheetWriterObj.convertirDatosALibroDeExcel(tblAlumnos);
-			// //TODO EOS
 		} else if (source == cmbColegio) {
 			asignaCursos();
 		}
-
 	}
 
 	private void asignaCursos() {
@@ -530,6 +528,5 @@ public class AlumnosTableTreeView extends AFormView implements
 			}
 			cmbCurso.setItems(oList);
 		}
-
 	}
 }
