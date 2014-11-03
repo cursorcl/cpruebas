@@ -583,6 +583,37 @@ public class EvaluarPruebaView extends AFormView {
 					return results;
 				}
 			};
+			task.setOnFailed(new EventHandler<WorkerStateEvent>() {
+
+				@Override
+				public void handle(WorkerStateEvent event) {
+					Runnable r = new Runnable() {
+
+						@Override
+						public void run() {
+							Dialogs info = Dialogs.create();
+							info.title("Proceso finalizado con error");
+							info.masthead("Se ha producido un error al procesar las imagenes.");
+							if(task.getException() instanceof IOException)
+							{
+								info.message("No se han encontrado los archivos de red");
+							}
+							else
+							{
+								info.message("Error desconocido");
+							}
+							
+							
+							info.owner(tblListadoPruebas);
+							info.showError();
+							
+							
+						}
+
+					};
+					Platform.runLater(r);					
+				}
+			});
 			task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
 				@Override
 				public void handle(WorkerStateEvent event) {

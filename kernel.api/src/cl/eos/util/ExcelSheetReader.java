@@ -119,9 +119,4 @@ public class ExcelSheetReader {
 		}
 	}
 
-	public static void main(String[] args) {
-		// String fileName = "C:" + File.separator + "APP" + File.separator
-		// + "ciclo.xls";
-		// new ExcelSheetReader().readExcelFile(fileName);
-	}
 }

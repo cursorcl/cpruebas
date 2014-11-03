@@ -101,11 +101,6 @@ public abstract OTResultadoScanner process(BufferedImage image, int nroPreguntas
     for (int n = 0; n < CIRCLE_X_RUT_DIFF.length; n++) {
       int y = pRefRut.y;
       BufferedImage rut = image.getSubimage(x + CIRCLE_X_RUT_DIFF[n] - 2, y - 2, 51, 545);
-      try {
-        ImageIO.write(rut, "png", new File("o:/res/respuestas/RUT" + n + ".png"));
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
       Pair<Integer, Pair<Double, Double>> result = recognizerRut.recognize(rut, 0.75);
       int idx = result.getFirst();
       if (idx != -1) {
