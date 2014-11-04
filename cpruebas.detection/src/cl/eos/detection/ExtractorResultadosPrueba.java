@@ -36,10 +36,10 @@ public class ExtractorResultadosPrueba extends AExtractorResultados {
 	private ExtractorResultadosPrueba()  {
 		
 		try {
-			File fRedPrueba = new File("/res/red_2");
-			log.info("red_2 existe = " + fRedPrueba.getName() +  " " + fRedPrueba.exists());
-			File fRedRut = new File("/res/red_rut");
-			log.info("red_rut existe = " + fRedRut.getName() +  " " + fRedRut.exists() );
+			File fRedPrueba = new File("res/red_2");
+			log.info("red_2 existe = " + fRedPrueba.getAbsolutePath() +  " " + fRedPrueba.exists());
+			File fRedRut = new File("res/red_rut");
+			log.info("red_rut existe = " + fRedRut.getAbsolutePath() +  " " + fRedRut.exists() );
 
 			recognizerRespustas = RecognizerFactory.create(fRedPrueba);
 			recognizerRut = RecognizerFactory.create(fRedRut);
