@@ -16,11 +16,14 @@ import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.chart.XYChart.Data;
+import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
@@ -118,7 +121,7 @@ EventHandler<ActionEvent>{
 									.getNologrado();
 
 							XYChart.Series series1 = new XYChart.Series();
-							series1.setName("Porcentaje de Respuestas");
+							series1.setName("%");
 							series1.getData().add(
 									new XYChart.Data<String, Float>("Logrado",
 											porcentajeLogrado));
@@ -127,6 +130,15 @@ EventHandler<ActionEvent>{
 											"No Logrado", porcentajeNologrado));
 							graficoBarra.getData().clear();
 							graficoBarra.getData().add(series1);
+							
+							for (Series<String, Number> s : graficoBarra.getData()) {
+					            for (Data<String, Number> d : s.getData()) {
+					                Tooltip.install(d.getNode(), new Tooltip(
+					                        String.format("%s = %2.1f", 
+					                                d.getXValue().toString(), 
+					                                d.getYValue().doubleValue())));
+					            }
+					        }
 						}
 					}
 				});
