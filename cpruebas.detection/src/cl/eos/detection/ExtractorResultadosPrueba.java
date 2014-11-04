@@ -6,10 +6,12 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 
 import cl.cursor.card.RecognizerFactory;
+import cl.cursor.card.impl.NeuralNetworkRecognizer;
 import cl.eos.detection.base.AExtractorResultados;
 
 /**
@@ -19,6 +21,9 @@ import cl.eos.detection.base.AExtractorResultados;
  */
 public class ExtractorResultadosPrueba extends AExtractorResultados {
 
+	
+	 static final Logger log =
+		      Logger.getLogger(ExtractorResultadosPrueba.class.getName());
 	private static ExtractorResultadosPrueba instance;
 
 	/**
@@ -29,15 +34,15 @@ public class ExtractorResultadosPrueba extends AExtractorResultados {
 	 *             Error al leer las redes.
 	 */
 	private ExtractorResultadosPrueba()  {
-		URL redPrueba = ExtractorResultadosPrueba.class
-				.getResource("/res/red_2");
-		URL redRut = ExtractorResultadosPrueba.class
-				.getResource("/res/red_rut");
-
+		
 		try {
-			recognizerRespustas = RecognizerFactory.create(new File(redPrueba
-					.getFile()));
-			recognizerRut = RecognizerFactory.create(new File(redRut.getFile()));
+			File fRedPrueba = new File("/res/red_2");
+			log.info("red_2 existe = " + fRedPrueba.getName() +  " " + fRedPrueba.exists());
+			File fRedRut = new File("/res/red_rut");
+			log.info("red_rut existe = " + fRedRut.getName() +  " " + fRedRut.exists() );
+
+			recognizerRespustas = RecognizerFactory.create(fRedPrueba);
+			recognizerRut = RecognizerFactory.create(fRedRut);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

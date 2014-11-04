@@ -20,11 +20,4 @@
 		<nature>org.eclipse.xtext.ui.shared.xtextNature</nature>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>res</name>
-			<type>2</type>
-			<location>C:/desarrollo/cpruebas/res</location>
-		</link>
-	</linkedResources>
 </projectDescription>

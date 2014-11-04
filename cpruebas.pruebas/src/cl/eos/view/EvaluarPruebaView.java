@@ -624,6 +624,7 @@ public class EvaluarPruebaView extends AFormView {
 							}
 							else
 							{
+								task.getException().printStackTrace();
 								info.message("Error desconocido");
 							}
 							
