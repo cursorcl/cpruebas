@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -284,7 +285,17 @@ public class EvaluarPruebaView extends AFormView {
 
 		int nroPreguntas = respuestas.size();
 		int nMax = Math.min(respsAlumno.length(), nroPreguntas);
-		otRendida.setOmitidas(Math.abs(respsAlumno.length() - nroPreguntas));
+		
+		int nroLast = Math.abs(respsAlumno.length() - nroPreguntas);
+		if(nroLast > 0)
+		{
+			char[] c = new char[nroLast];
+			Arrays.fill(c, 'O');
+			otRendida.setOmitidas(nroLast);
+			StringBuilder sBuilder =  new StringBuilder(respsAlumno);
+			sBuilder.append(c);
+			respsAlumno =  sBuilder.toString();
+		}
 		otRendida.setBuenas(0);
 		otRendida.setMalas(0);
 		for (int n = 0; n < nMax; n++) {
