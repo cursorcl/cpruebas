@@ -257,7 +257,7 @@ public class ComunalCursoView extends AFormView implements
 			}
 		});
 		columna0.setPrefWidth(100);
-		columna0.setStyle("-fx-alignment: CENTER;");
+		//columna0.setStyle("-fx-alignment: CENTER;");
 		tblEvaluaciones.getColumns().add(columna0);
 
 		titulosColumnas = new ArrayList<>();

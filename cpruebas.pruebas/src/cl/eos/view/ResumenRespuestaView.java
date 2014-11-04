@@ -12,11 +12,14 @@ import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.chart.XYChart.Data;
+import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
@@ -79,9 +82,11 @@ public class ResumenRespuestaView extends AFormView implements
 		this.setTitle("Resumen de respuestas por pregunta");
 		inicializarTablaRespuestas();
 		inicializarTablaPorcentaje();
+		
 		graficoBarra.setTitle("Gráfico Respuestas por pregunta");
 		xAxis.setLabel("Country");
 		yAxis.setLabel("Value");
+		
 		mnuExportarRespuestas.setOnAction(this);
 	}
 
@@ -203,24 +208,25 @@ public class ResumenRespuestaView extends AFormView implements
 		listaPorcentaje = new LinkedList<OTRespuestasPorcentaje>();
 		OTRespuestasPorcentaje respuestaPorcentajeB = new OTRespuestasPorcentaje();
 		respuestaPorcentajeB.setTitulo("Buenas");
-		float porcentajeBuenas = (float) ((buenas / nroAlumnos) / nroPreguntas);
-		respuestaPorcentajeB.setPorcentaje(porcentajeBuenas * 100);
+		Float porcentajeBuenas = ((float) ((buenas / nroAlumnos) / nroPreguntas)) * 100;
+		respuestaPorcentajeB.setPorcentaje(porcentajeBuenas);
 		listaPorcentaje.add(respuestaPorcentajeB);
 
 		OTRespuestasPorcentaje respuestaPorcentajeM = new OTRespuestasPorcentaje();
 		respuestaPorcentajeM.setTitulo("Malas");
-		float porcentajeMalas = (float) ((malas / nroAlumnos) / nroPreguntas);
-		respuestaPorcentajeM.setPorcentaje(porcentajeMalas * 100);
+		Float porcentajeMalas = ((float) ((malas / nroAlumnos) / nroPreguntas)) * 100;
+		respuestaPorcentajeM.setPorcentaje(porcentajeMalas);
 		listaPorcentaje.add(respuestaPorcentajeM);
 
 		OTRespuestasPorcentaje respuestaPorcentaje = new OTRespuestasPorcentaje();
 		respuestaPorcentaje.setTitulo("Omitidas");
-		float porcentajeOmitidas = (float) ((omitidas / nroAlumnos) / nroPreguntas);
-		respuestaPorcentaje.setPorcentaje(porcentajeOmitidas * 100);
+		Float porcentajeOmitidas = ((float) ((omitidas / nroAlumnos) / nroPreguntas)) * 100;
+		respuestaPorcentaje.setPorcentaje(porcentajeOmitidas);
 		listaPorcentaje.add(respuestaPorcentaje);
 
 		XYChart.Series series1 = new XYChart.Series();
-		series1.setName("Porcentaje de Respuestas");
+		
+		series1.setName("%");
 		series1.getData().clear();
 		series1.getData().add(
 				new XYChart.Data<String, Float>("Buenas", porcentajeBuenas));
@@ -229,8 +235,18 @@ public class ResumenRespuestaView extends AFormView implements
 		series1.getData()
 				.add(new XYChart.Data<String, Float>("Omitidas",
 						porcentajeOmitidas));
+		
 		graficoBarra.getData().clear();
 		graficoBarra.getData().add(series1);
+		
+		for (Series<String, Number> s : graficoBarra.getData()) {
+            for (Data<String, Number> d : s.getData()) {
+                Tooltip.install(d.getNode(), new Tooltip(
+                        String.format("%s = %2.1f", 
+                                d.getXValue().toString(), 
+                                d.getYValue().doubleValue())));
+            }
+        }
 	}
 
 	@Override
