@@ -148,8 +148,8 @@ public class ComparativoComunalHabilidadView extends AFormView implements
 				for (PruebaRendida pruebaRendida : pruebasRendidas) {
 					generaDatosEvaluacion(pruebaRendida, colegioCurso);
 
-					String respuesta = pruebaRendida.getRespuestas();
-					char[] cRespuesta = respuesta.toCharArray();
+					String respuesta = pruebaRendida.getRespuestas().toUpperCase();
+					char[] cRespuesta = respuesta.toUpperCase().toCharArray();
 
 					for (RespuestasEsperadasPrueba respuestasEsperadasPrueba : respuestasEsperadas) {
 
