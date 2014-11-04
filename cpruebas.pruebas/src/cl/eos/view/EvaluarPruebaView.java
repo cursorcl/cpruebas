@@ -596,6 +596,7 @@ public class EvaluarPruebaView extends AFormView {
 							info.masthead("Se ha producido un error al procesar las imagenes.");
 							if(task.getException() instanceof IOException)
 							{
+								task.getException().printStackTrace();
 								info.message("No se han encontrado los archivos de red");
 							}
 							else

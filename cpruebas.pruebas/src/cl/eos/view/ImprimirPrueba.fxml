@@ -21,7 +21,7 @@
                               <KeyCodeCombination alt="UP" code="A" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                            </accelerator></MenuItem>
                         <MenuItem fx:id="mnuQuitar" mnemonicParsing="false" text="Quitar" />
-                        <MenuItem fx:id="mnuEliminarTodo" mnemonicParsing="false" text="Eliminar Todo" />
+                        <MenuItem fx:id="mnuEliminar" mnemonicParsing="false" text="Eliminar Todo" />
                         <SeparatorMenuItem mnemonicParsing="false" />
                         <MenuItem fx:id="mnuImprimir" mnemonicParsing="false" text="Imprimir">
                            <accelerator>
@@ -70,7 +70,7 @@
                   <ContextMenu>
                     <items>
                         <MenuItem fx:id="mnuQuitarPopup" mnemonicParsing="false" text="Quitar" />
-                      <MenuItem fx:id="mnuEliminarTodoPopup" mnemonicParsing="false" text="Eliminar Todo" />
+                      <MenuItem fx:id="mnuEliminarPopup" mnemonicParsing="false" text="Eliminar Todo" />
                     </items>
                   </ContextMenu>
                </contextMenu>
