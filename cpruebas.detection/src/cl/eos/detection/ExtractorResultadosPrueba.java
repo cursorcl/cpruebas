@@ -28,18 +28,23 @@ public class ExtractorResultadosPrueba extends AExtractorResultados {
 	 * @throws IOException
 	 *             Error al leer las redes.
 	 */
-	private ExtractorResultadosPrueba() throws IOException {
+	private ExtractorResultadosPrueba()  {
 		URL redPrueba = ExtractorResultadosPrueba.class
 				.getResource("/res/red_2");
 		URL redRut = ExtractorResultadosPrueba.class
 				.getResource("/res/red_rut");
 
-		recognizerRespustas = RecognizerFactory.create(new File(redPrueba
-				.getFile()));
-		recognizerRut = RecognizerFactory.create(new File(redRut.getFile()));
+		try {
+			recognizerRespustas = RecognizerFactory.create(new File(redPrueba
+					.getFile()));
+			recognizerRut = RecognizerFactory.create(new File(redRut.getFile()));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 	}
 
-	public static ExtractorResultadosPrueba getInstance() throws IOException {
+	public static ExtractorResultadosPrueba getInstance() {
 		if (instance == null) {
 			instance = new ExtractorResultadosPrueba();
 		}
