@@ -286,6 +286,7 @@ public class EvaluarPruebaView extends AFormView {
 		int nroPreguntas = respuestas.size();
 		int nMax = Math.min(respsAlumno.length(), nroPreguntas);
 		
+		otRendida.setOmitidas(0); 
 		int nroLast = Math.abs(respsAlumno.length() - nroPreguntas);
 		if(nroLast > 0)
 		{
