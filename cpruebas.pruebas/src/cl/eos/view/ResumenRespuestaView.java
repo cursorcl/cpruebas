@@ -159,8 +159,8 @@ public class ResumenRespuestaView extends AFormView implements
 			String responses = entity.getPrueba().getResponses();
 			String respuesta = pruebaRendida.getRespuestas();
 
-			char[] cResponses = responses.toCharArray();
-			char[] cRespuesta = respuesta.toCharArray();
+			char[] cResponses = responses.toUpperCase().toCharArray();
+			char[] cRespuesta = respuesta.toUpperCase().toCharArray();
 			int contadorBuenas = 0;
 			for (int i = 0; i < cResponses.length; i++) {
 

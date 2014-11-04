@@ -228,8 +228,8 @@ public class ResumenGeneralPMEView extends AFormView implements
 	private void generaContenidosHabilidades(PruebaRendida pruebaRendida,
 			List<RespuestasEsperadasPrueba> respuestasEsperadas) {
 
-		String respuesta = pruebaRendida.getRespuestas();
-		char[] cRespuesta = respuesta.toCharArray();
+		String respuesta = pruebaRendida.getRespuestas().toUpperCase();
+		char[] cRespuesta = respuesta.toUpperCase().toCharArray();
 
 		for (RespuestasEsperadasPrueba respuestasEsperadasPrueba : respuestasEsperadas) {
 
@@ -278,8 +278,8 @@ public class ResumenGeneralPMEView extends AFormView implements
 			List<RespuestasEsperadasPrueba> respuestasEsperadas,
 			NivelEvaluacion nivelEvaluacion) {
 
-		String respuesta = pruebaRendida.getRespuestas();
-		char[] cRespuesta = respuesta.toCharArray();
+		String respuesta = pruebaRendida.getRespuestas().toUpperCase();
+		char[] cRespuesta = respuesta.toUpperCase().toCharArray();
 
 		for (RespuestasEsperadasPrueba respuestasEsperadasPrueba : respuestasEsperadas) {
 

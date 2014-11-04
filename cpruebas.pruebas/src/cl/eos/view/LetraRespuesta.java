@@ -20,7 +20,7 @@ public class LetraRespuesta extends TableCell<PruebaRendida, String> {
 		} else {
 			int index = getTableView().getColumns().indexOf(getTableColumn()) - 4;
 			if (index < respuesta.length()) {
-				String caracter = respuesta.substring(index, index + 1);
+				String caracter = respuesta.toUpperCase().substring(index, index + 1);
 				char[] ccar = caracter.toCharArray();
 				String cResp = comparaRespuestas(ccar, index);
 				setText(cResp);
@@ -42,8 +42,8 @@ public class LetraRespuesta extends TableCell<PruebaRendida, String> {
 
 	private String comparaRespuestas(char[] ccar, int index) {
 		String cResultado = null;
-		char[] cResponses = responses.toCharArray();
-
+		char[] cResponses = responses.toUpperCase().toCharArray();
+		
 		if (ccar[0] == 'O') {
 			cResultado = "O";
 		} else if (ccar[0] == (cResponses[index]) || ccar[0] == '+') {

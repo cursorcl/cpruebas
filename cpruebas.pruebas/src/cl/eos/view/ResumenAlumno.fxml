@@ -37,7 +37,7 @@
                   </AnchorPane>
                 <AnchorPane prefHeight="137.0" prefWidth="421.0">
                      <children>
-                        <TableView fx:id="tblAlumnos" prefHeight="137.0" prefWidth="417.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0">
+                        <TableView fx:id="tblAlumnos" prefHeight="137.0" prefWidth="417.0" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="2.0">
                           <columns>
                             <TableColumn id="colRut" fx:id="colARut" prefWidth="75.0" text="Rut" />
                             <TableColumn id="colPaterno" fx:id="colAPaterno" prefWidth="83.0" text="A.Paterno" />
