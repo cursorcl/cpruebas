@@ -31,6 +31,7 @@ public class NeuralNetworkRecognizer implements Recognizer
   public NeuralNetworkRecognizer(File file) throws IOException
   {
     // the (first) file with the grid size
+	  log.info(String.format("Reading red %s", file.getName()));
     BufferedReader brdr = new BufferedReader(new FileReader(file));
     String[] grdsz = brdr.readLine().split(" ");
     String nnfilename = brdr.readLine();
@@ -38,10 +39,12 @@ public class NeuralNetworkRecognizer implements Recognizer
     width = Integer.parseInt(grdsz[0]);
     height = Integer.parseInt(grdsz[1]);
 
-    //log.info(String.format("grid is read as %d x %d", width, height));
+    log.info(String.format("Grid is read as %d x %d", width, height));
 
     File nnFile = new File(file.getParent(), nnfilename);
     network = NeuralNetwork.createFromFile(nnFile);
+    
+    log.info(String.format("Grid is readed"));
   }
 
   @Override

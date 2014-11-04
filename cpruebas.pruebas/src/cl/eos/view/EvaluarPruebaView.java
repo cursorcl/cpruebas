@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -284,7 +285,18 @@ public class EvaluarPruebaView extends AFormView {
 
 		int nroPreguntas = respuestas.size();
 		int nMax = Math.min(respsAlumno.length(), nroPreguntas);
-		otRendida.setOmitidas(Math.abs(respsAlumno.length() - nroPreguntas));
+		
+		otRendida.setOmitidas(0); 
+		int nroLast = Math.abs(respsAlumno.length() - nroPreguntas);
+		if(nroLast > 0)
+		{
+			char[] c = new char[nroLast];
+			Arrays.fill(c, 'O');
+			otRendida.setOmitidas(nroLast);
+			StringBuilder sBuilder =  new StringBuilder(respsAlumno);
+			sBuilder.append(c);
+			respsAlumno =  sBuilder.toString();
+		}
 		otRendida.setBuenas(0);
 		otRendida.setMalas(0);
 		for (int n = 0; n < nMax; n++) {
@@ -465,7 +477,18 @@ public class EvaluarPruebaView extends AFormView {
 						oPr.setBuenas(nPr.getBuenas());
 						oPr.setMalas(nPr.getMalas());
 						oPr.setOmitidas(nPr.getOmitidas());
-						oPr.setRespuestas(nPr.getRespuestas());
+						
+						String respsAlumno = nPr.getRespuestas();
+						int nroLast = Math.abs(respsAlumno.length() - prueba.getNroPreguntas());
+						if(nroLast > 0)
+						{
+							char[] c = new char[nroLast];
+							Arrays.fill(c, 'O');
+							StringBuilder sBuilder =  new StringBuilder(respsAlumno);
+							sBuilder.append(c);
+							respsAlumno =  sBuilder.toString();
+						}
+						oPr.setRespuestas(respsAlumno);
 						oPr.setRango(nPr.getRango());
 						evalPrueba.getPruebasRendidas().set(idx,
 								ot.getPruebaRendida());
@@ -596,6 +619,7 @@ public class EvaluarPruebaView extends AFormView {
 							info.masthead("Se ha producido un error al procesar las imagenes.");
 							if(task.getException() instanceof IOException)
 							{
+								task.getException().printStackTrace();
 								info.message("No se han encontrado los archivos de red");
 							}
 							else
