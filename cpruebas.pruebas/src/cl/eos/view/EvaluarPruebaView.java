@@ -477,7 +477,18 @@ public class EvaluarPruebaView extends AFormView {
 						oPr.setBuenas(nPr.getBuenas());
 						oPr.setMalas(nPr.getMalas());
 						oPr.setOmitidas(nPr.getOmitidas());
-						oPr.setRespuestas(nPr.getRespuestas());
+						
+						String respsAlumno = nPr.getRespuestas();
+						int nroLast = Math.abs(respsAlumno.length() - prueba.getNroPreguntas());
+						if(nroLast > 0)
+						{
+							char[] c = new char[nroLast];
+							Arrays.fill(c, 'O');
+							StringBuilder sBuilder =  new StringBuilder(respsAlumno);
+							sBuilder.append(c);
+							respsAlumno =  sBuilder.toString();
+						}
+						oPr.setRespuestas(respsAlumno);
 						oPr.setRango(nPr.getRango());
 						evalPrueba.getPruebasRendidas().set(idx,
 								ot.getPruebaRendida());
