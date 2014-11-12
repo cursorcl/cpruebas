@@ -91,11 +91,8 @@ public class ImpresionPrueba {
 		colAlternativas = 5;
 		try {
 
-			URL pruebaVacia = ImpresionPrueba.class
-					.getResource("/res/cpruebas.vacia.png");
 
-			BufferedImage imageEmpty = ImageIO.read(new File(pruebaVacia
-					.getFile()));
+			BufferedImage imageEmpty = ImageIO.read(new File("res/cpruebas.vacia.png"));
 			image = new BufferedImage(imageEmpty.getWidth(),
 					imageEmpty.getHeight(), imageEmpty.getType());
 			g2 = (Graphics2D) image.getGraphics();
