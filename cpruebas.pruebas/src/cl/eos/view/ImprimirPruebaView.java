@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -35,6 +37,7 @@ import org.controlsfx.dialog.Dialog;
 import org.controlsfx.dialog.Dialogs;
 
 import cl.eos.detection.ImpresionPrueba;
+import cl.eos.detection.ImpresionPruebaVacia;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.persistence.models.Colegio;
@@ -44,6 +47,7 @@ import cl.eos.persistence.models.Habilidad;
 import cl.eos.persistence.models.Profesor;
 import cl.eos.persistence.models.Prueba;
 import cl.eos.persistence.models.RespuestasEsperadasPrueba;
+import cl.eos.util.Utils;
 import cl.eos.view.ots.OTImprimirPrueba;
 
 public class ImprimirPruebaView extends AFormView {
@@ -92,6 +96,9 @@ public class ImprimirPruebaView extends AFormView {
 	@FXML
 	private MenuItem mnuImprimir;
 
+	@FXML
+	private MenuItem mnuImprimeVacia;
+
 	public ImprimirPruebaView() {
 		setTitle("Imprimir");
 	}
@@ -105,22 +112,56 @@ public class ImprimirPruebaView extends AFormView {
 			public void handle(ActionEvent event) {
 				Colegio colegio = cmbColegios.getSelectionModel()
 						.getSelectedItem();
+
+				cmbCursos.getItems().clear();
 				Map<String, Object> parameters = new HashMap<String, Object>();
 				parameters.put("tcursoId", prueba.getCurso().getId());
 				parameters.put("colegioId", colegio.getId());
 				controller.find("Curso.findByTipoColegio", parameters);
+				boolean disable = cmbColegios.getSelectionModel()
+						.getSelectedItem() == null
+						|| cmbCursos.getSelectionModel().getSelectedItem() == null
+						|| cmbProfesor.getSelectionModel().getSelectedItem() == null;
+				mnuImprimeVacia.setDisable(disable);
 			}
 		});
+		cmbCursos.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				boolean disable = cmbColegios.getSelectionModel()
+						.getSelectedItem() == null
+						|| cmbCursos.getSelectionModel().getSelectedItem() == null
+						|| cmbProfesor.getSelectionModel().getSelectedItem() == null;
+				mnuImprimeVacia.setDisable(disable);
+			}
+		});
+		
+		cmbProfesor.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				boolean disable = cmbColegios.getSelectionModel()
+						.getSelectedItem() == null
+						|| cmbCursos.getSelectionModel().getSelectedItem() == null
+						|| cmbProfesor.getSelectionModel().getSelectedItem() == null;
+				mnuImprimeVacia.setDisable(disable);
+				
+			}
+		});
+
+		mnuImprimeVacia.setDisable(true);
+		
 		RespondeEventos eventHandler = new RespondeEventos();
 		mnuAgregar.setOnAction(eventHandler);
 		mnuEliminar.setOnAction(eventHandler);
 		mnuImprimir.setOnAction(eventHandler);
+		mnuImprimeVacia.setOnAction(eventHandler);
 		mnuQuitar.setOnAction(eventHandler);
 
 		mnuEliminarPopup.setOnAction(eventHandler);
 		mnuQuitarPopup.setOnAction(eventHandler);
 
-		
 		colegioCol
 				.setCellValueFactory(new PropertyValueFactory<OTImprimirPrueba, String>(
 						"colegio"));
@@ -222,7 +263,7 @@ public class ImprimirPruebaView extends AFormView {
 					}
 				}
 			}
-			
+
 			if (event.getSource() == mnuEliminar
 					|| event.getSource() == mnuEliminarPopup) {
 				if (tblListadoPruebas.getSelectionModel().getSelectedItems() != null
@@ -230,77 +271,53 @@ public class ImprimirPruebaView extends AFormView {
 					tblListadoPruebas.getItems().clear();
 				}
 			}
-			if (event.getSource() == mnuImprimir) {
-				ImpresionPrueba impresion = new ImpresionPrueba();
-				ObservableList<OTImprimirPrueba> selecteds = tblListadoPruebas
-						.getItems();
+			if (event.getSource() == mnuImprimeVacia) {
 
-				List<PDDocument> documentos = new ArrayList<PDDocument>();
-				for (OTImprimirPrueba ot : selecteds) {
+				Optional<String> response = Dialogs.create().owner(null)
+						.title("Cuanats hojas quiere imprimir?").masthead(null)
+						.message("Ingrese cantidad de hojas a imprimir")
+						.showTextInput("10");
+				int n = 10;
+				try {
+					String value = response.get();
+					n = Integer.parseInt(value);
+					if (Utils.isInteger(value)) {
+						ImpresionPruebaVacia impresion = new ImpresionPruebaVacia();
+						Curso curso = cmbCursos.getValue();
+						Profesor profesor = cmbProfesor.getValue();
+						Colegio colegio = cmbColegios.getValue();
 
-					PDDocument doc = impresion.imprimir(prueba, ot.getCurso(),
-							ot.getProfesor(), ot.getColegio(),
-							dtpFecha.getValue());
-					documentos.add(doc);
-				}
-				Action response = Dialogs
-						.create()
-						.owner(null)
-						.title("Pruebas para impresión generadas")
-						.masthead(
-								String.format(
-										"Se ha(n) generado %d prueba(s).",
-										documentos.size()))
-						.message("Confirma la impresión?")
-						.actions(Dialog.Actions.OK, Dialog.Actions.CANCEL)
-						.showConfirm();
-				if (response.equals(Dialog.Actions.OK)) {
-					PrintService pService = choosePrinter();
-					if (pService == null) {
-						Dialogs.create()
-								.owner(null)
-								.title("No se ha seleccionado impresora.")
-								.masthead("No se imrpimirán los documentos.")
-								.message(
-										"Debe seleccionar impresora antes de imprimir.")
-								.showError();
-					} else {
-						for (PDDocument doc : documentos) {
-							try {
-								printPDF(doc, pService);
-							} catch (IOException e) {
-								Dialogs.create()
-										.owner(null)
-										.title("Problemas al leer documento.")
-										.masthead(
-												"Se omitirá la impresión del documento")
-										.message(
-												doc.getDocumentInformation()
-														.getTitle())
-										.showError();
-							} catch (PrinterException e) {
-								Dialogs.create()
-										.owner(null)
-										.title("Problemas con la impresora.")
-										.masthead(
-												"Se omitirá la impresión del documento")
-										.message(
-												doc.getDocumentInformation()
-														.getTitle())
-										.showError();
-							}
-						}
-						Dialogs.create()
-								.owner(null)
-								.title("Finalizada la impresión de documentos.")
-								.message(
-										"Se han enviado todos los documentos a la impresora.")
-								.showInformation();
-
+						PDDocument doc = impresion.imprimir(prueba, curso,
+								profesor, colegio, dtpFecha.getValue(), n);
+						List<PDDocument> documentos = new ArrayList<PDDocument>();
+						documentos.add(doc);
+						printPDF(documentos);
 					}
+				} catch (NoSuchElementException exep) {
+
 				}
-				tblListadoPruebas.getItems().clear();
+
 			}
+
+			if (event.getSource() == mnuImprimir) {
+				procesarImprimir();
+			}
+		}
+
+		private void procesarImprimir() {
+			ImpresionPrueba impresion = new ImpresionPrueba();
+			ObservableList<OTImprimirPrueba> selecteds = tblListadoPruebas
+					.getItems();
+
+			List<PDDocument> documentos = new ArrayList<PDDocument>();
+			for (OTImprimirPrueba ot : selecteds) {
+
+				PDDocument doc = impresion.imprimir(prueba, ot.getCurso(),
+						ot.getProfesor(), ot.getColegio(), dtpFecha.getValue());
+				documentos.add(doc);
+			}
+			printPDF(documentos);
+			tblListadoPruebas.getItems().clear();
 		}
 
 		public PrintService choosePrinter() {
@@ -323,6 +340,62 @@ public class ImprimirPruebaView extends AFormView {
 			job.setPrintService(printer);
 			document.silentPrint(job);
 			document.close();
+		}
+
+		public void printPDF(List<PDDocument> documentos) {
+			Action response = Dialogs
+					.create()
+					.owner(null)
+					.title("Pruebas para impresión generadas")
+					.masthead(
+							String.format("Se ha(n) generado %d prueba(s).",
+									documentos.size()))
+					.message("Confirma la impresión?")
+					.actions(Dialog.Actions.OK, Dialog.Actions.CANCEL)
+					.showConfirm();
+			if (response.equals(Dialog.Actions.OK)) {
+				PrintService pService = choosePrinter();
+				if (pService == null) {
+					Dialogs.create()
+							.owner(null)
+							.title("No se ha seleccionado impresora.")
+							.masthead("No se imrpimirán los documentos.")
+							.message(
+									"Debe seleccionar impresora antes de imprimir.")
+							.showError();
+				} else {
+					for (PDDocument doc : documentos) {
+						try {
+							printPDF(doc, pService);
+						} catch (IOException e) {
+							Dialogs.create()
+									.owner(null)
+									.title("Problemas al leer documento.")
+									.masthead(
+											"Se omitirá la impresión del documento")
+									.message(
+											doc.getDocumentInformation()
+													.getTitle()).showError();
+						} catch (PrinterException e) {
+							Dialogs.create()
+									.owner(null)
+									.title("Problemas con la impresora.")
+									.masthead(
+											"Se omitirá la impresión del documento")
+									.message(
+											doc.getDocumentInformation()
+													.getTitle()).showError();
+						}
+					}
+					Dialogs.create()
+							.owner(null)
+							.title("Finalizada la impresión de documentos.")
+							.message(
+									"Se han enviado todos los documentos a la impresora.")
+							.showInformation();
+
+				}
+			}
 		}
 	}
 }

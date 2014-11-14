@@ -181,4 +181,13 @@ public class Utils {
 	public static double redondeo2Decimales(double parametro) {
 		return Math.round(parametro * 100d) / 100d;
 	}
+	
+	
+	public static boolean isNumeric(String s) {  
+	    return s.matches("[-+]?\\d*\\.?\\d+");  
+	}  
+	
+	public static boolean isInteger(String s) {  
+	    return s.matches("[-+]?\\d+");  
+	}  
 }

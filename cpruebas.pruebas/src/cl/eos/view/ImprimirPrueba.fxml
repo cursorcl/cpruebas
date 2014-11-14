@@ -28,6 +28,7 @@
                               <KeyCodeCombination alt="UP" code="P" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                            </accelerator>
                         </MenuItem>
+                        <MenuItem fx:id="mnuImprimeVacia" mnemonicParsing="false" text="Imprimir Prueba Vacía" />
                   </items>
                 </Menu>
               </menus>
