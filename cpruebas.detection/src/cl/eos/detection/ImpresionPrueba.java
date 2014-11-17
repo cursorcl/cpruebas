@@ -139,7 +139,7 @@ public class ImpresionPrueba {
 			fileChooser.setTitle("Seleccione Archivo a grabar");
 			File  output = fileChooser.showSaveDialog(null);
 			
-			if(!output.getAbsolutePath().toLowerCase().endsWith("pdf")){
+			if(output != null && !output.getAbsolutePath().toLowerCase().endsWith("pdf")){
 				output = new File(output + ".pdf");
 			}
 			
