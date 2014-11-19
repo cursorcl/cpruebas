@@ -470,7 +470,7 @@ public class DefinePruebaViewController extends AFormView {
 				respuesta.setHabilidad(registro.getHabilidad());
 				respuesta.setMental(registro.getMental());
 				respuesta.setName(registro.getNumero().toString());
-				respuesta.setNumero(new Integer(n));
+				respuesta.setNumero(new Integer(n+1));
 				respuesta.setRespuesta(registro.getRespuesta());
 				respuesta.setVerdaderoFalso(registro.getVerdaderoFalso());
 				respuesta.setPrueba(prueba);
