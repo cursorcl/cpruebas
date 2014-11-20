@@ -13,6 +13,7 @@ import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
+import javafx.stage.FileChooser;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -356,11 +357,20 @@ public class PersistenceService implements IPersistenceService {
               try {
                 Dialogs.create().owner(null).title("Error de importación desde excel")
                     .masthead("Se ha presentado algunos problemas")
-                    .message("Revisar archivo de log en carpeta de proyecto res/logimport.log").showError();
-                File temp = new File("res/logimport.log");
-                FileWriter writer = new FileWriter(temp);
-                writer.write(error.toString());
-                writer.close();
+                    .message("Se grabará el archivo de log.").showError();
+
+                FileChooser fileChooser = new FileChooser();
+                fileChooser.setInitialFileName("import_" + entity + "_" + System.currentTimeMillis() + ".log");
+                fileChooser.setInitialDirectory(new File("res/"));
+                FileChooser.ExtensionFilter extFilter =
+                    new FileChooser.ExtensionFilter("Archivo de log", "*.log");
+                fileChooser.getExtensionFilters().add(extFilter);
+                File file = fileChooser.showSaveDialog(null);
+                if (file != null) {
+                  FileWriter writer = new FileWriter(file);
+                  writer.write(error.toString());
+                  writer.close();
+                }
 
               } catch (IOException e) {
                 e.printStackTrace();
