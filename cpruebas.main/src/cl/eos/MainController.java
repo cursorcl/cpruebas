@@ -3,6 +3,9 @@ package cl.eos;
 import java.awt.MenuContainer;
 import java.io.File;
 import java.util.List;
+import java.util.Optional;
+
+import org.controlsfx.dialog.Dialogs;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -180,28 +183,48 @@ public class MainController {
   }
 
   protected void importarExcel() {
-    FileChooser fileChooser = new FileChooser();
-    FileChooser.ExtensionFilter extFilter =
-        new FileChooser.ExtensionFilter("XLS files (*.xls), (*.xlsx)", "*.xls", "*.xlsx");
-    fileChooser.getExtensionFilters().add(extFilter);
+    Optional<String> response =
+        Dialogs.create().owner(groupRoot).title("Información a Importar:").masthead(null)
+            .message("Ingrese cantidad de hojas a imprimir")
+            .showChoices("Alumno", "Colegio", "Curso", "Profesor");
 
-    File file = fileChooser.showOpenDialog(null);
-    if (file != null) {
-      List lista = null;
-      String extension = Utils.getFileExtension(file);
-      if (extension.equals(EXTENSION_XLSX)) {
-        ExcelSheetReaderx excel = new ExcelSheetReaderx();
-        lista = excel.readExcelFile(file);
-      } else {
-        ExcelSheetReader excel = new ExcelSheetReader();
-        lista = excel.readExcelFile(file);
-      }
-      String[] datosFile = file.getName().split("." + extension);
-      try {
-        PersistenceServiceFactory.getPersistenceService().insert(datosFile[0], lista, null);
+    if (response.isPresent()) {
+      FileChooser fileChooser = new FileChooser();
+      FileChooser.ExtensionFilter extFilter =
+          new FileChooser.ExtensionFilter("XLS files (*.xls), (*.xlsx)", "*.xls", "*.xlsx");
+      fileChooser.getExtensionFilters().add(extFilter);
 
-      } catch (ExceptionBD e) {
-        e.printStackTrace();
+      File file = fileChooser.showOpenDialog(null);
+      if (file != null) {
+        List lista = null;
+        String extension = Utils.getFileExtension(file);
+        try {
+          if (extension.equals(EXTENSION_XLSX)) {
+            ExcelSheetReaderx excel = new ExcelSheetReaderx();
+            lista = excel.readExcelFile(file);
+          } else {
+            ExcelSheetReader excel = new ExcelSheetReader();
+            lista = excel.readExcelFile(file);
+          }
+          PersistenceServiceFactory.getPersistenceService().insert(response.get(), lista, null);
+
+        } catch (ExceptionBD e) {
+          Dialogs error = Dialogs.create();
+          error.owner(groupRoot);
+          error.title("Error en la importación desde excel");
+          error.masthead(null);
+          error.showException(e);
+        }
+        catch(OutOfMemoryError e)
+        {
+          Dialogs error = Dialogs.create();
+          error.owner(groupRoot);
+          error.title("Error en la importación desde excel");
+          error.masthead(null);
+          error.message("Archivo demasiado grande. Reinicie la aplicación");
+          error.showError();
+          
+        }
       }
     }
   }
