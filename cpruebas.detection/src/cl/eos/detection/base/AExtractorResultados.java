@@ -61,14 +61,25 @@ public abstract class AExtractorResultados implements IExtractorResultados {
   public static int NRO_PREG_POR_COLUMNA = 25;
   public static int GROUP_SIZE = 5;
   public static int prueba = 1;
-  public static int XRUTREF = 145;
+  
 
   protected static String RESPUESTAS[] = {"A", "B", "C", "D", "E", "O"};
   protected static String RUT[] = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "K"};
 
+  /*
+  //Inicio rectangulo.
+  public static int XRUTREF = 145;
   // Son las diferencias del inicio del círculo con inicio rectángulo
   public static int[] CIRCLE_X_RUT_DIFF = {286 - XRUTREF, 348 - XRUTREF, 418 - XRUTREF,
       477 - XRUTREF, 536 - XRUTREF, 611 - XRUTREF, 675 - XRUTREF, 736 - XRUTREF, 816 - XRUTREF};
+  */
+
+  //Inicio rectangulo.
+  public static int XRUTREF = 53;
+  // Son las diferencias del inicio del círculo con inicio rectángulo
+  public static int[] CIRCLE_X_RUT_DIFF = {203 - XRUTREF, 270 - XRUTREF, 345 - XRUTREF,
+      408 - XRUTREF, 471 - XRUTREF, 550 - XRUTREF, 617 - XRUTREF, 680 - XRUTREF, 764 - XRUTREF};
+
   // Espaciamiento entre inicios de circulo del rut
   public static int CIRCLE_Y_RUT_DIFF = 48;
   protected Recognizer recognizerRespustas;
@@ -97,10 +108,18 @@ public abstract OTResultadoScanner process(BufferedImage image, int nroPreguntas
    */
   protected String getRut(Point pRefRut, BufferedImage image) {
     int x = pRefRut.x;
+    
     StringBuffer strRut = new StringBuffer("");
     for (int n = 0; n < CIRCLE_X_RUT_DIFF.length; n++) {
       int y = pRefRut.y;
       BufferedImage rut = image.getSubimage(x + CIRCLE_X_RUT_DIFF[n] - 2, y - 2, 51, 545);
+      
+		try {
+			ImageIO.write(rut, "png", new File("/res/RUT" + System.currentTimeMillis()+ ".png"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
       Pair<Integer, Pair<Double, Double>> result = recognizerRut.recognize(rut, 0.75);
       int idx = result.getFirst();
       if (idx != -1) {
@@ -185,9 +204,25 @@ public abstract OTResultadoScanner process(BufferedImage image, int nroPreguntas
     List<Contour> contours = getContours(limage);
     double anlge = getRotationAngle(contours);
     BufferedImage image = rotate(anlge, limage);
+    //image = getScaledImage(image, 2560, 3300);
     return image;
   }
 
+  private BufferedImage getScaledImage(BufferedImage image, int width, int height) 
+  {
+	    int imageWidth  = image.getWidth();
+	    int imageHeight = image.getHeight();
+
+	    double scaleX = (double)((double)width/(double)imageWidth);
+	    double scaleY = (double)((double)height/(double)imageHeight);
+	    AffineTransform scaleTransform = AffineTransform.getScaleInstance(scaleX, scaleY);
+	    AffineTransformOp bilinearScaleOp = new AffineTransformOp(scaleTransform, AffineTransformOp.TYPE_BILINEAR);
+
+	    return bilinearScaleOp.filter(
+	        image,
+	        new BufferedImage(width, height, image.getType()));
+	}
+  
   /**
    * Se obtienen todos los puntos de referencia en base a los contornos generados de las marcas de
    * impresion.
