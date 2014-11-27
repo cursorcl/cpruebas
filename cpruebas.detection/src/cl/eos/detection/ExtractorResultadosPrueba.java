@@ -4,15 +4,12 @@ import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.util.Arrays;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 
 import cl.cursor.card.RecognizerFactory;
-import cl.cursor.card.impl.NeuralNetworkRecognizer;
 import cl.eos.detection.base.AExtractorResultados;
 
 /**
@@ -76,12 +73,6 @@ public class ExtractorResultadosPrueba extends AExtractorResultados {
 	public OTResultadoScanner process(BufferedImage image, int nroPreguntas) {
 		OTResultadoScanner resultado = new OTResultadoScanner();
 		BufferedImage recImage = rectificarImagen(image);
-		try {
-			ImageIO.write(recImage, "png", new File("/res/PR" + System.currentTimeMillis() + ".png"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		Point[] pointsReference = obtenerPuntosReferencia(recImage);
 		Point[] pRefRespuestas = Arrays.copyOfRange(pointsReference, 1,
 				pointsReference.length);
@@ -99,5 +90,4 @@ public class ExtractorResultadosPrueba extends AExtractorResultados {
 		resultado.setRut(rut);
 		return resultado;
 	}
-
 }
