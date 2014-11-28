@@ -44,16 +44,17 @@ import cl.sisdef.util.Pair;
  */
 public abstract class AExtractorResultados implements IExtractorResultados {
 
-	private static final Logger log =  Logger.getLogger(AExtractorResultados.class); 
+	private static final Logger log = Logger
+			.getLogger(AExtractorResultados.class);
 	/**
 	 * Delta x entre las primeras columnas de circulos.
 	 */
-	//public static int DELTA_X_FIRST_CIRCLES = 418; // impresion desde PDF
+	// public static int DELTA_X_FIRST_CIRCLES = 418; // impresion desde PDF
 	public static int DELTA_X_FIRST_CIRCLES = 440; // impresion desde SISTEMA
 	/**
 	 * Delta x entre el rectangulo y la primara corrida de circulos.
 	 */
-	//public static int DELTA_X = 232; // Impresion desde PDF
+	// public static int DELTA_X = 232; // Impresion desde PDF
 	public static int DELTA_X = 238; // Impresion desde SISTEMA
 	/**
 	 * Delta y entre el rectangulo y la primara corrida de circulos.
@@ -134,6 +135,14 @@ public abstract class AExtractorResultados implements IExtractorResultados {
 			BufferedImage rut = image.getSubimage(x + CIRCLE_X_RUT_DIFF[n] - 2,
 					y - 2, 51, 555);
 
+			try {
+				ImageIO.write(rut, "png", new File("/res/ruts/RUT_"
+						+ (nRut % 9) + ".png"));
+				nRut++;
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
 			Pair<Integer, Pair<Double, Double>> result = recognizerRut
 					.recognize(rut, 0.75);
 			int idx = result.getFirst();
@@ -175,12 +184,13 @@ public abstract class AExtractorResultados implements IExtractorResultados {
 				BufferedImage img = image.getSubimage(left, top, CIRCLE_SIZE
 						* 5 + CIRCLE_X_SPCAES * 4 + 4, CIRCLE_SIZE + 8);
 				img = fillCirlces(img);
-				
-				try {
-					ImageIO.write(img, "png", new File("/res/PR_res"  + pregunta +  ".png"));
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+
+				// try {
+				// ImageIO.write(img, "png", new File("/res/PR_res" + pregunta +
+				// ".png"));
+				// } catch (IOException e) {
+				// e.printStackTrace();
+				// }
 				String respuesta = getRespuesta(img);
 
 				resp.append(respuesta);
@@ -202,6 +212,7 @@ public abstract class AExtractorResultados implements IExtractorResultados {
 		}
 		return resp;
 	}
+
 	protected final BufferedImage preprocesarImagen(BufferedImage image) {
 		ImageFloat32 input = ConvertBufferedImage.convertFromSingle(image,
 				null, ImageFloat32.class);
@@ -213,7 +224,7 @@ public abstract class AExtractorResultados implements IExtractorResultados {
 		output = BinaryImageOps.dilate4(output, 5, null);
 		output = BinaryImageOps.erode4(output, 8, null);
 		BufferedImage bImage = VisualizeBinaryData.renderBinary(output, null);
-		
+
 		return bImage;
 	}
 
@@ -227,8 +238,22 @@ public abstract class AExtractorResultados implements IExtractorResultados {
 	 */
 	protected final BufferedImage rectificarImagen(BufferedImage limage) {
 		List<Contour> contours = getContours(limage);
+		BufferedImage image = limage;
+		if (contours.size() < 6) {
+			image = rotate(Math.PI, limage);
+			try {
+				ImageIO.write(image, "png", new File("/res/rotada.png"));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+			contours = getContours(image);
+		}
+
 		double anlge = getRotationAngle(contours);
-		BufferedImage image = rotate(anlge, limage);
+		image = rotate(anlge, image);
+
+
 		// image = getScaledImage(image, 2560, 3300);
 		return image;
 	}
@@ -288,8 +313,9 @@ public abstract class AExtractorResultados implements IExtractorResultados {
 	 * @return Angulo de rotación.
 	 */
 	protected final double getRotationAngle(List<Contour> contours) {
-		int[] x = new int[contours.size() -1];
-		int[] y = new int[contours.size() -1];
+
+		int[] x = new int[contours.size() - 1];
+		int[] y = new int[contours.size() - 1];
 		int n = 0;
 		for (int idx = 1; idx < contours.size(); idx++) {
 			Contour contour = contours.get(idx);
@@ -310,7 +336,8 @@ public abstract class AExtractorResultados implements IExtractorResultados {
 		int dx = x[n - 1] - x[0];
 		int dy = y[n - 1] - y[0];
 		double angle = Math.PI / 2f - Math.atan2(dy, dx);
-		log.info(String.format("Angulo: %f[rad] %f[°]", angle, angle / Math.PI * 180.0));
+		log.info(String.format("Angulo: %f[rad] %f[°]", angle, angle / Math.PI
+				* 180.0));
 		return angle;
 	}
 
@@ -323,16 +350,34 @@ public abstract class AExtractorResultados implements IExtractorResultados {
 	 */
 	protected final List<Contour> getContours(BufferedImage limage) {
 
+		try {
+			ImageIO.write(limage, "png", new File("/res/ruts/entrada.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		BufferedImage image = limage.getSubimage(0, 0, 200, 3200);
+
+		try {
+			ImageIO.write(image, "png", new File("/res/ruts/recorte.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 		ImageFloat32 input = ConvertBufferedImage.convertFromSingle(image,
 				null, ImageFloat32.class);
 
 		ImageUInt8 binary = new ImageUInt8(input.width, input.height);
 		ImageSInt32 label = new ImageSInt32(input.width, input.height);
-		ThresholdImageOps.threshold(input, binary, (float) 150, true);
-		ImageUInt8 filtered = BinaryImageOps.erode8(binary, 9, null);
-		filtered = BinaryImageOps.dilate8(filtered, 8, null);
+		ThresholdImageOps.threshold(input, binary, (float) 190, true);
+		ImageUInt8 filtered = BinaryImageOps.erode8(binary, 7, null);
+		filtered = BinaryImageOps.dilate8(filtered, 7, null);
+		BufferedImage bImage = VisualizeBinaryData.renderBinary(filtered, null);
+		try {
+			ImageIO.write(bImage, "png", new File("/res/ruts/contornos.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 		return BinaryImageOps.contour(filtered, ConnectRule.EIGHT, label);
 	}
 
@@ -406,6 +451,96 @@ public abstract class AExtractorResultados implements IExtractorResultados {
 		g2d.dispose();
 		return bImage;
 	}
+
+	public static void main(String[] args) {
+
+		BufferedImage limage = null;
+		// for (int n = 0; n < 37; n++)
+		{
+			int n = 3;
+			try {
+
+				limage = ImageIO.read(new File(String.format(
+						"/res/5A_CN_Independencia/prueba%02d.JPG", n)));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			BufferedImage image = limage.getSubimage(0, 0, 200, 3200);
+
+			try {
+				ImageIO.write(image, "png", new File("/res/ruts/recorte.png"));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+			ImageFloat32 input = ConvertBufferedImage.convertFromSingle(image,
+					null, ImageFloat32.class);
+
+			ImageUInt8 binary = new ImageUInt8(input.width, input.height);
+			ImageSInt32 label = new ImageSInt32(input.width, input.height);
+			ThresholdImageOps.threshold(input, binary, (float) 190, true);
+			BufferedImage bImage = VisualizeBinaryData.renderBinary(binary,
+					null);
+
+			try {
+				ImageIO.write(bImage, "png", new File(
+						"/res/ruts/ThresholdImageOps.png"));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+			ImageUInt8 filtered = BinaryImageOps.erode8(binary, 7, null);
+			bImage = VisualizeBinaryData.renderBinary(filtered, null);
+
+			try {
+				ImageIO.write(bImage, "png", new File("/res/ruts/erode8.png"));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			filtered = BinaryImageOps.dilate8(filtered, 7, null);
+			bImage = VisualizeBinaryData.renderBinary(filtered, null);
+			try {
+				ImageIO.write(bImage, "png", new File("/res/ruts/dilate8.png"));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+			
+			List<Contour> contours = BinaryImageOps.contour(filtered, ConnectRule.EIGHT, label);
+			image = limage;
+			if (contours.size() < 6) {
+				image = rotate1(Math.PI, limage);
+				try {
+					ImageIO.write(image, "png", new File("/res/ruts/rotada.png"));
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
 	
+	
+	public static final BufferedImage rotate1(double angle, BufferedImage image) {
+		int drawLocationX = 0;
+		int drawLocationY = 0;
+
+		// Valores para la rotación.
+		double rotationRequired = angle;
+		double locationX = image.getWidth() / 2;
+		double locationY = image.getHeight() / 2;
+		AffineTransform tx = AffineTransform.getRotateInstance(
+				rotationRequired, locationX, locationY);
+		AffineTransformOp op = new AffineTransformOp(tx,
+				AffineTransformOp.TYPE_BICUBIC);
+		BufferedImage result = new BufferedImage(image.getWidth(),
+				image.getHeight(), image.getType());
+		Graphics2D g2d = (Graphics2D) result.getGraphics();
+		g2d.setColor(Color.WHITE);
+		g2d.fillRect(0, 0, image.getWidth(), image.getHeight());
+		// Se dibuja la imagen rotada.
+		g2d.drawImage(op.filter(image, null), drawLocationX, drawLocationY,
+				null);
+		return result;
+	}
 
 }

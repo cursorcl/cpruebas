@@ -8,43 +8,122 @@ import cl.eos.interfaces.entity.IEntity;
 import cl.eos.interfaces.entity.IPersistenceListener;
 
 /**
- * Interface de un modelo.
+ * Un modelo corresponde a la instancia que contiene los elementos, entre sus
+ * responsabilidades se encuentra:
+ * <p>
+ * <li>Persistencia de los elementos.
+ * <li>Busqueda de los elementos.
+ * <p>
+ * Un modelo sabe que Entity accede en la persistencia, por lo tanto todas las
+ * operaciones que realiza son sobre la entidad que maneja.
+ * 
+ * <p>
  * 
  * @author eosorio
  */
 public interface IModel {
 
-	
-	void setController(IController controller);
-	IController getController();
 	/**
-	 * Graba el modelo.
+	 * Establece el controlador al modelo.
+	 * 
+	 * @param controller
+	 *            Controlador de la funcion que se asocia al modelo.
+	 */
+
+	void setController(IController controller);
+
+	/**
+	 * Obtiene el controlador asociado al modelo.
+	 * 
+	 * @return Controlador que se encuentra asociado al modelo.
+	 */
+	IController getController();
+
+	/**
+	 * Graba el elemento en el medio de persistencia.
+	 * 
+	 * @param entity
+	 *            El elemento a ser grabado.
 	 */
 	void save(IEntity entity);
 
+	/**
+	 * Elimina el elemento en el medio de persistencia.
+	 * 
+	 * @param entity
+	 *            El elemento a ser eliminado.
+	 */
 	void delete(IEntity entity);
-	
+
+	/**
+	 * Elimina los elementos en el medio de persistencia.
+	 * 
+	 * @param entity
+	 *            Lista de elementos a ser eliminados.
+	 */
 	void delete(List<? extends IEntity> entity);
 
+	/**
+	 * Graba el elemento en el medio de persistencia, asumiendo que existe.
+	 * 
+	 * @param entity
+	 *            El elemento a ser grabado.
+	 */
 	void update(IEntity entity);
 
 	/**
 	 * Busca todos los registros de una entidad.
-	 * @param entityClazz Clase que se quiere buscar.
-	 * @param listener A quien se le notifica del termino de la ejecucion.
+	 * 
+	 * @param entityClazz
+	 *            Clase que se quiere buscar.
+	 * @param listener
+	 *            A quien se le notifica del termino de la ejecucion.
 	 */
-	void findAll(Class<? extends IEntity> entityClazz, IPersistenceListener listener);
+	void findAll(Class<? extends IEntity> entityClazz,
+			IPersistenceListener listener);
+
 	void findAll(Class<? extends IEntity> entityClazz);
-	void find(final String namedQuery, final Map<String, Object> parameters, IPersistenceListener listener);
+
+	void find(final String namedQuery, final Map<String, Object> parameters,
+			IPersistenceListener listener);
+
 	void find(final String namedQuery, final Map<String, Object> parameters);
-	void findById(Class<? extends IEntity> entityClazz, Long id, IPersistenceListener listener);
+
+	void findById(Class<? extends IEntity> entityClazz, Long id,
+			IPersistenceListener listener);
+
 	void findById(Class<? extends IEntity> entityClazz, Long id);
-	void findByName(Class<? extends IEntity> entityClazz, String name, IPersistenceListener listener);
+
+	void findByName(Class<? extends IEntity> entityClazz, String name,
+			IPersistenceListener listener);
+
 	void findByName(Class<? extends IEntity> entityClazz, String name);
 
+	/**
+	 * Realiza la busqueda del elemento que tiene el mismo identificador de
+	 * entity en la persistencia.
+	 * 
+	 * @param entity
+	 *            Entidad que se quiere buscar, se hace uso del identificador
+	 *            para la busqueda.
+	 * @return Entidad encontrada en la BD, de no encontrarse retorna
+	 *         <code>null</code>.
+	 */
 	IEntity get(IEntity entity);
+
+	/**
+	 * Realiza la busqueda del elemento que tiene el <code>id</code> en la
+	 * persistencia.
+	 * 
+	 * @param id
+	 *            Identificador del elemento a buscar.
+	 * @return Entidad encontrada en la BD, de no encontrarse retorna
+	 *         <code>null</code>.
+	 */
 	IEntity get(Long id);
-	
+
 	void findByAllId(Class<? extends IEntity> entityClazz, Object[] id);
-	void findByAllId(Class<? extends IEntity> entityClazz, Object[] id, IPersistenceListener listener);
+
+	void findByAllId(Class<? extends IEntity> entityClazz, Object[] id,
+			IPersistenceListener listener);
 }
