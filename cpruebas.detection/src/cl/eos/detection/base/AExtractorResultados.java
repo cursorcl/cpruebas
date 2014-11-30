@@ -199,9 +199,9 @@ public abstract class AExtractorResultados implements IExtractorResultados {
   protected final BufferedImage preprocesarImagen(BufferedImage image) {
     ImageFloat32 input = ConvertBufferedImage.convertFromSingle(image, null, ImageFloat32.class);
     ImageUInt8 binary = new ImageUInt8(input.width, input.height);
-    ThresholdImageOps.threshold(input, binary, (float) 180, false); //170,180
-    ImageUInt8 output = BinaryImageOps.erode4(binary, 4, null); //2,4
-    output = BinaryImageOps.dilate4(output, 9, null); //7,9
+    ThresholdImageOps.threshold(input, binary, (float) 189, false); //170,180
+    ImageUInt8 output = BinaryImageOps.erode4(binary, 2, null); //2,4
+    output = BinaryImageOps.dilate4(output, 7, null); //7,9
     output = BinaryImageOps.erode4(output, 2, null);
     output = BinaryImageOps.dilate4(output, 5, null);
     output = BinaryImageOps.erode4(output, 8, null);
@@ -388,7 +388,7 @@ public abstract class AExtractorResultados implements IExtractorResultados {
   public static void main(String[] args) {
 
     BufferedImage limage = null;
-    int n = 16;
+    int n = 20;
     // for (n = 0; n < 37; n++)
     {
       try {
@@ -399,13 +399,13 @@ public abstract class AExtractorResultados implements IExtractorResultados {
 //        ImageFloat32 input =
 //            ConvertBufferedImage.convertFromSingle(limage, null, ImageFloat32.class);
 //        ImageUInt8 binary = new ImageUInt8(input.width, input.height);
-//        ThresholdImageOps.threshold(input, binary, (float) 200, false);
+//        ThresholdImageOps.threshold(input, binary, (float) 180, false);
 //        BufferedImage bImage = VisualizeBinaryData.renderBinary(binary, null);
 //        writeIMG(bImage, "1threshold");
-//        ImageUInt8 output = BinaryImageOps.erode4(binary, 6, null);
+//        ImageUInt8 output = BinaryImageOps.erode4(binary, 2, null);
 //        bImage = VisualizeBinaryData.renderBinary(output, null);
 //        writeIMG(bImage, "2erode4_1x2");
-//        output = BinaryImageOps.dilate4(output, 11, null);
+//        output = BinaryImageOps.dilate4(output, 7, null);
 //        bImage = VisualizeBinaryData.renderBinary(output, null);
 //        writeIMG(bImage, "3dilate4_1x7");
 //        output = BinaryImageOps.erode4(output, 2, null);
@@ -428,12 +428,12 @@ public abstract class AExtractorResultados implements IExtractorResultados {
 
 
   public static void writeIMG(BufferedImage image, String name) {
-//    try {
-//      ImageIO.write(image, "png", new File("/res/ruts/" + name + ".png"));
-//    } catch (IOException e) {
-//      // TODO Auto-generated catch block
-//      e.printStackTrace();
-//    };
+    try {
+      ImageIO.write(image, "png", new File("/res/ruts/" + name + ".png"));
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    };
   }
 
 }
