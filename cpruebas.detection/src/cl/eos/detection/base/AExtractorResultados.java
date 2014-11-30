@@ -59,7 +59,13 @@ public abstract class AExtractorResultados implements IExtractorResultados {
    * Delta y entre el rectangulo y la primara corrida de circulos.
    */
 
-  public static int DELTA_Y_FIRST_CIRCLE_RESP = -17;
+  // Las posiciones de los circulos con respecto a los puntos de referencia en Y son:
+  /*
+   * Primer circulo es PREF - 15(DELTA_Y_FIRST_CIRCLE_RESP) Segundo circulo es PREF - 15 + 54 Tercer
+   * circulo es PREF - 15 + 54 * 2 Cuarto circulo es PREF - 15 + 54 * 3 Quinto circulo es PREF - 15
+   * + 54 * 4
+   */
+  public static int DELTA_Y_FIRST_CIRCLE_RESP = -15;
   public static int CIRCLE_SIZE = 44;
   public static int CIRCLE_Y_SPCAES = 6;
   public static int CIRCLE_X_SPCAES = 16;
@@ -146,6 +152,8 @@ public abstract class AExtractorResultados implements IExtractorResultados {
    */
   protected String getRespuestas(Point[] pRefRespuestas, BufferedImage image, int nroPreguntas) {
     int pregunta = 1;
+    
+    
     StringBuffer resp = new StringBuffer();
     for (int idx = 1; idx <= nroPreguntas; idx = idx + GROUP_SIZE) {
       // Con esto se calcula el nro del punto de referencia.
@@ -157,12 +165,14 @@ public abstract class AExtractorResultados implements IExtractorResultados {
       int col = (pregunta - 1) / NRO_PREG_POR_COLUMNA;
 
       for (int n = 0; n < GROUP_SIZE; n++) {
-        int left = x + DELTA_X - 4 + col * DELTA_X_FIRST_CIRCLES;
-        int top = y + DELTA_Y_FIRST_CIRCLE_RESP + BASE + n * 52;
+        int left = x + DELTA_X + col * DELTA_X_FIRST_CIRCLES; // - 4;
+        int top = y + DELTA_Y_FIRST_CIRCLE_RESP + BASE + n * 54;
         BufferedImage img =
             image
                 .getSubimage(left, top, CIRCLE_SIZE * 5 + CIRCLE_X_SPCAES * 4 + 4, CIRCLE_SIZE + 8);
+        writeIMG(img, "resp_" + pregunta);
         img = fillCirlces(img);
+        writeIMG(img, "fresp_" + pregunta);
         String respuesta = getRespuesta(img);
 
         resp.append(respuesta);
@@ -189,9 +199,9 @@ public abstract class AExtractorResultados implements IExtractorResultados {
   protected final BufferedImage preprocesarImagen(BufferedImage image) {
     ImageFloat32 input = ConvertBufferedImage.convertFromSingle(image, null, ImageFloat32.class);
     ImageUInt8 binary = new ImageUInt8(input.width, input.height);
-    ThresholdImageOps.threshold(input, binary, (float) 190, false);
-    ImageUInt8 output = BinaryImageOps.erode4(binary, 2, null);
-    output = BinaryImageOps.dilate4(output, 7, null);
+    ThresholdImageOps.threshold(input, binary, (float) 180, false); //170,180
+    ImageUInt8 output = BinaryImageOps.erode4(binary, 4, null); //2,4
+    output = BinaryImageOps.dilate4(output, 9, null); //7,9
     output = BinaryImageOps.erode4(output, 2, null);
     output = BinaryImageOps.dilate4(output, 5, null);
     output = BinaryImageOps.erode4(output, 8, null);
@@ -279,7 +289,7 @@ public abstract class AExtractorResultados implements IExtractorResultados {
     int dx = x[n - 1] - x[0];
     int dy = y[n - 1] - y[0];
     double angle = Math.PI / 2f - Math.atan2(dy, dx);
-//    log.info(String.format("Angulo: %f[rad] %f[°]", angle, angle / Math.PI * 180.0));
+    // log.info(String.format("Angulo: %f[rad] %f[°]", angle, angle / Math.PI * 180.0));
     return angle;
   }
 
@@ -296,12 +306,12 @@ public abstract class AExtractorResultados implements IExtractorResultados {
     ImageUInt8 binary = new ImageUInt8(input.width, input.height);
     ImageSInt32 label = new ImageSInt32(input.width, input.height);
     ThresholdImageOps.threshold(input, binary, (float) 190, true);
-    
+
     ImageUInt8 filtered = BinaryImageOps.dilate8(binary, 2, null);
     filtered = BinaryImageOps.erode8(filtered, 9, null);
     filtered = BinaryImageOps.dilate8(filtered, 10, null);
-//    BufferedImage bImage = VisualizeBinaryData.renderBinary(filtered, null);
-//    writeIMG(bImage, "contornos");
+    // BufferedImage bImage = VisualizeBinaryData.renderBinary(filtered, null);
+    // writeIMG(bImage, "contornos");
     return BinaryImageOps.contour(filtered, ConnectRule.EIGHT, label);
   }
 
@@ -361,7 +371,13 @@ public abstract class AExtractorResultados implements IExtractorResultados {
           ConvertBufferedImage.convertFromSingle(subImage, null, ImageFloat32.class);
       double value = ImageStatistics.mean(img32);
       g2d.drawOval(X[n], 1, 45, 48);
-      if (value < 180) {
+      if (value < 170) {
+        g2d.setColor(Color.BLACK);
+        g2d.fillOval(X[n], 1, 45, 48);
+      }
+      else
+      {
+        g2d.setColor(Color.WHITE);
         g2d.fillOval(X[n], 1, 45, 48);
       }
     }
@@ -372,15 +388,38 @@ public abstract class AExtractorResultados implements IExtractorResultados {
   public static void main(String[] args) {
 
     BufferedImage limage = null;
-    int n =6;
+    int n = 16;
     // for (n = 0; n < 37; n++)
     {
       try {
         limage =
-            ImageIO.read(new File(String.format("/res/8B_CS_Independencia/prueba%02d.JPG", n)));
-          ExtractorResultadosPrueba extractor = ExtractorResultadosPrueba.getInstance();
-          extractor.process(limage, 35);
-          
+            ImageIO.read(new File(String.format("/res/5A_CN_Independencia/prueba%02d.JPG", n)));
+
+//        writeIMG(limage, "0fuente");
+//        ImageFloat32 input =
+//            ConvertBufferedImage.convertFromSingle(limage, null, ImageFloat32.class);
+//        ImageUInt8 binary = new ImageUInt8(input.width, input.height);
+//        ThresholdImageOps.threshold(input, binary, (float) 200, false);
+//        BufferedImage bImage = VisualizeBinaryData.renderBinary(binary, null);
+//        writeIMG(bImage, "1threshold");
+//        ImageUInt8 output = BinaryImageOps.erode4(binary, 6, null);
+//        bImage = VisualizeBinaryData.renderBinary(output, null);
+//        writeIMG(bImage, "2erode4_1x2");
+//        output = BinaryImageOps.dilate4(output, 11, null);
+//        bImage = VisualizeBinaryData.renderBinary(output, null);
+//        writeIMG(bImage, "3dilate4_1x7");
+//        output = BinaryImageOps.erode4(output, 2, null);
+//        bImage = VisualizeBinaryData.renderBinary(output, null);
+//        writeIMG(bImage, "4erode4_2x2");
+//        output = BinaryImageOps.dilate4(output, 5, null);
+//        bImage = VisualizeBinaryData.renderBinary(output, null);
+//        writeIMG(bImage, "5dialte4_2x5");
+//        output = BinaryImageOps.erode4(output, 8, null);
+//        bImage = VisualizeBinaryData.renderBinary(output, null);
+//        writeIMG(bImage, "6erode4_2x8_finish");
+         ExtractorResultadosPrueba extractor = ExtractorResultadosPrueba.getInstance();
+         extractor.process(limage, 35);
+
       } catch (IOException e) {
         e.printStackTrace();
       }
@@ -389,12 +428,12 @@ public abstract class AExtractorResultados implements IExtractorResultados {
 
 
   public static void writeIMG(BufferedImage image, String name) {
-    try {
-      ImageIO.write(image, "png", new File("/res/ruts/" + name + ".png"));
-    } catch (IOException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    };
+//    try {
+//      ImageIO.write(image, "png", new File("/res/ruts/" + name + ".png"));
+//    } catch (IOException e) {
+//      // TODO Auto-generated catch block
+//      e.printStackTrace();
+//    };
   }
 
 }
