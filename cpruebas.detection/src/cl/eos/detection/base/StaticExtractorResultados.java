@@ -32,6 +32,7 @@ import cl.cursor.card.Recognizer;
 import cl.eos.detection.OTResultadoScanner;
 import cl.sisdef.util.Pair;
 
+
 /**
  * Imagen escaneada en una resolucion de 300dpi. 1) 1.l) El primer rectangulo oscuro está en 58,1541
  * 1.2) La primera columna de circulo a leer está en 290,1528 y la segunda en 710, 1528 1.3) Los
