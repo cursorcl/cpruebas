@@ -565,7 +565,7 @@ public class EvaluarPruebaView extends AFormView {
 		FileChooser.ExtensionFilter imageExtFilter = new FileChooser.ExtensionFilter(
 				"Archivos de Imágenes ", "*.png", "*.jpg");
 		fileChooser.getExtensionFilters().add(imageExtFilter);
-
+		fileChooser.setInitialDirectory(Utils.getDefaultDirectory());
 		fileChooser.setTitle("Seleccione Imégenes Respuesta");
 		List<File> files = fileChooser.showOpenMultipleDialog(null);
 		if (files != null && !files.isEmpty()) {

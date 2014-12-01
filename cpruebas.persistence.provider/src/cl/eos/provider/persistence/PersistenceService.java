@@ -31,6 +31,7 @@ import cl.eos.interfaces.entity.IPersistenceListener;
 import cl.eos.persistence.IPersistenceService;
 import cl.eos.persistence.models.Prueba;
 import cl.eos.util.Pair;
+import cl.eos.util.Utils;
 
 /**
  * Instancia de servicio para almacenamiento.
@@ -361,7 +362,7 @@ public class PersistenceService implements IPersistenceService {
 
                 FileChooser fileChooser = new FileChooser();
                 fileChooser.setInitialFileName("import_" + entity + "_" + System.currentTimeMillis() + ".log");
-                fileChooser.setInitialDirectory(new File("res/"));
+                fileChooser.setInitialDirectory(Utils.getDefaultDirectory());
                 FileChooser.ExtensionFilter extFilter =
                     new FileChooser.ExtensionFilter("Archivo de log", "*.log");
                 fileChooser.getExtensionFilters().add(extFilter);

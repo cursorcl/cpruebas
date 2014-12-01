@@ -12,9 +12,12 @@ import javax.imageio.ImageReader;
 import javax.imageio.stream.FileImageInputStream;
 import javax.imageio.stream.ImageInputStream;
 
+import com.sun.istack.internal.logging.Logger;
+
 public class Utils {
 
 	public static float MAX_PUNTAJE = 340f;
+	private static Logger log =  Logger.getLogger(Utils.class);
 
 	/**
 	 * M�todo Est�tico que valida si un rut es v�lido Fuente :
@@ -189,5 +192,29 @@ public class Utils {
 	
 	public static boolean isInteger(String s) {  
 	    return s.matches("[-+]?\\d+");  
-	}  
+	}
+	
+	/**
+	 * Obtiene el directorio donde se almacenan todos los archivos.
+	 * Retorna uset.home directorio.
+	 * @return 
+	 */
+	public static File getDefaultDirectory()
+	{
+		String path = System.getProperty("user.home") + File.separator
+				+ "Documents";
+		path += File.separator + "CPruebas";
+		File customDir = new File(path);
+		if (customDir.exists()) {
+			log.info(customDir + " ya existe.");
+		} else if (customDir.mkdirs()) {
+			log.info(customDir + " fue creado.");
+		} else {
+			log.info(customDir + " no fue creado.");
+			path = System.getProperty("user.home");
+			customDir = new File(path);
+		}
+		return customDir;
+	}
+	
 }
