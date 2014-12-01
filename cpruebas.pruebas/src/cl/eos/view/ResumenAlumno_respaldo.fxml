@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="485.0" prefWidth="1087.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.ResumenAlumnoView">
+   <center>
+      <SplitPane dividerPositions="0.3169642857142857" orientation="VERTICAL" prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+        <items>
+            <SplitPane dividerPositions="0.3242924528301887" prefHeight="124.0" prefWidth="848.0">
+              <items>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="278.0" prefWidth="421.0">
+                     <children>
+                        <TextField id="txtCurso" fx:id="txtCurso" editable="false" layoutX="10.0" layoutY="66.0" promptText="Curso" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="10.0" right="10.0" />
+                           </VBox.margin>
+                        </TextField>
+                        <TextField id="txtPrueba" fx:id="txtPrueba" editable="false" layoutX="10.0" layoutY="23.0" promptText="Prueba" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                           </VBox.margin>
+                        </TextField>
+                        <TextField id="txtAsignatura" fx:id="txtAsignatura" editable="false" layoutX="10.0" layoutY="108.0" promptText="Asignatura" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="10.0" right="10.0" />
+                           </VBox.margin>
+                        </TextField>
+                        <Label layoutX="10.0" layoutY="6.0" prefHeight="17.0" prefWidth="61.0" text="Prueba" AnchorPane.leftAnchor="5.0" />
+                        <Label layoutX="10.0" layoutY="48.0" text="Curso" AnchorPane.leftAnchor="5.0" />
+                        <Label layoutX="12.0" layoutY="91.0" text="Asignatura" AnchorPane.leftAnchor="5.0" />
+                     </children>
+                  </AnchorPane>
+                <AnchorPane prefHeight="137.0" prefWidth="421.0">
+                     <children>
+                        <TableView fx:id="tblAlumnos" prefHeight="137.0" prefWidth="417.0" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="2.0">
+                          <columns>
+                            <TableColumn id="colRut" fx:id="colARut" prefWidth="75.0" text="Rut" />
+                            <TableColumn id="colPaterno" fx:id="colAPaterno" prefWidth="83.0" text="A.Paterno" />
+                              <TableColumn id="colMaterno" fx:id="colAMaterno" prefWidth="190.0" text="A.Materno" />
+                              <TableColumn id="colName" fx:id="colAName" prefWidth="232.0" text="Nombres" />
+                              <TableColumn fx:id="colABuenas" prefWidth="75.0" style="-fx-aligment:CENTER;" text="Buenas" />
+                              <TableColumn fx:id="colAMalas" prefWidth="75.0" style="-fx-aligment:CENTER;" text="Malas" />
+                              <TableColumn fx:id="colAOmitidas" prefWidth="75.0" style="-fx-aligment:CENTER;" text="Omitidas" />
+                          </columns>
+                           <columnResizePolicy>
+                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                           </columnResizePolicy>
+                           <contextMenu>
+                              <ContextMenu>
+                                <items>
+                                    <MenuItem fx:id="mnuExportarAlumnos" mnemonicParsing="false" text="Exportar a Excel" />
+                                </items>
+                              </ContextMenu>
+                           </contextMenu>
+                        </TableView>
+                     </children>
+                  </AnchorPane>
+              </items>
+            </SplitPane>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="71.0" prefWidth="848.0">
+               <children>
+                  <BorderPane prefHeight="459.0" prefWidth="370.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <center>
+                        <TableView fx:id="tblRespuestas" prefHeight="400.0" prefWidth="773.0" BorderPane.alignment="CENTER">
+                           <columnResizePolicy>
+                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                           </columnResizePolicy>
+                           <columns>
+                              <TableColumn id="colRut" fx:id="colRRut" prefWidth="103.0" resizable="false" text="Rut" />
+                              <TableColumn id="colPaterno" fx:id="colRPaterno" prefWidth="134.0" resizable="false" text="A.Paterno" />
+                              <TableColumn id="colMaterno" fx:id="colRMaterno" prefWidth="131.0" resizable="false" text="A.Materno" />
+                              <TableColumn id="colName" fx:id="colRName" prefWidth="166.0" resizable="false" text="Nombres" />
+                           </columns>
+                           <contextMenu>
+                              <ContextMenu>
+                                <items>
+                                    <MenuItem fx:id="mnuExportarRespuestas" mnemonicParsing="false" text="Exportar a Excel" />
+                                </items>
+                              </ContextMenu>
+                           </contextMenu>
+                           <BorderPane.margin>
+                              <Insets bottom="20.0" />
+                           </BorderPane.margin>
+                        </TableView>
+                     </center>
+                  </BorderPane>
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
+   </center>
+   <top>
+      <Pane maxHeight="40.0" styleClass="sample-page" BorderPane.alignment="CENTER">
+         <children>
+            <HBox />
+         </children>
+      </Pane>
+   </top>
+</BorderPane>

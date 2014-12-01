@@ -200,7 +200,7 @@ public abstract class AExtractorResultados implements IExtractorResultados {
     ImageFloat32 input = ConvertBufferedImage.convertFromSingle(image, null, ImageFloat32.class);
     ImageUInt8 binary = new ImageUInt8(input.width, input.height);
     ThresholdImageOps.threshold(input, binary, (float) 185, false); //170,180
-    ImageUInt8 output = BinaryImageOps.erode4(binary, 2, null); //2,4
+    ImageUInt8 output = BinaryImageOps.erode4(binary, 3, null); //2,4
     output = BinaryImageOps.dilate4(output, 7, null); //7,9
     output = BinaryImageOps.erode4(output, 2, null);
     output = BinaryImageOps.dilate4(output, 5, null); //5
@@ -390,8 +390,8 @@ public abstract class AExtractorResultados implements IExtractorResultados {
     BufferedImage limage = null;
     ExtractorResultadosPrueba extractor = ExtractorResultadosPrueba.getInstance();
 
-    int n = 24;
-    for (n = 0; n < 37; n++)
+    int n = 37;
+//    for (n = 0; n < 37; n++)
     {
       try {
         limage =
@@ -401,19 +401,19 @@ public abstract class AExtractorResultados implements IExtractorResultados {
 //        ImageFloat32 input =
 //            ConvertBufferedImage.convertFromSingle(limage, null, ImageFloat32.class);
 //        ImageUInt8 binary = new ImageUInt8(input.width, input.height);
-//        ThresholdImageOps.threshold(input, binary, (float) 180, false);
+//        ThresholdImageOps.threshold(input, binary, (float) 185, false);
 //        BufferedImage bImage = VisualizeBinaryData.renderBinary(binary, null);
 //        writeIMG(bImage, "1threshold");
-//        ImageUInt8 output = BinaryImageOps.erode4(binary, 2, null);
+//        ImageUInt8 output = BinaryImageOps.erode4(binary, 3, null);
 //        bImage = VisualizeBinaryData.renderBinary(output, null);
 //        writeIMG(bImage, "2erode4_1x2");
-//        output = BinaryImageOps.dilate4(output, 6, null);
+//        output = BinaryImageOps.dilate4(output, 7, null);
 //        bImage = VisualizeBinaryData.renderBinary(output, null);
 //        writeIMG(bImage, "3dilate4_1x7");
 //        output = BinaryImageOps.erode4(output, 2, null);
 //        bImage = VisualizeBinaryData.renderBinary(output, null);
 //        writeIMG(bImage, "4erode4_2x2");
-//        output = BinaryImageOps.dilate4(output, 4, null);
+//        output = BinaryImageOps.dilate4(output, 5, null);
 //        bImage = VisualizeBinaryData.renderBinary(output, null);
 //        writeIMG(bImage, "5dialte4_2x5");
 //        output = BinaryImageOps.erode4(output, 8, null);
