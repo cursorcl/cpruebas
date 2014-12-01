@@ -11,9 +11,12 @@ import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.imageio.ImageIO;
+
+import com.sun.istack.internal.logging.Logger;
 
 import boofcv.alg.filter.binary.BinaryImageOps;
 import boofcv.alg.filter.binary.Contour;
@@ -26,11 +29,8 @@ import boofcv.struct.image.ImageFloat32;
 import boofcv.struct.image.ImageSInt32;
 import boofcv.struct.image.ImageUInt8;
 import cl.cursor.card.Recognizer;
-import cl.eos.detection.ExtractorResultadosPrueba;
 import cl.eos.detection.OTResultadoScanner;
 import cl.sisdef.util.Pair;
-
-import com.sun.istack.internal.logging.Logger;
 
 /**
  * Imagen escaneada en una resolucion de 300dpi. 1) 1.l) El primer rectangulo oscuro está en 58,1541
@@ -42,9 +42,9 @@ import com.sun.istack.internal.logging.Logger;
  *
  *
  */
-public abstract class AExtractorResultados implements IExtractorResultados {
+public class StaticExtractorResultados {
 
-  private static final Logger log = Logger.getLogger(AExtractorResultados.class);
+  private static final Logger log = Logger.getLogger(StaticExtractorResultados.class);
   /**
    * Delta x entre las primeras columnas de circulos.
    */
@@ -59,13 +59,7 @@ public abstract class AExtractorResultados implements IExtractorResultados {
    * Delta y entre el rectangulo y la primara corrida de circulos.
    */
 
-  // Las posiciones de los circulos con respecto a los puntos de referencia en Y son:
-  /*
-   * Primer circulo es PREF - 15(DELTA_Y_FIRST_CIRCLE_RESP) Segundo circulo es PREF - 15 + 54 Tercer
-   * circulo es PREF - 15 + 54 * 2 Cuarto circulo es PREF - 15 + 54 * 3 Quinto circulo es PREF - 15
-   * + 54 * 4
-   */
-  public static int DELTA_Y_FIRST_CIRCLE_RESP = -15;
+  public static int DELTA_Y_FIRST_CIRCLE_RESP = -17;
   public static int CIRCLE_SIZE = 44;
   public static int CIRCLE_Y_SPCAES = 6;
   public static int CIRCLE_X_SPCAES = 16;
@@ -92,26 +86,8 @@ public abstract class AExtractorResultados implements IExtractorResultados {
 
   // Espaciamiento entre inicios de circulo del rut
   public static int CIRCLE_Y_RUT_DIFF = 48;
-  protected Recognizer recognizerRespustas;
-  protected Recognizer recognizerRut;
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see cl.eos.detection.IExtractorResultados#process(java.io.File, int)
-   */
-  @Override
-  public OTResultadoScanner process(File archivo, int nroPreguntas) throws IOException {
-    return process(ImageIO.read(archivo), nroPreguntas);
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see cl.eos.detection.IExtractorResultados#process(java.awt.image.BufferedImage , int)
-   */
-  @Override
-  public abstract OTResultadoScanner process(BufferedImage image, int nroPreguntas);
+  protected static Recognizer recognizerRespustas;
+  protected static Recognizer recognizerRut;
 
   /**
    * Procesa la seccion rut para obtnener el rut de quien resolvio la prueba.
@@ -121,25 +97,24 @@ public abstract class AExtractorResultados implements IExtractorResultados {
    * @return String con el rut que viene referenciado en la prueba.
    */
   static int nRut = 0;
+  static int nImage = 0;
 
-  protected String getRut(Point pRefRut, BufferedImage image) {
+  public static String getRut(Point pRefRut, BufferedImage image) {
     nRut++;
     int x = pRefRut.x;
-    StringBuffer strRut = new StringBuffer("");
-    writeIMG(image, "RUT");
-
     for (int n = 0; n < CIRCLE_X_RUT_DIFF.length; n++) {
       int y = pRefRut.y;
       BufferedImage rut = image.getSubimage(x + CIRCLE_X_RUT_DIFF[n] - 2, y - 2, 51, 555);
-      writeIMG(rut, "RUT_" + (nRut));
-      nRut++;
-      Pair<Integer, Pair<Double, Double>> result = recognizerRut.recognize(rut, 0.60);
-      int idx = result.getFirst();
-      if (idx != -1) {
-        strRut.append(RUT[idx]);
+
+      try {
+        ImageIO.write(rut, "png", new File("/res/ruts/RUT_" + (nRut % 9) + ".png"));
+        nRut++;
+      } catch (IOException e) {
+        e.printStackTrace();
       }
+
     }
-    return strRut.toString();
+    return "";
   }
 
   /**
@@ -150,10 +125,8 @@ public abstract class AExtractorResultados implements IExtractorResultados {
    * @param nroPreguntas Número de preguntas de la prueba.
    * @return String con las respuestas rescatadas de la prueba.
    */
-  protected String getRespuestas(Point[] pRefRespuestas, BufferedImage image, int nroPreguntas) {
+  public static String getRespuestas(Point[] pRefRespuestas, BufferedImage image, int nroPreguntas) {
     int pregunta = 1;
-    
-    
     StringBuffer resp = new StringBuffer();
     for (int idx = 1; idx <= nroPreguntas; idx = idx + GROUP_SIZE) {
       // Con esto se calcula el nro del punto de referencia.
@@ -165,45 +138,33 @@ public abstract class AExtractorResultados implements IExtractorResultados {
       int col = (pregunta - 1) / NRO_PREG_POR_COLUMNA;
 
       for (int n = 0; n < GROUP_SIZE; n++) {
-        int left = x + DELTA_X + col * DELTA_X_FIRST_CIRCLES; // - 4;
-        int top = y + DELTA_Y_FIRST_CIRCLE_RESP + BASE + n * 54;
+        int left = x + DELTA_X - 4 + col * DELTA_X_FIRST_CIRCLES;
+        int top = y + DELTA_Y_FIRST_CIRCLE_RESP + BASE + n * 52;
         BufferedImage img =
             image
                 .getSubimage(left, top, CIRCLE_SIZE * 5 + CIRCLE_X_SPCAES * 4 + 4, CIRCLE_SIZE + 8);
-        writeIMG(img, "resp_" + pregunta);
         img = fillCirlces(img);
-        writeIMG(img, "fresp_" + pregunta);
-        String respuesta = getRespuesta(img);
 
-        resp.append(respuesta);
+        // try {
+        // ImageIO.write(img, "png", new File("/res/PR_res" + pregunta +
+        // ".png"));
+        // } catch (IOException e) {
+        // e.printStackTrace();
+        // }
         pregunta++;
       }
     }
-    return resp.toString();
+    return "";
   }
 
-  protected final String getRespuesta(BufferedImage img) {
-    String resp = "O";
-    Pair<Integer, Pair<Double, Double>> result = recognizerRespustas.recognize(img, 0.9); // Red
-                                                                                          // pequeña
-                                                                                          // 0.8
-    int idx = result.getFirst();
-    if (idx != -1) {
-      resp = RESPUESTAS[idx];
-    } else {
-      resp = "M";
-    }
-    return resp;
-  }
-
-  protected final BufferedImage preprocesarImagen(BufferedImage image) {
+  public static final BufferedImage preprocesarImagen(BufferedImage image) {
     ImageFloat32 input = ConvertBufferedImage.convertFromSingle(image, null, ImageFloat32.class);
     ImageUInt8 binary = new ImageUInt8(input.width, input.height);
-    ThresholdImageOps.threshold(input, binary, (float) 185, false); //170,180
-    ImageUInt8 output = BinaryImageOps.erode4(binary, 3, null); //2,4
-    output = BinaryImageOps.dilate4(output, 7, null); //7,9
+    ThresholdImageOps.threshold(input, binary, (float) 180, false);
+    ImageUInt8 output = BinaryImageOps.erode4(binary, 2, null);
+    output = BinaryImageOps.dilate4(output, 7, null);
     output = BinaryImageOps.erode4(output, 2, null);
-    output = BinaryImageOps.dilate4(output, 5, null); //5
+    output = BinaryImageOps.dilate4(output, 5, null);
     output = BinaryImageOps.erode4(output, 8, null);
     BufferedImage bImage = VisualizeBinaryData.renderBinary(output, null);
 
@@ -217,18 +178,19 @@ public abstract class AExtractorResultados implements IExtractorResultados {
    * @param limage Imagen a rotar
    * @return
    */
-  protected final BufferedImage rectificarImagen(BufferedImage limage) {
+  public static final BufferedImage rectificarImagen(BufferedImage limage) {
     List<Contour> contours = getContours(limage);
     BufferedImage image = limage;
     if (contours.size() < 6) {
       image = rotate(Math.PI, limage);
+      writeIMG(image, "rotada1_" + (nImage++));
       contours = getContours(image);
     }
     double anlge = getRotationAngle(contours);
     image = rotate(anlge, image);
+    writeIMG(image, "rotada2_" + (nImage++));
     return image;
   }
-
 
   /**
    * Se obtienen todos los puntos de referencia en base a los contornos generados de las marcas de
@@ -237,7 +199,7 @@ public abstract class AExtractorResultados implements IExtractorResultados {
    * @param image La imagen que tiene las figuras de referencia.
    * @return Puntos de referencia para obtener las respuestas.
    */
-  protected final Point[] obtenerPuntosReferencia(BufferedImage image) {
+  public static final Point[] obtenerPuntosReferencia(BufferedImage image) {
     List<Contour> contours = getContours(image);
     Point[] points = new Point[contours.size()];
     int n = 0;
@@ -265,7 +227,7 @@ public abstract class AExtractorResultados implements IExtractorResultados {
    * @param contours Lista de contornos que con los cuales se quiere obtener el angulo de rotacion.
    * @return Angulo de rotación.
    */
-  protected final double getRotationAngle(List<Contour> contours) {
+  public static final double getRotationAngle(List<Contour> contours) {
 
     int[] x = new int[contours.size() - 1];
     int[] y = new int[contours.size() - 1];
@@ -289,7 +251,7 @@ public abstract class AExtractorResultados implements IExtractorResultados {
     int dx = x[n - 1] - x[0];
     int dy = y[n - 1] - y[0];
     double angle = Math.PI / 2f - Math.atan2(dy, dx);
-    // log.info(String.format("Angulo: %f[rad] %f[°]", angle, angle / Math.PI * 180.0));
+    log.info(String.format("Angulo: %f[rad] %f[°]", angle, angle / Math.PI * 180.0));
     return angle;
   }
 
@@ -299,19 +261,17 @@ public abstract class AExtractorResultados implements IExtractorResultados {
    * @param limage Imagen completa de la prueba.
    * @return Lista de los contornos de las imagenes.
    */
-  protected final List<Contour> getContours(BufferedImage limage) {
+  public static final List<Contour> getContours(BufferedImage limage) {
 
-    BufferedImage image = limage.getSubimage(0, 0, 110, 3200);
+    BufferedImage image = limage.getSubimage(0, 0, 150, 3200);
     ImageFloat32 input = ConvertBufferedImage.convertFromSingle(image, null, ImageFloat32.class);
     ImageUInt8 binary = new ImageUInt8(input.width, input.height);
     ImageSInt32 label = new ImageSInt32(input.width, input.height);
     ThresholdImageOps.threshold(input, binary, (float) 190, true);
-
-    ImageUInt8 filtered = BinaryImageOps.dilate8(binary, 2, null);
-    filtered = BinaryImageOps.erode8(filtered, 9, null);
-    filtered = BinaryImageOps.dilate8(filtered, 10, null);
-    // BufferedImage bImage = VisualizeBinaryData.renderBinary(filtered, null);
-    // writeIMG(bImage, "contornos");
+    ImageUInt8 filtered = BinaryImageOps.erode8(binary, 9, null);
+    filtered = BinaryImageOps.dilate8(filtered, 9, null);
+    BufferedImage bImage = VisualizeBinaryData.renderBinary(filtered, null);
+    writeIMG(bImage, "contornos" + (nImage++));
     return BinaryImageOps.contour(filtered, ConnectRule.EIGHT, label);
   }
 
@@ -322,7 +282,7 @@ public abstract class AExtractorResultados implements IExtractorResultados {
    * @param image Imagen que se quiere rotar.
    * @return Nueva imagen rotada.
    */
-  protected final BufferedImage rotate(double angle, BufferedImage image) {
+  public static final BufferedImage rotate(double angle, BufferedImage image) {
     int drawLocationX = 0;
     int drawLocationY = 0;
 
@@ -348,7 +308,7 @@ public abstract class AExtractorResultados implements IExtractorResultados {
 
   static int resC = 0;
 
-  protected BufferedImage fillCirlces(BufferedImage bImage) {
+  public static BufferedImage fillCirlces(BufferedImage bImage) {
     Graphics2D g2d = (Graphics2D) bImage.getGraphics();
     g2d.setColor(Color.BLACK);
     Ellipse2D ellipse = new Ellipse2D.Float();
@@ -371,13 +331,7 @@ public abstract class AExtractorResultados implements IExtractorResultados {
           ConvertBufferedImage.convertFromSingle(subImage, null, ImageFloat32.class);
       double value = ImageStatistics.mean(img32);
       g2d.drawOval(X[n], 1, 45, 48);
-      if (value < 165) {
-        g2d.setColor(Color.BLACK);
-        g2d.fillOval(X[n], 1, 45, 48);
-      }
-      else
-      {
-        g2d.setColor(Color.WHITE);
+      if (value < 180) {
         g2d.fillOval(X[n], 1, 45, 48);
       }
     }
@@ -388,45 +342,27 @@ public abstract class AExtractorResultados implements IExtractorResultados {
   public static void main(String[] args) {
 
     BufferedImage limage = null;
-    ExtractorResultadosPrueba extractor = ExtractorResultadosPrueba.getInstance();
-
-    int n = 37;
-//    for (n = 0; n < 37; n++)
+    int n = 8;
+    // for (n = 0; n < 37; n++)
     {
       try {
         limage =
             ImageIO.read(new File(String.format("/res/5A_CN_Independencia/prueba%02d.JPG", n)));
+        limage = rectificarImagen(limage);
+        Point[] pointsReference = obtenerPuntosReferencia(limage);
+        Point pRefRut = pointsReference[0];
+        String rut = getRut(pRefRut, limage);
+        Point[] pRefRespuestas = Arrays.copyOfRange(pointsReference, 1, pointsReference.length);
+        limage = preprocesarImagen(limage);
+        String respuestas = getRespuestas(pRefRespuestas, limage, 35);
 
-//        writeIMG(limage, "0fuente");
-//        ImageFloat32 input =
-//            ConvertBufferedImage.convertFromSingle(limage, null, ImageFloat32.class);
-//        ImageUInt8 binary = new ImageUInt8(input.width, input.height);
-//        ThresholdImageOps.threshold(input, binary, (float) 185, false);
-//        BufferedImage bImage = VisualizeBinaryData.renderBinary(binary, null);
-//        writeIMG(bImage, "1threshold");
-//        ImageUInt8 output = BinaryImageOps.erode4(binary, 3, null);
-//        bImage = VisualizeBinaryData.renderBinary(output, null);
-//        writeIMG(bImage, "2erode4_1x2");
-//        output = BinaryImageOps.dilate4(output, 7, null);
-//        bImage = VisualizeBinaryData.renderBinary(output, null);
-//        writeIMG(bImage, "3dilate4_1x7");
-//        output = BinaryImageOps.erode4(output, 2, null);
-//        bImage = VisualizeBinaryData.renderBinary(output, null);
-//        writeIMG(bImage, "4erode4_2x2");
-//        output = BinaryImageOps.dilate4(output, 5, null);
-//        bImage = VisualizeBinaryData.renderBinary(output, null);
-//        writeIMG(bImage, "5dialte4_2x5");
-//        output = BinaryImageOps.erode4(output, 8, null);
-//        bImage = VisualizeBinaryData.renderBinary(output, null);
-//        writeIMG(bImage, "6erode4_2x8_finish");
-         extractor.process(limage, 35);
 
+        StaticExtractorResultados.getContours(limage);
       } catch (IOException e) {
         e.printStackTrace();
       }
     }
   }
-
 
   public static void writeIMG(BufferedImage image, String name) {
     try {
@@ -436,5 +372,6 @@ public abstract class AExtractorResultados implements IExtractorResultados {
       e.printStackTrace();
     };
   }
+
 
 }

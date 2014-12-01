@@ -74,16 +74,17 @@ public class ExtractorResultadosPrueba extends AExtractorResultados {
 		OTResultadoScanner resultado = new OTResultadoScanner();
 		BufferedImage recImage = rectificarImagen(image);
 		Point[] pointsReference = obtenerPuntosReferencia(recImage);
+        Point pRefRut = pointsReference[0];
+        String rut = getRut(pRefRut, recImage);
+        
 		Point[] pRefRespuestas = Arrays.copyOfRange(pointsReference, 1,
 				pointsReference.length);
 		recImage = preprocesarImagen(recImage);
 		String respuestas = getRespuestas(pRefRespuestas, recImage,
 				nroPreguntas);
 
-		Point pRefRut = pointsReference[0];
-		String rut = getRut(pRefRut, recImage);
+		log.info(String.format("%s,%s", rut,respuestas));
 		
-		log.info(rut + " " + respuestas);
 
 		resultado.setForma(1);
 		resultado.setRespuestas(respuestas);
