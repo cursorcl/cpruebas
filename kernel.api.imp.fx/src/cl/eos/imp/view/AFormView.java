@@ -27,10 +27,21 @@ public abstract class AFormView extends AView implements IFormView {
 
   @Override
   public void delete(IEntity otObject) {
-    if (controller != null && confirmaEliminar()) {
-      controller.delete(otObject);
-      selectedEntity = null;
+    delete(otObject, true);
+  }
+
+  public void delete(IEntity otObject, boolean confirm) {
+    if (controller != null) {
+      boolean confirmed = true;
+      if (confirm) {
+        confirmed = confirmaEliminar();
+      }
+      if (confirmed) {
+        controller.delete(otObject);
+        selectedEntity = null;
+      }
     }
+
   }
 
   @Override

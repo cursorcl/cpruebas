@@ -170,13 +170,15 @@ public class EvaluarPruebaView extends AFormView {
       public void handle(ActionEvent event) {
         Action response =
             Dialogs.create().owner(null).title("No rinde prueba")
-                .masthead("Registro será eliminado de la tabla.")
+                .masthead("Registro será marcado.")
                 .message("Confirma que no rindió prueba?").showConfirm();
         if (response.equals(Dialog.Actions.YES)) {
-          int idx = tblListadoPruebas.getSelectionModel().getSelectedIndex();
-          if (idx != -1) {
-            tblListadoPruebas.getItems().remove(idx);
-          }
+            OTPruebaRendida ot = tblListadoPruebas.getSelectionModel().getSelectedItem();
+            ot.setBuenas(0);
+            ot.setMalas(0);
+            ot.setOmitidas(0);
+            ot.setRespuestas("");
+            ot.setRindioPrueba(false);
         }
 
       }
@@ -425,7 +427,7 @@ public class EvaluarPruebaView extends AFormView {
       if (!prueba.getEvaluaciones().contains(evalPrueba)) {
         prueba.getEvaluaciones().add(evalPrueba);
       }
-
+      List<PruebaRendida> removePruebasRendidas =  new ArrayList<PruebaRendida>();
       ObservableList<OTPruebaRendida> otDeLaTabla = tblListadoPruebas.getItems();
       for (OTPruebaRendida ot : otDeLaTabla) {
         if (ot.getRespuestas() != null && !ot.getRespuestas().trim().isEmpty()) {
@@ -454,9 +456,11 @@ public class EvaluarPruebaView extends AFormView {
           }
 
         } else {
+          removePruebasRendidas.add(ot.getPruebaRendida());
           int idx = evalPrueba.getPruebasRendidas().indexOf(ot.getPruebaRendida());
           if (idx != -1) {
             evalPrueba.getPruebasRendidas().remove(idx);
+            
           }
         }
       }
@@ -468,6 +472,10 @@ public class EvaluarPruebaView extends AFormView {
       prueba.getFormas().size();
       prueba.getRespuestas().size();
       save(prueba);
+      for(PruebaRendida pr: removePruebasRendidas)
+      {
+        delete(pr, false);
+      }
 
       mnuGrabar.setDisable(true);
       mnuScanner.setDisable(true);
@@ -517,17 +525,17 @@ public class EvaluarPruebaView extends AFormView {
 
   protected void handlerLeerImagenes() throws IOException {
     FileChooser fileChooser = new FileChooser();
-    FileChooser.ExtensionFilter imageExtFilter =
-        new FileChooser.ExtensionFilter("Archivos de Imágenes ", "*.png", "*.jpg");
-    fileChooser.getExtensionFilters().add(imageExtFilter);
-    fileChooser.setInitialDirectory(Utils.getDefaultDirectory());
-    fileChooser.setTitle("Seleccione Imégenes Respuesta");
-    List<File> files = fileChooser.showOpenMultipleDialog(null);
-    if (files != null && !files.isEmpty()) {
-      final Dialogs dlg = Dialogs.create();
-      dlg.title("Procesando pruebas");
-      dlg.masthead(null);
-      dlg.message("Esto tomará algunos minutos.");
+		FileChooser.ExtensionFilter imageExtFilter = new FileChooser.ExtensionFilter(
+				"Archivos de Imágenes ", "*.png", "*.jpg");
+		fileChooser.getExtensionFilters().add(imageExtFilter);
+		fileChooser.setInitialDirectory(Utils.getDefaultDirectory());
+		fileChooser.setTitle("Seleccione Imégenes Respuesta");
+		List<File> files = fileChooser.showOpenMultipleDialog(null);
+		if (files != null && !files.isEmpty()) {
+			final Dialogs dlg = Dialogs.create();
+			dlg.title("Procesando pruebas");
+			dlg.masthead(null);
+			dlg.message("Esto tomará algunos minutos.");
 
       Task<Pair<ObservableList<String>, ObservableList<PruebaRendida>>> task =
           new Task<Pair<ObservableList<String>, ObservableList<PruebaRendida>>>() {
