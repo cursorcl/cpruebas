@@ -429,12 +429,12 @@ public abstract class AExtractorResultados implements IExtractorResultados {
 
 
   public static void writeIMG(BufferedImage image, String name) {
-    try {
-      ImageIO.write(image, "png", new File("/res/ruts/" + name + ".png"));
-    } catch (IOException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    };
+//    try {
+//      ImageIO.write(image, "png", new File("/res/ruts/" + name + ".png"));
+//    } catch (IOException e) {
+//      // TODO Auto-generated catch block
+//      e.printStackTrace();
+//    };
   }
 
 }
