@@ -1,5 +1,6 @@
 package cl.eos.view.ots;
 
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleFloatProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -17,6 +18,7 @@ public class OTPruebaRendida {
   private SimpleStringProperty respuestas = new SimpleStringProperty();
   private SimpleFloatProperty nota = new SimpleFloatProperty();
   private SimpleIntegerProperty puntaje = new SimpleIntegerProperty();
+  private SimpleBooleanProperty rindioPrueba = new SimpleBooleanProperty();
   private SimpleObjectProperty<RangoEvaluacion> nivel = new SimpleObjectProperty<RangoEvaluacion>();
 
   public OTPruebaRendida(PruebaRendida pruebaRendida) {
@@ -28,6 +30,7 @@ public class OTPruebaRendida {
     this.nota.set(Utils.redondeo2Decimales(pruebaRendida.getNota()));
     this.puntaje.set(Utils.getPuntaje(this.nota.floatValue()));
     this.nivel.set(pruebaRendida.getRango());
+    this.rindioPrueba.set(true);
   }
 
   public String getPaterno() {
@@ -168,6 +171,18 @@ public class OTPruebaRendida {
     } else if (!pruebaRendida.equals(other.pruebaRendida))
       return false;
     return true;
+  }
+
+  public final SimpleBooleanProperty rindioPruebaProperty() {
+    return this.rindioPrueba;
+  }
+
+  public final boolean isRindioPrueba() {
+    return this.rindioPruebaProperty().get();
+  }
+
+  public final void setRindioPrueba(final boolean rindioPrueba) {
+    this.rindioPruebaProperty().set(rindioPrueba);
   }
 
   

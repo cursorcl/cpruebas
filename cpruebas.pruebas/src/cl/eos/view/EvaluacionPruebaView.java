@@ -219,6 +219,8 @@ public class EvaluacionPruebaView extends AFormView implements
 				.getSelectedItem();
 		if (evaluacionPrueba != null) {
 			resumenAlumno = (ResumenAlumnoView) show("/cl/eos/view/ResumenAlumno.fxml");
+			
+			
 			controller.findById(EvaluacionPrueba.class,
 					evaluacionPrueba.getId(), resumenAlumno);
 		} else {

@@ -400,7 +400,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
       Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
       if (prueba != null) {
         controller.findById(Prueba.class, prueba.getId(), comparativoComunal);
-        controller.findAll(EvaluacionEjeTematico.class);
+        controller.findAll(EvaluacionEjeTematico.class, comparativoComunal);
       }
     }
   }
