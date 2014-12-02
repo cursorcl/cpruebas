@@ -193,6 +193,7 @@ public class MainController {
       FileChooser.ExtensionFilter extFilter =
           new FileChooser.ExtensionFilter("XLS files (*.xls), (*.xlsx)", "*.xls", "*.xlsx");
       fileChooser.getExtensionFilters().add(extFilter);
+      fileChooser.setInitialDirectory(Utils.getDefaultDirectory());
 
       File file = fileChooser.showOpenDialog(null);
       if (file != null) {

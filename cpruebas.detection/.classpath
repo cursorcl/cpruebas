@@ -24,6 +24,5 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/kernel.api"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/cardneuroph"/>
 	<classpathentry kind="lib" path="../jars/guava-18.0.jar"/>
-	<classpathentry kind="lib" path="O:/cpruebas/jars/ij.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

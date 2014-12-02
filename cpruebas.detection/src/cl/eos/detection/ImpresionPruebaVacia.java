@@ -32,6 +32,7 @@ import cl.eos.persistence.models.Formas;
 import cl.eos.persistence.models.Profesor;
 import cl.eos.persistence.models.Prueba;
 import cl.eos.persistence.models.RespuestasEsperadasPrueba;
+import cl.eos.util.Utils;
 
 public class ImpresionPruebaVacia {
 
@@ -130,7 +131,7 @@ public class ImpresionPruebaVacia {
 			FileChooser.ExtensionFilter imageExtFilter = new FileChooser.ExtensionFilter(
 					"Archivos PDF ", "*.pdf");
 			fileChooser.getExtensionFilters().add(imageExtFilter);
-
+			fileChooser.setInitialDirectory(Utils.getDefaultDirectory());
 			fileChooser.setTitle("Seleccione Archivo a grabar");
 			File  output = fileChooser.showSaveDialog(null);
 			

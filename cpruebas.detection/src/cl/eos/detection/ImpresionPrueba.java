@@ -9,7 +9,6 @@ import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +16,6 @@ import java.util.List;
 import javafx.stage.FileChooser;
 
 import javax.imageio.ImageIO;
-import javax.swing.JFileChooser;
 
 import org.apache.pdfbox.exceptions.COSVisitorException;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -27,7 +25,6 @@ import org.apache.pdfbox.pdmodel.edit.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.graphics.xobject.PDJpeg;
 import org.apache.pdfbox.pdmodel.graphics.xobject.PDXObjectImage;
 
-import cl.cursor.card.RecognizerFactory;
 import cl.eos.persistence.models.Alumno;
 import cl.eos.persistence.models.Colegio;
 import cl.eos.persistence.models.Curso;
@@ -35,6 +32,7 @@ import cl.eos.persistence.models.Formas;
 import cl.eos.persistence.models.Profesor;
 import cl.eos.persistence.models.Prueba;
 import cl.eos.persistence.models.RespuestasEsperadasPrueba;
+import cl.eos.util.Utils;
 
 public class ImpresionPrueba {
 
@@ -135,7 +133,7 @@ public class ImpresionPrueba {
 			FileChooser.ExtensionFilter imageExtFilter = new FileChooser.ExtensionFilter(
 					"Archivos PDF ", "*.pdf");
 			fileChooser.getExtensionFilters().add(imageExtFilter);
-
+			fileChooser.setInitialDirectory(Utils.getDefaultDirectory());
 			fileChooser.setTitle("Seleccione Archivo a grabar");
 			File  output = fileChooser.showSaveDialog(null);
 			

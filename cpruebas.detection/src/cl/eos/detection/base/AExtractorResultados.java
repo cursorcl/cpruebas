@@ -420,6 +420,7 @@ public abstract class AExtractorResultados implements IExtractorResultados {
 //        bImage = VisualizeBinaryData.renderBinary(output, null);
 //        writeIMG(bImage, "6erode4_2x8_finish");
          extractor.process(limage, 35);
+         
 
       } catch (IOException e) {
         e.printStackTrace();

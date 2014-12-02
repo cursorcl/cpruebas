@@ -2,7 +2,6 @@ package cl.eos.util;
 
 import java.awt.Color;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Calendar;
@@ -11,7 +10,6 @@ import java.util.List;
 
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableView;
 
@@ -24,6 +22,7 @@ import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.controlsfx.dialog.Dialogs;
 
 /**
  * Clase que permite exportar a excel datos asociados a las tablas.
@@ -45,7 +44,7 @@ public final class ExcelSheetWriterObj {
 		crearLibroConDatosDeTabla(tabla, wbook);
 		crearDocExcel(wbook);
 	}
-	
+
 	public static void convertirDatosALibroDeExcel(
 			TreeTableView<? extends Object> tabla) {
 		final Workbook wbook = new HSSFWorkbook();
@@ -67,22 +66,29 @@ public final class ExcelSheetWriterObj {
 	private static void crearDocExcel(final Workbook wbWork) {
 		long time = Calendar.getInstance().getTimeInMillis();
 		final String nombreDoc = "wb" + time + ".xls";
+		String path = Utils.getDefaultDirectory().toString() + File.separator
+				+ nombreDoc;
+
 		FileOutputStream fileOut = null;
 		try {
-			fileOut = new FileOutputStream(nombreDoc);
+			fileOut = new FileOutputStream(path);
 			wbWork.write(fileOut);
-		} catch (final FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (final IOException e) {
-			e.printStackTrace();
-		} finally {
+		} catch (IOException e) {
+			Dialogs.create().owner(null).title("Problemas al grabar")
+					.masthead("No se pudo grabar archivo")
+					.message("Nombre:" + path).showError();
+		}
+
+		finally {
 			try {
 				fileOut.close();
 			} catch (final IOException e) {
-				e.printStackTrace();
+				Dialogs.create().owner(null).title("Problemas al cerrar archivo")
+				.masthead("No se pudo cerrar archivo")
+				.message("Nombre:" + path).showError();
 			}
 		}
-		mostrarDocumentoExcel(nombreDoc);
+		mostrarDocumentoExcel(path);
 	}
 
 	/**
@@ -101,7 +107,7 @@ public final class ExcelSheetWriterObj {
 		crearDatosHeader(tabla, workbook);
 		crearDatosTabla(tabla, workbook);
 	}
-	
+
 	private static void crearLibroConDatosDeTabla(
 			final TreeTableView<? extends Object> tabla, Workbook wbook) {
 		final Workbook workbook = wbook;
@@ -144,7 +150,7 @@ public final class ExcelSheetWriterObj {
 		}
 
 	}
-	
+
 	/**
 	 * Metodo que permite crear los datos en la tabla.
 	 * 
@@ -165,7 +171,6 @@ public final class ExcelSheetWriterObj {
 		}
 	}
 
-	
 	/**
 	 * Metodo que permite crear los datos en la tabla.
 	 * 
@@ -179,17 +184,16 @@ public final class ExcelSheetWriterObj {
 			final Workbook wbook) {
 		final Workbook workbook = wbook;
 		final Sheet sheet1 = workbook.getSheet(tabla.getId());
-		
-		
+
 		int indiceFila = 0;
-		while(tabla.getTreeItem(indiceFila) != null)
-		{
+		while (tabla.getTreeItem(indiceFila) != null) {
 			tabla.getTreeItem(indiceFila).setExpanded(true);
 			final Row fila = sheet1.createRow(indiceFila + 1);
 			recorrerColumnas(tabla, indiceFila, fila);
 			indiceFila++;
 		}
 	}
+
 	/**
 	 * Metodo que permite el recorrido de las columnas.
 	 * 
@@ -206,8 +210,8 @@ public final class ExcelSheetWriterObj {
 		for (int indiceColumna = 0; indiceColumna < tabla.getColumns().size(); indiceColumna++) {
 
 			final Cell cell = fila.createCell(indiceColumna);
-			TreeTableColumn<? extends Object, ?> valores = tabla.getColumns().get(
-					indiceColumna);
+			TreeTableColumn<? extends Object, ?> valores = tabla.getColumns()
+					.get(indiceColumna);
 			Object valor = valores.getCellData(indiceFila);
 			if (valor instanceof String) {
 				cell.setCellValue((String) valor);
@@ -233,7 +237,6 @@ public final class ExcelSheetWriterObj {
 		}
 	}
 
-	
 	/**
 	 * Metodo que permite el recorrido de las columnas.
 	 * 
