@@ -22,10 +22,7 @@ import javax.persistence.Query;
 import javax.persistence.RollbackException;
 
 import org.controlsfx.dialog.Dialogs;
-import org.controlsfx.dialog.Dialogs.CommandLink;
 
-import cl.eos.exception.ExceptionBD;
-import cl.eos.exception.ExceptionImport;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.interfaces.entity.IPersistenceListener;
 import cl.eos.persistence.IPersistenceService;

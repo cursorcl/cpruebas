@@ -21,5 +21,5 @@ public class OTResultado {
 	public void setLogrado(double logrado) {
 		this.logrado = logrado;
 	}
-
+	
 }

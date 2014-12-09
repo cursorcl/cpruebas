@@ -20,6 +20,8 @@ import cl.eos.interfaces.entity.IEntity;
 @Entity(name = "evaluacionprueba")
 @NamedQueries({
 		@NamedQuery(name = "EvaluacionPrueba.findAll", query = "SELECT e FROM evaluacionprueba e"),
+		@NamedQuery(name = "EvaluacionPrueba.findEvaluacionByColegioAsig", 
+		query = "SELECT e FROM evaluacionprueba e where e.colegio.id = :idColegio and e.prueba.asignatura.id = :idAsignatura"),
 		@NamedQuery(name = "EvaluacionPrueba.findByPrueba", query = "SELECT e FROM evaluacionprueba e where e.prueba.id = :idPrueba") })
 public class EvaluacionPrueba implements IEntity {
 
@@ -124,8 +126,8 @@ public class EvaluacionPrueba implements IEntity {
 	public Integer getFormas() {
 		return prueba.getNroFormas();
 	}
-	
-	public String getTipoCurso(){
+
+	public String getTipoCurso() {
 		return curso.getTipoCurso().getName();
 	}
 
@@ -177,8 +179,5 @@ public class EvaluacionPrueba implements IEntity {
 			return false;
 		return true;
 	}
-	
-	
-	
-	
+
 }
