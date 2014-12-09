@@ -28,6 +28,7 @@ public interface IFormView extends IView {
    * @param otObject Objeto que se quire eliminar.
    */
   void delete(IEntity otObject);
+  void delete(IEntity otObject, boolean confirm);
 
   void delete(List<? extends IEntity> otObject);
 
