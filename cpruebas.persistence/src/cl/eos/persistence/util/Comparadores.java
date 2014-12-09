@@ -3,6 +3,7 @@ package cl.eos.persistence.util;
 import java.util.Comparator;
 
 import cl.eos.ot.OTRangoEvaluacion;
+import cl.eos.ot.OTResumenColegio;
 import cl.eos.persistence.models.RespuestasEsperadasPrueba;
 
 public class Comparadores {
@@ -28,4 +29,16 @@ public class Comparadores {
             }
         };
     }
+    
+    public static Comparator<? super OTResumenColegio> comparaResumeColegio()
+    {
+        return new Comparator<OTResumenColegio>() {
+            @Override
+            public int compare(final OTResumenColegio respSource, final OTResumenColegio respTarget)
+            {
+                return respSource.getCurso().getId().compareTo(respTarget.getCurso().getId());
+            }
+        };
+    }
+
 }

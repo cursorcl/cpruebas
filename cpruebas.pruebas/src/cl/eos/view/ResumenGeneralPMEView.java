@@ -373,7 +373,6 @@ public class ResumenGeneralPMEView extends AFormView implements
 			}
 
 		}
-
 	}
 
 	private void creacionColumnasEjesTematicos() {
