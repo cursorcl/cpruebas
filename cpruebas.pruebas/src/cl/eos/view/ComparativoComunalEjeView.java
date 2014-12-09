@@ -1,5 +1,6 @@
 package cl.eos.view;
 
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -8,6 +9,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import org.controlsfx.dialog.Dialogs;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
@@ -152,6 +155,11 @@ public class ComparativoComunalEjeView extends AFormView implements EventHandler
         Alumno al = pruebaRendida.getAlumno();
         log.info(String.format("%s %s %s %s %s %s", colegioCurso, al.getRut(), al.getName(),
             al.getPaterno(), al.getMaterno(), respuesta));
+
+        if (respuesta == null || respuesta.length() < prueba.getNroPreguntas()) {
+          informarProblemas(colegioCurso, al, respuesta);
+          continue;
+        }
         char[] cRespuesta = respuesta.toUpperCase().toCharArray();
 
         for (RespuestasEsperadasPrueba respuestasEsperadasPrueba : respuestasEsperadas) {
@@ -201,6 +209,16 @@ public class ComparativoComunalEjeView extends AFormView implements EventHandler
       }
 
     }
+  }
+
+  private void informarProblemas(String colegioCurso, Alumno al, String respuesta) {
+    Dialogs info = Dialogs.create();
+    info.title("Alumno con respuestas incompletas.");
+    info.masthead(String.format("%s/%s", colegioCurso, al.toString()));
+    info.message(String.format("La respuesta [%s] es incompleta", respuesta));
+    info.owner(null);
+    info.showError();
+
   }
 
   private void generaDatosEvaluacion(PruebaRendida pruebaRendida, String colegioCurso) {
