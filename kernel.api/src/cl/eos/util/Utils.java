@@ -17,7 +17,7 @@ import com.sun.istack.internal.logging.Logger;
 public class Utils {
 
 	public static float MAX_PUNTAJE = 340f;
-	private static Logger log =  Logger.getLogger(Utils.class);
+	private static Logger log = Logger.getLogger(Utils.class);
 
 	/**
 	 * M�todo Est�tico que valida si un rut es v�lido Fuente :
@@ -114,6 +114,10 @@ public class Utils {
 		return Math.round((pjes[0] + pjes[1] + pjes[2]) / 3f);
 	}
 
+	public static float getPorcenta(float nota) {
+		return ((float) getPuntaje(nota) / MAX_PUNTAJE) * 100f;
+	}
+
 	/**
 	 * Solo vale cuando es superior a 4.
 	 * 
@@ -184,23 +188,22 @@ public class Utils {
 	public static double redondeo2Decimales(double parametro) {
 		return Math.round(parametro * 100d) / 100d;
 	}
-	
-	
-	public static boolean isNumeric(String s) {  
-	    return s.matches("[-+]?\\d*\\.?\\d+");  
-	}  
-	
-	public static boolean isInteger(String s) {  
-	    return s.matches("[-+]?\\d+");  
+
+	public static boolean isNumeric(String s) {
+		return s.matches("[-+]?\\d*\\.?\\d+");
 	}
-	
+
+	public static boolean isInteger(String s) {
+		return s.matches("[-+]?\\d+");
+	}
+
 	/**
-	 * Obtiene el directorio donde se almacenan todos los archivos.
-	 * Retorna uset.home directorio.
-	 * @return 
+	 * Obtiene el directorio donde se almacenan todos los archivos. Retorna
+	 * uset.home directorio.
+	 * 
+	 * @return
 	 */
-	public static File getDefaultDirectory()
-	{
+	public static File getDefaultDirectory() {
 		String path = System.getProperty("user.home") + File.separator
 				+ "Documents";
 		path += File.separator + "CPruebas";
@@ -216,5 +219,5 @@ public class Utils {
 		}
 		return customDir;
 	}
-	
+
 }

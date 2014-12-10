@@ -314,7 +314,6 @@ public class ResumenGeneralPMEView extends AFormView implements
 		}
 
 		for (OTPreguntasEjes otAlumno : mapaEjesAlumno.values()) {
-
 			float valor = otAlumno.getLogrado();
 			if (mapaEjesCurso.containsKey(otAlumno.getEjeTematico())) {
 				Float totalValor = mapaEjesCurso.get(otAlumno.getEjeTematico());
