@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
@@ -143,6 +144,9 @@ public class ResumenColegioView extends AFormView implements
 		mapaCursos.clear();
 		mResumen.clear();
 		lstCursos.clear();
+		tblCursos.getItems().clear();
+		tblPME.getItems().clear();
+		tblResumenTotal.getItems().clear();
 		if (!parameters.isEmpty() && parameters.containsKey(COLEGIO_ID)
 				&& parameters.containsKey(ASIGNATURA_ID)) {
 			controller.find("EvaluacionPrueba.findEvaluacionByColegioAsig",
@@ -295,9 +299,9 @@ public class ResumenColegioView extends AFormView implements
 			resumenCurso
 					.setAlumnosEvaluados(((float) totalEvaluados / (float) totalAlumnos) * 100f);
 			resumenCurso
-					.setAlumnosAprobados(((float) totalAprobados / (float) totalAlumnos) * 100f);
+					.setAlumnosAprobados(((float) totalAprobados / (float) totalEvaluados) * 100f);
 			resumenCurso
-					.setAlumnosReprobados(((float) totalReprobados / (float) totalAlumnos) * 100f);
+					.setAlumnosReprobados(((float) totalReprobados / (float) totalEvaluados) * 100f);
 			lstCursos.add(resumenCurso);
 
 			totalColAlumnos = totalColAlumnos + totalAlumnos;
@@ -321,10 +325,10 @@ public class ResumenColegioView extends AFormView implements
 						/ (float) totalColAlumnos) * 100f));
 		resumenTotal
 				.setAlumnosAprobados(Utils
-						.redondeo2Decimales(((float) totalColAprobados / (float) totalColAlumnos) * 100f));
+						.redondeo2Decimales(((float) totalColAprobados / (float) totalColEvaluados) * 100f));
 		resumenTotal
 				.setAlumnosReprobados(Utils
-						.redondeo2Decimales(((float) totalColReprobados / (float) totalColAlumnos) * 100f));
+						.redondeo2Decimales(((float) totalColReprobados / (float) totalColEvaluados) * 100f));
 		lstCursos.add(resumenTotal);
 
 		generarDatosResumenCurso();
@@ -370,14 +374,13 @@ public class ResumenColegioView extends AFormView implements
 			Integer evaluacion = mResumen.get(ttEvaluacion.getValue());
 			if (evaluacion != null) {
 				row.add(Utils.redondeo2Decimales(evaluacion));
-				float valor = ((float) resumenTotal.getTotalEvaluados()/ (float) evaluacion) * 100f;
-				row1.add(valor);
+				float valor = ((float) resumenTotal.getTotalEvaluados() / (float) evaluacion) * 100f;
+				row1.add(valor + "%");
 				total = total + valor;
 
 			} else {
 				row.add(0);
 				row1.add(0);
-				row2.add("");
 			}
 		}
 
@@ -387,7 +390,6 @@ public class ResumenColegioView extends AFormView implements
 
 		resumenGeneral.add(row);
 		resumenGeneral.add(row1);
-		resumenGeneral.add(row2);
 		tblResumenTotal.setItems(resumenGeneral);
 
 	}
@@ -428,12 +430,23 @@ public class ResumenColegioView extends AFormView implements
 		ObservableList<ObservableList<Object>> resumenPME = FXCollections
 				.observableArrayList();
 
-		for (Entry<Curso, Map<RangoEvaluacion, OTRangoCurso>> lEntity : pmeCursos
-				.entrySet()) {
-			ObservableList<Object> row = FXCollections.observableArrayList();
-			row.add(lEntity.getKey().getName());
+		Set<Curso> listaCursos = pmeCursos.keySet();
+		List<Curso> cursos = new LinkedList<Curso>();
+		for (Curso curso : listaCursos) {
+			cursos.add(curso);
+		}
+		Collections.sort(cursos, Comparadores.comparaResumeCurso());
 
-			Map<RangoEvaluacion, OTRangoCurso> lista = lEntity.getValue();
+		// for (Entry<Curso, Map<RangoEvaluacion, OTRangoCurso>> lEntity :
+		// pmeCursos
+		// .entrySet()) {
+
+		for (Curso lEntity : cursos) {
+			ObservableList<Object> row = FXCollections.observableArrayList();
+
+			row.add(lEntity.getName());
+
+			Map<RangoEvaluacion, OTRangoCurso> lista = pmeCursos.get(lEntity);
 			for (Entry<Integer, RangoEvaluacion> otMapaRangos : mapaRangos
 					.entrySet()) {
 				OTRangoCurso otRegistro = lista.get(otMapaRangos.getValue());
@@ -531,6 +544,13 @@ public class ResumenColegioView extends AFormView implements
 			tblPME.getColumns().add(columna);
 			mapaRangos.put(indice, titulo);
 			indice++;
+		}
+
+		ObservableList columnas = tblPME.getColumns();
+		for (Object object : columnas) {
+			if (object instanceof TableColumn) {
+				columna0.setStyle("-fx-alignment: CENTER;");
+			}
 		}
 
 	}
@@ -690,6 +710,12 @@ public class ResumenColegioView extends AFormView implements
 			indice++;
 		}
 
+		ObservableList columnas = tblResumenTotal.getColumns();
+		for (Object object : columnas) {
+			if (object instanceof TableColumn) {
+				columna0.setStyle("-fx-alignment: CENTER;");
+			}
+		}
 	}
 
 }

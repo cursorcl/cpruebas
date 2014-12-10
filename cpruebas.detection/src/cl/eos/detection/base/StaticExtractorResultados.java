@@ -41,7 +41,7 @@ import cl.sisdef.util.Pair;
  * 
  * 2) 2.1) 58,1541 (+335) 2.2) 58,1876 (+334) 2.3) 58,2210 (+334) 2.4) 58,2544 (+333) 2.5) 58,2877
  *
- *
+ * Cambio para ver merge.
  */
 public class StaticExtractorResultados {
 
@@ -60,6 +60,9 @@ public class StaticExtractorResultados {
    * Delta y entre el rectangulo y la primara corrida de circulos.
    */
 
+  protected static String RESPUESTAS[] = {"A", "B", "C", "D", "E", "O"};
+  protected static String RUT[] = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "K"};
+  
   public static int DELTA_Y_FIRST_CIRCLE_RESP = -17;
   public static int CIRCLE_SIZE = 44;
   public static int CIRCLE_Y_SPCAES = 6;
@@ -69,8 +72,7 @@ public class StaticExtractorResultados {
   public static int GROUP_SIZE = 5;
   public static int prueba = 1;
 
-  protected static String RESPUESTAS[] = {"A", "B", "C", "D", "E", "O"};
-  protected static String RUT[] = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "K"};
+
 
   /*
    * //Inicio rectangulo. public static int XRUTREF = 145; // Son las diferencias del inicio del

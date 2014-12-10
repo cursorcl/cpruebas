@@ -4,6 +4,7 @@ import java.util.Comparator;
 
 import cl.eos.ot.OTRangoEvaluacion;
 import cl.eos.ot.OTResumenColegio;
+import cl.eos.persistence.models.Curso;
 import cl.eos.persistence.models.RespuestasEsperadasPrueba;
 
 public class Comparadores {
@@ -36,7 +37,18 @@ public class Comparadores {
             @Override
             public int compare(final OTResumenColegio respSource, final OTResumenColegio respTarget)
             {
-                return respSource.getCurso().getId().compareTo(respTarget.getCurso().getId());
+                return respSource.getCurso().getName().compareTo(respTarget.getCurso().getName());
+            }
+        };
+    }
+    
+    public static Comparator<? super Curso> comparaResumeCurso()
+    {
+        return new Comparator<Curso>() {
+            @Override
+            public int compare(final Curso respSource, final Curso respTarget)
+            {
+                return respSource.getName().compareTo(respTarget.getName());
             }
         };
     }
