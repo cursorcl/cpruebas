@@ -28,12 +28,12 @@
                                 <columns>
                                   <TableColumn fx:id="colCurso" prefWidth="100.0" text="Curso" />
                                   <TableColumn fx:id="colTotal" prefWidth="93.0" style="-fx-alignment: CENTER;" text="Total alumnos" />
-                                    <TableColumn fx:id="colEvaluados" minWidth="0.0" prefWidth="136.0" style="-fx-alignment: CENTER;" text="Alumnos evaluados" />
-                                    <TableColumn fx:id="colAprobados" prefWidth="116.0" style="-fx-alignment: CENTER;" text="Total aprobados" />
-                                    <TableColumn fx:id="colReprobados" prefWidth="164.0" style="-fx-alignment: CENTER;" text="Total reprobados" />
-                                    <TableColumn fx:id="colPEvaluados" prefWidth="152.0" resizable="false" style="-fx-alignment: CENTER;" text="\% Alumnos evaluados" />
-                                    <TableColumn fx:id="colPReprobados" prefWidth="113.0" resizable="false" style="-fx-alignment: CENTER;" text="\%Reprobados" />
-                                    <TableColumn fx:id="colPAprobados" prefWidth="93.0" style="-fx-alignment: CENTER;" text="\% Aprobados" />
+                                    <TableColumn fx:id="colEvaluados" minWidth="0.0" prefWidth="122.0" style="-fx-alignment: CENTER;" text="Alumnos evaluados" />
+                                    <TableColumn fx:id="colAprobados" prefWidth="106.0" style="-fx-alignment: CENTER;" text="Total aprobados" />
+                                    <TableColumn fx:id="colReprobados" prefWidth="116.0" style="-fx-alignment: CENTER;" text="Total reprobados" />
+                                    <TableColumn fx:id="colPEvaluados" prefWidth="150.0" resizable="false" style="-fx-alignment: CENTER;" text="\% Alumnos evaluados" />
+                                    <TableColumn fx:id="colPReprobados" minWidth="0.0" prefWidth="113.0" resizable="false" style="-fx-alignment: CENTER;" text="\%Reprobados" />
+                                    <TableColumn fx:id="colPAprobados" prefWidth="114.0" style="-fx-alignment: CENTER;" text="\% Aprobados" />
                                 </columns>
                                  <contextMenu>
                                     <ContextMenu>

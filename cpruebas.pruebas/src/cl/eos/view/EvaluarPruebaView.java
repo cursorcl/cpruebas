@@ -1,7 +1,9 @@
 package cl.eos.view;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.StringWriter;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,6 +41,8 @@ import org.controlsfx.control.action.Action;
 import org.controlsfx.dialog.Dialog;
 import org.controlsfx.dialog.Dialogs;
 
+import com.sun.corba.se.impl.javax.rmi.CORBA.Util;
+
 import cl.eos.PruebasActivator;
 import cl.eos.detection.ExtractorResultadosPrueba;
 import cl.eos.detection.OTResultadoScanner;
@@ -47,6 +51,8 @@ import cl.eos.imp.view.AFormView;
 import cl.eos.imp.view.WindowManager;
 import cl.eos.interfaces.IActivator;
 import cl.eos.interfaces.entity.IEntity;
+import cl.eos.interfaces.entity.IPersistenceListener;
+import cl.eos.persistence.IPersistenceService;
 import cl.eos.persistence.models.Alumno;
 import cl.eos.persistence.models.Colegio;
 import cl.eos.persistence.models.Curso;
@@ -59,6 +65,8 @@ import cl.eos.persistence.models.PruebaRendida;
 import cl.eos.persistence.models.RangoEvaluacion;
 import cl.eos.persistence.models.RespuestasEsperadasPrueba;
 import cl.eos.persistence.util.Comparadores;
+import cl.eos.provider.persistence.PersistenceService;
+import cl.eos.provider.persistence.PersistenceServiceFactory;
 import cl.eos.util.ExcelSheetWriterObj;
 import cl.eos.util.Pair;
 import cl.eos.util.Utils;
@@ -169,15 +177,15 @@ public class EvaluarPruebaView extends AFormView {
       public void handle(ActionEvent event) {
         Action response =
             Dialogs.create().owner(null).title("No rinde prueba")
-                .masthead("Registro será marcado.")
-                .message("Confirma que no rindió prueba?").showConfirm();
+                .masthead("Registro será marcado.").message("Confirma que no rindió prueba?")
+                .showConfirm();
         if (response.equals(Dialog.Actions.YES)) {
-            OTPruebaRendida ot = tblListadoPruebas.getSelectionModel().getSelectedItem();
-            ot.setBuenas(0);
-            ot.setMalas(0);
-            ot.setOmitidas(0);
-            ot.setRespuestas("");
-            ot.setRindioPrueba(false);
+          OTPruebaRendida ot = tblListadoPruebas.getSelectionModel().getSelectedItem();
+          ot.setBuenas(0);
+          ot.setMalas(0);
+          ot.setOmitidas(0);
+          ot.setRespuestas("");
+          ot.setRindioPrueba(false);
         }
 
       }
@@ -302,7 +310,7 @@ public class EvaluarPruebaView extends AFormView {
         .setNota(Utils.getNota(nroPreguntas, porcDificultad, otRendida.getBuenas(), notaMinima));
 
     float total = otRendida.getBuenas() + otRendida.getMalas() + otRendida.getOmitidas();
-    float porcentaje = ((float) otRendida.getBuenas()) / total * 100f;
+    float porcentaje = Utils.getPorcenta(otRendida.getNota());
     RangoEvaluacion rango = prueba.getNivelEvaluacion().getRango(porcentaje);
     otRendida.setNivel(rango);
   }
@@ -426,7 +434,7 @@ public class EvaluarPruebaView extends AFormView {
       if (!prueba.getEvaluaciones().contains(evalPrueba)) {
         prueba.getEvaluaciones().add(evalPrueba);
       }
-      List<PruebaRendida> removePruebasRendidas =  new ArrayList<PruebaRendida>();
+      List<PruebaRendida> removePruebasRendidas = new ArrayList<PruebaRendida>();
       ObservableList<OTPruebaRendida> otDeLaTabla = tblListadoPruebas.getItems();
       for (OTPruebaRendida ot : otDeLaTabla) {
         if (ot.getRespuestas() != null && !ot.getRespuestas().trim().isEmpty()) {
@@ -459,7 +467,7 @@ public class EvaluarPruebaView extends AFormView {
           int idx = evalPrueba.getPruebasRendidas().indexOf(ot.getPruebaRendida());
           if (idx != -1) {
             evalPrueba.getPruebasRendidas().remove(idx);
-            
+
           }
         }
       }
@@ -471,8 +479,7 @@ public class EvaluarPruebaView extends AFormView {
       prueba.getFormas().size();
       prueba.getRespuestas().size();
       save(prueba);
-      for(PruebaRendida pr: removePruebasRendidas)
-      {
+      for (PruebaRendida pr : removePruebasRendidas) {
         delete(pr, false);
       }
 
@@ -524,17 +531,17 @@ public class EvaluarPruebaView extends AFormView {
 
   protected void handlerLeerImagenes() throws IOException {
     FileChooser fileChooser = new FileChooser();
-		FileChooser.ExtensionFilter imageExtFilter = new FileChooser.ExtensionFilter(
-				"Archivos de Imágenes ", "*.png", "*.jpg");
-		fileChooser.getExtensionFilters().add(imageExtFilter);
-		fileChooser.setInitialDirectory(Utils.getDefaultDirectory());
-		fileChooser.setTitle("Seleccione Imégenes Respuesta");
-		List<File> files = fileChooser.showOpenMultipleDialog(null);
-		if (files != null && !files.isEmpty()) {
-			final Dialogs dlg = Dialogs.create();
-			dlg.title("Procesando pruebas");
-			dlg.masthead(null);
-			dlg.message("Esto tomará algunos minutos.");
+    FileChooser.ExtensionFilter imageExtFilter =
+        new FileChooser.ExtensionFilter("Archivos de Imágenes ", "*.png", "*.jpg");
+    fileChooser.getExtensionFilters().add(imageExtFilter);
+    fileChooser.setInitialDirectory(Utils.getDefaultDirectory());
+    fileChooser.setTitle("Seleccione Imégenes Respuesta");
+    List<File> files = fileChooser.showOpenMultipleDialog(null);
+    if (files != null && !files.isEmpty()) {
+      final Dialogs dlg = Dialogs.create();
+      dlg.title("Procesando pruebas");
+      dlg.masthead(null);
+      dlg.message("Esto tomará algunos minutos.");
 
       Task<Pair<ObservableList<String>, ObservableList<PruebaRendida>>> task =
           new Task<Pair<ObservableList<String>, ObservableList<PruebaRendida>>>() {
@@ -756,4 +763,39 @@ public class EvaluarPruebaView extends AFormView {
       }
     };
   }
+
+  public static void main(String[] args) {
+    PersistenceService p = new PersistenceService();
+
+    List<Object> list = p.findAllSynchro(PruebaRendida.class);
+    File f = new File("o:/sqlUpdate.sql");
+    FileWriter wr;
+    try {
+      wr = new FileWriter(f);
+
+      for (Object obj : list) {
+        PruebaRendida pr = (PruebaRendida) obj;
+        float por = Utils.getPorcenta(pr.getNota());
+        RangoEvaluacion rng =
+            pr.getEvaluacionPrueba().getPrueba().getNivelEvaluacion().getRango(por);
+
+        System.out.println(String.format(
+            "update cpruebas.pruebarendida set RANGO_ID = %d where ID = %d;", rng.getId(),
+            pr.getId()));
+        try {
+          wr.write(String.format(
+              "update cpruebas.pruebarendida set RANGO_ID = %d where ID = %d;\n", rng.getId(),
+              pr.getId()));
+        } catch (IOException e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        }
+      }
+      wr.close();
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+  }
+
 }

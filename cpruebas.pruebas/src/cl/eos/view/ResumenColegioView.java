@@ -465,7 +465,8 @@ public class ResumenColegioView extends AFormView implements
 	private void generaDatosRangos(PruebaRendida rendida,
 			NivelEvaluacion nivelEvaluacion) {
 
-		RangoEvaluacion rango = nivelEvaluacion.getRango(rendida.getNota());
+		float porcentaje = Utils.getPorcenta(rendida.getNota());
+		RangoEvaluacion rango = nivelEvaluacion.getRango(porcentaje);
 
 		Curso curso = rendida.getEvaluacionPrueba().getCurso();
 		if (pmeCursos.containsKey(curso)) {
@@ -496,6 +497,7 @@ public class ResumenColegioView extends AFormView implements
 	}
 
 	private Map<Integer, RangoEvaluacion> mapaRangos = new HashMap<Integer, RangoEvaluacion>();
+	private static int ANCHO_COL = 83;
 
 	private void generarColumnasPME() {
 
@@ -507,7 +509,7 @@ public class ResumenColegioView extends AFormView implements
 						.toString());
 			}
 		});
-		columna0.setPrefWidth(80);
+		columna0.setPrefWidth(ANCHO_COL);
 		columna0.setCellFactory(new Callback<TableColumn, TableCell>() {
 
 			public TableCell call(TableColumn param) {
@@ -540,7 +542,7 @@ public class ResumenColegioView extends AFormView implements
 				}
 			});
 
-			columna.setPrefWidth(80);
+			columna.setPrefWidth(ANCHO_COL);
 			tblPME.getColumns().add(columna);
 			mapaRangos.put(indice, titulo);
 			indice++;
@@ -564,7 +566,7 @@ public class ResumenColegioView extends AFormView implements
 						.toString());
 			}
 		});
-		columna0.setPrefWidth(80);
+		columna0.setPrefWidth(ANCHO_COL);
 		columna0.setCellFactory(new Callback<TableColumn, TableCell>() {
 
 			public TableCell call(TableColumn param) {
@@ -589,7 +591,7 @@ public class ResumenColegioView extends AFormView implements
 						.toString());
 			}
 		});
-		columna1.setPrefWidth(80);
+		columna1.setPrefWidth(ANCHO_COL);
 		columna1.setCellFactory(new Callback<TableColumn, TableCell>() {
 
 			public TableCell call(TableColumn param) {
@@ -617,7 +619,7 @@ public class ResumenColegioView extends AFormView implements
 						.toString());
 			}
 		});
-		columna3.setPrefWidth(80);
+		columna3.setPrefWidth(ANCHO_COL);
 		columna3.setCellFactory(new Callback<TableColumn, TableCell>() {
 
 			public TableCell call(TableColumn param) {
@@ -644,7 +646,7 @@ public class ResumenColegioView extends AFormView implements
 						.toString());
 			}
 		});
-		columna4.setPrefWidth(80);
+		columna4.setPrefWidth(ANCHO_COL);
 		columna4.setCellFactory(new Callback<TableColumn, TableCell>() {
 
 			public TableCell call(TableColumn param) {
@@ -668,7 +670,7 @@ public class ResumenColegioView extends AFormView implements
 						.toString());
 			}
 		});
-		columna5.setPrefWidth(80);
+		columna5.setPrefWidth(ANCHO_COL);
 		columna5.setCellFactory(new Callback<TableColumn, TableCell>() {
 
 			public TableCell call(TableColumn param) {
@@ -704,7 +706,7 @@ public class ResumenColegioView extends AFormView implements
 				}
 			});
 
-			columna.setPrefWidth(80);
+			columna.setPrefWidth(ANCHO_COL);
 			columna6.getColumns().add(columna);
 			tituloEvaluacion.put(indice, titulo);
 			indice++;
@@ -719,3 +721,4 @@ public class ResumenColegioView extends AFormView implements
 	}
 
 }
+

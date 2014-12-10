@@ -388,4 +388,19 @@ public class PersistenceService implements IPersistenceService {
     Executors.newSingleThreadExecutor().execute(task);
 
   }
+  
+  public List<Object> findAllSynchro(final Class<? extends IEntity> entityClazz)
+  {
+    List<Object> lresults = null;
+    String findAll = entityClazz.getSimpleName() + ".findAll";
+
+    Query query = eManager.createNamedQuery(findAll);
+
+    if (query != null) {
+      lresults = query.getResultList();
+    }
+    return lresults;
+  }
+  
+  
 }

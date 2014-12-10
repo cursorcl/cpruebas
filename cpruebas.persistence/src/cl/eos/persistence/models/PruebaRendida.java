@@ -5,11 +5,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.util.Utils;
 
 @Entity(name = "pruebarendida")
+@NamedQueries({ @NamedQuery(name = "PruebaRendida.findAll", query = "SELECT e FROM pruebarendida e")})
 public class PruebaRendida implements IEntity {
 
   /**
