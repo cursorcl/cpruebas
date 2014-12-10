@@ -266,6 +266,7 @@ public class ComparativoComunalEjeView extends AFormView implements EventHandler
   }
 
   private void desplegarDatosEjesTematicos() {
+
     ObservableList<ObservableList> registros = FXCollections.observableArrayList();
 
     for (Entry<EjeTematico, HashMap<String, OTPreguntasEjes>> mapa : mapaEjesTematicos.entrySet()) {
@@ -278,7 +279,11 @@ public class ComparativoComunalEjeView extends AFormView implements EventHandler
 
       for (String string : titulosColumnas) {
         OTPreguntasEjes otPregunta = resultados.get(string);
-        row.add(formatter.format(otPregunta.getLogrado()));
+        if (otPregunta != null) {//EOS
+          row.add(formatter.format(otPregunta.getLogrado()));
+        } else {//EOS
+          row.add("");
+        }
       }
 
       registros.add(row);
@@ -301,13 +306,19 @@ public class ComparativoComunalEjeView extends AFormView implements EventHandler
 
       for (String string : titulosColumnas) {
         OTPreguntasEvaluacion otPregunta = resultados.get(string);
-        if (totales.containsKey(string)) {
-          total = otPregunta.getAlumnos() + totales.get(string);
-          totales.replace(string, total);
-        } else {
-          totales.put(string, otPregunta.getAlumnos());
+        if (otPregunta != null) { // EOS
+          if (totales.containsKey(string)) {
+            total = otPregunta.getAlumnos() + totales.get(string);
+            totales.replace(string, total);
+          } else {
+            totales.put(string, otPregunta.getAlumnos());
+          }
+          row.add(String.valueOf(otPregunta.getAlumnos()));
+        } else {//EOS
+          row.add("");
+          totales.put(string, 0);
         }
-        row.add(String.valueOf(otPregunta.getAlumnos()));
+
       }
       registroseEva.add(row);
 
