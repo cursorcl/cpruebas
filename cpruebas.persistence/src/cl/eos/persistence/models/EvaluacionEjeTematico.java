@@ -18,8 +18,8 @@ public class EvaluacionEjeTematico implements IEntity {
 	@Id
 	private Long id;
 	private String name;
-	private Float nroRangoMin;
-	private Float nroRangoMax;
+	private Float nroRangoMin = 0F;
+	private Float nroRangoMax = 0F;
 	
 	@Override
 	public Long getId() {
@@ -62,4 +62,8 @@ public class EvaluacionEjeTematico implements IEntity {
 		this.nroRangoMax = nroRangoMax;
 	}
 	
+	public boolean isInside(Float porcentaje)
+	{
+	  return porcentaje != null && porcentaje >= getNroRangoMin() && porcentaje <= getNroRangoMax();
+	}
 }

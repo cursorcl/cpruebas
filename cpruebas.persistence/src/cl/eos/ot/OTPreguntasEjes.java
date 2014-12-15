@@ -6,8 +6,8 @@ import cl.eos.util.Utils;
 public class OTPreguntasEjes {
 
 	private EjeTematico ejeTematico;
-	private Integer buenas;
-	private Integer total;
+	private Integer buenas = 0;
+	private Integer total = 0;
 	
 	public EjeTematico getEjeTematico() {
 		return ejeTematico;
