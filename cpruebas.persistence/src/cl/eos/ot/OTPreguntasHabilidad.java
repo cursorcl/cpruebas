@@ -9,8 +9,8 @@ public class OTPreguntasHabilidad {
 
 	NumberFormat formatter = new DecimalFormat("#0.00"); 
 	private Habilidad habilidad;
-	private Integer buenas;
-	private Integer total;
+	private Integer buenas = 0;
+	private Integer total = 0;
 
 	public Habilidad getHabilidad() {
 		return habilidad;

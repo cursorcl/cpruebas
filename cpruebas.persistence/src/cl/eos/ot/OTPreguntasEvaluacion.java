@@ -5,7 +5,7 @@ import cl.eos.persistence.models.EvaluacionEjeTematico;
 public class OTPreguntasEvaluacion {
 
 	private EvaluacionEjeTematico evaluacion;
-	private Integer alumnos;
+	private Integer alumnos = 0;
 
 	public EvaluacionEjeTematico getEvaluacion() {
 		return evaluacion;
