@@ -64,6 +64,6 @@ public class EvaluacionEjeTematico implements IEntity {
 	
 	public boolean isInside(Float porcentaje)
 	{
-	  return porcentaje != null && porcentaje >= getNroRangoMin() && porcentaje <= getNroRangoMax();
+	  return porcentaje != null && porcentaje >= getNroRangoMin() && porcentaje < getNroRangoMax();
 	}
 }

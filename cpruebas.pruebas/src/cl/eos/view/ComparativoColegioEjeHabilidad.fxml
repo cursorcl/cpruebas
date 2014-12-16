@@ -8,7 +8,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="520.0" prefWidth="1150.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.ResumenColegioEjeHabilidadView">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="520.0" prefWidth="1150.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.ComparativoColegioEjeHabilidadView">
    <center>
       <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <items>
@@ -18,22 +18,10 @@
                     <items>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0">
                            <children>
-                              <Label layoutX="2.0" text="TOTAL ALUMNOS " AnchorPane.bottomAnchor="188.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="756.0" AnchorPane.topAnchor="0.0">
-                                 <font>
-                                    <Font name="System Bold" size="12.0" />
-                                 </font>
-                              </Label>
                               <Label fx:id="lblColegio" layoutX="125.0" prefHeight="27.0" prefWidth="325.0" AnchorPane.bottomAnchor="188.0" AnchorPane.leftAnchor="125.0" AnchorPane.topAnchor="0.0" />
-                              <TableView fx:id="tblCursos" layoutX="2.0" layoutY="37.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="37.0">
+                              <TableView fx:id="tblEjeshabilidades" layoutX="2.0" layoutY="37.0" prefHeight="233.0" prefWidth="926.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                 <columns>
-                                  <TableColumn fx:id="colCurso" prefWidth="100.0" text="Curso" />
-                                  <TableColumn fx:id="colTotal" prefWidth="93.0" style="-fx-alignment: CENTER;" text="Total alumnos" />
-                                    <TableColumn fx:id="colEvaluados" minWidth="0.0" prefWidth="122.0" style="-fx-alignment: CENTER;" text="Alumnos evaluados" />
-                                    <TableColumn fx:id="colAprobados" prefWidth="106.0" style="-fx-alignment: CENTER;" text="Total aprobados" />
-                                    <TableColumn fx:id="colReprobados" prefWidth="116.0" style="-fx-alignment: CENTER;" text="Total reprobados" />
-                                    <TableColumn fx:id="colPEvaluados" prefWidth="150.0" resizable="false" style="-fx-alignment: CENTER;" text="\% Alumnos evaluados" />
-                                    <TableColumn fx:id="colPReprobados" minWidth="0.0" prefWidth="113.0" resizable="false" style="-fx-alignment: CENTER;" text="\%Reprobados" />
-                                    <TableColumn fx:id="colPAprobados" prefWidth="114.0" style="-fx-alignment: CENTER;" text="\% Aprobados" />
+                                  <TableColumn fx:id="colEjesHabilidades" prefWidth="100.0" text="Ejes/Habilidades" />
                                 </columns>
                                  <contextMenu>
                                     <ContextMenu>
@@ -57,17 +45,12 @@
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
-                  <Label layoutX="23.0" layoutY="14.0" text="TOTAL GENERAL " AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="20.0">
-                     <font>
-                        <Font name="System Bold" size="12.0" />
-                     </font>
-                  </Label>
                   <Label layoutX="120.0" layoutY="20.0" prefHeight="17.0" prefWidth="365.0" AnchorPane.topAnchor="20.0">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>
                   </Label>
-                  <TableView fx:id="tblResumenTotal" layoutX="63.0" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="40.0">
+                  <TableView fx:id="tblEvaluacion" layoutX="63.0" prefHeight="238.0" prefWidth="1148.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <contextMenu>
                         <ContextMenu>
                           <items>
@@ -75,6 +58,9 @@
                           </items>
                         </ContextMenu>
                      </contextMenu>
+                     <columns>
+                        <TableColumn prefWidth="132.0" text="Evaluación" />
+                     </columns>
                   </TableView>
                </children>
                <padding>

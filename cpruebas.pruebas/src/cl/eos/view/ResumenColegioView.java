@@ -150,7 +150,7 @@ public class ResumenColegioView extends AFormView implements
 		if (!parameters.isEmpty() && parameters.containsKey(COLEGIO_ID)
 				&& parameters.containsKey(ASIGNATURA_ID)) {
 			controller.find("EvaluacionPrueba.findEvaluacionByColegioAsig",
-					parameters);
+					parameters, this);
 		}
 	}
 

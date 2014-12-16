@@ -189,6 +189,14 @@ public class Utils {
 		return Math.round(parametro * 100d) / 100d;
 	}
 
+	   public static float redondeo1Decimal(float parametro) {
+	        return Math.round(parametro * 10f) / 10f;
+	    }
+
+	    public static double redondeo1Decimal(double parametro) {
+	        return Math.round(parametro * 10d) / 10d;
+	    }
+	
 	public static boolean isNumeric(String s) {
 		return s.matches("[-+]?\\d*\\.?\\d+");
 	}

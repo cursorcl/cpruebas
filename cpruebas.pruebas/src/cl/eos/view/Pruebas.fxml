@@ -187,6 +187,7 @@
                                           <MenuItem fx:id="mnuListaEvaluaciones" mnemonicParsing="false" text="Lista de Evaluaciones" />
                                           <MenuItem fx:id="mnuComparativoComunal" mnemonicParsing="false" text="Comparativo comunal ejes temáticos" />
                                           <MenuItem fx:id="mnuComparativoComunalHab" mnemonicParsing="false" text="Comparativo comunal habilidades" />
+                                          <MenuItem fx:id="mnuComparativoColegioEjeHabil" mnemonicParsing="false" text="Comparativo Colegio Ejes/Habilidades" />
                                           <MenuItem fx:id="mnuComunalEje" mnemonicParsing="false" text="Resumen Comunal" />
                                           <MenuItem fx:id="mnuColegio" mnemonicParsing="false" text="Resumen Colegio" />
                                       </items>
