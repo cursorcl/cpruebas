@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.controlsfx.dialog.Dialogs;
+
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -182,6 +184,12 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements
         generarReporte();
       }
     }
+    else if(list != null && list.isEmpty())
+    {
+      Dialogs.create().owner(null).title("No hay registros.")
+      .masthead(null)
+      .message("No se ha encontrado registros para la consulta.").showInformation();
+    }
   }
 
   /**
@@ -255,7 +263,7 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements
       // No hay valores para procesar todo.
       return;
     }
-    
+
     llenarColumnas(cursoList);
     int nroCursos = cursoList.size();
     Map<EjeTematico, List<OTPreguntasEjes>> mapEjes =
@@ -519,8 +527,7 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements
   }
 
 
-  private void clearContent()
-  {
+  private void clearContent() {
     tblEjeshabilidades.getItems().clear();
     tblEvaluacion.getItems().clear();
     tblEjeshabilidades.getColumns().clear();;

@@ -36,10 +36,10 @@
                     </items>
                   </SplitPane>
                   <AnchorPane layoutX="-86.0" layoutY="4.0" />
-                  <ComboBox fx:id="cmbColegios" layoutX="15.0" layoutY="75.0" prefHeight="25.0" prefWidth="195.0" promptText="Colegio" AnchorPane.bottomAnchor="139.0" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="949.0" AnchorPane.topAnchor="75.0" />
-                  <Label layoutX="14.0" layoutY="58.0" prefHeight="17.0" prefWidth="191.0" text="Seleccione colegio a procesar" AnchorPane.leftAnchor="4.0" />
-                  <Label layoutX="14.0" layoutY="122.0" prefHeight="17.0" prefWidth="176.0" text="Seleccione asignatura" AnchorPane.leftAnchor="4.0" />
-                  <ComboBox fx:id="cmbAsignatura" layoutX="15.0" layoutY="139.0" prefHeight="25.0" prefWidth="198.0" promptText="Asignatura" AnchorPane.bottomAnchor="75.0" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="949.0" AnchorPane.topAnchor="139.0" />
+                  <ComboBox fx:id="cmbColegios" layoutX="4.0" layoutY="47.0" prefHeight="34.0" prefWidth="195.0" promptText="Colegio" AnchorPane.bottomAnchor="160.0" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="949.0" AnchorPane.topAnchor="47.0" />
+                  <Label layoutX="4.0" layoutY="30.0" prefHeight="17.0" prefWidth="191.0" text="Seleccione colegio a procesar" AnchorPane.leftAnchor="4.0" />
+                  <Label layoutX="4.0" layoutY="99.0" prefHeight="17.0" prefWidth="176.0" text="Seleccione asignatura" AnchorPane.leftAnchor="4.0" />
+                  <ComboBox fx:id="cmbAsignatura" layoutX="4.0" layoutY="116.0" prefHeight="34.0" prefWidth="195.0" promptText="Asignatura" AnchorPane.bottomAnchor="91.0" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="949.0" AnchorPane.topAnchor="116.0" />
                   <Button fx:id="btnReportes" layoutX="98.0" layoutY="182.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="106.0" text="Generar reporte" />
                </children>
             </AnchorPane>
@@ -71,18 +71,14 @@
       </SplitPane>
    </center>
    <top>
-      <Pane maxHeight="40.0" BorderPane.alignment="CENTER">
+      <AnchorPane prefHeight="30.0" prefWidth="1150.0" styleClass="sample-page" BorderPane.alignment="CENTER">
          <children>
-            <HBox>
-               <children>
-                  <Label fx:id="lblTitulo" alignment="CENTER" contentDisplay="CENTER" prefHeight="35.0" prefWidth="1084.0">
-                     <font>
-                        <Font name="System Bold" size="20.0" />
-                     </font>
-                  </Label>
-               </children>
-            </HBox>
+            <Label fx:id="lblTitulo" alignment="CENTER" contentDisplay="CENTER" prefHeight="35.0" prefWidth="1150.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Label>
          </children>
-      </Pane>
+      </AnchorPane>
    </top>
 </BorderPane>
