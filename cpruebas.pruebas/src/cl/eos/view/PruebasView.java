@@ -119,6 +119,8 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 	@FXML
 	private MenuItem mnuComparativoComunalHab;
 	@FXML
+	private MenuItem mnuComparativoColegioEjeHabil;
+	@FXML
 	private MenuItem mnuColegio;
 	@FXML
 	private MenuItem mnuComunalEje;
@@ -211,6 +213,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 		mnuColegio.setOnAction(this);
 		mnuImprimirPrueba.setOnAction(this);
 		mnuNueva.setOnAction(this);
+		mnuComparativoColegioEjeHabil.setOnAction(this);
 		accionClicTabla();
 	}
 
@@ -388,10 +391,22 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 			handlerImrpimirPrueba();
 		} else if (source == mnuNueva) {
 			handlerNuevaPrueba();
+		} else if (source == mnuComparativoColegioEjeHabil)
+		{
+		  handlerComparativoColegioEjeHabilidad();
 		}
+		
 	}
 
-	private void handlerResumenColegios() {
+	private void handlerComparativoColegioEjeHabilidad() {
+	  ComparativoColegioEjeHabilidadView resumenColegioEjeHabiliadad = (ComparativoColegioEjeHabilidadView) show("/cl/eos/view/ComparativoColegioEjeHabilidad.fxml");
+      show(resumenColegioEjeHabiliadad);
+      controller.findAll(Colegio.class, resumenColegioEjeHabiliadad);
+      controller.findAll(Asignatura.class, resumenColegioEjeHabiliadad);
+      controller.findAll(EvaluacionEjeTematico.class, resumenColegioEjeHabiliadad);    
+  }
+
+  private void handlerResumenColegios() {
 		resumenColegio = (ResumenColegioView) show("/cl/eos/view/ResumenColegio.fxml");
 		show(resumenColegio);
 		controller.findAll(Colegio.class, resumenColegio);
