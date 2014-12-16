@@ -5,8 +5,6 @@ import java.io.File;
 import java.util.List;
 import java.util.Optional;
 
-import org.controlsfx.dialog.Dialogs;
-
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -17,6 +15,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import jfxtras.labs.scene.control.BreadcrumbBar;
+
+import org.controlsfx.dialog.Dialogs;
+
 import cl.eos.exception.ExceptionBD;
 import cl.eos.imp.view.WindowButtons;
 import cl.eos.imp.view.WindowManager;

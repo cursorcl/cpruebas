@@ -1,5 +1,6 @@
 package cl.eos;
 
+import java.io.File;
 import java.io.IOException;
 
 import javafx.application.Application;
@@ -11,14 +12,20 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import cl.sisdef.license.ProductKeyValidation;
+import cl.sisdef.license.UtilProductKey;
+import cl.sisdef.license.impl.PropertyFileProductKeyStorage;
+import cl.sisdef.license.impl.WMICSerialProvider;
 
 public class Main extends Application {
 	protected double xOffset;
 	protected double yOffset;
-	
+	static final String PRODUCT_KEYSTORE = "keystore";
+	private static final int PRODUCT_ID = 71;
 	@Override
 	public void start(Stage primaryStage) {
 		try {
+			processProductAuthentication(PRODUCT_ID);
 			setUserAgentStylesheet(STYLESHEET_MODENA);
 			try {
 				FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(
@@ -68,4 +75,22 @@ public class Main extends Application {
 	public static void main(String[] args) {
 		launch(args);
 	}
+	
+	
+    /**
+    *
+    * Metodo.
+    * @param productId
+    * @throws Exception
+    */
+   static public void processProductAuthentication(int productId) throws Exception
+   {
+         ProductKeyValidation pkv = UtilProductKey.validateProductKey(
+             new PropertyFileProductKeyStorage(new File(PRODUCT_KEYSTORE), null),
+             productId, new WMICSerialProvider(), true);
+         if (pkv == null || pkv.isUsable() == false)
+         {
+           throw new Exception("Unable to validate product");
+         }
+   }
 }

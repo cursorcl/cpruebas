@@ -311,7 +311,6 @@ public class ImprimirPruebaView extends AFormView {
 
 			List<PDDocument> documentos = new ArrayList<PDDocument>();
 			for (OTImprimirPrueba ot : selecteds) {
-
 				PDDocument doc = impresion.imprimir(prueba, ot.getCurso(),
 						ot.getProfesor(), ot.getColegio(), dtpFecha.getValue());
 				documentos.add(doc);

@@ -107,6 +107,7 @@ public class ImpresionPrueba {
 			doc = new PDDocument();
 
 			/* Por ahora solo la forma 1 */
+			prueba.getFormas().size();
 			Formas forma = prueba.getFormas().get(0);
 
 			for (Alumno alumno : curso.getAlumnos()) {

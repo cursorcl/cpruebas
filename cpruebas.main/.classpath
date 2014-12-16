@@ -25,5 +25,7 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.persistence"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.tipo.prueba"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.nivel.evaluacion"/>
+	<classpathentry kind="lib" path="../jars/lib.util.license.jar"/>
+	<classpathentry kind="lib" path="../jars/lib.util.java.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
