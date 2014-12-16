@@ -183,12 +183,9 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements
         }
         generarReporte();
       }
-    }
-    else if(list != null && list.isEmpty())
-    {
-      Dialogs.create().owner(null).title("No hay registros.")
-      .masthead(null)
-      .message("No se ha encontrado registros para la consulta.").showInformation();
+    } else if (list != null && list.isEmpty()) {
+      Dialogs.create().owner(null).title("No hay registros.").masthead(null)
+          .message("No se ha encontrado registros para la consulta.").showInformation();
     }
   }
 
@@ -297,7 +294,6 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements
       List<PruebaRendida> pruebasRendidas = eval.getPruebasRendidas();
       eval.getPrueba().getRespuestas().size();
       List<RespuestasEsperadasPrueba> respEsperadas = eval.getPrueba().getRespuestas();
-      int n = 0;
       // Estamos procesando un curso/una prueba
       for (PruebaRendida pruebaRendida : pruebasRendidas) {
         // Se procesa un alumno.
@@ -314,51 +310,54 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements
           continue;
         }
 
-        // Sumando a ejes tematicos
-        EjeTematico eje = respEsperadas.get(n).getEjeTematico();
-        if (!mapEjes.containsKey(eje)) {
-          List<OTPreguntasEjes> lista = new ArrayList<OTPreguntasEjes>();
-          for (int idx = 0; idx < nroCursos; idx++) {
-            lista.add(null);
+        for (int n = 0; n < respEsperadas.size(); n++) {
+          // Sumando a ejes tematicos
+          EjeTematico eje = respEsperadas.get(n).getEjeTematico();
+          if (!mapEjes.containsKey(eje)) {
+            List<OTPreguntasEjes> lista = new ArrayList<OTPreguntasEjes>();
+            for (int idx = 0; idx < nroCursos; idx++) {
+              lista.add(null);
+            }
+            mapEjes.put(eje, lista);
           }
-          mapEjes.put(eje, lista);
-        }
-        List<OTPreguntasEjes> lstEjes = mapEjes.get(eje);
-        OTPreguntasEjes otE = lstEjes.get(index); // Se obtiene el valor asociado a la columna.
-        if (otE == null) {
-          otE = new OTPreguntasEjes();
-          otE.setEjeTematico(eje);
+          List<OTPreguntasEjes> lstEjes = mapEjes.get(eje);
+          OTPreguntasEjes otE = lstEjes.get(index); // Se obtiene el valor asociado a la columna.
+          if (otE == null) {
+            otE = new OTPreguntasEjes();
+            otE.setEjeTematico(eje);
+            lstEjes.set(index, otE);
+          }
+          Pair<Integer, Integer> buenasTotal = obtenerBuenasTotales(respuestas, respEsperadas, eje);
+          otE.setBuenas(otE.getBuenas() + buenasTotal.getFirst());
+          otE.setTotal(otE.getTotal() + buenasTotal.getSecond());
           lstEjes.set(index, otE);
-        }
-        Pair<Integer, Integer> buenasTotal = obtenerBuenasTotales(respuestas, respEsperadas, eje);
-        otE.setBuenas(otE.getBuenas() + buenasTotal.getFirst());
-        otE.setTotal(otE.getTotal() + buenasTotal.getSecond());
-        lstEjes.set(index, otE);
 
-        // Sumando a habilidades
-        Habilidad hab = respEsperadas.get(n).getHabilidad();
-        System.out.println(hab);
-        if (!mapHabilidades.containsKey(hab)) {
+          // Sumando a habilidades
+          Habilidad hab = respEsperadas.get(n).getHabilidad();
+          System.out.println(hab);
+          if (!mapHabilidades.containsKey(hab)) {
 
-          List<OTPreguntasHabilidad> lista = new ArrayList<OTPreguntasHabilidad>();
-          for (int idx = 0; idx < nroCursos; idx++) {
-            lista.add(null);
+            List<OTPreguntasHabilidad> lista = new ArrayList<OTPreguntasHabilidad>();
+            for (int idx = 0; idx < nroCursos; idx++) {
+              lista.add(null);
+            }
+            mapHabilidades.put(hab, lista);
           }
-          mapHabilidades.put(hab, lista);
-        }
-        List<OTPreguntasHabilidad> lstHabilidades = mapHabilidades.get(hab);
-        OTPreguntasHabilidad otH = lstHabilidades.get(index);// Se obtiene el valor asociado a la
-                                                             // columna
-        if (otH == null) {
-          otH = new OTPreguntasHabilidad();
-          otH.setHabilidad(hab);
+          List<OTPreguntasHabilidad> lstHabilidades = mapHabilidades.get(hab);
+          OTPreguntasHabilidad otH = lstHabilidades.get(index);// Se obtiene el valor asociado a la
+                                                               // columna
+          if (otH == null) {
+            otH = new OTPreguntasHabilidad();
+            otH.setHabilidad(hab);
+            lstHabilidades.set(index, otH);
+          }
+          buenasTotal = obtenerBuenasTotales(respuestas, respEsperadas, hab);
+          otH.setBuenas(otE.getBuenas() + buenasTotal.getFirst());
+          otH.setTotal(otE.getTotal() + buenasTotal.getSecond());
           lstHabilidades.set(index, otH);
-        }
-        buenasTotal = obtenerBuenasTotales(respuestas, respEsperadas, hab);
-        otH.setBuenas(otE.getBuenas() + buenasTotal.getFirst());
-        otH.setTotal(otE.getTotal() + buenasTotal.getSecond());
-        lstHabilidades.set(index, otH);
 
+
+        }
         for (EvaluacionEjeTematico ejetem : evalEjeTematicoList) {
           if (ejetem.isInside(pruebaRendida.getPbuenas())) {
             List<OTPreguntasEvaluacion> lstOt = mapEvaluaciones.get(ejetem);
