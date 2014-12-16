@@ -295,6 +295,7 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements
       // Se esta revisando un curso.
       eval.getPruebasRendidas().size();
       List<PruebaRendida> pruebasRendidas = eval.getPruebasRendidas();
+      eval.getPrueba().getRespuestas().size();
       List<RespuestasEsperadasPrueba> respEsperadas = eval.getPrueba().getRespuestas();
       int n = 0;
       // Estamos procesando un curso/una prueba
@@ -336,6 +337,7 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements
 
         // Sumando a habilidades
         Habilidad hab = respEsperadas.get(n).getHabilidad();
+        System.out.println(hab);
         if (!mapHabilidades.containsKey(hab)) {
 
           List<OTPreguntasHabilidad> lista = new ArrayList<OTPreguntasHabilidad>();
@@ -486,7 +488,7 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements
     for (int n = 0; n < respEsperadas.size(); n++) {
       RespuestasEsperadasPrueba resp = respEsperadas.get(n);
       if (resp.getHabilidad().equals(hab)) {
-        if (respuestas.length() >= n) {
+        if (respuestas.length() > n) {
           String sResp = respuestas.substring(n, n + 1);
           if ("+".equals(sResp) || resp.getRespuesta().equalsIgnoreCase(sResp)) {
             nroBuenas++;
@@ -514,7 +516,7 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements
     for (int n = 0; n < respEsperadas.size(); n++) {
       RespuestasEsperadasPrueba resp = respEsperadas.get(n);
       if (resp.getEjeTematico().equals(eje)) {
-        if (respuestas.length() >= n) {
+        if (respuestas.length() > n) {
           String sResp = respuestas.substring(n, n + 1);
           if ("+".equals(sResp) || resp.getRespuesta().equalsIgnoreCase(sResp)) {
             nroBuenas++;
@@ -525,7 +527,6 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements
     }
     return new Pair<Integer, Integer>(nroBuenas, nroPreguntas);
   }
-
 
   private void clearContent() {
     tblEjeshabilidades.getItems().clear();
