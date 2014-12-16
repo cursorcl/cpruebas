@@ -3,6 +3,8 @@ package cl.eos;
 import java.io.File;
 import java.io.IOException;
 
+import org.controlsfx.dialog.Dialogs;
+
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -12,6 +14,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import cl.eos.exceptions.CPruebasException;
+import cl.eos.util.Utils;
 import cl.sisdef.license.ProductKeyValidation;
 import cl.sisdef.license.UtilProductKey;
 import cl.sisdef.license.impl.PropertyFileProductKeyStorage;
@@ -67,8 +71,11 @@ public class Main extends Application {
 				e.printStackTrace();
 			}
 
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (CPruebasException e) {
+			Dialogs.create().owner(null).title("Producto no validado.")
+			.masthead("Debe solicitar código de activación.")
+			.message("Solicitar código de activación al correo curso.cl@gmail.com.").showError();
+
 		}
 	}
 
@@ -83,14 +90,14 @@ public class Main extends Application {
     * @param productId
     * @throws Exception
     */
-   static public void processProductAuthentication(int productId) throws Exception
+   static public void processProductAuthentication(int productId) throws CPruebasException
    {
          ProductKeyValidation pkv = UtilProductKey.validateProductKey(
-             new PropertyFileProductKeyStorage(new File(PRODUCT_KEYSTORE), null),
+             new PropertyFileProductKeyStorage(new File(Utils.getDefaultDirectory() + "/" + PRODUCT_KEYSTORE), null),
              productId, new WMICSerialProvider(), true);
          if (pkv == null || pkv.isUsable() == false)
          {
-           throw new Exception("Unable to validate product");
+           throw new CPruebasException("Producto no validado.");
          }
    }
 }
