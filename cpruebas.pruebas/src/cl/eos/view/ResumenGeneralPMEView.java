@@ -380,14 +380,8 @@ public class ResumenGeneralPMEView extends AFormView implements
 		columna0.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
 			public ObservableValue<String> call(
 					CellDataFeatures<ObservableList, String> param) {
-				// if (param.getValue().get(0) instanceof String){
 				return new SimpleStringProperty(param.getValue().get(0)
 						.toString());
-				// }
-				// else if (param.getValue().get(1) instanceof Integer){
-				// return null;//new SimpleIntegerProperty((int)
-				// param.getValue().get(1));
-				// }
 			}
 		});
 		columna0.setPrefWidth(100);
@@ -402,7 +396,6 @@ public class ResumenGeneralPMEView extends AFormView implements
 						}
 					}
 				};
-				// cell.setAlignment(Pos.CENTER);
 				return cell;
 			}
 		});
