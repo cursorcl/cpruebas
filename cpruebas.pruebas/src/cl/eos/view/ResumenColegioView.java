@@ -46,6 +46,7 @@ public class ResumenColegioView extends AFormView implements EventHandler<Action
   private static final String ASIGNATURA_ID = "idAsignatura";
 
   private static final String COLEGIO_ID = "idColegio";
+  @SuppressWarnings("rawtypes")
   @FXML
   private TableView tblPME;
   @FXML
@@ -67,6 +68,7 @@ public class ResumenColegioView extends AFormView implements EventHandler<Action
   @FXML
   private TableColumn<OTResumenColegio, Float> colPReprobados;
 
+  @SuppressWarnings("rawtypes")
   @FXML
   private TableView tblResumenTotal;
   @FXML
@@ -479,6 +481,7 @@ public class ResumenColegioView extends AFormView implements EventHandler<Action
   private void generarColumnasPME() {
 
     TableColumn columna0 = new TableColumn("Curso");
+    columna0.setStyle("-fx-alignment: CENTER-LEFT;");
     columna0
         .setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
           public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
@@ -510,6 +513,7 @@ public class ResumenColegioView extends AFormView implements EventHandler<Action
       // Columnas
       final int col = indice;
       TableColumn columna = new TableColumn(titulo.getName());
+      columna.setStyle("-fx-alignment: CENTER;");
       columna
           .setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
             public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
@@ -523,17 +527,12 @@ public class ResumenColegioView extends AFormView implements EventHandler<Action
       indice++;
     }
 
-    ObservableList columnas = tblPME.getColumns();
-    for (Object object : columnas) {
-      if (object instanceof TableColumn) {
-        columna0.setStyle("-fx-alignment: CENTER;");
-      }
-    }
-
   }
 
+  @SuppressWarnings({"rawtypes", "unchecked"})
   private void agregarColumnasTbl() {
     TableColumn columna0 = new TableColumn("");
+    columna0.setStyle("-fx-alignment: CENTER-LEFT;");
     columna0
         .setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
           public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
@@ -558,6 +557,7 @@ public class ResumenColegioView extends AFormView implements EventHandler<Action
     tblResumenTotal.getColumns().add(columna0);
 
     TableColumn columna1 = new TableColumn("Total Escuela");
+    columna1.setStyle("-fx-alignment: CENTER;");
     columna1
         .setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
           public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
@@ -582,9 +582,11 @@ public class ResumenColegioView extends AFormView implements EventHandler<Action
     tblResumenTotal.getColumns().add(columna1);
 
     TableColumn columna2 = new TableColumn("N° Alumnos");
+    columna2.setStyle("-fx-alignment: CENTER;");
     tblResumenTotal.getColumns().add(columna2);
 
     TableColumn columna3 = new TableColumn("Evaluados");
+    columna3.setStyle("-fx-alignment: CENTER;");
     columna3
         .setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
           public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
@@ -608,9 +610,11 @@ public class ResumenColegioView extends AFormView implements EventHandler<Action
     });
     columna2.getColumns().addAll(columna3);
     TableColumn columna7 = new TableColumn("Alumnos");
+    columna7.setStyle("-fx-alignment: CENTER;");
     tblResumenTotal.getColumns().add(columna7);
 
     TableColumn columna4 = new TableColumn("Aprobados");
+    columna4.setStyle("-fx-alignment: CENTER;");
     columna4
         .setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
           public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
@@ -634,6 +638,7 @@ public class ResumenColegioView extends AFormView implements EventHandler<Action
     });
 
     TableColumn columna5 = new TableColumn("Reprobados");
+    columna5.setStyle("-fx-alignment: CENTER;");
     columna5
         .setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
           public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
@@ -659,6 +664,7 @@ public class ResumenColegioView extends AFormView implements EventHandler<Action
     columna7.getColumns().addAll(columna4, columna5);
 
     TableColumn columna6 = new TableColumn("");
+    columna6.setStyle("-fx-alignment: CENTER;");
     tblResumenTotal.getColumns().add(columna6);
 
     int indice = 5;
@@ -668,6 +674,7 @@ public class ResumenColegioView extends AFormView implements EventHandler<Action
       // Columnas
       final int column = indice;
       TableColumn columna = new TableColumn(titulo.getName());
+      columna.setStyle("-fx-alignment: CENTER;");
       columna
           .setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
             public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
@@ -681,12 +688,6 @@ public class ResumenColegioView extends AFormView implements EventHandler<Action
       indice++;
     }
 
-    ObservableList columnas = tblResumenTotal.getColumns();
-    for (Object object : columnas) {
-      if (object instanceof TableColumn) {
-        columna0.setStyle("-fx-alignment: CENTER;");
-      }
-    }
   }
 
 }
