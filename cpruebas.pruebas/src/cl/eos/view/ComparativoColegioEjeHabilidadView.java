@@ -195,6 +195,7 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements
    * 
    * @param pCursoList
    */
+  @SuppressWarnings({"rawtypes", "unchecked"})
   private void llenarColumnas(ObservableList<Curso> pCursoList) {
     TableColumn tc = new TableColumn("EJE / HABILIDAD");
     tc.setSortable(false);
@@ -269,7 +270,6 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements
         new HashMap<Habilidad, List<OTPreguntasHabilidad>>();
     Map<EvaluacionEjeTematico, List<OTPreguntasEvaluacion>> mapEvaluaciones =
         new HashMap<EvaluacionEjeTematico, List<OTPreguntasEvaluacion>>();
-    Map<String, List<Integer>> mapTotales = new HashMap<String, List<Integer>>();
 
 
     for (EvaluacionEjeTematico ejetem : evalEjeTematicoList) {
