@@ -52,6 +52,8 @@ public class EvaluacionPruebaView extends AFormView implements EventHandler<Acti
   @FXML
   private MenuItem mnuResumenAlumno;
   @FXML
+  private MenuItem mnuResEjeHabxAlumno;
+  @FXML
   private MenuItem mnuRespuestasPregunta;
   @FXML
   private MenuItem mnuRespuestasHabilidad;
@@ -106,6 +108,7 @@ public class EvaluacionPruebaView extends AFormView implements EventHandler<Acti
     menuRespuestasEje.setOnAction(this);
     menuResumenPME.setOnAction(this);
     mnuEjeHabXAlumno.setOnAction(this);
+    mnuResEjeHabxAlumno.setOnAction(this);
 
     mnuExportarExcel.setOnAction(this);
     menuExportarExcel.setOnAction(this);
@@ -161,7 +164,7 @@ public class EvaluacionPruebaView extends AFormView implements EventHandler<Acti
       handlerResumenPME();
     } else if (source == mnuExportarExcel || source == menuExportarExcel) {
       handlerResumenExcel();
-    } else if (source == mnuEjeHabXAlumno) {
+    } else if (source == mnuEjeHabXAlumno || source == mnuResEjeHabxAlumno) {
       handlerResumenEjeHabXAlumno();
     }
     tblListadoPruebas.getSelectionModel().clearSelection();

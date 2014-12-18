@@ -7,6 +7,7 @@
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.control.SeparatorMenuItem?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="519.0" prefWidth="1087.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.PruebasView">
    <top>
@@ -179,17 +180,23 @@
                                  <contextMenu>
                                     <ContextMenu>
                                       <items>
-                                        <MenuItem fx:id="mnuPopupModificar" mnemonicParsing="false" text="Modificar Prueba" />
+                                          <MenuItem fx:id="mnuPopupModificar" mnemonicParsing="false" text="Modificar Prueba" />
                                           <MenuItem fx:id="mnuPopupEliminar" mnemonicParsing="false" text="Eliminar Prueba" />
-                                          <MenuItem fx:id="mnuDefinirPrueba" mnemonicParsing="false" text="Definir Prueba" />
-                                          <MenuItem fx:id="mnuEvaluarPrueba" mnemonicParsing="false" text="Evaluar prueba" />
                                           <MenuItem fx:id="mnuImprimirPrueba" mnemonicParsing="false" text="Imprimir Prueba" />
-                                          <MenuItem fx:id="mnuListaEvaluaciones" mnemonicParsing="false" text="Lista de Evaluaciones" />
-                                          <MenuItem fx:id="mnuComparativoComunal" mnemonicParsing="false" text="Comparativo comunal ejes temáticos" />
-                                          <MenuItem fx:id="mnuComparativoComunalHab" mnemonicParsing="false" text="Comparativo comunal habilidades" />
+                                          <SeparatorMenuItem ></SeparatorMenuItem>
+                                          <MenuItem fx:id="mnuListaEvaluaciones" mnemonicParsing="false" text="Ver Evaluaciones" />
+                                          <SeparatorMenuItem ></SeparatorMenuItem>
+                                          <MenuItem fx:id="mnuDefinirPrueba" mnemonicParsing="false" text="Definir Prueba" />                                         
+                                          <MenuItem fx:id="mnuEvaluarPrueba" mnemonicParsing="false" text="Evaluar Prueba" />
+                                          <SeparatorMenuItem ></SeparatorMenuItem>
                                           <MenuItem fx:id="mnuComparativoColegioEjeHabil" mnemonicParsing="false" text="Comparativo Colegio Ejes/Habilidades" />
-                                          <MenuItem fx:id="mnuComunalEje" mnemonicParsing="false" text="Resumen Comunal" />
                                           <MenuItem fx:id="mnuColegio" mnemonicParsing="false" text="Resumen Colegio" />
+                                          <SeparatorMenuItem ></SeparatorMenuItem>
+                                          <MenuItem fx:id="mnuComunalEje" mnemonicParsing="false" text="Resumen Comunal" />
+                                          <MenuItem fx:id="mnuComparativoComunal" mnemonicParsing="false" text="Comparativo Comunal Ejes Temáticos" />
+                                          <MenuItem fx:id="mnuComparativoComunalHab" mnemonicParsing="false" text="Comparativo Comunal Habilidades" />
+                                          
+                                          
                                       </items>
                                     </ContextMenu>
                                  </contextMenu>
