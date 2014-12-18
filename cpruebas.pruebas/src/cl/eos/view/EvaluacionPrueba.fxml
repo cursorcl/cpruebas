@@ -35,6 +35,7 @@
                                       <items>
                                         <MenuItem fx:id="mnuResumenGeneral" mnemonicParsing="false" text="Resumen General" />
                                           <MenuItem fx:id="mnuResumenAlumno" mnemonicParsing="false" text="Resumen por Alumno" />
+                                          <MenuItem fx:id="mnuEjeHabXAlumno" mnemonicParsing="false" text="Resumen Eje/Habilidad x Alumno" />
                                           <MenuItem fx:id="mnuRespuestasPregunta" mnemonicParsing="false" text="Resumen Respuestas por Pregunta" />
                                           <MenuItem fx:id="mnuRespuestasHabilidad" mnemonicParsing="false" text="Resumen Respuestas por Habilidad" />
                                           <MenuItem fx:id="mnuRespuestasEje" mnemonicParsing="false" text="Resumen Respuestas por Eje Temático" />
