@@ -346,7 +346,7 @@ public class ResumenXAlumnoEjeHabilidadView extends AFormView implements
 		makeHeaderWrappable(tc);
 		tc.setSortable(false);
 		tc.setStyle("-fx-alignment: CENTER;-fx-font-size: 8pt;-fx-text-alignment: center;");
-		tc.prefWidthProperty().set(75f);
+		tc.prefWidthProperty().set(70f);
 		tc.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
 			public ObservableValue<String> call(
 					CellDataFeatures<ObservableList, String> param) {
