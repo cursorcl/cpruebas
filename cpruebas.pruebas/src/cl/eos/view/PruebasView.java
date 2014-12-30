@@ -124,7 +124,8 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 	private MenuItem mnuColegio;
 	@FXML
 	private MenuItem mnuComunalEje;
-
+	@FXML
+	private MenuItem mnuEjesEvaluacion;
 	@FXML
 	private MenuItem mnuNueva;
 	@FXML
@@ -214,6 +215,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 		mnuImprimirPrueba.setOnAction(this);
 		mnuNueva.setOnAction(this);
 		mnuComparativoColegioEjeHabil.setOnAction(this);
+		mnuEjesEvaluacion.setOnAction(this);
 		accionClicTabla();
 	}
 
@@ -395,7 +397,18 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 		{
 		  handlerComparativoColegioEjeHabilidad();
 		}
+		else if(source == mnuEjesEvaluacion)
+		{
+			handlerEjesEvaluacion();
+		}
 		
+	}
+
+	private void handlerEjesEvaluacion() {
+		ComparativoColegioEjeEvauacionView resumenEjeEvaluacion = (ComparativoColegioEjeEvauacionView) show("/cl/eos/view/ComparativoColegioEjeEvauacion.fxml");
+	      show(resumenEjeEvaluacion);
+	      controller.findAll(Colegio.class, resumenEjeEvaluacion);
+	      controller.findAll(Asignatura.class, resumenEjeEvaluacion);
 	}
 
 	private void handlerComparativoColegioEjeHabilidad() {

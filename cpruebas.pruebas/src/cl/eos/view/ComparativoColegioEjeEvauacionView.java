@@ -43,7 +43,7 @@ import cl.eos.util.ExcelSheetWriterObj;
 import cl.eos.util.Pair;
 import cl.eos.util.Utils;
 
-public class ComparativoColegioEjeCantidadView extends AFormView implements
+public class ComparativoColegioEjeEvauacionView extends AFormView implements
 		EventHandler<ActionEvent> {
 
 	private static final String ASIGNATURA_ID = "idAsignatura";
@@ -71,7 +71,7 @@ public class ComparativoColegioEjeCantidadView extends AFormView implements
 	private ObservableList<EvaluacionPrueba> evaluacionesPrueba;
 	private ArrayList<OTPreguntasEvaluacion> lst;
 
-	public ComparativoColegioEjeCantidadView() {
+	public ComparativoColegioEjeEvauacionView() {
 		setTitle("Comparativo Colegio Ejes Temáticos y Habilidades");
 	}
 
@@ -138,7 +138,6 @@ public class ComparativoColegioEjeCantidadView extends AFormView implements
 		cmbAsignatura.setOnAction(this);
 		btnReportes.setOnAction(this);
 		mnuExportarAlumnos.setOnAction(this);
-		mnuExportarGeneral.setOnAction(this);
 	}
 
 	@Override
@@ -228,6 +227,7 @@ public class ComparativoColegioEjeCantidadView extends AFormView implements
 							.toString());
 				}
 			});
+			
 			// Estoy agregando subcolumnas
 			for(RangoEvaluacion rng: rangos)
 			{
@@ -242,6 +242,7 @@ public class ComparativoColegioEjeCantidadView extends AFormView implements
 								.toString());
 					}
 				});
+				tc.getColumns().add(stc);
 			}
 			
 			tblEjesCantidad.getColumns().add(tc);

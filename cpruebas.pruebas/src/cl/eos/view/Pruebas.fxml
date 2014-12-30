@@ -183,15 +183,16 @@
                                           <MenuItem fx:id="mnuPopupModificar" mnemonicParsing="false" text="Modificar Prueba" />
                                           <MenuItem fx:id="mnuPopupEliminar" mnemonicParsing="false" text="Eliminar Prueba" />
                                           <MenuItem fx:id="mnuImprimirPrueba" mnemonicParsing="false" text="Imprimir Prueba" />
-                                          <SeparatorMenuItem ></SeparatorMenuItem>
+                                          <SeparatorMenuItem />
                                           <MenuItem fx:id="mnuListaEvaluaciones" mnemonicParsing="false" text="Ver Evaluaciones" />
-                                          <SeparatorMenuItem ></SeparatorMenuItem>
+                                          <SeparatorMenuItem />
                                           <MenuItem fx:id="mnuDefinirPrueba" mnemonicParsing="false" text="Definir Prueba" />                                         
                                           <MenuItem fx:id="mnuEvaluarPrueba" mnemonicParsing="false" text="Evaluar Prueba" />
-                                          <SeparatorMenuItem ></SeparatorMenuItem>
+                                          <SeparatorMenuItem />
                                           <MenuItem fx:id="mnuComparativoColegioEjeHabil" mnemonicParsing="false" text="Comparativo Colegio Ejes/Habilidades" />
                                           <MenuItem fx:id="mnuColegio" mnemonicParsing="false" text="Resumen Colegio" />
-                                          <SeparatorMenuItem ></SeparatorMenuItem>
+                                          <MenuItem fx:id="mnuEjesEvaluacion" mnemonicParsing="false" text="Colegio Ejes/Evaluación" />
+                                          <SeparatorMenuItem />
                                           <MenuItem fx:id="mnuComunalEje" mnemonicParsing="false" text="Resumen Comunal" />
                                           <MenuItem fx:id="mnuComparativoComunal" mnemonicParsing="false" text="Comparativo Comunal Ejes Temáticos" />
                                           <MenuItem fx:id="mnuComparativoComunalHab" mnemonicParsing="false" text="Comparativo Comunal Habilidades" />
