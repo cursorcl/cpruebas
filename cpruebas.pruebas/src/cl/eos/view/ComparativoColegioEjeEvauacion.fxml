@@ -21,7 +21,7 @@
                               <Label fx:id="lblColegio" layoutX="125.0" prefHeight="27.0" prefWidth="325.0" AnchorPane.bottomAnchor="188.0" AnchorPane.leftAnchor="125.0" AnchorPane.topAnchor="0.0" />
                               <TableView fx:id="tblEjesCantidad" layoutX="2.0" layoutY="37.0" prefHeight="233.0" prefWidth="926.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                 <columns>
-                                  <TableColumn fx:id="colEjesHabilidades" prefWidth="100.0" text="Ejes/Habilidades" />
+                                  <TableColumn fx:id="colEjesHabilidades" prefWidth="100.0" text="EJES" />
                                 </columns>
                                  <contextMenu>
                                     <ContextMenu>
@@ -36,10 +36,10 @@
                     </items>
                   </SplitPane>
                   <AnchorPane layoutX="-86.0" layoutY="4.0" />
-                  <ComboBox fx:id="cmbColegios" layoutX="4.0" layoutY="47.0" prefHeight="34.0" prefWidth="195.0" promptText="Colegio" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="949.0" AnchorPane.topAnchor="47.0" />
+                  <ComboBox fx:id="cmbColegios" layoutX="4.0" layoutY="47.0" prefHeight="22.0" prefWidth="195.0" promptText="Colegio" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="949.0" AnchorPane.topAnchor="47.0" />
                   <Label layoutX="4.0" layoutY="30.0" prefHeight="17.0" prefWidth="191.0" text="Seleccione colegio a procesar" AnchorPane.leftAnchor="4.0" />
                   <Label layoutX="4.0" layoutY="99.0" prefHeight="17.0" prefWidth="176.0" text="Seleccione asignatura" AnchorPane.leftAnchor="4.0" />
-                  <ComboBox fx:id="cmbAsignatura" layoutX="4.0" layoutY="116.0" prefHeight="34.0" prefWidth="195.0" promptText="Asignatura" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="949.0" AnchorPane.topAnchor="116.0" />
+                  <ComboBox fx:id="cmbAsignatura" layoutX="4.0" layoutY="116.0" prefHeight="22.0" prefWidth="195.0" promptText="Asignatura" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="949.0" AnchorPane.topAnchor="116.0" />
                   <Button fx:id="btnReportes" layoutX="98.0" layoutY="182.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="106.0" text="Generar reporte" />
                </children>
             </AnchorPane>

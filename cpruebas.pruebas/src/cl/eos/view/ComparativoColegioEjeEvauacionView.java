@@ -73,7 +73,7 @@ public class ComparativoColegioEjeEvauacionView extends AFormView implements
 	private ArrayList<OTPreguntasEvaluacion> lst;
 
 	public ComparativoColegioEjeEvauacionView() {
-		setTitle("Comparativo Colegio Ejes Temáticos y Habilidades");
+		setTitle("Comparativo Colegios Ejes");
 	}
 
 	@Override
@@ -91,11 +91,10 @@ public class ComparativoColegioEjeEvauacionView extends AFormView implements
 
 		if (source == mnuExportarAlumnos || source == mnuExportarGeneral) {
 
-			tblEjesCantidad.setId("Comparativo Ejes y Habilidades");
-			//
+			tblEjesCantidad.setId("Comparativo Colegios Ejes");
 			List<TableView<? extends Object>> listaTablas = new ArrayList<>();
 			listaTablas.add((TableView<? extends Object>) tblEjesCantidad);
-			ExcelSheetWriterObj.convertirDatosALibroDeExcel(listaTablas);
+			ExcelSheetWriterObj.convertirDatosColumnasDoblesALibroDeExcel(listaTablas);
 		}
 	}
 

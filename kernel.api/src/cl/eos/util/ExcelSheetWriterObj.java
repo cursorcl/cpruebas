@@ -15,13 +15,17 @@ import javafx.scene.control.TreeTableView;
 
 import javax.swing.ImageIcon;
 
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.controlsfx.dialog.Dialogs;
 
 /**
@@ -63,6 +67,16 @@ public final class ExcelSheetWriterObj {
 		crearDocExcel(wbook);
 	}
 
+	public static void convertirDatosColumnasDoblesALibroDeExcel(
+			List<TableView<? extends Object>> listaTablas) {
+		final Workbook wbook = new HSSFWorkbook();
+		for (TableView<? extends Object> tableView : listaTablas) {
+
+			crearLibroConDatosDeTablaColumnasDobles(tableView, wbook);
+		}
+		crearDocExcel(wbook);
+	}
+
 	private static void crearDocExcel(final Workbook wbWork) {
 		long time = Calendar.getInstance().getTimeInMillis();
 		final String nombreDoc = "wb" + time + ".xls";
@@ -83,9 +97,10 @@ public final class ExcelSheetWriterObj {
 			try {
 				fileOut.close();
 			} catch (final IOException e) {
-				Dialogs.create().owner(null).title("Problemas al cerrar archivo")
-				.masthead("No se pudo cerrar archivo")
-				.message("Nombre:" + path).showError();
+				Dialogs.create().owner(null)
+						.title("Problemas al cerrar archivo")
+						.masthead("No se pudo cerrar archivo")
+						.message("Nombre:" + path).showError();
 			}
 		}
 		mostrarDocumentoExcel(path);
@@ -106,6 +121,13 @@ public final class ExcelSheetWriterObj {
 		final Workbook workbook = wbook;
 		crearDatosHeader(tabla, workbook);
 		crearDatosTabla(tabla, workbook);
+	}
+
+	private static void crearLibroConDatosDeTablaColumnasDobles(
+			final TableView<? extends Object> tabla, Workbook wbook) {
+		final Workbook workbook = wbook;
+		crearDatosHeaderColumnasDobles(tabla, workbook);
+		crearDatosTablaColumnasDobles(tabla, workbook);
 	}
 
 	private static void crearLibroConDatosDeTabla(
@@ -129,6 +151,63 @@ public final class ExcelSheetWriterObj {
 			final Cell cell = filaCabecera.createCell(indice);
 			cell.setCellValue(tabla.getColumns().get(indice).getText());
 			cell.setCellStyle(style);
+		}
+
+	}
+
+	private static void crearDatosHeaderColumnasDobles(
+			TableView<? extends Object> tabla, Workbook wbook) {
+
+		final Sheet sheet1 = wbook.createSheet(tabla.getId());
+		final HSSFCellStyle  style = (HSSFCellStyle) wbook.createCellStyle();
+		
+//		Font font = wbook.createFont();
+//		font.setFontHeightInPoints((short) 13);
+//		font.setFontName("Courier New");
+//		font.setBoldweight((short) 2);
+//		style.setFont(font);
+		style.setAlignment(CellStyle.ALIGN_CENTER);
+		style.setAlignment(CellStyle.VERTICAL_CENTER);
+		style.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
+		style.setFillPattern(CellStyle.SOLID_FOREGROUND);
+
+		
+
+		final Row filaTitulo = sheet1.createRow(0);
+		final Row filaSubtitulo = sheet1.createRow(1);
+		int idx = 0;
+		for (int indice = 0; indice < tabla.getColumns().size(); indice++) {
+			TableColumn<? extends Object, ?> columna = tabla.getColumns().get(
+					indice);
+			if (columna.getColumns() != null && !columna.getColumns().isEmpty()) {
+				for (int n = 0; n < columna.getColumns().size(); n++) {
+					Cell cell = filaTitulo.createCell(idx);
+					cell.setCellValue("");
+					if (n == 0) {
+						cell.setCellValue(tabla.getColumns().get(indice)
+								.getText());
+					}
+					cell.setCellStyle(style);
+
+					cell = filaSubtitulo.createCell(idx);
+					cell.setCellValue(columna.getColumns().get(n).getText());
+					cell.setCellStyle(style);
+					idx++;
+				}
+
+				sheet1.addMergedRegion(new CellRangeAddress(0, 0,
+						(indice - 1) * 4 + 1, (indice - 1) * 4 + 4));
+
+			} else {
+				Cell cell = filaTitulo.createCell(idx);
+				cell.setCellValue(tabla.getColumns().get(indice).getText());
+				cell.setCellStyle(style);
+				cell = filaSubtitulo.createCell(idx);
+				cell.setCellValue("");
+				cell.setCellStyle(style);
+				idx++;
+
+			}
 		}
 
 	}
@@ -168,6 +247,17 @@ public final class ExcelSheetWriterObj {
 		for (int indiceFila = 0; indiceFila < tabla.getItems().size(); indiceFila++) {
 			final Row fila = sheet1.createRow(indiceFila + 1);
 			recorrerColumnas(tabla, indiceFila, fila);
+		}
+	}
+
+	private static void crearDatosTablaColumnasDobles(
+			TableView<? extends Object> tabla, final Workbook wbook) {
+		final Workbook workbook = wbook;
+		final Sheet sheet1 = workbook.getSheet(tabla.getId());
+
+		for (int indiceFila = 0; indiceFila < tabla.getItems().size(); indiceFila++) {
+			final Row fila = sheet1.createRow(indiceFila + 2);
+			recorrerColumnasDobles(tabla, indiceFila + 1, fila);
 		}
 	}
 
@@ -278,6 +368,67 @@ public final class ExcelSheetWriterObj {
 				cell.setCellValue((String) valor.toString());
 			}
 		}
+	}
+
+	private static void recorrerColumnasDobles(
+			final TableView<? extends Object> tabla, final int indiceFila,
+			final Row fila) {
+
+		int idx = 0;
+		for (int indiceColumna = 0; indiceColumna < tabla.getColumns().size(); indiceColumna++) {
+
+			TableColumn<? extends Object, ?> valores = tabla.getColumns().get(
+					indiceColumna);
+			if (valores.getColumns() != null && !valores.getColumns().isEmpty()) {
+				for (int n = 0; n < valores.getColumns().size(); n++) {
+					TableColumn<? extends Object, ?> values = valores
+							.getColumns().get(n);
+					Object valor = values.getCellData(indiceFila);
+					final Cell cell = fila.createCell(idx);
+					CellStyle style = cell.getCellStyle();
+					style.setAlignment(CellStyle.ALIGN_CENTER);
+					style.setAlignment(CellStyle.VERTICAL_CENTER);
+					setValueToCell(valor, cell);
+					cell.setCellStyle(style);
+					idx++;
+				}
+			} else {
+				Object valor = valores.getCellData(indiceFila);
+				final Cell cell = fila.createCell(idx);
+				setValueToCell(valor, cell);
+				CellStyle style = cell.getCellStyle();
+				style.setAlignment(CellStyle.ALIGN_CENTER);
+				style.setAlignment(CellStyle.VERTICAL_CENTER);
+				setValueToCell(valor, cell);
+				idx++;
+			}
+
+		}
+	}
+
+	private static void setValueToCell(Object valor, Cell cell) {
+		if (valor instanceof String) {
+			cell.setCellValue((String) valor);
+		} else if (valor instanceof Boolean) {
+			cell.setCellValue((Boolean) valor);
+		} else if (valor instanceof Date) {
+			// cell.setCellValue(UtilesFechas.formatDate((Date)
+			// valor));
+		} else if (valor instanceof Integer) {
+			cell.setCellValue((Integer) valor);
+		} else if (valor instanceof Long) {
+			cell.setCellValue((Long) valor);
+		} else if (valor instanceof Double) {
+			cell.setCellValue((Double) valor);
+		} else if (valor instanceof Float) {
+			cell.setCellValue((Float) valor);
+		} else if ((valor instanceof ImageIcon) || (valor == null)
+				|| valor instanceof Color) {
+			cell.setCellValue("");
+		} else {
+			cell.setCellValue((String) valor.toString());
+		}
+
 	}
 
 	/**
