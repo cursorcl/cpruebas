@@ -76,5 +76,22 @@ public class RangoEvaluacion implements IEntity {
 		return name;
 	}
 
-	
+	/**
+	 * Indica si el valor esta dentro del rango.
+	 * @param porcentaje Porcentaje de logro
+	 * @return Verdadero si esta dentro.
+	 */
+	public boolean isInside(float porcentaje)
+	{
+	  boolean res = false;
+	  if(porcentaje > getMinimo() && porcentaje <= getMaximo() )
+	  {
+	      res = true;
+	  }
+	  else if(getMinimo() == 0 && porcentaje == 0)
+	  {
+	    res = true;
+	  }
+	  return res;
+	}
 }
