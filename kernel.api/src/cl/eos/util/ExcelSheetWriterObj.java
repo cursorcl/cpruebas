@@ -19,13 +19,11 @@ import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
-import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.controlsfx.dialog.Dialogs;
 
 /**
@@ -257,7 +255,7 @@ public final class ExcelSheetWriterObj {
 
 		for (int indiceFila = 0; indiceFila < tabla.getItems().size(); indiceFila++) {
 			final Row fila = sheet1.createRow(indiceFila + 2);
-			recorrerColumnasDobles(tabla, indiceFila + 1, fila);
+			recorrerColumnasDobles(tabla, indiceFila, fila);
 		}
 	}
 
