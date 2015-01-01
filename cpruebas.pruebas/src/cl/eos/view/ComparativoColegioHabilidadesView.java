@@ -44,13 +44,13 @@ import cl.eos.util.Pair;
 import cl.eos.util.Utils;
 import cl.eos.view.ots.ejeevaluacion.OTAcumulador;
 
-public class ComparativoColegioEjeEvaluacionView extends AFormView implements
+public class ComparativoColegioHabilidadesView extends AFormView implements
 		EventHandler<ActionEvent> {
 
 	private static final String ASIGNATURA_ID = "idAsignatura";
 	private static final String COLEGIO_ID = "idColegio";
 	@FXML
-	private TableView tblEjesCantidad;
+	private TableView tblHabilidadesCantidad;
 	@FXML
 	private ComboBox<Colegio> cmbColegios;
 	@FXML
@@ -72,8 +72,8 @@ public class ComparativoColegioEjeEvaluacionView extends AFormView implements
 	private ObservableList<EvaluacionPrueba> evaluacionesPrueba;
 	private ArrayList<OTPreguntasEvaluacion> lst;
 
-	public ComparativoColegioEjeEvaluacionView() {
-		setTitle("Comparativo Colegios Ejes");
+	public ComparativoColegioHabilidadesView() {
+		setTitle("Comparativo Colegios Habilidades");
 	}
 
 	@Override
@@ -91,9 +91,9 @@ public class ComparativoColegioEjeEvaluacionView extends AFormView implements
 
 		if (source == mnuExportarAlumnos || source == mnuExportarGeneral) {
 
-			tblEjesCantidad.setId("Comparativo Colegios Ejes");
+			tblHabilidadesCantidad.setId("Comp ColegiosHabilidades");
 			List<TableView<? extends Object>> listaTablas = new ArrayList<>();
-			listaTablas.add((TableView<? extends Object>) tblEjesCantidad);
+			listaTablas.add((TableView<? extends Object>) tblHabilidadesCantidad);
 			ExcelSheetWriterObj.convertirDatosColumnasDoblesALibroDeExcel(listaTablas);
 		}
 	}
@@ -137,6 +137,7 @@ public class ComparativoColegioEjeEvaluacionView extends AFormView implements
 		cmbColegios.setOnAction(this);
 		cmbAsignatura.setOnAction(this);
 		btnReportes.setOnAction(this);
+		mnuExportarAlumnos.setOnAction(this);
 	}
 
 	@Override
@@ -200,7 +201,7 @@ public class ComparativoColegioEjeEvaluacionView extends AFormView implements
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void llenarColumnas(ObservableList<Curso> pCursoList,
 			ObservableList<RangoEvaluacion> rangos) {
-		TableColumn tc = new TableColumn("EJES");
+		TableColumn tc = new TableColumn("HABILIDADES");
 		tc.setSortable(false);
 		tc.setStyle("-fx-alignment: CENTER-LEFT;");
 		tc.prefWidthProperty().set(250f);
@@ -211,7 +212,7 @@ public class ComparativoColegioEjeEvaluacionView extends AFormView implements
 						.toString());
 			}
 		});
-		tblEjesCantidad.getColumns().add(tc);
+		tblHabilidadesCantidad.getColumns().add(tc);
 
 		int indice = 1;
 		for (Curso curso : pCursoList) {
@@ -245,7 +246,7 @@ public class ComparativoColegioEjeEvaluacionView extends AFormView implements
 				indice++;
 			}
 
-			tblEjesCantidad.getColumns().add(tc);
+			tblHabilidadesCantidad.getColumns().add(tc);
 
 			
 		}
@@ -256,7 +257,7 @@ public class ComparativoColegioEjeEvaluacionView extends AFormView implements
 	 * 1) Se obtienen los ejes tematicos de todas las pruebas.<br>
 	 * 2) Se obtienen las habilidades de todas las pruebas.<br>
 	 * 3) Se obtienen los porcentajes de aprobacion de cada curso con respecto a
-	 * cada eje y habilidad.
+	 * cada habilidad y habilidad.
 	 */
 	private void generarReporte() {
 
@@ -268,7 +269,7 @@ public class ComparativoColegioEjeEvaluacionView extends AFormView implements
 		llenarColumnas(cursoList, rangoEvalList);
 		int nroCursos = cursoList.size();
 		int nroRangos = rangoEvalList.size();
-		Map<EjeTematico, List<OTAcumulador>> mapEjes = new HashMap<EjeTematico, List<OTAcumulador>>();
+		Map<Habilidad, List<OTAcumulador>> mapEjes = new HashMap<Habilidad, List<OTAcumulador>>();
 
 		// Todas las evaluaciones asociadas (Todos los cursos)
 		for (EvaluacionPrueba eval : evaluacionesPrueba) {
@@ -296,16 +297,16 @@ public class ComparativoColegioEjeEvaluacionView extends AFormView implements
 
 				for (int n = 0; n < respEsperadas.size(); n++) {
 					// Sumando a ejes tematicos
-					EjeTematico eje = respEsperadas.get(n).getEjeTematico();
-					if (!mapEjes.containsKey(eje)) {
+					Habilidad habilidad = respEsperadas.get(n).getHabilidad();
+					if (!mapEjes.containsKey(habilidad)) {
 						List<OTAcumulador> lista = new ArrayList<OTAcumulador>(
 								nroCursos);
 						for (int idx = 0; idx < nroCursos; idx++) {
 							lista.add(null);
 						}
-						mapEjes.put(eje, lista);
+						mapEjes.put(habilidad, lista);
 					}
-					List<OTAcumulador> lstEjes = mapEjes.get(eje);
+					List<OTAcumulador> lstEjes = mapEjes.get(habilidad);
 					OTAcumulador otEjeEval = lstEjes.get(index); // Que columna (curso es)
 					if (otEjeEval == null) {
 						otEjeEval = new OTAcumulador();
@@ -315,11 +316,11 @@ public class ComparativoColegioEjeEvaluacionView extends AFormView implements
 						lstEjes.set(index, otEjeEval);
 					}
 				}
-				for (EjeTematico eje : mapEjes.keySet()) {
-					List<OTAcumulador> lstEjes = mapEjes.get(eje);
+				for (Habilidad habilidad : mapEjes.keySet()) {
+					List<OTAcumulador> lstEjes = mapEjes.get(habilidad);
 					OTAcumulador otEjeEval = lstEjes.get(index);
 					float porcentaje = obtenerPorcentaje(respuestas,
-							respEsperadas, eje);
+							respEsperadas, habilidad);
 
 					for (int idx = 0; idx < nroRangos; idx++) {
 						RangoEvaluacion rango = rangoEvalList.get(idx);
@@ -341,7 +342,7 @@ public class ComparativoColegioEjeEvaluacionView extends AFormView implements
 	}
 
 	/**
-	 * Se genera la tabal que contiene los % de logro por cada eje y por cada
+	 * Se genera la tabal que contiene los % de logro por cada habilidad y por cada
 	 * habilidad asociado a cada curso.
 	 * 
 	 * @param mapEjes
@@ -351,14 +352,14 @@ public class ComparativoColegioEjeEvaluacionView extends AFormView implements
 	 *            habilidades.
 	 */
 	private void generarTablaEjes(
-			Map<EjeTematico, List<OTAcumulador>> mapEjes) {
+			Map<Habilidad, List<OTAcumulador>> mapEjes) {
 		ObservableList<String> row = null;
 		ObservableList<ObservableList<String>> items = FXCollections
 				.observableArrayList();
-		for (EjeTematico eje : mapEjes.keySet()) {
+		for (Habilidad habilidad : mapEjes.keySet()) {
 			row = FXCollections.observableArrayList();
-			List<OTAcumulador> lst = mapEjes.get(eje);
-			row.add(eje.getName());
+			List<OTAcumulador> lst = mapEjes.get(habilidad);
+			row.add(habilidad.getName());
 			for (OTAcumulador otEje : lst) {
 				if (otEje != null && otEje.getNroPersonas() != null) {
 					int[] personas = otEje.getNroPersonas();
@@ -373,17 +374,17 @@ public class ComparativoColegioEjeEvaluacionView extends AFormView implements
 			}
 			items.add(row);
 		}
-		tblEjesCantidad.setItems(items);
+		tblHabilidadesCantidad.setItems(items);
 
 	}
 
 	private float obtenerPorcentaje(String respuestas,
-			List<RespuestasEsperadasPrueba> respEsperadas, EjeTematico eje) {
+			List<RespuestasEsperadasPrueba> respEsperadas, Habilidad habilidad) {
 		float nroBuenas = 0;
 		float nroPreguntas = 0;
 		for (int n = 0; n < respEsperadas.size(); n++) {
 			RespuestasEsperadasPrueba resp = respEsperadas.get(n);
-			if (resp.getEjeTematico().equals(eje)) {
+			if (resp.getHabilidad().equals(habilidad)) {
 				if (respuestas.length() > n) {
 					String sResp = respuestas.substring(n, n + 1);
 					if ("+".equals(sResp)
@@ -399,8 +400,8 @@ public class ComparativoColegioEjeEvaluacionView extends AFormView implements
 	}
 
 	private void clearContent() {
-		tblEjesCantidad.getItems().clear();
-		tblEjesCantidad.getColumns().clear();
+		tblHabilidadesCantidad.getItems().clear();
+		tblHabilidadesCantidad.getColumns().clear();
 		;
 	}
 }

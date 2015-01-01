@@ -6,6 +6,7 @@ import cl.eos.ot.OTRangoEvaluacion;
 import cl.eos.ot.OTResumenColegio;
 import cl.eos.persistence.models.Curso;
 import cl.eos.persistence.models.EvaluacionEjeTematico;
+import cl.eos.persistence.models.EvaluacionPrueba;
 import cl.eos.persistence.models.RespuestasEsperadasPrueba;
 
 public class Comparadores {
@@ -70,6 +71,16 @@ public class Comparadores {
       public int compare(final EvaluacionEjeTematico eetSource,
           final EvaluacionEjeTematico eetTarget) {
         return eetSource.getNroRangoMin().compareTo(eetTarget.getNroRangoMin());
+      }
+    };
+  }
+  
+  public static Comparator<? super EvaluacionPrueba> comparaEvaluacionPruebaXCurso() {
+    return new Comparator<EvaluacionPrueba>() {
+      @Override
+      public int compare(final EvaluacionPrueba eetSource,
+          final EvaluacionPrueba eetTarget) {
+        return eetSource.getCurso().getName().compareTo(eetTarget.getCurso().getName());
       }
     };
   }

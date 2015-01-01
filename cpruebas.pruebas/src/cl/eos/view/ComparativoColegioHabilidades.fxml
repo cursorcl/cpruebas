@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="520.0" prefWidth="1150.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.ComparativoColegioHabilidadesView">
+   <center>
+      <SplitPane orientation="VERTICAL" prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="247.0" prefWidth="1085.0">
+               <children>
+                  <SplitPane layoutX="210.0" layoutY="2.0" prefHeight="217.0" prefWidth="865.0" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="210.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="2.0">
+                    <items>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <Label fx:id="lblColegio" layoutX="125.0" prefHeight="27.0" prefWidth="325.0" AnchorPane.bottomAnchor="188.0" AnchorPane.leftAnchor="125.0" AnchorPane.topAnchor="0.0" />
+                              <TableView fx:id="tblHabilidadesCantidad" layoutX="2.0" layoutY="37.0" prefHeight="233.0" prefWidth="926.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <columns>
+                                  <TableColumn fx:id="colEjesHabilidades" prefWidth="100.0" text="HABILIDADES" />
+                                </columns>
+                                 <contextMenu>
+                                    <ContextMenu>
+                                      <items>
+                                        <MenuItem fx:id="mnuExportarAlumnos" mnemonicParsing="false" text="Exportar a excel" />
+                                      </items>
+                                    </ContextMenu>
+                                 </contextMenu>
+                              </TableView>
+                           </children>
+                        </AnchorPane>
+                    </items>
+                  </SplitPane>
+                  <AnchorPane layoutX="-86.0" layoutY="4.0" />
+                  <ComboBox fx:id="cmbColegios" layoutX="4.0" layoutY="47.0" prefHeight="22.0" prefWidth="195.0" promptText="Colegio" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="949.0" AnchorPane.topAnchor="47.0" />
+                  <Label layoutX="4.0" layoutY="30.0" prefHeight="17.0" prefWidth="191.0" text="Seleccione colegio a procesar" AnchorPane.leftAnchor="4.0" />
+                  <Label layoutX="4.0" layoutY="99.0" prefHeight="17.0" prefWidth="176.0" text="Seleccione asignatura" AnchorPane.leftAnchor="4.0" />
+                  <ComboBox fx:id="cmbAsignatura" layoutX="4.0" layoutY="116.0" prefHeight="22.0" prefWidth="195.0" promptText="Asignatura" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="949.0" AnchorPane.topAnchor="116.0" />
+                  <Button fx:id="btnReportes" layoutX="98.0" layoutY="182.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="106.0" text="Generar reporte" />
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
+   </center>
+   <top>
+      <AnchorPane prefHeight="30.0" prefWidth="1150.0" styleClass="sample-page" BorderPane.alignment="CENTER">
+         <children>
+            <Label fx:id="lblTitulo" alignment="CENTER" contentDisplay="CENTER" prefHeight="35.0" prefWidth="1150.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+   </top>
+</BorderPane>
