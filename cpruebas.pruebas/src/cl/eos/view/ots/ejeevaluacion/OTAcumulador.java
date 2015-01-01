@@ -4,11 +4,11 @@ package cl.eos.view.ots.ejeevaluacion;
  * Contiene tantos elementos en el arreglo como evaluaciones existen.
  * @author curso_000
  */
-public class OTEjeEvaluacion {
+public class OTAcumulador {
 
   private int[] nroPersonas;
 
-  public OTEjeEvaluacion() {
+  public OTAcumulador() {
 
   }
 

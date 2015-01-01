@@ -42,9 +42,9 @@ import cl.eos.persistence.util.Comparadores;
 import cl.eos.util.ExcelSheetWriterObj;
 import cl.eos.util.Pair;
 import cl.eos.util.Utils;
-import cl.eos.view.ots.ejeevaluacion.OTEjeEvaluacion;
+import cl.eos.view.ots.ejeevaluacion.OTAcumulador;
 
-public class ComparativoColegioEjeEvauacionView extends AFormView implements
+public class ComparativoColegioEjeEvaluacionView extends AFormView implements
 		EventHandler<ActionEvent> {
 
 	private static final String ASIGNATURA_ID = "idAsignatura";
@@ -72,7 +72,7 @@ public class ComparativoColegioEjeEvauacionView extends AFormView implements
 	private ObservableList<EvaluacionPrueba> evaluacionesPrueba;
 	private ArrayList<OTPreguntasEvaluacion> lst;
 
-	public ComparativoColegioEjeEvauacionView() {
+	public ComparativoColegioEjeEvaluacionView() {
 		setTitle("Comparativo Colegios Ejes");
 	}
 
@@ -269,7 +269,7 @@ public class ComparativoColegioEjeEvauacionView extends AFormView implements
 		llenarColumnas(cursoList, rangoEvalList);
 		int nroCursos = cursoList.size();
 		int nroRangos = rangoEvalList.size();
-		Map<EjeTematico, List<OTEjeEvaluacion>> mapEjes = new HashMap<EjeTematico, List<OTEjeEvaluacion>>();
+		Map<EjeTematico, List<OTAcumulador>> mapEjes = new HashMap<EjeTematico, List<OTAcumulador>>();
 
 		// Todas las evaluaciones asociadas (Todos los cursos)
 		for (EvaluacionPrueba eval : evaluacionesPrueba) {
@@ -299,17 +299,17 @@ public class ComparativoColegioEjeEvauacionView extends AFormView implements
 					// Sumando a ejes tematicos
 					EjeTematico eje = respEsperadas.get(n).getEjeTematico();
 					if (!mapEjes.containsKey(eje)) {
-						List<OTEjeEvaluacion> lista = new ArrayList<OTEjeEvaluacion>(
+						List<OTAcumulador> lista = new ArrayList<OTAcumulador>(
 								nroCursos);
 						for (int idx = 0; idx < nroCursos; idx++) {
 							lista.add(null);
 						}
 						mapEjes.put(eje, lista);
 					}
-					List<OTEjeEvaluacion> lstEjes = mapEjes.get(eje);
-					OTEjeEvaluacion otEjeEval = lstEjes.get(index); // Que columna (curso es)
+					List<OTAcumulador> lstEjes = mapEjes.get(eje);
+					OTAcumulador otEjeEval = lstEjes.get(index); // Que columna (curso es)
 					if (otEjeEval == null) {
-						otEjeEval = new OTEjeEvaluacion();
+						otEjeEval = new OTAcumulador();
 						int[] nroPersonas = new int[nroRangos];
 						Arrays.fill(nroPersonas, 0);
 						otEjeEval.setNroPersonas(nroPersonas);
@@ -317,8 +317,8 @@ public class ComparativoColegioEjeEvauacionView extends AFormView implements
 					}
 				}
 				for (EjeTematico eje : mapEjes.keySet()) {
-					List<OTEjeEvaluacion> lstEjes = mapEjes.get(eje);
-					OTEjeEvaluacion otEjeEval = lstEjes.get(index);
+					List<OTAcumulador> lstEjes = mapEjes.get(eje);
+					OTAcumulador otEjeEval = lstEjes.get(index);
 					float porcentaje = obtenerPorcentaje(respuestas,
 							respEsperadas, eje);
 
@@ -352,15 +352,15 @@ public class ComparativoColegioEjeEvauacionView extends AFormView implements
 	 *            habilidades.
 	 */
 	private void generarTablaEjes(
-			Map<EjeTematico, List<OTEjeEvaluacion>> mapEjes) {
+			Map<EjeTematico, List<OTAcumulador>> mapEjes) {
 		ObservableList<String> row = null;
 		ObservableList<ObservableList<String>> items = FXCollections
 				.observableArrayList();
 		for (EjeTematico eje : mapEjes.keySet()) {
 			row = FXCollections.observableArrayList();
-			List<OTEjeEvaluacion> lst = mapEjes.get(eje);
+			List<OTAcumulador> lst = mapEjes.get(eje);
 			row.add(eje.getName());
-			for (OTEjeEvaluacion otEje : lst) {
+			for (OTAcumulador otEje : lst) {
 				if (otEje != null && otEje.getNroPersonas() != null) {
 					int[] personas = otEje.getNroPersonas();
 					for (int n = 0; n < rangoEvalList.size(); n++) {
