@@ -62,8 +62,6 @@ public class ComparativoColegioEjeEvaluacionView extends AFormView implements
 	@FXML
 	private Label lblTitulo;
 	@FXML
-	private MenuItem mnuExportarGeneral;
-	@FXML
 	private MenuItem mnuExportarAlumnos;
 
 	private Map<String, Object> parameters = new HashMap<String, Object>();
@@ -89,7 +87,7 @@ public class ComparativoColegioEjeEvaluacionView extends AFormView implements
 			handleReportes();
 		}
 
-		if (source == mnuExportarAlumnos || source == mnuExportarGeneral) {
+		if (source == mnuExportarAlumnos ) {
 
 			tblEjesCantidad.setId("Comparativo Colegios Ejes");
 			List<TableView<? extends Object>> listaTablas = new ArrayList<>();
@@ -137,6 +135,7 @@ public class ComparativoColegioEjeEvaluacionView extends AFormView implements
 		cmbColegios.setOnAction(this);
 		cmbAsignatura.setOnAction(this);
 		btnReportes.setOnAction(this);
+		mnuExportarAlumnos.setOnAction(this);
 	}
 
 	@Override
