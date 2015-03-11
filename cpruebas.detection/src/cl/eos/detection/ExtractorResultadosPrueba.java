@@ -11,6 +11,7 @@ import javax.imageio.ImageIO;
 
 import cl.cursor.card.RecognizerFactory;
 import cl.eos.detection.base.AExtractorResultados;
+import cl.eos.util.Utils;
 
 /**
  * Realiza el analisis de una imagen, obitiene el rut del alumno y las
@@ -56,7 +57,9 @@ public class ExtractorResultadosPrueba extends AExtractorResultados {
 
 	public OTResultadoScanner process(File archivo, int nroPreguntas)
 			throws IOException {
-		return process(ImageIO.read(archivo), nroPreguntas);
+		BufferedImage bImg = ImageIO.read(archivo);
+//		writeIMG(bImg, Utils.getDefaultDirectory()+"/original");
+		return process(bImg, nroPreguntas);
 	}
 
 	/**
@@ -73,6 +76,7 @@ public class ExtractorResultadosPrueba extends AExtractorResultados {
 	public OTResultadoScanner process(BufferedImage image, int nroPreguntas) {
 		OTResultadoScanner resultado = new OTResultadoScanner();
 		BufferedImage recImage = rectificarImagen(image);
+//		writeIMG(recImage, Utils.getDefaultDirectory()+"/rectificar");
 		Point[] pointsReference = obtenerPuntosReferencia(recImage);
         Point pRefRut = pointsReference[0];
         String rut = getRut(pRefRut, recImage);
