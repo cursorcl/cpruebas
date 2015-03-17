@@ -127,14 +127,14 @@ public abstract class AExtractorResultados implements IExtractorResultados {
     nRut++;
     int x = pRefRut.x;
     StringBuffer strRut = new StringBuffer("");
-    //writeIMG(image, "RUT");
+    writeIMG(image, "RUT");
 
     for (int n = 0; n < CIRCLE_X_RUT_DIFF.length; n++) {
       int y = pRefRut.y;
       BufferedImage rut = image.getSubimage(x + CIRCLE_X_RUT_DIFF[n] - 2, y - 2, 51, 555);
-//      writeIMG(rut, "RUT_" + (nRut));
+      writeIMG(rut, "RUT_" + (nRut));
       nRut++;
-      Pair<Integer, Pair<Double, Double>> result = recognizerRut.recognize(rut, 0.60);
+      Pair<Integer, Pair<Double, Double>> result = recognizerRut.recognize(rut, 0.50);
       int idx = result.getFirst();
       if (idx != -1) {
         strRut.append(RUT[idx]);
@@ -434,7 +434,7 @@ public abstract class AExtractorResultados implements IExtractorResultados {
 
   public static void writeIMG(BufferedImage image, String name) {
     try {
-      ImageIO.write(image, "png", new File( name + ".png"));
+      ImageIO.write(image, "png", new File( Utils.getDefaultDirectory() + "/" +name + ".png"));
     } catch (IOException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
