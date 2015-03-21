@@ -38,6 +38,7 @@ import cl.eos.persistence.models.EjeTematico;
 import cl.eos.persistence.models.Formas;
 import cl.eos.persistence.models.Habilidad;
 import cl.eos.persistence.models.Prueba;
+import cl.eos.persistence.models.Prueba.Estado;
 import cl.eos.persistence.models.RespuestasEsperadasPrueba;
 import cl.eos.persistence.util.Comparadores;
 import cl.eos.util.ExcelSheetWriterObj;
@@ -325,6 +326,8 @@ public class DefinePruebaViewController extends AFormView {
 			registros = FXCollections.observableArrayList();
 			prueba = (Prueba) entity;
 
+			
+			
 			respsValidas = VALID_LETTERS.substring(0, prueba.getAlternativas());
 			respuestaCol
 					.setCellFactory(new Callback<TableColumn<RegistroDefinePrueba, String>, TableCell<RegistroDefinePrueba, String>>() {
@@ -388,6 +391,14 @@ public class DefinePruebaViewController extends AFormView {
 			}
 
 			tblRegistroDefinePrueba.setItems(registros);
+			
+			 boolean editable =  !prueba.getEstado().equals(Estado.EVALUADA);
+			 txtRespuestas.setEditable(editable);
+			 txtRespuestas.setDisable(!editable);
+		     preguntaCol.setEditable(editable);
+		     respuestaCol.setEditable(editable);
+		     vfCol.setEditable(editable);
+		     mentalCol.setEditable(editable);
 		}
 	}
 

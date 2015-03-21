@@ -529,7 +529,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
     if (tblListadoPruebas.getSelectionModel().getSelectedItem() != null) {
       Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
 
-      if (!prueba.getEstado().equals(Estado.EVALUADA)) {
+      //if (!prueba.getEstado().equals(Estado.EVALUADA)) {
         definePrueba = (DefinePruebaViewController) show("/cl/eos/view/DefinePruebaView.fxml");
 
         if (prueba != null) {
@@ -539,11 +539,11 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
           controller.find("EjeTematico.findByAsigntura", parameters, definePrueba);
           controller.findAll(Habilidad.class, definePrueba);
         }
-      } else {
-        Dialogs.create().owner(null).title("No se puede modificar.")
-            .masthead("La prueba ya se encuentra evaluada.").message("No se podrá modificar.")
-            .showInformation();
-      }
+//      } else {
+//        Dialogs.create().owner(null).title("No se puede modificar.")
+//            .masthead("La prueba ya se encuentra evaluada.").message("No se podrá modificar.")
+//            .showInformation();
+//      }
     }
   }
 
