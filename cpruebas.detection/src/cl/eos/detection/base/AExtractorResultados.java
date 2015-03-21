@@ -28,6 +28,7 @@ import boofcv.struct.image.ImageUInt8;
 import cl.cursor.card.Recognizer;
 import cl.eos.detection.ExtractorResultadosPrueba;
 import cl.eos.detection.OTResultadoScanner;
+import cl.eos.util.Utils;
 import cl.sisdef.util.Pair;
 
 import com.sun.istack.internal.logging.Logger;
@@ -133,7 +134,7 @@ public abstract class AExtractorResultados implements IExtractorResultados {
       BufferedImage rut = image.getSubimage(x + CIRCLE_X_RUT_DIFF[n] - 2, y - 2, 51, 555);
       writeIMG(rut, "RUT_" + (nRut));
       nRut++;
-      Pair<Integer, Pair<Double, Double>> result = recognizerRut.recognize(rut, 0.60);
+      Pair<Integer, Pair<Double, Double>> result = recognizerRut.recognize(rut, 0.50);
       int idx = result.getFirst();
       if (idx != -1) {
         strRut.append(RUT[idx]);
@@ -170,9 +171,9 @@ public abstract class AExtractorResultados implements IExtractorResultados {
         BufferedImage img =
             image
                 .getSubimage(left, top, CIRCLE_SIZE * 5 + CIRCLE_X_SPCAES * 4 + 4, CIRCLE_SIZE + 8);
-        writeIMG(img, "resp_" + pregunta);
+//        writeIMG(img, "resp_" + pregunta);
         img = fillCirlces(img);
-        writeIMG(img, "fresp_" + pregunta);
+//        writeIMG(img, "fresp_" + pregunta);
         String respuesta = getRespuesta(img);
 
         resp.append(respuesta);
@@ -220,7 +221,7 @@ public abstract class AExtractorResultados implements IExtractorResultados {
   protected final BufferedImage rectificarImagen(BufferedImage limage) {
     List<Contour> contours = getContours(limage);
     BufferedImage image = limage;
-    if (contours.size() < 6) {
+    if (contours.size() < 5) {
       image = rotate(Math.PI, limage);
       contours = getContours(image);
     }
@@ -302,16 +303,18 @@ public abstract class AExtractorResultados implements IExtractorResultados {
   protected final List<Contour> getContours(BufferedImage limage) {
 
     BufferedImage image = limage.getSubimage(0, 0, 110, 3200);
+//    writeIMG(image, Utils.getDefaultDirectory()+"/subimage");
     ImageFloat32 input = ConvertBufferedImage.convertFromSingle(image, null, ImageFloat32.class);
+    
     ImageUInt8 binary = new ImageUInt8(input.width, input.height);
     ImageSInt32 label = new ImageSInt32(input.width, input.height);
     ThresholdImageOps.threshold(input, binary, (float) 190, true);
-
+//    writeIMG(VisualizeBinaryData.renderBinary(binary, null), Utils.getDefaultDirectory()+"/threshold");
     ImageUInt8 filtered = BinaryImageOps.dilate8(binary, 2, null);
     filtered = BinaryImageOps.erode8(filtered, 9, null);
     filtered = BinaryImageOps.dilate8(filtered, 10, null);
-    // BufferedImage bImage = VisualizeBinaryData.renderBinary(filtered, null);
-    // writeIMG(bImage, "contornos");
+     BufferedImage bImage = VisualizeBinaryData.renderBinary(filtered, null);
+//     writeIMG(bImage, Utils.getDefaultDirectory() + "/contornos");
     return BinaryImageOps.contour(filtered, ConnectRule.EIGHT, label);
   }
 
@@ -430,12 +433,12 @@ public abstract class AExtractorResultados implements IExtractorResultados {
 
 
   public static void writeIMG(BufferedImage image, String name) {
-//    try {
-//      ImageIO.write(image, "png", new File("/res/ruts/" + name + ".png"));
-//    } catch (IOException e) {
-//      // TODO Auto-generated catch block
-//      e.printStackTrace();
-//    };
+    try {
+      ImageIO.write(image, "png", new File( Utils.getDefaultDirectory() + "/" +name + ".png"));
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    };
   }
 
 }

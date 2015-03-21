@@ -186,12 +186,12 @@ public class StaticExtractorResultados {
     BufferedImage image = limage;
     if (contours.size() < 6) {
       image = rotate(Math.PI, limage);
-      writeIMG(image, "rotada1_" + (nImage++));
+//      writeIMG(image, "rotada1_" + (nImage++));
       contours = getContours(image);
     }
     double anlge = getRotationAngle(contours);
     image = rotate(anlge, image);
-    writeIMG(image, "rotada2_" + (nImage++));
+//    writeIMG(image, "rotada2_" + (nImage++));
     return image;
   }
 
@@ -274,7 +274,7 @@ public class StaticExtractorResultados {
     ImageUInt8 filtered = BinaryImageOps.erode8(binary, 9, null);
     filtered = BinaryImageOps.dilate8(filtered, 9, null);
     BufferedImage bImage = VisualizeBinaryData.renderBinary(filtered, null);
-    writeIMG(bImage, "contornos" + (nImage++));
+//    writeIMG(bImage, "contornos" + (nImage++));
     return BinaryImageOps.contour(filtered, ConnectRule.EIGHT, label);
   }
 
