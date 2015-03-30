@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 
@@ -23,6 +24,7 @@ public class Alumno implements IEntity {
 	private String materno;
 	private String direccion;
 	private Colegio colegio;
+	@ManyToOne
 	private Curso curso;
 	
 	@Override

@@ -17,7 +17,6 @@
 	<classpathentry kind="lib" path="../jars/boofcv/xstream-1.4.7.jar"/>
 	<classpathentry kind="lib" path="../jars/MarvinFramework/marvin_1.5.1.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.persistence"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.persistence.provider"/>
 	<classpathentry kind="lib" path="../jars/pdfbox-1.8.7.jar"/>
 	<classpathentry kind="lib" path="../jars/xmpbox-1.8.7.jar"/>
 	<classpathentry kind="lib" path="../jars/commons-logging-1.2.jar"/>

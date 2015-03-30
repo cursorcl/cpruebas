@@ -6,7 +6,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.persistence"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/kernel.api"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/kernel.api.imp.fx"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.persistence.provider"/>
 	<classpathentry kind="lib" path="../jars/jfxtras-agenda.jar"/>
 	<classpathentry kind="lib" path="../jars/jfxtras-common.jar"/>
 	<classpathentry kind="lib" path="../jars/jfxtras-controls.jar"/>
