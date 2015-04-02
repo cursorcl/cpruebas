@@ -37,6 +37,7 @@ import cl.eos.util.Utils;
  */
 public class PersistenceService implements IPersistenceService {
 
+  //@PersistenceContext(unitName = "cpruebas", type = PersistenceContextType.TRANSACTION)
   private EntityManager eManager;
   private EntityManagerFactory eFactory;
 
@@ -81,9 +82,9 @@ public class PersistenceService implements IPersistenceService {
     if (eManager != null && eManager.isOpen()) {
       eManager.close();
     }
-    if (eFactory != null && eFactory.isOpen()) {
-      eFactory.close();
-    }
+		if (eFactory != null && eFactory.isOpen()) {
+			eFactory.close();
+		}
   }
 
   @Override
