@@ -58,7 +58,7 @@ public class ExtractorResultadosPrueba extends AExtractorResultados {
 	public OTResultadoScanner process(File archivo, int nroPreguntas)
 			throws IOException {
 		BufferedImage bImg = ImageIO.read(archivo);
-//		writeIMG(bImg, Utils.getDefaultDirectory()+"/original");
+		writeIMG(bImg, "original");
 		return process(bImg, nroPreguntas);
 	}
 
@@ -76,7 +76,7 @@ public class ExtractorResultadosPrueba extends AExtractorResultados {
 	public OTResultadoScanner process(BufferedImage image, int nroPreguntas) {
 		OTResultadoScanner resultado = new OTResultadoScanner();
 		BufferedImage recImage = rectificarImagen(image);
-//		writeIMG(recImage, Utils.getDefaultDirectory()+"/rectificar");
+		writeIMG(recImage, "rectificar");
 		Point[] pointsReference = obtenerPuntosReferencia(recImage);
         Point pRefRut = pointsReference[0];
         String rut = getRut(pRefRut, recImage);

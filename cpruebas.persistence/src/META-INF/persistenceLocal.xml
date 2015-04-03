@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="1.0"
+	xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
+	<persistence-unit name="cpruebas" transaction-type="RESOURCE_LOCAL">
+		<provider>oracle.toplink.essentials.ejb.cmp3.EntityManagerFactoryProvider</provider>
+		 
+		<class>cl.eos.persistence.models.Alumno</class>
+		<class>cl.eos.persistence.models.Asignatura</class>
+		<class>cl.eos.persistence.models.Curso</class>
+		<class>cl.eos.persistence.models.Profesor</class>
+		<class>cl.eos.persistence.models.Colegio</class>
+		<class>cl.eos.persistence.models.EjeTematico</class>
+		<class>cl.eos.persistence.models.Habilidad</class>
+		<class>cl.eos.persistence.models.Prueba</class>
+		<class>cl.eos.persistence.models.TipoPrueba</class>
+		<class>cl.eos.persistence.models.Ciclo</class>
+		<class>cl.eos.persistence.models.PruebaRendida</class>
+		<class>cl.eos.persistence.models.NivelEvaluacion</class>
+		<class>cl.eos.persistence.models.RangoEvaluacion</class>
+		<class>cl.eos.persistence.models.TipoCurso</class>
+		<class>cl.eos.persistence.models.EvaluacionPrueba</class>
+		<class>cl.eos.persistence.models.RespuestasEsperadasPrueba</class>
+		<class>cl.eos.persistence.models.Formas</class>
+		<class>cl.eos.persistence.models.EvaluacionEjeTematico</class>
+		<properties>
+			<property name="toplink.jdbc.user" value="root" />
+			<property name="toplink.jdbc.password" value="admin" />
+			<property name="toplink.jdbc.url" value="jdbc:mysql://localhost:3306/cpruebas" />
+			<property name="toplink.jdbc.driver" value="com.mysql.jdbc.Driver" />
+			<!-- property name="toplink.ddl-generation" value="update-tables"/-->
+			<!-- <property name="toplink.ddl-generation" value="create-tables"/> -->
+			<!-- <property name="toplink.ddl-generation" value="create-tables" /> -->
+		
+		</properties>
+	</persistence-unit>
+</persistence>
