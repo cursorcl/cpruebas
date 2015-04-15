@@ -283,6 +283,12 @@ public class ComparativoColegioHabilidadesView extends AFormView implements
 			for (PruebaRendida pruebaRendida : pruebasRendidas) {
 				// Se procesa un alumno.
 
+				if(pruebaRendida.getAlumno() == null)
+				{
+					// Caso especial que indica que la prueba esta sin alumno.
+					continue;
+				}
+				
 				// Obtengo el index de la columna que tengo que llenar (mas 1
 				// por que la primera es de contenido
 				// index * nroRangos Ya que cada curso tiene nroRangos columnas
@@ -290,6 +296,9 @@ public class ComparativoColegioHabilidadesView extends AFormView implements
 				int index = cursoList.indexOf(pruebaRendida.getAlumno()
 						.getCurso());
 
+				if (index == -1 ) { // Caso especial que indica que el alumno no es del colegio.
+					continue;
+				}
 				String respuestas = pruebaRendida.getRespuestas();
 				if (respuestas == null || respuestas.isEmpty()) {
 					continue;

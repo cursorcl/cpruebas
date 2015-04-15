@@ -292,15 +292,17 @@ public class ComparativoColegioEjeEvaluacionView extends AFormView implements
 				}
 				int index = cursoList.indexOf(pruebaRendida.getAlumno()
 						.getCurso());
-
+				
+				if (index == -1 ) { // Caso especial que indica que el alumno no es del colegio.
+					continue;
+				}
+				
 				String respuestas = pruebaRendida.getRespuestas();
 				if (respuestas == null || respuestas.isEmpty()) {
 					continue;
 				}
 
-				if (index == -1 ) { // Caso especial que indica que el alumno no es del colegio.
-					continue;
-				}
+
 				for (int n = 0; n < respEsperadas.size(); n++) {
 					// Sumando a ejes tematicos
 					EjeTematico eje = respEsperadas.get(n).getEjeTematico();
