@@ -285,6 +285,11 @@ public class ComparativoColegioEjeEvaluacionView extends AFormView implements
 				// por que la primera es de contenido
 				// index * nroRangos Ya que cada curso tiene nroRangos columnas
 				// asociadas.
+				if(pruebaRendida.getAlumno() == null)
+				{
+					// Caso especial que indica que la prueba esta sin alumno.
+					continue;
+				}
 				int index = cursoList.indexOf(pruebaRendida.getAlumno()
 						.getCurso());
 
@@ -293,6 +298,9 @@ public class ComparativoColegioEjeEvaluacionView extends AFormView implements
 					continue;
 				}
 
+				if (index == -1 ) { // Caso especial que indica que el alumno no es del colegio.
+					continue;
+				}
 				for (int n = 0; n < respEsperadas.size(); n++) {
 					// Sumando a ejes tematicos
 					EjeTematico eje = respEsperadas.get(n).getEjeTematico();
