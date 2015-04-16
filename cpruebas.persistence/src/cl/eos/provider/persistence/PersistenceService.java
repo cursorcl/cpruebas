@@ -37,7 +37,6 @@ import cl.eos.util.Utils;
  */
 public class PersistenceService implements IPersistenceService {
 
-	//@PersistenceContext(unitName = "cpruebas", type = PersistenceContextType.TRANSACTION)
 	private EntityManager eManager;
 	private EntityManagerFactory eFactory;
 

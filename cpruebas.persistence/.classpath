@@ -3,14 +3,8 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/kernel.api"/>
-	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry kind="lib" path="O:/cpruebas/jars/controlsfx-8.0.6_20.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/EclipseLink 2.5.2">
-		<attributes>
-			<attribute name="owner.project.facets" value="jpt.jpa"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="O:/cpruebas/cpruebas.persistence.provider/lib/mysql-connector-java-5.1.9-bin.jar"/>
-	<classpathentry kind="lib" path="O:/cpruebas/cpruebas.persistence.provider/lib/toplink-essentials.jar"/>
+	<classpathentry kind="lib" path="lib/mysql-connector-java-5.1.9-bin.jar"/>
+	<classpathentry kind="lib" path="lib/toplink-essentials.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
