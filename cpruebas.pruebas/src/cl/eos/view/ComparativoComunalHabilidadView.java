@@ -23,10 +23,14 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.util.Callback;
+
+import org.controlsfx.dialog.Dialogs;
+
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.ot.OTPreguntasEvaluacion;
 import cl.eos.ot.OTPreguntasHabilidad;
+import cl.eos.persistence.models.Alumno;
 import cl.eos.persistence.models.EvaluacionEjeTematico;
 import cl.eos.persistence.models.EvaluacionPrueba;
 import cl.eos.persistence.models.Habilidad;
@@ -35,8 +39,11 @@ import cl.eos.persistence.models.PruebaRendida;
 import cl.eos.persistence.models.RespuestasEsperadasPrueba;
 import cl.eos.util.ExcelSheetWriterObj;
 
+import com.sun.istack.internal.logging.Logger;
+
 public class ComparativoComunalHabilidadView extends AFormView implements EventHandler<ActionEvent> {
 
+	private static Logger log = Logger.getLogger(ComparativoComunalHabilidadView.class);
   private NumberFormat formatter = new DecimalFormat("#0.00");
   @FXML
   private Label lblTitulo;
@@ -144,6 +151,20 @@ public class ComparativoComunalHabilidadView extends AFormView implements EventH
           generaDatosEvaluacion(pruebaRendida, colegioCurso);
 
           String respuesta = pruebaRendida.getRespuestas().toUpperCase();
+          Alumno al = pruebaRendida.getAlumno();
+          if(al == null)
+          {
+          	log.severe(String.format("NO EXISTE ALUMNO: %s %s", colegioCurso, respuesta));
+          	continue; // Caso que el alumno sea nulo.
+          }
+          log.info(String.format("%s %s %s %s %s %s", colegioCurso, al.getRut(), al.getName(),
+              al.getPaterno(), al.getMaterno(), respuesta));
+
+          if (respuesta == null || respuesta.length() < prueba.getNroPreguntas()) {
+            informarProblemas(colegioCurso, al, respuesta);
+            continue;
+          }
+          
           char[] cRespuesta = respuesta.toUpperCase().toCharArray();
 
           for (RespuestasEsperadasPrueba respuestasEsperadasPrueba : respuestasEsperadas) {
@@ -383,4 +404,14 @@ public class ComparativoComunalHabilidadView extends AFormView implements EventH
       ExcelSheetWriterObj.convertirDatosALibroDeExcel(listaTablas);
     }
   }
+  
+  private void informarProblemas(String colegioCurso, Alumno al, String respuesta) {
+	    Dialogs info = Dialogs.create();
+	    info.title("Alumno con respuestas incompletas.");
+	    info.masthead(String.format("%s/%s", colegioCurso, al.toString()));
+	    info.message(String.format("La respuesta [%s] es incompleta", respuesta));
+	    info.owner(null);
+	    info.showError();
+
+	  }
 }

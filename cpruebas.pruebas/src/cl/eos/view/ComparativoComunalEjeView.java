@@ -153,6 +153,11 @@ public class ComparativoComunalEjeView extends AFormView implements EventHandler
 
         String respuesta = pruebaRendida.getRespuestas().toUpperCase();
         Alumno al = pruebaRendida.getAlumno();
+        if(al == null)
+        {
+        	log.severe(String.format("NO EXISTE ALUMNO: %s %s", colegioCurso, respuesta));
+        	continue; // Caso que el alumno sea nulo.
+        }
         log.info(String.format("%s %s %s %s %s %s", colegioCurso, al.getRut(), al.getName(),
             al.getPaterno(), al.getMaterno(), respuesta));
 
