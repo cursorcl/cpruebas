@@ -98,7 +98,7 @@ public class TareaProcesaEvaluacionScanner extends Task<ObservableList<PruebaRen
     }
     int nroPreguntas = respEsperadas.size();
     float porcDificultad = prueba.getExigencia() == null ? 60f : prueba.getExigencia();
-    float notaMinima = 1.0f;
+    float notaMinima = prueba.getPuntajeBase() == null ? 1.0f: prueba.getPuntajeBase().floatValue();
     pRendida.setNota(Utils.getNota(nroPreguntas, porcDificultad, pRendida.getBuenas(), notaMinima));
 
     float total = pRendida.getBuenas() + pRendida.getMalas() + pRendida.getOmitidas();

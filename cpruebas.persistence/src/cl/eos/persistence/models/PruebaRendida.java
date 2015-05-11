@@ -1,5 +1,7 @@
 package cl.eos.persistence.models;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -224,4 +226,42 @@ public class PruebaRendida implements IEntity {
   }
 
 
+  
+  public static  void evaluar(String respuetas, PruebaRendida pRendida) {
+	  	
+	  	Prueba prueba = pRendida.getEvaluacionPrueba().getPrueba();
+	    List<RespuestasEsperadasPrueba> respEsperadas = prueba.getRespuestas();
+
+	    int nMax = Math.min(respuetas.length(), respEsperadas.size());
+	    pRendida.setOmitidas(Math.abs(respuetas.length() - respEsperadas.size()));
+	    pRendida.setBuenas(0);
+	    pRendida.setMalas(0);
+	    for (int n = 0; n < nMax; n++) {
+	      RespuestasEsperadasPrueba resp = respEsperadas.get(n);
+	      String userResp = respuetas.substring(n, n + 1);
+	      String validResp = resp.getRespuesta();
+	      if (userResp.toUpperCase().equals("*")) {
+	        pRendida.setOmitidas(pRendida.getOmitidas() + 1);
+	      } else if(userResp.toUpperCase().equals("X")) {
+	    	  if (userResp.toUpperCase().equals(validResp.toUpperCase())) {
+	    		  //Esta Respuesta esta anulada por el administrador.
+	    	  }
+	      } else if (userResp.toUpperCase().equals(validResp.toUpperCase())) {
+	        pRendida.setBuenas(pRendida.getBuenas() + 1);
+	      } else {
+	        pRendida.setMalas(pRendida.getMalas() + 1);
+	      }
+	    }
+	    int nroPreguntas = respEsperadas.size();
+	    float porcDificultad = prueba.getExigencia() == null ? 60f : prueba.getExigencia();
+	    float notaMinima = prueba.getPuntajeBase() == null ? 1.0f: prueba.getPuntajeBase().floatValue();
+	    pRendida.setNota(Utils.getNota(nroPreguntas, porcDificultad, pRendida.getBuenas(), notaMinima));
+
+	    float total = pRendida.getBuenas() + pRendida.getMalas() + pRendida.getOmitidas();
+	    float porcentaje = ((float) pRendida.getBuenas()) / total * 100f;
+	    RangoEvaluacion rango = prueba.getNivelEvaluacion().getRango(porcentaje);
+	    pRendida.setRango(rango);
+	  }
+  
+  
 }
