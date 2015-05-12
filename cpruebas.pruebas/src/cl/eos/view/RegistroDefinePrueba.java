@@ -45,7 +45,8 @@ public class RegistroDefinePrueba {
 			public void changed(ObservableValue<? extends Boolean> observable,
 					Boolean oldValue, Boolean newValue) {
 				if (newValue.equals(Boolean.TRUE)) {
-					RegistroDefinePrueba.this.verdaderoFalso.set(Boolean.FALSE);
+					RegistroDefinePrueba.this.verdaderoFalso
+							.set(Boolean.FALSE);
 					RegistroDefinePrueba.this.respuesta.set(" ");
 				}
 			}
@@ -57,8 +58,7 @@ public class RegistroDefinePrueba {
 					Boolean oldValue, Boolean newValue) {
 				if (newValue.equals(Boolean.TRUE)) {
 					RegistroDefinePrueba.this.mental.set(Boolean.FALSE);
-					if(!"VF".contains(getRespuesta().toUpperCase()))
-					{
+					if (!"VF".contains(getRespuesta().toUpperCase())) {
 						setRespuesta("");
 					}
 				}

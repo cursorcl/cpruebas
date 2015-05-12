@@ -393,6 +393,7 @@ public class ComparativoColegioEjeEvaluacionView extends AFormView implements
 		for (int n = 0; n < respEsperadas.size(); n++) {
 			RespuestasEsperadasPrueba resp = respEsperadas.get(n);
 			if (resp.getEjeTematico().equals(eje)) {
+				
 				if (respuestas.length() > n) {
 					String sResp = respuestas.substring(n, n + 1);
 					if ("+".equals(sResp)
@@ -400,6 +401,7 @@ public class ComparativoColegioEjeEvaluacionView extends AFormView implements
 						nroBuenas++;
 					}
 				}
+				
 				nroPreguntas++;
 			}
 		}
