@@ -589,8 +589,6 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 			if (prueba != null) {
 				controller.findById(Prueba.class, prueba.getId(),
 						anularPregunta);
-				Map<String, Object> parameters = new HashMap<String, Object>();
-				parameters.put("idAsignatura", prueba.getAsignatura().getId());
 			}
 		}
 	}
