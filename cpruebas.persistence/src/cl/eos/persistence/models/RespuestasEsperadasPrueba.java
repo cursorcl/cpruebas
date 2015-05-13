@@ -34,6 +34,7 @@ public class RespuestasEsperadasPrueba implements IEntity {
   private Boolean mental = Boolean.FALSE;
   private Habilidad habilidad;
   private EjeTematico ejeTematico;
+  private Boolean anulada = Boolean.FALSE;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -120,5 +121,13 @@ public class RespuestasEsperadasPrueba implements IEntity {
   public void setEjeTematico(EjeTematico ejeTematico) {
     this.ejeTematico = ejeTematico;
   }
+
+public Boolean getAnulada() {
+	return anulada;
+}
+
+public void setAnulada(Boolean anulada) {
+	this.anulada = anulada;
+}
 
 }
