@@ -671,10 +671,18 @@ public class EvaluarPruebaView extends AFormView {
         int buenas = 0;
         int malas = 0;
         int omitidas = 0;
+        int anuladas = 0;
 
         for (int n = 0; n < prueba.getNroPreguntas(); n++) {
           String letter = strResps.substring(n, n + 1);
           RespuestasEsperadasPrueba rEsperada = respuestas.get(n);
+          
+          if(rEsperada.isAnulada())
+          {
+        	  anuladas++;
+        	  continue;
+          }
+          
           if ("O".equalsIgnoreCase(letter)) {
             omitidas++;
           } else if ("M".equalsIgnoreCase(letter)) {
@@ -714,8 +722,9 @@ public class EvaluarPruebaView extends AFormView {
           }
         }
 
+        int nroPreguntas = prueba.getNroPreguntas() - anuladas; 
         float nota =
-            Utils.getNota(prueba.getNroPreguntas(), prueba.getExigencia(), buenas,
+            Utils.getNota(nroPreguntas, prueba.getExigencia(), buenas,
                 prueba.getPuntajeBase());
         pRendida = new PruebaRendida();
         pRendida.setAlumno(alumno);
@@ -723,7 +732,7 @@ public class EvaluarPruebaView extends AFormView {
         pRendida.setMalas(malas);
         pRendida.setOmitidas(omitidas);
         pRendida.setNota(nota);
-        float porcentaje = ((float) pRendida.getBuenas()) / prueba.getNroPreguntas() * 100f;
+        float porcentaje = ((float) pRendida.getBuenas()) / nroPreguntas * 100f;
         RangoEvaluacion rango = prueba.getNivelEvaluacion().getRango(porcentaje);
         pRendida.setRango(rango);
 

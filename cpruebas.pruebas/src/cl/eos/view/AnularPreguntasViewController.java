@@ -21,9 +21,11 @@ import cl.eos.imp.view.AFormView;
 import cl.eos.imp.view.WindowManager;
 import cl.eos.interfaces.IActivator;
 import cl.eos.interfaces.entity.IEntity;
+import cl.eos.persistence.models.EvaluacionPrueba;
 import cl.eos.persistence.models.Formas;
 import cl.eos.persistence.models.Prueba;
 import cl.eos.persistence.models.Prueba.Estado;
+import cl.eos.persistence.models.PruebaRendida;
 import cl.eos.persistence.models.RespuestasEsperadasPrueba;
 import cl.eos.persistence.util.Comparadores;
 import cl.eos.util.ExcelSheetWriterObj;
@@ -185,14 +187,28 @@ public class AnularPreguntasViewController extends AFormView {
 		}
 	}
 
+	
+	/**
+	 * Aqui voy
+	 */
 	protected void ejecutaGrabar() {
 		if (validate()) {
-			List<RespuestasEsperadasPrueba> fromPrueba = getRespuestasEsperadas();
+			updateRespuestasEsperadas();
+			/*
+			 * Se van a actualizar todas las evaluaciones, recalculando las notas.
+			 */
+			for(EvaluacionPrueba evaluacion: prueba.getEvaluaciones())
+			{
+				for(PruebaRendida pruebaRendida: evaluacion.getPruebasRendidas())
+				{
+					pruebaRendida.reEvaluate();
+				}
+			}
 			save(prueba);
 		}
 	}
 
-	private List<RespuestasEsperadasPrueba> getRespuestasEsperadas() {
+	private void updateRespuestasEsperadas() {
 		List<RespuestasEsperadasPrueba> fromPrueba = prueba.getRespuestas();
 		if (fromPrueba == null) {
 			fromPrueba = new ArrayList<RespuestasEsperadasPrueba>();
@@ -230,7 +246,6 @@ public class AnularPreguntasViewController extends AFormView {
 				fromPrueba.remove(registros.size());
 			}
 		}
-		return fromPrueba;
 	}
 
 }

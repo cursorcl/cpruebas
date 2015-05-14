@@ -126,6 +126,10 @@ public Boolean getAnulada() {
 	return anulada;
 }
 
+public Boolean isAnulada() {
+	return anulada;
+}
+
 public void setAnulada(Boolean anulada) {
 	this.anulada = anulada;
 }
