@@ -679,6 +679,8 @@ public class EvaluarPruebaView extends AFormView {
           
           if(rEsperada.isAnulada())
           {
+        	  rEsperada.setRespuesta("*");
+        	  strResps.replace(n, n+1, "*");
         	  anuladas++;
         	  continue;
           }
@@ -732,6 +734,7 @@ public class EvaluarPruebaView extends AFormView {
         pRendida.setMalas(malas);
         pRendida.setOmitidas(omitidas);
         pRendida.setNota(nota);
+        pRendida.setRespuestas(strResps.toString());
         float porcentaje = ((float) pRendida.getBuenas()) / nroPreguntas * 100f;
         RangoEvaluacion rango = prueba.getNivelEvaluacion().getRango(porcentaje);
         pRendida.setRango(rango);

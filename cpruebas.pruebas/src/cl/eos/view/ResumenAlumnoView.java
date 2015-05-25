@@ -115,6 +115,7 @@ public class ResumenAlumnoView extends AFormView implements EventHandler<ActionE
     colABuenas.setCellValueFactory(new PropertyValueFactory<PruebaRendida, Integer>("buenas"));
     colAMalas.setCellValueFactory(new PropertyValueFactory<PruebaRendida, Integer>("malas"));
     colAOmitidas.setCellValueFactory(new PropertyValueFactory<PruebaRendida, Integer>("omitidas"));
+    
 
   }
 

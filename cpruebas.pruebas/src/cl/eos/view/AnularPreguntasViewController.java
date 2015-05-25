@@ -197,6 +197,7 @@ public class AnularPreguntasViewController extends AFormView {
 			/*
 			 * Se van a actualizar todas las evaluaciones, recalculando las notas.
 			 */
+			
 			for(EvaluacionPrueba evaluacion: prueba.getEvaluaciones())
 			{
 				for(PruebaRendida pruebaRendida: evaluacion.getPruebasRendidas())

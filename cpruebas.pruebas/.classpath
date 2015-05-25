@@ -25,5 +25,6 @@
 	<classpathentry kind="lib" path="../jars/boofcv/BoofCV-sfm-0.17.jar"/>
 	<classpathentry kind="lib" path="../jars/boofcv/BoofCV-v4l4j-0.17.jar"/>
 	<classpathentry kind="lib" path="../jars/boofcv/BoofCV-visualize-0.17.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.pruebas.reportes"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

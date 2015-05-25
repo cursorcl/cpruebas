@@ -87,12 +87,13 @@ public class ComparativoColegioEjeEvaluacionView extends AFormView implements
 			handleReportes();
 		}
 
-		if (source == mnuExportarAlumnos ) {
+		if (source == mnuExportarAlumnos) {
 
 			tblEjesCantidad.setId("Comparativo Colegios Ejes");
 			List<TableView<? extends Object>> listaTablas = new ArrayList<>();
 			listaTablas.add((TableView<? extends Object>) tblEjesCantidad);
-			ExcelSheetWriterObj.convertirDatosColumnasDoblesALibroDeExcel(listaTablas);
+			ExcelSheetWriterObj
+					.convertirDatosColumnasDoblesALibroDeExcel(listaTablas);
 		}
 	}
 
@@ -246,7 +247,6 @@ public class ComparativoColegioEjeEvaluacionView extends AFormView implements
 
 			tblEjesCantidad.getColumns().add(tc);
 
-			
 		}
 	}
 
@@ -285,23 +285,22 @@ public class ComparativoColegioEjeEvaluacionView extends AFormView implements
 				// por que la primera es de contenido
 				// index * nroRangos Ya que cada curso tiene nroRangos columnas
 				// asociadas.
-				if(pruebaRendida.getAlumno() == null)
-				{
+				if (pruebaRendida.getAlumno() == null) {
 					// Caso especial que indica que la prueba esta sin alumno.
 					continue;
 				}
 				int index = cursoList.indexOf(pruebaRendida.getAlumno()
 						.getCurso());
-				
-				if (index == -1 ) { // Caso especial que indica que el alumno no es del colegio.
+
+				if (index == -1) { // Caso especial que indica que el alumno no
+									// es del colegio.
 					continue;
 				}
-				
+
 				String respuestas = pruebaRendida.getRespuestas();
 				if (respuestas == null || respuestas.isEmpty()) {
 					continue;
 				}
-
 
 				for (int n = 0; n < respEsperadas.size(); n++) {
 					// Sumando a ejes tematicos
@@ -315,7 +314,9 @@ public class ComparativoColegioEjeEvaluacionView extends AFormView implements
 						mapEjes.put(eje, lista);
 					}
 					List<OTAcumulador> lstEjes = mapEjes.get(eje);
-					OTAcumulador otEjeEval = lstEjes.get(index); // Que columna (curso es)
+					OTAcumulador otEjeEval = lstEjes.get(index); // Que columna
+																	// (curso
+																	// es)
 					if (otEjeEval == null) {
 						otEjeEval = new OTAcumulador();
 						int[] nroPersonas = new int[nroRangos];
@@ -359,8 +360,7 @@ public class ComparativoColegioEjeEvaluacionView extends AFormView implements
 	 *            Mapa que contiene los valores para cada curso de las
 	 *            habilidades.
 	 */
-	private void generarTablaEjes(
-			Map<EjeTematico, List<OTAcumulador>> mapEjes) {
+	private void generarTablaEjes(Map<EjeTematico, List<OTAcumulador>> mapEjes) {
 		ObservableList<String> row = null;
 		ObservableList<ObservableList<String>> items = FXCollections
 				.observableArrayList();
@@ -392,17 +392,20 @@ public class ComparativoColegioEjeEvaluacionView extends AFormView implements
 		float nroPreguntas = 0;
 		for (int n = 0; n < respEsperadas.size(); n++) {
 			RespuestasEsperadasPrueba resp = respEsperadas.get(n);
-			if (resp.getEjeTematico().equals(eje)) {
-				
-				if (respuestas.length() > n) {
-					String sResp = respuestas.substring(n, n + 1);
-					if ("+".equals(sResp)
-							|| resp.getRespuesta().equalsIgnoreCase(sResp)) {
-						nroBuenas++;
+			if (!resp.isAnulada()) {
+
+				if (resp.getEjeTematico().equals(eje)) {
+
+					if (respuestas.length() > n) {
+						String sResp = respuestas.substring(n, n + 1);
+						if ("+".equals(sResp)
+								|| resp.getRespuesta().equalsIgnoreCase(sResp)) {
+							nroBuenas++;
+						}
 					}
+
+					nroPreguntas++;
 				}
-				
-				nroPreguntas++;
 			}
 		}
 		float porcentaje = nroBuenas / nroPreguntas * 100f;

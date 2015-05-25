@@ -136,6 +136,10 @@ public class CursoEjeHabilidad {
 		int nroPreguntas = 0;
 		for (int n = 0; n < respEsperadas.size(); n++) {
 			RespuestasEsperadasPrueba resp = respEsperadas.get(n);
+			if(resp.isAnulada())
+			{
+				continue;
+			}
 			if (resp.getHabilidad().equals(hab)) {
 				if (respuestas.length() > n) {
 					String sResp = respuestas.substring(n, n + 1);
@@ -166,6 +170,10 @@ public class CursoEjeHabilidad {
 		int nroPreguntas = 0;
 		for (int n = 0; n < respEsperadas.size(); n++) {
 			RespuestasEsperadasPrueba resp = respEsperadas.get(n);
+			if(resp.isAnulada())
+			{
+				continue;
+			}
 			if (resp.getEjeTematico().equals(eje)) {
 				if (respuestas.length() > n) {
 					String sResp = respuestas.substring(n, n + 1);

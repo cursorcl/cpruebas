@@ -234,9 +234,9 @@ public class ComunalCursoView extends AFormView implements
 								mapaOT = new HashMap<String, OTPreguntasEvaluacion>();
 								mapaOT.put(nameTpCurso, pregunta);
 								mapEvaAlumnos.put(evaluacionAl, mapaOT);
-//								System.out.println("name tp " + nameTpCurso
-//										+ " " + evaluacionAl.getName() + " "
-//										+ pregunta.getAlumnos());
+								// System.out.println("name tp " + nameTpCurso
+								// + " " + evaluacionAl.getName() + " "
+								// + pregunta.getAlumnos());
 							}
 						}
 					}
@@ -257,7 +257,7 @@ public class ComunalCursoView extends AFormView implements
 			}
 		});
 		columna0.setPrefWidth(100);
-		//columna0.setStyle("-fx-alignment: CENTER;");
+		// columna0.setStyle("-fx-alignment: CENTER;");
 		tblEvaluaciones.getColumns().add(columna0);
 
 		titulosColumnas = new ArrayList<>();

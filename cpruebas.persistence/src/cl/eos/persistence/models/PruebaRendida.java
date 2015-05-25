@@ -1,5 +1,6 @@
 package cl.eos.persistence.models;
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -228,24 +229,35 @@ public class PruebaRendida implements IEntity {
 	}
 
 	/**
-	 * Este metodo recalcula la nota y el rango de la prueba rendida.
-	 * Esto se hace cuando se ha realizado una anulación de alguna pregunta.
+	 * Este metodo recalcula la nota y el rango de la prueba rendida. Esto se
+	 * hace cuando se ha realizado una anulación de alguna pregunta.
 	 */
 	public void reEvaluate() {
 		Prueba prueba = this.getEvaluacionPrueba().getPrueba();
-		List<RespuestasEsperadasPrueba> respuestasEsperadas = prueba.getRespuestas();
+		List<RespuestasEsperadasPrueba> respuestasEsperadas = prueba
+				.getRespuestas();
 		StringBuilder strResps = new StringBuilder(this.getRespuestas());
 
 		int buenas = 0;
 		int malas = 0;
 		int omitidas = 0;
 		int anuladas = 0;
+		int nroRespuestas = prueba.getNroPreguntas();
+		int nroLast = Math.abs(strResps.length() - nroRespuestas);
+		if (nroLast > 0) {
+			for(int n = 0; n < nroLast; n++)
+			{
+				strResps.append("O");
+			}
+		}
 
-		for (int n = 0; n < prueba.getNroPreguntas(); n++) {
+		for (int n = 0; n < nroRespuestas; n++) {
 			String letter = strResps.substring(n, n + 1);
 			RespuestasEsperadasPrueba rEsperada = respuestasEsperadas.get(n);
 
 			if (rEsperada.isAnulada()) {
+				rEsperada.setRespuesta("*");
+				strResps.replace(n, n+1, "*");
 				anuladas++;
 				continue;
 			}
@@ -288,10 +300,10 @@ public class PruebaRendida implements IEntity {
 				}
 			}
 		}
-
 		int nroPreguntas = prueba.getNroPreguntas() - anuladas;
 		float nota = Utils.getNota(nroPreguntas, prueba.getExigencia(), buenas,
 				prueba.getPuntajeBase());
+		this.setRespuestas(strResps.toString());
 		this.setBuenas(buenas);
 		this.setMalas(malas);
 		this.setOmitidas(omitidas);
@@ -300,78 +312,6 @@ public class PruebaRendida implements IEntity {
 		RangoEvaluacion rango = prueba.getNivelEvaluacion()
 				.getRango(porcentaje);
 		this.setRango(rango);
-	}
-
-	public static void evaluar(String respuetas, PruebaRendida pRendida) {
-
-		Prueba prueba = pRendida.getEvaluacionPrueba().getPrueba();
-		List<RespuestasEsperadasPrueba> respuestasEsperadas = prueba.getRespuestas();
-		StringBuilder strResps = new StringBuilder(respuetas);
-
-		int buenas = 0;
-		int malas = 0;
-		int omitidas = 0;
-		int anuladas = 0;
-
-		for (int n = 0; n < prueba.getNroPreguntas(); n++) {
-			String letter = strResps.substring(n, n + 1);
-			RespuestasEsperadasPrueba rEsperada = respuestasEsperadas.get(n);
-
-			if (rEsperada.isAnulada()) {
-				anuladas++;
-				continue;
-			}
-
-			if ("O".equalsIgnoreCase(letter)) {
-				omitidas++;
-			} else if ("M".equalsIgnoreCase(letter)) {
-				malas++;
-			} else {
-				if (rEsperada.getMental()) {
-					if ("B".equalsIgnoreCase(letter)) {
-						strResps.replace(n, n + 1, "+");
-						buenas++;
-					} else if ("D".equalsIgnoreCase(letter)) {
-						strResps.replace(n, n + 1, "-");
-						malas++;
-					} else {
-						malas++;
-					}
-				} else if (rEsperada.getVerdaderoFalso()) {
-					if ("B".equalsIgnoreCase(letter)) {
-						strResps.replace(n, n + 1, "V");
-						letter = "V";
-					} else if ("D".equalsIgnoreCase(letter)) {
-						strResps.replace(n, n + 1, "F");
-						letter = "F";
-					}
-
-					if (rEsperada.getRespuesta().equalsIgnoreCase(letter)) {
-						buenas++;
-					} else {
-						malas++;
-					}
-				} else {
-					if (rEsperada.getRespuesta().equalsIgnoreCase(letter)) {
-						buenas++;
-					} else {
-						malas++;
-					}
-				}
-			}
-		}
-
-		int nroPreguntas = prueba.getNroPreguntas() - anuladas;
-		float nota = Utils.getNota(nroPreguntas, prueba.getExigencia(), buenas,
-				prueba.getPuntajeBase());
-		pRendida.setBuenas(buenas);
-		pRendida.setMalas(malas);
-		pRendida.setOmitidas(omitidas);
-		pRendida.setNota(nota);
-		float porcentaje = ((float) pRendida.getBuenas()) / nroPreguntas * 100f;
-		RangoEvaluacion rango = prueba.getNivelEvaluacion()
-				.getRango(porcentaje);
-		pRendida.setRango(rango);
 	}
 
 }

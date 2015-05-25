@@ -20,7 +20,7 @@ public class Utils {
 	private static Logger log = Logger.getLogger(Utils.class);
 
 	/**
-	 * M�todo Est�tico que valida si un rut es v�lido Fuente :
+	 * Metodo Estatico que valida si un rut es valido
 	 */
 	public static boolean validarRut(String strRut) {
 		boolean resultado = false;

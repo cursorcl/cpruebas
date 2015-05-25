@@ -93,8 +93,10 @@ public class ComparativoColegioHabilidadesView extends AFormView implements
 
 			tblHabilidadesCantidad.setId("Comp ColegiosHabilidades");
 			List<TableView<? extends Object>> listaTablas = new ArrayList<>();
-			listaTablas.add((TableView<? extends Object>) tblHabilidadesCantidad);
-			ExcelSheetWriterObj.convertirDatosColumnasDoblesALibroDeExcel(listaTablas);
+			listaTablas
+					.add((TableView<? extends Object>) tblHabilidadesCantidad);
+			ExcelSheetWriterObj
+					.convertirDatosColumnasDoblesALibroDeExcel(listaTablas);
 		}
 	}
 
@@ -248,7 +250,6 @@ public class ComparativoColegioHabilidadesView extends AFormView implements
 
 			tblHabilidadesCantidad.getColumns().add(tc);
 
-			
 		}
 	}
 
@@ -283,12 +284,11 @@ public class ComparativoColegioHabilidadesView extends AFormView implements
 			for (PruebaRendida pruebaRendida : pruebasRendidas) {
 				// Se procesa un alumno.
 
-				if(pruebaRendida.getAlumno() == null)
-				{
+				if (pruebaRendida.getAlumno() == null) {
 					// Caso especial que indica que la prueba esta sin alumno.
 					continue;
 				}
-				
+
 				// Obtengo el index de la columna que tengo que llenar (mas 1
 				// por que la primera es de contenido
 				// index * nroRangos Ya que cada curso tiene nroRangos columnas
@@ -296,7 +296,8 @@ public class ComparativoColegioHabilidadesView extends AFormView implements
 				int index = cursoList.indexOf(pruebaRendida.getAlumno()
 						.getCurso());
 
-				if (index == -1 ) { // Caso especial que indica que el alumno no es del colegio.
+				if (index == -1) { // Caso especial que indica que el alumno no
+									// es del colegio.
 					continue;
 				}
 				String respuestas = pruebaRendida.getRespuestas();
@@ -316,7 +317,9 @@ public class ComparativoColegioHabilidadesView extends AFormView implements
 						mapEjes.put(habilidad, lista);
 					}
 					List<OTAcumulador> lstEjes = mapEjes.get(habilidad);
-					OTAcumulador otEjeEval = lstEjes.get(index); // Que columna (curso es)
+					OTAcumulador otEjeEval = lstEjes.get(index); // Que columna
+																	// (curso
+																	// es)
 					if (otEjeEval == null) {
 						otEjeEval = new OTAcumulador();
 						int[] nroPersonas = new int[nroRangos];
@@ -351,8 +354,8 @@ public class ComparativoColegioHabilidadesView extends AFormView implements
 	}
 
 	/**
-	 * Se genera la tabal que contiene los % de logro por cada habilidad y por cada
-	 * habilidad asociado a cada curso.
+	 * Se genera la tabal que contiene los % de logro por cada habilidad y por
+	 * cada habilidad asociado a cada curso.
 	 * 
 	 * @param mapEjes
 	 *            Mapa que contiene los valores para cada curso de los ejes.
@@ -360,8 +363,7 @@ public class ComparativoColegioHabilidadesView extends AFormView implements
 	 *            Mapa que contiene los valores para cada curso de las
 	 *            habilidades.
 	 */
-	private void generarTablaEjes(
-			Map<Habilidad, List<OTAcumulador>> mapEjes) {
+	private void generarTablaEjes(Map<Habilidad, List<OTAcumulador>> mapEjes) {
 		ObservableList<String> row = null;
 		ObservableList<ObservableList<String>> items = FXCollections
 				.observableArrayList();
@@ -393,15 +395,17 @@ public class ComparativoColegioHabilidadesView extends AFormView implements
 		float nroPreguntas = 0;
 		for (int n = 0; n < respEsperadas.size(); n++) {
 			RespuestasEsperadasPrueba resp = respEsperadas.get(n);
-			if (resp.getHabilidad().equals(habilidad)) {
-				if (respuestas.length() > n) {
-					String sResp = respuestas.substring(n, n + 1);
-					if ("+".equals(sResp)
-							|| resp.getRespuesta().equalsIgnoreCase(sResp)) {
-						nroBuenas++;
+			if (!resp.isAnulada()) {
+				if (resp.getHabilidad().equals(habilidad)) {
+					if (respuestas.length() > n) {
+						String sResp = respuestas.substring(n, n + 1);
+						if ("+".equals(sResp)
+								|| resp.getRespuesta().equalsIgnoreCase(sResp)) {
+							nroBuenas++;
+						}
 					}
+					nroPreguntas++;
 				}
-				nroPreguntas++;
 			}
 		}
 		float porcentaje = nroBuenas / nroPreguntas * 100f;
