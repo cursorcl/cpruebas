@@ -190,6 +190,7 @@
                                           <MenuItem fx:id="mnuEvaluarPrueba" mnemonicParsing="false" text="Evaluar Prueba" />
                                           <MenuItem fx:id="mnuAnularPregunta" mnemonicParsing="false" text="Anular Pregunta" />
                                           <SeparatorMenuItem />
+                                          <MenuItem fx:id="mnuCompColegioEjeHabilXCurso" mnemonicParsing="false" text="Comparativo Colegio Ejes/Habilidades x Curso" />
                                           <MenuItem fx:id="mnuComparativoColegioEjeHabil" mnemonicParsing="false" text="Comparativo Colegio Ejes/Habilidades" />
                                           <MenuItem fx:id="mnuColegio" mnemonicParsing="false" text="Resumen Colegio" />
                                           <MenuItem fx:id="mnuEjesEvaluacion" mnemonicParsing="false" text="Colegio Ejes/Evaluación" />

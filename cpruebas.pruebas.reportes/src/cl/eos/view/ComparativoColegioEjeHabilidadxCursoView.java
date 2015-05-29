@@ -25,6 +25,7 @@ import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.util.Callback;
 import cl.eos.imp.view.AFormView;
+import cl.eos.interfaces.entity.IEntity;
 import cl.eos.ot.OTPreguntasEjes;
 import cl.eos.ot.OTPreguntasEvaluacion;
 import cl.eos.ot.OTPreguntasHabilidad;
@@ -42,7 +43,7 @@ import cl.eos.util.ExcelSheetWriterObj;
 import cl.eos.util.Pair;
 import cl.eos.util.Utils;
 
-public class ComparativoColegioEjeHabilidadView extends AFormView implements
+public class ComparativoColegioEjeHabilidadxCursoView extends AFormView implements
 		EventHandler<ActionEvent> {
 
 	private static final String ASIGNATURA_ID = "idAsignatura";
@@ -67,12 +68,12 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements
 	private MenuItem mnuExportarAlumnos;
 
 	private Map<String, Object> parameters = new HashMap<String, Object>();
-	private ObservableList<Curso> cursoList;
-	private ObservableList<EvaluacionEjeTematico> evalEjeTematicoList;
-	private ObservableList<EvaluacionPrueba> evaluacionesPrueba;
+	private ObservableList<Curso> listaCursos;
+	private ObservableList<EvaluacionEjeTematico> rangosEvaluacionPorcentaje;
+	private ObservableList<EvaluacionPrueba> listaEvaluacionesPrueba;
 	private ArrayList<OTPreguntasEvaluacion> lst;
 
-	public ComparativoColegioEjeHabilidadView() {
+	public ComparativoColegioEjeHabilidadxCursoView() {
 		setTitle("Comparativo Colegio Ejes Temáticos y Habilidades");
 	}
 
@@ -165,26 +166,26 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements
 				cmbAsignatura.setItems(oList);
 			}
 			if (entity instanceof Curso) {
-				cursoList = FXCollections.observableArrayList();
+				listaCursos = FXCollections.observableArrayList();
 				for (Object iEntity : list) {
-					cursoList.add((Curso) iEntity);
+					listaCursos.add((Curso) iEntity);
 				}
 				FXCollections
-						.sort(cursoList, Comparadores.comparaResumeCurso());
+						.sort(listaCursos, Comparadores.comparaResumeCurso());
 			}
 			if (entity instanceof EvaluacionEjeTematico) {
-				evalEjeTematicoList = FXCollections.observableArrayList();
+				rangosEvaluacionPorcentaje = FXCollections.observableArrayList();
 				for (Object object : list) {
 					EvaluacionEjeTematico evaluacion = (EvaluacionEjeTematico) object;
-					evalEjeTematicoList.add(evaluacion);
+					rangosEvaluacionPorcentaje.add(evaluacion);
 				}
 				generarReporte();
 			}
 			if (entity instanceof EvaluacionPrueba) {
-				evaluacionesPrueba = FXCollections.observableArrayList();
+				listaEvaluacionesPrueba = FXCollections.observableArrayList();
 				for (Object object : list) {
 					EvaluacionPrueba evaluacion = (EvaluacionPrueba) object;
-					evaluacionesPrueba.add(evaluacion);
+					listaEvaluacionesPrueba.add(evaluacion);
 				}
 				generarReporte();
 			}
@@ -262,28 +263,93 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements
 			indice++;
 		}
 	}
+	
 
+	
 	/**
-	 * Aqui se llenan las tablas con los valores correspondientes.<br>
-	 * 1) Se obtienen los ejes tematicos de todas las pruebas.<br>
-	 * 2) Se obtienen las habilidades de todas las pruebas.<br>
-	 * 3) Se obtienen los porcentajes de aprobacion de de cada curso con
-	 * respecto a cada eje y habilidad.
+	 * Para ontener el resultado final se siguen los sieguientes pasos:
+	 * <lu>
+	 * <li> Obtener resumen de preguntas buenas de cada Eje/Hab x Alumno. 
+	 * </lu>
 	 */
 	private void generarReporte() {
 
-		if (evaluacionesPrueba == null || evalEjeTematicoList == null) {
+		if (listaEvaluacionesPrueba == null || rangosEvaluacionPorcentaje == null) {
 			// No hay valores para procesar todo.
 			return;
 		}
+		
+		// Una iteracion por cada curso asociado al colegio con una evaluacion
+		int nroCursos = listaEvaluacionesPrueba.size();
 
-		llenarColumnas(cursoList);
-		int nroCursos = cursoList.size();
+		List<OTCursoRangos> listaCursosConRangos = new ArrayList<OTCursoRangos>();
+		Map<IEntity, List<OTCursoRangos>> reporte = new HashMap<IEntity, List<OTCursoRangos>>();
+		
+		// Una evaluacion corresponde al conjunto de pruebas de un CURSO de un COLEGIO de una ASIGNATURA.
+		for(EvaluacionPrueba evaluacion: listaEvaluacionesPrueba)
+		{
+			List<EjeTematico> ejeTematicos =  new ArrayList<EjeTematico>();
+			List<Habilidad> hablidades =  new ArrayList<Habilidad>();
+			List<RespuestasEsperadasPrueba> rEsperadas = evaluacion.getPrueba().getRespuestas();
+
+			//Obtengo lista de ejes y habilidades de la PRUEBA base de la EVALUACION.
+			for(RespuestasEsperadasPrueba rEsperada: rEsperadas)
+			{
+				if(!ejeTematicos.contains(rEsperada.getEjeTematico()))
+				{
+					ejeTematicos.add(rEsperada.getEjeTematico());
+				}
+				if(!hablidades.contains(rEsperada.getHabilidad()))
+				{
+					hablidades.add(rEsperada.getHabilidad());
+				}
+			}
+			
+			List<RespuestasEsperadasPrueba> respEsperadas = evaluacion.getPrueba().getRespuestas();
+			OTCursoRangos ot =  new OTCursoRangos(evaluacion.getCurso(), rangosEvaluacionPorcentaje.size());
+			// Cada prueba rendida equivale a un ALUMNO DEL CURSO
+			for(PruebaRendida pRendida: evaluacion.getPruebasRendidas())
+			{
+				String respuestas = pRendida.getRespuestas();
+				int n = 0;
+				for(RespuestasEsperadasPrueba resp: respEsperadas )
+				{
+					if(respuestas.length() < n)
+					{
+						// No hay más respuesta
+						break;
+					}
+					String r = respuestas.substring(nroCursos,  n + 1);
+					if(resp.getAnulada() || "O".equals(r) || "-".equals(r))
+					{
+						// La respuesta no se considera
+						n++;
+						continue;
+					}
+					
+					if(resp.getRespuesta().equals(r))
+					{
+						int idx = rangosEvaluacionPorcentaje.indexOf(resp.getEjeTematico());
+						int cantidad = ot.getCantidadAlumnosEnRangos()[idx] + 1;
+						ot.getCantidadAlumnosEnRangos()[idx] = cantidad;
+					}
+					
+					
+				}
+				
+				
+			}
+		}
+		
+		
+/*		
+		llenarColumnas(listaCursos);
+		int nroCursos = listaCursos.size();
 		Map<EjeTematico, List<OTPreguntasEjes>> mapEjes = new HashMap<EjeTematico, List<OTPreguntasEjes>>();
 		Map<Habilidad, List<OTPreguntasHabilidad>> mapHabilidades = new HashMap<Habilidad, List<OTPreguntasHabilidad>>();
 		Map<EvaluacionEjeTematico, List<OTPreguntasEvaluacion>> mapEvaluaciones = new HashMap<EvaluacionEjeTematico, List<OTPreguntasEvaluacion>>();
 
-		for (EvaluacionEjeTematico ejetem : evalEjeTematicoList) {
+		for (EvaluacionEjeTematico ejetem : rangosEvaluacionPorcentaje) {
 			lst = new ArrayList<OTPreguntasEvaluacion>(nroCursos);
 			for (int idx = 0; idx < nroCursos; idx++) {
 				OTPreguntasEvaluacion otEval = new OTPreguntasEvaluacion();
@@ -299,7 +365,7 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements
 		Arrays.fill(alumnosEvaluados, 0);
 
 		// Todas las evaluaciones asociadas (Todos los cursos)
-		for (EvaluacionPrueba eval : evaluacionesPrueba) {
+		for (EvaluacionPrueba eval : listaEvaluacionesPrueba) {
 			// Se esta revisando un curso.
 			eval.getPruebasRendidas().size();
 			List<PruebaRendida> pruebasRendidas = eval.getPruebasRendidas();
@@ -318,7 +384,7 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements
 
 				}
 
-				int index = cursoList.indexOf(pruebaRendida.getAlumno()
+				int index = listaCursos.indexOf(pruebaRendida.getAlumno()
 						.getCurso());
 
 				if (index == -1) {
@@ -392,7 +458,7 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements
 					lstHabilidades.set(index, otH);
 
 				}
-				for (EvaluacionEjeTematico ejetem : evalEjeTematicoList) {
+				for (EvaluacionEjeTematico ejetem : rangosEvaluacionPorcentaje) {
 					if (ejetem.isInside(pruebaRendida.getPbuenas())) {
 						List<OTPreguntasEvaluacion> lstOt = mapEvaluaciones
 								.get(ejetem);
@@ -408,7 +474,23 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements
 		generarTablaEjesHabilidades(mapEjes, mapHabilidades);
 		generarTablaEvaluaciones(mapEvaluaciones, totalAlumnos,
 				alumnosEvaluados);
+				*/
 
+	}
+
+
+
+	/**
+	 * Se obtiene la lista de ejes/habilidades existentes en una prueba de un curso con los siguientes atributos asociados.
+	 * Eje/Habilidad
+	 * Numero Preguntas asociadas
+	 * Lista de alumnos con las preguntas buenas por cada eje.
+	 */
+	private void obtenerResPregBuenasEHxAlumno() {
+		// TODO Auto-generated method stub
+		
+		
+		
 	}
 
 	private void generarTablaEvaluaciones(
@@ -417,10 +499,10 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements
 		ObservableList<String> row = null;
 		ObservableList<ObservableList<String>> items = FXCollections
 				.observableArrayList();
-		Collections.sort(evalEjeTematicoList,
+		Collections.sort(rangosEvaluacionPorcentaje,
 				Comparadores.comparaEvaluacionEjeTematico());
 
-		for (EvaluacionEjeTematico eval : evalEjeTematicoList) {
+		for (EvaluacionEjeTematico eval : rangosEvaluacionPorcentaje) {
 			row = FXCollections.observableArrayList();
 			List<OTPreguntasEvaluacion> lst = mapEvaluaciones.get(eval);
 			row.add(eval.getName());
@@ -589,7 +671,6 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements
 		tblEjeshabilidades.getItems().clear();
 		tblEvaluacion.getItems().clear();
 		tblEjeshabilidades.getColumns().clear();
-		;
 		tblEvaluacion.getColumns().clear();
 	}
 }
