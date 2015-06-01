@@ -1,8 +1,5 @@
 package cl.eos.view;
 
-import java.util.Arrays;
-
-import cl.eos.interfaces.entity.IEntity;
 import cl.eos.persistence.models.Curso;
 
 
@@ -13,27 +10,18 @@ import cl.eos.persistence.models.Curso;
  */
 public class OTCursoRangos {
 	private Curso curso;
-	private int[] cantidadAlumnosEnRangos;
-	
+	private int cantidadPreguntas;
+	private int cantidadBuenas;
 	public OTCursoRangos() {
 		
 	}
 	
 	
-	public OTCursoRangos(Curso curso,
-			int cantidadRangos) {
+	public OTCursoRangos(Curso curso) {
 		super();
 		this.curso = curso;
-		this.cantidadAlumnosEnRangos = new int[cantidadRangos];
-		Arrays.fill(cantidadAlumnosEnRangos, 0);
 	}	
 	
-	public OTCursoRangos(Curso curso,
-			int[] cantidadAlumnosEnRangos) {
-		super();
-		this.curso = curso;
-		this.cantidadAlumnosEnRangos = cantidadAlumnosEnRangos;
-	}
 
 	public Curso getCurso() {
 		return curso;
@@ -41,13 +29,26 @@ public class OTCursoRangos {
 	public void setCurso(Curso curso) {
 		this.curso = curso;
 	}
-	public int[] getCantidadAlumnosEnRangos() {
-		return cantidadAlumnosEnRangos;
-	}
-	public void setCantidadAlumnosEnRangos(int[] cantidadAlumnosEnRangos) {
-		this.cantidadAlumnosEnRangos = cantidadAlumnosEnRangos;
+
+
+	public int getCantidadPreguntas() {
+		return cantidadPreguntas;
 	}
 
+
+	public void setCantidadPreguntas(int cantidadPreguntas) {
+		this.cantidadPreguntas = cantidadPreguntas;
+	}
+
+
+	public int getCantidadBuenas() {
+		return cantidadBuenas;
+	}
+
+
+	public void setCantidadBuenas(int cantidadBuenas) {
+		this.cantidadBuenas = cantidadBuenas;
+	}
 	
 	
 }

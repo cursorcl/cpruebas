@@ -418,11 +418,10 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 			handlerHabilidadEvaluacion();
 		} else if (source == mnuHabilidadEvaluacionXAlumno) {
 			handlerHabilidadEvaluacionXAlumno();
-		} else if (source == mnuCompColegioEjeHabilXCurso)
-		{
+		} else if (source == mnuCompColegioEjeHabilXCurso) {
 			handlerCompColegioEjeHabilXCurso();
 		}
-		
+
 	}
 
 	private void handlerCompColegioEjeHabilXCurso() {
@@ -430,7 +429,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 		show(resColegioHabEjeCurso);
 		controller.findAll(Colegio.class, resColegioHabEjeCurso);
 		controller.findAll(Asignatura.class, resColegioHabEjeCurso);
-		
+		controller.findAll(EvaluacionEjeTematico.class, resColegioHabEjeCurso);
 	}
 
 	private void handlerHabilidadEvaluacionXAlumno() {
@@ -438,6 +437,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 		show(resHabEjeAlumno);
 		controller.findAll(Colegio.class, resHabEjeAlumno);
 		controller.findAll(Asignatura.class, resHabEjeAlumno);
+		
 	}
 
 	private void handlerHabilidadEvaluacion() {
