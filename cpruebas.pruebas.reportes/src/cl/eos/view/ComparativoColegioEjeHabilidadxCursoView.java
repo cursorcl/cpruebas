@@ -281,6 +281,8 @@ public class ComparativoColegioEjeHabilidadxCursoView extends AFormView
 		int nroCursos = listaEvaluacionesPrueba.size();
 
 		List<OTCursoRangos> listaCursosConRangos = new ArrayList<OTCursoRangos>();
+		List<EjeTematico> listaEjesTematicos =  new ArrayList<EjeTematico>();
+		List<Habilidad> listaHablidades =  new ArrayList<Habilidad>();
 		Map<IEntity, List<OTCursoRangos>> reporte = new HashMap<IEntity, List<OTCursoRangos>>();
 
 		// Una evaluacion corresponde al conjunto de pruebas de un CURSO de un
@@ -293,54 +295,61 @@ public class ComparativoColegioEjeHabilidadxCursoView extends AFormView
 			// Obtengo lista de ejes y habilidades de la PRUEBA base de la
 			// EVALUACION.
 			for (RespuestasEsperadasPrueba rEsperada : rEsperadas) {
-				if (!reporte.containsKey(rEsperada.getEjeTematico())) {
-					reporte.put(rEsperada.getEjeTematico(),
-							new ArrayList<OTCursoRangos>(nroCursos));
+				if (!listaEjesTematicos.contains(rEsperada.getEjeTematico())) {
+					listaEjesTematicos.add(rEsperada.getEjeTematico());
 				}
-				if (!reporte.containsKey(rEsperada.getHabilidad())) {
-					reporte.put(rEsperada.getHabilidad(),
-							new ArrayList<OTCursoRangos>(nroCursos));
+				if (!listaHablidades.contains(rEsperada.getHabilidad())) {
+					listaHablidades.add(rEsperada.getHabilidad());
 				}
 			}
+		}
+		for (EvaluacionPrueba evaluacion : listaEvaluacionesPrueba) {
 
 			List<RespuestasEsperadasPrueba> respEsperadas = evaluacion
 					.getPrueba().getRespuestas();
 
+			int nroAlumnos = evaluacion.getPruebasRendidas().size();
+			List<OTUnCurso> listaOTUnCurso =  new ArrayList<OTUnCurso>();
+			
 			// Cada prueba rendida equivale a un ALUMNO DEL CURSO
+			int n = 0;
 			for (PruebaRendida pRendida : evaluacion.getPruebasRendidas()) {
 				String respuestas = pRendida.getRespuestas();
-				int n = 0;
+				
 				for (RespuestasEsperadasPrueba resp : respEsperadas) {
+					
+					OTUnCurso otEje = new  OTUnCurso(resp.getEjeTematico(), nroAlumnos);
+					if(listaOTUnCurso.contains(otEje))
+					{
+						// Me aseguro que es el que existe
+						otEje = listaOTUnCurso.get(listaOTUnCurso.indexOf(otEje));
+					}
+					else
+					{
+						// Lo agrego a la lista.
+						listaOTUnCurso.add(otEje);
+					}
+					
+					OTUnCurso otHab = new  OTUnCurso(resp.getHabilidad(), nroAlumnos);
+					if(listaOTUnCurso.contains(otHab))
+					{
+						// Me aseguro que es el que existe
+						otHab = listaOTUnCurso.get(listaOTUnCurso.indexOf(otHab));
+					}
+					else
+					{
+						// Lo agrego a la lista.
+						listaOTUnCurso.add(otHab);
+					}
+					
+					otEje.setNroPreguntas(otEje.getNroPreguntas() + 1);
+					otHab.setNroPreguntas(otHab.getNroPreguntas() + 1);
+					
 					if (respuestas.length() < n) {
 						// No hay más respuesta
 						break;
 					}
 					String r = respuestas.substring(n, n + 1);
-
-					// Sumo 1 a las preguntas asociadas al eje.
-					List<OTCursoRangos> cursos = reporte.get(resp
-							.getEjeTematico());
-					int index = cursos.indexOf(evaluacion.getCurso());
-					OTCursoRangos ot = null;
-					if (index == -1) {
-						ot = new OTCursoRangos(evaluacion.getCurso());
-					} else {
-						ot = cursos.get(index);
-					}
-
-					ot.setCantidadPreguntas(ot.getCantidadPreguntas() + 1);
-
-					// Sumo 1 a las preguntas asociadas a la habilidad.
-					cursos = reporte.get(resp.getHabilidad());
-					index = cursos.indexOf(evaluacion.getCurso());
-
-					ot = null;
-					if (index == -1) {
-						ot = new OTCursoRangos(evaluacion.getCurso());
-					} else {
-						ot = cursos.get(index);
-					}
-					ot.setCantidadPreguntas(ot.getCantidadPreguntas() + 1);
 
 					if (resp.getAnulada() || "O".equals(r) || "-".equals(r)) {
 						// La respuesta no se considera
@@ -348,24 +357,17 @@ public class ComparativoColegioEjeHabilidadxCursoView extends AFormView
 						continue;
 					}
 
+					// Aqui agrego 1 a las buenas del eje y de la habilidad del alumno n.
 					if (resp.getRespuesta().equals(r)) {
-
-						cursos = reporte.get(resp.getEjeTematico());
-						index = cursos.indexOf(evaluacion.getCurso());
-						ot = cursos.get(index);
-						ot.setCantidadBuenas(ot.getCantidadBuenas() + 1);
-
-						// Sumo 1 a las preguntas asociadas a la habilidad.
-						cursos = reporte.get(resp.getHabilidad());
-						index = cursos.indexOf(evaluacion.getCurso());
-						ot = cursos.get(index);
-						ot.setCantidadBuenas(ot.getCantidadBuenas() + 1);
-
+						int buenasEje = otEje.getBuenasPorAlumno()[n];
+						otEje.getBuenasPorAlumno()[n] = buenasEje + 1;
+						int buenasHab = otHab.getBuenasPorAlumno()[n];
+						otHab.getBuenasPorAlumno()[n] = buenasHab + 1;
 					}
-
 				}
-
+				n++; //Siguiente alumno.
 			}
+			// Aqui va la siguiente evaluacion (CURSO)
 		}
 
 		/*
