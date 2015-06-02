@@ -281,8 +281,9 @@ public class ComparativoColegioEjeHabilidadxCursoView extends AFormView
 		int nroCursos = listaEvaluacionesPrueba.size();
 
 		List<OTCursoRangos> listaCursosConRangos = new ArrayList<OTCursoRangos>();
-		List<EjeTematico> listaEjesTematicos =  new ArrayList<EjeTematico>();
-		List<Habilidad> listaHablidades =  new ArrayList<Habilidad>();
+		List<EjeTematico> listaEjesTematicos = new ArrayList<EjeTematico>();
+		List<Habilidad> listaHablidades = new ArrayList<Habilidad>();
+
 		Map<IEntity, List<OTCursoRangos>> reporte = new HashMap<IEntity, List<OTCursoRangos>>();
 
 		// Una evaluacion corresponde al conjunto de pruebas de un CURSO de un
@@ -295,180 +296,103 @@ public class ComparativoColegioEjeHabilidadxCursoView extends AFormView
 			// Obtengo lista de ejes y habilidades de la PRUEBA base de la
 			// EVALUACION.
 			for (RespuestasEsperadasPrueba rEsperada : rEsperadas) {
+
 				if (!listaEjesTematicos.contains(rEsperada.getEjeTematico())) {
 					listaEjesTematicos.add(rEsperada.getEjeTematico());
+					reporte.put(rEsperada.getEjeTematico(),
+							new ArrayList<OTCursoRangos>(nroCursos));
 				}
 				if (!listaHablidades.contains(rEsperada.getHabilidad())) {
 					listaHablidades.add(rEsperada.getHabilidad());
+					reporte.put(rEsperada.getHabilidad(),
+							new ArrayList<OTCursoRangos>(nroCursos));
 				}
 			}
 		}
+
+		// Va a tener los resulados finales
+		int nroCurso = 0;
 		for (EvaluacionPrueba evaluacion : listaEvaluacionesPrueba) {
 
 			List<RespuestasEsperadasPrueba> respEsperadas = evaluacion
 					.getPrueba().getRespuestas();
 
 			int nroAlumnos = evaluacion.getPruebasRendidas().size();
-			List<OTUnCurso> listaOTUnCurso =  new ArrayList<OTUnCurso>();
-			
+			List<OTUnCursoUnEjeHabilidad> listaOTUnCurso = new ArrayList<OTUnCursoUnEjeHabilidad>();
 			// Cada prueba rendida equivale a un ALUMNO DEL CURSO
-			int n = 0;
+			int nAlumno = 0;
 			for (PruebaRendida pRendida : evaluacion.getPruebasRendidas()) {
 				String respuestas = pRendida.getRespuestas();
-				
+				int nResp = 0;
 				for (RespuestasEsperadasPrueba resp : respEsperadas) {
-					
-					OTUnCurso otEje = new  OTUnCurso(resp.getEjeTematico(), nroAlumnos);
-					if(listaOTUnCurso.contains(otEje))
-					{
+
+					OTUnCursoUnEjeHabilidad otEje = new OTUnCursoUnEjeHabilidad(
+							resp.getEjeTematico(), nroAlumnos);
+					if (listaOTUnCurso.contains(otEje)) {
 						// Me aseguro que es el que existe
-						otEje = listaOTUnCurso.get(listaOTUnCurso.indexOf(otEje));
-					}
-					else
-					{
+						otEje = listaOTUnCurso.get(listaOTUnCurso
+								.indexOf(otEje));
+					} else {
 						// Lo agrego a la lista.
 						listaOTUnCurso.add(otEje);
 					}
-					
-					OTUnCurso otHab = new  OTUnCurso(resp.getHabilidad(), nroAlumnos);
-					if(listaOTUnCurso.contains(otHab))
-					{
+
+					OTUnCursoUnEjeHabilidad otHab = new OTUnCursoUnEjeHabilidad(
+							resp.getHabilidad(), nroAlumnos);
+					if (listaOTUnCurso.contains(otHab)) {
 						// Me aseguro que es el que existe
-						otHab = listaOTUnCurso.get(listaOTUnCurso.indexOf(otHab));
-					}
-					else
-					{
+						otHab = listaOTUnCurso.get(listaOTUnCurso
+								.indexOf(otHab));
+					} else {
 						// Lo agrego a la lista.
 						listaOTUnCurso.add(otHab);
 					}
-					
-					otEje.setNroPreguntas(otEje.getNroPreguntas() + 1);
-					otHab.setNroPreguntas(otHab.getNroPreguntas() + 1);
-					
-					if (respuestas.length() < n) {
+					if (nAlumno == 0) { 
+						// Contamos las preguntas para eje/habilidad solo en el primer alumno.
+						otEje.setNroPreguntas(otEje.getNroPreguntas() + 1);
+						otHab.setNroPreguntas(otHab.getNroPreguntas() + 1);
+					}
+
+					if (respuestas.length() < nResp) {
 						// No hay más respuesta
 						break;
 					}
-					String r = respuestas.substring(n, n + 1);
+					String r = respuestas.substring(nResp, nResp + 1);
 
 					if (resp.getAnulada() || "O".equals(r) || "-".equals(r)) {
 						// La respuesta no se considera
-						n++;
+						nResp++;
 						continue;
 					}
 
-					// Aqui agrego 1 a las buenas del eje y de la habilidad del alumno n.
+					// Aqui agrego 1 a las buenas del eje y de la habilidad del
+					// alumno n.
 					if (resp.getRespuesta().equals(r)) {
-						int buenasEje = otEje.getBuenasPorAlumno()[n];
-						otEje.getBuenasPorAlumno()[n] = buenasEje + 1;
-						int buenasHab = otHab.getBuenasPorAlumno()[n];
-						otHab.getBuenasPorAlumno()[n] = buenasHab + 1;
+						float buenasEje = otEje.getBuenasPorAlumno()[nAlumno];
+						otEje.getBuenasPorAlumno()[nAlumno] = buenasEje + 1;
+						float buenasHab = otHab.getBuenasPorAlumno()[nAlumno];
+						otHab.getBuenasPorAlumno()[nAlumno] = buenasHab + 1;
 					}
+					nResp++; // Siguiente respuesta
 				}
-				n++; //Siguiente alumno.
+				nAlumno++; // Siguiente alumno.
 			}
+			// Aqui cuento la cantida de alumnos en los rangos
+			for(OTUnCursoUnEjeHabilidad ot: listaOTUnCurso)
+			{
+				//Calcula cantidad de alumnos en los rangos para un eje y un curso
+				int[] alumXRango = ot.calculateAlumnosXRango(rangosEvaluacionPorcentaje);
+				OTCursoRangos cursoRango = new OTCursoRangos(evaluacion.getCurso(), alumXRango);
+				List<OTCursoRangos> listOTs = reporte.get(ot.getEjeHabilidad());
+				listOTs.set(nroCurso, cursoRango);
+				
+			}
+			nroCurso++;
 			// Aqui va la siguiente evaluacion (CURSO)
 		}
-
-		/*
-		 * llenarColumnas(listaCursos); int nroCursos = listaCursos.size();
-		 * Map<EjeTematico, List<OTPreguntasEjes>> mapEjes = new
-		 * HashMap<EjeTematico, List<OTPreguntasEjes>>(); Map<Habilidad,
-		 * List<OTPreguntasHabilidad>> mapHabilidades = new HashMap<Habilidad,
-		 * List<OTPreguntasHabilidad>>(); Map<EvaluacionEjeTematico,
-		 * List<OTPreguntasEvaluacion>> mapEvaluaciones = new
-		 * HashMap<EvaluacionEjeTematico, List<OTPreguntasEvaluacion>>();
-		 * 
-		 * for (EvaluacionEjeTematico ejetem : rangosEvaluacionPorcentaje) { lst
-		 * = new ArrayList<OTPreguntasEvaluacion>(nroCursos); for (int idx = 0;
-		 * idx < nroCursos; idx++) { OTPreguntasEvaluacion otEval = new
-		 * OTPreguntasEvaluacion(); otEval.setEvaluacion(ejetem); lst.add(idx,
-		 * otEval); } mapEvaluaciones.put(ejetem, lst); }
-		 * 
-		 * int[] totalAlumnos = new int[nroCursos]; Arrays.fill(totalAlumnos,
-		 * 0); int[] alumnosEvaluados = new int[nroCursos];
-		 * Arrays.fill(alumnosEvaluados, 0);
-		 * 
-		 * // Todas las evaluaciones asociadas (Todos los cursos) for
-		 * (EvaluacionPrueba eval : listaEvaluacionesPrueba) { // Se esta
-		 * revisando un curso. eval.getPruebasRendidas().size();
-		 * List<PruebaRendida> pruebasRendidas = eval.getPruebasRendidas();
-		 * eval.getPrueba().getRespuestas().size();
-		 * List<RespuestasEsperadasPrueba> respEsperadas = eval.getPrueba()
-		 * .getRespuestas(); // Estamos procesando un curso/una prueba for
-		 * (PruebaRendida pruebaRendida : pruebasRendidas) { // Se procesa un
-		 * alumno.
-		 * 
-		 * // Obtengo el index de la columna que tengo que llenar (mas 1 // por
-		 * que la primera es de // contenido if (pruebaRendida.getAlumno() ==
-		 * null) { continue;
-		 * 
-		 * }
-		 * 
-		 * int index = listaCursos.indexOf(pruebaRendida.getAlumno()
-		 * .getCurso());
-		 * 
-		 * if (index == -1) { continue; } totalAlumnos[index] =
-		 * pruebaRendida.getAlumno().getCurso() .getAlumnos().size();
-		 * alumnosEvaluados[index] = alumnosEvaluados[index] + 1;
-		 * 
-		 * String respuestas = pruebaRendida.getRespuestas(); if (respuestas ==
-		 * null || respuestas.isEmpty()) { continue; }
-		 * 
-		 * for (int n = 0; n < respEsperadas.size(); n++) { // Sumando a ejes
-		 * tematicos EjeTematico eje = respEsperadas.get(n).getEjeTematico(); if
-		 * (!mapEjes.containsKey(eje)) { List<OTPreguntasEjes> lista = new
-		 * ArrayList<OTPreguntasEjes>(); for (int idx = 0; idx < nroCursos;
-		 * idx++) { lista.add(null); } mapEjes.put(eje, lista); }
-		 * List<OTPreguntasEjes> lstEjes = mapEjes.get(eje); OTPreguntasEjes otE
-		 * = lstEjes.get(index); // Se obtiene el // valor // asociado a la //
-		 * columna. if (otE == null) { otE = new OTPreguntasEjes();
-		 * otE.setEjeTematico(eje); lstEjes.set(index, otE); } Pair<Integer,
-		 * Integer> buenasTotal = obtenerBuenasTotales( respuestas,
-		 * respEsperadas, eje); otE.setBuenas(otE.getBuenas() +
-		 * buenasTotal.getFirst()); otE.setTotal(otE.getTotal() +
-		 * buenasTotal.getSecond()); lstEjes.set(index, otE);
-		 * 
-		 * // Sumando a habilidades Habilidad hab =
-		 * respEsperadas.get(n).getHabilidad(); System.out.println(hab); if
-		 * (!mapHabilidades.containsKey(hab)) {
-		 * 
-		 * List<OTPreguntasHabilidad> lista = new
-		 * ArrayList<OTPreguntasHabilidad>(); for (int idx = 0; idx < nroCursos;
-		 * idx++) { lista.add(null); } mapHabilidades.put(hab, lista); }
-		 * List<OTPreguntasHabilidad> lstHabilidades = mapHabilidades .get(hab);
-		 * OTPreguntasHabilidad otH = lstHabilidades.get(index);// Se // obtiene
-		 * // el // valor // asociado // a // la // columna if (otH == null) {
-		 * otH = new OTPreguntasHabilidad(); otH.setHabilidad(hab);
-		 * lstHabilidades.set(index, otH); } buenasTotal =
-		 * obtenerBuenasTotales(respuestas, respEsperadas, hab);
-		 * otH.setBuenas(otE.getBuenas() + buenasTotal.getFirst());
-		 * otH.setTotal(otE.getTotal() + buenasTotal.getSecond());
-		 * lstHabilidades.set(index, otH);
-		 * 
-		 * } for (EvaluacionEjeTematico ejetem : rangosEvaluacionPorcentaje) {
-		 * if (ejetem.isInside(pruebaRendida.getPbuenas())) {
-		 * List<OTPreguntasEvaluacion> lstOt = mapEvaluaciones .get(ejetem);
-		 * OTPreguntasEvaluacion ot = lstOt.get(index);
-		 * ot.setAlumnos(ot.getAlumnos() + 1); break; } } } }
-		 * 
-		 * // Ahora se debe llenar las tablas.
-		 * generarTablaEjesHabilidades(mapEjes, mapHabilidades);
-		 * generarTablaEvaluaciones(mapEvaluaciones, totalAlumnos,
-		 * alumnosEvaluados);
-		 */
-
-	}
-
-	/**
-	 * Se obtiene la lista de ejes/habilidades existentes en una prueba de un
-	 * curso con los siguientes atributos asociados. Eje/Habilidad Numero
-	 * Preguntas asociadas Lista de alumnos con las preguntas buenas por cada
-	 * eje.
-	 */
-	private void obtenerResPregBuenasEHxAlumno() {
-		// TODO Auto-generated method stub
-
+		
+		// Tengo todos los resultados en el map (reporte)
+		//Ahora debo generar la tabla.
 	}
 
 	private void generarTablaEvaluaciones(

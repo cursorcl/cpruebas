@@ -10,16 +10,13 @@ import cl.eos.persistence.models.Curso;
  */
 public class OTCursoRangos {
 	private Curso curso;
-	private int cantidadPreguntas;
-	private int cantidadBuenas;
-	public OTCursoRangos() {
-		
-	}
+	private int[] nroAlumnosXEjeHab;
+
 	
-	
-	public OTCursoRangos(Curso curso) {
+	public OTCursoRangos(Curso curso, int[] nroAlumnosXEjeHab) {
 		super();
 		this.curso = curso;
+		this.nroAlumnosXEjeHab = nroAlumnosXEjeHab;
 	}	
 	
 
@@ -30,25 +27,15 @@ public class OTCursoRangos {
 		this.curso = curso;
 	}
 
-
-	public int getCantidadPreguntas() {
-		return cantidadPreguntas;
+	public int[] getNroAlumnosXEjeHab() {
+		return nroAlumnosXEjeHab;
 	}
 
 
-	public void setCantidadPreguntas(int cantidadPreguntas) {
-		this.cantidadPreguntas = cantidadPreguntas;
+	public void setNroAlumnosXEjeHab(int[] nroAlumnosXEjeHab) {
+		this.nroAlumnosXEjeHab = nroAlumnosXEjeHab;
 	}
 
 
-	public int getCantidadBuenas() {
-		return cantidadBuenas;
-	}
-
-
-	public void setCantidadBuenas(int cantidadBuenas) {
-		this.cantidadBuenas = cantidadBuenas;
-	}
-	
 	
 }
