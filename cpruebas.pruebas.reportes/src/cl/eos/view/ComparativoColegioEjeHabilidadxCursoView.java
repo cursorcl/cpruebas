@@ -1,13 +1,12 @@
 package cl.eos.view;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.controlsfx.dialog.Dialogs;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
@@ -24,6 +23,9 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.util.Callback;
+
+import org.controlsfx.dialog.Dialogs;
+
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.ot.OTPreguntasEjes;
@@ -50,8 +52,6 @@ public class ComparativoColegioEjeHabilidadxCursoView extends AFormView
 	private static final String COLEGIO_ID = "idColegio";
 	@FXML
 	private TableView tblEjeshabilidades;
-	@FXML
-	private TableView tblEvaluacion;
 	@FXML
 	private ComboBox<Colegio> cmbColegios;
 	@FXML
@@ -93,12 +93,9 @@ public class ComparativoColegioEjeHabilidadxCursoView extends AFormView
 		if (source == mnuExportarAlumnos || source == mnuExportarGeneral) {
 
 			tblEjeshabilidades.setId("Comparativo Ejes y Habilidades");
-			tblEvaluacion.setId("Rango de Evaluaciones");
 			//
 			List<TableView<? extends Object>> listaTablas = new ArrayList<>();
 			listaTablas.add((TableView<? extends Object>) tblEjeshabilidades);
-			listaTablas.add((TableView<? extends Object>) tblEvaluacion);
-			ExcelSheetWriterObj.convertirDatosALibroDeExcel(listaTablas);
 		}
 	}
 
@@ -220,20 +217,7 @@ public class ComparativoColegioEjeHabilidadxCursoView extends AFormView
 		});
 		tblEjeshabilidades.getColumns().add(tc);
 
-		tc = new TableColumn("EVALUACION");
-		tc.setStyle("-fx-alignment: CENTER-LEFT;");
-		tc.prefWidthProperty().set(250f);
-		tc.setSortable(false);
-		tc.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
-			public ObservableValue<String> call(
-					CellDataFeatures<ObservableList, String> param) {
-				return new SimpleStringProperty(param.getValue().get(0)
-						.toString());
-			}
-		});
-		tblEvaluacion.getColumns().add(tc);
-
-		int indice = 1;
+				int indice = 1;
 		for (Curso curso : pCursoList) {
 			final int idx = indice;
 			tc = new TableColumn(curso.getName());
@@ -248,21 +232,156 @@ public class ComparativoColegioEjeHabilidadxCursoView extends AFormView
 				}
 			});
 			tblEjeshabilidades.getColumns().add(tc);
-
-			tc = new TableColumn(curso.getName());
-			tc.prefWidthProperty().set(50f);
-			tc.setStyle("-fx-alignment: CENTER;");
-			tc.setSortable(false);
-			tc.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
-				public ObservableValue<String> call(
-						CellDataFeatures<ObservableList, String> param) {
-					return new SimpleStringProperty(param.getValue().get(idx)
-							.toString());
-				}
-			});
-			tblEvaluacion.getColumns().add(tc);
+			
 			indice++;
 		}
+	}
+
+	private List<OTUnCursoUnEjeHabilidad> evaluarUnCurso(
+			List<RespuestasEsperadasPrueba> respEsperadas,
+			EvaluacionPrueba evaluacion) {
+		List<OTUnCursoUnEjeHabilidad> listaOTUnCurso = new ArrayList<OTUnCursoUnEjeHabilidad>();
+		// Cada prueba rendida equivale a un ALUMNO DEL CURSO
+		int nAlumno = 0;
+		for (PruebaRendida pRendida : evaluacion.getPruebasRendidas()) {
+			evaluarUnAlumno(pRendida, respEsperadas, nAlumno, listaOTUnCurso);
+			nAlumno++; // Siguiente alumno.
+		}
+		return listaOTUnCurso;
+	}
+
+	private List<OTUnCursoUnEjeHabilidad> evaluarUnAlumno(
+			PruebaRendida pRendida,
+			List<RespuestasEsperadasPrueba> respEsperadas, int nAlumno,
+			List<OTUnCursoUnEjeHabilidad> listaOTUnCurso) {
+		String respuestas = pRendida.getRespuestas();
+		int nResp = 0;
+		int nroAlumnos = pRendida.getEvaluacionPrueba().getPruebasRendidas()
+				.size();
+
+		for (RespuestasEsperadasPrueba resp : respEsperadas) {
+
+			OTUnCursoUnEjeHabilidad otEje = new OTUnCursoUnEjeHabilidad(
+					resp.getEjeTematico(), nroAlumnos);
+			OTUnCursoUnEjeHabilidad otHab = new OTUnCursoUnEjeHabilidad(
+					resp.getHabilidad(), nroAlumnos);
+
+			if (listaOTUnCurso.contains(otEje)) {
+				// Me aseguro que es el que existe
+				otEje = listaOTUnCurso.get(listaOTUnCurso.indexOf(otEje));
+			} else {
+				// Lo agrego a la lista.
+				listaOTUnCurso.add(otEje);
+			}
+			if (listaOTUnCurso.contains(otHab)) {
+				// Me aseguro que es el que existe
+				otHab = listaOTUnCurso.get(listaOTUnCurso.indexOf(otHab));
+			} else {
+				// Lo agrego a la lista.
+				listaOTUnCurso.add(otHab);
+			}
+
+			if (nAlumno == 0) {
+				// Contamos las preguntas para eje/habilidad solo en el
+				// primer alumno.
+				otEje.setNroPreguntas(otEje.getNroPreguntas() + 1);
+				otHab.setNroPreguntas(otHab.getNroPreguntas() + 1);
+			}
+
+			if (respuestas.length() <= nResp) {
+				// No hay más respuesta
+				break;
+			}
+			String r = respuestas.substring(nResp, nResp + 1);
+
+			if (resp.getAnulada() || "O".equals(r) || "-".equals(r)) {
+				// La respuesta no se considera
+				nResp++;
+				continue;
+			}
+
+			// Aqui agrego 1 a las buenas del eje y de la habilidad del
+			// alumno n.
+			if (resp.getRespuesta().equals(r)) {
+				float buenasEje = otEje.getBuenasPorAlumno()[nAlumno];
+				otEje.getBuenasPorAlumno()[nAlumno] = buenasEje + 1;
+				float buenasHab = otHab.getBuenasPorAlumno()[nAlumno];
+				otHab.getBuenasPorAlumno()[nAlumno] = buenasHab + 1;
+			}
+			nResp++; // Siguiente respuesta
+		}
+		return listaOTUnCurso;
+	}
+
+	private Map<IEntity, List<OTCursoRangos>> makeMapReporte(int nroCursos) {
+		Map<IEntity, List<OTCursoRangos>> reporte = new HashMap<IEntity, List<OTCursoRangos>>();
+
+		for (EvaluacionPrueba evaluacion : listaEvaluacionesPrueba) {
+
+			List<RespuestasEsperadasPrueba> rEsperadas = evaluacion.getPrueba()
+					.getRespuestas();
+
+			// Obtengo lista de habilidades de la PRUEBA base de la EVALUACION.
+			for (RespuestasEsperadasPrueba rEsperada : rEsperadas) {
+				if (!reporte.containsKey(rEsperada.getHabilidad())) {
+					List<OTCursoRangos> list = Stream
+							.generate(OTCursoRangos::new).limit(nroCursos)
+							.collect(Collectors.toList());
+
+					reporte.put(rEsperada.getHabilidad(), list);
+				}
+				if (!reporte.containsKey(rEsperada.getEjeTematico())) {
+					List<OTCursoRangos> list = Stream
+							.generate(OTCursoRangos::new).limit(nroCursos)
+							.collect(Collectors.toList());
+					reporte.put(rEsperada.getEjeTematico(), list);
+				}
+			}
+		}
+
+		return reporte;
+	}
+
+	private List<Habilidad> makeListHabilidades() {
+
+		List<Habilidad> listaHablidades = new ArrayList<Habilidad>();
+		// Una evaluacion corresponde al conjunto de pruebas de un CURSO de un
+		// COLEGIO de una ASIGNATURA.
+		for (EvaluacionPrueba evaluacion : listaEvaluacionesPrueba) {
+
+			List<RespuestasEsperadasPrueba> rEsperadas = evaluacion.getPrueba()
+					.getRespuestas();
+
+			// Obtengo lista de habilidades de la PRUEBA base de la EVALUACION.
+			for (RespuestasEsperadasPrueba rEsperada : rEsperadas) {
+
+				if (!listaHablidades.contains(rEsperada.getHabilidad())) {
+					listaHablidades.add(rEsperada.getHabilidad());
+				}
+			}
+		}
+		return listaHablidades;
+	}
+
+	private List<EjeTematico> makeListEjesTematicos() {
+		List<EjeTematico> listaEjesTematicos = new ArrayList<EjeTematico>();
+		// Una evaluacion corresponde al conjunto de pruebas de un CURSO de un
+		// COLEGIO de una ASIGNATURA.
+		for (EvaluacionPrueba evaluacion : listaEvaluacionesPrueba) {
+
+			List<RespuestasEsperadasPrueba> rEsperadas = evaluacion.getPrueba()
+					.getRespuestas();
+
+			// Obtengo lista de ejes de la PRUEBA base de la EVALUACION.
+			for (RespuestasEsperadasPrueba rEsperada : rEsperadas) {
+
+				if (!listaEjesTematicos.contains(rEsperada.getEjeTematico())) {
+					listaEjesTematicos.add(rEsperada.getEjeTematico());
+				}
+			}
+		}
+		return listaEjesTematicos;
+
 	}
 
 	/**
@@ -280,35 +399,9 @@ public class ComparativoColegioEjeHabilidadxCursoView extends AFormView
 		// Una iteracion por cada curso asociado al colegio con una evaluacion
 		int nroCursos = listaEvaluacionesPrueba.size();
 
-		List<OTCursoRangos> listaCursosConRangos = new ArrayList<OTCursoRangos>();
-		List<EjeTematico> listaEjesTematicos = new ArrayList<EjeTematico>();
-		List<Habilidad> listaHablidades = new ArrayList<Habilidad>();
-
-		Map<IEntity, List<OTCursoRangos>> reporte = new HashMap<IEntity, List<OTCursoRangos>>();
-
-		// Una evaluacion corresponde al conjunto de pruebas de un CURSO de un
-		// COLEGIO de una ASIGNATURA.
-		for (EvaluacionPrueba evaluacion : listaEvaluacionesPrueba) {
-
-			List<RespuestasEsperadasPrueba> rEsperadas = evaluacion.getPrueba()
-					.getRespuestas();
-
-			// Obtengo lista de ejes y habilidades de la PRUEBA base de la
-			// EVALUACION.
-			for (RespuestasEsperadasPrueba rEsperada : rEsperadas) {
-
-				if (!listaEjesTematicos.contains(rEsperada.getEjeTematico())) {
-					listaEjesTematicos.add(rEsperada.getEjeTematico());
-					reporte.put(rEsperada.getEjeTematico(),
-							new ArrayList<OTCursoRangos>(nroCursos));
-				}
-				if (!listaHablidades.contains(rEsperada.getHabilidad())) {
-					listaHablidades.add(rEsperada.getHabilidad());
-					reporte.put(rEsperada.getHabilidad(),
-							new ArrayList<OTCursoRangos>(nroCursos));
-				}
-			}
-		}
+		List<EjeTematico> listaEjesTematicos = makeListEjesTematicos();
+		List<Habilidad> listaHablidades = makeListHabilidades();
+		Map<IEntity, List<OTCursoRangos>> reporte = makeMapReporte(nroCursos);
 
 		// Va a tener los resulados finales
 		int nroCurso = 0;
@@ -317,82 +410,33 @@ public class ComparativoColegioEjeHabilidadxCursoView extends AFormView
 			List<RespuestasEsperadasPrueba> respEsperadas = evaluacion
 					.getPrueba().getRespuestas();
 
-			int nroAlumnos = evaluacion.getPruebasRendidas().size();
-			List<OTUnCursoUnEjeHabilidad> listaOTUnCurso = new ArrayList<OTUnCursoUnEjeHabilidad>();
-			// Cada prueba rendida equivale a un ALUMNO DEL CURSO
-			int nAlumno = 0;
-			for (PruebaRendida pRendida : evaluacion.getPruebasRendidas()) {
-				String respuestas = pRendida.getRespuestas();
-				int nResp = 0;
-				for (RespuestasEsperadasPrueba resp : respEsperadas) {
+			List<OTUnCursoUnEjeHabilidad> listaOTUnCurso = evaluarUnCurso(
+					respEsperadas, evaluacion);
 
-					OTUnCursoUnEjeHabilidad otEje = new OTUnCursoUnEjeHabilidad(
-							resp.getEjeTematico(), nroAlumnos);
-					if (listaOTUnCurso.contains(otEje)) {
-						// Me aseguro que es el que existe
-						otEje = listaOTUnCurso.get(listaOTUnCurso
-								.indexOf(otEje));
-					} else {
-						// Lo agrego a la lista.
-						listaOTUnCurso.add(otEje);
-					}
-
-					OTUnCursoUnEjeHabilidad otHab = new OTUnCursoUnEjeHabilidad(
-							resp.getHabilidad(), nroAlumnos);
-					if (listaOTUnCurso.contains(otHab)) {
-						// Me aseguro que es el que existe
-						otHab = listaOTUnCurso.get(listaOTUnCurso
-								.indexOf(otHab));
-					} else {
-						// Lo agrego a la lista.
-						listaOTUnCurso.add(otHab);
-					}
-					if (nAlumno == 0) { 
-						// Contamos las preguntas para eje/habilidad solo en el primer alumno.
-						otEje.setNroPreguntas(otEje.getNroPreguntas() + 1);
-						otHab.setNroPreguntas(otHab.getNroPreguntas() + 1);
-					}
-
-					if (respuestas.length() < nResp) {
-						// No hay más respuesta
-						break;
-					}
-					String r = respuestas.substring(nResp, nResp + 1);
-
-					if (resp.getAnulada() || "O".equals(r) || "-".equals(r)) {
-						// La respuesta no se considera
-						nResp++;
-						continue;
-					}
-
-					// Aqui agrego 1 a las buenas del eje y de la habilidad del
-					// alumno n.
-					if (resp.getRespuesta().equals(r)) {
-						float buenasEje = otEje.getBuenasPorAlumno()[nAlumno];
-						otEje.getBuenasPorAlumno()[nAlumno] = buenasEje + 1;
-						float buenasHab = otHab.getBuenasPorAlumno()[nAlumno];
-						otHab.getBuenasPorAlumno()[nAlumno] = buenasHab + 1;
-					}
-					nResp++; // Siguiente respuesta
-				}
-				nAlumno++; // Siguiente alumno.
-			}
 			// Aqui cuento la cantida de alumnos en los rangos
-			for(OTUnCursoUnEjeHabilidad ot: listaOTUnCurso)
-			{
-				//Calcula cantidad de alumnos en los rangos para un eje y un curso
-				int[] alumXRango = ot.calculateAlumnosXRango(rangosEvaluacionPorcentaje);
-				OTCursoRangos cursoRango = new OTCursoRangos(evaluacion.getCurso(), alumXRango);
-				List<OTCursoRangos> listOTs = reporte.get(ot.getEjeHabilidad());
-				listOTs.set(nroCurso, cursoRango);
-				
+			for (OTUnCursoUnEjeHabilidad ot : listaOTUnCurso) {
+				// Calcula cantidad de alumnos en los rangos para un eje y un
+				// curso
+				int[] alumXRango = ot
+						.calculateAlumnosXRango(rangosEvaluacionPorcentaje);
+				OTCursoRangos cursoRango = new OTCursoRangos(
+						evaluacion.getCurso(), alumXRango);
+				List<OTCursoRangos> listCursos = reporte.get(ot
+						.getEjeHabilidad());
+				listCursos.set(nroCurso, cursoRango); // Establesco el la
+														// cantidad de alumnos
+														// en un porcentaje para
+														// el curso
 			}
+
 			nroCurso++;
 			// Aqui va la siguiente evaluacion (CURSO)
+
 		}
-		
+
 		// Tengo todos los resultados en el map (reporte)
-		//Ahora debo generar la tabla.
+		// Ahora debo generar la tabla.
+
 	}
 
 	private void generarTablaEvaluaciones(
@@ -437,142 +481,11 @@ public class ComparativoColegioEjeHabilidadxCursoView extends AFormView
 		}
 		items.add(row);
 
-		tblEvaluacion.setItems(items);
-	}
-
-	/**
-	 * Se genera la tabal que contiene los % de logro por cada eje y por cada
-	 * habilidad asociado a cada curso.
-	 * 
-	 * @param mapEjes
-	 *            Mapa que contiene los valores para cada curso de los ejes.
-	 * @param mapHabilidades
-	 *            Mapa que contiene los valores para cada curso de las
-	 *            habilidades.
-	 */
-	private void generarTablaEjesHabilidades(
-			Map<EjeTematico, List<OTPreguntasEjes>> mapEjes,
-			Map<Habilidad, List<OTPreguntasHabilidad>> mapHabilidades) {
-		ObservableList<String> row = null;
-		ObservableList<ObservableList<String>> items = FXCollections
-				.observableArrayList();
-		int nroCols = 0;
-		for (EjeTematico eje : mapEjes.keySet()) {
-			row = FXCollections.observableArrayList();
-			List<OTPreguntasEjes> lst = mapEjes.get(eje);
-			nroCols = lst.size();
-			row.add(eje.getName());
-			for (OTPreguntasEjes ot : lst) {
-				if (ot != null && ot.getBuenas() != null
-						&& ot.getTotal() != null && ot.getTotal() != 0F) {
-					float porcentaje = ot.getBuenas().floatValue()
-							/ ot.getTotal().floatValue() * 100f;
-					row.add(String.valueOf(Utils.redondeo1Decimal(porcentaje)));
-				} else {
-					row.add(" ");
-				}
-			}
-			items.add(row);
-		}
-		row = FXCollections.observableArrayList();
-		for (int m = 0; m <= nroCols; m++) {
-			row.add(" ");
-		}
-		items.add(row);
-
-		for (Habilidad hab : mapHabilidades.keySet()) {
-			row = FXCollections.observableArrayList();
-			List<OTPreguntasHabilidad> lst = mapHabilidades.get(hab);
-			row.add(hab.getName());
-			for (OTPreguntasHabilidad ot : lst) {
-				if (ot != null && ot.getBuenas() != null
-						&& ot.getTotal() != null && ot.getTotal() != 0F) {
-					float porcentaje = ot.getBuenas().floatValue()
-							/ ot.getTotal().floatValue() * 100f;
-					row.add(String.valueOf(Utils.redondeo1Decimal(porcentaje)));
-				} else {
-					row.add(" ");
-				}
-			}
-			items.add(row);
-		}
-
-		tblEjeshabilidades.setItems(items);
-
-	}
-
-	/**
-	 * Este metodo evalua la cantidad de buenas de un String de respuesta
-	 * contrastado contra las respuestas esperadas.
-	 * 
-	 * @param respuestas
-	 *            Las respuestas del alumno.
-	 * @param respEsperadas
-	 *            Las respuestas correctas definidas en la prueba.
-	 * @param ahb
-	 *            La Habilidad en base al que se realiza el calculo.
-	 * @return Par <Preguntas buenas, Total de Preguntas> del eje.
-	 */
-	private Pair<Integer, Integer> obtenerBuenasTotales(String respuestas,
-			List<RespuestasEsperadasPrueba> respEsperadas, Habilidad hab) {
-		int nroBuenas = 0;
-		int nroPreguntas = 0;
-		for (int n = 0; n < respEsperadas.size(); n++) {
-			RespuestasEsperadasPrueba resp = respEsperadas.get(n);
-			if (!resp.isAnulada()) {
-				if (resp.getHabilidad().equals(hab)) {
-					if (respuestas.length() > n) {
-						String sResp = respuestas.substring(n, n + 1);
-						if ("+".equals(sResp)
-								|| resp.getRespuesta().equalsIgnoreCase(sResp)) {
-							nroBuenas++;
-						}
-					}
-					nroPreguntas++;
-				}
-			}
-		}
-		return new Pair<Integer, Integer>(nroBuenas, nroPreguntas);
-	}
-
-	/**
-	 * Este metodo evalua la cantidad de buenas de un String de respuesta
-	 * contrastado contra las respuestas eperadas.
-	 * 
-	 * @param respuestas
-	 *            Las respuestas del alumno.
-	 * @param respEsperadas
-	 *            Las respuestas correctas definidas en la prueba.
-	 * @param eje
-	 *            El Eje tematico en base al que se realiza el calculo.
-	 * @return Par <Preguntas buenas, Total de Preguntas> del eje.
-	 */
-	private Pair<Integer, Integer> obtenerBuenasTotales(String respuestas,
-			List<RespuestasEsperadasPrueba> respEsperadas, EjeTematico eje) {
-		int nroBuenas = 0;
-		int nroPreguntas = 0;
-		for (int n = 0; n < respEsperadas.size(); n++) {
-			RespuestasEsperadasPrueba resp = respEsperadas.get(n);
-			if (!resp.isAnulada()) {
-				if (resp.getEjeTematico().equals(eje)) {
-					if (respuestas.length() > n) {
-						String sResp = respuestas.substring(n, n + 1);
-						if ("+".equals(sResp)
-								|| resp.getRespuesta().equalsIgnoreCase(sResp)) {
-							nroBuenas++;
-						}
-					}
-					nroPreguntas++;
-				}
-			}
-		}
-		return new Pair<Integer, Integer>(nroBuenas, nroPreguntas);
 	}
 
 	private void clearContent() {
 		tblEjeshabilidades.getItems().clear();
-		tblEvaluacion.getItems().clear();
 		tblEjeshabilidades.getColumns().clear();
-		tblEvaluacion.getColumns().clear();
 	}
+
 }
