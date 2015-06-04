@@ -217,10 +217,8 @@ public class ResumenColegioXAlumnoEjeHabilidadView extends AFormView implements
 						Platform.runLater(r);
 
 						lst.add(curso);
-					}
-					else
-					{
-						log.severe(eval.getName() +  " Sin curso");
+					} else {
+						log.severe(eval.getName() + " Sin curso");
 					}
 				}
 				return lst;
