@@ -8,6 +8,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import javafx.collections.ObservableList;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TreeTableColumn;
@@ -116,29 +117,26 @@ public final class ExcelSheetWriterObj {
 	 */
 	private static void crearLibroConDatosDeTabla(
 			final TableView<? extends Object> tabla, Workbook wbook) {
-		final Workbook workbook = wbook;
-		crearDatosHeader(tabla, workbook);
-		crearDatosTabla(tabla, workbook);
+		crearDatosHeader(tabla, wbook);
+		crearDatosTabla(tabla, wbook);
 	}
 
 	private static void crearLibroConDatosDeTablaColumnasDobles(
 			final TableView<? extends Object> tabla, Workbook wbook) {
-		final Workbook workbook = wbook;
-		crearDatosHeaderColumnasDobles(tabla, workbook);
-		crearDatosTablaColumnasDobles(tabla, workbook);
+		crearDatosHeaderColumnasDobles(tabla, wbook);
+		crearDatosTablaColumnasDobles(tabla, wbook);
 	}
 
 	private static void crearLibroConDatosDeTabla(
 			final TreeTableView<? extends Object> tabla, Workbook wbook) {
-		final Workbook workbook = wbook;
-		crearDatosHeader(tabla, workbook);
-		crearDatosTabla(tabla, workbook);
+		crearDatosHeader(tabla, wbook);
+		crearDatosTabla(tabla, wbook);
 	}
 
 	private static void crearDatosHeader(TableView<? extends Object> tabla,
 			Workbook wbook) {
-
-		final Sheet sheet1 = wbook.createSheet(tabla.getId());
+		String id = tabla.getId();
+		final Sheet sheet1 = wbook.createSheet(id);
 		final CellStyle style = wbook.createCellStyle();
 
 		style.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
@@ -156,20 +154,15 @@ public final class ExcelSheetWriterObj {
 	private static void crearDatosHeaderColumnasDobles(
 			TableView<? extends Object> tabla, Workbook wbook) {
 
-		final Sheet sheet1 = wbook.createSheet(tabla.getId());
+		String id = tabla.getId();
+		final Sheet sheet1 = wbook.createSheet(id);
+		System.out.println("# Sheets=" + wbook.getNumberOfSheets()  + " del wb=" + wbook  + " de la hoja:" + sheet1);
 		final HSSFCellStyle  style = (HSSFCellStyle) wbook.createCellStyle();
 		
-//		Font font = wbook.createFont();
-//		font.setFontHeightInPoints((short) 13);
-//		font.setFontName("Courier New");
-//		font.setBoldweight((short) 2);
-//		style.setFont(font);
 		style.setAlignment(CellStyle.ALIGN_CENTER);
 		style.setAlignment(CellStyle.VERTICAL_CENTER);
 		style.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
 		style.setFillPattern(CellStyle.SOLID_FOREGROUND);
-
-		
 
 		final Row filaTitulo = sheet1.createRow(0);
 		final Row filaSubtitulo = sheet1.createRow(1);
@@ -213,7 +206,9 @@ public final class ExcelSheetWriterObj {
 	private static void crearDatosHeader(TreeTableView<? extends Object> tabla,
 			Workbook wbook) {
 
-		final Sheet sheet1 = wbook.createSheet(tabla.getId());
+		String id = tabla.getId();
+		final Sheet sheet1 = wbook.createSheet(id);
+		
 		final CellStyle style = wbook.createCellStyle();
 
 		style.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
@@ -239,8 +234,8 @@ public final class ExcelSheetWriterObj {
 	 */
 	private static void crearDatosTabla(TableView<? extends Object> tabla,
 			final Workbook wbook) {
-		final Workbook workbook = wbook;
-		final Sheet sheet1 = workbook.getSheet(tabla.getId());
+		String id = tabla.getId();
+		final Sheet sheet1 = wbook.getSheet(id);
 
 		for (int indiceFila = 0; indiceFila < tabla.getItems().size(); indiceFila++) {
 			final Row fila = sheet1.createRow(indiceFila + 1);
@@ -249,9 +244,9 @@ public final class ExcelSheetWriterObj {
 	}
 
 	private static void crearDatosTablaColumnasDobles(
-			TableView<? extends Object> tabla, final Workbook wbook) {
-		final Workbook workbook = wbook;
-		final Sheet sheet1 = workbook.getSheet(tabla.getId());
+			TableView<? extends Object> tabla, Workbook wbook) {
+		String id = tabla.getId();
+		final Sheet sheet1 = wbook.getSheet(id);
 
 		for (int indiceFila = 0; indiceFila < tabla.getItems().size(); indiceFila++) {
 			final Row fila = sheet1.createRow(indiceFila + 2);
@@ -270,8 +265,7 @@ public final class ExcelSheetWriterObj {
 	 */
 	private static void crearDatosTabla(TreeTableView<? extends Object> tabla,
 			final Workbook wbook) {
-		final Workbook workbook = wbook;
-		final Sheet sheet1 = workbook.getSheet(tabla.getId());
+		final Sheet sheet1 = wbook.getSheet(tabla.getId());
 
 		int indiceFila = 0;
 		while (tabla.getTreeItem(indiceFila) != null) {
@@ -429,6 +423,58 @@ public final class ExcelSheetWriterObj {
 
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public static void generarReporteComparativoColegioEjeHabilidadCurso(final TableView<? extends Object> tabla) {
+		
+		final Workbook wbook = new HSSFWorkbook();
+		final CellStyle style = wbook.createCellStyle();
+		style.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
+		style.setFillPattern(CellStyle.SOLID_FOREGROUND);
+
+		
+		final Sheet sheet = wbook.createSheet(tabla.getId());
+		
+		
+		
+		final Row heder = sheet.createRow(0);
+		
+			
+			cell.setCellValue(tabla.getColumns().get(indice).getText());
+			cell.setCellStyle(style);
+		}
+		
+		for(TableColumn tc: tabla.getColumns())
+		{
+			
+			System.out.println(tc.getText() );
+			if(tc.getColumns() != null &&  !tc.getColumns().isEmpty())
+			{
+				for(Object tic:tc.getColumns())
+				{
+					System.out.println(((TableColumn)tic).getText() );
+				}
+			}
+			else
+			{
+				final Cell cell = filaCabecera.createCell(indice);
+			}
+			
+		}
+		
+		ObservableList<? extends Object> list = tabla.getItems();
+		for(Object row: list)
+		{
+			ObservableList<String> itemsRow = (ObservableList<String>) row;
+			for(String cell: itemsRow)
+			{
+				System.out.print(cell + " ");
+			}
+			System.out.println(" ");
+		}
+		
+	}
+	
+	
 	/**
 	 * Metodo que permite desplegar el documento de excel creado.
 	 * 

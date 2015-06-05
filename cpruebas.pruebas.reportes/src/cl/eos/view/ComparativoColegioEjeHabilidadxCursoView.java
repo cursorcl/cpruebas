@@ -1,17 +1,20 @@
 package cl.eos.view;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -28,7 +31,6 @@ import org.controlsfx.dialog.Dialogs;
 
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
-import cl.eos.ot.OTPreguntasEvaluacion;
 import cl.eos.persistence.models.Asignatura;
 import cl.eos.persistence.models.Colegio;
 import cl.eos.persistence.models.Curso;
@@ -39,6 +41,8 @@ import cl.eos.persistence.models.Habilidad;
 import cl.eos.persistence.models.PruebaRendida;
 import cl.eos.persistence.models.RespuestasEsperadasPrueba;
 import cl.eos.persistence.util.Comparadores;
+import cl.eos.util.ExcelSheetWriterObj;
+import cl.eos.util.Pair;
 
 public class ComparativoColegioEjeHabilidadxCursoView extends AFormView
 		implements EventHandler<ActionEvent> {
@@ -64,7 +68,6 @@ public class ComparativoColegioEjeHabilidadxCursoView extends AFormView
 	private ObservableList<Curso> listaCursos;
 	private ObservableList<EvaluacionEjeTematico> rangosEvaluacionPorcentaje;
 	private ObservableList<EvaluacionPrueba> listaEvaluacionesPrueba;
-	private ArrayList<OTPreguntasEvaluacion> lst;
 
 	public ComparativoColegioEjeHabilidadxCursoView() {
 		setTitle("Comparativo Colegio Ejes Temáticos y Habilidades");
@@ -84,11 +87,7 @@ public class ComparativoColegioEjeHabilidadxCursoView extends AFormView
 		}
 
 		if (source == mnuExportarAlumnos) {
-
-			tblEjeshabilidades.setId("Comparativo Ejes y Habilidades");
-			//
-			List<TableView<? extends Object>> listaTablas = new ArrayList<>();
-			listaTablas.add((TableView<? extends Object>) tblEjeshabilidades);
+			ExcelSheetWriterObj.generarReporteComparativoColegioEjeHabilidadCurso(tblEjeshabilidades);
 		}
 	}
 
@@ -169,7 +168,7 @@ public class ComparativoColegioEjeHabilidadxCursoView extends AFormView
 					EvaluacionEjeTematico evaluacion = (EvaluacionEjeTematico) object;
 					rangosEvaluacionPorcentaje.add(evaluacion);
 				}
-				generarReporte();
+				tareaGenerarReporte();
 			}
 			if (entity instanceof EvaluacionPrueba) {
 				listaEvaluacionesPrueba = FXCollections.observableArrayList();
@@ -177,55 +176,13 @@ public class ComparativoColegioEjeHabilidadxCursoView extends AFormView
 					EvaluacionPrueba evaluacion = (EvaluacionPrueba) object;
 					listaEvaluacionesPrueba.add(evaluacion);
 				}
-				generarReporte();
+				tareaGenerarReporte();
 			}
 		} else if (list != null && list.isEmpty()) {
 			Dialogs.create().owner(null).title("No hay registros.")
 					.masthead(null)
 					.message("No se ha encontrado registros para la consulta.")
 					.showInformation();
-		}
-	}
-
-	/**
-	 * Este metodo coloca las columnas a las dos tablas de la HMI. Coloca los
-	 * cursos que estan asociados al colegio, independiente que tenga o no
-	 * evaluaciones.
-	 * 
-	 * @param pCursoList
-	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private void llenarColumnas(ObservableList<Curso> pCursoList) {
-		TableColumn tc = new TableColumn("EJE / HABILIDAD");
-		tc.setSortable(false);
-		tc.setStyle("-fx-alignment: CENTER-LEFT;");
-		tc.prefWidthProperty().set(250f);
-		tc.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
-			public ObservableValue<String> call(
-					CellDataFeatures<ObservableList, String> param) {
-				return new SimpleStringProperty(param.getValue().get(0)
-						.toString());
-			}
-		});
-		tblEjeshabilidades.getColumns().add(tc);
-
-		int indice = 1;
-		for (Curso curso : pCursoList) {
-			final int idx = indice;
-			tc = new TableColumn(curso.getName());
-			tc.prefWidthProperty().set(50f);
-			tc.setStyle("-fx-alignment: CENTER;");
-			tc.setSortable(false);
-			tc.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
-				public ObservableValue<String> call(
-						CellDataFeatures<ObservableList, String> param) {
-					return new SimpleStringProperty(param.getValue().get(idx)
-							.toString());
-				}
-			});
-			tblEjeshabilidades.getColumns().add(tc);
-
-			indice++;
 		}
 	}
 
@@ -242,7 +199,18 @@ public class ComparativoColegioEjeHabilidadxCursoView extends AFormView
 						.toString());
 			}
 		});
-		tblEjeshabilidades.getColumns().add(tc);
+		
+		Runnable r = new Runnable()
+		{
+			@Override
+			public void run() {
+				tblEjeshabilidades.getColumns().add(tc);
+			}
+			
+		};
+		Platform.runLater(r);
+		
+		
 		List<Curso> mCursos = new ArrayList<Curso>();
 		for (EvaluacionPrueba evPrueba : listaEvaluacionesPrueba) {
 			mCursos.add(evPrueba.getCurso());
@@ -250,7 +218,7 @@ public class ComparativoColegioEjeHabilidadxCursoView extends AFormView
 		// Ordenar los cursos
 		int nCol = 1;
 		for (Curso curso : mCursos) {
-			
+
 			TableColumn colCurso = new TableColumn(curso.getName());
 			for (EvaluacionEjeTematico evEjeHab : rangosEvaluacionPorcentaje) {
 				final int idx = nCol;
@@ -269,8 +237,17 @@ public class ComparativoColegioEjeHabilidadxCursoView extends AFormView
 				colCurso.getColumns().add(colEjeHab);
 				nCol++;
 			}
-			
-			tblEjeshabilidades.getColumns().add(colCurso);
+
+			r = new Runnable()
+			{
+
+				@Override
+				public void run() {
+					tblEjeshabilidades.getColumns().add(colCurso);
+				}
+				
+			};
+			Platform.runLater(r);
 		}
 	}
 
@@ -284,10 +261,7 @@ public class ComparativoColegioEjeHabilidadxCursoView extends AFormView
 		ObservableList<String> registro = null;
 		ObservableList<ObservableList<String>> items = FXCollections
 				.observableArrayList();
-		// Collections.sort(rangosEvaluacionPorcentaje,
-		// Comparadores.comparaEvaluacionEjeTematico());
 
-		int nroCols = (tblEjeshabilidades.getColumns().size() - 1) * 3 + 1;
 		for (IEntity entity : entidades) {
 			registro = FXCollections.observableArrayList();
 			registro.add(entity.getName());
@@ -308,8 +282,18 @@ public class ComparativoColegioEjeHabilidadxCursoView extends AFormView
 			}
 			items.add(registro);
 		}
-		tblEjeshabilidades.getItems().setAll(items);
+		
 
+		Runnable r = new Runnable()
+		{
+			@SuppressWarnings("unchecked")
+			@Override
+			public void run() {
+				tblEjeshabilidades.getItems().setAll(items);
+			}
+			
+		};
+		Platform.runLater(r);
 	}
 
 	private List<OTUnCursoUnEjeHabilidad> evaluarUnCurso(
@@ -459,23 +443,58 @@ public class ComparativoColegioEjeHabilidadxCursoView extends AFormView
 
 	}
 
-	/**
-	 * Para ontener el resultado final se siguen los sieguientes pasos: <lu> <li>
-	 * Obtener resumen de preguntas buenas de cada Eje/Hab x Alumno. </lu>
-	 */
-	private void generarReporte() {
-
+	private void tareaGenerarReporte() {
+		
 		if (listaEvaluacionesPrueba == null
 				|| rangosEvaluacionPorcentaje == null) {
 			// No hay valores para procesar todo.
 			return;
 		}
+		Task<Boolean> task = new Task<Boolean>() {
+			@Override
+			protected Boolean call() throws Exception {
+				updateMessage("Generando reporte");
+				Pair<Map<IEntity, List<OTCursoRangos>>, Pair<List<EjeTematico>, List<Habilidad>>> resultado = generarReporte(); 
+				Map<IEntity, List<OTCursoRangos>> reporte = resultado.getFirst();
+				List<EjeTematico> listaEjesTematicos = resultado.getSecond().getFirst();
+				List<Habilidad> listaHablidades = resultado.getSecond().getSecond();
+				updateMessage("Construyendo tabla");
+				makeTable();
+				updateMessage("Llenando valores en tabla");
+				fillColumnEjeHabilidad(listaEjesTematicos, listaHablidades,reporte);
+				return Boolean.TRUE;
+			}
+		};
+		task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+			@Override
+			public void handle(WorkerStateEvent event) {
+			}
+		});
+		task.setOnFailed(new EventHandler<WorkerStateEvent>() {
+
+			@Override
+			public void handle(WorkerStateEvent event) {
+			}
+		});
+		final Dialogs dlg = Dialogs.create();
+		dlg.title("Generando reporte");
+		dlg.masthead(null);
+		dlg.message("Esto tomará algunos segundos.");
+		dlg.showWorkerProgress(task);
+		Executors.newSingleThreadExecutor().execute(task);
+	}
+
+	/**
+	 * Para ontener el resultado final se siguen los sieguientes pasos: <lu> <li>
+	 * Obtener resumen de preguntas buenas de cada Eje/Hab x Alumno. </lu>
+	 */
+	private Pair<Map<IEntity, List<OTCursoRangos>>, Pair<List<EjeTematico>, List<Habilidad>>> generarReporte() {
 
 		// Una iteracion por cada curso asociado al colegio con una evaluacion
 		int nroCursos = listaEvaluacionesPrueba.size();
 
 		List<EjeTematico> listaEjesTematicos = makeListEjesTematicos();
-		List<Habilidad> listaHablidades = makeListHabilidades();
+		 List<Habilidad> listaHablidades = makeListHabilidades();
 		Map<IEntity, List<OTCursoRangos>> reporte = makeMapReporte(nroCursos);
 
 		// Va a tener los resulados finales
@@ -508,56 +527,10 @@ public class ComparativoColegioEjeHabilidadxCursoView extends AFormView
 			// Aqui va la siguiente evaluacion (CURSO)
 
 		}
-
 		// Tengo todos los resultados en el map (reporte)
 		// Ahora debo generar la tabla.
-		makeTable();
-		fillColumnEjeHabilidad(listaEjesTematicos, listaHablidades, reporte);
-
-	}
-
-	private void generarTablaEvaluaciones(
-			Map<EvaluacionEjeTematico, List<OTPreguntasEvaluacion>> mapEvaluaciones,
-			int[] totalAlumnos, int[] alumnosEvaluados) {
-		ObservableList<String> row = null;
-		ObservableList<ObservableList<String>> items = FXCollections
-				.observableArrayList();
-		Collections.sort(rangosEvaluacionPorcentaje,
-				Comparadores.comparaEvaluacionEjeTematico());
-
-		for (EvaluacionEjeTematico eval : rangosEvaluacionPorcentaje) {
-			row = FXCollections.observableArrayList();
-			List<OTPreguntasEvaluacion> lst = mapEvaluaciones.get(eval);
-			row.add(eval.getName());
-			for (OTPreguntasEvaluacion ot : lst) {
-				if (ot != null && ot.getAlumnos() != null) {
-					row.add(String.valueOf(ot.getAlumnos()));
-				} else {
-					row.add(" ");
-				}
-			}
-			items.add(row);
-		}
-		row = FXCollections.observableArrayList();
-		for (int m = 0; m <= alumnosEvaluados.length; m++) {
-			row.add(" ");
-		}
-		items.add(row);
-
-		row = FXCollections.observableArrayList();
-		row.add("EVALUADOS");
-		for (int val : alumnosEvaluados) {
-			row.add(String.valueOf(val));
-		}
-		items.add(row);
-
-		row = FXCollections.observableArrayList();
-		row.add("TOTAL");
-		for (int val : totalAlumnos) {
-			row.add(String.valueOf(val));
-		}
-		items.add(row);
-
+		Pair<List<EjeTematico>, List<Habilidad>> listas = new Pair<List<EjeTematico>, List<Habilidad>>(listaEjesTematicos, listaHablidades);
+		return new Pair<Map<IEntity, List<OTCursoRangos>>, Pair<List<EjeTematico>, List<Habilidad>>>(reporte, listas);
 	}
 
 	private void clearContent() {
