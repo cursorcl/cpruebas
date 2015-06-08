@@ -63,6 +63,8 @@ public class ComparativoColegioEjeHabilidadxCursoView extends AFormView
 	private Label lblTitulo;
 	@FXML
 	private MenuItem mnuExportarAlumnos;
+	
+	private Colegio colegioActivo;
 
 	private Map<String, Object> parameters = new HashMap<String, Object>();
 	private ObservableList<Curso> listaCursos;
@@ -87,7 +89,8 @@ public class ComparativoColegioEjeHabilidadxCursoView extends AFormView
 		}
 
 		if (source == mnuExportarAlumnos) {
-			ExcelSheetWriterObj.generarReporteComparativoColegioEjeHabilidadCurso(tblEjeshabilidades);
+			ExcelSheetWriterObj.generarReporteComparativoColegioEjeHabilidadCurso(tblEjeshabilidades, colegioActivo.getName());
+			colegioActivo = null;
 		}
 	}
 
@@ -99,6 +102,7 @@ public class ComparativoColegioEjeHabilidadxCursoView extends AFormView
 			param.put("coelgioId", colegio.getId());
 			lblTitulo.setText(colegio.getName());
 			controller.find("Curso.findByColegio", param);
+			colegioActivo = colegio;
 			clearContent();
 		}
 	}

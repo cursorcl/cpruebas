@@ -17,9 +17,12 @@ import javafx.scene.control.TreeTableView;
 import javax.swing.ImageIcon;
 
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -33,6 +36,9 @@ import org.controlsfx.dialog.Dialogs;
  * @author Sisdef.
  */
 public final class ExcelSheetWriterObj {
+
+	private static CellStyle titleStyle;
+	private static CellStyle cStyle;
 
 	/**
 	 * Constructor de la clase.
@@ -156,9 +162,10 @@ public final class ExcelSheetWriterObj {
 
 		String id = tabla.getId();
 		final Sheet sheet1 = wbook.createSheet(id);
-		System.out.println("# Sheets=" + wbook.getNumberOfSheets()  + " del wb=" + wbook  + " de la hoja:" + sheet1);
-		final HSSFCellStyle  style = (HSSFCellStyle) wbook.createCellStyle();
-		
+		System.out.println("# Sheets=" + wbook.getNumberOfSheets() + " del wb="
+				+ wbook + " de la hoja:" + sheet1);
+		final HSSFCellStyle style = (HSSFCellStyle) wbook.createCellStyle();
+
 		style.setAlignment(CellStyle.ALIGN_CENTER);
 		style.setAlignment(CellStyle.VERTICAL_CENTER);
 		style.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
@@ -208,7 +215,7 @@ public final class ExcelSheetWriterObj {
 
 		String id = tabla.getId();
 		final Sheet sheet1 = wbook.createSheet(id);
-		
+
 		final CellStyle style = wbook.createCellStyle();
 
 		style.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
@@ -424,57 +431,150 @@ public final class ExcelSheetWriterObj {
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static void generarReporteComparativoColegioEjeHabilidadCurso(final TableView<? extends Object> tabla) {
-		
-		final Workbook wbook = new HSSFWorkbook();
-		final CellStyle style = wbook.createCellStyle();
-		style.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
-		style.setFillPattern(CellStyle.SOLID_FOREGROUND);
+	public static void generarReporteComparativoColegioEjeHabilidadCurso(
+			final TableView<? extends Object> tabla, String colegio) {
 
-		
+		final Workbook wbook = new HSSFWorkbook();
+
 		final Sheet sheet = wbook.createSheet(tabla.getId());
-		
-		
-		
-		final Row heder = sheet.createRow(0);
-		
-			
-			cell.setCellValue(tabla.getColumns().get(indice).getText());
-			cell.setCellStyle(style);
-		}
-		
-		for(TableColumn tc: tabla.getColumns())
-		{
-			
-			System.out.println(tc.getText() );
-			if(tc.getColumns() != null &&  !tc.getColumns().isEmpty())
-			{
-				for(Object tic:tc.getColumns())
-				{
-					System.out.println(((TableColumn)tic).getText() );
+
+		Row header = sheet.createRow(0);
+		header.setHeightInPoints(sheet.getDefaultRowHeightInPoints());
+		Cell cell = header.createCell(0);
+		cell.setCellValue("COMPARATIVO COLEGIO EJE Y HABILIDADES POR CURSO");
+		applySheetTitleStyle(cell);
+		header = sheet.createRow(1);
+		header.setHeightInPoints(sheet.getDefaultRowHeightInPoints());
+		cell = header.createCell(0);
+		applySheetSubTitleStyle(cell);
+		cell.setCellValue(colegio);
+
+		Row header1 = sheet.createRow(2);
+		Row header2 = sheet.createRow(3);
+		// Estableciendo los titulos.
+		int indice = 0;
+		for (TableColumn tc : tabla.getColumns()) {
+			if (tc.getColumns() != null && !tc.getColumns().isEmpty()) {
+				boolean first = true;
+				for (Object obj : tc.getColumns()) {
+					Cell cell1 = header1.createCell(indice);
+					applyTitleStyle(cell1);
+					Cell cell2 = header2.createCell(indice);
+					applyTitleStyle(cell2);
+					if (first) {
+						cell1.setCellValue(tc.getText());
+						first = false;
+					}
+					TableColumn tcI = (TableColumn) obj;
+					cell2.setCellValue(tcI.getText());
+					indice++;
 				}
+				sheet.addMergedRegion(new CellRangeAddress(2, 2, indice - 3, indice - 1 ));
+			} else {
+				Cell cell1 = header1.createCell(indice);
+				applyTitleStyle(cell1);
+				Cell cell2 = header2.createCell(indice);
+				applyTitleStyle(cell2);
+				cell2.setCellValue(tc.getText());
+				indice++;
 			}
-			else
-			{
-				final Cell cell = filaCabecera.createCell(indice);
-			}
-			
 		}
-		
+
+		sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, indice - 1));
+		sheet.addMergedRegion(new CellRangeAddress(1, 1, 0, indice - 1));
+
+		indice = 4;
 		ObservableList<? extends Object> list = tabla.getItems();
-		for(Object row: list)
-		{
+		for (Object row : list) {
+			Row register = sheet.createRow(indice++);
 			ObservableList<String> itemsRow = (ObservableList<String>) row;
-			for(String cell: itemsRow)
-			{
-				System.out.print(cell + " ");
+			int colIndex = 0;
+			for (String cellValue : itemsRow) {
+				cell = register.createCell(colIndex++);
+				if (colIndex > 1) {
+					applyNormalStyle(cell);
+				} else {
+					applyLeftFirstColumnStyle(cell);
+				}
+				cell.setCellValue(cellValue);
 			}
-			System.out.println(" ");
 		}
-		
+		sheet.autoSizeColumn(0);
+		crearDocExcel(wbook);
 	}
-	
-	
+
+	private static void applySheetSubTitleStyle(Cell cell) {
+		Font font = cell.getSheet().getWorkbook().createFont();
+		font.setFontHeightInPoints((short) 20);
+		font.setFontName("IMPACT");
+		font.setItalic(true);
+		font.setColor(HSSFColor.BRIGHT_GREEN.index);
+
+		cStyle = cell.getSheet().getWorkbook().createCellStyle();
+		cStyle.setBorderLeft(CellStyle.BORDER_MEDIUM);
+		cStyle.setBorderRight(CellStyle.BORDER_MEDIUM);
+		cStyle.setBorderTop(CellStyle.BORDER_MEDIUM);
+		cStyle.setBorderBottom(CellStyle.BORDER_MEDIUM);
+		cStyle.setAlignment(CellStyle.ALIGN_CENTER);
+		cStyle.setFont(font);
+		cStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
+		cell.setCellStyle(cStyle);
+	}
+
+	private static void applySheetTitleStyle(Cell cell) {
+		Font font = cell.getSheet().getWorkbook().createFont();
+		font.setFontHeightInPoints((short) 30);
+		font.setFontName("IMPACT");
+		font.setItalic(true);
+		font.setColor(HSSFColor.BRIGHT_GREEN.index);
+
+		cStyle = cell.getSheet().getWorkbook().createCellStyle();
+		cStyle.setBorderLeft(CellStyle.BORDER_MEDIUM);
+		cStyle.setBorderRight(CellStyle.BORDER_MEDIUM);
+		cStyle.setBorderTop(CellStyle.BORDER_MEDIUM);
+		cStyle.setBorderBottom(CellStyle.BORDER_MEDIUM);
+		cStyle.setAlignment(CellStyle.ALIGN_CENTER);
+		cStyle.setFont(font);
+		cStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
+		cell.setCellStyle(cStyle);
+	}
+
+	private static void applyLeftFirstColumnStyle(Cell cell) {
+		cStyle = cell.getSheet().getWorkbook().createCellStyle();
+		cStyle.setAlignment(CellStyle.ALIGN_LEFT);
+		cStyle.setBorderLeft(CellStyle.BORDER_MEDIUM);
+		cStyle.setBorderRight(CellStyle.BORDER_MEDIUM);
+		cStyle.setBorderTop(CellStyle.BORDER_MEDIUM);
+		cStyle.setBorderBottom(CellStyle.BORDER_MEDIUM);
+		cStyle.setFillForegroundColor(IndexedColors.GREY_40_PERCENT.getIndex());
+		cStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
+		cell.setCellStyle(cStyle);
+
+	}
+
+	public static void applyTitleStyle(Cell cell) {
+		cStyle = cell.getSheet().getWorkbook().createCellStyle();
+		cStyle.setAlignment(CellStyle.ALIGN_CENTER);
+		cStyle.setBorderLeft(CellStyle.BORDER_MEDIUM);
+		cStyle.setBorderRight(CellStyle.BORDER_MEDIUM);
+		cStyle.setBorderTop(CellStyle.BORDER_MEDIUM);
+		cStyle.setBorderBottom(CellStyle.BORDER_MEDIUM);
+		cStyle.setFillForegroundColor(IndexedColors.GREY_40_PERCENT.getIndex());
+		cStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
+		cell.setCellStyle(cStyle);
+	}
+
+	public static void applyNormalStyle(Cell cell) {
+		cStyle = cell.getSheet().getWorkbook().createCellStyle();
+		cStyle.setAlignment(CellStyle.ALIGN_CENTER);
+		cStyle.setBorderLeft(CellStyle.BORDER_THIN);
+		cStyle.setBorderRight(CellStyle.BORDER_THIN);
+		cStyle.setBorderTop(CellStyle.BORDER_THIN);
+		cStyle.setBorderBottom(CellStyle.BORDER_THIN);
+
+		cell.setCellStyle(cStyle);
+	}
+
 	/**
 	 * Metodo que permite desplegar el documento de excel creado.
 	 * 
