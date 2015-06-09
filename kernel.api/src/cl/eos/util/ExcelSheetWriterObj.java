@@ -443,12 +443,13 @@ public final class ExcelSheetWriterObj {
 		Cell cell = header.createCell(0);
 		cell.setCellValue("COMPARATIVO COLEGIO EJE Y HABILIDADES POR CURSO");
 		applySheetTitleStyle(cell);
+		header.setHeightInPoints(40);
 		header = sheet.createRow(1);
-		header.setHeightInPoints(sheet.getDefaultRowHeightInPoints());
 		cell = header.createCell(0);
 		applySheetSubTitleStyle(cell);
 		cell.setCellValue(colegio);
-
+		header.setHeightInPoints(30);
+		
 		Row header1 = sheet.createRow(2);
 		Row header2 = sheet.createRow(3);
 		// Estableciendo los titulos.

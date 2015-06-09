@@ -1,7 +1,10 @@
 package cl.eos.ot;
 
 import cl.eos.persistence.models.Colegio;
+import cl.eos.persistence.models.TipoColegio;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleLongProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 public class OTColegio {
@@ -9,6 +12,7 @@ public class OTColegio {
 	private SimpleLongProperty id = new SimpleLongProperty();
 	private SimpleStringProperty name = new SimpleStringProperty();
 	private SimpleStringProperty direccion = new SimpleStringProperty();
+	private ObjectProperty<TipoColegio> tipo = new  SimpleObjectProperty<TipoColegio>();
 
 	private Colegio colegio;
 
@@ -17,6 +21,7 @@ public class OTColegio {
 		this.id.set(colegio.getId());
 		this.name.set(colegio.getName());
 		this.direccion.set(colegio.getDireccion());
+		this.tipo.set(colegio.getTipoColegio());
 
 	}
 
@@ -60,6 +65,19 @@ public class OTColegio {
 		this.direccionProperty().set(direccion);
 	}
 
+	
+	public final ObjectProperty<TipoColegio> tipoProperty() {
+		return this.tipo;
+	}
+
+	public final TipoColegio getTipo() {
+		return this.tipoProperty().getValue();
+	}
+
+	public final void setTipo(final TipoColegio tipoColegio) {	
+		this.tipoProperty().set(tipoColegio);
+	}
+	
 	public Colegio getColegio() {
 		return colegio;
 	}

@@ -10,6 +10,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SelectionMode;
@@ -23,6 +24,7 @@ import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.ot.OTColegio;
 import cl.eos.persistence.models.Colegio;
+import cl.eos.persistence.models.TipoColegio;
 import cl.eos.util.ExcelSheetWriterObj;
 
 public class ColegiosView extends AFormView implements
@@ -65,7 +67,10 @@ public class ColegiosView extends AFormView implements
 
 	@FXML
 	private ImageView imgColegio;
-
+	
+	@FXML 
+	private ComboBox<TipoColegio> cmbTipoColegio;
+	
 	@FXML
 	private TableView<OTColegio> tblColegio;
 
@@ -79,6 +84,8 @@ public class ColegiosView extends AFormView implements
 
 	@FXML
 	private Label lblError;
+	@FXML
+	private TableColumn<OTColegio, String> colTipoColegio;
 
 	public ColegiosView() {
 		setTitle("Colegios");
@@ -154,6 +161,10 @@ public class ColegiosView extends AFormView implements
 		colDireccion
 				.setCellValueFactory(new PropertyValueFactory<OTColegio, String>(
 						"direccion"));
+		
+		colTipoColegio
+		.setCellValueFactory(new PropertyValueFactory<OTColegio, String>(
+				"tipo"));
 	}
 
 	private void accionModificar() {
@@ -161,13 +172,8 @@ public class ColegiosView extends AFormView implements
 		if (colegio != null) {
 			txtNombre.setText(colegio.getName());
 			txtDireccion.setText(colegio.getDireccion());
+			cmbTipoColegio.setValue(colegio.getTipo());
 			select((IEntity) colegio.getColegio());
-			// ByteArrayInputStream byteArrayInputStream = new
-			// ByteArrayInputStream(
-			// colegio.getImage());
-			// javafx.scene.image.Image image = new javafx.scene.image.Image(
-			// byteArrayInputStream);
-			// imgColegio.setImage(image);
 		}
 	}
 
@@ -208,16 +214,7 @@ public class ColegiosView extends AFormView implements
 			}
 			colegio.setName(txtNombre.getText());
 			colegio.setDireccion(txtDireccion.getText());
-			// BufferedImage bufferImg = SwingFXUtils.fromFXImage(
-			// imgColegio.getImage(), null);
-
-			// ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-			// try {
-			// ImageIO.write(bufferImg, "png", outputStream);
-			// colegio.setImage(outputStream.toByteArray());
-			// } catch (IOException e) {
-			// e.printStackTrace();
-			// }
+			colegio.setTipoColegio(cmbTipoColegio.getValue());
 			save(colegio);
 			limpiarControles();
 		} else {
@@ -230,8 +227,7 @@ public class ColegiosView extends AFormView implements
 	private void limpiarControles() {
 		txtNombre.clear();
 		txtDireccion.clear();
-		// imgColegio.setImage(null);
-		select(null);
+		cmbTipoColegio.setValue(null);
 		tblColegio.getSelectionModel().clearSelection();
 	}
 
@@ -262,6 +258,11 @@ public class ColegiosView extends AFormView implements
 			txtNombre.getStyleClass().add("bad");
 			valida = false;
 		}
+		if(cmbTipoColegio.getValue() == null)
+		{
+			cmbTipoColegio.getStyleClass().add("bad");
+			valida = false;
+		}
 		return valida;
 	}
 
@@ -277,6 +278,14 @@ public class ColegiosView extends AFormView implements
 				}
 				tblColegio.setItems(oList);
 			}
+			else if (entity instanceof TipoColegio) {
+				ObservableList<TipoColegio> value = FXCollections
+						.observableArrayList();
+				for (Object iEntity : list) {
+					value.add((TipoColegio) iEntity);
+				}
+				cmbTipoColegio.setItems(value);
+			}
 		}
 	}
 
@@ -284,6 +293,7 @@ public class ColegiosView extends AFormView implements
 		removeAllStyle(lblError);
 		removeAllStyle(txtNombre);
 		removeAllStyle(txtDireccion);
+		removeAllStyle(cmbTipoColegio);
 	}
 
 	@Override

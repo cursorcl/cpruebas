@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 
@@ -19,11 +20,10 @@ public class Colegio implements IEntity {
 	private Long id;
 	private String name;
 	
-//	@Column(name="image", columnDefinition="blob")
-//	private byte[] image;
-	
 	private String direccion;
 	
+	@ManyToOne
+	private TipoColegio tipoColegio;
 
 	@Override
 	public Long getId() {
@@ -43,6 +43,14 @@ public class Colegio implements IEntity {
 	@Override
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public TipoColegio getTipoColegio() {
+		return tipoColegio;
+	}
+
+	public void setTipoColegio(TipoColegio tipo) {
+		this.tipoColegio = tipo;
 	}
 
 	@Override
