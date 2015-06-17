@@ -19,6 +19,7 @@ import cl.eos.interfaces.entity.IEntity;
 
 public class TipoColegio implements IEntity{
 	
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
@@ -85,8 +86,5 @@ public class TipoColegio implements IEntity{
 	public String toString() {
 		return name;
 	}
-	
-	
-	
-	
+
 }
