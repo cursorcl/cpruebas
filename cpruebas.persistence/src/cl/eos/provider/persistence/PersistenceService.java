@@ -44,7 +44,7 @@ public class PersistenceService implements IPersistenceService {
 	 * Constructor de la clase.
 	 */
 	public PersistenceService() {
-		
+	
 		 eFactory = Persistence.createEntityManagerFactory("cpruebas");
 		 eManager = eFactory.createEntityManager();
 	}

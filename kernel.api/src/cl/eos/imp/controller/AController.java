@@ -239,12 +239,8 @@ public abstract class AController implements IController, IPersistenceListener {
 				}
 			}
 		});
-
 	}
 
-
-
-	
 	
 	public void findByAllId(Class<? extends IEntity> entityClazz, Object[] id) {
 		model.findByAllId(entityClazz, id);
