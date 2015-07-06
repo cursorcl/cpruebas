@@ -89,8 +89,8 @@ public class ImpresionPrueba {
 		colAlternativas = 5;
 		try {
 
-
-			BufferedImage imageEmpty = ImageIO.read(new File("res/cpruebas.vacia.png"));
+			BufferedImage imageEmpty = ImageIO.read(new File(
+					"res/cpruebas.vacia.png"));
 			image = new BufferedImage(imageEmpty.getWidth(),
 					imageEmpty.getHeight(), imageEmpty.getType());
 			g2 = (Graphics2D) image.getGraphics();
@@ -136,13 +136,13 @@ public class ImpresionPrueba {
 			fileChooser.getExtensionFilters().add(imageExtFilter);
 			fileChooser.setInitialDirectory(Utils.getDefaultDirectory());
 			fileChooser.setTitle("Seleccione Archivo a grabar");
-			File  output = fileChooser.showSaveDialog(null);
-			
-			if(output != null && !output.getAbsolutePath().toLowerCase().endsWith("pdf")){
+			File output = fileChooser.showSaveDialog(null);
+
+			if (output != null
+					&& !output.getAbsolutePath().toLowerCase().endsWith("pdf")) {
 				output = new File(output + ".pdf");
 			}
-			
-			
+
 			if (output != null) {
 				doc.setDocumentInformation(new PDDocumentInformation());
 				doc.getDocumentInformation().setTitle(fileName);
@@ -232,6 +232,24 @@ public class ImpresionPrueba {
 		String orden = forma.getOrden();
 		String[] nOrden = orden.split(",");
 
+		for (int m = 1; m <= 25; m++) {
+			if (m % GROUP_SIZE == 1) {
+				if (m % 25 == 1) {
+					row = FIRST_ROW;
+				} else {
+					row += STEP_ROW * 2;
+				}
+				if (m < 25) {
+					drawMarks(row);
+				}
+				row += STEP_ROW / 2;
+			} else {
+				row += STEP_ROW;
+			}
+			n++;
+		}
+
+		n = 1;
 		for (String sIdx : nOrden) {
 			RespuestasEsperadasPrueba resp = respEsperadas.get(Integer
 					.parseInt(sIdx) - 1);

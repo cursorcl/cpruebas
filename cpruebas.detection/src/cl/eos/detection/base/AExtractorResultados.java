@@ -183,7 +183,7 @@ public abstract class AExtractorResultados implements IExtractorResultados {
 
 			int col = (pregunta - 1) / NRO_PREG_POR_COLUMNA;
 
-			for (int n = 0; n < GROUP_SIZE; n++) {
+			for (int n = 0; n < GROUP_SIZE && (n + idx) <= nroPreguntas; n++) {
 				int left = x + DELTA_X + col * DELTA_X_FIRST_CIRCLES; // - 4;
 				int top = y + DELTA_Y_FIRST_CIRCLE_RESP + BASE + n * 54;
 				BufferedImage img = image.getSubimage(left, top, CIRCLE_SIZE
@@ -467,7 +467,7 @@ public abstract class AExtractorResultados implements IExtractorResultados {
 
 	public static void writeIMG(BufferedImage image, String name) {
 		String debug = System.getProperty("DEBUG");
-		if (debug != null &&  "TRUE".equals(debug)) {
+		if (debug != null && "TRUE".equals(debug)) {
 			try {
 				ImageIO.write(image, "png",
 						new File(Utils.getDefaultDirectory() + "/" + name
