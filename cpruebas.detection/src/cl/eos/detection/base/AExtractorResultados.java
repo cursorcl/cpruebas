@@ -133,16 +133,21 @@ public abstract class AExtractorResultados implements IExtractorResultados {
 	 *            Imagen de la prueba que se procesa.
 	 * @return String con el rut que viene referenciado en la prueba.
 	 */
+	
 	static int nRut = 0;
-
 	protected String getRut(Point pRefRut, BufferedImage image) {
 		nRut++;
 		int x = pRefRut.x;
 		StringBuffer strRut = new StringBuffer("");
 		writeIMG(image, "RUT");
+		int y = pRefRut.y;
+		
+		BufferedImage firstRut = image.getSubimage(x + CIRCLE_X_RUT_DIFF[0] - 5, y - 2, 66, 48);
+		Point pointFirstRut = getPointReferenciaRut(firstRut);
+		x = pRefRut.x - 10 + pointFirstRut.x;
 
 		for (int n = 0; n < CIRCLE_X_RUT_DIFF.length; n++) {
-			int y = pRefRut.y;
+			y = pRefRut.y;
 			BufferedImage rut = image.getSubimage(x + CIRCLE_X_RUT_DIFF[n] - 2,
 					y - 2, 51, 555);
 			writeIMG(rut, "RUT_" + (nRut));
@@ -155,6 +160,56 @@ public abstract class AExtractorResultados implements IExtractorResultados {
 			}
 		}
 		return strRut.toString();
+	}
+	
+	/**
+	 * Obtiene los contornos de las marcas establecidas en la impresión.
+	 * 
+	 * @param limage
+	 *            Imagen completa de la prueba.
+	 * @return Lista de los contornos de las imagenes.
+	 */
+	protected final Point getPointReferenciaRut(BufferedImage limage) {
+
+		writeIMG(limage, "PedazoRut");
+		ImageFloat32 input = ConvertBufferedImage.convertFromSingle(limage,
+				null, ImageFloat32.class);
+
+		ImageUInt8 binary = new ImageUInt8(input.width, input.height);
+		ImageSInt32 label = new ImageSInt32(input.width, input.height);
+		ThresholdImageOps.threshold(input, binary, (float) 190, true);
+		writeIMG(VisualizeBinaryData.renderBinary(binary, null), "thresholdRut");
+		ImageUInt8 filtered = BinaryImageOps.dilate8(binary, 2, null);
+		writeIMG(VisualizeBinaryData.renderBinary(filtered, null), "dilated8-2Rut");
+		filtered = BinaryImageOps.erode8(filtered, 3, null);
+		writeIMG(VisualizeBinaryData.renderBinary(filtered, null), "eroded8-3Rut");
+		filtered = BinaryImageOps.dilate8(filtered, 2, null);
+		writeIMG(VisualizeBinaryData.renderBinary(filtered, null), "dilate8-5Rut");
+		BufferedImage bImage = VisualizeBinaryData.renderBinary(filtered, null);
+		writeIMG(bImage, "contornosPedazoRut");
+		
+		
+		List<Contour> contours =  BinaryImageOps.contour(filtered, ConnectRule.EIGHT, label);
+		
+		Point[] points = new Point[contours.size()];
+		
+		int n = 0;
+		for (int idx = 0; idx < contours.size(); idx++) {
+			Contour contour = contours.get(idx);
+			int minX = Integer.MAX_VALUE;
+			int minY = Integer.MAX_VALUE;
+			for (Point2D_I32 point : contour.external) {
+				if (point.x < minX) {
+					minX = point.x;
+				}
+				if (point.y < minY) {
+					minY = point.y;
+				}
+			}
+			points[n] = new Point(minX, minY);
+			n++;
+		}
+		return points[0];
 	}
 
 	/**
@@ -326,7 +381,7 @@ public abstract class AExtractorResultados implements IExtractorResultados {
 	 */
 	protected final List<Contour> getContours(BufferedImage limage) {
 
-		BufferedImage image = limage.getSubimage(0, 0, 110, 3200);
+		BufferedImage image = limage.getSubimage(0, 0, 120, 3200);
 		writeIMG(image, "subimage");
 		ImageFloat32 input = ConvertBufferedImage.convertFromSingle(image,
 				null, ImageFloat32.class);
