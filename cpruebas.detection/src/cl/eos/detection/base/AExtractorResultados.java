@@ -93,10 +93,13 @@ public abstract class AExtractorResultados implements IExtractorResultados {
 	// Inicio rectangulo.
 	public static int XRUTREF = 53;
 	// Son las diferencias del inicio del círculo con inicio rectángulo
-	public static int[] CIRCLE_X_RUT_DIFF = { 203 - XRUTREF, 270 - XRUTREF,
-			345 - XRUTREF, 408 - XRUTREF, 471 - XRUTREF, 550 - XRUTREF,
-			617 - XRUTREF, 680 - XRUTREF, 764 - XRUTREF };
+	// public static int[] CIRCLE_X_RUT_DIFF = { 203 - XRUTREF, 270 - XRUTREF,
+	// 345 - XRUTREF, 408 - XRUTREF, 471 - XRUTREF, 550 - XRUTREF,
+	// 617 - XRUTREF, 680 - XRUTREF, 764 - XRUTREF };
 
+	// Son las diferencias del inicio del círculo con inicio rectángulo
+	public static int[] CIRCLE_X_RUT_DIFF = { 0, 64, 135, 196, 256, 332, 397,
+			456, 536 };
 	// Espaciamiento entre inicios de circulo del rut
 	public static int CIRCLE_Y_RUT_DIFF = 48;
 	protected Recognizer recognizerRespustas;
@@ -133,27 +136,32 @@ public abstract class AExtractorResultados implements IExtractorResultados {
 	 *            Imagen de la prueba que se procesa.
 	 * @return String con el rut que viene referenciado en la prueba.
 	 */
-	
+
 	static int nRut = 0;
+
 	protected String getRut(Point pRefRut, BufferedImage image) {
 		nRut++;
 		int x = pRefRut.x;
 		StringBuffer strRut = new StringBuffer("");
 		writeIMG(image, "RUT");
 		int y = pRefRut.y;
-		
-		BufferedImage firstRut = image.getSubimage(x + CIRCLE_X_RUT_DIFF[0] - 5, y - 2, 66, 48);
+
+		BufferedImage firstRut = image.getSubimage(x + 145, y - 2, 66, 48);
 		Point pointFirstRut = getPointReferenciaRut(firstRut);
-		x = pRefRut.x - 10 + pointFirstRut.x;
+		x = pRefRut.x + 145 + pointFirstRut.x;
+
+		BufferedImage sectorRut = image.getSubimage(x, y - 2, x + 600, 555);
+		sectorRut = preprocesarImagen(sectorRut);
+		writeIMG(sectorRut, "SECTOR_RUT");
 
 		for (int n = 0; n < CIRCLE_X_RUT_DIFF.length; n++) {
 			y = pRefRut.y;
-			BufferedImage rut = image.getSubimage(x + CIRCLE_X_RUT_DIFF[n] - 2,
-					y - 2, 51, 555);
+			BufferedImage rut = sectorRut.getSubimage(CIRCLE_X_RUT_DIFF[n], 0,
+					51, 555);
 			writeIMG(rut, "RUT_" + (nRut));
 			nRut++;
 			Pair<Integer, Pair<Double, Double>> result = recognizerRut
-					.recognize(rut, 0.50);
+					.recognize(rut, 0.40);
 			int idx = result.getFirst();
 			if (idx != -1) {
 				strRut.append(RUT[idx]);
@@ -161,7 +169,7 @@ public abstract class AExtractorResultados implements IExtractorResultados {
 		}
 		return strRut.toString();
 	}
-	
+
 	/**
 	 * Obtiene los contornos de las marcas establecidas en la impresión.
 	 * 
@@ -180,19 +188,22 @@ public abstract class AExtractorResultados implements IExtractorResultados {
 		ThresholdImageOps.threshold(input, binary, (float) 190, true);
 		writeIMG(VisualizeBinaryData.renderBinary(binary, null), "thresholdRut");
 		ImageUInt8 filtered = BinaryImageOps.dilate8(binary, 2, null);
-		writeIMG(VisualizeBinaryData.renderBinary(filtered, null), "dilated8-2Rut");
+		writeIMG(VisualizeBinaryData.renderBinary(filtered, null),
+				"dilated8-2Rut");
 		filtered = BinaryImageOps.erode8(filtered, 3, null);
-		writeIMG(VisualizeBinaryData.renderBinary(filtered, null), "eroded8-3Rut");
+		writeIMG(VisualizeBinaryData.renderBinary(filtered, null),
+				"eroded8-3Rut");
 		filtered = BinaryImageOps.dilate8(filtered, 2, null);
-		writeIMG(VisualizeBinaryData.renderBinary(filtered, null), "dilate8-5Rut");
+		writeIMG(VisualizeBinaryData.renderBinary(filtered, null),
+				"dilate8-5Rut");
 		BufferedImage bImage = VisualizeBinaryData.renderBinary(filtered, null);
 		writeIMG(bImage, "contornosPedazoRut");
-		
-		
-		List<Contour> contours =  BinaryImageOps.contour(filtered, ConnectRule.EIGHT, label);
-		
+
+		List<Contour> contours = BinaryImageOps.contour(filtered,
+				ConnectRule.EIGHT, label);
+
 		Point[] points = new Point[contours.size()];
-		
+
 		int n = 0;
 		for (int idx = 0; idx < contours.size(); idx++) {
 			Contour contour = contours.get(idx);
@@ -296,7 +307,7 @@ public abstract class AExtractorResultados implements IExtractorResultados {
 	protected final BufferedImage rectificarImagen(BufferedImage limage) {
 		List<Contour> contours = getContours(limage);
 		BufferedImage image = limage;
-		if (contours.size() < 5) {
+		if (contours.size() < 2) {
 			image = rotate(Math.PI, limage);
 			contours = getContours(image);
 		}
