@@ -5,11 +5,12 @@ import java.io.File;
 import java.io.IOException;
 
 import cl.eos.detection.OTResultadoScanner;
+import cl.eos.exceptions.CPruebasException;
 
 public interface IExtractorResultados {
 
 	OTResultadoScanner process(File archivo, int nroPreguntas)
-			throws IOException;
+			throws IOException, CPruebasException;
 
 	/**
 	 * Metodo que realiza el procesamiento de una prueba, obtiene el rut y las

@@ -23,5 +23,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/kernel.api"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/cardneuroph"/>
 	<classpathentry kind="lib" path="../jars/guava-18.0.jar"/>
+	<classpathentry kind="lib" path="O:/cpruebas/jars/controlsfx-8.0.6_20.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -28,6 +28,7 @@ import boofcv.struct.image.ImageUInt8;
 import cl.cursor.card.Recognizer;
 import cl.eos.detection.ExtractorResultadosPrueba;
 import cl.eos.detection.OTResultadoScanner;
+import cl.eos.exceptions.CPruebasException;
 import cl.eos.util.Utils;
 import cl.sisdef.util.Pair;
 
@@ -112,7 +113,7 @@ public abstract class AExtractorResultados implements IExtractorResultados {
 	 */
 	@Override
 	public OTResultadoScanner process(File archivo, int nroPreguntas)
-			throws IOException {
+			throws IOException, CPruebasException{
 		return process(ImageIO.read(archivo), nroPreguntas);
 	}
 
@@ -188,14 +189,8 @@ public abstract class AExtractorResultados implements IExtractorResultados {
 		ThresholdImageOps.threshold(input, binary, (float) 190, true);
 		writeIMG(VisualizeBinaryData.renderBinary(binary, null), "thresholdRut");
 		ImageUInt8 filtered = BinaryImageOps.dilate8(binary, 2, null);
-		writeIMG(VisualizeBinaryData.renderBinary(filtered, null),
-				"dilated8-2Rut");
 		filtered = BinaryImageOps.erode8(filtered, 3, null);
-		writeIMG(VisualizeBinaryData.renderBinary(filtered, null),
-				"eroded8-3Rut");
 		filtered = BinaryImageOps.dilate8(filtered, 2, null);
-		writeIMG(VisualizeBinaryData.renderBinary(filtered, null),
-				"dilate8-5Rut");
 		BufferedImage bImage = VisualizeBinaryData.renderBinary(filtered, null);
 		writeIMG(bImage, "contornosPedazoRut");
 
@@ -392,7 +387,8 @@ public abstract class AExtractorResultados implements IExtractorResultados {
 	 */
 	protected final List<Contour> getContours(BufferedImage limage) {
 
-		BufferedImage image = limage.getSubimage(0, 0, 120, 3200);
+		int h = Math.min(3200, limage.getHeight());
+		BufferedImage image = limage.getSubimage(0, 0, 120, h);
 		writeIMG(image, "subimage");
 		ImageFloat32 input = ConvertBufferedImage.convertFromSingle(image,
 				null, ImageFloat32.class);

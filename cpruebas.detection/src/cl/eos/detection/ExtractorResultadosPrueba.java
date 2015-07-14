@@ -11,6 +11,7 @@ import javax.imageio.ImageIO;
 
 import cl.cursor.card.RecognizerFactory;
 import cl.eos.detection.base.AExtractorResultados;
+import cl.eos.exceptions.CPruebasException;
 import cl.eos.util.Utils;
 
 /**
@@ -20,9 +21,8 @@ import cl.eos.util.Utils;
  */
 public class ExtractorResultadosPrueba extends AExtractorResultados {
 
-	
-	 static final Logger log =
-		      Logger.getLogger(ExtractorResultadosPrueba.class.getName());
+	static final Logger log = Logger.getLogger(ExtractorResultadosPrueba.class
+			.getName());
 	private static ExtractorResultadosPrueba instance;
 
 	/**
@@ -32,20 +32,22 @@ public class ExtractorResultadosPrueba extends AExtractorResultados {
 	 * @throws IOException
 	 *             Error al leer las redes.
 	 */
-	private ExtractorResultadosPrueba()  {
-		
+	private ExtractorResultadosPrueba() {
+
 		try {
 			File fRedPrueba = new File("res/red_2");
-			log.info("red_2 existe = " + fRedPrueba.getAbsolutePath() +  " " + fRedPrueba.exists());
+			log.info("red_2 existe = " + fRedPrueba.getAbsolutePath() + " "
+					+ fRedPrueba.exists());
 			File fRedRut = new File("res/red_rut");
-			log.info("red_rut existe = " + fRedRut.getAbsolutePath() +  " " + fRedRut.exists() );
+			log.info("red_rut existe = " + fRedRut.getAbsolutePath() + " "
+					+ fRedRut.exists());
 
 			recognizerRespustas = RecognizerFactory.create(fRedPrueba);
 			recognizerRut = RecognizerFactory.create(fRedRut);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	public static ExtractorResultadosPrueba getInstance() {
@@ -56,8 +58,14 @@ public class ExtractorResultadosPrueba extends AExtractorResultados {
 	}
 
 	public OTResultadoScanner process(File archivo, int nroPreguntas)
-			throws IOException {
+			throws IOException, CPruebasException {
 		BufferedImage bImg = ImageIO.read(archivo);
+		int h = bImg.getHeight();
+		int w = bImg.getWidth();
+		if(h < 32010 || w < 2480)
+		{
+			throw new CPruebasException(String.format("Dimensiones de la prueba son muy pequeñas %dx%d", w,h));
+		}
 		writeIMG(bImg, "original");
 		return process(bImg, nroPreguntas);
 	}
@@ -78,17 +86,16 @@ public class ExtractorResultadosPrueba extends AExtractorResultados {
 		BufferedImage recImage = rectificarImagen(image);
 		writeIMG(recImage, "rectificar");
 		Point[] pointsReference = obtenerPuntosReferencia(recImage);
-        Point pRefRut = pointsReference[0];
-        String rut = getRut(pRefRut, recImage);
-        
+		Point pRefRut = pointsReference[0];
+		String rut = getRut(pRefRut, recImage);
+
 		Point[] pRefRespuestas = Arrays.copyOfRange(pointsReference, 1,
 				pointsReference.length);
 		recImage = preprocesarImagen(recImage);
 		String respuestas = getRespuestas(pRefRespuestas, recImage,
 				nroPreguntas);
 
-		log.info(String.format("%s,%s", rut,respuestas));
-		
+		log.info(String.format("%s,%s", rut, respuestas));
 
 		resultado.setForma(1);
 		resultado.setRespuestas(respuestas);
