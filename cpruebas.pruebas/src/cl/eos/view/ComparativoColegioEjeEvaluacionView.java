@@ -25,23 +25,17 @@ import javafx.util.Callback;
 import org.controlsfx.dialog.Dialogs;
 
 import cl.eos.imp.view.AFormView;
-import cl.eos.ot.OTPreguntasEjes;
 import cl.eos.ot.OTPreguntasEvaluacion;
-import cl.eos.ot.OTPreguntasHabilidad;
 import cl.eos.persistence.models.Asignatura;
 import cl.eos.persistence.models.Colegio;
 import cl.eos.persistence.models.Curso;
 import cl.eos.persistence.models.EjeTematico;
-import cl.eos.persistence.models.EvaluacionEjeTematico;
 import cl.eos.persistence.models.EvaluacionPrueba;
-import cl.eos.persistence.models.Habilidad;
 import cl.eos.persistence.models.PruebaRendida;
 import cl.eos.persistence.models.RangoEvaluacion;
 import cl.eos.persistence.models.RespuestasEsperadasPrueba;
 import cl.eos.persistence.util.Comparadores;
 import cl.eos.util.ExcelSheetWriterObj;
-import cl.eos.util.Pair;
-import cl.eos.util.Utils;
 import cl.eos.view.ots.ejeevaluacion.OTAcumulador;
 
 public class ComparativoColegioEjeEvaluacionView extends AFormView implements

@@ -17,6 +17,7 @@ import javax.imageio.ImageIO;
 
 import boofcv.alg.filter.binary.BinaryImageOps;
 import boofcv.alg.filter.binary.Contour;
+import boofcv.alg.filter.binary.GThresholdImageOps;
 import boofcv.alg.filter.binary.ThresholdImageOps;
 import boofcv.alg.misc.ImageStatistics;
 import boofcv.core.image.ConvertBufferedImage;
@@ -113,7 +114,7 @@ public abstract class AExtractorResultados implements IExtractorResultados {
 	 */
 	@Override
 	public OTResultadoScanner process(File archivo, int nroPreguntas)
-			throws IOException, CPruebasException{
+			throws IOException, CPruebasException {
 		return process(ImageIO.read(archivo), nroPreguntas);
 	}
 
@@ -280,7 +281,9 @@ public abstract class AExtractorResultados implements IExtractorResultados {
 		ImageFloat32 input = ConvertBufferedImage.convertFromSingle(image,
 				null, ImageFloat32.class);
 		ImageUInt8 binary = new ImageUInt8(input.width, input.height);
-		ThresholdImageOps.threshold(input, binary, (float) 185, false); // 170,180
+		double threshold = 185;
+		threshold = GThresholdImageOps.computeOtsu(input, 0, 256);
+		ThresholdImageOps.threshold(input, binary, (float) threshold, false); // 170,180
 		ImageUInt8 output = BinaryImageOps.erode4(binary, 3, null); // 2,4
 		output = BinaryImageOps.dilate4(output, 7, null); // 7,9
 		output = BinaryImageOps.erode4(output, 2, null);
@@ -302,12 +305,14 @@ public abstract class AExtractorResultados implements IExtractorResultados {
 	protected final BufferedImage rectificarImagen(BufferedImage limage) {
 		List<Contour> contours = getContours(limage);
 		BufferedImage image = limage;
-		if (contours.size() < 2) {
-			image = rotate(Math.PI, limage);
-			contours = getContours(image);
+		if (contours != null) {
+			if (contours.size() < 2) {
+				image = rotate(Math.PI, limage);
+				contours = getContours(image);
+			}
+			double anlge = getRotationAngle(contours);
+			image = rotate(anlge, image);
 		}
-		double anlge = getRotationAngle(contours);
-		image = rotate(anlge, image);
 		return image;
 	}
 
@@ -321,22 +326,25 @@ public abstract class AExtractorResultados implements IExtractorResultados {
 	 */
 	protected final Point[] obtenerPuntosReferencia(BufferedImage image) {
 		List<Contour> contours = getContours(image);
-		Point[] points = new Point[contours.size()];
-		int n = 0;
-		for (int idx = 0; idx < contours.size(); idx++) {
-			Contour contour = contours.get(idx);
-			int minX = Integer.MAX_VALUE;
-			int minY = Integer.MAX_VALUE;
-			for (Point2D_I32 point : contour.external) {
-				if (point.x < minX) {
-					minX = point.x;
+		Point[] points = null;
+		if (contours != null) {
+			points = new Point[contours.size()];
+			int n = 0;
+			for (int idx = 0; idx < contours.size(); idx++) {
+				Contour contour = contours.get(idx);
+				int minX = Integer.MAX_VALUE;
+				int minY = Integer.MAX_VALUE;
+				for (Point2D_I32 point : contour.external) {
+					if (point.x < minX) {
+						minX = point.x;
+					}
+					if (point.y < minY) {
+						minY = point.y;
+					}
 				}
-				if (point.y < minY) {
-					minY = point.y;
-				}
+				points[n] = new Point(minX, minY);
+				n++;
 			}
-			points[n] = new Point(minX, minY);
-			n++;
 		}
 		return points;
 	}
@@ -388,21 +396,34 @@ public abstract class AExtractorResultados implements IExtractorResultados {
 	protected final List<Contour> getContours(BufferedImage limage) {
 
 		int h = Math.min(3200, limage.getHeight());
-		BufferedImage image = limage.getSubimage(0, 0, 120, h);
-		writeIMG(image, "subimage");
-		ImageFloat32 input = ConvertBufferedImage.convertFromSingle(image,
-				null, ImageFloat32.class);
+		int w = 120;
+		List<Contour> contours = null;
+		while (w < 200) {
+			BufferedImage image = limage.getSubimage(0, 0, w , h);
+			writeIMG(image, "subimage");
+			ImageFloat32 input = ConvertBufferedImage.convertFromSingle(image,
+					null, ImageFloat32.class);
 
-		ImageUInt8 binary = new ImageUInt8(input.width, input.height);
-		ImageSInt32 label = new ImageSInt32(input.width, input.height);
-		ThresholdImageOps.threshold(input, binary, (float) 190, true);
-		writeIMG(VisualizeBinaryData.renderBinary(binary, null), "threshold");
-		ImageUInt8 filtered = BinaryImageOps.dilate8(binary, 2, null);
-		filtered = BinaryImageOps.erode8(filtered, 9, null);
-		filtered = BinaryImageOps.dilate8(filtered, 10, null);
-		BufferedImage bImage = VisualizeBinaryData.renderBinary(filtered, null);
-		writeIMG(bImage, "contornos");
-		return BinaryImageOps.contour(filtered, ConnectRule.EIGHT, label);
+			ImageUInt8 binary = new ImageUInt8(input.width, input.height);
+			ImageSInt32 label = new ImageSInt32(input.width, input.height);
+			ThresholdImageOps.threshold(input, binary, (float) 190, true);
+			writeIMG(VisualizeBinaryData.renderBinary(binary, null),
+					"threshold");
+			ImageUInt8 filtered = BinaryImageOps.dilate8(binary, 2, null);
+			filtered = BinaryImageOps.erode8(filtered, 9, null);
+			filtered = BinaryImageOps.dilate8(filtered, 10, null);
+			BufferedImage bImage = VisualizeBinaryData.renderBinary(filtered,
+					null);
+			writeIMG(bImage, "contornos");
+
+			contours = BinaryImageOps.contour(filtered, ConnectRule.EIGHT,
+					label);
+			if (contours != null && !contours.isEmpty()) {
+				break;
+			}
+			w = w + 60;
+		}
+		return contours;
 	}
 
 	/**

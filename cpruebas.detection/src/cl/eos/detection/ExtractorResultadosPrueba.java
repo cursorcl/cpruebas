@@ -12,7 +12,6 @@ import javax.imageio.ImageIO;
 import cl.cursor.card.RecognizerFactory;
 import cl.eos.detection.base.AExtractorResultados;
 import cl.eos.exceptions.CPruebasException;
-import cl.eos.util.Utils;
 
 /**
  * Realiza el analisis de una imagen, obitiene el rut del alumno y las
@@ -62,9 +61,11 @@ public class ExtractorResultadosPrueba extends AExtractorResultados {
 		BufferedImage bImg = ImageIO.read(archivo);
 		int h = bImg.getHeight();
 		int w = bImg.getWidth();
-		if(h < 32010 || w < 2480)
-		{
-			throw new CPruebasException(String.format("Dimensiones de la prueba son muy pequeñas %dx%d", w,h));
+		if (h < 3210 || w < 2480) {
+			log.severe(String.format(
+					"Dimensiones de la prueba son muy pequeñas %dx%d", w, h));
+			throw new CPruebasException(String.format(
+					"Dimensiones de la prueba son muy pequeñas %dx%d", w, h));
 		}
 		writeIMG(bImg, "original");
 		return process(bImg, nroPreguntas);
@@ -86,20 +87,22 @@ public class ExtractorResultadosPrueba extends AExtractorResultados {
 		BufferedImage recImage = rectificarImagen(image);
 		writeIMG(recImage, "rectificar");
 		Point[] pointsReference = obtenerPuntosReferencia(recImage);
-		Point pRefRut = pointsReference[0];
-		String rut = getRut(pRefRut, recImage);
+		if (pointsReference != null) {
+			Point pRefRut = pointsReference[0];
+			String rut = getRut(pRefRut, recImage);
 
-		Point[] pRefRespuestas = Arrays.copyOfRange(pointsReference, 1,
-				pointsReference.length);
-		recImage = preprocesarImagen(recImage);
-		String respuestas = getRespuestas(pRefRespuestas, recImage,
-				nroPreguntas);
+			Point[] pRefRespuestas = Arrays.copyOfRange(pointsReference, 1,
+					pointsReference.length);
+			recImage = preprocesarImagen(recImage);
+			String respuestas = getRespuestas(pRefRespuestas, recImage,
+					nroPreguntas);
 
-		log.info(String.format("%s,%s", rut, respuestas));
+			log.info(String.format("%s,%s", rut, respuestas));
 
-		resultado.setForma(1);
-		resultado.setRespuestas(respuestas);
-		resultado.setRut(rut);
+			resultado.setForma(1);
+			resultado.setRespuestas(respuestas);
+			resultado.setRut(rut);
+		}
 		return resultado;
 	}
 }
