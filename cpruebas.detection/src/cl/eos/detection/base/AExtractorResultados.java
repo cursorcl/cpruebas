@@ -513,7 +513,7 @@ public abstract class AExtractorResultados implements IExtractorResultados {
 	protected final List<Contour> getContours(BufferedImage limage) {
 
 		int h = Math.min(3200, limage.getHeight());
-		int w = 150;
+		int w = 180;
 		List<Contour> contours = null;
 		while (w < 200) {
 			BufferedImage image = limage.getSubimage(0, 0, w, h);
