@@ -3,7 +3,6 @@ package cl.eos.view;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.StringWriter;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,11 +36,10 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.util.Callback;
 
+import org.apache.log4j.Logger;
 import org.controlsfx.control.action.Action;
 import org.controlsfx.dialog.Dialog;
 import org.controlsfx.dialog.Dialogs;
-
-import com.sun.corba.se.impl.javax.rmi.CORBA.Util;
 
 import cl.eos.PruebasActivator;
 import cl.eos.detection.ExtractorResultadosPrueba;
@@ -51,8 +49,6 @@ import cl.eos.imp.view.AFormView;
 import cl.eos.imp.view.WindowManager;
 import cl.eos.interfaces.IActivator;
 import cl.eos.interfaces.entity.IEntity;
-import cl.eos.interfaces.entity.IPersistenceListener;
-import cl.eos.persistence.IPersistenceService;
 import cl.eos.persistence.models.Alumno;
 import cl.eos.persistence.models.Colegio;
 import cl.eos.persistence.models.Curso;
@@ -66,7 +62,6 @@ import cl.eos.persistence.models.RangoEvaluacion;
 import cl.eos.persistence.models.RespuestasEsperadasPrueba;
 import cl.eos.persistence.util.Comparadores;
 import cl.eos.provider.persistence.PersistenceService;
-import cl.eos.provider.persistence.PersistenceServiceFactory;
 import cl.eos.util.ExcelSheetWriterObj;
 import cl.eos.util.Pair;
 import cl.eos.util.Utils;
@@ -75,6 +70,7 @@ import cl.eos.view.ots.OTPruebaRendida;
 
 public class EvaluarPruebaView extends AFormView {
 
+	private static Logger log =  Logger.getLogger(EvaluarPruebaView.class);
 	private Prueba prueba;
 	private EvaluacionPrueba evalPrueba = null;
 	@FXML
@@ -621,6 +617,7 @@ public class EvaluarPruebaView extends AFormView {
 								updateProgress(n++, files.size());
 							}
 						} catch (CPruebasException e) {
+							log.info("Archivo:" + archivo.getName() + " " + e.getMessage());
 							results.getFirst().add(e.getMessage());
 							updateMessage(e.getMessage());
 							updateProgress(n++, files.size());

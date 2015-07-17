@@ -16,7 +16,9 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
-import com.sun.istack.internal.logging.Logger;
+
+
+import org.apache.log4j.Logger;
 
 import boofcv.alg.filter.binary.BinaryImageOps;
 import boofcv.alg.filter.binary.Contour;
@@ -29,7 +31,6 @@ import boofcv.struct.image.ImageFloat32;
 import boofcv.struct.image.ImageSInt32;
 import boofcv.struct.image.ImageUInt8;
 import cl.cursor.card.Recognizer;
-import cl.eos.detection.OTResultadoScanner;
 import cl.sisdef.util.Pair;
 
 

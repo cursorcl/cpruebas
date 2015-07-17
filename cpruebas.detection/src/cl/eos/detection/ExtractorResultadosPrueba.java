@@ -5,9 +5,10 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
+
+import org.apache.log4j.Logger;
 
 import cl.cursor.card.RecognizerFactory;
 import cl.eos.detection.base.AExtractorResultados;
@@ -20,8 +21,7 @@ import cl.eos.exceptions.CPruebasException;
  */
 public class ExtractorResultadosPrueba extends AExtractorResultados {
 
-	static final Logger log = Logger.getLogger(ExtractorResultadosPrueba.class
-			.getName());
+	static final Logger log = Logger.getLogger(ExtractorResultadosPrueba.class);
 	private static ExtractorResultadosPrueba instance;
 
 	/**
@@ -62,7 +62,7 @@ public class ExtractorResultadosPrueba extends AExtractorResultados {
 		int h = bImg.getHeight();
 		int w = bImg.getWidth();
 		if (h < 3210 || w < 2480) {
-			log.severe(String.format(
+			log.error(String.format(
 					"Dimensiones de la prueba son muy pequeñas %dx%d", w, h));
 			throw new CPruebasException(String.format(
 					"Dimensiones de la prueba son muy pequeñas %dx%d", w, h));
@@ -89,8 +89,8 @@ public class ExtractorResultadosPrueba extends AExtractorResultados {
 		Point[] pointsReference = obtenerPuntosReferencia(recImage);
 		if (pointsReference != null) {
 			Point pRefRut = pointsReference[0];
+			nRut = 0;
 			String rut = getRut(pRefRut, recImage);
-
 			Point[] pRefRespuestas = Arrays.copyOfRange(pointsReference, 1,
 					pointsReference.length);
 			recImage = preprocesarImagen(recImage);

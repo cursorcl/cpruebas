@@ -11,9 +11,14 @@ import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.imageio.ImageIO;
+
+import org.apache.log4j.Logger;
 
 import boofcv.alg.filter.binary.BinaryImageOps;
 import boofcv.alg.filter.binary.Contour;
@@ -30,10 +35,10 @@ import cl.cursor.card.Recognizer;
 import cl.eos.detection.ExtractorResultadosPrueba;
 import cl.eos.detection.OTResultadoScanner;
 import cl.eos.exceptions.CPruebasException;
+import cl.eos.persistence.models.RespuestasEsperadasPrueba;
+import cl.eos.persistence.util.Comparadores;
 import cl.eos.util.Utils;
 import cl.sisdef.util.Pair;
-
-import com.sun.istack.internal.logging.Logger;
 
 /**
  * Imagen escaneada en una resolucion de 300dpi. 1) 1.l) El primer rectangulo
@@ -50,6 +55,8 @@ public abstract class AExtractorResultados implements IExtractorResultados {
 
 	private static final Logger log = Logger
 			.getLogger(AExtractorResultados.class);
+
+	protected int nRut = 0;
 	/**
 	 * Delta x entre las primeras columnas de circulos.
 	 */
@@ -107,6 +114,22 @@ public abstract class AExtractorResultados implements IExtractorResultados {
 	protected Recognizer recognizerRespustas;
 	protected Recognizer recognizerRut;
 
+	/**
+	 * Comparador creado especificamente para ordenar los pares de valores que se obtienen al procesar el RUT.
+	 * Ordena por el primer item que en este caso representa el valor menor de la corrdenada X.
+	 * @return El valor correspondiente indicando si es menor, igual o mayor el primero par con respecto al segundo.
+	 */
+	public static Comparator<? super Pair<Integer, Integer>> compararPairsInteger() {
+		return new Comparator<Pair<Integer, Integer>>() {
+			@Override
+			public int compare(final Pair<Integer, Integer> pairSource,
+					final Pair<Integer, Integer> pairTarget) {
+
+				return pairSource.getFirst().compareTo(pairTarget.getFirst());
+			}
+		};
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -139,27 +162,31 @@ public abstract class AExtractorResultados implements IExtractorResultados {
 	 * @return String con el rut que viene referenciado en la prueba.
 	 */
 
-	static int nRut = 0;
-
 	protected String getRut(Point pRefRut, BufferedImage image) {
 		nRut++;
 		int x = pRefRut.x;
 		StringBuffer strRut = new StringBuffer("");
-		writeIMG(image, "RUT");
 		int y = pRefRut.y;
 
 		BufferedImage firstRut = image.getSubimage(x + 145, y - 2, 66, 48);
 		Point pointFirstRut = getPointReferenciaRut(firstRut);
 		x = pRefRut.x + 145 + pointFirstRut.x;
-
-		BufferedImage sectorRut = image.getSubimage(x, y - 2, x + 600, 555);
-		sectorRut = preprocesarImagen(sectorRut);
+		y = y + pointFirstRut.y + 2;
+		BufferedImage sectorRut = image.getSubimage(x, y , x + 600, 545);
+		sectorRut = preprocesarImagenRut(sectorRut);
 		writeIMG(sectorRut, "SECTOR_RUT");
+		List<Contour> contours = getContoursFullImage(sectorRut);
 
-		for (int n = 0; n < CIRCLE_X_RUT_DIFF.length; n++) {
+		List<Pair<Integer, Integer>> sortedPairs = sortContoursByX(contours);
+
+		for (int n = 0; n < sortedPairs.size(); n++) {
+			Pair<Integer, Integer> minMax = sortedPairs.get(n);
 			y = pRefRut.y;
-			BufferedImage rut = sectorRut.getSubimage(CIRCLE_X_RUT_DIFF[n], 0,
-					51, 555);
+			int start = minMax.getFirst().intValue();
+			int width = minMax.getSecond().intValue()
+					- minMax.getFirst().intValue();
+			BufferedImage rut = sectorRut.getSubimage(start, 0, width, 545);
+
 			writeIMG(rut, "RUT_" + (nRut));
 			nRut++;
 			Pair<Integer, Pair<Double, Double>> result = recognizerRut
@@ -169,7 +196,47 @@ public abstract class AExtractorResultados implements IExtractorResultados {
 				strRut.append(RUT[idx]);
 			}
 		}
+		log.info("Rut obtenido:" + strRut != null ? strRut.toString() : "--");
 		return strRut.toString();
+	}
+
+	/**
+	 * Ordena los contornos en base al valor minimo de la X de cada contorno.
+	 * 
+	 * @param contours
+	 *            Contornos a ordenar.
+	 * @return Lista de Pares ordenados de minimo-maximo.
+	 */
+	private List<Pair<Integer, Integer>> sortContoursByX(List<Contour> contours) {
+		List<Pair<Integer, Integer>> result = new ArrayList<Pair<Integer, Integer>>(
+				contours.size());
+		for (Contour contour : contours) {
+			Pair<Integer, Integer> minMax = getMinMaxX(contour);
+			result.add(minMax);
+		}
+
+		Collections.sort(result, compararPairsInteger());
+
+		return result;
+	}
+
+	private Pair<Integer, Integer> getMinMaxX(Contour contour) {
+		Pair<Integer, Integer> result = null;
+		int min = Integer.MAX_VALUE;
+		int max = Integer.MIN_VALUE;
+		if (contour.external != null && contour.external.size() > 0) {
+			for (int n = 0; n < contour.external.size(); n++) {
+				if (contour.external.get(n).x < min) {
+					min = contour.external.get(n).x;
+				}
+				if (contour.external.get(n).x > max) {
+					max = contour.external.get(n).x;
+				}
+			}
+			result = new Pair<Integer, Integer>(min, max);
+		}
+
+		return result;
 	}
 
 	/**
@@ -187,7 +254,9 @@ public abstract class AExtractorResultados implements IExtractorResultados {
 
 		ImageUInt8 binary = new ImageUInt8(input.width, input.height);
 		ImageSInt32 label = new ImageSInt32(input.width, input.height);
-		ThresholdImageOps.threshold(input, binary, (float) 190, true);
+		double threshold = 185;
+		threshold = GThresholdImageOps.computeOtsu(input, 0, 256);
+		ThresholdImageOps.threshold(input, binary, (float) threshold, true);
 		writeIMG(VisualizeBinaryData.renderBinary(binary, null), "thresholdRut");
 		ImageUInt8 filtered = BinaryImageOps.dilate8(binary, 2, null);
 		filtered = BinaryImageOps.erode8(filtered, 3, null);
@@ -259,6 +328,8 @@ public abstract class AExtractorResultados implements IExtractorResultados {
 				pregunta++;
 			}
 		}
+		log.info("Respuesras obtenidas:" + resp != null ? resp.toString()
+				: "--");
 		return resp.toString();
 	}
 
@@ -294,6 +365,23 @@ public abstract class AExtractorResultados implements IExtractorResultados {
 		return bImage;
 	}
 
+	
+	protected final BufferedImage preprocesarImagenRut(BufferedImage image) {
+		ImageFloat32 input = ConvertBufferedImage.convertFromSingle(image,
+				null, ImageFloat32.class);
+		ImageUInt8 binary = new ImageUInt8(input.width, input.height);
+		double threshold = 185;
+		threshold = GThresholdImageOps.computeOtsu(input, 0, 256);
+		ThresholdImageOps.threshold(input, binary, (float) threshold, false); // 170,180
+		ImageUInt8 output = BinaryImageOps.erode4(binary, 3, null); // 2,4
+		output = BinaryImageOps.dilate4(output, 7, null); // 7,9
+		output = BinaryImageOps.erode4(output, 2, null);
+		output = BinaryImageOps.dilate4(output, 5, null); // 5
+		output = BinaryImageOps.erode4(output, 3, null);
+		BufferedImage bImage = VisualizeBinaryData.renderBinary(output, null);
+
+		return bImage;
+	}
 	/**
 	 * Rotacion de la imagen. Este metodo realiza la corrección de la imagen. En
 	 * esta version solamente enderza la imagen.
@@ -393,20 +481,51 @@ public abstract class AExtractorResultados implements IExtractorResultados {
 	 *            Imagen completa de la prueba.
 	 * @return Lista de los contornos de las imagenes.
 	 */
+	protected final List<Contour> getContoursFullImage(BufferedImage limage) {
+
+		List<Contour> contours = null;
+		BufferedImage image = limage;
+		ImageFloat32 input = ConvertBufferedImage.convertFromSingle(image,
+				null, ImageFloat32.class);
+
+		ImageUInt8 binary = new ImageUInt8(input.width, input.height);
+		ImageSInt32 label = new ImageSInt32(input.width, input.height);
+		double threshold = 190;
+		threshold = GThresholdImageOps.computeOtsu(input, 0, 256);
+		ThresholdImageOps.threshold(input, binary, (float) threshold, true);
+
+		writeIMG(VisualizeBinaryData.renderBinary(binary, null), "threshold");
+		ImageUInt8 filtered = BinaryImageOps.dilate8(binary, 2, null);
+		filtered = BinaryImageOps.erode8(filtered, 9, null);
+		filtered = BinaryImageOps.dilate8(filtered, 10, null);
+		contours = BinaryImageOps.contour(filtered, ConnectRule.EIGHT, label);
+		return contours;
+	}
+
+	
+	/**
+	 * Obtiene los contornos de las marcas establecidas en la impresión.
+	 * 
+	 * @param limage
+	 *            Imagen completa de la prueba.
+	 * @return Lista de los contornos de las imagenes.
+	 */
 	protected final List<Contour> getContours(BufferedImage limage) {
 
 		int h = Math.min(3200, limage.getHeight());
-		int w = 120;
+		int w = 150;
 		List<Contour> contours = null;
 		while (w < 200) {
-			BufferedImage image = limage.getSubimage(0, 0, w , h);
+			BufferedImage image = limage.getSubimage(0, 0, w, h);
 			writeIMG(image, "subimage");
 			ImageFloat32 input = ConvertBufferedImage.convertFromSingle(image,
 					null, ImageFloat32.class);
 
 			ImageUInt8 binary = new ImageUInt8(input.width, input.height);
 			ImageSInt32 label = new ImageSInt32(input.width, input.height);
-			ThresholdImageOps.threshold(input, binary, (float) 190, true);
+			double threshold = 190;
+			threshold = GThresholdImageOps.computeOtsu(input, 0, 256);
+			ThresholdImageOps.threshold(input, binary, (float) threshold, true);
 			writeIMG(VisualizeBinaryData.renderBinary(binary, null),
 					"threshold");
 			ImageUInt8 filtered = BinaryImageOps.dilate8(binary, 2, null);
@@ -508,38 +627,23 @@ public abstract class AExtractorResultados implements IExtractorResultados {
 				.getInstance();
 
 		int n = 37;
-		// for (n = 0; n < 37; n++)
 		{
 			try {
-				limage = ImageIO.read(new File(String.format(
-						"/res/5A_CN_Independencia/prueba%02d.JPG", n)));
+				limage = ImageIO.read(new File("C:\\Users\\eosorio\\Documents\\CPruebas\\pruebas\\K20150630210309843_0010.jpg"));
+				ImageFloat32 input = ConvertBufferedImage.convertFromSingle(limage,
+						null, ImageFloat32.class);
+				ImageUInt8 binary = new ImageUInt8(input.width, input.height);
+				double threshold = 185;
+				threshold = GThresholdImageOps.computeOtsu(input, 0, 256);
+				ThresholdImageOps.threshold(input, binary, (float) threshold, false); // 170,180
+				ImageUInt8 output = BinaryImageOps.erode4(binary, 3, null); // 2,4
+				output = BinaryImageOps.dilate4(output, 7, null); // 7,9
+				output = BinaryImageOps.erode4(output, 2, null);
+				output = BinaryImageOps.dilate4(output, 5, null); // 5
+				output = BinaryImageOps.erode4(output, 3, null);
+				BufferedImage bImage = VisualizeBinaryData.renderBinary(output, null);
 
-				// writeIMG(limage, "0fuente");
-				// ImageFloat32 input =
-				// ConvertBufferedImage.convertFromSingle(limage, null,
-				// ImageFloat32.class);
-				// ImageUInt8 binary = new ImageUInt8(input.width,
-				// input.height);
-				// ThresholdImageOps.threshold(input, binary, (float) 185,
-				// false);
-				// BufferedImage bImage =
-				// VisualizeBinaryData.renderBinary(binary, null);
-				// writeIMG(bImage, "1threshold");
-				// ImageUInt8 output = BinaryImageOps.erode4(binary, 3, null);
-				// bImage = VisualizeBinaryData.renderBinary(output, null);
-				// writeIMG(bImage, "2erode4_1x2");
-				// output = BinaryImageOps.dilate4(output, 7, null);
-				// bImage = VisualizeBinaryData.renderBinary(output, null);
-				// writeIMG(bImage, "3dilate4_1x7");
-				// output = BinaryImageOps.erode4(output, 2, null);
-				// bImage = VisualizeBinaryData.renderBinary(output, null);
-				// writeIMG(bImage, "4erode4_2x2");
-				// output = BinaryImageOps.dilate4(output, 5, null);
-				// bImage = VisualizeBinaryData.renderBinary(output, null);
-				// writeIMG(bImage, "5dialte4_2x5");
-				// output = BinaryImageOps.erode4(output, 8, null);
-				// bImage = VisualizeBinaryData.renderBinary(output, null);
-				// writeIMG(bImage, "6erode4_2x8_finish");
+				writeIMG(bImage, "ejemplo");
 				extractor.process(limage, 35);
 
 			} catch (IOException e) {

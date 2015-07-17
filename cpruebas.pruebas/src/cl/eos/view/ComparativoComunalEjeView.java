@@ -1,6 +1,5 @@
 package cl.eos.view;
 
-import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -9,8 +8,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import org.controlsfx.dialog.Dialogs;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
@@ -26,6 +23,10 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.util.Callback;
+
+import org.apache.log4j.Logger;
+import org.controlsfx.dialog.Dialogs;
+
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.ot.OTPreguntasEjes;
@@ -39,7 +40,6 @@ import cl.eos.persistence.models.PruebaRendida;
 import cl.eos.persistence.models.RespuestasEsperadasPrueba;
 import cl.eos.util.ExcelSheetWriterObj;
 
-import com.sun.istack.internal.logging.Logger;
 
 public class ComparativoComunalEjeView extends AFormView implements
 		EventHandler<ActionEvent> {
@@ -160,7 +160,7 @@ public class ComparativoComunalEjeView extends AFormView implements
 				String respuesta = pruebaRendida.getRespuestas().toUpperCase();
 				Alumno al = pruebaRendida.getAlumno();
 				if (al == null) {
-					log.severe(String.format("NO EXISTE ALUMNO: %s %s",
+					log.error(String.format("NO EXISTE ALUMNO: %s %s",
 							colegioCurso, respuesta));
 					continue; // Caso que el alumno sea nulo.
 				}

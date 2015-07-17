@@ -35,5 +35,6 @@
 	<classpathentry kind="lib" path="O:/cpruebas/jars/boofcv/xpp3_min-1.1.4c.jar"/>
 	<classpathentry kind="lib" path="O:/cpruebas/jars/boofcv/xstream-1.4.7.jar"/>
 	<classpathentry kind="lib" path="O:/cpruebas/jars/controlsfx-8.0.6_20.jar"/>
+	<classpathentry kind="lib" path="O:/cpruebas/jars/log4j.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -24,6 +24,7 @@ import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.util.Callback;
 
+import org.apache.log4j.Logger;
 import org.controlsfx.dialog.Dialogs;
 
 import cl.eos.imp.view.AFormView;
@@ -38,8 +39,6 @@ import cl.eos.persistence.models.Prueba;
 import cl.eos.persistence.models.PruebaRendida;
 import cl.eos.persistence.models.RespuestasEsperadasPrueba;
 import cl.eos.util.ExcelSheetWriterObj;
-
-import com.sun.istack.internal.logging.Logger;
 
 public class ComparativoComunalHabilidadView extends AFormView implements
 		EventHandler<ActionEvent> {
@@ -160,7 +159,7 @@ public class ComparativoComunalHabilidadView extends AFormView implements
 							.toUpperCase();
 					Alumno al = pruebaRendida.getAlumno();
 					if (al == null) {
-						log.severe(String.format("NO EXISTE ALUMNO: %s %s",
+						log.error(String.format("NO EXISTE ALUMNO: %s %s",
 								colegioCurso, respuesta));
 						continue; // Caso que el alumno sea nulo.
 					}

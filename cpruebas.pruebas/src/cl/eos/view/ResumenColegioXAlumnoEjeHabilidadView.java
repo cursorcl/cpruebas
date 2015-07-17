@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executors;
-import java.util.logging.Logger;
 
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -23,6 +22,7 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableView;
 
+import org.apache.log4j.Logger;
 import org.controlsfx.dialog.Dialogs;
 
 import cl.eos.imp.view.AFormView;
@@ -39,7 +39,7 @@ public class ResumenColegioXAlumnoEjeHabilidadView extends AFormView implements
 		EventHandler<ActionEvent> {
 
 	private static Logger log = Logger
-			.getLogger(ResumenColegioXAlumnoEjeHabilidadView.class.getName());
+			.getLogger(ResumenColegioXAlumnoEjeHabilidadView.class);
 	private static final String ASIGNATURA_ID = "idAsignatura";
 	private static final String COLEGIO_ID = "idColegio";
 	@FXML
@@ -218,7 +218,7 @@ public class ResumenColegioXAlumnoEjeHabilidadView extends AFormView implements
 
 						lst.add(curso);
 					} else {
-						log.severe(eval.getName() + " Sin curso");
+						log.error(eval.getName() + " Sin curso");
 					}
 				}
 				return lst;
@@ -234,7 +234,7 @@ public class ResumenColegioXAlumnoEjeHabilidadView extends AFormView implements
 
 			@Override
 			public void handle(WorkerStateEvent event) {
-				log.severe(event.getEventType().toString());
+				log.error(event.getEventType().toString());
 			}
 		});
 		final Dialogs dlg = Dialogs.create();

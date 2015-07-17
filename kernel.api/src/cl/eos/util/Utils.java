@@ -12,7 +12,8 @@ import javax.imageio.ImageReader;
 import javax.imageio.stream.FileImageInputStream;
 import javax.imageio.stream.ImageInputStream;
 
-import com.sun.istack.internal.logging.Logger;
+import org.apache.log4j.Logger;
+
 
 public class Utils {
 
@@ -217,11 +218,11 @@ public class Utils {
 		path += File.separator + "CPruebas";
 		File customDir = new File(path);
 		if (customDir.exists()) {
-			log.info(customDir + " ya existe.");
+			//log.debug(customDir + " ya existe.");
 		} else if (customDir.mkdirs()) {
-			log.info(customDir + " fue creado.");
+			//log.debug(customDir + " fue creado.");
 		} else {
-			log.info(customDir + " no fue creado.");
+			log.error(customDir + " no fue creado.");
 			path = System.getProperty("user.home");
 			customDir = new File(path);
 		}
