@@ -452,7 +452,9 @@ public class ResumenColegioView extends AFormView implements EventHandler<Action
 
   private void generaDatosRangos(PruebaRendida rendida, NivelEvaluacion nivelEvaluacion) {
 
-    float porcentaje = Utils.getPorcenta(rendida.getNota());
+    
+//    float porcentaje = Utils.getPorcenta(rendida.getNota());
+    float porcentaje = (float)rendida.getBuenas() / (float)rendida.getEvaluacionPrueba().getPrueba().getNroPreguntas() * 100f;
     RangoEvaluacion rango = nivelEvaluacion.getRango(porcentaje);
     
     log.info(String.format(";\"%s\";%f;%5.2f%%;\"%s\"", rendida.getCurso(), rendida.getNota(), porcentaje, rango.getName()));

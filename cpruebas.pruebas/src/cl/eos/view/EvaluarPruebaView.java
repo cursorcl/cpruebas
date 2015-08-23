@@ -332,7 +332,9 @@ public class EvaluarPruebaView extends AFormView {
 
 		float total = otRendida.getBuenas() + otRendida.getMalas()
 				+ otRendida.getOmitidas();
-		float porcentaje = Utils.getPorcenta(otRendida.getNota());
+//		float porcentaje = Utils.getPorcenta(otRendida.getNota());
+		float porcentaje = (float)otRendida.getBuenas() / total * 100f;
+		
 		RangoEvaluacion rango = prueba.getNivelEvaluacion()
 				.getRango(porcentaje);
 		otRendida.setNivel(rango);
