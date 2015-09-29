@@ -17,7 +17,7 @@
 			<top>
             <AnchorPane fx:id="pnlWindow" prefHeight="62.0" prefWidth="1024.0">
                <children>
-                  <ImageView fitHeight="60.0" fitWidth="347.0">
+                  <ImageView fitHeight="60.0" fitWidth="193.0">
                      <image>
                         <Image url="@images/logo128.png" />
                      </image>

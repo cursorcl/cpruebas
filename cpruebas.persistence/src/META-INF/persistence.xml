@@ -27,7 +27,7 @@
 		<properties>
 			<property name="toplink.jdbc.user" value="root" />
 			<property name="toplink.jdbc.password" value="admin" />
-			<property name="toplink.jdbc.url" value="jdbc:mysql://localhost:3306/cpruebas" />
+			<property name="toplink.jdbc.url" value="jdbc:mysql://localhost:3306/cpruebas2" />
 			<property name="toplink.jdbc.driver" value="com.mysql.jdbc.Driver" />
 			<!-- 
 			<property name="toplink.ddl-generation" value="update-tables" />
