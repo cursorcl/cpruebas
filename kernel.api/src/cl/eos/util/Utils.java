@@ -118,6 +118,8 @@ public class Utils {
 	public static float getPorcenta(float nota) {
 		return ((float) getPuntaje(nota) / MAX_PUNTAJE) * 100f;
 	}
+	
+	
 
 	/**
 	 * Solo vale cuando es superior a 4.

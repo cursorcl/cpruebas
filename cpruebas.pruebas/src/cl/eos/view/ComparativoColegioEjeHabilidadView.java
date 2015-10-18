@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.controlsfx.dialog.Dialogs;
 
 import javafx.beans.property.SimpleStringProperty;
@@ -45,6 +46,7 @@ import cl.eos.util.Utils;
 public class ComparativoColegioEjeHabilidadView extends AFormView implements
 		EventHandler<ActionEvent> {
 
+	private Logger log = Logger.getLogger("ComparativoColegioEjeHabilidadView");
 	private static final String ASIGNATURA_ID = "idAsignatura";
 	private static final String COLEGIO_ID = "idColegio";
 	@FXML
@@ -300,6 +302,7 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements
 
 		// Todas las evaluaciones asociadas (Todos los cursos)
 		for (EvaluacionPrueba eval : evaluacionesPrueba) {
+
 			// Se esta revisando un curso.
 			eval.getPruebasRendidas().size();
 			List<PruebaRendida> pruebasRendidas = eval.getPruebasRendidas();
@@ -313,19 +316,13 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements
 				// Obtengo el index de la columna que tengo que llenar (mas 1
 				// por que la primera es de
 				// contenido
-				if (pruebaRendida.getAlumno() == null) {
-					continue;
-
-				}
-
-				int index = cursoList.indexOf(pruebaRendida.getAlumno()
-						.getCurso());
+				int index = -1;
+				index = cursoList.indexOf(eval.getCurso());
 
 				if (index == -1) {
 					continue;
 				}
-				totalAlumnos[index] = pruebaRendida.getAlumno().getCurso()
-						.getAlumnos().size();
+				totalAlumnos[index] = eval.getCurso().getAlumnos().size();
 				alumnosEvaluados[index] = alumnosEvaluados[index] + 1;
 
 				String respuestas = pruebaRendida.getRespuestas();
@@ -333,8 +330,8 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements
 					continue;
 				}
 
+				// Obtener ejes y habilidades de esta prueba
 				for (int n = 0; n < respEsperadas.size(); n++) {
-					// Sumando a ejes tematicos
 					EjeTematico eje = respEsperadas.get(n).getEjeTematico();
 					if (!mapEjes.containsKey(eje)) {
 						List<OTPreguntasEjes> lista = new ArrayList<OTPreguntasEjes>();
@@ -343,25 +340,7 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements
 						}
 						mapEjes.put(eje, lista);
 					}
-					List<OTPreguntasEjes> lstEjes = mapEjes.get(eje);
-					OTPreguntasEjes otE = lstEjes.get(index); // Se obtiene el
-																// valor
-																// asociado a la
-																// columna.
-					if (otE == null) {
-						otE = new OTPreguntasEjes();
-						otE.setEjeTematico(eje);
-						lstEjes.set(index, otE);
-					}
-					Pair<Integer, Integer> buenasTotal = obtenerBuenasTotales(
-							respuestas, respEsperadas, eje);
-					otE.setBuenas(otE.getBuenas() + buenasTotal.getFirst());
-					otE.setTotal(otE.getTotal() + buenasTotal.getSecond());
-					lstEjes.set(index, otE);
-
-					// Sumando a habilidades
 					Habilidad hab = respEsperadas.get(n).getHabilidad();
-					System.out.println(hab);
 					if (!mapHabilidades.containsKey(hab)) {
 
 						List<OTPreguntasHabilidad> lista = new ArrayList<OTPreguntasHabilidad>();
@@ -370,28 +349,54 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements
 						}
 						mapHabilidades.put(hab, lista);
 					}
-					List<OTPreguntasHabilidad> lstHabilidades = mapHabilidades
+				}
+
+				for (EjeTematico eje : mapEjes.keySet()) {
+					List<OTPreguntasEjes> lstEjes = mapEjes.get(eje);
+					OTPreguntasEjes otEje = lstEjes.get(index); // Se obtiene el
+																// asociado a la
+																// columna.
+					if (otEje == null) {
+						otEje = new OTPreguntasEjes();
+						otEje.setEjeTematico(eje);
+						lstEjes.set(index, otEje);
+					}
+					Pair<Integer, Integer> buenasTotal = obtenerBuenasTotales(
+							respuestas, respEsperadas, eje);
+
+					otEje.setBuenas(otEje.getBuenas() + buenasTotal.getFirst());
+					otEje.setTotal(otEje.getTotal() + buenasTotal.getSecond());
+					lstEjes.set(index, otEje);
+				}
+
+				for (Habilidad hab : mapHabilidades.keySet()) {
+					List<OTPreguntasHabilidad> lstHabs = mapHabilidades
 							.get(hab);
-					OTPreguntasHabilidad otH = lstHabilidades.get(index);// Se
+					OTPreguntasHabilidad otHabilidad = lstHabs.get(index); // Se
 																			// obtiene
 																			// el
-																			// valor
 																			// asociado
 																			// a
 																			// la
-																			// columna
-					if (otH == null) {
-						otH = new OTPreguntasHabilidad();
-						otH.setHabilidad(hab);
-						lstHabilidades.set(index, otH);
+																			// columna.
+					if (otHabilidad == null) {
+						otHabilidad = new OTPreguntasHabilidad();
+						otHabilidad.setHabilidad(hab);
+						lstHabs.set(index, otHabilidad);
 					}
-					buenasTotal = obtenerBuenasTotales(respuestas,
-							respEsperadas, hab);
-					otH.setBuenas(otE.getBuenas() + buenasTotal.getFirst());
-					otH.setTotal(otE.getTotal() + buenasTotal.getSecond());
-					lstHabilidades.set(index, otH);
-
+					Pair<Integer, Integer> buenasTotal = obtenerBuenasTotales(
+							respuestas, respEsperadas, hab);
+					otHabilidad.setBuenas(otHabilidad.getBuenas()
+							+ buenasTotal.getFirst());
+					otHabilidad.setTotal(otHabilidad.getTotal()
+							+ buenasTotal.getSecond());
+					log.debug(String.format("HAB: %s %d/%d  ACUM: %d/%d",
+							hab.getName(), buenasTotal.getFirst(),
+							buenasTotal.getSecond(), otHabilidad.getBuenas(),
+							otHabilidad.getTotal()));
+					lstHabs.set(index, otHabilidad);
 				}
+
 				for (EvaluacionEjeTematico ejetem : evalEjeTematicoList) {
 					if (ejetem.isInside(pruebaRendida.getPbuenas())) {
 						List<OTPreguntasEvaluacion> lstOt = mapEvaluaciones
