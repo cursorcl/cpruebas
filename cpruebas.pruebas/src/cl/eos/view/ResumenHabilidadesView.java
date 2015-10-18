@@ -34,6 +34,7 @@ import cl.eos.persistence.models.Prueba;
 import cl.eos.persistence.models.PruebaRendida;
 import cl.eos.persistence.models.RespuestasEsperadasPrueba;
 import cl.eos.util.ExcelSheetWriterObj;
+import cl.eos.util.Pair;
 
 public class ResumenHabilidadesView extends AFormView implements
 		EventHandler<ActionEvent> {
@@ -174,43 +175,61 @@ public class ResumenHabilidadesView extends AFormView implements
 		List<RespuestasEsperadasPrueba> respuestasEsperadas = prueba
 				.getRespuestas();
 
+		for(RespuestasEsperadasPrueba  resp: respuestasEsperadas)
+		{
+			mapaHabilidades.put(resp.getHabilidad(), new OTPreguntasHabilidad());
+		}
+		
 		for (PruebaRendida pruebaRendida : pruebasRendidas) {
 			String respuesta = pruebaRendida.getRespuestas();
-			char[] cRespuesta = respuesta.toCharArray();
 
-			for (RespuestasEsperadasPrueba respuestasEsperadasPrueba : respuestasEsperadas) {
-
-				Habilidad hab = respuestasEsperadasPrueba.getHabilidad();
-				Integer numeroPreg = respuestasEsperadasPrueba.getNumero();
-
-				if (mapaHabilidades.containsKey(hab)) {
-
-					OTPreguntasHabilidad otPreguntas = mapaHabilidades.get(hab);
-					if (String.valueOf(cRespuesta[numeroPreg - 1]).toUpperCase().equals(
-							String.valueOf(respuestasEsperadasPrueba.getRespuesta().toCharArray()[0]).toUpperCase()))
-					{
-						otPreguntas.setBuenas(otPreguntas.getBuenas() + 1);
-					}
-					otPreguntas.setTotal(otPreguntas.getTotal() + 1);
-
-				} else {
-					Integer valor = 1;
-					OTPreguntasHabilidad otPreguntas = new OTPreguntasHabilidad();
-					otPreguntas.setHabilidad(hab);
-					if (String.valueOf(cRespuesta[numeroPreg - 1]).toUpperCase().equals(
-							String.valueOf(respuestasEsperadasPrueba.getRespuesta().toCharArray()[0]).toUpperCase()))
-					{
-						otPreguntas.setBuenas(valor);
-					} else {
-						otPreguntas.setBuenas(0);
-					}
-					otPreguntas.setTotal(valor);
-					mapaHabilidades.put(hab, otPreguntas);
-				}
+			for(Habilidad hab: mapaHabilidades.keySet())
+			{
+				OTPreguntasHabilidad otPreguntas = mapaHabilidades.get(hab);
+				Pair<Integer, Integer> result = obtenerBuenasTotales(respuesta, respuestasEsperadas, hab);
+				otPreguntas.setHabilidad(hab);
+				otPreguntas.setBuenas(otPreguntas.getBuenas() + result.getFirst());
+				otPreguntas.setTotal(otPreguntas.getTotal() + result.getSecond());
+				
 			}
 		}
 	}
 
+	
+	/**
+	 * Este metodo evalua la cantidad de buenas de un String de respuesta
+	 * contrastado contra las respuestas esperadas.
+	 * 
+	 * @param respuestas
+	 *            Las respuestas del alumno.
+	 * @param respEsperadas
+	 *            Las respuestas correctas definidas en la prueba.
+	 * @param ahb
+	 *            La Habilidad en base al que se realiza el calculo.
+	 * @return Par <Preguntas buenas, Total de Preguntas> del eje.
+	 */
+	private Pair<Integer, Integer> obtenerBuenasTotales(String respuestas,
+			List<RespuestasEsperadasPrueba> respEsperadas, Habilidad hab) {
+		int nroBuenas = 0;
+		int nroPreguntas = 0;
+		for (int n = 0; n < respEsperadas.size(); n++) {
+			RespuestasEsperadasPrueba resp = respEsperadas.get(n);
+			if (!resp.isAnulada()) {
+				if (resp.getHabilidad().equals(hab)) {
+					if (respuestas.length() > n) {
+						String sResp = respuestas.substring(n, n + 1);
+						if ("+".equals(sResp)
+								|| resp.getRespuesta().equalsIgnoreCase(sResp)) {
+							nroBuenas++;
+						}
+					}
+					nroPreguntas++;
+				}
+			}
+		}
+		return new Pair<Integer, Integer>(nroBuenas, nroPreguntas);
+	}
+	
 	@Override
 	public void handle(ActionEvent event) {
 		Object source = event.getSource();

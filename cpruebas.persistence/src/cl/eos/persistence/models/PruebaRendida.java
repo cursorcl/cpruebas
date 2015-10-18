@@ -139,22 +139,42 @@ public class PruebaRendida implements IEntity {
 	}
 
 	public String getRut() {
+		if(alumno == null)
+		{
+			return "";
+		}
 		return alumno.getRut();
 	}
 
 	public String getPaterno() {
+		if(alumno == null)
+		{
+			return "";
+		}
 		return alumno.getPaterno();
 	}
 
 	public String getMaterno() {
+		if(alumno == null)
+		{
+			return "";
+		}
 		return alumno.getMaterno();
 	}
 
 	public String getNombre() {
+		if(alumno == null)
+		{
+			return "";
+		}
 		return alumno.getName();
 	}
 
 	public String getCurso() {
+		if(alumno == null)
+		{
+			return "";
+		}
 		return alumno.getCurso().getName();
 	}
 

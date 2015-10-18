@@ -134,10 +134,20 @@ public class ResumenXAlumnoEjeHabilidadView extends AFormView implements
 		ObservableList<String> row = null;
 		for (OTAlumnoResumen ot : puntos) {
 			row = FXCollections.observableArrayList();
+			if(ot.getAlumno() != null)
+			{
 			row.add(ot.getAlumno().getRut());
 			row.add(ot.getAlumno().getPaterno());
 			row.add(ot.getAlumno().getMaterno());
 			row.add(ot.getAlumno().getName());
+			}
+			else
+			{
+				row.add("");
+				row.add("");
+				row.add("");
+				row.add("");
+			}
 			List<Float> values = ot.getPorcentajes();
 			for (Float value : values) {
 				row.add(String.valueOf(Utils.redondeo1Decimal(value)));

@@ -28,12 +28,15 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.ot.OTPreguntasEjes;
+import cl.eos.ot.OTPreguntasHabilidad;
 import cl.eos.persistence.models.EjeTematico;
 import cl.eos.persistence.models.EvaluacionPrueba;
+import cl.eos.persistence.models.Habilidad;
 import cl.eos.persistence.models.Prueba;
 import cl.eos.persistence.models.PruebaRendida;
 import cl.eos.persistence.models.RespuestasEsperadasPrueba;
 import cl.eos.util.ExcelSheetWriterObj;
+import cl.eos.util.Pair;
 
 public class ResumenEjesTematicosView extends AFormView  implements
 EventHandler<ActionEvent>{
@@ -175,45 +178,60 @@ EventHandler<ActionEvent>{
 		List<RespuestasEsperadasPrueba> respuestasEsperadas = prueba
 				.getRespuestas();
 
+		for(RespuestasEsperadasPrueba  resp: respuestasEsperadas)
+		{
+			mapaEjesTematicos.put(resp.getEjeTematico(), new OTPreguntasEjes());
+		}
+		
 		for (PruebaRendida pruebaRendida : pruebasRendidas) {
 			String respuesta = pruebaRendida.getRespuestas();
-			char[] cRespuesta = respuesta.toCharArray();
 
-			for (RespuestasEsperadasPrueba respuestasEsperadasPrueba : respuestasEsperadas) {
-
-				EjeTematico ejeTematico = respuestasEsperadasPrueba
-						.getEjeTematico();
-				Integer numeroPreg = respuestasEsperadasPrueba.getNumero();
-
-				if (mapaEjesTematicos.containsKey(ejeTematico)) {
-
-					OTPreguntasEjes otPreguntas = mapaEjesTematicos
-							.get(ejeTematico);
-					if (String.valueOf(cRespuesta[numeroPreg - 1]).toUpperCase().equals(
-							String.valueOf(respuestasEsperadasPrueba.getRespuesta().toCharArray()[0]).toUpperCase())) 
-					{
-						otPreguntas.setBuenas(otPreguntas.getBuenas() + 1);
-					}
-					otPreguntas.setTotal(otPreguntas.getTotal() + 1);
-
-				} else {
-					Integer valor = 1;
-					OTPreguntasEjes otPreguntas = new OTPreguntasEjes();
-					otPreguntas.setEjeTematico(ejeTematico);
-					if (String.valueOf(cRespuesta[numeroPreg - 1]).toUpperCase().equals(
-							String.valueOf(respuestasEsperadasPrueba.getRespuesta().toCharArray()[0]).toUpperCase()))
-					{
-						otPreguntas.setBuenas(valor);
-					} else {
-						otPreguntas.setBuenas(0);
-					}
-					otPreguntas.setTotal(valor);
-					mapaEjesTematicos.put(ejeTematico, otPreguntas);
-				}
+			for(EjeTematico hab: mapaEjesTematicos.keySet())
+			{
+				OTPreguntasEjes otPreguntas = mapaEjesTematicos.get(hab);
+				Pair<Integer, Integer> result = obtenerBuenasTotales(respuesta, respuestasEsperadas, hab);
+				otPreguntas.setEjeTematico(hab);
+				otPreguntas.setBuenas(otPreguntas.getBuenas() + result.getFirst());
+				otPreguntas.setTotal(otPreguntas.getTotal() + result.getSecond());
+				
 			}
 		}
 	}
 
+	/**
+	 * Este metodo evalua la cantidad de buenas de un String de respuesta
+	 * contrastado contra las respuestas eperadas.
+	 * 
+	 * @param respuestas
+	 *            Las respuestas del alumno.
+	 * @param respEsperadas
+	 *            Las respuestas correctas definidas en la prueba.
+	 * @param eje
+	 *            El Eje tematico en base al que se realiza el calculo.
+	 * @return Par <Preguntas buenas, Total de Preguntas> del eje.
+	 */
+	private Pair<Integer, Integer> obtenerBuenasTotales(String respuestas,
+			List<RespuestasEsperadasPrueba> respEsperadas, EjeTematico eje) {
+		int nroBuenas = 0;
+		int nroPreguntas = 0;
+		for (int n = 0; n < respEsperadas.size(); n++) {
+			RespuestasEsperadasPrueba resp = respEsperadas.get(n);
+			if (!resp.isAnulada()) {
+				if (resp.getEjeTematico().equals(eje)) {
+					if (respuestas.length() > n) {
+						String sResp = respuestas.substring(n, n + 1);
+						if ("+".equals(sResp)
+								|| resp.getRespuesta().equalsIgnoreCase(sResp)) {
+							nroBuenas++;
+						}
+					}
+					nroPreguntas++;
+				}
+			}
+		}
+		return new Pair<Integer, Integer>(nroBuenas, nroPreguntas);
+	}
+	
 	@Override
 	public void handle(ActionEvent event) {
 		Object source = event.getSource();
