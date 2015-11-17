@@ -469,8 +469,8 @@ public abstract class AExtractorResultados implements IExtractorResultados {
 		int dx = x[n - 1] - x[0];
 		int dy = y[n - 1] - y[0];
 		double angle = Math.PI / 2f - Math.atan2(dy, dx);
-		// log.info(String.format("Angulo: %f[rad] %f[°]", angle, angle /
-		// Math.PI * 180.0));
+		 log.info(String.format("Angulo: %f[rad] %f[°]", angle, angle /
+		 Math.PI * 180.0));
 		return angle;
 	}
 
@@ -513,7 +513,7 @@ public abstract class AExtractorResultados implements IExtractorResultados {
 	protected final List<Contour> getContours(BufferedImage limage) {
 
 		int h = Math.min(3200, limage.getHeight());
-		int w = 180;
+		int w = 160;
 		List<Contour> contours = null;
 		while (w < 200) {
 			BufferedImage image = limage.getSubimage(0, 0, w, h);
@@ -523,7 +523,7 @@ public abstract class AExtractorResultados implements IExtractorResultados {
 
 			ImageUInt8 binary = new ImageUInt8(input.width, input.height);
 			ImageSInt32 label = new ImageSInt32(input.width, input.height);
-			double threshold = 190;
+			double threshold = 200;
 			threshold = GThresholdImageOps.computeOtsu(input, 0, 256);
 			ThresholdImageOps.threshold(input, binary, (float) threshold, true);
 			writeIMG(VisualizeBinaryData.renderBinary(binary, null),

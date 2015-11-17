@@ -61,7 +61,7 @@ public class ExtractorResultadosPrueba extends AExtractorResultados {
 		BufferedImage bImg = ImageIO.read(archivo);
 		int h = bImg.getHeight();
 		int w = bImg.getWidth();
-		if (h < 3210 || w < 2480) {
+		if (h < 3200 || w < 2480) {
 			log.error(String.format(
 					"Dimensiones de la prueba son muy pequeñas %dx%d", w, h));
 			throw new CPruebasException(String.format(
