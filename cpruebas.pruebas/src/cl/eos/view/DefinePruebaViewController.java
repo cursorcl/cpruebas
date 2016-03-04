@@ -2,6 +2,7 @@ package cl.eos.view;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -458,7 +459,6 @@ public class DefinePruebaViewController extends AFormView {
 		if (fromPrueba == null) {
 			fromPrueba = new ArrayList<RespuestasEsperadasPrueba>();
 		}
-
 		int n = 0;
 		while (n < fromPrueba.size() && n < registros.size()) {
 			RegistroDefinePrueba registro = registros.get(n);

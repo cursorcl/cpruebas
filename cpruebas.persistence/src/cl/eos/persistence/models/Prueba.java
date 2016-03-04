@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 
 import cl.eos.interfaces.entity.IEntity;
 
@@ -50,6 +51,7 @@ public class Prueba implements IEntity {
 	private List<Formas> formas;
 
 	@OneToMany(mappedBy = "prueba", cascade = CascadeType.ALL)
+	@OrderBy("numero ASC")
 	private List<RespuestasEsperadasPrueba> respuestas;
 
 	@OneToMany(mappedBy = "prueba", cascade = CascadeType.ALL)
