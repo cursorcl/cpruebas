@@ -3,7 +3,6 @@ package cl.eos.view;
 import java.util.Arrays;
 import java.util.List;
 
-import javafx.collections.ObservableList;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.persistence.models.EvaluacionEjeTematico;
 
