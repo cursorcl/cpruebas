@@ -7,12 +7,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.Version;
 
-import cl.eos.interfaces.entity.IEntity;
+import cl.eos.persistence.AEntity;
 
 @Entity(name = "tipocurso")
 @NamedQueries({ @NamedQuery(name = "TipoCurso.findAll", query = "SELECT e FROM tipocurso e order by e.name") })
-public class TipoCurso implements IEntity {
+public class TipoCurso extends AEntity {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -22,6 +23,22 @@ public class TipoCurso implements IEntity {
 	@Column(length = 100)
 	private String name;
 
+	
+	/**
+	 * Se crea para el manejo de multiusuarios
+	 */
+	@Version 
+	protected int version;
+	
+	
+	public final int getVersion() {
+		return version;
+	}
+
+	public final void setVersion(int version) {
+		this.version = version;
+	}
+	
 	@Override
 	public Long getId() {
 		return id;

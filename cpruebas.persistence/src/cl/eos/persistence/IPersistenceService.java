@@ -9,11 +9,11 @@ import cl.eos.interfaces.entity.IPersistenceListener;
 
 public interface IPersistenceService {
 
-  void save(IEntity entity);
+	IEntity save(IEntity entity);
 
-  void update(IEntity entity);
+	IEntity update(IEntity entity);
 
-  void delete(IEntity entity);
+	IEntity delete(IEntity entity);
 
   /**
    * Se utiliza principalmente para ejecutar operaciones de actualizacion en la base de datos

@@ -8,8 +8,9 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.Version;
 
-import cl.eos.interfaces.entity.IEntity;
+import cl.eos.persistence.AEntity;
 
 /**
  * Contiene las respuestas esperadas de una prueba
@@ -21,7 +22,7 @@ import cl.eos.interfaces.entity.IEntity;
     @NamedQuery(name = "RespuestasEsperadasPrueba.findAll", query = "SELECT e FROM respuestasesperadasprueba e"),
     @NamedQuery(name = "RespuestasEsperadasPrueba.findByPrueba", query = "SELECT e FROM respuestasesperadasprueba e WHERE e.prueba.id = :pruebaId order by e.numero"),
     @NamedQuery(name = "RespuestasEsperadasPrueba.deleteByPrueba", query = "DELETE FROM respuestasesperadasprueba e WHERE e.prueba.id = :pruebaId")})
-public class RespuestasEsperadasPrueba implements IEntity {
+public class RespuestasEsperadasPrueba extends AEntity {
 
   private static final long serialVersionUID = 1L;
 
@@ -40,6 +41,21 @@ public class RespuestasEsperadasPrueba implements IEntity {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
   private String name;
+  
+	/**
+	 * Se crea para el manejo de multiusuarios
+	 */
+	@Version 
+	protected int version;
+	
+	
+	public final int getVersion() {
+		return version;
+	}
+
+	public final void setVersion(int version) {
+		this.version = version;
+	}
 
   @Override
   public Long getId() {

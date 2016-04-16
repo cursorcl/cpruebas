@@ -11,17 +11,16 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.Version;
 
-import cl.eos.interfaces.entity.IEntity;
+import cl.eos.persistence.AEntity;
 
 @Entity(name = "curso")
-@NamedQueries({
-		@NamedQuery(name = "Curso.findAll", query = "SELECT e FROM curso e order by e.name"),
+@NamedQueries({ @NamedQuery(name = "Curso.findAll", query = "SELECT e FROM curso e order by e.name"),
 		@NamedQuery(name = "Curso.findByTipo", query = "SELECT e FROM curso e where e.tipoCurso.id = :tcursoId"),
 		@NamedQuery(name = "Curso.findByColegio", query = "SELECT e FROM curso e where e.colegio.id = :coelgioId"),
-		@NamedQuery(name = "Curso.findByTipoColegio", query = "SELECT e FROM curso e where e.colegio.id = :colegioId and e.tipoCurso.id = :tcursoId")
-		})
-public class Curso implements IEntity {
+		@NamedQuery(name = "Curso.findByTipoColegio", query = "SELECT e FROM curso e where e.colegio.id = :colegioId and e.tipoCurso.id = :tcursoId") })
+public class Curso extends AEntity {
 
 	private static final long serialVersionUID = 1L;
 	@Id
@@ -31,10 +30,27 @@ public class Curso implements IEntity {
 	private Ciclo ciclo;
 	private Colegio colegio;
 
-	@OneToMany(mappedBy = "curso", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+	@OneToMany(mappedBy = "curso", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Collection<Alumno> alumnos;
 	private TipoCurso tipoCurso;
 
+	
+	/**
+	 * Se crea para el manejo de multiusuarios
+	 */
+	@Version 
+	protected int version;
+	
+	
+	public final int getVersion() {
+		return version;
+	}
+
+	public final void setVersion(int version) {
+		this.version = version;
+	}
+	
+	
 	@Override
 	public Long getId() {
 		return id;
@@ -97,30 +113,29 @@ public class Curso implements IEntity {
 		return name;
 	}
 
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((id == null) ? 0 : id.hashCode());
-    return result;
-  }
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
 
-  @Override
-  public boolean equals(Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    Curso other = (Curso) obj;
-    if (id == null) {
-      if (other.id != null)
-        return false;
-    } else if (!id.equals(other.id))
-      return false;
-    return true;
-  }
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Curso other = (Curso) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
+	}
 
-	
 }

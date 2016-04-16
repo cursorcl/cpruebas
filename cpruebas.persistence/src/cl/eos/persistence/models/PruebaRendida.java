@@ -1,6 +1,5 @@
 package cl.eos.persistence.models;
 
-import java.util.Arrays;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -10,13 +9,14 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.Version;
 
-import cl.eos.interfaces.entity.IEntity;
+import cl.eos.persistence.AEntity;
 import cl.eos.util.Utils;
 
 @Entity(name = "pruebarendida")
 @NamedQueries({@NamedQuery(name = "PruebaRendida.findAll", query = "SELECT e FROM pruebarendida e")})
-public class PruebaRendida implements IEntity {
+public class PruebaRendida extends AEntity {
 
   private static final long serialVersionUID = 1L;
   @Id
@@ -37,6 +37,21 @@ public class PruebaRendida implements IEntity {
   private EvaluacionPrueba evaluacionPrueba;
 
   private RangoEvaluacion rango;
+  
+	/**
+	 * Se crea para el manejo de multiusuarios
+	 */
+	@Version 
+	protected int version;
+	
+	
+	public final int getVersion() {
+		return version;
+	}
+
+	public final void setVersion(int version) {
+		this.version = version;
+	}
 
   /**
    * Corresponde a la forma asociada a la prueba del alumno.

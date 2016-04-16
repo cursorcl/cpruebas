@@ -6,12 +6,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.Version;
 
-import cl.eos.interfaces.entity.IEntity;
+import cl.eos.persistence.AEntity;
 
 @Entity(name = "ciclo")
 @NamedQueries({ @NamedQuery(name = "Ciclo.findAll", query = "SELECT e FROM ciclo e order by e.name") })
-public class Ciclo implements IEntity {
+public class Ciclo extends AEntity {
 
 	private static final long serialVersionUID = 1L;
 	@Id
@@ -19,6 +20,21 @@ public class Ciclo implements IEntity {
 	private Long id;
 	private String name;
 
+	/**
+	 * Se crea para el manejo de multiusuarios
+	 */
+	@Version 
+	protected int version;
+	
+	
+	public final int getVersion() {
+		return version;
+	}
+
+	public final void setVersion(int version) {
+		this.version = version;
+	}
+	
 	@Override
 	public Long getId() {
 		return id;

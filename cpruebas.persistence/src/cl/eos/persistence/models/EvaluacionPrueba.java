@@ -14,8 +14,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.Version;
 
-import cl.eos.interfaces.entity.IEntity;
+import cl.eos.persistence.AEntity;
 
 @Entity(name = "evaluacionprueba")
 @NamedQueries({
@@ -23,7 +24,7 @@ import cl.eos.interfaces.entity.IEntity;
 		@NamedQuery(name = "EvaluacionPrueba.findEvaluacionByColegioAsig", 
 		query = "SELECT e FROM evaluacionprueba e where e.colegio.id = :idColegio and e.prueba.asignatura.id = :idAsignatura"),
 		@NamedQuery(name = "EvaluacionPrueba.findByPrueba", query = "SELECT e FROM evaluacionprueba e where e.prueba.id = :idPrueba") })
-public class EvaluacionPrueba implements IEntity {
+public class EvaluacionPrueba extends AEntity {
 
 	private static final long serialVersionUID = 1L;
 	@Id
@@ -42,6 +43,22 @@ public class EvaluacionPrueba implements IEntity {
 	private Profesor profesor;
 	private Colegio colegio;
 
+	
+	/**
+	 * Se crea para el manejo de multiusuarios
+	 */
+	@Version 
+	protected int version;
+	
+	
+	public final int getVersion() {
+		return version;
+	}
+
+	public final void setVersion(int version) {
+		this.version = version;
+	}
+	
 	@Override
 	public Long getId() {
 		return id;

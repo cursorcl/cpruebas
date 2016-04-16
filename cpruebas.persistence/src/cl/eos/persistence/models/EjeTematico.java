@@ -6,13 +6,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.Version;
 
-import cl.eos.interfaces.entity.IEntity;
+import cl.eos.persistence.AEntity;
 
 @Entity(name = "ejetematico")
 @NamedQueries({ @NamedQuery(name = "EjeTematico.findAll", query = "SELECT e FROM ejetematico e order by e.name"),
                 @NamedQuery(name = "EjeTematico.findByAsigntura", query = "Select e FROM ejetematico e WHERE e.asignatura.id = :idAsignatura")})
-public class EjeTematico implements IEntity {
+public class EjeTematico extends AEntity {
 
 	private static final long serialVersionUID = 1L;
 	@Id
@@ -22,6 +23,21 @@ public class EjeTematico implements IEntity {
 	private TipoPrueba tipoprueba;
 	private Asignatura asignatura;
 
+	/**
+	 * Se crea para el manejo de multiusuarios
+	 */
+	@Version 
+	protected int version;
+	
+	
+	public final int getVersion() {
+		return version;
+	}
+
+	public final void setVersion(int version) {
+		this.version = version;
+	}
+	
 	@Override
 	public Long getId() {
 		return id;

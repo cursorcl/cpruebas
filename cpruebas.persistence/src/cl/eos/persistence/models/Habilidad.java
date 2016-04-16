@@ -6,12 +6,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.Version;
 
-import cl.eos.interfaces.entity.IEntity;
+import cl.eos.persistence.AEntity;
 
 @Entity(name = "habilidad")
 @NamedQueries({@NamedQuery(name = "Habilidad.findAll", query = "SELECT e FROM habilidad e order by e.name")})
-public class Habilidad implements IEntity {
+public class Habilidad extends AEntity {
   private static final long serialVersionUID = 1L;
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,6 +20,21 @@ public class Habilidad implements IEntity {
   private String name;
   private String descripcion;
 
+	/**
+	 * Se crea para el manejo de multiusuarios
+	 */
+	@Version 
+	protected int version;
+	
+	
+	public final int getVersion() {
+		return version;
+	}
+
+	public final void setVersion(int version) {
+		this.version = version;
+	}
+  
   @Override
   public Long getId() {
     return id;

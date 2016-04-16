@@ -45,7 +45,7 @@ public interface IModel {
 	 * @param entity
 	 *            El elemento a ser grabado.
 	 */
-	void save(IEntity entity);
+	IEntity save(IEntity entity);
 
 	/**
 	 * Elimina el elemento en el medio de persistencia.
@@ -53,7 +53,7 @@ public interface IModel {
 	 * @param entity
 	 *            El elemento a ser eliminado.
 	 */
-	void delete(IEntity entity);
+	IEntity delete(IEntity entity);
 
 	/**
 	 * Elimina los elementos en el medio de persistencia.
@@ -69,7 +69,7 @@ public interface IModel {
 	 * @param entity
 	 *            El elemento a ser grabado.
 	 */
-	void update(IEntity entity);
+	IEntity update(IEntity entity);
 
 	/**
 	 * Busca todos los registros de una entidad.

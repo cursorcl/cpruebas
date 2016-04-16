@@ -6,12 +6,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.Version;
 
-import cl.eos.interfaces.entity.IEntity;
+import cl.eos.persistence.AEntity;
 
 @Entity(name = "rangoevaluacion")
 @NamedQueries({ @NamedQuery(name = "RangoEvaluacion.findAll", query = "SELECT e FROM rangoevaluacion e") })
-public class RangoEvaluacion implements IEntity {
+public class RangoEvaluacion extends AEntity {
 
 	private static final long serialVersionUID = 1L;
 	@Id
@@ -22,6 +23,22 @@ public class RangoEvaluacion implements IEntity {
 	private Float minimo;
 	private Float maximo;
 
+	
+	/**
+	 * Se crea para el manejo de multiusuarios
+	 */
+	@Version 
+	protected int version;
+	
+	
+	public final int getVersion() {
+		return version;
+	}
+
+	public final void setVersion(int version) {
+		this.version = version;
+	}
+	
 	@Override
 	public Long getId() {
 		return id;

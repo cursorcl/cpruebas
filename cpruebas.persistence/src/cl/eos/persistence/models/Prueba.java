@@ -13,12 +13,13 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
+import javax.persistence.Version;
 
-import cl.eos.interfaces.entity.IEntity;
+import cl.eos.persistence.AEntity;
 
 @Entity(name = "prueba")
 @NamedQueries({ @NamedQuery(name = "Prueba.findAll", query = "SELECT e FROM prueba e") })
-public class Prueba implements IEntity {
+public class Prueba extends AEntity {
 
 	public enum Estado {
 		CREADA, DEFINIDA, EVALUADA
@@ -47,6 +48,7 @@ public class Prueba implements IEntity {
 	private String responses;
 	private Integer exigencia;
 
+	
 	@OneToMany(mappedBy = "prueba", cascade = CascadeType.ALL)
 	private List<Formas> formas;
 
@@ -56,6 +58,22 @@ public class Prueba implements IEntity {
 
 	@OneToMany(mappedBy = "prueba", cascade = CascadeType.ALL)
 	private List<EvaluacionPrueba> evaluaciones;
+	
+	/**
+	 * Se crea para el manejo de multiusuarios
+	 */
+	@Version 
+	protected int version;
+	
+	
+	public final int getVersion() {
+		return version;
+	}
+
+	public final void setVersion(int version) {
+		this.version = version;
+	}
+	
 
 	public TipoPrueba getTipoPrueba() {
 		return tipoPrueba;

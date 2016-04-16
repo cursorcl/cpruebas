@@ -4,12 +4,13 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.Version;
 
-import cl.eos.interfaces.entity.IEntity;
+import cl.eos.persistence.AEntity;
 
 @Entity(name = "evaluacionejetematico")
 @NamedQueries({ @NamedQuery(name = "EvaluacionEjeTematico.findAll", query = "SELECT e FROM evaluacionejetematico e") })
-public class EvaluacionEjeTematico implements IEntity {
+public class EvaluacionEjeTematico extends AEntity {
 	
 	/**
 	 * Numero serial.
@@ -20,6 +21,22 @@ public class EvaluacionEjeTematico implements IEntity {
 	private String name;
 	private Float nroRangoMin = 0F;
 	private Float nroRangoMax = 0F;
+	
+	/**
+	 * Se crea para el manejo de multiusuarios
+	 */
+	@Version 
+	protected int version;
+	
+	
+	public final int getVersion() {
+		return version;
+	}
+
+	public final void setVersion(int version) {
+		this.version = version;
+	}
+	
 	
 	@Override
 	public Long getId() {

@@ -1,6 +1,5 @@
 package cl.eos.imp.model;
 
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -17,9 +16,13 @@ public abstract class AModel implements IModel {
 	protected IController controller;
 
 	@Override
-	public void save(IEntity entity) {
-		PersistenceServiceFactory.getPersistenceService().save(entity);
+	public IEntity save(IEntity entity) {
+		IEntity result = PersistenceServiceFactory.getPersistenceService().save(entity);
+		int idx = entities.indexOf(result);
+		if (idx != -1)
+			entities.remove(idx);
 		entities.add(entity);
+		return result;
 	}
 
 	public IController getController() {
@@ -31,9 +34,10 @@ public abstract class AModel implements IModel {
 	}
 
 	@Override
-	public void delete(IEntity entity) {
-		PersistenceServiceFactory.getPersistenceService().delete(entity);
-		entities.remove(entity);
+	public IEntity delete(IEntity entity) {
+		IEntity result = PersistenceServiceFactory.getPersistenceService().delete(entity);
+		entities.remove(result);
+		return result;
 	}
 
 	@Override
@@ -44,17 +48,18 @@ public abstract class AModel implements IModel {
 	}
 
 	@Override
-	public void update(IEntity entity) {
-		PersistenceServiceFactory.getPersistenceService().save(entity);
-		entities.remove(entity);
-		entities.add(entity);
+	public IEntity update(IEntity entity) {
+		IEntity result = PersistenceServiceFactory.getPersistenceService().save(entity);
+		int idx = entities.indexOf(result);
+		if (idx != -1)
+			entities.remove(idx);
+		entities.add(result);
+		return result;
 	}
 
 	@Override
-	public void findAll(Class<? extends IEntity> entityClazz,
-			IPersistenceListener listener) {
-		PersistenceServiceFactory.getPersistenceService().findAll(entityClazz,
-				listener);
+	public void findAll(Class<? extends IEntity> entityClazz, IPersistenceListener listener) {
+		PersistenceServiceFactory.getPersistenceService().findAll(entityClazz, listener);
 	}
 
 	@Override
@@ -84,24 +89,18 @@ public abstract class AModel implements IModel {
 	}
 
 	@Override
-	public void find(String namedQuery, Map<String, Object> parameters,
-			IPersistenceListener listener) {
-		PersistenceServiceFactory.getPersistenceService().find(namedQuery,
-				parameters, listener);
+	public void find(String namedQuery, Map<String, Object> parameters, IPersistenceListener listener) {
+		PersistenceServiceFactory.getPersistenceService().find(namedQuery, parameters, listener);
 	}
 
 	@Override
-	public void findById(Class<? extends IEntity> entityClazz, Long id,
-			IPersistenceListener listener) {
-		PersistenceServiceFactory.getPersistenceService().findById(entityClazz,
-				id, listener);
+	public void findById(Class<? extends IEntity> entityClazz, Long id, IPersistenceListener listener) {
+		PersistenceServiceFactory.getPersistenceService().findById(entityClazz, id, listener);
 	}
 
 	@Override
-	public void findByName(Class<? extends IEntity> entityClazz, String name,
-			IPersistenceListener listener) {
-		PersistenceServiceFactory.getPersistenceService().findByName(
-				entityClazz, name, listener);
+	public void findByName(Class<? extends IEntity> entityClazz, String name, IPersistenceListener listener) {
+		PersistenceServiceFactory.getPersistenceService().findByName(entityClazz, name, listener);
 	}
 
 	@Override
@@ -129,15 +128,13 @@ public abstract class AModel implements IModel {
 	public void findByAllId(Class<? extends IEntity> entityClazz, Object[] id) {
 		if (controller != null && controller instanceof IPersistenceListener) {
 
-			PersistenceServiceFactory.getPersistenceService().findByAllId(
-					entityClazz, id, (IPersistenceListener) controller);
+			PersistenceServiceFactory.getPersistenceService().findByAllId(entityClazz, id,
+					(IPersistenceListener) controller);
 		}
 	}
 
-	public void findByAllId(Class<? extends IEntity> entityClazz, Object[] id,
-			IPersistenceListener listener) {
-		PersistenceServiceFactory.getPersistenceService().findByAllId(
-				entityClazz, id, listener);
+	public void findByAllId(Class<? extends IEntity> entityClazz, Object[] id, IPersistenceListener listener) {
+		PersistenceServiceFactory.getPersistenceService().findByAllId(entityClazz, id, listener);
 	}
 
 	@Override

@@ -11,13 +11,14 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.Version;
 
-import cl.eos.interfaces.entity.IEntity;
+import cl.eos.persistence.AEntity;
 
 @Entity(name = "tipocolegio")
 @NamedQueries({ @NamedQuery(name = "TipoColegio.findAll", query = "SELECT e FROM tipocolegio e order by e.name")})
 
-public class TipoColegio implements IEntity{
+public class TipoColegio extends AEntity {
 	
 	private static final long serialVersionUID = 1L;
 	@Id
@@ -28,6 +29,22 @@ public class TipoColegio implements IEntity{
 	@OneToMany(mappedBy = "tipoColegio", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
 	private Collection<Colegio> colegios;
 
+	
+	/**
+	 * Se crea para el manejo de multiusuarios
+	 */
+	@Version 
+	protected int version;
+	
+	
+	public final int getVersion() {
+		return version;
+	}
+
+	public final void setVersion(int version) {
+		this.version = version;
+	}
+	
 	public Long getId() {
 		return id;
 	}

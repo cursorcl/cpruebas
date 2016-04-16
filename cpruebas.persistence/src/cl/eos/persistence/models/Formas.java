@@ -9,15 +9,16 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.Version;
 
-import cl.eos.interfaces.entity.IEntity;
+import cl.eos.persistence.AEntity;
 
 @Entity(name = "formas")
 @NamedQueries({ @NamedQuery(name = "Formas.findAll", query = "SELECT e FROM formas e"),
-                @NamedQuery(name = "Formas.findByPrueba", query = "SELECT e FROM formas e WHERE e.prueba.id = :pruebaId"),
-                @NamedQuery(name = "Formas.deleteByPrueba", query = "DELETE FROM formas e WHERE e.prueba.id = :pruebaId")})
+		@NamedQuery(name = "Formas.findByPrueba", query = "SELECT e FROM formas e WHERE e.prueba.id = :pruebaId"),
+		@NamedQuery(name = "Formas.deleteByPrueba", query = "DELETE FROM formas e WHERE e.prueba.id = :pruebaId") })
 
-public class Formas implements IEntity {
+public class Formas extends AEntity {
 
 	private static final long serialVersionUID = 1L;
 
@@ -37,15 +38,29 @@ public class Formas implements IEntity {
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Prueba prueba;
 
+	/**
+	 * Se crea para el manejo de multiusuarios
+	 */
+	@Version
+	protected int version;
+
+	public final int getVersion() {
+		return version;
+	}
+
+	public final void setVersion(int version) {
+		this.version = version;
+	}
+
 	public Prueba getPrueba() {
-    return prueba;
-  }
+		return prueba;
+	}
 
-  public void setPrueba(Prueba prueba) {
-    this.prueba = prueba;
-  }
+	public void setPrueba(Prueba prueba) {
+		this.prueba = prueba;
+	}
 
-  @Override
+	@Override
 	public Long getId() {
 		return id;
 	}
@@ -86,10 +101,9 @@ public class Formas implements IEntity {
 		this.orden = orden;
 	}
 
-  @Override
-  public String toString() {
-    return name;
-  }
+	@Override
+	public String toString() {
+		return name;
+	}
 
-	
 }
