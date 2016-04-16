@@ -17,6 +17,7 @@ import javafx.stage.FileChooser;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.LockModeType;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 import javax.persistence.RollbackException;
@@ -59,6 +60,7 @@ public class PersistenceService implements IPersistenceService {
 	@Override
 	public void save(IEntity entity) {
 		eManager.getTransaction().begin();
+		eManager.lock(entity, LockModeType.WRITE);
 		eManager.persist(entity);
 		eManager.getTransaction().commit();
 	}
@@ -73,7 +75,9 @@ public class PersistenceService implements IPersistenceService {
 	@Override
 	public void delete(IEntity entity) {
 		try {
+			
 			eManager.getTransaction().begin();
+			eManager.lock(entity, LockModeType.WRITE);
 			eManager.remove(entity);
 			eManager.getTransaction().commit();
 		} catch (RollbackException exception) {
@@ -93,6 +97,7 @@ public class PersistenceService implements IPersistenceService {
 
 	@Override
 	public void update(IEntity entity) {
+		eManager.lock(entity, LockModeType.OPTIMISTIC);
 		eManager.getTransaction().begin();
 		eManager.persist(entity);
 		eManager.getTransaction().commit();
@@ -113,7 +118,7 @@ public class PersistenceService implements IPersistenceService {
 				Query query = eManager.createNamedQuery(findAll);
 
 				if (query != null) {
-					lresults = query.getResultList();
+					lresults = query.setLockMode(LockModeType.PESSIMISTIC_WRITE).getResultList();
 				}
 				return lresults;
 			}
@@ -152,7 +157,7 @@ public class PersistenceService implements IPersistenceService {
 							}
 						}
 					}
-					lresults = query.getResultList();
+					lresults = query.setLockMode(LockModeType.PESSIMISTIC_WRITE).getResultList();
 
 				}
 				return lresults;
@@ -183,7 +188,7 @@ public class PersistenceService implements IPersistenceService {
 				Query query = eManager.createQuery(strQuery);
 				if (query != null) {
 					query.setParameter("id", id);
-					lresult = (IEntity) query.getSingleResult();
+					lresult = (IEntity) query.setLockMode(LockModeType.PESSIMISTIC_WRITE).getSingleResult();
 				}
 				return lresult;
 			}
@@ -224,7 +229,7 @@ public class PersistenceService implements IPersistenceService {
 					Query query = eManager.createQuery(strQuery);
 					if (query != null) {
 
-						lresult = query.getResultList();
+						lresult = query.setLockMode(LockModeType.PESSIMISTIC_WRITE).getResultList();
 					}
 				}
 				return lresult;
@@ -253,7 +258,7 @@ public class PersistenceService implements IPersistenceService {
 						"select c from %s c where c.name = :name", strEntity));
 				if (query != null) {
 					query.setParameter("name", name);
-					lresult = (IEntity) query.getSingleResult();
+					lresult = (IEntity) query.setLockMode(LockModeType.PESSIMISTIC_WRITE).getSingleResult();
 				}
 				return lresult;
 			}
@@ -322,7 +327,7 @@ public class PersistenceService implements IPersistenceService {
 								strRegister.append(columnas.get(i));
 								strRegister.append(" ");
 							}
-							query.executeUpdate();
+							query.setLockMode(LockModeType.OPTIMISTIC).executeUpdate();
 							eManager.getTransaction().commit();
 							updateMessage(String.format("Procesado[%d]: %s",
 									row++, strRegister.toString().trim()));
@@ -421,7 +426,7 @@ public class PersistenceService implements IPersistenceService {
 		Query query = eManager.createNamedQuery(findAll);
 
 		if (query != null) {
-			lresults = query.getResultList();
+			lresults = query.setLockMode(LockModeType.PESSIMISTIC_WRITE).getResultList();
 		}
 		return lresults;
 	}
