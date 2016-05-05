@@ -1,4 +1,4 @@
-package cl.eos.view;
+package comparativo.comunal;
 
 import java.util.ArrayList;
 import java.util.HashMap;

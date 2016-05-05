@@ -1,4 +1,4 @@
-package cl.eos.view;
+package comparativo.colegio.eje.habilidad;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -36,5 +36,6 @@
 	<classpathentry kind="lib" path="O:/cpruebas/jars/boofcv/xstream-1.4.7.jar"/>
 	<classpathentry kind="lib" path="O:/cpruebas/jars/controlsfx-8.0.6_20.jar"/>
 	<classpathentry kind="lib" path="O:/cpruebas/jars/log4j.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.data"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

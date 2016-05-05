@@ -12,5 +12,7 @@
 	<classpathentry kind="lib" path="O:/cpruebas/jars/jfxtras-fxml-8.0.jar"/>
 	<classpathentry kind="lib" path="O:/cpruebas/jars/jfxtras-labs-8.0.jar"/>
 	<classpathentry kind="lib" path="O:/cpruebas/jars/jfxtras-window.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.data"/>
+	<classpathentry kind="lib" path="O:/cpruebas_multiuser/cpruebas/jars/log4j.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

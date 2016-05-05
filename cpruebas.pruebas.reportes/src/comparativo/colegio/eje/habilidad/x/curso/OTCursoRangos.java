@@ -1,4 +1,4 @@
-package cl.eos.view;
+package comparativo.colegio.eje.habilidad.x.curso;
 
 import cl.eos.persistence.models.Curso;
 

@@ -1,4 +1,4 @@
-package cl.eos.view;
+package comparativo.colegio.eje.habilidad.x.curso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -49,6 +49,7 @@ public class ComparativoColegioEjeHabilidadxCursoView extends AFormView
 
 	private static final String ASIGNATURA_ID = "idAsignatura";
 	private static final String COLEGIO_ID = "idColegio";
+	@SuppressWarnings("rawtypes")
 	@FXML
 	private TableView tblEjeshabilidades;
 	@FXML
@@ -75,6 +76,7 @@ public class ComparativoColegioEjeHabilidadxCursoView extends AFormView
 		setTitle("Comparativo Colegio Ejes Temáticos y Habilidades");
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void handle(ActionEvent event) {
 		Object source = event.getSource();
@@ -190,7 +192,7 @@ public class ComparativoColegioEjeHabilidadxCursoView extends AFormView
 		}
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void makeTable() {
 		TableColumn tc = new TableColumn("EJE / HABILIDAD");
 		tc.setSortable(false);
