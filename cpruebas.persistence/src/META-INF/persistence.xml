@@ -5,6 +5,7 @@
 	<persistence-unit name="multi_cpruebas" transaction-type="RESOURCE_LOCAL">
 		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
 		 
+		<class>cl.eos.persistence.models.TipoAlumno</class>
 		<class>cl.eos.persistence.models.Alumno</class>
 		<class>cl.eos.persistence.models.Asignatura</class>
 		<class>cl.eos.persistence.models.Curso</class>
@@ -29,10 +30,11 @@
 			<property name="javax.persistence.jdbc.password" value="admin" />
 			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/multi_cpruebas" />
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
-			<!-- 
+			 <!--
 			<property name="eclipselink.ddl-generation" value="update-tables" />
+			--> 
 			<property name="eclipselink.ddl-generation" value="drop-and-create-tables"/> 
-			--> 			
+						
 			
 
 		

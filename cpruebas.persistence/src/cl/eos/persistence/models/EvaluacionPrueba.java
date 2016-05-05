@@ -44,21 +44,6 @@ public class EvaluacionPrueba extends AEntity {
 	private Colegio colegio;
 
 	
-	/**
-	 * Se crea para el manejo de multiusuarios
-	 */
-	@Version 
-	protected int version;
-	
-	
-	public final int getVersion() {
-		return version;
-	}
-
-	public final void setVersion(int version) {
-		this.version = version;
-	}
-	
 	@Override
 	public Long getId() {
 		return id;
@@ -164,6 +149,21 @@ public class EvaluacionPrueba extends AEntity {
 		return prueba.getExigencia();
 	}
 
+	/**
+	 * Se crea para el manejo de multiusuarios
+	 */
+	@Version
+	protected int version;
+
+	public final int getVersion() {
+		return version;
+	}
+
+	public final void setVersion(int version) {
+		this.version = version;
+	}
+
+	
 	public String getColegiocurso() {
 		StringBuffer buffer = new StringBuffer();
 		buffer.append(colegio.getName());

@@ -1,11 +1,12 @@
 package cl.eos.ot;
 
-import javafx.beans.property.SimpleLongProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
 import cl.eos.persistence.models.Alumno;
 import cl.eos.persistence.models.Colegio;
 import cl.eos.persistence.models.Curso;
+import cl.eos.persistence.models.TipoAlumno;
+import javafx.beans.property.SimpleLongProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
 
 public class OTAlumno {
 
@@ -17,6 +18,7 @@ public class OTAlumno {
 	private SimpleStringProperty direccion = new SimpleStringProperty();
 	private SimpleObjectProperty<Colegio> colegio = new SimpleObjectProperty<Colegio>();
 	private SimpleObjectProperty<Curso> curso = new SimpleObjectProperty<Curso>();
+	private SimpleObjectProperty<TipoAlumno> tipoAlumno = new SimpleObjectProperty<TipoAlumno>();
 	private Alumno alumno;
 
 	public OTAlumno(Alumno alumno) {
@@ -29,6 +31,7 @@ public class OTAlumno {
 		this.direccion.set(alumno.getDireccion());
 		this.colegio.set(alumno.getColegio());
 		this.curso.set(alumno.getCurso());
+		this.tipoAlumno.set(alumno.getTipoAlumno());
 
 	}
 
@@ -140,6 +143,18 @@ public class OTAlumno {
 		this.alumno = alumno;
 	}
 
+	public final SimpleObjectProperty<TipoAlumno> tipoAlumnoProperty() {
+		return this.tipoAlumno;
+	}
+
+	public final cl.eos.persistence.models.TipoAlumno getTipoAlumno() {
+		return this.tipoAlumnoProperty().get();
+	}
+
+	public final void setTipoAlumno(final cl.eos.persistence.models.TipoAlumno tipoAlumno) {
+		this.tipoAlumnoProperty().set(tipoAlumno);
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -169,9 +184,8 @@ public class OTAlumno {
 	public String toString() {
 		String result = "";
 		if (alumno != null) {
-			result = String.format("%s\t%s\t%s %s %s %s", alumno.getColegio()
-					.getName(), alumno.getCurso().getName(), alumno.getRut(),
-					alumno.getPaterno(), alumno.getMaterno(), alumno.getName());
+			result = String.format("%s\t%s\t%s %s %s %s", alumno.getColegio().getName(), alumno.getCurso().getName(),
+					alumno.getRut(), alumno.getPaterno(), alumno.getMaterno(), alumno.getName());
 		}
 		return result;
 	}

@@ -62,6 +62,8 @@
                   <Label layoutX="10.0" layoutY="221.0" text="Apellido paterno" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="230.0" />
                   <Label layoutX="14.0" layoutY="271.0" text="Apellido materno" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="280.0" />
                   <Label layoutX="10.0" layoutY="320.0" text="Dirección" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="330.0" />
+                  <ComboBox fx:id="cmbTipoAlumno" layoutX="10.0" layoutY="405.0" prefHeight="25.0" prefWidth="228.0" promptText="Tipo Alumno" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="410.0" />
+                  <Label layoutX="12.0" layoutY="388.0" text="Tipo Alumno" />
                </children>
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
@@ -72,13 +74,14 @@
                            <children>
                               <TableView fx:id="tblAlumnos" prefHeight="396.0" prefWidth="447.0" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="2.0">
                                 <columns>
-                                    <TableColumn fx:id="colId" prefWidth="75.0" text="Identificador" />
-                                  <TableColumn id="colRut" fx:id="colRut" prefWidth="75.0" text="Rut" />
+                                    <TableColumn fx:id="colId" prefWidth="88.0" text="Identificador" />
+                                  <TableColumn id="colRut" fx:id="colRut" prefWidth="148.0" text="Rut" />
                                   <TableColumn id="colPaterno" fx:id="colPaterno" prefWidth="75.0" text="A.Paterno" />
                                     <TableColumn id="colMaterno" fx:id="colMaterno" prefWidth="75.0" text="A.Materno" />
                                     <TableColumn id="colName" fx:id="colName" prefWidth="133.0" text="Nombres" />
                                     <TableColumn fx:id="colColegio" prefWidth="75.0" text="Colegio" />
                                     <TableColumn id="colCurso" fx:id="colCurso" prefWidth="87.0" text="Curso" />
+                                    <TableColumn fx:id="colTAlumno" editable="false" prefWidth="75.0" text="T. Alumno" />
                                 </columns>
                                  <contextMenu>
                                     <ContextMenu>

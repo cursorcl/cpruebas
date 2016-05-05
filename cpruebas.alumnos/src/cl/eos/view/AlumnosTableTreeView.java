@@ -5,6 +5,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.controlsfx.dialog.Dialogs;
+
+import cl.eos.imp.view.AFormView;
+import cl.eos.interfaces.entity.IEntity;
+import cl.eos.ot.OTAlumno;
+import cl.eos.persistence.models.Alumno;
+import cl.eos.persistence.models.Colegio;
+import cl.eos.persistence.models.Curso;
+import cl.eos.persistence.models.TipoAlumno;
+import cl.eos.util.ExcelSheetWriterObj;
+import cl.eos.util.Utils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -22,17 +33,6 @@ import javafx.scene.control.TreeTableView;
 import javafx.scene.control.cell.TreeItemPropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-
-import org.controlsfx.dialog.Dialogs;
-
-import cl.eos.imp.view.AFormView;
-import cl.eos.interfaces.entity.IEntity;
-import cl.eos.ot.OTAlumno;
-import cl.eos.persistence.models.Alumno;
-import cl.eos.persistence.models.Colegio;
-import cl.eos.persistence.models.Curso;
-import cl.eos.util.ExcelSheetWriterObj;
-import cl.eos.util.Utils;
 
 public class AlumnosTableTreeView extends AFormView implements EventHandler<ActionEvent> {
 
@@ -111,6 +111,12 @@ public class AlumnosTableTreeView extends AFormView implements EventHandler<Acti
 
   @FXML
   private TreeTableColumn<OTAlumno, String> colCurso;
+  
+  @FXML
+  private TreeTableColumn<OTAlumno, String> colTAlumno;
+  
+  @FXML
+  private ComboBox<TipoAlumno> cmbTipoAlumno;
 
   private ObservableList<Curso> oListCursos;
 
@@ -176,6 +182,7 @@ public class AlumnosTableTreeView extends AFormView implements EventHandler<Acti
       txtDireccion.setText(alumno.getDireccion());
       cmbColegio.setValue(alumno.getColegio());
       cmbCurso.setValue(alumno.getCurso());
+      cmbTipoAlumno.setValue(alumno.getTipoAlumno());
       select((IEntity) alumno.getAlumno());
     }
   }
@@ -223,6 +230,7 @@ public class AlumnosTableTreeView extends AFormView implements EventHandler<Acti
       alumno.setDireccion(txtDireccion.getText());
       alumno.setColegio(cmbColegio.getValue());
       alumno.setCurso(cmbCurso.getValue());
+      alumno.setTipoAlumno(cmbTipoAlumno.getValue());
       save(alumno);
     } else {
       lblError.getStyleClass().add("bad");
@@ -240,6 +248,7 @@ public class AlumnosTableTreeView extends AFormView implements EventHandler<Acti
     cmbColegio.getSelectionModel().clearSelection();
     cmbCurso.getSelectionModel().clearSelection();
     tblAlumnos.getSelectionModel().clearSelection();
+    cmbTipoAlumno.getSelectionModel().clearSelection();
     select(null);
   }
 
@@ -252,6 +261,7 @@ public class AlumnosTableTreeView extends AFormView implements EventHandler<Acti
     colMaterno.setCellValueFactory(new TreeItemPropertyValueFactory<OTAlumno, String>("materno"));
     colColegio.setCellValueFactory(new TreeItemPropertyValueFactory<OTAlumno, String>("colegio"));
     colCurso.setCellValueFactory(new TreeItemPropertyValueFactory<OTAlumno, String>("curso"));
+    colTAlumno.setCellValueFactory(new TreeItemPropertyValueFactory<OTAlumno, String>("tipoAlumno"));
     tblAlumnos.setShowRoot(false);
   }
 
