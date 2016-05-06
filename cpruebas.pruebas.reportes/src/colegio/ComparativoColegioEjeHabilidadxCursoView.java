@@ -1,4 +1,4 @@
-package comparativo.colegio.eje.habilidad.x.curso;
+package colegio;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,6 +43,8 @@ import cl.eos.persistence.models.RespuestasEsperadasPrueba;
 import cl.eos.persistence.util.Comparadores;
 import cl.eos.util.ExcelSheetWriterObj;
 import cl.eos.util.Pair;
+import comparativo.colegio.eje.habilidad.x.curso.OTCursoRangos;
+import comparativo.colegio.eje.habilidad.x.curso.OTUnCursoUnEjeHabilidad;
 
 public class ComparativoColegioEjeHabilidadxCursoView extends AFormView
 		implements EventHandler<ActionEvent> {

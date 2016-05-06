@@ -1,4 +1,4 @@
-package cl.eos.view;
+package colegio;
 
 import java.util.Collections;
 import java.util.HashMap;

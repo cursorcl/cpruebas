@@ -1,4 +1,4 @@
-package cl.eos.view;
+package curso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,7 +27,9 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
+import cl.eos.ot.OTPreguntasEjes;
 import cl.eos.ot.OTPreguntasHabilidad;
+import cl.eos.persistence.models.EjeTematico;
 import cl.eos.persistence.models.EvaluacionPrueba;
 import cl.eos.persistence.models.Habilidad;
 import cl.eos.persistence.models.Prueba;
@@ -36,19 +38,19 @@ import cl.eos.persistence.models.RespuestasEsperadasPrueba;
 import cl.eos.util.ExcelSheetWriterObj;
 import cl.eos.util.Pair;
 
-public class ResumenHabilidadesView extends AFormView implements
-		EventHandler<ActionEvent> {
+public class ResumenEjesTematicosView extends AFormView  implements
+EventHandler<ActionEvent>{
 
 	@FXML
-	private TableView<OTPreguntasHabilidad> tblHabilidades;
+	private TableView<OTPreguntasEjes> tblEjesTematicos;
 	@FXML
-	private TableColumn<OTPreguntasHabilidad, String> colNombre;
+	private TableColumn<OTPreguntasEjes, String> colNombre;
 	@FXML
-	private TableColumn<OTPreguntasHabilidad, String> colDescripcion;
+	private TableColumn<OTPreguntasEjes, String> colDescripcion;
 	@FXML
-	private TableColumn<OTPreguntasHabilidad, String> colLogrado;
+	private TableColumn<OTPreguntasEjes, Float> colLogrado;
 	@FXML
-	private TableColumn<OTPreguntasHabilidad, String> colNoLogrado;
+	private TableColumn<OTPreguntasEjes, Float> colNoLogrado;
 
 	@FXML
 	private TextField txtPrueba;
@@ -57,7 +59,7 @@ public class ResumenHabilidadesView extends AFormView implements
 	@FXML
 	private TextField txtAsignatura;
 	@FXML
-	private TextField txtHabilidad;
+	private TextField txtEjeTematico;
 
 	final NumberAxis xAxis = new NumberAxis();
 	final CategoryAxis yAxis = new CategoryAxis();
@@ -65,60 +67,60 @@ public class ResumenHabilidadesView extends AFormView implements
 	private BarChart<String, Number> graficoBarra = new BarChart<String, Number>(
 			yAxis, xAxis);
 
-	private HashMap<Habilidad, OTPreguntasHabilidad> mapaHabilidades;
 	@FXML
-	private MenuItem mnuExportarHabilidad;
+	private MenuItem mnuExportarEjes;
 
-	public ResumenHabilidadesView() {
+	private HashMap<EjeTematico, OTPreguntasEjes> mapaEjesTematicos;
+
+	public ResumenEjesTematicosView() {
 
 	}
 
 	@FXML
 	public void initialize() {
-		inicializarTablaHabilidades();
+		inicializarTablaEjes();
 		accionClicTabla();
-		this.setTitle("Resumen Respuestas por Habilidades");
-		graficoBarra.setTitle("Gráfico Respuestas por habilidad");
+		this.setTitle("Resumen Respuestas por Ejes Temáticos");
+		graficoBarra.setTitle("Gráfico Respuestas por ejes temáticos");
 		xAxis.setLabel("Country");
 		yAxis.setLabel("Value");
-		mnuExportarHabilidad.setOnAction(this);
+		mnuExportarEjes.setOnAction(this);
 	}
 
-	private void inicializarTablaHabilidades() {
-		tblHabilidades.getSelectionModel().setSelectionMode(
+	private void inicializarTablaEjes() {
+		tblEjesTematicos.getSelectionModel().setSelectionMode(
 				SelectionMode.MULTIPLE);
 		colNombre
-				.setCellValueFactory(new PropertyValueFactory<OTPreguntasHabilidad, String>(
+				.setCellValueFactory(new PropertyValueFactory<OTPreguntasEjes, String>(
 						"name"));
 		colDescripcion
-				.setCellValueFactory(new PropertyValueFactory<OTPreguntasHabilidad, String>(
+				.setCellValueFactory(new PropertyValueFactory<OTPreguntasEjes, String>(
 						"descripcion"));
 		colLogrado
-				.setCellValueFactory(new PropertyValueFactory<OTPreguntasHabilidad, String>(
+				.setCellValueFactory(new PropertyValueFactory<OTPreguntasEjes, Float>(
 						"slogrado"));
 		colNoLogrado
-				.setCellValueFactory(new PropertyValueFactory<OTPreguntasHabilidad, String>(
+				.setCellValueFactory(new PropertyValueFactory<OTPreguntasEjes, Float>(
 						"snlogrado"));
 	}
 
 	private void accionClicTabla() {
-		tblHabilidades.getSelectionModel().selectedItemProperty()
-				.addListener(new ChangeListener<OTPreguntasHabilidad>() {
+		tblEjesTematicos.getSelectionModel().selectedItemProperty()
+				.addListener(new ChangeListener<OTPreguntasEjes>() {
 
 					@Override
 					public void changed(
-							ObservableValue<? extends OTPreguntasHabilidad> observable,
-							OTPreguntasHabilidad oldValue,
-							OTPreguntasHabilidad newValue) {
-						ObservableList<OTPreguntasHabilidad> itemsSelec = tblHabilidades
+							ObservableValue<? extends OTPreguntasEjes> observable,
+							OTPreguntasEjes oldValue, OTPreguntasEjes newValue) {
+						ObservableList<OTPreguntasEjes> itemsSelec = tblEjesTematicos
 								.getSelectionModel().getSelectedItems();
 
 						if (itemsSelec.size() == 1) {
-							OTPreguntasHabilidad habilidad = itemsSelec.get(0);
-							txtHabilidad.setText(habilidad.getName());
+							OTPreguntasEjes ejeTematico = itemsSelec.get(0);
+							txtEjeTematico.setText(ejeTematico.getName());
 
-							Float porcentajeLogrado = habilidad.getLogrado();
-							Float porcentajeNologrado = habilidad
+							Float porcentajeLogrado = ejeTematico.getLogrado();
+							Float porcentajeNologrado = ejeTematico
 									.getNologrado();
 
 							XYChart.Series series1 = new XYChart.Series();
@@ -143,6 +145,7 @@ public class ResumenHabilidadesView extends AFormView implements
 						}
 					}
 				});
+
 	}
 
 	@Override
@@ -155,21 +158,21 @@ public class ResumenHabilidadesView extends AFormView implements
 					.setText(((EvaluacionPrueba) entity).getPrueba().getName());
 			obtenerResultados((EvaluacionPrueba) entity);
 
-			if (mapaHabilidades != null && !mapaHabilidades.isEmpty()) {
+			if (mapaEjesTematicos != null && !mapaEjesTematicos.isEmpty()) {
 
-				ArrayList<OTPreguntasHabilidad> listado = new ArrayList<>(
-						mapaHabilidades.values());
-				ObservableList<OTPreguntasHabilidad> oList = FXCollections
+				ArrayList<OTPreguntasEjes> listado = new ArrayList<>(
+						mapaEjesTematicos.values());
+				ObservableList<OTPreguntasEjes> oList = FXCollections
 						.observableList(listado);
-				tblHabilidades.setItems(oList);
+				tblEjesTematicos.setItems(oList);
 			}
 		}
 	}
 
 	private void obtenerResultados(EvaluacionPrueba entity) {
 		List<PruebaRendida> pruebasRendidas = entity.getPruebasRendidas();
-		
-		mapaHabilidades = new HashMap<Habilidad, OTPreguntasHabilidad>();
+
+		mapaEjesTematicos = new HashMap<EjeTematico, OTPreguntasEjes>();
 
 		Prueba prueba = entity.getPrueba();
 		List<RespuestasEsperadasPrueba> respuestasEsperadas = prueba
@@ -177,17 +180,17 @@ public class ResumenHabilidadesView extends AFormView implements
 
 		for(RespuestasEsperadasPrueba  resp: respuestasEsperadas)
 		{
-			mapaHabilidades.put(resp.getHabilidad(), new OTPreguntasHabilidad());
+			mapaEjesTematicos.put(resp.getEjeTematico(), new OTPreguntasEjes());
 		}
 		
 		for (PruebaRendida pruebaRendida : pruebasRendidas) {
 			String respuesta = pruebaRendida.getRespuestas();
 
-			for(Habilidad hab: mapaHabilidades.keySet())
+			for(EjeTematico hab: mapaEjesTematicos.keySet())
 			{
-				OTPreguntasHabilidad otPreguntas = mapaHabilidades.get(hab);
+				OTPreguntasEjes otPreguntas = mapaEjesTematicos.get(hab);
 				Pair<Integer, Integer> result = obtenerBuenasTotales(respuesta, respuestasEsperadas, hab);
-				otPreguntas.setHabilidad(hab);
+				otPreguntas.setEjeTematico(hab);
 				otPreguntas.setBuenas(otPreguntas.getBuenas() + result.getFirst());
 				otPreguntas.setTotal(otPreguntas.getTotal() + result.getSecond());
 				
@@ -195,27 +198,26 @@ public class ResumenHabilidadesView extends AFormView implements
 		}
 	}
 
-	
 	/**
 	 * Este metodo evalua la cantidad de buenas de un String de respuesta
-	 * contrastado contra las respuestas esperadas.
+	 * contrastado contra las respuestas eperadas.
 	 * 
 	 * @param respuestas
 	 *            Las respuestas del alumno.
 	 * @param respEsperadas
 	 *            Las respuestas correctas definidas en la prueba.
-	 * @param ahb
-	 *            La Habilidad en base al que se realiza el calculo.
+	 * @param eje
+	 *            El Eje tematico en base al que se realiza el calculo.
 	 * @return Par <Preguntas buenas, Total de Preguntas> del eje.
 	 */
 	private Pair<Integer, Integer> obtenerBuenasTotales(String respuestas,
-			List<RespuestasEsperadasPrueba> respEsperadas, Habilidad hab) {
+			List<RespuestasEsperadasPrueba> respEsperadas, EjeTematico eje) {
 		int nroBuenas = 0;
 		int nroPreguntas = 0;
 		for (int n = 0; n < respEsperadas.size(); n++) {
 			RespuestasEsperadasPrueba resp = respEsperadas.get(n);
 			if (!resp.isAnulada()) {
-				if (resp.getHabilidad().equals(hab)) {
+				if (resp.getEjeTematico().equals(eje)) {
 					if (respuestas.length() > n) {
 						String sResp = respuestas.substring(n, n + 1);
 						if ("+".equals(sResp)
@@ -233,14 +235,15 @@ public class ResumenHabilidadesView extends AFormView implements
 	@Override
 	public void handle(ActionEvent event) {
 		Object source = event.getSource();
-		if (source == mnuExportarHabilidad) {
+		if (source == mnuExportarEjes) {
 
-			tblHabilidades.setId("Habilidades");
+			tblEjesTematicos.setId("Ejes temáticos");
 
 			List<TableView<? extends Object>> listaTablas = new LinkedList<>();
-			listaTablas.add((TableView<? extends Object>) tblHabilidades);
+			listaTablas.add((TableView<? extends Object>) tblEjesTematicos);
 
 			ExcelSheetWriterObj.convertirDatosALibroDeExcel(listaTablas);
 		}
+		
 	}
 }

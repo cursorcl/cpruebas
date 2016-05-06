@@ -1,4 +1,4 @@
-package cl.eos.view;
+package curso;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

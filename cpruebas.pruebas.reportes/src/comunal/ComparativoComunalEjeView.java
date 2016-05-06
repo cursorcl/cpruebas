@@ -1,4 +1,4 @@
-package comparativo.comunal.eje;
+package comunal;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;

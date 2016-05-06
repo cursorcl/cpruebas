@@ -24,6 +24,13 @@ import cl.eos.persistence.models.EvaluacionPrueba;
 import cl.eos.persistence.models.RangoEvaluacion;
 import cl.eos.persistence.models.TipoPrueba;
 import cl.eos.util.ExcelSheetWriterObj;
+import curso.ResumenAlumnoView;
+import curso.ResumenEjesTematicosView;
+import curso.ResumenGeneralPMEView;
+import curso.ResumenGeneralView;
+import curso.ResumenHabilidadesView;
+import curso.ResumenRespuestaView;
+import curso.ResumenXAlumnoEjeHabilidadView;
 
 public class EvaluacionPruebaView extends AFormView implements EventHandler<ActionEvent> {
 

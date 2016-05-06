@@ -1,4 +1,4 @@
-package comparativo.colegio.habilidad;
+package colegio;
 
 import java.util.ArrayList;
 import java.util.Arrays;

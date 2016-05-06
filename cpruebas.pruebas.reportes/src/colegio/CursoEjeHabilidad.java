@@ -1,132 +1,57 @@
-package cl.eos.view;
+package colegio;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.fxml.FXML;
 import javafx.geometry.Pos;
-import javafx.geometry.Side;
-import javafx.scene.chart.CategoryAxis;
-import javafx.scene.chart.LineChart;
-import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.TextAlignment;
 import javafx.util.Callback;
-import cl.eos.imp.view.AFormView;
-import cl.eos.interfaces.entity.IEntity;
 import cl.eos.persistence.models.Alumno;
 import cl.eos.persistence.models.EjeTematico;
 import cl.eos.persistence.models.EvaluacionPrueba;
 import cl.eos.persistence.models.Habilidad;
 import cl.eos.persistence.models.PruebaRendida;
 import cl.eos.persistence.models.RespuestasEsperadasPrueba;
-import cl.eos.util.ExcelSheetWriterObj;
 import cl.eos.util.Pair;
 import cl.eos.util.Utils;
 import cl.eos.view.ots.resumenxalumno.eje.habilidad.OTAlumnoResumen;
 
-public class ResumenXAlumnoEjeHabilidadView extends AFormView implements
-		EventHandler<ActionEvent> {
+public class CursoEjeHabilidad {
 
 	private final int FIXED_COLUMNS = 4;
-	@SuppressWarnings("rawtypes")
-	@FXML
 	private TableView tblAlumnos;
 
-	final NumberAxis xAxisE = new NumberAxis(0, 100, 10);
-	final CategoryAxis yAxisE = new CategoryAxis();
-	@FXML
-	private LineChart<String, Number> grfEjes = new LineChart<String, Number>(
-			yAxisE, xAxisE);
-	@FXML
-	private MenuItem mnuExportarAlumnos;
+	private EvaluacionPrueba evaluacionPrueba;
+	private List<EjeTematico> lstEjes;
+	private List<Habilidad> lstHabs;
+	private List<RespuestasEsperadasPrueba> respEsperadas;
 
-	final NumberAxis xAxisH = new NumberAxis(0, 100, 10);
-	final CategoryAxis yAxisH = new CategoryAxis();
-	@FXML
-	private LineChart<String, Number> grfHabilidades = new LineChart<String, Number>(
-			yAxisH, xAxisH);
-
-	private List<OTAlumnoResumen> puntos;
-	private List<EjeTematico> lstOtEjes;
-	private List<Habilidad> lstOtHabs;
-
-	public ResumenXAlumnoEjeHabilidadView() {
-		setTitle("Resumen Eje/Habilidad x Alumno");
+	public CursoEjeHabilidad() {
+		this(null);
 	}
 
-	@SuppressWarnings("unchecked")
-	@FXML
-	public void initialize() {
-		tblAlumnos.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-		tblAlumnos.getSelectionModel().selectedItemProperty()
-				.addListener(new ChangeListener<ObservableList<String>>() {
-
-					@Override
-					public void changed(
-							ObservableValue<? extends ObservableList<String>> observable,
-							ObservableList<String> oldValue,
-							ObservableList<String> newValue) {
-						int index = tblAlumnos.getSelectionModel()
-								.getSelectedIndex();
-						poblarGraficos(index);
-					}
-				});
-
-		mnuExportarAlumnos.setOnAction(this);
+	public CursoEjeHabilidad(EvaluacionPrueba evaluacionPrueba) {
+		super();
+		tblAlumnos = new TableView();
+		tblAlumnos.setId(evaluacionPrueba.getCurso().getName());
+		this.setEvaluacionPrueba(evaluacionPrueba);
 	}
 
-	@Override
-	public void handle(ActionEvent event) {
-		if (event.getSource() == mnuExportarAlumnos) {
-			tblAlumnos.setId("ResumenEjeHabilidadesxAlumno");
-			ExcelSheetWriterObj.convertirDatosALibroDeExcel(tblAlumnos);
-		}
+	public final void generate() {
+		List<OTAlumnoResumen> puntos = obtenerPuntos();
+		construirColumnas();
+		llenarValores(puntos);
 	}
 
-	@Override
-	public void onFound(IEntity entity) {
-		if (entity instanceof EvaluacionPrueba) {
-			EvaluacionPrueba evaluacionPrueba = (EvaluacionPrueba) entity;
-			List<PruebaRendida> pRendidas = evaluacionPrueba
-					.getPruebasRendidas();
-
-			if (pRendidas != null && !pRendidas.isEmpty()) {
-				List<RespuestasEsperadasPrueba> respEsperadas = evaluacionPrueba
-						.getPrueba().getRespuestas();
-
-				// Obteniendo los elementos
-				lstOtEjes = getEjesTematicos(respEsperadas);
-				lstOtHabs = getHabilidades(respEsperadas);
-				puntos = obtenerPuntos(evaluacionPrueba, lstOtEjes, lstOtHabs);
-
-				construirColumnas(lstOtEjes, lstOtHabs);
-				llenarValores(puntos);
-			}
-
-		}
-	}
-
-	/**
-	 * Establece los valores en la tabla.
-	 * 
-	 * @param puntos
-	 *            Los puntos de cada eje por alumno.
-	 */
 	@SuppressWarnings("unchecked")
 	private void llenarValores(List<OTAlumnoResumen> puntos) {
 		ObservableList<ObservableList<String>> contenido = FXCollections
@@ -134,10 +59,17 @@ public class ResumenXAlumnoEjeHabilidadView extends AFormView implements
 		ObservableList<String> row = null;
 		for (OTAlumnoResumen ot : puntos) {
 			row = FXCollections.observableArrayList();
-			row.add(ot.getAlumno().getRut());
-			row.add(ot.getAlumno().getPaterno());
-			row.add(ot.getAlumno().getMaterno());
-			row.add(ot.getAlumno().getName());
+			if (ot.getAlumno() != null) {
+				row.add(ot.getAlumno().getRut());
+				row.add(ot.getAlumno().getPaterno());
+				row.add(ot.getAlumno().getMaterno());
+				row.add(ot.getAlumno().getName());
+			} else {
+				row.add("--");
+				row.add("--");
+				row.add("--");
+				row.add("--");
+			}
 			List<Float> values = ot.getPorcentajes();
 			for (Float value : values) {
 				row.add(String.valueOf(Utils.redondeo1Decimal(value)));
@@ -145,7 +77,6 @@ public class ResumenXAlumnoEjeHabilidadView extends AFormView implements
 			contenido.add(row);
 		}
 		tblAlumnos.setItems(contenido);
-
 	}
 
 	/**
@@ -159,23 +90,17 @@ public class ResumenXAlumnoEjeHabilidadView extends AFormView implements
 	 *            Las habilidades exitentes en la prueba.
 	 * @return Mapa de alumno con todos los puntos por eje y habilidad.
 	 */
-	private List<OTAlumnoResumen> obtenerPuntos(
-			EvaluacionPrueba evaluacionPrueba, List<EjeTematico> lstEjes,
-			List<Habilidad> lstHabs) {
+	private List<OTAlumnoResumen> obtenerPuntos() {
 
 		List<OTAlumnoResumen> respuesta = new ArrayList<OTAlumnoResumen>();
 
 		List<PruebaRendida> pRendidas = evaluacionPrueba.getPruebasRendidas();
-		List<RespuestasEsperadasPrueba> respEsperadas = evaluacionPrueba
-				.getPrueba().getRespuestas();
-
 		for (PruebaRendida pr : pRendidas) {
 			String resps = pr.getRespuestas();
 			Alumno alumno = pr.getAlumno();
 			OTAlumnoResumen ot = new OTAlumnoResumen(alumno);
 			for (EjeTematico eje : lstEjes) {
-				Pair<Integer, Integer> pair = obtenerBuenasTotales(resps,
-						respEsperadas, eje);
+				Pair<Integer, Integer> pair = obtenerBuenasTotales(resps, eje);
 				Integer buenas = pair.getFirst();
 				Integer cantidad = pair.getSecond();
 				float porcentaje = buenas.floatValue() / cantidad.floatValue()
@@ -183,8 +108,7 @@ public class ResumenXAlumnoEjeHabilidadView extends AFormView implements
 				ot.getPorcentajes().add(porcentaje);
 			}
 			for (Habilidad hab : lstHabs) {
-				Pair<Integer, Integer> pair = obtenerBuenasTotales(resps,
-						respEsperadas, hab);
+				Pair<Integer, Integer> pair = obtenerBuenasTotales(resps, hab);
 				Integer buenas = pair.getFirst();
 				Integer cantidad = pair.getSecond();
 				float porcentaje = buenas.floatValue() / cantidad.floatValue()
@@ -202,18 +126,20 @@ public class ResumenXAlumnoEjeHabilidadView extends AFormView implements
 	 * 
 	 * @param respuestas
 	 *            Las respuestas del alumno.
-	 * @param respEsperadas
-	 *            Las respuestas correctas definidas en la prueba.
 	 * @param ahb
 	 *            La Habilidad en base al que se realiza el calculo.
 	 * @return Par <Preguntas buenas, Total de Preguntas> del eje.
 	 */
 	private Pair<Integer, Integer> obtenerBuenasTotales(String respuestas,
-			List<RespuestasEsperadasPrueba> respEsperadas, Habilidad hab) {
+			Habilidad hab) {
 		int nroBuenas = 0;
 		int nroPreguntas = 0;
 		for (int n = 0; n < respEsperadas.size(); n++) {
 			RespuestasEsperadasPrueba resp = respEsperadas.get(n);
+			if(resp.isAnulada())
+			{
+				continue;
+			}
 			if (resp.getHabilidad().equals(hab)) {
 				if (respuestas.length() > n) {
 					String sResp = respuestas.substring(n, n + 1);
@@ -234,18 +160,20 @@ public class ResumenXAlumnoEjeHabilidadView extends AFormView implements
 	 * 
 	 * @param respuestas
 	 *            Las respuestas del alumno.
-	 * @param respEsperadas
-	 *            Las respuestas correctas definidas en la prueba.
 	 * @param eje
 	 *            El Eje tematico en base al que se realiza el calculo.
 	 * @return Par <Preguntas buenas, Total de Preguntas> del eje.
 	 */
 	private Pair<Integer, Integer> obtenerBuenasTotales(String respuestas,
-			List<RespuestasEsperadasPrueba> respEsperadas, EjeTematico eje) {
+			EjeTematico eje) {
 		int nroBuenas = 0;
 		int nroPreguntas = 0;
 		for (int n = 0; n < respEsperadas.size(); n++) {
 			RespuestasEsperadasPrueba resp = respEsperadas.get(n);
+			if(resp.isAnulada())
+			{
+				continue;
+			}
 			if (resp.getEjeTematico().equals(eje)) {
 				if (respuestas.length() > n) {
 					String sResp = respuestas.substring(n, n + 1);
@@ -261,44 +189,6 @@ public class ResumenXAlumnoEjeHabilidadView extends AFormView implements
 	}
 
 	/**
-	 * Obtiene todos las habilidades de una prueba y la cantidad de preguntas de
-	 * cada una.
-	 * 
-	 * @param respEsperadas
-	 *            Lista de preguntas esperadas de una prueba.
-	 * @return Lista con las habilidades y la cantidad de preguntas de cada
-	 *         habilidad en la prueba.
-	 */
-	private List<Habilidad> getHabilidades(
-			List<RespuestasEsperadasPrueba> respEsperadas) {
-		List<Habilidad> lstOtHabs = new ArrayList<Habilidad>();
-		for (RespuestasEsperadasPrueba r : respEsperadas) {
-			if (!lstOtHabs.contains(r.getHabilidad())) {
-				lstOtHabs.add(r.getHabilidad());
-			}
-		}
-		return lstOtHabs;
-	}
-
-	/**
-	 * Obtiene todos los ejes temáticos de una prueba.
-	 * 
-	 * @param respEsperadas
-	 *            Lista de preguntas esperadas de una prueba.
-	 * @return Lista con los ejes temáticos en la prueba.
-	 */
-	private List<EjeTematico> getEjesTematicos(
-			List<RespuestasEsperadasPrueba> respEsperadas) {
-		List<EjeTematico> lstOtEjes = new ArrayList<EjeTematico>();
-		for (RespuestasEsperadasPrueba r : respEsperadas) {
-			if (!lstOtEjes.contains(r.getEjeTematico())) {
-				lstOtEjes.add(r.getEjeTematico());
-			}
-		}
-		return lstOtEjes;
-	}
-
-	/**
 	 * Este metodo coloca las columnas a las dos tablas de la HMI. Coloca los
 	 * cursos que estan asociados al colegio, independiente que tenga o no
 	 * evaluaciones.
@@ -306,17 +196,17 @@ public class ResumenXAlumnoEjeHabilidadView extends AFormView implements
 	 * @param pCursoList
 	 */
 	@SuppressWarnings("unchecked")
-	private void construirColumnas(List<EjeTematico> ejes, List<Habilidad> habs) {
+	private void construirColumnas() {
 		int index = 0;
-		tblAlumnos.getColumns().add(getFixedColumns("RUT", index++, 250));
-		tblAlumnos.getColumns().add(getFixedColumns("PATERNO", index++, 250));
-		tblAlumnos.getColumns().add(getFixedColumns("MATERNO", index++, 250));
-		tblAlumnos.getColumns().add(getFixedColumns("NOMBRE", index++, 320));
-		for (EjeTematico eje : ejes) {
+		tblAlumnos.getColumns().add(getFixedColumns("RUT", index++, 100));
+		tblAlumnos.getColumns().add(getFixedColumns("PATERNO", index++, 100));
+		tblAlumnos.getColumns().add(getFixedColumns("MATERNO", index++, 100));
+		tblAlumnos.getColumns().add(getFixedColumns("NOMBRE", index++, 150));
+		for (EjeTematico eje : lstEjes) {
 			tblAlumnos.getColumns().add(
 					getPercentColumns(eje.getName(), index++));
 		}
-		for (Habilidad hab : habs) {
+		for (Habilidad hab : lstHabs) {
 			tblAlumnos.getColumns().add(
 					getPercentColumns(hab.getName(), index++));
 		}
@@ -372,38 +262,59 @@ public class ResumenXAlumnoEjeHabilidadView extends AFormView implements
 		col.setGraphic(stack);
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private void poblarGraficos(int index) {
-		OTAlumnoResumen ot = puntos.get(index);
-		List<Float> porcentajes = ot.getPorcentajes();
+	public TableView getTblAlumnos() {
+		return tblAlumnos;
+	}
 
-		XYChart.Series seriesE = new XYChart.Series();
+	public void setTblAlumnos(TableView tblAlumnos) {
+		this.tblAlumnos = tblAlumnos;
+	}
 
-		seriesE.setName("Porcentaje logro Ejes");
-		seriesE.getData().clear();
-		int idx = 0;
-		for (int i = 0; i < lstOtEjes.size(); i++) {
-			seriesE.getData().add(
-					new XYChart.Data<String, Number>(String.valueOf(idx + 1),
-							porcentajes.get(idx++)));
+	public EvaluacionPrueba getEvaluacionPrueba() {
+		return evaluacionPrueba;
+	}
+
+	public final void setEvaluacionPrueba(EvaluacionPrueba evaluacionPrueba) {
+		this.evaluacionPrueba = evaluacionPrueba;
+		respEsperadas = this.evaluacionPrueba.getPrueba().getRespuestas();
+		lstEjes = getEjesTematicos();
+		lstHabs = getHabilidades();
+		generate();
+	}
+
+	/**
+	 * Obtiene todos las habilidades de una prueba y la cantidad de preguntas de
+	 * cada una.
+	 * 
+	 * @param respEsperadas
+	 *            Lista de preguntas esperadas de una prueba.
+	 * @return Lista con las habilidades y la cantidad de preguntas de cada
+	 *         habilidad en la prueba.
+	 */
+	private List<Habilidad> getHabilidades() {
+		List<Habilidad> lstOtHabs = new ArrayList<Habilidad>();
+		for (RespuestasEsperadasPrueba r : respEsperadas) {
+			if (!lstOtHabs.contains(r.getHabilidad())) {
+				lstOtHabs.add(r.getHabilidad());
+			}
 		}
-		grfEjes.setLegendSide(Side.RIGHT);
-		grfEjes.getData().clear();
-		grfEjes.getData().add(seriesE);
-		grfEjes.getYAxis().autoRangingProperty().set(false);
-		grfEjes.setLegendVisible(false);
-		XYChart.Series seriesH = new XYChart.Series();
-		seriesH.setName("Porcentaje logro Habilidades");
-		seriesH.getData().clear();
-		for (int i = 0; i < lstOtHabs.size(); i++) {
-			seriesH.getData().add(
-					new XYChart.Data<String, Number>(String.valueOf(idx + 1),
-							porcentajes.get(idx++)));
-		}
+		return lstOtHabs;
+	}
 
-		grfHabilidades.setLegendVisible(false);
-		grfHabilidades.getData().clear();
-		grfHabilidades.getData().add(seriesH);
-		grfHabilidades.getYAxis().autoRangingProperty().set(false);
+	/**
+	 * Obtiene todos los ejes temáticos de una prueba.
+	 * 
+	 * @param respEsperadas
+	 *            Lista de preguntas esperadas de una prueba.
+	 * @return Lista con los ejes temáticos en la prueba.
+	 */
+	private List<EjeTematico> getEjesTematicos() {
+		List<EjeTematico> lstOtEjes = new ArrayList<EjeTematico>();
+		for (RespuestasEsperadasPrueba r : respEsperadas) {
+			if (!lstOtEjes.contains(r.getEjeTematico())) {
+				lstOtEjes.add(r.getEjeTematico());
+			}
+		}
+		return lstOtEjes;
 	}
 }

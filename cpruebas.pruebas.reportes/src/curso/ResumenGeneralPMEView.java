@@ -1,4 +1,4 @@
-package cl.eos.view;
+package curso;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;

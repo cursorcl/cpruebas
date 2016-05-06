@@ -45,13 +45,15 @@ import cl.eos.persistence.models.TipoCurso;
 import cl.eos.persistence.models.TipoPrueba;
 import cl.eos.view.editablecells.PruebaCellFactory;
 import cl.eos.view.ots.OTPrueba;
-import comparativo.colegio.eje.evaluacion.ComparativoColegioEjeEvaluacionView;
-import comparativo.colegio.eje.habilidad.ComparativoColegioEjeHabilidadView;
-import comparativo.colegio.eje.habilidad.x.curso.ComparativoColegioEjeHabilidadxCursoView;
-import comparativo.colegio.habilidad.ComparativoColegioHabilidadesView;
-import comparativo.comunal.ComunalCursoView;
-import comparativo.comunal.eje.ComparativoComunalEjeView;
-import comparativo.comunal.habilidad.ComparativoComunalHabilidadView;
+import colegio.ComparativoColegioEjeEvaluacionView;
+import colegio.ComparativoColegioEjeHabilidadView;
+import colegio.ComparativoColegioEjeHabilidadxCursoView;
+import colegio.ComparativoColegioHabilidadesView;
+import colegio.ResumenColegioView;
+import colegio.ResumenColegioXAlumnoEjeHabilidadView;
+import comunal.ComparativoComunalEjeView;
+import comunal.ComparativoComunalHabilidadView;
+import comunal.ComunalCursoView;
 
 public class PruebasView extends AFormView implements EventHandler<ActionEvent> {
 

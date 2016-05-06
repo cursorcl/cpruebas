@@ -1,4 +1,4 @@
-package comparativo.comunal;
+package comunal;
 
 import java.util.ArrayList;
 import java.util.HashMap;
