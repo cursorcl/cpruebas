@@ -40,7 +40,9 @@
                   <Label layoutX="4.0" layoutY="30.0" prefHeight="17.0" prefWidth="191.0" text="Seleccione colegio a procesar" AnchorPane.leftAnchor="4.0" />
                   <Label layoutX="4.0" layoutY="99.0" prefHeight="17.0" prefWidth="176.0" text="Seleccione asignatura" AnchorPane.leftAnchor="4.0" />
                   <ComboBox fx:id="cmbAsignatura" layoutX="4.0" layoutY="116.0" prefHeight="22.0" prefWidth="195.0" promptText="Asignatura" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="949.0" AnchorPane.topAnchor="116.0" />
-                  <Button fx:id="btnReportes" layoutX="98.0" layoutY="182.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="106.0" text="Generar reporte" />
+                  <Button fx:id="btnReportes" layoutX="100.0" layoutY="219.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="106.0" text="Generar reporte" />
+                  <ComboBox fx:id="cmbTipoAlumno" layoutX="4.0" layoutY="187.0" prefHeight="25.0" prefWidth="196.0" promptText="Alumnos a Incluir" />
+                  <Label layoutX="4.0" layoutY="170.0" text="Incluye Alumnos" />
                </children>
             </AnchorPane>
         </items>

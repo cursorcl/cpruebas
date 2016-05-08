@@ -9,7 +9,6 @@ import java.util.Map;
 import org.controlsfx.dialog.Dialogs;
 
 import cl.eos.imp.view.AFormView;
-import cl.eos.ot.OTPreguntasEvaluacion;
 import cl.eos.persistence.models.Asignatura;
 import cl.eos.persistence.models.Colegio;
 import cl.eos.persistence.models.Curso;
@@ -37,8 +36,7 @@ import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.util.Callback;
 
-public class ComparativoColegioEjeEvaluacionView extends AFormView implements
-		EventHandler<ActionEvent> {
+public class ComparativoColegioEjeEvaluacionView extends AFormView implements EventHandler<ActionEvent> {
 
 	private static final String ASIGNATURA_ID = "idAsignatura";
 	private static final String COLEGIO_ID = "idColegio";
@@ -61,12 +59,12 @@ public class ComparativoColegioEjeEvaluacionView extends AFormView implements
 	private ObservableList<Curso> cursoList;
 	private ObservableList<RangoEvaluacion> rangoEvalList;
 	private ObservableList<EvaluacionPrueba> evaluacionesPrueba;
-	private ArrayList<OTPreguntasEvaluacion> lst;
 
 	public ComparativoColegioEjeEvaluacionView() {
 		setTitle("Comparativo Colegios Ejes");
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void handle(ActionEvent event) {
 		Object source = event.getSource();
@@ -85,8 +83,7 @@ public class ComparativoColegioEjeEvaluacionView extends AFormView implements
 			tblEjesCantidad.setId("Comparativo Colegios Ejes");
 			List<TableView<? extends Object>> listaTablas = new ArrayList<>();
 			listaTablas.add((TableView<? extends Object>) tblEjesCantidad);
-			ExcelSheetWriterObj
-					.convertirDatosColumnasDoblesALibroDeExcel(listaTablas);
+			ExcelSheetWriterObj.convertirDatosColumnasDoblesALibroDeExcel(listaTablas);
 		}
 	}
 
@@ -103,8 +100,7 @@ public class ComparativoColegioEjeEvaluacionView extends AFormView implements
 	}
 
 	private void handleAsignatura() {
-		Asignatura asignatura = cmbAsignatura.getSelectionModel()
-				.getSelectedItem();
+		Asignatura asignatura = cmbAsignatura.getSelectionModel().getSelectedItem();
 		if (asignatura != null) {
 			parameters.put(ASIGNATURA_ID, asignatura.getId());
 			clearContent();
@@ -112,11 +108,9 @@ public class ComparativoColegioEjeEvaluacionView extends AFormView implements
 	}
 
 	private void handleReportes() {
-		if (!parameters.isEmpty() && parameters.containsKey(COLEGIO_ID)
-				&& parameters.containsKey(ASIGNATURA_ID)) {
+		if (!parameters.isEmpty() && parameters.containsKey(COLEGIO_ID) && parameters.containsKey(ASIGNATURA_ID)) {
 
-			controller.find("EvaluacionPrueba.findEvaluacionByColegioAsig",
-					parameters, this);
+			controller.find("EvaluacionPrueba.findEvaluacionByColegioAsig", parameters, this);
 		}
 	}
 
@@ -134,52 +128,46 @@ public class ComparativoColegioEjeEvaluacionView extends AFormView implements
 
 	@Override
 	public void onDataArrived(List<Object> list) {
-		if (list != null && !list.isEmpty()) {
-			Object entity = list.get(0);
-			if (entity instanceof Colegio) {
-				ObservableList<Colegio> oList = FXCollections
-						.observableArrayList();
-				for (Object iEntity : list) {
-					oList.add((Colegio) iEntity);
-				}
-				cmbColegios.setItems(oList);
+		if (list == null || list.isEmpty()) {
+			Dialogs.create().owner(null).title("No hay registros.").masthead(null)
+					.message("No se ha encontrado registros para la consulta.").showInformation();
+			return;
+		}
+		Object entity = list.get(0);
+		if (entity instanceof Colegio) {
+			ObservableList<Colegio> oList = FXCollections.observableArrayList();
+			for (Object iEntity : list) {
+				oList.add((Colegio) iEntity);
 			}
-			if (entity instanceof Asignatura) {
-				ObservableList<Asignatura> oList = FXCollections
-						.observableArrayList();
-				for (Object iEntity : list) {
-					oList.add((Asignatura) iEntity);
-				}
-				cmbAsignatura.setItems(oList);
+			cmbColegios.setItems(oList);
+		}
+		if (entity instanceof Asignatura) {
+			ObservableList<Asignatura> oList = FXCollections.observableArrayList();
+			for (Object iEntity : list) {
+				oList.add((Asignatura) iEntity);
 			}
-			if (entity instanceof Curso) {
-				cursoList = FXCollections.observableArrayList();
-				for (Object iEntity : list) {
-					cursoList.add((Curso) iEntity);
-				}
-				FXCollections
-						.sort(cursoList, Comparadores.comparaResumeCurso());
+			cmbAsignatura.setItems(oList);
+		}
+		if (entity instanceof Curso) {
+			cursoList = FXCollections.observableArrayList();
+			for (Object iEntity : list) {
+				cursoList.add((Curso) iEntity);
 			}
-			if (entity instanceof EvaluacionPrueba) {
-				evaluacionesPrueba = FXCollections.observableArrayList();
-				for (Object object : list) {
-					EvaluacionPrueba evaluacion = (EvaluacionPrueba) object;
-					evaluacionesPrueba.add(evaluacion);
-				}
-				EvaluacionPrueba evaluacionPrueba = (EvaluacionPrueba) entity;
-				rangoEvalList = FXCollections.observableArrayList();
-				List<RangoEvaluacion> rngs = evaluacionPrueba.getPrueba()
-						.getNivelEvaluacion().getRangos();
-				for (RangoEvaluacion rng : rngs) {
-					rangoEvalList.add(rng);
-				}
-				generarReporte();
+			FXCollections.sort(cursoList, Comparadores.comparaResumeCurso());
+		}
+		if (entity instanceof EvaluacionPrueba) {
+			evaluacionesPrueba = FXCollections.observableArrayList();
+			for (Object object : list) {
+				EvaluacionPrueba evaluacion = (EvaluacionPrueba) object;
+				evaluacionesPrueba.add(evaluacion);
 			}
-		} else if (list != null && list.isEmpty()) {
-			Dialogs.create().owner(null).title("No hay registros.")
-					.masthead(null)
-					.message("No se ha encontrado registros para la consulta.")
-					.showInformation();
+			EvaluacionPrueba evaluacionPrueba = (EvaluacionPrueba) entity;
+			rangoEvalList = FXCollections.observableArrayList();
+			List<RangoEvaluacion> rngs = evaluacionPrueba.getPrueba().getNivelEvaluacion().getRangos();
+			for (RangoEvaluacion rng : rngs) {
+				rangoEvalList.add(rng);
+			}
+			generarReporte();
 		}
 	}
 
@@ -191,17 +179,14 @@ public class ComparativoColegioEjeEvaluacionView extends AFormView implements
 	 * @param pCursoList
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private void llenarColumnas(ObservableList<Curso> pCursoList,
-			ObservableList<RangoEvaluacion> rangos) {
+	private void llenarColumnas(ObservableList<Curso> pCursoList, ObservableList<RangoEvaluacion> rangos) {
 		TableColumn tc = new TableColumn("EJES");
 		tc.setSortable(false);
 		tc.setStyle("-fx-alignment: CENTER-LEFT;");
 		tc.prefWidthProperty().set(250f);
 		tc.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
-			public ObservableValue<String> call(
-					CellDataFeatures<ObservableList, String> param) {
-				return new SimpleStringProperty(param.getValue().get(0)
-						.toString());
+			public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
+				return new SimpleStringProperty(param.getValue().get(0).toString());
 			}
 		});
 		tblEjesCantidad.getColumns().add(tc);
@@ -214,10 +199,8 @@ public class ComparativoColegioEjeEvaluacionView extends AFormView implements
 			tc.setStyle("-fx-alignment: CENTER;");
 			tc.setSortable(false);
 			tc.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
-				public ObservableValue<String> call(
-						CellDataFeatures<ObservableList, String> param) {
-					return new SimpleStringProperty(param.getValue().get(0)
-							.toString());
+				public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
+					return new SimpleStringProperty(param.getValue().get(0).toString());
 				}
 			});
 			// Estoy agregando subcolumnas
@@ -227,13 +210,12 @@ public class ComparativoColegioEjeEvaluacionView extends AFormView implements
 				stc.prefWidthProperty().set(50f);
 				stc.setStyle("-fx-alignment: CENTER;");
 				stc.setSortable(false);
-				stc.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
-					public ObservableValue<String> call(
-							CellDataFeatures<ObservableList, String> param) {
-						return new SimpleStringProperty(param.getValue()
-								.get(lIdx).toString());
-					}
-				});
+				stc.setCellValueFactory(
+						new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
+							public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
+								return new SimpleStringProperty(param.getValue().get(lIdx).toString());
+							}
+						});
 				tc.getColumns().add(stc);
 				indice++;
 			}
@@ -268,8 +250,7 @@ public class ComparativoColegioEjeEvaluacionView extends AFormView implements
 			eval.getPruebasRendidas().size();
 			List<PruebaRendida> pruebasRendidas = eval.getPruebasRendidas();
 			eval.getPrueba().getRespuestas().size();
-			List<RespuestasEsperadasPrueba> respEsperadas = eval.getPrueba()
-					.getRespuestas();
+			List<RespuestasEsperadasPrueba> respEsperadas = eval.getPrueba().getRespuestas();
 			// Estamos procesando un curso/una prueba
 			for (PruebaRendida pruebaRendida : pruebasRendidas) {
 				// Se procesa un alumno.
@@ -282,8 +263,7 @@ public class ComparativoColegioEjeEvaluacionView extends AFormView implements
 					// Caso especial que indica que la prueba esta sin alumno.
 					continue;
 				}
-				int index = cursoList.indexOf(pruebaRendida.getAlumno()
-						.getCurso());
+				int index = cursoList.indexOf(pruebaRendida.getAlumno().getCurso());
 
 				if (index == -1) { // Caso especial que indica que el alumno no
 									// es del colegio.
@@ -299,8 +279,7 @@ public class ComparativoColegioEjeEvaluacionView extends AFormView implements
 					// Sumando a ejes tematicos
 					EjeTematico eje = respEsperadas.get(n).getEjeTematico();
 					if (!mapEjes.containsKey(eje)) {
-						List<OTAcumulador> lista = new ArrayList<OTAcumulador>(
-								nroCursos);
+						List<OTAcumulador> lista = new ArrayList<OTAcumulador>(nroCursos);
 						for (int idx = 0; idx < nroCursos; idx++) {
 							lista.add(null);
 						}
@@ -321,14 +300,12 @@ public class ComparativoColegioEjeEvaluacionView extends AFormView implements
 				for (EjeTematico eje : mapEjes.keySet()) {
 					List<OTAcumulador> lstEjes = mapEjes.get(eje);
 					OTAcumulador otEjeEval = lstEjes.get(index);
-					float porcentaje = obtenerPorcentaje(respuestas,
-							respEsperadas, eje);
+					float porcentaje = obtenerPorcentaje(respuestas, respEsperadas, eje);
 
 					for (int idx = 0; idx < nroRangos; idx++) {
 						RangoEvaluacion rango = rangoEvalList.get(idx);
 						if (rango.isInside(porcentaje)) {
-							otEjeEval.getNroPersonas()[idx] = otEjeEval
-									.getNroPersonas()[idx] + 1;
+							otEjeEval.getNroPersonas()[idx] = otEjeEval.getNroPersonas()[idx] + 1;
 							break;
 						}
 					}
@@ -355,8 +332,7 @@ public class ComparativoColegioEjeEvaluacionView extends AFormView implements
 	 */
 	private void generarTablaEjes(Map<EjeTematico, List<OTAcumulador>> mapEjes) {
 		ObservableList<String> row = null;
-		ObservableList<ObservableList<String>> items = FXCollections
-				.observableArrayList();
+		ObservableList<ObservableList<String>> items = FXCollections.observableArrayList();
 		for (EjeTematico eje : mapEjes.keySet()) {
 			row = FXCollections.observableArrayList();
 			List<OTAcumulador> lst = mapEjes.get(eje);
@@ -379,8 +355,7 @@ public class ComparativoColegioEjeEvaluacionView extends AFormView implements
 
 	}
 
-	private float obtenerPorcentaje(String respuestas,
-			List<RespuestasEsperadasPrueba> respEsperadas, EjeTematico eje) {
+	private float obtenerPorcentaje(String respuestas, List<RespuestasEsperadasPrueba> respEsperadas, EjeTematico eje) {
 		float nroBuenas = 0;
 		float nroPreguntas = 0;
 		for (int n = 0; n < respEsperadas.size(); n++) {
@@ -391,8 +366,7 @@ public class ComparativoColegioEjeEvaluacionView extends AFormView implements
 
 					if (respuestas.length() > n) {
 						String sResp = respuestas.substring(n, n + 1);
-						if ("+".equals(sResp)
-								|| resp.getRespuesta().equalsIgnoreCase(sResp)) {
+						if ("+".equals(sResp) || resp.getRespuesta().equalsIgnoreCase(sResp)) {
 							nroBuenas++;
 						}
 					}

@@ -17,7 +17,9 @@ public class Asignatura extends AEntity {
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long id;	
+	private Long id;
+	
+	
 	private String name;
 
 	/**
@@ -26,11 +28,12 @@ public class Asignatura extends AEntity {
 	@Version 
 	protected int version;
 	
-	
+	@Override
 	public final int getVersion() {
 		return version;
 	}
 
+	@Override
 	public final void setVersion(int version) {
 		this.version = version;
 	}

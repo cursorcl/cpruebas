@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.Executors;
-import java.util.logging.Logger;
 
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -23,6 +22,7 @@ import javax.persistence.Persistence;
 import javax.persistence.Query;
 import javax.persistence.RollbackException;
 
+import org.apache.log4j.Logger;
 import org.controlsfx.dialog.Dialogs;
 
 import cl.eos.interfaces.entity.IEntity;
@@ -39,7 +39,7 @@ import cl.eos.util.Utils;
  */
 public class PersistenceService implements IPersistenceService {
 
-	static final Logger log = Logger.getLogger(PersistenceService.class.getName());
+	static final Logger LOG = Logger.getLogger(PersistenceService.class);
 	private EntityManagerFactory eFactory;
 
 	/**
@@ -90,7 +90,7 @@ public class PersistenceService implements IPersistenceService {
 			eManager.close();
 		} catch (RollbackException exception) {
 			mEntity = null;
-			exception.getLocalizedMessage();
+			LOG.error(exception);
 		}
 		return mEntity;
 	}
@@ -137,8 +137,9 @@ public class PersistenceService implements IPersistenceService {
 						eManager.getTransaction().commit();
 					} catch (Exception e) {
 						eManager.getTransaction().rollback();
-						log.severe("Error en el findAll de la entidad:" + entityClazz.getName() + " / "
-								+ e.getMessage().toString());
+						LOG.error(
+								"Error en el findAll de la entidad:" + entityClazz.getName() + " / " + e.getMessage());
+						LOG.error(e);
 					}
 				}
 
@@ -180,7 +181,8 @@ public class PersistenceService implements IPersistenceService {
 						eManager.getTransaction().commit();
 					} catch (Exception e) {
 						eManager.getTransaction().rollback();
-						log.severe("Error en el find del namedQuery:" + namedQuery + " / " + e.getMessage().toString());
+						LOG.error("Error en el find del namedQuery:" + namedQuery + " / " + e.getMessage());
+						LOG.error(e);
 					}
 
 				}
@@ -188,12 +190,7 @@ public class PersistenceService implements IPersistenceService {
 				return lresults;
 			}
 		};
-		task.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED, new EventHandler<WorkerStateEvent>() {
-			@Override
-			public void handle(WorkerStateEvent t) {
-				listener.onFindFinished(task.getValue());
-			}
-		});
+		task.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED, t -> listener.onFindFinished(task.getValue()));
 		new Thread(task).start();
 
 	}
@@ -219,8 +216,9 @@ public class PersistenceService implements IPersistenceService {
 						eManager.getTransaction().commit();
 					} catch (Exception e) {
 						eManager.getTransaction().rollback();
-						log.severe("Error en el findById de la entidad:" + entityClazz.getName() + " / "
-								+ e.getMessage().toString());
+						LOG.error(
+								"Error en el findById de la entidad:" + entityClazz.getName() + " / " + e.getMessage());
+						LOG.error(e);
 					}
 
 				}
@@ -228,23 +226,19 @@ public class PersistenceService implements IPersistenceService {
 				return lresult;
 			}
 		};
-		task.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED, new EventHandler<WorkerStateEvent>() {
-			@Override
-			public void handle(WorkerStateEvent t) {
-				listener.onFound(task.getValue());
-			}
-		});
+		task.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED, t -> listener.onFound(task.getValue()));
 		new Thread(task).start();
 
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void findByAllId(final Class<? extends IEntity> entityClazz, final Object[] id,
 			final IPersistenceListener listener) {
-		final Task<List> task = new Task<List>() {
+		final Task<List<Object>> task = new Task<List<Object>>() {
 			@Override
-			protected List call() throws Exception {
-				List<IEntity> lresult = null;
+			protected List<Object> call() throws Exception {
+				List<Object> lresult = null;
 				StringBuffer ids = new StringBuffer();
 				for (Object object : id) {
 					if (object instanceof Prueba) {
@@ -252,36 +246,30 @@ public class PersistenceService implements IPersistenceService {
 						ids.append(",");
 					}
 				}
-				if (ids != null) {
-					int idLast = ids.lastIndexOf(",");
-					String listaIds = ids.substring(0, idLast);
-					String strEntity = entityClazz.getSimpleName();
-					String strQuery = String.format("select c from %s c where c.id in (" + listaIds.toString() + ")",
-							strEntity.toLowerCase());
+				int idLast = ids.lastIndexOf(",");
+				String listaIds = ids.substring(0, idLast);
+				String strEntity = entityClazz.getSimpleName();
+				String strQuery = String.format("select c from %s c where c.id in (%s)", strEntity.toLowerCase(),
+						listaIds);
 
-					EntityManager eManager = eFactory.createEntityManager();
-					eManager.getTransaction().begin();
-					Query query = eManager.createQuery(strQuery);
-					if (query != null) {
-						try {
-							lresult = query.setLockMode(LockModeType.PESSIMISTIC_WRITE).getResultList();
-						} catch (Exception e) {
-							eManager.getTransaction().rollback();
-							log.severe("Error en el findByAllId de la entidad:" + entityClazz.getName() + " / "
-									+ e.getMessage().toString());
-						}
+				EntityManager eManager = eFactory.createEntityManager();
+				eManager.getTransaction().begin();
+				Query query = eManager.createQuery(strQuery);
+				if (query != null) {
+					try {
+						lresult = query.setLockMode(LockModeType.PESSIMISTIC_WRITE).getResultList();
+					} catch (Exception e) {
+						eManager.getTransaction().rollback();
+						LOG.error("Error en el findByAllId de la entidad:" + entityClazz.getName() + " / "
+								+ e.getMessage());
+						LOG.error(e);
 					}
-					eManager.close();
 				}
+				eManager.close();
 				return lresult;
 			}
 		};
-		task.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED, new EventHandler<WorkerStateEvent>() {
-			@Override
-			public void handle(WorkerStateEvent t) {
-				listener.onFindAllFinished(task.getValue());
-			}
-		});
+		task.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED, t -> listener.onFindAllFinished(task.getValue()));
 		new Thread(task).start();
 
 	}
@@ -305,8 +293,9 @@ public class PersistenceService implements IPersistenceService {
 						eManager.getTransaction().commit();
 					} catch (Exception e) {
 						eManager.getTransaction().rollback();
-						log.severe("Error en el findByName de la entidad:" + entityClazz.getName() + " / "
-								+ e.getMessage().toString());
+						LOG.error("Error en el findByName de la entidad:" + entityClazz.getName() + " / "
+								+ e.getMessage());
+						LOG.error(e);
 					}
 
 				}
@@ -314,17 +303,9 @@ public class PersistenceService implements IPersistenceService {
 				return lresult;
 			}
 		};
-		task.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED, new EventHandler<WorkerStateEvent>() {
-			@Override
-			public void handle(WorkerStateEvent t) {
-				listener.onFound(task.getValue());
-			}
-		});
-		task.addEventHandler(WorkerStateEvent.WORKER_STATE_FAILED, new EventHandler<WorkerStateEvent>() {
-			@Override
-			public void handle(WorkerStateEvent t) {
-				throw new RuntimeException(task.getException());
-			}
+		task.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED, t -> listener.onFound(task.getValue()));
+		task.addEventHandler(WorkerStateEvent.WORKER_STATE_FAILED, t -> {
+			throw new RuntimeException(task.getException());
 		});
 		new Thread(task).start();
 
@@ -344,8 +325,9 @@ public class PersistenceService implements IPersistenceService {
 			res = query.executeUpdate();
 			eManager.getTransaction().commit();
 		} catch (Exception e) {
+			LOG.error("Error en el executeUpdate de:" + namedQuery + " / " + e.getMessage());
 			eManager.getTransaction().rollback();
-			log.severe("Error en el executeUpdate de:" + namedQuery + " / " + e.getMessage().toString());
+
 		}
 		eManager.close();
 		return res;
@@ -471,6 +453,8 @@ public class PersistenceService implements IPersistenceService {
 
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
 	public List<Object> findAllSynchro(final Class<? extends IEntity> entityClazz) {
 		List<Object> lresults = null;
 		String findAll = entityClazz.getSimpleName() + ".findAll";

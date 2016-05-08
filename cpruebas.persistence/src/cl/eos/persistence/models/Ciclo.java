@@ -27,10 +27,12 @@ public class Ciclo extends AEntity {
 	protected int version;
 	
 	
+	@Override
 	public final int getVersion() {
 		return version;
 	}
 
+	@Override
 	public final void setVersion(int version) {
 		this.version = version;
 	}

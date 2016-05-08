@@ -9,9 +9,6 @@ public class AActivator implements IActivator {
 	protected IView view;
 	protected Object pane;
 	
-	public AActivator() {
-	}
-	
 	@Override
 	public IController getController() {
 		return controller;

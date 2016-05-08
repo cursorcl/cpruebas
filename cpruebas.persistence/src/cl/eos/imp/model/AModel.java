@@ -25,10 +25,12 @@ public abstract class AModel implements IModel {
 		return result;
 	}
 
+	@Override
 	public IController getController() {
 		return controller;
 	}
 
+	@Override
 	public void setController(IController controller) {
 		this.controller = controller;
 	}
