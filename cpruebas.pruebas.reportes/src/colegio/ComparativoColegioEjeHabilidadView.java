@@ -25,10 +25,12 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.util.Callback;
+import cl.eos.common.Constants;
 import cl.eos.imp.view.AFormView;
 import cl.eos.ot.OTPreguntasEjes;
 import cl.eos.ot.OTPreguntasEvaluacion;
 import cl.eos.ot.OTPreguntasHabilidad;
+import cl.eos.persistence.models.Alumno;
 import cl.eos.persistence.models.Asignatura;
 import cl.eos.persistence.models.Colegio;
 import cl.eos.persistence.models.Curso;
@@ -38,13 +40,13 @@ import cl.eos.persistence.models.EvaluacionPrueba;
 import cl.eos.persistence.models.Habilidad;
 import cl.eos.persistence.models.PruebaRendida;
 import cl.eos.persistence.models.RespuestasEsperadasPrueba;
+import cl.eos.persistence.models.TipoAlumno;
 import cl.eos.persistence.util.Comparadores;
 import cl.eos.util.ExcelSheetWriterObj;
 import cl.eos.util.Pair;
 import cl.eos.util.Utils;
 
-public class ComparativoColegioEjeHabilidadView extends AFormView implements
-		EventHandler<ActionEvent> {
+public class ComparativoColegioEjeHabilidadView extends AFormView implements EventHandler<ActionEvent> {
 
 	private Logger log = Logger.getLogger("ComparativoColegioEjeHabilidadView");
 	private static final String ASIGNATURA_ID = "idAsignatura";
@@ -57,6 +59,9 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements
 	private ComboBox<Colegio> cmbColegios;
 	@FXML
 	private ComboBox<Asignatura> cmbAsignatura;
+	@FXML
+	private ComboBox<TipoAlumno> cmbTipoAlumno;
+
 	@FXML
 	private Button btnReportes;
 	@FXML
@@ -116,8 +121,7 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements
 	}
 
 	private void handleAsignatura() {
-		Asignatura asignatura = cmbAsignatura.getSelectionModel()
-				.getSelectedItem();
+		Asignatura asignatura = cmbAsignatura.getSelectionModel().getSelectedItem();
 		if (asignatura != null) {
 			parameters.put(ASIGNATURA_ID, asignatura.getId());
 			clearContent();
@@ -125,11 +129,9 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements
 	}
 
 	private void handleReportes() {
-		if (!parameters.isEmpty() && parameters.containsKey(COLEGIO_ID)
-				&& parameters.containsKey(ASIGNATURA_ID)) {
+		if (!parameters.isEmpty() && parameters.containsKey(COLEGIO_ID) && parameters.containsKey(ASIGNATURA_ID)) {
 
-			controller.find("EvaluacionPrueba.findEvaluacionByColegioAsig",
-					parameters, this);
+			controller.find("EvaluacionPrueba.findEvaluacionByColegioAsig", parameters, this);
 		}
 	}
 
@@ -151,16 +153,14 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements
 		if (list != null && !list.isEmpty()) {
 			Object entity = list.get(0);
 			if (entity instanceof Colegio) {
-				ObservableList<Colegio> oList = FXCollections
-						.observableArrayList();
+				ObservableList<Colegio> oList = FXCollections.observableArrayList();
 				for (Object iEntity : list) {
 					oList.add((Colegio) iEntity);
 				}
 				cmbColegios.setItems(oList);
 			}
 			if (entity instanceof Asignatura) {
-				ObservableList<Asignatura> oList = FXCollections
-						.observableArrayList();
+				ObservableList<Asignatura> oList = FXCollections.observableArrayList();
 				for (Object iEntity : list) {
 					oList.add((Asignatura) iEntity);
 				}
@@ -171,8 +171,7 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements
 				for (Object iEntity : list) {
 					cursoList.add((Curso) iEntity);
 				}
-				FXCollections
-						.sort(cursoList, Comparadores.comparaResumeCurso());
+				FXCollections.sort(cursoList, Comparadores.comparaResumeCurso());
 			}
 			if (entity instanceof EvaluacionEjeTematico) {
 				evalEjeTematicoList = FXCollections.observableArrayList();
@@ -181,6 +180,13 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements
 					evalEjeTematicoList.add(evaluacion);
 				}
 				generarReporte();
+			}
+			if (entity instanceof TipoAlumno) {
+				ObservableList<TipoAlumno> tAlumnoList = FXCollections.observableArrayList();
+				for (Object iEntity : list) {
+					tAlumnoList.add((TipoAlumno) iEntity);
+				}
+				cmbTipoAlumno.setItems(tAlumnoList);
 			}
 			if (entity instanceof EvaluacionPrueba) {
 				evaluacionesPrueba = FXCollections.observableArrayList();
@@ -191,10 +197,8 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements
 				generarReporte();
 			}
 		} else if (list != null && list.isEmpty()) {
-			Dialogs.create().owner(null).title("No hay registros.")
-					.masthead(null)
-					.message("No se ha encontrado registros para la consulta.")
-					.showInformation();
+			Dialogs.create().owner(null).title("No hay registros.").masthead(null)
+					.message("No se ha encontrado registros para la consulta.").showInformation();
 		}
 	}
 
@@ -212,10 +216,8 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements
 		tc.setStyle("-fx-alignment: CENTER-LEFT;");
 		tc.prefWidthProperty().set(250f);
 		tc.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
-			public ObservableValue<String> call(
-					CellDataFeatures<ObservableList, String> param) {
-				return new SimpleStringProperty(param.getValue().get(0)
-						.toString());
+			public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
+				return new SimpleStringProperty(param.getValue().get(0).toString());
 			}
 		});
 		tblEjeshabilidades.getColumns().add(tc);
@@ -225,10 +227,8 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements
 		tc.prefWidthProperty().set(250f);
 		tc.setSortable(false);
 		tc.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
-			public ObservableValue<String> call(
-					CellDataFeatures<ObservableList, String> param) {
-				return new SimpleStringProperty(param.getValue().get(0)
-						.toString());
+			public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
+				return new SimpleStringProperty(param.getValue().get(0).toString());
 			}
 		});
 		tblEvaluacion.getColumns().add(tc);
@@ -241,10 +241,8 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements
 			tc.setStyle("-fx-alignment: CENTER;");
 			tc.setSortable(false);
 			tc.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
-				public ObservableValue<String> call(
-						CellDataFeatures<ObservableList, String> param) {
-					return new SimpleStringProperty(param.getValue().get(idx)
-							.toString());
+				public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
+					return new SimpleStringProperty(param.getValue().get(idx).toString());
 				}
 			});
 			tblEjeshabilidades.getColumns().add(tc);
@@ -254,10 +252,8 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements
 			tc.setStyle("-fx-alignment: CENTER;");
 			tc.setSortable(false);
 			tc.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
-				public ObservableValue<String> call(
-						CellDataFeatures<ObservableList, String> param) {
-					return new SimpleStringProperty(param.getValue().get(idx)
-							.toString());
+				public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
+					return new SimpleStringProperty(param.getValue().get(idx).toString());
 				}
 			});
 			tblEvaluacion.getColumns().add(tc);
@@ -275,18 +271,19 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements
 	private void generarReporte() {
 
 		if (evaluacionesPrueba == null || evalEjeTematicoList == null) {
-			// No hay valores para procesar todo.
 			return;
 		}
 
+		long tipoAlumno = cmbTipoAlumno.getSelectionModel().getSelectedItem().getId();
+		
 		llenarColumnas(cursoList);
 		int nroCursos = cursoList.size();
-		Map<EjeTematico, List<OTPreguntasEjes>> mapEjes = new HashMap<EjeTematico, List<OTPreguntasEjes>>();
-		Map<Habilidad, List<OTPreguntasHabilidad>> mapHabilidades = new HashMap<Habilidad, List<OTPreguntasHabilidad>>();
-		Map<EvaluacionEjeTematico, List<OTPreguntasEvaluacion>> mapEvaluaciones = new HashMap<EvaluacionEjeTematico, List<OTPreguntasEvaluacion>>();
+		Map<EjeTematico, List<OTPreguntasEjes>> mapEjes = new HashMap<>();
+		Map<Habilidad, List<OTPreguntasHabilidad>> mapHabilidades = new HashMap<>();
+		Map<EvaluacionEjeTematico, List<OTPreguntasEvaluacion>> mapEvaluaciones = new HashMap<>();
 
 		for (EvaluacionEjeTematico ejetem : evalEjeTematicoList) {
-			lst = new ArrayList<OTPreguntasEvaluacion>(nroCursos);
+			lst = new ArrayList<>(nroCursos);
 			for (int idx = 0; idx < nroCursos; idx++) {
 				OTPreguntasEvaluacion otEval = new OTPreguntasEvaluacion();
 				otEval.setEvaluacion(ejetem);
@@ -307,22 +304,37 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements
 			eval.getPruebasRendidas().size();
 			List<PruebaRendida> pruebasRendidas = eval.getPruebasRendidas();
 			eval.getPrueba().getRespuestas().size();
-			List<RespuestasEsperadasPrueba> respEsperadas = eval.getPrueba()
-					.getRespuestas();
+			List<RespuestasEsperadasPrueba> respEsperadas = eval.getPrueba().getRespuestas();
 			// Estamos procesando un curso/una prueba
+
+			// Obtengo el index de la columna que tengo que llenar (mas 1
+			// por que la primera es de
+			// contenido
+			int index = cursoList.indexOf(eval.getCurso());
+
+			if (index == -1) {
+				continue;
+			}
+			totalAlumnos[index] = 0;
+
+			// Obtengo los alumnos a considerar en el caso que hayan alumnos PIE.
+			for(Alumno alumno: eval.getCurso().getAlumnos())
+			{
+				if(tipoAlumno == Constants.PIE_ALL || alumno.getTipoAlumno().getId().equals(tipoAlumno))
+				{
+					// le quito 1 al total de alumnos, ya que este alumno no es del grupo que sequiere representar en el reporte.
+					totalAlumnos[index] = totalAlumnos[index] +1;
+				}
+			}
+			
 			for (PruebaRendida pruebaRendida : pruebasRendidas) {
 				// Se procesa un alumno.
-
-				// Obtengo el index de la columna que tengo que llenar (mas 1
-				// por que la primera es de
-				// contenido
-				int index = -1;
-				index = cursoList.indexOf(eval.getCurso());
-
-				if (index == -1) {
+				if(tipoAlumno != Constants.PIE_ALL && !pruebaRendida.getAlumno().getTipoAlumno().getId().equals(tipoAlumno))
+				{
 					continue;
 				}
-				totalAlumnos[index] = eval.getCurso().getAlumnos().size();
+				
+				
 				alumnosEvaluados[index] = alumnosEvaluados[index] + 1;
 
 				String respuestas = pruebaRendida.getRespuestas();
@@ -334,7 +346,7 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements
 				for (int n = 0; n < respEsperadas.size(); n++) {
 					EjeTematico eje = respEsperadas.get(n).getEjeTematico();
 					if (!mapEjes.containsKey(eje)) {
-						List<OTPreguntasEjes> lista = new ArrayList<OTPreguntasEjes>();
+						List<OTPreguntasEjes> lista = new ArrayList<>();
 						for (int idx = 0; idx < nroCursos; idx++) {
 							lista.add(null);
 						}
@@ -343,7 +355,7 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements
 					Habilidad hab = respEsperadas.get(n).getHabilidad();
 					if (!mapHabilidades.containsKey(hab)) {
 
-						List<OTPreguntasHabilidad> lista = new ArrayList<OTPreguntasHabilidad>();
+						List<OTPreguntasHabilidad> lista = new ArrayList<>();
 						for (int idx = 0; idx < nroCursos; idx++) {
 							lista.add(null);
 						}
@@ -361,8 +373,7 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements
 						otEje.setEjeTematico(eje);
 						lstEjes.set(index, otEje);
 					}
-					Pair<Integer, Integer> buenasTotal = obtenerBuenasTotales(
-							respuestas, respEsperadas, eje);
+					Pair<Integer, Integer> buenasTotal = obtenerBuenasTotales(respuestas, respEsperadas, eje);
 
 					otEje.setBuenas(otEje.getBuenas() + buenasTotal.getFirst());
 					otEje.setTotal(otEje.getTotal() + buenasTotal.getSecond());
@@ -370,37 +381,26 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements
 				}
 
 				for (Habilidad hab : mapHabilidades.keySet()) {
-					List<OTPreguntasHabilidad> lstHabs = mapHabilidades
-							.get(hab);
-					OTPreguntasHabilidad otHabilidad = lstHabs.get(index); // Se
-																			// obtiene
-																			// el
-																			// asociado
-																			// a
-																			// la
-																			// columna.
+					List<OTPreguntasHabilidad> lstHabs = mapHabilidades.get(hab);
+					
+					// Se obtiene el asociado a la columna.
+					OTPreguntasHabilidad otHabilidad = lstHabs.get(index);
 					if (otHabilidad == null) {
 						otHabilidad = new OTPreguntasHabilidad();
 						otHabilidad.setHabilidad(hab);
 						lstHabs.set(index, otHabilidad);
 					}
-					Pair<Integer, Integer> buenasTotal = obtenerBuenasTotales(
-							respuestas, respEsperadas, hab);
-					otHabilidad.setBuenas(otHabilidad.getBuenas()
-							+ buenasTotal.getFirst());
-					otHabilidad.setTotal(otHabilidad.getTotal()
-							+ buenasTotal.getSecond());
-					log.debug(String.format("HAB: %s %d/%d  ACUM: %d/%d",
-							hab.getName(), buenasTotal.getFirst(),
-							buenasTotal.getSecond(), otHabilidad.getBuenas(),
-							otHabilidad.getTotal()));
+					Pair<Integer, Integer> buenasTotal = obtenerBuenasTotales(respuestas, respEsperadas, hab);
+					otHabilidad.setBuenas(otHabilidad.getBuenas() + buenasTotal.getFirst());
+					otHabilidad.setTotal(otHabilidad.getTotal() + buenasTotal.getSecond());
+					log.debug(String.format("HAB: %s %d/%d  ACUM: %d/%d", hab.getName(), buenasTotal.getFirst(),
+							buenasTotal.getSecond(), otHabilidad.getBuenas(), otHabilidad.getTotal()));
 					lstHabs.set(index, otHabilidad);
 				}
 
 				for (EvaluacionEjeTematico ejetem : evalEjeTematicoList) {
 					if (ejetem.isInside(pruebaRendida.getPbuenas())) {
-						List<OTPreguntasEvaluacion> lstOt = mapEvaluaciones
-								.get(ejetem);
+						List<OTPreguntasEvaluacion> lstOt = mapEvaluaciones.get(ejetem);
 						OTPreguntasEvaluacion ot = lstOt.get(index);
 						ot.setAlumnos(ot.getAlumnos() + 1);
 						break;
@@ -411,19 +411,15 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements
 
 		// Ahora se debe llenar las tablas.
 		generarTablaEjesHabilidades(mapEjes, mapHabilidades);
-		generarTablaEvaluaciones(mapEvaluaciones, totalAlumnos,
-				alumnosEvaluados);
+		generarTablaEvaluaciones(mapEvaluaciones, totalAlumnos, alumnosEvaluados);
 
 	}
 
-	private void generarTablaEvaluaciones(
-			Map<EvaluacionEjeTematico, List<OTPreguntasEvaluacion>> mapEvaluaciones,
+	private void generarTablaEvaluaciones(Map<EvaluacionEjeTematico, List<OTPreguntasEvaluacion>> mapEvaluaciones,
 			int[] totalAlumnos, int[] alumnosEvaluados) {
 		ObservableList<String> row = null;
-		ObservableList<ObservableList<String>> items = FXCollections
-				.observableArrayList();
-		Collections.sort(evalEjeTematicoList,
-				Comparadores.comparaEvaluacionEjeTematico());
+		ObservableList<ObservableList<String>> items = FXCollections.observableArrayList();
+		Collections.sort(evalEjeTematicoList, Comparadores.comparaEvaluacionEjeTematico());
 
 		for (EvaluacionEjeTematico eval : evalEjeTematicoList) {
 			row = FXCollections.observableArrayList();
@@ -471,12 +467,10 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements
 	 *            Mapa que contiene los valores para cada curso de las
 	 *            habilidades.
 	 */
-	private void generarTablaEjesHabilidades(
-			Map<EjeTematico, List<OTPreguntasEjes>> mapEjes,
+	private void generarTablaEjesHabilidades(Map<EjeTematico, List<OTPreguntasEjes>> mapEjes,
 			Map<Habilidad, List<OTPreguntasHabilidad>> mapHabilidades) {
 		ObservableList<String> row = null;
-		ObservableList<ObservableList<String>> items = FXCollections
-				.observableArrayList();
+		ObservableList<ObservableList<String>> items = FXCollections.observableArrayList();
 		int nroCols = 0;
 		for (EjeTematico eje : mapEjes.keySet()) {
 			row = FXCollections.observableArrayList();
@@ -484,10 +478,8 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements
 			nroCols = lst.size();
 			row.add(eje.getName());
 			for (OTPreguntasEjes ot : lst) {
-				if (ot != null && ot.getBuenas() != null
-						&& ot.getTotal() != null && ot.getTotal() != 0F) {
-					float porcentaje = ot.getBuenas().floatValue()
-							/ ot.getTotal().floatValue() * 100f;
+				if (ot != null && ot.getBuenas() != null && ot.getTotal() != null && ot.getTotal() != 0F) {
+					float porcentaje = ot.getBuenas().floatValue() / ot.getTotal().floatValue() * 100f;
 					row.add(String.valueOf(Utils.redondeo1Decimal(porcentaje)));
 				} else {
 					row.add(" ");
@@ -506,10 +498,8 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements
 			List<OTPreguntasHabilidad> lst = mapHabilidades.get(hab);
 			row.add(hab.getName());
 			for (OTPreguntasHabilidad ot : lst) {
-				if (ot != null && ot.getBuenas() != null
-						&& ot.getTotal() != null && ot.getTotal() != 0F) {
-					float porcentaje = ot.getBuenas().floatValue()
-							/ ot.getTotal().floatValue() * 100f;
+				if (ot != null && ot.getBuenas() != null && ot.getTotal() != null && ot.getTotal() != 0F) {
+					float porcentaje = ot.getBuenas().floatValue() / ot.getTotal().floatValue() * 100f;
 					row.add(String.valueOf(Utils.redondeo1Decimal(porcentaje)));
 				} else {
 					row.add(" ");
@@ -544,8 +534,7 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements
 				if (resp.getHabilidad().equals(hab)) {
 					if (respuestas.length() > n) {
 						String sResp = respuestas.substring(n, n + 1);
-						if ("+".equals(sResp)
-								|| resp.getRespuesta().equalsIgnoreCase(sResp)) {
+						if ("+".equals(sResp) || resp.getRespuesta().equalsIgnoreCase(sResp)) {
 							nroBuenas++;
 						}
 					}
@@ -578,8 +567,7 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements
 				if (resp.getEjeTematico().equals(eje)) {
 					if (respuestas.length() > n) {
 						String sResp = respuestas.substring(n, n + 1);
-						if ("+".equals(sResp)
-								|| resp.getRespuesta().equalsIgnoreCase(sResp)) {
+						if ("+".equals(sResp) || resp.getRespuesta().equalsIgnoreCase(sResp)) {
 							nroBuenas++;
 						}
 					}

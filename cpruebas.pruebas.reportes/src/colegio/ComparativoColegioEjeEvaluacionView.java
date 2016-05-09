@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.controlsfx.dialog.Dialogs;
 
+import cl.eos.common.Constants;
 import cl.eos.imp.view.AFormView;
 import cl.eos.persistence.models.Asignatura;
 import cl.eos.persistence.models.Colegio;
@@ -17,6 +18,7 @@ import cl.eos.persistence.models.EvaluacionPrueba;
 import cl.eos.persistence.models.PruebaRendida;
 import cl.eos.persistence.models.RangoEvaluacion;
 import cl.eos.persistence.models.RespuestasEsperadasPrueba;
+import cl.eos.persistence.models.TipoAlumno;
 import cl.eos.persistence.util.Comparadores;
 import cl.eos.util.ExcelSheetWriterObj;
 import cl.eos.view.ots.ejeevaluacion.OTAcumulador;
@@ -46,6 +48,8 @@ public class ComparativoColegioEjeEvaluacionView extends AFormView implements Ev
 	private ComboBox<Colegio> cmbColegios;
 	@FXML
 	private ComboBox<Asignatura> cmbAsignatura;
+	@FXML
+	private ComboBox<TipoAlumno> cmbTipoAlumno;
 	@FXML
 	private Button btnReportes;
 	@FXML
@@ -155,6 +159,13 @@ public class ComparativoColegioEjeEvaluacionView extends AFormView implements Ev
 			}
 			FXCollections.sort(cursoList, Comparadores.comparaResumeCurso());
 		}
+		if (entity instanceof TipoAlumno) {
+			ObservableList<TipoAlumno> tAlumnoList = FXCollections.observableArrayList();
+			for (Object iEntity : list) {
+				tAlumnoList.add((TipoAlumno) iEntity);
+			}
+			cmbTipoAlumno.setItems(tAlumnoList);
+		}
 		if (entity instanceof EvaluacionPrueba) {
 			evaluacionesPrueba = FXCollections.observableArrayList();
 			for (Object object : list) {
@@ -235,14 +246,18 @@ public class ComparativoColegioEjeEvaluacionView extends AFormView implements Ev
 	private void generarReporte() {
 
 		if (evaluacionesPrueba == null || rangoEvalList == null) {
-			// No hay valores para procesar todo.
 			return;
 		}
 
 		llenarColumnas(cursoList, rangoEvalList);
 		int nroCursos = cursoList.size();
 		int nroRangos = rangoEvalList.size();
-		Map<EjeTematico, List<OTAcumulador>> mapEjes = new HashMap<EjeTematico, List<OTAcumulador>>();
+		Map<EjeTematico, List<OTAcumulador>> mapEjes = new HashMap<>();
+
+		/*
+		 * Aqui verificamos el TIPO ALUMNO SELECCIONADO PARA EL REPORTE
+		 */
+		long tipoAlumno = cmbTipoAlumno.getSelectionModel().getSelectedItem().getId();
 
 		// Todas las evaluaciones asociadas (Todos los cursos)
 		for (EvaluacionPrueba eval : evaluacionesPrueba) {
@@ -263,6 +278,14 @@ public class ComparativoColegioEjeEvaluacionView extends AFormView implements Ev
 					// Caso especial que indica que la prueba esta sin alumno.
 					continue;
 				}
+
+				if (tipoAlumno != Constants.PIE_ALL
+						&& tipoAlumno != pruebaRendida.getAlumno().getTipoAlumno().getId()) {
+					// En este caso, no se considera este alumno para el
+					// cálculo.
+					continue;
+				}
+
 				int index = cursoList.indexOf(pruebaRendida.getAlumno().getCurso());
 
 				if (index == -1) { // Caso especial que indica que el alumno no

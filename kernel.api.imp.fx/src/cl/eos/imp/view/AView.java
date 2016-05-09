@@ -4,6 +4,8 @@ import java.awt.Dimension;
 import java.net.URL;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.Pane;
 import cl.eos.interfaces.controller.IController;
@@ -12,6 +14,7 @@ import cl.eos.interfaces.view.IView;
 
 public abstract class AView implements IView {
 
+	static final Logger LOG = Logger.getLogger(AView.class);
 	private String title;
 	protected IController controller;
 	protected Object parent;
@@ -38,36 +41,30 @@ public abstract class AView implements IView {
 	}
 
 	public void addView(IView view) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void removeView(IView view) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public List<IView> getViews() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public void onChangeStatus(Object status) {
-		// TODO Auto-generated method stub
 	}
 
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Dimension getPreferredSize() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -81,49 +78,41 @@ public abstract class AView implements IView {
 
 	@Override
 	public void onSaving(IEntity entity) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void onSaved(IEntity entity) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void onDeleting(IEntity entity) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void onDeleted(IEntity entity) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void onSelected(IEntity entity) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void onFound(IEntity entity) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void onDataArrived(List<Object> list) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void onError(String error) {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -141,7 +130,7 @@ public abstract class AView implements IView {
 			view.setPanel(pane);
 			controller.addView(view);
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.error(e);
 		}
 		if (view != null) {
 			WindowManager.getInstance().show(view);

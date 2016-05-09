@@ -41,6 +41,7 @@ import cl.eos.persistence.models.Profesor;
 import cl.eos.persistence.models.Prueba;
 import cl.eos.persistence.models.Prueba.Estado;
 import cl.eos.persistence.models.RangoEvaluacion;
+import cl.eos.persistence.models.TipoAlumno;
 import cl.eos.persistence.models.TipoCurso;
 import cl.eos.persistence.models.TipoPrueba;
 import cl.eos.view.editablecells.PruebaCellFactory;
@@ -434,7 +435,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 	}
 
 	private void handlerCompColegioEjeHabilXCurso() {
-		ComparativoColegioEjeHabilidadxCursoView resColegioHabEjeCurso = (ComparativoColegioEjeHabilidadxCursoView) show("/cl/eos/view/ComparativoColegioEjeHabilidadxCurso.fxml");
+		ComparativoColegioEjeHabilidadxCursoView resColegioHabEjeCurso = (ComparativoColegioEjeHabilidadxCursoView) show("/colegio/fxml/ComparativoColegioEjeHabilidadxCurso.fxml");
 		show(resColegioHabEjeCurso);
 		controller.findAll(Colegio.class, resColegioHabEjeCurso);
 		controller.findAll(Asignatura.class, resColegioHabEjeCurso);
@@ -442,7 +443,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 	}
 
 	private void handlerHabilidadEvaluacionXAlumno() {
-		ResumenColegioXAlumnoEjeHabilidadView resHabEjeAlumno = (ResumenColegioXAlumnoEjeHabilidadView) show("/cl/eos/view/ResumenColegioXAlumnoEjeHabilidad.fxml");
+		ResumenColegioXAlumnoEjeHabilidadView resHabEjeAlumno = (ResumenColegioXAlumnoEjeHabilidadView) show("/colegio/fxml/ResumenColegioXAlumnoEjeHabilidad.fxml");
 		show(resHabEjeAlumno);
 		controller.findAll(Colegio.class, resHabEjeAlumno);
 		controller.findAll(Asignatura.class, resHabEjeAlumno);
@@ -450,7 +451,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 	}
 
 	private void handlerHabilidadEvaluacion() {
-		ComparativoColegioHabilidadesView resumenHabilidades = (ComparativoColegioHabilidadesView) show("/cl/eos/view/ComparativoColegioHabilidades.fxml");
+		ComparativoColegioHabilidadesView resumenHabilidades = (ComparativoColegioHabilidadesView) show("/colegio/fxml/ComparativoColegioHabilidades.fxml");
 		show(resumenHabilidades);
 		controller.findAll(Colegio.class, resumenHabilidades);
 		controller.findAll(Asignatura.class, resumenHabilidades);
@@ -458,19 +459,21 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 	}
 
 	private void handlerEjesEvaluacion() {
-		ComparativoColegioEjeEvaluacionView resumenEjeEvaluacion = (ComparativoColegioEjeEvaluacionView) show("/cl/eos/view/ComparativoColegioEjeEvaluacion.fxml");
+		ComparativoColegioEjeEvaluacionView resumenEjeEvaluacion = (ComparativoColegioEjeEvaluacionView) show("/colegio/fxml/ComparativoColegioEjeEvaluacion.fxml");
 		show(resumenEjeEvaluacion);
 		controller.findAll(Colegio.class, resumenEjeEvaluacion);
 		controller.findAll(Asignatura.class, resumenEjeEvaluacion);
+		controller.findAll(TipoAlumno.class, resumenEjeEvaluacion);
 	}
 
 	private void handlerComparativoColegioEjeHabilidad() {
-		ComparativoColegioEjeHabilidadView resumenColegioEjeHabiliadad = (ComparativoColegioEjeHabilidadView) show("/cl/eos/view/ComparativoColegioEjeHabilidad.fxml");
+		ComparativoColegioEjeHabilidadView resumenColegioEjeHabiliadad = (ComparativoColegioEjeHabilidadView) show("/colegio/fxml/ComparativoColegioEjeHabilidad.fxml");
 		show(resumenColegioEjeHabiliadad);
 		controller.findAll(Colegio.class, resumenColegioEjeHabiliadad);
 		controller.findAll(Asignatura.class, resumenColegioEjeHabiliadad);
 		controller.findAll(EvaluacionEjeTematico.class,
 				resumenColegioEjeHabiliadad);
+		controller.findAll(TipoAlumno.class, resumenColegioEjeHabiliadad);
 	}
 
 	private void handlerResumenColegios() {
