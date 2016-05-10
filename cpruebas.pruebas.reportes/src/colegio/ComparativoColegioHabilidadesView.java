@@ -24,10 +24,12 @@ import javafx.util.Callback;
 
 import org.controlsfx.dialog.Dialogs;
 
+import cl.eos.common.Constants;
 import cl.eos.imp.view.AFormView;
 import cl.eos.ot.OTPreguntasEjes;
 import cl.eos.ot.OTPreguntasEvaluacion;
 import cl.eos.ot.OTPreguntasHabilidad;
+import cl.eos.persistence.models.Alumno;
 import cl.eos.persistence.models.Asignatura;
 import cl.eos.persistence.models.Colegio;
 import cl.eos.persistence.models.Curso;
@@ -38,14 +40,14 @@ import cl.eos.persistence.models.Habilidad;
 import cl.eos.persistence.models.PruebaRendida;
 import cl.eos.persistence.models.RangoEvaluacion;
 import cl.eos.persistence.models.RespuestasEsperadasPrueba;
+import cl.eos.persistence.models.TipoAlumno;
 import cl.eos.persistence.util.Comparadores;
 import cl.eos.util.ExcelSheetWriterObj;
 import cl.eos.util.Pair;
 import cl.eos.util.Utils;
 import cl.eos.view.ots.ejeevaluacion.OTAcumulador;
 
-public class ComparativoColegioHabilidadesView extends AFormView implements
-		EventHandler<ActionEvent> {
+public class ComparativoColegioHabilidadesView extends AFormView implements EventHandler<ActionEvent> {
 
 	private static final String ASIGNATURA_ID = "idAsignatura";
 	private static final String COLEGIO_ID = "idColegio";
@@ -55,6 +57,8 @@ public class ComparativoColegioHabilidadesView extends AFormView implements
 	private ComboBox<Colegio> cmbColegios;
 	@FXML
 	private ComboBox<Asignatura> cmbAsignatura;
+	@FXML
+	private ComboBox<TipoAlumno> cmbTipoAlumno;
 	@FXML
 	private Button btnReportes;
 	@FXML
@@ -93,10 +97,8 @@ public class ComparativoColegioHabilidadesView extends AFormView implements
 
 			tblHabilidadesCantidad.setId("Comp ColegiosHabilidades");
 			List<TableView<? extends Object>> listaTablas = new ArrayList<>();
-			listaTablas
-					.add((TableView<? extends Object>) tblHabilidadesCantidad);
-			ExcelSheetWriterObj
-					.convertirDatosColumnasDoblesALibroDeExcel(listaTablas);
+			listaTablas.add((TableView<? extends Object>) tblHabilidadesCantidad);
+			ExcelSheetWriterObj.convertirDatosColumnasDoblesALibroDeExcel(listaTablas);
 		}
 	}
 
@@ -113,8 +115,7 @@ public class ComparativoColegioHabilidadesView extends AFormView implements
 	}
 
 	private void handleAsignatura() {
-		Asignatura asignatura = cmbAsignatura.getSelectionModel()
-				.getSelectedItem();
+		Asignatura asignatura = cmbAsignatura.getSelectionModel().getSelectedItem();
 		if (asignatura != null) {
 			parameters.put(ASIGNATURA_ID, asignatura.getId());
 			clearContent();
@@ -122,11 +123,9 @@ public class ComparativoColegioHabilidadesView extends AFormView implements
 	}
 
 	private void handleReportes() {
-		if (!parameters.isEmpty() && parameters.containsKey(COLEGIO_ID)
-				&& parameters.containsKey(ASIGNATURA_ID)) {
+		if (!parameters.isEmpty() && parameters.containsKey(COLEGIO_ID) && parameters.containsKey(ASIGNATURA_ID)) {
 
-			controller.find("EvaluacionPrueba.findEvaluacionByColegioAsig",
-					parameters, this);
+			controller.find("EvaluacionPrueba.findEvaluacionByColegioAsig", parameters, this);
 		}
 	}
 
@@ -147,16 +146,14 @@ public class ComparativoColegioHabilidadesView extends AFormView implements
 		if (list != null && !list.isEmpty()) {
 			Object entity = list.get(0);
 			if (entity instanceof Colegio) {
-				ObservableList<Colegio> oList = FXCollections
-						.observableArrayList();
+				ObservableList<Colegio> oList = FXCollections.observableArrayList();
 				for (Object iEntity : list) {
 					oList.add((Colegio) iEntity);
 				}
 				cmbColegios.setItems(oList);
 			}
 			if (entity instanceof Asignatura) {
-				ObservableList<Asignatura> oList = FXCollections
-						.observableArrayList();
+				ObservableList<Asignatura> oList = FXCollections.observableArrayList();
 				for (Object iEntity : list) {
 					oList.add((Asignatura) iEntity);
 				}
@@ -167,8 +164,14 @@ public class ComparativoColegioHabilidadesView extends AFormView implements
 				for (Object iEntity : list) {
 					cursoList.add((Curso) iEntity);
 				}
-				FXCollections
-						.sort(cursoList, Comparadores.comparaResumeCurso());
+				FXCollections.sort(cursoList, Comparadores.comparaResumeCurso());
+			}
+			if (entity instanceof TipoAlumno) {
+				ObservableList<TipoAlumno> tAlumnoList = FXCollections.observableArrayList();
+				for (Object iEntity : list) {
+					tAlumnoList.add((TipoAlumno) iEntity);
+				}
+				cmbTipoAlumno.setItems(tAlumnoList);
 			}
 			if (entity instanceof EvaluacionPrueba) {
 				evaluacionesPrueba = FXCollections.observableArrayList();
@@ -178,18 +181,15 @@ public class ComparativoColegioHabilidadesView extends AFormView implements
 				}
 				EvaluacionPrueba evaluacionPrueba = (EvaluacionPrueba) entity;
 				rangoEvalList = FXCollections.observableArrayList();
-				List<RangoEvaluacion> rngs = evaluacionPrueba.getPrueba()
-						.getNivelEvaluacion().getRangos();
+				List<RangoEvaluacion> rngs = evaluacionPrueba.getPrueba().getNivelEvaluacion().getRangos();
 				for (RangoEvaluacion rng : rngs) {
 					rangoEvalList.add(rng);
 				}
 				generarReporte();
 			}
 		} else if (list != null && list.isEmpty()) {
-			Dialogs.create().owner(null).title("No hay registros.")
-					.masthead(null)
-					.message("No se ha encontrado registros para la consulta.")
-					.showInformation();
+			Dialogs.create().owner(null).title("No hay registros.").masthead(null)
+					.message("No se ha encontrado registros para la consulta.").showInformation();
 		}
 	}
 
@@ -201,17 +201,14 @@ public class ComparativoColegioHabilidadesView extends AFormView implements
 	 * @param pCursoList
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private void llenarColumnas(ObservableList<Curso> pCursoList,
-			ObservableList<RangoEvaluacion> rangos) {
+	private void llenarColumnas(ObservableList<Curso> pCursoList, ObservableList<RangoEvaluacion> rangos) {
 		TableColumn tc = new TableColumn("HABILIDADES");
 		tc.setSortable(false);
 		tc.setStyle("-fx-alignment: CENTER-LEFT;");
 		tc.prefWidthProperty().set(250f);
 		tc.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
-			public ObservableValue<String> call(
-					CellDataFeatures<ObservableList, String> param) {
-				return new SimpleStringProperty(param.getValue().get(0)
-						.toString());
+			public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
+				return new SimpleStringProperty(param.getValue().get(0).toString());
 			}
 		});
 		tblHabilidadesCantidad.getColumns().add(tc);
@@ -224,10 +221,8 @@ public class ComparativoColegioHabilidadesView extends AFormView implements
 			tc.setStyle("-fx-alignment: CENTER;");
 			tc.setSortable(false);
 			tc.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
-				public ObservableValue<String> call(
-						CellDataFeatures<ObservableList, String> param) {
-					return new SimpleStringProperty(param.getValue().get(0)
-							.toString());
+				public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
+					return new SimpleStringProperty(param.getValue().get(0).toString());
 				}
 			});
 			// Estoy agregando subcolumnas
@@ -237,13 +232,12 @@ public class ComparativoColegioHabilidadesView extends AFormView implements
 				stc.prefWidthProperty().set(50f);
 				stc.setStyle("-fx-alignment: CENTER;");
 				stc.setSortable(false);
-				stc.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
-					public ObservableValue<String> call(
-							CellDataFeatures<ObservableList, String> param) {
-						return new SimpleStringProperty(param.getValue()
-								.get(lIdx).toString());
-					}
-				});
+				stc.setCellValueFactory(
+						new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
+							public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
+								return new SimpleStringProperty(param.getValue().get(lIdx).toString());
+							}
+						});
 				tc.getColumns().add(stc);
 				indice++;
 			}
@@ -263,23 +257,21 @@ public class ComparativoColegioHabilidadesView extends AFormView implements
 	private void generarReporte() {
 
 		if (evaluacionesPrueba == null || rangoEvalList == null) {
-			// No hay valores para procesar todo.
 			return;
 		}
 
 		llenarColumnas(cursoList, rangoEvalList);
 		int nroCursos = cursoList.size();
 		int nroRangos = rangoEvalList.size();
-		Map<Habilidad, List<OTAcumulador>> mapEjes = new HashMap<Habilidad, List<OTAcumulador>>();
-
+		Map<Habilidad, List<OTAcumulador>> mapEjes = new HashMap<>();
+		long tipoAlumno = cmbTipoAlumno.getSelectionModel().getSelectedItem().getId();
 		// Todas las evaluaciones asociadas (Todos los cursos)
 		for (EvaluacionPrueba eval : evaluacionesPrueba) {
 			// Se esta revisando un curso.
 			eval.getPruebasRendidas().size();
 			List<PruebaRendida> pruebasRendidas = eval.getPruebasRendidas();
 			eval.getPrueba().getRespuestas().size();
-			List<RespuestasEsperadasPrueba> respEsperadas = eval.getPrueba()
-					.getRespuestas();
+			List<RespuestasEsperadasPrueba> respEsperadas = eval.getPrueba().getRespuestas();
 			// Estamos procesando un curso/una prueba
 			for (PruebaRendida pruebaRendida : pruebasRendidas) {
 				// Se procesa un alumno.
@@ -289,12 +281,18 @@ public class ComparativoColegioHabilidadesView extends AFormView implements
 					continue;
 				}
 
+				Alumno alumno = pruebaRendida.getAlumno();
+				if (tipoAlumno != Constants.PIE_ALL && tipoAlumno != alumno.getTipoAlumno().getId()) {
+					// En este caso, no se considera este alumno para el
+					// cálculo.
+					continue;
+				}
+
 				// Obtengo el index de la columna que tengo que llenar (mas 1
 				// por que la primera es de contenido
 				// index * nroRangos Ya que cada curso tiene nroRangos columnas
 				// asociadas.
-				int index = cursoList.indexOf(pruebaRendida.getAlumno()
-						.getCurso());
+				int index = cursoList.indexOf(pruebaRendida.getAlumno().getCurso());
 
 				if (index == -1) { // Caso especial que indica que el alumno no
 									// es del colegio.
@@ -309,8 +307,7 @@ public class ComparativoColegioHabilidadesView extends AFormView implements
 					// Sumando a ejes tematicos
 					Habilidad habilidad = respEsperadas.get(n).getHabilidad();
 					if (!mapEjes.containsKey(habilidad)) {
-						List<OTAcumulador> lista = new ArrayList<OTAcumulador>(
-								nroCursos);
+						List<OTAcumulador> lista = new ArrayList<OTAcumulador>(nroCursos);
 						for (int idx = 0; idx < nroCursos; idx++) {
 							lista.add(null);
 						}
@@ -331,14 +328,12 @@ public class ComparativoColegioHabilidadesView extends AFormView implements
 				for (Habilidad habilidad : mapEjes.keySet()) {
 					List<OTAcumulador> lstEjes = mapEjes.get(habilidad);
 					OTAcumulador otEjeEval = lstEjes.get(index);
-					float porcentaje = obtenerPorcentaje(respuestas,
-							respEsperadas, habilidad);
+					float porcentaje = obtenerPorcentaje(respuestas, respEsperadas, habilidad);
 
 					for (int idx = 0; idx < nroRangos; idx++) {
 						RangoEvaluacion rango = rangoEvalList.get(idx);
 						if (rango.isInside(porcentaje)) {
-							otEjeEval.getNroPersonas()[idx] = otEjeEval
-									.getNroPersonas()[idx] + 1;
+							otEjeEval.getNroPersonas()[idx] = otEjeEval.getNroPersonas()[idx] + 1;
 							break;
 						}
 					}
@@ -365,8 +360,7 @@ public class ComparativoColegioHabilidadesView extends AFormView implements
 	 */
 	private void generarTablaEjes(Map<Habilidad, List<OTAcumulador>> mapEjes) {
 		ObservableList<String> row = null;
-		ObservableList<ObservableList<String>> items = FXCollections
-				.observableArrayList();
+		ObservableList<ObservableList<String>> items = FXCollections.observableArrayList();
 		for (Habilidad habilidad : mapEjes.keySet()) {
 			row = FXCollections.observableArrayList();
 			List<OTAcumulador> lst = mapEjes.get(habilidad);
@@ -389,8 +383,8 @@ public class ComparativoColegioHabilidadesView extends AFormView implements
 
 	}
 
-	private float obtenerPorcentaje(String respuestas,
-			List<RespuestasEsperadasPrueba> respEsperadas, Habilidad habilidad) {
+	private float obtenerPorcentaje(String respuestas, List<RespuestasEsperadasPrueba> respEsperadas,
+			Habilidad habilidad) {
 		float nroBuenas = 0;
 		float nroPreguntas = 0;
 		for (int n = 0; n < respEsperadas.size(); n++) {
@@ -399,8 +393,7 @@ public class ComparativoColegioHabilidadesView extends AFormView implements
 				if (resp.getHabilidad().equals(habilidad)) {
 					if (respuestas.length() > n) {
 						String sResp = respuestas.substring(n, n + 1);
-						if ("+".equals(sResp)
-								|| resp.getRespuesta().equalsIgnoreCase(sResp)) {
+						if ("+".equals(sResp) || resp.getRespuesta().equalsIgnoreCase(sResp)) {
 							nroBuenas++;
 						}
 					}
