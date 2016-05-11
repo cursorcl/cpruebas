@@ -15,12 +15,14 @@ import javafx.scene.control.TableView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.TextAlignment;
 import javafx.util.Callback;
+import cl.eos.common.Constants;
 import cl.eos.persistence.models.Alumno;
 import cl.eos.persistence.models.EjeTematico;
 import cl.eos.persistence.models.EvaluacionPrueba;
 import cl.eos.persistence.models.Habilidad;
 import cl.eos.persistence.models.PruebaRendida;
 import cl.eos.persistence.models.RespuestasEsperadasPrueba;
+import cl.eos.persistence.models.TipoAlumno;
 import cl.eos.util.Pair;
 import cl.eos.util.Utils;
 import cl.eos.view.ots.resumenxalumno.eje.habilidad.OTAlumnoResumen;
@@ -34,16 +36,18 @@ public class CursoEjeHabilidad {
 	private List<EjeTematico> lstEjes;
 	private List<Habilidad> lstHabs;
 	private List<RespuestasEsperadasPrueba> respEsperadas;
+	private  TipoAlumno tipoAlumno;
 
-	public CursoEjeHabilidad() {
-		this(null);
+	public CursoEjeHabilidad( TipoAlumno tipoAlumno) {
+		this(null, tipoAlumno);
 	}
 
-	public CursoEjeHabilidad(EvaluacionPrueba evaluacionPrueba) {
+	public CursoEjeHabilidad(EvaluacionPrueba evaluacionPrueba, TipoAlumno tipoAlumno) {
 		super();
+		this.tipoAlumno =  tipoAlumno;
 		tblAlumnos = new TableView();
 		tblAlumnos.setId(evaluacionPrueba.getCurso().getName());
-		this.setEvaluacionPrueba(evaluacionPrueba);
+		setEvaluacionPrueba(evaluacionPrueba);
 	}
 
 	public final void generate() {
@@ -92,12 +96,19 @@ public class CursoEjeHabilidad {
 	 */
 	private List<OTAlumnoResumen> obtenerPuntos() {
 
-		List<OTAlumnoResumen> respuesta = new ArrayList<OTAlumnoResumen>();
+		List<OTAlumnoResumen> respuesta = new ArrayList<>();
 
 		List<PruebaRendida> pRendidas = evaluacionPrueba.getPruebasRendidas();
 		for (PruebaRendida pr : pRendidas) {
 			String resps = pr.getRespuestas();
 			Alumno alumno = pr.getAlumno();
+			
+			if (tipoAlumno.getId() != Constants.PIE_ALL && tipoAlumno.getId() != alumno.getTipoAlumno().getId()) {
+				// En este caso, no se considera este alumno para el
+				// cálculo.
+				continue;
+			}
+			
 			OTAlumnoResumen ot = new OTAlumnoResumen(alumno);
 			for (EjeTematico eje : lstEjes) {
 				Pair<Integer, Integer> pair = obtenerBuenasTotales(resps, eje);
@@ -309,7 +320,7 @@ public class CursoEjeHabilidad {
 	 * @return Lista con los ejes temáticos en la prueba.
 	 */
 	private List<EjeTematico> getEjesTematicos() {
-		List<EjeTematico> lstOtEjes = new ArrayList<EjeTematico>();
+		List<EjeTematico> lstOtEjes = new ArrayList<>();
 		for (RespuestasEsperadasPrueba r : respEsperadas) {
 			if (!lstOtEjes.contains(r.getEjeTematico())) {
 				lstOtEjes.add(r.getEjeTematico());

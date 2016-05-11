@@ -14,13 +14,13 @@ import cl.eos.persistence.models.Asignatura;
 import cl.eos.persistence.models.Colegio;
 import cl.eos.persistence.models.Curso;
 import cl.eos.persistence.models.EvaluacionPrueba;
+import cl.eos.persistence.models.TipoAlumno;
 import cl.eos.persistence.util.Comparadores;
 import cl.eos.util.ExcelSheetWriterObj;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
-import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -32,11 +32,9 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableView;
 
-public class ResumenColegioXAlumnoEjeHabilidadView extends AFormView implements
-		EventHandler<ActionEvent> {
+public class ResumenColegioXAlumnoEjeHabilidadView extends AFormView implements EventHandler<ActionEvent> {
 
-	private static Logger log = Logger
-			.getLogger(ResumenColegioXAlumnoEjeHabilidadView.class);
+	private static Logger log = Logger.getLogger(ResumenColegioXAlumnoEjeHabilidadView.class);
 	private static final String ASIGNATURA_ID = "idAsignatura";
 	private static final String COLEGIO_ID = "idColegio";
 	@FXML
@@ -45,6 +43,8 @@ public class ResumenColegioXAlumnoEjeHabilidadView extends AFormView implements
 	private ComboBox<Colegio> cmbColegios;
 	@FXML
 	private ComboBox<Asignatura> cmbAsignatura;
+	@FXML
+	private ComboBox<TipoAlumno> cmbTipoAlumno;
 	@FXML
 	private Button btnReportes;
 	@FXML
@@ -81,8 +81,7 @@ public class ResumenColegioXAlumnoEjeHabilidadView extends AFormView implements
 			if (lstCursoEjeHabilidad != null && !lstCursoEjeHabilidad.isEmpty()) {
 				List<TableView<? extends Object>> listaTablas = new ArrayList<>();
 				for (CursoEjeHabilidad curso : lstCursoEjeHabilidad) {
-					listaTablas.add((TableView<? extends Object>) curso
-							.getTblAlumnos());
+					listaTablas.add((TableView<? extends Object>) curso.getTblAlumnos());
 				}
 				ExcelSheetWriterObj.convertirDatosALibroDeExcel(listaTablas);
 			}
@@ -102,8 +101,7 @@ public class ResumenColegioXAlumnoEjeHabilidadView extends AFormView implements
 	}
 
 	private void handleAsignatura() {
-		Asignatura asignatura = cmbAsignatura.getSelectionModel()
-				.getSelectedItem();
+		Asignatura asignatura = cmbAsignatura.getSelectionModel().getSelectedItem();
 		if (asignatura != null) {
 			parameters.put(ASIGNATURA_ID, asignatura.getId());
 			clearContent();
@@ -111,11 +109,9 @@ public class ResumenColegioXAlumnoEjeHabilidadView extends AFormView implements
 	}
 
 	private void handleReportes() {
-		if (!parameters.isEmpty() && parameters.containsKey(COLEGIO_ID)
-				&& parameters.containsKey(ASIGNATURA_ID)) {
+		if (!parameters.isEmpty() && parameters.containsKey(COLEGIO_ID) && parameters.containsKey(ASIGNATURA_ID)) {
 
-			controller.find("EvaluacionPrueba.findEvaluacionByColegioAsig",
-					parameters, this);
+			controller.find("EvaluacionPrueba.findEvaluacionByColegioAsig", parameters, this);
 		}
 	}
 
@@ -136,16 +132,14 @@ public class ResumenColegioXAlumnoEjeHabilidadView extends AFormView implements
 		if (list != null && !list.isEmpty()) {
 			Object entity = list.get(0);
 			if (entity instanceof Colegio) {
-				ObservableList<Colegio> oList = FXCollections
-						.observableArrayList();
+				ObservableList<Colegio> oList = FXCollections.observableArrayList();
 				for (Object iEntity : list) {
 					oList.add((Colegio) iEntity);
 				}
 				cmbColegios.setItems(oList);
 			}
 			if (entity instanceof Asignatura) {
-				ObservableList<Asignatura> oList = FXCollections
-						.observableArrayList();
+				ObservableList<Asignatura> oList = FXCollections.observableArrayList();
 				for (Object iEntity : list) {
 					oList.add((Asignatura) iEntity);
 				}
@@ -156,8 +150,14 @@ public class ResumenColegioXAlumnoEjeHabilidadView extends AFormView implements
 				for (Object iEntity : list) {
 					cursoList.add((Curso) iEntity);
 				}
-				FXCollections
-						.sort(cursoList, Comparadores.comparaResumeCurso());
+				FXCollections.sort(cursoList, Comparadores.comparaResumeCurso());
+			}
+			if (entity instanceof TipoAlumno) {
+				ObservableList<TipoAlumno> tAlumnoList = FXCollections.observableArrayList();
+				for (Object iEntity : list) {
+					tAlumnoList.add((TipoAlumno) iEntity);
+				}
+				cmbTipoAlumno.setItems(tAlumnoList);
 			}
 			if (entity instanceof EvaluacionPrueba) {
 				evaluacionesPrueba = FXCollections.observableArrayList();
@@ -168,10 +168,8 @@ public class ResumenColegioXAlumnoEjeHabilidadView extends AFormView implements
 				generarReporte();
 			}
 		} else if (list != null && list.isEmpty()) {
-			Dialogs.create().owner(null).title("No hay registros.")
-					.masthead(null)
-					.message("No se ha encontrado registros para la consulta.")
-					.showInformation();
+			Dialogs.create().owner(null).title("No hay registros.").masthead(null)
+					.message("No se ha encontrado registros para la consulta.").showInformation();
 		}
 	}
 
@@ -184,32 +182,25 @@ public class ResumenColegioXAlumnoEjeHabilidadView extends AFormView implements
 	 */
 	private void generarReporte() {
 
-		if (evaluacionesPrueba == null) {
-			// No hay valores para procesar todo.
+		if (evaluacionesPrueba == null)
 			return;
-		}
-		FXCollections.sort(evaluacionesPrueba,
-				Comparadores.comparaEvaluacionPruebaXCurso());
+		FXCollections.sort(evaluacionesPrueba, Comparadores.comparaEvaluacionPruebaXCurso());
 
 		Task<ArrayList<CursoEjeHabilidad>> task = new Task<ArrayList<CursoEjeHabilidad>>() {
 			@Override
 			protected ArrayList<CursoEjeHabilidad> call() throws Exception {
-				ArrayList<CursoEjeHabilidad> lst = new ArrayList<CursoEjeHabilidad>();
+				ArrayList<CursoEjeHabilidad> lst = new ArrayList<>();
 				int n = 1;
 				int total = evaluacionesPrueba.size();
 				for (EvaluacionPrueba eval : evaluacionesPrueba) {
 					if (eval.getCurso() != null) {
-						updateMessage(String.format("Prcesando %s", eval
-								.getCurso().getName()));
+						updateMessage(String.format("Prcesando %s", eval.getCurso().getName()));
 						updateProgress(n++, total);
-						CursoEjeHabilidad curso = new CursoEjeHabilidad(eval);
-						Runnable r = new Runnable() {
-							@Override
-							public void run() {
-								Tab tab = new Tab(eval.getCurso().getName());
-								tab.setContent(curso.getTblAlumnos());
-								tabPane.getTabs().add(tab);
-							}
+						CursoEjeHabilidad curso = new CursoEjeHabilidad(eval, cmbTipoAlumno.getSelectionModel().getSelectedItem());
+						Runnable r = () -> {
+							Tab tab = new Tab(eval.getCurso().getName());
+							tab.setContent(curso.getTblAlumnos());
+							tabPane.getTabs().add(tab);
 						};
 						Platform.runLater(r);
 
@@ -221,19 +212,9 @@ public class ResumenColegioXAlumnoEjeHabilidadView extends AFormView implements
 				return lst;
 			}
 		};
-		task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
-			@Override
-			public void handle(WorkerStateEvent event) {
-				lstCursoEjeHabilidad = task.getValue();
-			}
-		});
-		task.setOnFailed(new EventHandler<WorkerStateEvent>() {
+		task.setOnSucceeded(event -> lstCursoEjeHabilidad = task.getValue());
+		task.setOnFailed(event -> log.error(event.getEventType().toString()));
 
-			@Override
-			public void handle(WorkerStateEvent event) {
-				log.error(event.getEventType().toString());
-			}
-		});
 		final Dialogs dlg = Dialogs.create();
 		dlg.title("Procesando Cursos");
 		dlg.masthead(null);
