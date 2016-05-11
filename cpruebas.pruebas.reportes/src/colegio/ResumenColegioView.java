@@ -28,9 +28,11 @@ import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Callback;
+import cl.eos.common.Constants;
 import cl.eos.imp.view.AFormView;
 import cl.eos.ot.OTRangoCurso;
 import cl.eos.ot.OTResumenColegio;
+import cl.eos.persistence.models.Alumno;
 import cl.eos.persistence.models.Asignatura;
 import cl.eos.persistence.models.Colegio;
 import cl.eos.persistence.models.Curso;
@@ -45,6 +47,8 @@ import cl.eos.util.ExcelSheetWriterObj;
 import cl.eos.util.Utils;
 
 public class ResumenColegioView extends AFormView implements EventHandler<ActionEvent> {
+
+	private static final String FX_ALIGNMENT_CENTER = "-fx-alignment: CENTER;";
 
 	private static final String ASIGNATURA_ID = "idAsignatura";
 
@@ -93,17 +97,32 @@ public class ResumenColegioView extends AFormView implements EventHandler<Action
 	@FXML
 	private MenuItem mnuExportarAlumnos;
 
-	Map<String, Object> parameters = new HashMap<String, Object>();
-	private Map<Long, OTResumenColegio> mapaCursos = new HashMap<Long, OTResumenColegio>();
+	Map<String, Object> parameters = new HashMap<>();
+	private Map<Long, OTResumenColegio> mapaCursos = new HashMap<>();
 
-	private List<OTResumenColegio> lstCursos = new LinkedList<OTResumenColegio>();
+	private List<OTResumenColegio> lstCursos = new LinkedList<>();
 
 	private ObservableList<RangoEvaluacion> oList;
+
+	private Map<Integer, EvaluacionEjeTematico> tituloEvaluacion = new HashMap<>();
+
+	private Map<Long, EvaluacionEjeTematico> mEvaluaciones = new HashMap<>();
+
+	private Map<Curso, Map<RangoEvaluacion, OTRangoCurso>> pmeCursos = new HashMap<>();
+
+	private Map<EvaluacionEjeTematico, Integer> mResumen = new HashMap<>();
+
+	private OTResumenColegio resumenTotal;
+
+	private Map<Integer, RangoEvaluacion> mapaRangos = new HashMap<>();
+	
+	private static final int ANCHO_COL = 83;
 
 	public ResumenColegioView() {
 		setTitle("Resumen Colegio");
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void handle(ActionEvent event) {
 		Object source = event.getSource();
@@ -215,7 +234,7 @@ public class ResumenColegioView extends AFormView implements EventHandler<Action
 					tAlumnoList.add((TipoAlumno) iEntity);
 				}
 				cmbTipoAlumno.setItems(tAlumnoList);
-			}			
+			}
 			if (entity instanceof RangoEvaluacion) {
 				oList = FXCollections.observableArrayList();
 				for (Object iEntity : list) {
@@ -242,17 +261,9 @@ public class ResumenColegioView extends AFormView implements EventHandler<Action
 		}
 	}
 
-	private Map<Integer, EvaluacionEjeTematico> tituloEvaluacion = new HashMap<Integer, EvaluacionEjeTematico>();
-
-	private Map<Long, EvaluacionEjeTematico> mEvaluaciones = new HashMap<Long, EvaluacionEjeTematico>();
-
-	private Map<Curso, Map<RangoEvaluacion, OTRangoCurso>> pmeCursos = new HashMap<Curso, Map<RangoEvaluacion, OTRangoCurso>>();
-
-	private OTResumenColegio resumenTotal;
-
 	private void generarReporteCursos(List<Object> list) {
 		EvaluacionPrueba firstEvaluacion = (EvaluacionPrueba) list.get(0);
-		StringBuffer string = new StringBuffer();
+		StringBuilder string = new StringBuilder();
 		string.append(firstEvaluacion.getColegio());
 		lblColegio.setText(string.toString());
 
@@ -261,7 +272,7 @@ public class ResumenColegioView extends AFormView implements EventHandler<Action
 		int totalColEvaluados = 0;
 		int totalColAprobados = 0;
 		int totalColReprobados = 0;
-
+		long tipoAlumno = cmbTipoAlumno.getSelectionModel().getSelectedItem().getId();
 		// Todas las evaluaciones asociadas (Todos los cursos)
 		for (Object evaluacionPrueba : list) {
 			EvaluacionPrueba evaluacion = (EvaluacionPrueba) evaluacionPrueba;
@@ -277,6 +288,12 @@ public class ResumenColegioView extends AFormView implements EventHandler<Action
 			List<PruebaRendida> rendidas = evaluacion.getPruebasRendidas();
 			// Estamos procesando un curso/una prueba
 			for (PruebaRendida pruebaRendida : rendidas) {
+				Alumno alumno = pruebaRendida.getAlumno();
+				if (tipoAlumno != Constants.PIE_ALL && tipoAlumno != alumno.getTipoAlumno().getId()) {
+					// En este caso, no se considera este alumno para el
+					// cálculo.
+					continue;
+				}
 				totalEvaluados++;
 				if (pruebaRendida.getNota() >= 4) {
 					totalAprobados++;
@@ -329,6 +346,7 @@ public class ResumenColegioView extends AFormView implements EventHandler<Action
 		generarDatosResumenGeneral();
 	}
 
+	@SuppressWarnings("unchecked")
 	private void generarDatosResumenGeneral() {
 		ObservableList<Object> resumenGeneral = FXCollections.observableArrayList();
 
@@ -380,17 +398,12 @@ public class ResumenColegioView extends AFormView implements EventHandler<Action
 
 	}
 
-	private Map<EvaluacionEjeTematico, Integer> mResumen = new HashMap<EvaluacionEjeTematico, Integer>();
-
 	private void generaDatosGeneral(PruebaRendida pruebaRendida) {
-		// Integer pBuenas = pruebaRendida.getBuenas();
 		Float pBuenas = pruebaRendida.getPbuenas();
 		for (Entry<Long, EvaluacionEjeTematico> otResumenColegio : mEvaluaciones.entrySet()) {
 
 			EvaluacionEjeTematico otEvaluacion = otResumenColegio.getValue();
 			if (otEvaluacion.isInside(pBuenas)) {
-				// if (pBuenas >= otEvaluacion.getNroRangoMin()
-				// && pBuenas <= otEvaluacion.getNroRangoMax()) {
 				if (mResumen.containsKey(otEvaluacion)) {
 					Integer valor = mResumen.get(otEvaluacion);
 					valor++;
@@ -398,7 +411,6 @@ public class ResumenColegioView extends AFormView implements EventHandler<Action
 				} else {
 					mResumen.put(otEvaluacion, 1);
 				}
-
 			}
 		}
 	}
@@ -412,19 +424,16 @@ public class ResumenColegioView extends AFormView implements EventHandler<Action
 		tblCursos.setItems(cursos);
 	}
 
+	@SuppressWarnings("unchecked")
 	private void generarDatosResumenPME() {
 		ObservableList<ObservableList<Object>> resumenPME = FXCollections.observableArrayList();
 
 		Set<Curso> listaCursos = pmeCursos.keySet();
-		List<Curso> cursos = new LinkedList<Curso>();
+		List<Curso> cursos = new LinkedList<>();
 		for (Curso curso : listaCursos) {
 			cursos.add(curso);
 		}
 		Collections.sort(cursos, Comparadores.comparaResumeCurso());
-
-		// for (Entry<Curso, Map<RangoEvaluacion, OTRangoCurso>> lEntity :
-		// pmeCursos
-		// .entrySet()) {
 
 		for (Curso lEntity : cursos) {
 			ObservableList<Object> row = FXCollections.observableArrayList();
@@ -448,7 +457,6 @@ public class ResumenColegioView extends AFormView implements EventHandler<Action
 
 	private void generaDatosRangos(PruebaRendida rendida, NivelEvaluacion nivelEvaluacion) {
 
-		// float porcentaje = Utils.getPorcenta(rendida.getNota());
 		float porcentaje = (float) rendida.getBuenas()
 				/ (float) rendida.getEvaluacionPrueba().getPrueba().getNroPreguntas() * 100f;
 		RangoEvaluacion rango = nivelEvaluacion.getRango(porcentaje);
@@ -478,14 +486,11 @@ public class ResumenColegioView extends AFormView implements EventHandler<Action
 			rangoCurso.setRango(rango);
 			rangoCurso.setTotal(rangoCurso.getTotal() + 1);
 
-			Map<RangoEvaluacion, OTRangoCurso> pmeRangos = new HashMap<RangoEvaluacion, OTRangoCurso>();
+			Map<RangoEvaluacion, OTRangoCurso> pmeRangos = new HashMap<>();
 			pmeRangos.put(rango, rangoCurso);
 			pmeCursos.put(curso, pmeRangos);
 		}
 	}
-
-	private Map<Integer, RangoEvaluacion> mapaRangos = new HashMap<Integer, RangoEvaluacion>();
-	private static int ANCHO_COL = 83;
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void generarColumnasPME() {
@@ -498,18 +503,12 @@ public class ResumenColegioView extends AFormView implements EventHandler<Action
 			}
 		});
 		columna0.setPrefWidth(ANCHO_COL);
-		columna0.setCellFactory(new Callback<TableColumn, TableCell>() {
-
-			public TableCell call(TableColumn param) {
-				TableCell cell = new TableCell() {
-					@Override
-					public void updateItem(Object item, boolean empty) {
-						if (item != null) {
-							setText(item.toString());
-						}
-					}
-				};
-				return cell;
+		columna0.setCellFactory(param -> new TableCell() {
+			@Override
+			public void updateItem(Object item, boolean empty) {
+				if (item != null) {
+					setText(item.toString());
+				}
 			}
 		});
 
@@ -522,7 +521,7 @@ public class ResumenColegioView extends AFormView implements EventHandler<Action
 			// Columnas
 			final int col = indice;
 			TableColumn columna = new TableColumn(titulo.getName());
-			columna.setStyle("-fx-alignment: CENTER;");
+			columna.setStyle(FX_ALIGNMENT_CENTER);
 			columna.setCellValueFactory(
 					new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
 						public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
@@ -565,7 +564,7 @@ public class ResumenColegioView extends AFormView implements EventHandler<Action
 		tblResumenTotal.getColumns().add(columna0);
 
 		TableColumn columna1 = new TableColumn("Total Escuela");
-		columna1.setStyle("-fx-alignment: CENTER;");
+		columna1.setStyle(FX_ALIGNMENT_CENTER);
 		columna1.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
 			public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
 				return new SimpleStringProperty(param.getValue().get(1).toString());
@@ -589,11 +588,11 @@ public class ResumenColegioView extends AFormView implements EventHandler<Action
 		tblResumenTotal.getColumns().add(columna1);
 
 		TableColumn columna2 = new TableColumn("N° Alumnos");
-		columna2.setStyle("-fx-alignment: CENTER;");
+		columna2.setStyle(FX_ALIGNMENT_CENTER);
 		tblResumenTotal.getColumns().add(columna2);
 
 		TableColumn columna3 = new TableColumn("Evaluados");
-		columna3.setStyle("-fx-alignment: CENTER;");
+		columna3.setStyle(FX_ALIGNMENT_CENTER);
 		columna3.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
 			public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
 				return new SimpleStringProperty(param.getValue().get(2).toString());
@@ -616,11 +615,11 @@ public class ResumenColegioView extends AFormView implements EventHandler<Action
 		});
 		columna2.getColumns().addAll(columna3);
 		TableColumn columna7 = new TableColumn("Alumnos");
-		columna7.setStyle("-fx-alignment: CENTER;");
+		columna7.setStyle(FX_ALIGNMENT_CENTER);
 		tblResumenTotal.getColumns().add(columna7);
 
 		TableColumn columna4 = new TableColumn("Aprobados");
-		columna4.setStyle("-fx-alignment: CENTER;");
+		columna4.setStyle(FX_ALIGNMENT_CENTER);
 		columna4.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
 			public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
 				return new SimpleStringProperty(param.getValue().get(3).toString());
@@ -643,7 +642,7 @@ public class ResumenColegioView extends AFormView implements EventHandler<Action
 		});
 
 		TableColumn columna5 = new TableColumn("Reprobados");
-		columna5.setStyle("-fx-alignment: CENTER;");
+		columna5.setStyle(FX_ALIGNMENT_CENTER);
 		columna5.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
 			public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
 				return new SimpleStringProperty(param.getValue().get(4).toString());
@@ -668,7 +667,7 @@ public class ResumenColegioView extends AFormView implements EventHandler<Action
 		columna7.getColumns().addAll(columna4, columna5);
 
 		TableColumn columna6 = new TableColumn("");
-		columna6.setStyle("-fx-alignment: CENTER;");
+		columna6.setStyle(FX_ALIGNMENT_CENTER);
 		tblResumenTotal.getColumns().add(columna6);
 
 		int indice = 5;
@@ -678,7 +677,7 @@ public class ResumenColegioView extends AFormView implements EventHandler<Action
 			// Columnas
 			final int column = indice;
 			TableColumn columna = new TableColumn(titulo.getName());
-			columna.setStyle("-fx-alignment: CENTER;");
+			columna.setStyle(FX_ALIGNMENT_CENTER);
 			columna.setCellValueFactory(
 					new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
 						public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {

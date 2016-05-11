@@ -478,12 +478,13 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 	}
 
 	private void handlerResumenColegios() {
-		resumenColegio = (ResumenColegioView) show("/cl/eos/view/ResumenColegio.fxml");
+		resumenColegio = (ResumenColegioView) show("/colegio/fxml/ResumenColegio.fxml");
 		show(resumenColegio);
 		controller.findAll(Colegio.class, resumenColegio);
 		controller.findAll(Asignatura.class, resumenColegio);
 		controller.findAll(RangoEvaluacion.class, resumenColegio);
 		controller.findAll(EvaluacionEjeTematico.class, resumenColegio);
+		controller.findAll(TipoAlumno.class, resumenColegio);
 	}
 
 	private void handlerComunalEje() {
