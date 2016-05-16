@@ -20,12 +20,12 @@
 	<classpathentry kind="lib" path="../jars/jfxtras-fxml-8.0.jar"/>
 	<classpathentry kind="lib" path="../jars/jfxtras-labs-8.0.jar"/>
 	<classpathentry kind="lib" path="../jars/jfxtras-window.jar"/>
-	<classpathentry kind="lib" path="../jars/controlsfx-8.0.6_20.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.persistence"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.tipo.prueba"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.nivel.evaluacion"/>
 	<classpathentry kind="lib" path="../jars/lib.util.license.jar"/>
 	<classpathentry kind="lib" path="../jars/lib.util.java.jar"/>
 	<classpathentry kind="lib" path="O:/cpruebas/jars/log4j.jar"/>
+	<classpathentry kind="lib" path="O:/cpruebas_multiuser/cpruebas/jars/controlsfx-8.40.10.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

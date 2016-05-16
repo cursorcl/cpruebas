@@ -9,24 +9,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.SelectionMode;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableColumn.CellDataFeatures;
-import javafx.scene.control.TableView;
-import javafx.util.Callback;
-
 import org.apache.log4j.Logger;
-import org.controlsfx.dialog.Dialogs;
 
+import cl.eos.common.Constants;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.ot.OTPreguntasEjes;
@@ -38,14 +23,27 @@ import cl.eos.persistence.models.EvaluacionPrueba;
 import cl.eos.persistence.models.Prueba;
 import cl.eos.persistence.models.PruebaRendida;
 import cl.eos.persistence.models.RespuestasEsperadasPrueba;
+import cl.eos.persistence.models.TipoAlumno;
 import cl.eos.util.ExcelSheetWriterObj;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.SelectionMode;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellDataFeatures;
+import javafx.scene.control.TableView;
 
+public class ComparativoComunalEjeView extends AFormView implements EventHandler<ActionEvent> {
 
-public class ComparativoComunalEjeView extends AFormView implements
-		EventHandler<ActionEvent> {
-
-	private static Logger log = Logger
-			.getLogger(ComparativoComunalEjeView.class);
+	private static Logger log = Logger.getLogger(ComparativoComunalEjeView.class);
 	private NumberFormat formatter = new DecimalFormat("#0.00");
 	@FXML
 	private Label lblTitulo;
@@ -57,6 +55,8 @@ public class ComparativoComunalEjeView extends AFormView implements
 	private TableView tblEjesTematicos;
 	@FXML
 	private TableView tblEvaluacionEjesTematicos;
+	@FXML
+	private ComboBox<TipoAlumno> cmbTipoAlumno;
 
 	private HashMap<EjeTematico, HashMap<String, OTPreguntasEjes>> mapaEjesTematicos;
 
@@ -64,34 +64,29 @@ public class ComparativoComunalEjeView extends AFormView implements
 
 	private Map<EvaluacionEjeTematico, HashMap<String, OTPreguntasEvaluacion>> mapEvaAlumnos = null;
 
-	public ComparativoComunalEjeView() {
+	long tipoAlumno = Constants.PIE_ALL;
 
-	}
+	private boolean llegaOnFound = false;
+	private ArrayList<String> titulosColumnas;
+	private Prueba prueba;
+	private boolean llegaTipoAlumno = false;
+	private boolean llegaEvaluacionEjeTematico = false;
 
 	@FXML
 	public void initialize() {
 		this.setTitle("Resumen comparativo comunal ejes temáticas");
-		inicializarTablaEjes();
-		inicializarTablaEvaluacion();
+		tblEjesTematicos.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+		tblEvaluacionEjesTematicos.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
 		mnuExportarEjesTematicos.setOnAction(this);
 		mnuExportarEvaluacion.setOnAction(this);
+		cmbTipoAlumno.getSelectionModel().select(0);
+		cmbTipoAlumno.setOnAction(event -> {
+			if (prueba != null) {
+				procesaDatosReporte();
+			}
+		});
 	}
-
-	private void inicializarTablaEjes() {
-		tblEjesTematicos.getSelectionModel().setSelectionMode(
-				SelectionMode.MULTIPLE);
-	}
-
-	private void inicializarTablaEvaluacion() {
-		tblEvaluacionEjesTematicos.getSelectionModel().setSelectionMode(
-				SelectionMode.MULTIPLE);
-	}
-
-	private boolean llegaOnFound = false;
-	private boolean llegaOnDataArrived = false;
-	private ArrayList<String> titulosColumnas;
-	private Prueba prueba;
 
 	@Override
 	public void onFound(IEntity entity) {
@@ -107,37 +102,43 @@ public class ComparativoComunalEjeView extends AFormView implements
 		if (list != null && !list.isEmpty()) {
 			Object entity = list.get(0);
 			if (entity instanceof EvaluacionEjeTematico) {
-				llegaOnDataArrived = true;
-				mEvaluaciones = new HashMap<Long, EvaluacionEjeTematico>();
+				llegaEvaluacionEjeTematico = true;
+				mEvaluaciones = new HashMap<>();
 				for (Object object : list) {
 					EvaluacionEjeTematico eje = (EvaluacionEjeTematico) object;
 					mEvaluaciones.put(eje.getId(), eje);
 				}
+			}
+			if (entity instanceof TipoAlumno) {
+				ObservableList<TipoAlumno> tAlumnoList = FXCollections.observableArrayList();
+				llegaTipoAlumno = true;
+				for (Object iEntity : list) {
+					tAlumnoList.add((TipoAlumno) iEntity);
+				}
+				cmbTipoAlumno.setItems(tAlumnoList);
 			}
 		}
 		procesaDatosReporte();
 	}
 
 	private void procesaDatosReporte() {
-		if (llegaOnDataArrived && llegaOnFound) {
+		if (llegaEvaluacionEjeTematico && llegaTipoAlumno && llegaOnFound) {
 			llenarDatosTabla();
 			desplegarDatosEjesTematicos();
 			desplegarDatosEvaluaciones();
-			llegaOnDataArrived = false;
-			llegaOnFound = false;
 		}
 	}
 
 	private void llenarDatosTabla() {
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 		buffer.append(prueba.getAsignatura());
 		buffer.append(" ");
 		buffer.append(prueba.getCurso());
 		lblTitulo.setText(buffer.toString());
 
-		mapaEjesTematicos = new HashMap<EjeTematico, HashMap<String, OTPreguntasEjes>>();
-		mapEvaAlumnos = new HashMap<EvaluacionEjeTematico, HashMap<String, OTPreguntasEvaluacion>>();
-		HashMap<String, OTPreguntasEjes> mapaColegios = null;
+		mapaEjesTematicos = new HashMap<>();
+		mapEvaAlumnos = new HashMap<>();
+		HashMap<String, OTPreguntasEjes> mapaColegios;
 
 		List<EvaluacionPrueba> listaEvaluaciones = prueba.getEvaluaciones();
 
@@ -145,31 +146,37 @@ public class ComparativoComunalEjeView extends AFormView implements
 		creacionColumnasEvaluaciones(listaEvaluaciones);
 
 		// ********** generar datos ejes tematicos y evaluaciones
+		/*
+		 * Aqui verificamos el TIPO ALUMNO SELECCIONADO PARA EL REPORTE
+		 */
 
 		for (EvaluacionPrueba evaluacionPrueba : listaEvaluaciones) {
 			String colegioCurso = evaluacionPrueba.getColegiocurso();
 
-			List<PruebaRendida> pruebasRendidas = evaluacionPrueba
-					.getPruebasRendidas();
-			List<RespuestasEsperadasPrueba> respuestasEsperadas = prueba
-					.getRespuestas();
+			List<PruebaRendida> pruebasRendidas = evaluacionPrueba.getPruebasRendidas();
+			List<RespuestasEsperadasPrueba> respuestasEsperadas = prueba.getRespuestas();
 
 			for (PruebaRendida pruebaRendida : pruebasRendidas) {
+				Alumno al = pruebaRendida.getAlumno();
+
+				if (tipoAlumno != Constants.PIE_ALL
+						&& tipoAlumno != pruebaRendida.getAlumno().getTipoAlumno().getId()) {
+					// En este caso, no se considera este alumno para el
+					// cálculo.
+					continue;
+				}
 				generaDatosEvaluacion(pruebaRendida, colegioCurso);
 
 				String respuesta = pruebaRendida.getRespuestas().toUpperCase();
-				Alumno al = pruebaRendida.getAlumno();
+
 				if (al == null) {
-					log.error(String.format("NO EXISTE ALUMNO: %s %s",
-							colegioCurso, respuesta));
+					log.error(String.format("NO EXISTE ALUMNO: %s %s", colegioCurso, respuesta));
 					continue; // Caso que el alumno sea nulo.
 				}
-				log.info(String.format("%s %s %s %s %s %s", colegioCurso,
-						al.getRut(), al.getName(), al.getPaterno(),
+				log.info(String.format("%s %s %s %s %s %s", colegioCurso, al.getRut(), al.getName(), al.getPaterno(),
 						al.getMaterno(), respuesta));
 
-				if (respuesta == null
-						|| respuesta.length() < prueba.getNroPreguntas()) {
+				if (respuesta == null || respuesta.length() < prueba.getNroPreguntas()) {
 					informarProblemas(colegioCurso, al, respuesta);
 					continue;
 				}
@@ -179,27 +186,24 @@ public class ComparativoComunalEjeView extends AFormView implements
 					if (respuestasEsperadasPrueba.isAnulada()) {
 						continue;
 					}
-					EjeTematico ejeTematico = respuestasEsperadasPrueba
-							.getEjeTematico();
+					EjeTematico ejeTematico = respuestasEsperadasPrueba.getEjeTematico();
 					Integer numeroPreg = respuestasEsperadasPrueba.getNumero();
 					if (mapaEjesTematicos.containsKey(ejeTematico)) {
-						HashMap<String, OTPreguntasEjes> mapa = mapaEjesTematicos
-								.get(ejeTematico);
+						HashMap<String, OTPreguntasEjes> mapa = mapaEjesTematicos.get(ejeTematico);
 
 						if (mapa.containsKey(colegioCurso)) {
 							OTPreguntasEjes otPregunta = mapa.get(colegioCurso);
 
-							if (cRespuesta[numeroPreg - 1] == respuestasEsperadasPrueba
-									.getRespuesta().toCharArray()[0]) {
-								otPregunta
-										.setBuenas(otPregunta.getBuenas() + 1);
+							if (cRespuesta[numeroPreg - 1] == respuestasEsperadasPrueba.getRespuesta()
+									.toCharArray()[0]) {
+								otPregunta.setBuenas(otPregunta.getBuenas() + 1);
 							}
 							otPregunta.setTotal(otPregunta.getTotal() + 1);
 						} else {
 							OTPreguntasEjes otPreguntas = new OTPreguntasEjes();
 							otPreguntas.setEjeTematico(ejeTematico);
-							if (cRespuesta[numeroPreg - 1] == respuestasEsperadasPrueba
-									.getRespuesta().toCharArray()[0]) {
+							if (cRespuesta[numeroPreg - 1] == respuestasEsperadasPrueba.getRespuesta()
+									.toCharArray()[0]) {
 								otPreguntas.setBuenas(1);
 							} else {
 								otPreguntas.setBuenas(0);
@@ -211,15 +215,14 @@ public class ComparativoComunalEjeView extends AFormView implements
 					} else {
 						OTPreguntasEjes otPreguntas = new OTPreguntasEjes();
 						otPreguntas.setEjeTematico(ejeTematico);
-						if (cRespuesta[numeroPreg - 1] == respuestasEsperadasPrueba
-								.getRespuesta().toCharArray()[0]) {
+						if (cRespuesta[numeroPreg - 1] == respuestasEsperadasPrueba.getRespuesta().toCharArray()[0]) {
 							otPreguntas.setBuenas(1);
 						} else {
 							otPreguntas.setBuenas(0);
 						}
 						otPreguntas.setTotal(1);
 
-						mapaColegios = new HashMap<String, OTPreguntasEjes>();
+						mapaColegios = new HashMap<>();
 						mapaColegios.put(colegioCurso, otPreguntas);
 						mapaEjesTematicos.put(ejeTematico, mapaColegios);
 					}
@@ -229,44 +232,36 @@ public class ComparativoComunalEjeView extends AFormView implements
 		}
 	}
 
-	private void informarProblemas(String colegioCurso, Alumno al,
-			String respuesta) {
-		Dialogs info = Dialogs.create();
-		info.title("Alumno con respuestas incompletas.");
-		info.masthead(String.format("%s/%s", colegioCurso, al.toString()));
-		info.message(String
+	private void informarProblemas(String colegioCurso, Alumno al, String respuesta) {
+		Alert alert = new Alert(AlertType.ERROR);
+		alert.setTitle("Alumno con respuestas incompletas.");
+		alert.setHeaderText(String.format("%s/%s", colegioCurso, al.toString()));
+		alert.setContentText(String
 				.format("La respuesta [%s] es incompleta", respuesta));
-		info.owner(null);
-		info.showError();
+		alert.showAndWait();
 
 	}
 
-	private void generaDatosEvaluacion(PruebaRendida pruebaRendida,
-			String colegioCurso) {
+	private void generaDatosEvaluacion(PruebaRendida pruebaRendida, String colegioCurso) {
 
-		HashMap<String, OTPreguntasEvaluacion> mapaOT = new HashMap<String, OTPreguntasEvaluacion>();
+		HashMap<String, OTPreguntasEvaluacion> mapaOT;
 
 		Float pBuenas = pruebaRendida.getPbuenas();
-		for (Entry<Long, EvaluacionEjeTematico> mEvaluacion : mEvaluaciones
-				.entrySet()) {
+		for (Entry<Long, EvaluacionEjeTematico> mEvaluacion : mEvaluaciones.entrySet()) {
 
 			EvaluacionEjeTematico evaluacionAl = mEvaluacion.getValue();
 			if (mapEvaAlumnos.containsKey(evaluacionAl)) {
-				HashMap<String, OTPreguntasEvaluacion> evaluacion = mapEvaAlumnos
-						.get(evaluacionAl);
+				HashMap<String, OTPreguntasEvaluacion> evaluacion = mapEvaAlumnos.get(evaluacionAl);
 				if (evaluacion.containsKey(colegioCurso)) {
-					OTPreguntasEvaluacion otPreguntas = evaluacion
-							.get(colegioCurso);
+					OTPreguntasEvaluacion otPreguntas = evaluacion.get(colegioCurso);
 
-					if (pBuenas >= evaluacionAl.getNroRangoMin()
-							&& pBuenas <= evaluacionAl.getNroRangoMax()) {
+					if (pBuenas >= evaluacionAl.getNroRangoMin() && pBuenas <= evaluacionAl.getNroRangoMax()) {
 						otPreguntas.setAlumnos(otPreguntas.getAlumnos() + 1);
 					}
 				} else {
 
 					OTPreguntasEvaluacion pregunta = new OTPreguntasEvaluacion();
-					if (pBuenas >= evaluacionAl.getNroRangoMin()
-							&& pBuenas <= evaluacionAl.getNroRangoMax()) {
+					if (pBuenas >= evaluacionAl.getNroRangoMin() && pBuenas <= evaluacionAl.getNroRangoMax()) {
 						pregunta.setAlumnos(1);
 					} else {
 						pregunta.setAlumnos(0);
@@ -276,15 +271,14 @@ public class ComparativoComunalEjeView extends AFormView implements
 				}
 			} else {
 				OTPreguntasEvaluacion pregunta = new OTPreguntasEvaluacion();
-				if (pBuenas >= evaluacionAl.getNroRangoMin()
-						&& pBuenas <= evaluacionAl.getNroRangoMax()) {
+				if (pBuenas >= evaluacionAl.getNroRangoMin() && pBuenas <= evaluacionAl.getNroRangoMax()) {
 					pregunta.setAlumnos(1);
 				} else {
 					pregunta.setAlumnos(0);
 				}
 				pregunta.setEvaluacion(evaluacionAl);
 
-				mapaOT = new HashMap<String, OTPreguntasEvaluacion>();
+				mapaOT = new HashMap<>();
 				mapaOT.put(colegioCurso, pregunta);
 				mapEvaAlumnos.put(evaluacionAl, mapaOT);
 			}
@@ -292,17 +286,16 @@ public class ComparativoComunalEjeView extends AFormView implements
 
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void desplegarDatosEjesTematicos() {
 
-		ObservableList<ObservableList> registros = FXCollections
-				.observableArrayList();
+		ObservableList<ObservableList> registros = FXCollections.observableArrayList();
 
-		for (Entry<EjeTematico, HashMap<String, OTPreguntasEjes>> mapa : mapaEjesTematicos
-				.entrySet()) {
+		for (Entry<EjeTematico, HashMap<String, OTPreguntasEjes>> mapa : mapaEjesTematicos.entrySet()) {
 
 			ObservableList<String> row = FXCollections.observableArrayList();
 
-			row.add(((EjeTematico) mapa.getKey()).getName());
+			row.add((mapa.getKey()).getName());
 
 			HashMap<String, OTPreguntasEjes> resultados = mapa.getValue();
 
@@ -320,18 +313,17 @@ public class ComparativoComunalEjeView extends AFormView implements
 		tblEjesTematicos.setItems(registros);
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void desplegarDatosEvaluaciones() {
 
-		Map<String, Integer> totales = new HashMap<String, Integer>();
+		Map<String, Integer> totales = new HashMap<>();
 
-		ObservableList<ObservableList> registroseEva = FXCollections
-				.observableArrayList();
+		ObservableList<ObservableList> registroseEva = FXCollections.observableArrayList();
 		ObservableList<String> row = null;
 		int total = 0;
-		for (Entry<EvaluacionEjeTematico, HashMap<String, OTPreguntasEvaluacion>> mapa : mapEvaAlumnos
-				.entrySet()) {
+		for (Entry<EvaluacionEjeTematico, HashMap<String, OTPreguntasEvaluacion>> mapa : mapEvaAlumnos.entrySet()) {
 			row = FXCollections.observableArrayList();
-			row.add(((EvaluacionEjeTematico) mapa.getKey()).getName());
+			row.add((mapa.getKey()).getName());
 			HashMap<String, OTPreguntasEvaluacion> resultados = mapa.getValue();
 
 			for (String string : titulosColumnas) {
@@ -364,17 +356,14 @@ public class ComparativoComunalEjeView extends AFormView implements
 		tblEvaluacionEjesTematicos.setItems(registroseEva);
 	}
 
-	private void creacionColumnasEjesTematicos(
-			List<EvaluacionPrueba> pListaEvaluaciones) {
-		TableColumn columna0 = new TableColumn("Eje Temático");
-		columna0.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
-			public ObservableValue<String> call(
-					CellDataFeatures<ObservableList, String> param) {
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	private void creacionColumnasEjesTematicos(List<EvaluacionPrueba> pListaEvaluaciones) {
 
-				return new SimpleStringProperty(param.getValue().get(0)
-						.toString());
-			}
-		});
+		tblEjesTematicos.getColumns().clear();
+
+		TableColumn columna0 = new TableColumn("Eje Temático");
+		columna0.setCellValueFactory(param -> new SimpleStringProperty(
+				((CellDataFeatures<ObservableList, String>) param).getValue().get(0).toString()));
 		columna0.setPrefWidth(100);
 		tblEjesTematicos.getColumns().add(columna0);
 
@@ -387,29 +376,20 @@ public class ComparativoComunalEjeView extends AFormView implements
 			final String colegioCurso = evaluacion.getColegiocurso();
 			titulosColumnas.add(colegioCurso);
 			TableColumn columna = new TableColumn(colegioCurso);
-			columna.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
-				public ObservableValue<String> call(
-						CellDataFeatures<ObservableList, String> param) {
-					return new SimpleStringProperty(param.getValue().get(col)
-							.toString());
-				}
-			});
+			columna.setCellValueFactory(param -> new SimpleStringProperty(
+					((CellDataFeatures<ObservableList, String>) param).getValue().get(col).toString()));
 			columna.setPrefWidth(100);
 			tblEjesTematicos.getColumns().add(columna);
 			indice++;
 		}
 	}
 
-	private void creacionColumnasEvaluaciones(
-			List<EvaluacionPrueba> pListaEvaluaciones) {
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	private void creacionColumnasEvaluaciones(List<EvaluacionPrueba> pListaEvaluaciones) {
+		tblEvaluacionEjesTematicos.getColumns().clear();
 		TableColumn columna0 = new TableColumn("");
-		columna0.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
-			public ObservableValue<String> call(
-					CellDataFeatures<ObservableList, String> param) {
-				return new SimpleStringProperty(param.getValue().get(0)
-						.toString());
-			}
-		});
+		columna0.setCellValueFactory(param -> new SimpleStringProperty(
+				((CellDataFeatures<ObservableList, String>) param).getValue().get(0).toString()));
 		columna0.setPrefWidth(100);
 		tblEvaluacionEjesTematicos.getColumns().add(columna0);
 
@@ -420,31 +400,25 @@ public class ComparativoComunalEjeView extends AFormView implements
 			final int col = indice;
 			final String colegioCurso = evaluacion;
 			TableColumn columna = new TableColumn(colegioCurso);
-			columna.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
-				public ObservableValue<String> call(
-						CellDataFeatures<ObservableList, String> param) {
-					return new SimpleStringProperty(param.getValue().get(col)
-							.toString());
-				}
-			});
+			columna.setCellValueFactory(param -> new SimpleStringProperty(
+					((CellDataFeatures<ObservableList, String>) param).getValue().get(col).toString()));
 			columna.setPrefWidth(100);
 			tblEvaluacionEjesTematicos.getColumns().add(columna);
 			indice++;
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void handle(ActionEvent event) {
 		Object source = event.getSource();
-		if (source == mnuExportarEjesTematicos
-				|| source == mnuExportarEvaluacion) {
+		if (source == mnuExportarEjesTematicos || source == mnuExportarEvaluacion) {
 
 			tblEjesTematicos.setId("Ejes temáticos");
 			tblEvaluacionEjesTematicos.setId("Evaluación");
 			List<TableView<? extends Object>> listaTablas = new LinkedList<>();
 			listaTablas.add((TableView<? extends Object>) tblEjesTematicos);
-			listaTablas
-					.add((TableView<? extends Object>) tblEvaluacionEjesTematicos);
+			listaTablas.add((TableView<? extends Object>) tblEvaluacionEjesTematicos);
 
 			ExcelSheetWriterObj.convertirDatosALibroDeExcel(listaTablas);
 		}

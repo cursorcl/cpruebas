@@ -7,9 +7,9 @@ import java.util.Map;
 import java.util.concurrent.Executors;
 
 import org.apache.log4j.Logger;
-import org.controlsfx.dialog.Dialogs;
 
 import cl.eos.imp.view.AFormView;
+import cl.eos.imp.view.ProgressForm;
 import cl.eos.persistence.models.Asignatura;
 import cl.eos.persistence.models.Colegio;
 import cl.eos.persistence.models.Curso;
@@ -21,9 +21,12 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -63,6 +66,7 @@ public class ResumenColegioXAlumnoEjeHabilidadView extends AFormView implements 
 		setTitle("Resumen Colegio/Ejes Temáticos/Habilidades x Alumno");
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void handle(ActionEvent event) {
 		Object source = event.getSource();
@@ -168,8 +172,11 @@ public class ResumenColegioXAlumnoEjeHabilidadView extends AFormView implements 
 				generarReporte();
 			}
 		} else if (list != null && list.isEmpty()) {
-			Dialogs.create().owner(null).title("No hay registros.").masthead(null)
-					.message("No se ha encontrado registros para la consulta.").showInformation();
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("No hay registros.");
+			alert.setHeaderText(this.getName());
+			alert.setContentText("No se ha encontrado registros para la consulta.");
+			alert.showAndWait();
 		}
 	}
 
@@ -185,6 +192,9 @@ public class ResumenColegioXAlumnoEjeHabilidadView extends AFormView implements 
 		if (evaluacionesPrueba == null)
 			return;
 		FXCollections.sort(evaluacionesPrueba, Comparadores.comparaEvaluacionPruebaXCurso());
+		ProgressForm pForm = new ProgressForm();
+		pForm.title("Procesando Cursos");
+		pForm.message("Esto tomará algunos segundos.");
 
 		Task<ArrayList<CursoEjeHabilidad>> task = new Task<ArrayList<CursoEjeHabilidad>>() {
 			@Override
@@ -196,7 +206,8 @@ public class ResumenColegioXAlumnoEjeHabilidadView extends AFormView implements 
 					if (eval.getCurso() != null) {
 						updateMessage(String.format("Prcesando %s", eval.getCurso().getName()));
 						updateProgress(n++, total);
-						CursoEjeHabilidad curso = new CursoEjeHabilidad(eval, cmbTipoAlumno.getSelectionModel().getSelectedItem());
+						CursoEjeHabilidad curso = new CursoEjeHabilidad(eval,
+								cmbTipoAlumno.getSelectionModel().getSelectedItem());
 						Runnable r = () -> {
 							Tab tab = new Tab(eval.getCurso().getName());
 							tab.setContent(curso.getTblAlumnos());
@@ -212,15 +223,27 @@ public class ResumenColegioXAlumnoEjeHabilidadView extends AFormView implements 
 				return lst;
 			}
 		};
-		task.setOnSucceeded(event -> lstCursoEjeHabilidad = task.getValue());
-		task.setOnFailed(event -> log.error(event.getEventType().toString()));
+		task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+			@Override
+			public void handle(WorkerStateEvent event) {
+				lstCursoEjeHabilidad = task.getValue();
+				pForm.getDialogStage().hide();
+			}
+		});
+		task.setOnFailed(new EventHandler<WorkerStateEvent>() {
 
-		final Dialogs dlg = Dialogs.create();
-		dlg.title("Procesando Cursos");
-		dlg.masthead(null);
-		dlg.message("Esto tomará algunos segundos.");
-		dlg.showWorkerProgress(task);
+			@Override
+			public void handle(WorkerStateEvent event) {
+				log.error(event.getEventType().toString());
+				pForm.getDialogStage().hide();
+			}
+		});
+
+		pForm.showWorkerProgress(task);
 		Executors.newSingleThreadExecutor().execute(task);
+
+		Executors.newSingleThreadExecutor().execute(task);
+
 	}
 
 	private void clearContent() {
@@ -229,7 +252,6 @@ public class ResumenColegioXAlumnoEjeHabilidadView extends AFormView implements 
 			for (CursoEjeHabilidad curso : lstCursoEjeHabilidad) {
 				curso.getTblAlumnos().getItems().clear();
 				curso.setTblAlumnos(null);
-				curso = null;
 			}
 			lstCursoEjeHabilidad.clear();
 		}

@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.controlsfx.dialog.Dialogs;
 
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
@@ -23,6 +22,8 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
@@ -189,8 +190,11 @@ public class AlumnosTableTreeView extends AFormView implements EventHandler<Acti
 		ObservableList<TreeItem<OTAlumno>> otSeleccionados = tblAlumnos.getSelectionModel().getSelectedItems();
 
 		if (otSeleccionados == null || otSeleccionados.isEmpty()) {
-			Dialogs.create().owner(null).title("Selección registro").masthead(this.getName())
-					.message("Debe seleccionar registro a procesar").showInformation();
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Selección registro");
+			alert.setHeaderText(this.getName());
+			alert.setContentText("Debe seleccionar registro a procesar");
+			alert.showAndWait();
 			return;
 		}
 

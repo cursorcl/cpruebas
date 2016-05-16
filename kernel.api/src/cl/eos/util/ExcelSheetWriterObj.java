@@ -8,16 +8,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import javafx.collections.ObservableList;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TreeTableColumn;
-import javafx.scene.control.TreeTableView;
-
 import javax.swing.ImageIcon;
 
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.Cell;
@@ -28,7 +21,14 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
-import org.controlsfx.dialog.Dialogs;
+
+import javafx.collections.ObservableList;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TreeTableColumn;
+import javafx.scene.control.TreeTableView;
 
 /**
  * Clase que permite exportar a excel datos asociados a las tablas.
@@ -47,23 +47,20 @@ public final class ExcelSheetWriterObj {
 		// Sin implementar.
 	}
 
-	public static void convertirDatosALibroDeExcel(
-			TableView<? extends Object> tabla) {
+	public static void convertirDatosALibroDeExcel(TableView<? extends Object> tabla) {
 		final Workbook wbook = new HSSFWorkbook();
 		crearLibroConDatosDeTabla(tabla, wbook);
 		crearDocExcel(wbook);
 	}
 
-	public static void convertirDatosALibroDeExcel(
-			TreeTableView<? extends Object> tabla) {
+	public static void convertirDatosALibroDeExcel(TreeTableView<? extends Object> tabla) {
 		final Workbook wbook = new HSSFWorkbook();
 		tabla.getRoot().setExpanded(true);
 		crearLibroConDatosDeTabla(tabla, wbook);
 		crearDocExcel(wbook);
 	}
 
-	public static void convertirDatosALibroDeExcel(
-			List<TableView<? extends Object>> listaTablas) {
+	public static void convertirDatosALibroDeExcel(List<TableView<? extends Object>> listaTablas) {
 		final Workbook wbook = new HSSFWorkbook();
 		for (TableView<? extends Object> tableView : listaTablas) {
 
@@ -72,8 +69,7 @@ public final class ExcelSheetWriterObj {
 		crearDocExcel(wbook);
 	}
 
-	public static void convertirDatosColumnasDoblesALibroDeExcel(
-			List<TableView<? extends Object>> listaTablas) {
+	public static void convertirDatosColumnasDoblesALibroDeExcel(List<TableView<? extends Object>> listaTablas) {
 		final Workbook wbook = new HSSFWorkbook();
 		for (TableView<? extends Object> tableView : listaTablas) {
 
@@ -85,27 +81,29 @@ public final class ExcelSheetWriterObj {
 	private static void crearDocExcel(final Workbook wbWork) {
 		long time = Calendar.getInstance().getTimeInMillis();
 		final String nombreDoc = "wb" + time + ".xls";
-		String path = Utils.getDefaultDirectory().toString() + File.separator
-				+ nombreDoc;
+		String path = Utils.getDefaultDirectory().toString() + File.separator + nombreDoc;
 
 		FileOutputStream fileOut = null;
 		try {
 			fileOut = new FileOutputStream(path);
 			wbWork.write(fileOut);
 		} catch (IOException e) {
-			Dialogs.create().owner(null).title("Problemas al grabar")
-					.masthead("No se pudo grabar archivo")
-					.message("Nombre:" + path).showError();
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Problemas al grabar");
+			alert.setHeaderText("No se pudo grabar archivo");
+			alert.setContentText("Nombre:" + path);
+			alert.showAndWait();
 		}
 
 		finally {
 			try {
 				fileOut.close();
 			} catch (final IOException e) {
-				Dialogs.create().owner(null)
-						.title("Problemas al cerrar archivo")
-						.masthead("No se pudo cerrar archivo")
-						.message("Nombre:" + path).showError();
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle("Problemas al cerrar archivo");
+				alert.setHeaderText("No se pudo cerrar archivo");
+				alert.setContentText("Nombre:" + path);
+				alert.showAndWait();
 			}
 		}
 		mostrarDocumentoExcel(path);
@@ -121,26 +119,23 @@ public final class ExcelSheetWriterObj {
 	 *            modelo de tabla.
 	 * @return workbook libro de excel.
 	 */
-	private static void crearLibroConDatosDeTabla(
-			final TableView<? extends Object> tabla, Workbook wbook) {
+	private static void crearLibroConDatosDeTabla(final TableView<? extends Object> tabla, Workbook wbook) {
 		crearDatosHeader(tabla, wbook);
 		crearDatosTabla(tabla, wbook);
 	}
 
-	private static void crearLibroConDatosDeTablaColumnasDobles(
-			final TableView<? extends Object> tabla, Workbook wbook) {
+	private static void crearLibroConDatosDeTablaColumnasDobles(final TableView<? extends Object> tabla,
+			Workbook wbook) {
 		crearDatosHeaderColumnasDobles(tabla, wbook);
 		crearDatosTablaColumnasDobles(tabla, wbook);
 	}
 
-	private static void crearLibroConDatosDeTabla(
-			final TreeTableView<? extends Object> tabla, Workbook wbook) {
+	private static void crearLibroConDatosDeTabla(final TreeTableView<? extends Object> tabla, Workbook wbook) {
 		crearDatosHeader(tabla, wbook);
 		crearDatosTabla(tabla, wbook);
 	}
 
-	private static void crearDatosHeader(TableView<? extends Object> tabla,
-			Workbook wbook) {
+	private static void crearDatosHeader(TableView<? extends Object> tabla, Workbook wbook) {
 		String id = tabla.getId();
 		final Sheet sheet1 = wbook.createSheet(id);
 		final CellStyle style = wbook.createCellStyle();
@@ -157,13 +152,11 @@ public final class ExcelSheetWriterObj {
 
 	}
 
-	private static void crearDatosHeaderColumnasDobles(
-			TableView<? extends Object> tabla, Workbook wbook) {
+	private static void crearDatosHeaderColumnasDobles(TableView<? extends Object> tabla, Workbook wbook) {
 
 		String id = tabla.getId();
 		final Sheet sheet1 = wbook.createSheet(id);
-		System.out.println("# Sheets=" + wbook.getNumberOfSheets() + " del wb="
-				+ wbook + " de la hoja:" + sheet1);
+		System.out.println("# Sheets=" + wbook.getNumberOfSheets() + " del wb=" + wbook + " de la hoja:" + sheet1);
 		final HSSFCellStyle style = (HSSFCellStyle) wbook.createCellStyle();
 
 		style.setAlignment(CellStyle.ALIGN_CENTER);
@@ -175,15 +168,13 @@ public final class ExcelSheetWriterObj {
 		final Row filaSubtitulo = sheet1.createRow(1);
 		int idx = 0;
 		for (int indice = 0; indice < tabla.getColumns().size(); indice++) {
-			TableColumn<? extends Object, ?> columna = tabla.getColumns().get(
-					indice);
+			TableColumn<? extends Object, ?> columna = tabla.getColumns().get(indice);
 			if (columna.getColumns() != null && !columna.getColumns().isEmpty()) {
 				for (int n = 0; n < columna.getColumns().size(); n++) {
 					Cell cell = filaTitulo.createCell(idx);
 					cell.setCellValue("");
 					if (n == 0) {
-						cell.setCellValue(tabla.getColumns().get(indice)
-								.getText());
+						cell.setCellValue(tabla.getColumns().get(indice).getText());
 					}
 					cell.setCellStyle(style);
 
@@ -193,8 +184,7 @@ public final class ExcelSheetWriterObj {
 					idx++;
 				}
 
-				sheet1.addMergedRegion(new CellRangeAddress(0, 0,
-						(indice - 1) * 4 + 1, (indice - 1) * 4 + 4));
+				sheet1.addMergedRegion(new CellRangeAddress(0, 0, (indice - 1) * 4 + 1, (indice - 1) * 4 + 4));
 
 			} else {
 				Cell cell = filaTitulo.createCell(idx);
@@ -210,8 +200,7 @@ public final class ExcelSheetWriterObj {
 
 	}
 
-	private static void crearDatosHeader(TreeTableView<? extends Object> tabla,
-			Workbook wbook) {
+	private static void crearDatosHeader(TreeTableView<? extends Object> tabla, Workbook wbook) {
 
 		String id = tabla.getId();
 		final Sheet sheet1 = wbook.createSheet(id);
@@ -239,8 +228,7 @@ public final class ExcelSheetWriterObj {
 	 *            libro de excel.
 	 * @return workbook libro de excel modificado.
 	 */
-	private static void crearDatosTabla(TableView<? extends Object> tabla,
-			final Workbook wbook) {
+	private static void crearDatosTabla(TableView<? extends Object> tabla, final Workbook wbook) {
 		String id = tabla.getId();
 		final Sheet sheet1 = wbook.getSheet(id);
 
@@ -250,8 +238,7 @@ public final class ExcelSheetWriterObj {
 		}
 	}
 
-	private static void crearDatosTablaColumnasDobles(
-			TableView<? extends Object> tabla, Workbook wbook) {
+	private static void crearDatosTablaColumnasDobles(TableView<? extends Object> tabla, Workbook wbook) {
 		String id = tabla.getId();
 		final Sheet sheet1 = wbook.getSheet(id);
 
@@ -270,8 +257,7 @@ public final class ExcelSheetWriterObj {
 	 *            libro de excel.
 	 * @return workbook libro de excel modificado.
 	 */
-	private static void crearDatosTabla(TreeTableView<? extends Object> tabla,
-			final Workbook wbook) {
+	private static void crearDatosTabla(TreeTableView<? extends Object> tabla, final Workbook wbook) {
 		final Sheet sheet1 = wbook.getSheet(tabla.getId());
 
 		int indiceFila = 0;
@@ -293,14 +279,12 @@ public final class ExcelSheetWriterObj {
 	 * @param fila
 	 *            fila.
 	 */
-	private static void recorrerColumnas(
-			final TreeTableView<? extends Object> tabla, final int indiceFila,
+	private static void recorrerColumnas(final TreeTableView<? extends Object> tabla, final int indiceFila,
 			final Row fila) {
 		for (int indiceColumna = 0; indiceColumna < tabla.getColumns().size(); indiceColumna++) {
 
 			final Cell cell = fila.createCell(indiceColumna);
-			TreeTableColumn<? extends Object, ?> valores = tabla.getColumns()
-					.get(indiceColumna);
+			TreeTableColumn<? extends Object, ?> valores = tabla.getColumns().get(indiceColumna);
 			Object valor = valores.getCellData(indiceFila);
 			if (valor instanceof String) {
 				cell.setCellValue((String) valor);
@@ -317,8 +301,7 @@ public final class ExcelSheetWriterObj {
 				cell.setCellValue((Double) valor);
 			} else if (valor instanceof Float) {
 				cell.setCellValue((Float) valor);
-			} else if ((valor instanceof ImageIcon) || (valor == null)
-					|| valor instanceof Color) {
+			} else if ((valor instanceof ImageIcon) || (valor == null) || valor instanceof Color) {
 				cell.setCellValue("");
 			} else {
 				cell.setCellValue((String) valor.toString());
@@ -336,14 +319,12 @@ public final class ExcelSheetWriterObj {
 	 * @param fila
 	 *            fila.
 	 */
-	private static void recorrerColumnas(
-			final TableView<? extends Object> tabla, final int indiceFila,
+	private static void recorrerColumnas(final TableView<? extends Object> tabla, final int indiceFila,
 			final Row fila) {
 		for (int indiceColumna = 0; indiceColumna < tabla.getColumns().size(); indiceColumna++) {
 
 			final Cell cell = fila.createCell(indiceColumna);
-			TableColumn<? extends Object, ?> valores = tabla.getColumns().get(
-					indiceColumna);
+			TableColumn<? extends Object, ?> valores = tabla.getColumns().get(indiceColumna);
 			Object valor = valores.getCellData(indiceFila);
 			if (valor instanceof String) {
 				cell.setCellValue((String) valor);
@@ -360,8 +341,7 @@ public final class ExcelSheetWriterObj {
 				cell.setCellValue((Double) valor);
 			} else if (valor instanceof Float) {
 				cell.setCellValue((Float) valor);
-			} else if ((valor instanceof ImageIcon) || (valor == null)
-					|| valor instanceof Color) {
+			} else if ((valor instanceof ImageIcon) || (valor == null) || valor instanceof Color) {
 				cell.setCellValue("");
 			} else {
 				cell.setCellValue((String) valor.toString());
@@ -369,19 +349,16 @@ public final class ExcelSheetWriterObj {
 		}
 	}
 
-	private static void recorrerColumnasDobles(
-			final TableView<? extends Object> tabla, final int indiceFila,
+	private static void recorrerColumnasDobles(final TableView<? extends Object> tabla, final int indiceFila,
 			final Row fila) {
 
 		int idx = 0;
 		for (int indiceColumna = 0; indiceColumna < tabla.getColumns().size(); indiceColumna++) {
 
-			TableColumn<? extends Object, ?> valores = tabla.getColumns().get(
-					indiceColumna);
+			TableColumn<? extends Object, ?> valores = tabla.getColumns().get(indiceColumna);
 			if (valores.getColumns() != null && !valores.getColumns().isEmpty()) {
 				for (int n = 0; n < valores.getColumns().size(); n++) {
-					TableColumn<? extends Object, ?> values = valores
-							.getColumns().get(n);
+					TableColumn<? extends Object, ?> values = valores.getColumns().get(n);
 					Object valor = values.getCellData(indiceFila);
 					final Cell cell = fila.createCell(idx);
 					CellStyle style = cell.getCellStyle();
@@ -421,8 +398,7 @@ public final class ExcelSheetWriterObj {
 			cell.setCellValue((Double) valor);
 		} else if (valor instanceof Float) {
 			cell.setCellValue((Float) valor);
-		} else if ((valor instanceof ImageIcon) || (valor == null)
-				|| valor instanceof Color) {
+		} else if ((valor instanceof ImageIcon) || (valor == null) || valor instanceof Color) {
 			cell.setCellValue("");
 		} else {
 			cell.setCellValue((String) valor.toString());
@@ -431,8 +407,8 @@ public final class ExcelSheetWriterObj {
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static void generarReporteComparativoColegioEjeHabilidadCurso(
-			final TableView<? extends Object> tabla, String colegio) {
+	public static void generarReporteComparativoColegioEjeHabilidadCurso(final TableView<? extends Object> tabla,
+			String colegio) {
 
 		final Workbook wbook = new HSSFWorkbook();
 
@@ -449,7 +425,7 @@ public final class ExcelSheetWriterObj {
 		applySheetSubTitleStyle(cell);
 		cell.setCellValue(colegio);
 		header.setHeightInPoints(30);
-		
+
 		Row header1 = sheet.createRow(2);
 		Row header2 = sheet.createRow(3);
 		// Estableciendo los titulos.
@@ -470,7 +446,7 @@ public final class ExcelSheetWriterObj {
 					cell2.setCellValue(tcI.getText());
 					indice++;
 				}
-				sheet.addMergedRegion(new CellRangeAddress(2, 2, indice - 3, indice - 1 ));
+				sheet.addMergedRegion(new CellRangeAddress(2, 2, indice - 3, indice - 1));
 			} else {
 				Cell cell1 = header1.createCell(indice);
 				applyTitleStyle(cell1);
@@ -585,8 +561,7 @@ public final class ExcelSheetWriterObj {
 	private static void mostrarDocumentoExcel(final String nombreDoc) {
 		final File archivo = new File(nombreDoc);
 		try {
-			Runtime.getRuntime().exec(
-					"cmd /c start \"\" \"" + archivo.getAbsolutePath() + "\"");
+			Runtime.getRuntime().exec("cmd /c start \"\" \"" + archivo.getAbsolutePath() + "\"");
 		} catch (final Exception e) {
 			e.getMessage();
 		}

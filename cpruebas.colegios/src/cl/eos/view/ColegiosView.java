@@ -3,13 +3,19 @@ package cl.eos.view;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.controlsfx.dialog.Dialogs;
-
+import cl.eos.imp.view.AFormView;
+import cl.eos.interfaces.entity.IEntity;
+import cl.eos.ot.OTColegio;
+import cl.eos.persistence.models.Colegio;
+import cl.eos.persistence.models.TipoColegio;
+import cl.eos.util.ExcelSheetWriterObj;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
@@ -20,12 +26,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import cl.eos.imp.view.AFormView;
-import cl.eos.interfaces.entity.IEntity;
-import cl.eos.ot.OTColegio;
-import cl.eos.persistence.models.Colegio;
-import cl.eos.persistence.models.TipoColegio;
-import cl.eos.util.ExcelSheetWriterObj;
 
 public class ColegiosView extends AFormView implements
 		EventHandler<ActionEvent> {
@@ -181,10 +181,11 @@ public class ColegiosView extends AFormView implements
 		ObservableList<OTColegio> otSeleccionados = tblColegio
 				.getSelectionModel().getSelectedItems();
 		if (otSeleccionados.size() == 0) {
-			Dialogs.create().owner(null).title("Selección registro")
-					.masthead(this.getName())
-					.message("Debe seleccionar registro a procesar")
-					.showInformation();
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Selección registro");
+			alert.setHeaderText(this.getName());
+			alert.setContentText("Debe seleccionar registro a procesar");
+			alert.showAndWait();			
 		} else {
 			if (otSeleccionados != null && !otSeleccionados.isEmpty()) {
 				List<Colegio> colegio = new ArrayList<Colegio>(

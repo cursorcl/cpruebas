@@ -130,6 +130,7 @@ public abstract class AView implements IView {
 			view.setPanel(pane);
 			controller.addView(view);
 		} catch (Exception e) {
+			e.printStackTrace();
 			LOG.error(e);
 		}
 		if (view != null) {

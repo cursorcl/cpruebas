@@ -9,23 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.SelectionMode;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableColumn.CellDataFeatures;
-import javafx.scene.control.TableView;
-import javafx.util.Callback;
-
 import org.apache.log4j.Logger;
-import org.controlsfx.dialog.Dialogs;
 
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
@@ -39,6 +23,22 @@ import cl.eos.persistence.models.Prueba;
 import cl.eos.persistence.models.PruebaRendida;
 import cl.eos.persistence.models.RespuestasEsperadasPrueba;
 import cl.eos.util.ExcelSheetWriterObj;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.SelectionMode;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellDataFeatures;
+import javafx.scene.control.TableView;
+import javafx.util.Callback;
 
 public class ComparativoComunalHabilidadView extends AFormView implements
 		EventHandler<ActionEvent> {
@@ -439,13 +439,11 @@ public class ComparativoComunalHabilidadView extends AFormView implements
 
 	private void informarProblemas(String colegioCurso, Alumno al,
 			String respuesta) {
-		Dialogs info = Dialogs.create();
-		info.title("Alumno con respuestas incompletas.");
-		info.masthead(String.format("%s/%s", colegioCurso, al.toString()));
-		info.message(String
+		Alert alert = new Alert(AlertType.ERROR);
+		alert.setTitle("Alumno con respuestas incompletas.");
+		alert.setHeaderText(String.format("%s/%s", colegioCurso, al.toString()));
+		alert.setContentText(String
 				.format("La respuesta [%s] es incompleta", respuesta));
-		info.owner(null);
-		info.showError();
-
+		alert.showAndWait();
 	}
 }

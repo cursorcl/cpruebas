@@ -6,8 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.controlsfx.dialog.Dialogs;
-
 import cl.eos.common.Constants;
 import cl.eos.imp.view.AFormView;
 import cl.eos.persistence.models.Asignatura;
@@ -29,6 +27,8 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -133,8 +133,11 @@ public class ComparativoColegioEjeEvaluacionView extends AFormView implements Ev
 	@Override
 	public void onDataArrived(List<Object> list) {
 		if (list == null || list.isEmpty()) {
-			Dialogs.create().owner(null).title("No hay registros.").masthead(null)
-					.message("No se ha encontrado registros para la consulta.").showInformation();
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("No hay registros.");
+			alert.setHeaderText(this.getName());
+			alert.setContentText("No se ha encontrado registros para la consulta.");
+			alert.showAndWait();			
 			return;
 		}
 		Object entity = list.get(0);

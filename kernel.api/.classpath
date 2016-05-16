@@ -8,7 +8,7 @@
 	<classpathentry kind="lib" path="../jars/xmlbeans-5.2.4.jar"/>
 	<classpathentry kind="lib" path="../jars/dom4j-1.6.1.jar"/>
 	<classpathentry kind="lib" path="../jars/poi-ooxml-schemas-3.7.jar"/>
-	<classpathentry kind="lib" path="../jars/controlsfx-8.0.6_20.jar"/>
 	<classpathentry kind="lib" path="O:/cpruebas/jars/log4j.jar"/>
+	<classpathentry kind="lib" path="O:/cpruebas_multiuser/cpruebas/jars/controlsfx-8.40.10.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

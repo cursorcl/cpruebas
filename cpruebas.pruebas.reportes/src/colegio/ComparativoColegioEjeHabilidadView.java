@@ -8,23 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.controlsfx.dialog.Dialogs;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableColumn.CellDataFeatures;
-import javafx.scene.control.TableView;
-import javafx.util.Callback;
 import cl.eos.common.Constants;
 import cl.eos.imp.view.AFormView;
 import cl.eos.ot.OTPreguntasEjes;
@@ -45,6 +29,23 @@ import cl.eos.persistence.util.Comparadores;
 import cl.eos.util.ExcelSheetWriterObj;
 import cl.eos.util.Pair;
 import cl.eos.util.Utils;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellDataFeatures;
+import javafx.scene.control.TableView;
+import javafx.util.Callback;
 
 public class ComparativoColegioEjeHabilidadView extends AFormView implements EventHandler<ActionEvent> {
 
@@ -197,8 +198,11 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements Eve
 				generarReporte();
 			}
 		} else if (list != null && list.isEmpty()) {
-			Dialogs.create().owner(null).title("No hay registros.").masthead(null)
-					.message("No se ha encontrado registros para la consulta.").showInformation();
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("No hay registros.");
+			alert.setHeaderText(null);
+			alert.setContentText("No se ha encontrado registros para la consulta.");
+			alert.showAndWait();
 		}
 	}
 
@@ -275,7 +279,7 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements Eve
 		}
 
 		long tipoAlumno = cmbTipoAlumno.getSelectionModel().getSelectedItem().getId();
-		
+
 		llenarColumnas(cursoList);
 		int nroCursos = cursoList.size();
 		Map<EjeTematico, List<OTPreguntasEjes>> mapEjes = new HashMap<>();
@@ -317,24 +321,23 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements Eve
 			}
 			totalAlumnos[index] = 0;
 
-			// Obtengo los alumnos a considerar en el caso que hayan alumnos PIE.
-			for(Alumno alumno: eval.getCurso().getAlumnos())
-			{
-				if(tipoAlumno == Constants.PIE_ALL || alumno.getTipoAlumno().getId().equals(tipoAlumno))
-				{
-					// le quito 1 al total de alumnos, ya que este alumno no es del grupo que sequiere representar en el reporte.
-					totalAlumnos[index] = totalAlumnos[index] +1;
+			// Obtengo los alumnos a considerar en el caso que hayan alumnos
+			// PIE.
+			for (Alumno alumno : eval.getCurso().getAlumnos()) {
+				if (tipoAlumno == Constants.PIE_ALL || alumno.getTipoAlumno().getId().equals(tipoAlumno)) {
+					// le quito 1 al total de alumnos, ya que este alumno no es
+					// del grupo que sequiere representar en el reporte.
+					totalAlumnos[index] = totalAlumnos[index] + 1;
 				}
 			}
-			
+
 			for (PruebaRendida pruebaRendida : pruebasRendidas) {
 				// Se procesa un alumno.
-				if(tipoAlumno != Constants.PIE_ALL && !pruebaRendida.getAlumno().getTipoAlumno().getId().equals(tipoAlumno))
-				{
+				if (tipoAlumno != Constants.PIE_ALL
+						&& !pruebaRendida.getAlumno().getTipoAlumno().getId().equals(tipoAlumno)) {
 					continue;
 				}
-				
-				
+
 				alumnosEvaluados[index] = alumnosEvaluados[index] + 1;
 
 				String respuestas = pruebaRendida.getRespuestas();
@@ -382,7 +385,7 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements Eve
 
 				for (Habilidad hab : mapHabilidades.keySet()) {
 					List<OTPreguntasHabilidad> lstHabs = mapHabilidades.get(hab);
-					
+
 					// Se obtiene el asociado a la columna.
 					OTPreguntasHabilidad otHabilidad = lstHabs.get(index);
 					if (otHabilidad == null) {

@@ -8,7 +8,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="485.0" prefWidth="1087.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.ComparativoComunalEjeView">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="485.0" prefWidth="1087.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comunal.ComparativoComunalEjeView">
    <center>
       <SplitPane orientation="VERTICAL" prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <items>
@@ -36,15 +36,23 @@
       </SplitPane>
    </center>
    <top>
-      <Pane maxHeight="40.0" styleClass="sample-page" BorderPane.alignment="CENTER">
+      <Pane maxHeight="78.0" prefHeight="78.0" prefWidth="1087.0" styleClass="sample-page" BorderPane.alignment="CENTER">
          <children>
-            <HBox>
+            <HBox prefHeight="82.0" prefWidth="637.0">
                <children>
-                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="35.0" text="UNIDADES EDUCATIVA CAUQUENES - COMPARATIVO COMUNAL" textAlignment="CENTER">
-                     <font>
-                        <Font name="System Bold" size="20.0" />
-                     </font>
-                  </Label>
+                  <VBox prefHeight="82.0" prefWidth="673.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="35.0" prefWidth="640.0" text="UNIDADES EDUCATIVA CAUQUENES - COMPARATIVO COMUNAL" textAlignment="CENTER" VBox.vgrow="NEVER">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </Label>
+                        <ComboBox fx:id="cmbTipoAlumno" prefHeight="25.0" prefWidth="198.0" promptText="Tipo de Alumno" />
+                     </children>
+                  </VBox>
                </children>
             </HBox>
             <Label fx:id="lblTitulo" layoutX="638.0" layoutY="2.0" prefHeight="32.0" prefWidth="441.0" styleClass="sample-page">

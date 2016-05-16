@@ -8,30 +8,9 @@ import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javafx.application.Platform;
-import javafx.beans.binding.StringExpression;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.concurrent.Task;
-import javafx.concurrent.WorkerStateEvent;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableColumn.CellDataFeatures;
-import javafx.scene.control.TableView;
-import javafx.util.Callback;
-
-import org.controlsfx.dialog.Dialogs;
-
 import cl.eos.common.Constants;
 import cl.eos.imp.view.AFormView;
+import cl.eos.imp.view.ProgressForm;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.persistence.models.Alumno;
 import cl.eos.persistence.models.Asignatura;
@@ -49,6 +28,26 @@ import cl.eos.util.ExcelSheetWriterObj;
 import cl.eos.util.Pair;
 import comparativo.colegio.eje.habilidad.x.curso.OTCursoRangos;
 import comparativo.colegio.eje.habilidad.x.curso.OTUnCursoUnEjeHabilidad;
+import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellDataFeatures;
+import javafx.scene.control.TableView;
+import javafx.util.Callback;
 
 public class ComparativoColegioEjeHabilidadxCursoView extends AFormView implements EventHandler<ActionEvent> {
 
@@ -196,8 +195,11 @@ public class ComparativoColegioEjeHabilidadxCursoView extends AFormView implemen
 				tareaGenerarReporte();
 			}
 		} else if (list != null && list.isEmpty()) {
-			Dialogs.create().owner(null).title("No hay registros.").masthead(null)
-					.message("No se ha encontrado registros para la consulta.").showInformation();
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("No hay registros.");
+			alert.setHeaderText(null);
+			alert.setContentText("No se ha encontrado registros para la consulta.");
+			alert.showAndWait();
 		}
 	}
 
@@ -207,7 +209,8 @@ public class ComparativoColegioEjeHabilidadxCursoView extends AFormView implemen
 		tc.setSortable(false);
 		tc.setStyle("-fx-alignment: CENTER-LEFT;");
 		tc.prefWidthProperty().set(250f);
-		tc.setCellValueFactory(param -> new SimpleStringProperty(((CellDataFeatures<ObservableList, String>) param).getValue().get(0).toString()));
+		tc.setCellValueFactory(param -> new SimpleStringProperty(
+				((CellDataFeatures<ObservableList, String>) param).getValue().get(0).toString()));
 
 		Runnable r = new Runnable() {
 			@Override
@@ -303,8 +306,7 @@ public class ComparativoColegioEjeHabilidadxCursoView extends AFormView implemen
 		long tipoAlumno = cmbTipoAlumno.getSelectionModel().getSelectedItem().getId();
 		for (PruebaRendida pRendida : evaluacion.getPruebasRendidas()) {
 			Alumno alumno = pRendida.getAlumno();
-			if (tipoAlumno != Constants.PIE_ALL
-					&& tipoAlumno != alumno.getTipoAlumno().getId()) {
+			if (tipoAlumno != Constants.PIE_ALL && tipoAlumno != alumno.getTipoAlumno().getId()) {
 				// En este caso, no se considera este alumno para el
 				// cálculo.
 				continue;
@@ -445,6 +447,11 @@ public class ComparativoColegioEjeHabilidadxCursoView extends AFormView implemen
 			// No hay valores para procesar todo.
 			return;
 		}
+		
+		ProgressForm pForm = new ProgressForm();
+		pForm.title("Generando reporte");
+		pForm.message("Esto tomará algunos segundos.");
+		
 		Task<Boolean> task = new Task<Boolean>() {
 			@Override
 			protected Boolean call() throws Exception {
@@ -463,19 +470,19 @@ public class ComparativoColegioEjeHabilidadxCursoView extends AFormView implemen
 		task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
 			@Override
 			public void handle(WorkerStateEvent event) {
+				pForm.getDialogStage().hide();
 			}
 		});
 		task.setOnFailed(new EventHandler<WorkerStateEvent>() {
 
 			@Override
 			public void handle(WorkerStateEvent event) {
+				pForm.getDialogStage().hide();
 			}
 		});
-		final Dialogs dlg = Dialogs.create();
-		dlg.title("Generando reporte");
-		dlg.masthead(null);
-		dlg.message("Esto tomará algunos segundos.");
-		dlg.showWorkerProgress(task);
+
+
+		pForm.showWorkerProgress(task);
 		Executors.newSingleThreadExecutor().execute(task);
 	}
 

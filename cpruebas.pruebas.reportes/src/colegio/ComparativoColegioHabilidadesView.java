@@ -6,6 +6,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cl.eos.common.Constants;
+import cl.eos.imp.view.AFormView;
+import cl.eos.persistence.models.Alumno;
+import cl.eos.persistence.models.Asignatura;
+import cl.eos.persistence.models.Colegio;
+import cl.eos.persistence.models.Curso;
+import cl.eos.persistence.models.EvaluacionPrueba;
+import cl.eos.persistence.models.Habilidad;
+import cl.eos.persistence.models.PruebaRendida;
+import cl.eos.persistence.models.RangoEvaluacion;
+import cl.eos.persistence.models.RespuestasEsperadasPrueba;
+import cl.eos.persistence.models.TipoAlumno;
+import cl.eos.persistence.util.Comparadores;
+import cl.eos.util.ExcelSheetWriterObj;
+import cl.eos.view.ots.ejeevaluacion.OTAcumulador;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -13,6 +28,8 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -22,35 +39,11 @@ import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.util.Callback;
 
-import org.controlsfx.dialog.Dialogs;
-
-import cl.eos.common.Constants;
-import cl.eos.imp.view.AFormView;
-import cl.eos.ot.OTPreguntasEjes;
-import cl.eos.ot.OTPreguntasEvaluacion;
-import cl.eos.ot.OTPreguntasHabilidad;
-import cl.eos.persistence.models.Alumno;
-import cl.eos.persistence.models.Asignatura;
-import cl.eos.persistence.models.Colegio;
-import cl.eos.persistence.models.Curso;
-import cl.eos.persistence.models.EjeTematico;
-import cl.eos.persistence.models.EvaluacionEjeTematico;
-import cl.eos.persistence.models.EvaluacionPrueba;
-import cl.eos.persistence.models.Habilidad;
-import cl.eos.persistence.models.PruebaRendida;
-import cl.eos.persistence.models.RangoEvaluacion;
-import cl.eos.persistence.models.RespuestasEsperadasPrueba;
-import cl.eos.persistence.models.TipoAlumno;
-import cl.eos.persistence.util.Comparadores;
-import cl.eos.util.ExcelSheetWriterObj;
-import cl.eos.util.Pair;
-import cl.eos.util.Utils;
-import cl.eos.view.ots.ejeevaluacion.OTAcumulador;
-
 public class ComparativoColegioHabilidadesView extends AFormView implements EventHandler<ActionEvent> {
 
 	private static final String ASIGNATURA_ID = "idAsignatura";
 	private static final String COLEGIO_ID = "idColegio";
+	@SuppressWarnings("rawtypes")
 	@FXML
 	private TableView tblHabilidadesCantidad;
 	@FXML
@@ -74,12 +67,12 @@ public class ComparativoColegioHabilidadesView extends AFormView implements Even
 	private ObservableList<Curso> cursoList;
 	private ObservableList<RangoEvaluacion> rangoEvalList;
 	private ObservableList<EvaluacionPrueba> evaluacionesPrueba;
-	private ArrayList<OTPreguntasEvaluacion> lst;
 
 	public ComparativoColegioHabilidadesView() {
 		setTitle("Comparativo Colegios Habilidades");
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void handle(ActionEvent event) {
 		Object source = event.getSource();
@@ -188,8 +181,11 @@ public class ComparativoColegioHabilidadesView extends AFormView implements Even
 				generarReporte();
 			}
 		} else if (list != null && list.isEmpty()) {
-			Dialogs.create().owner(null).title("No hay registros.").masthead(null)
-					.message("No se ha encontrado registros para la consulta.").showInformation();
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("No hay registros.");
+			alert.setHeaderText(this.getName());
+			alert.setContentText("No se ha encontrado registros para la consulta.");
+			alert.showAndWait();			
 		}
 	}
 
@@ -215,7 +211,6 @@ public class ComparativoColegioHabilidadesView extends AFormView implements Even
 
 		int indice = 1;
 		for (Curso curso : pCursoList) {
-			final int idx = indice;
 			tc = new TableColumn(curso.getName());
 			tc.prefWidthProperty().set(50f);
 			tc.setStyle("-fx-alignment: CENTER;");
@@ -358,6 +353,7 @@ public class ComparativoColegioHabilidadesView extends AFormView implements Even
 	 *            Mapa que contiene los valores para cada curso de las
 	 *            habilidades.
 	 */
+	@SuppressWarnings("unchecked")
 	private void generarTablaEjes(Map<Habilidad, List<OTAcumulador>> mapEjes) {
 		ObservableList<String> row = null;
 		ObservableList<ObservableList<String>> items = FXCollections.observableArrayList();

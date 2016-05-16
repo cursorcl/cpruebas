@@ -28,13 +28,10 @@ public class TipoAlumno extends AEntity {
 	@Version
 	protected int version;
 
-	/**
-	 * Constructor por defecto de la clase.
-	 */
 	public TipoAlumno() {
-		
+		// Creado para que pueda ser instanciado por le sistema.
 	}
-	
+
 	public TipoAlumno(Long id, String name) {
 		super();
 		this.id = id;
@@ -61,7 +58,6 @@ public class TipoAlumno extends AEntity {
 		this.name = name;
 	}
 
-	
 	@Override
 	public final int getVersion() {
 		return version;
@@ -81,6 +77,5 @@ public class TipoAlumno extends AEntity {
 	public String toString() {
 		return name;
 	}
-	
-	
+
 }

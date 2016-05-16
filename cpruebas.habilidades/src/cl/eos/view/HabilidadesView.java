@@ -3,11 +3,18 @@ package cl.eos.view;
 import java.util.ArrayList;
 import java.util.List;
 
+import cl.eos.imp.view.AFormView;
+import cl.eos.interfaces.entity.IEntity;
+import cl.eos.ot.OTHabilidad;
+import cl.eos.persistence.models.Habilidad;
+import cl.eos.util.ExcelSheetWriterObj;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SelectionMode;
@@ -16,14 +23,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-
-import org.controlsfx.dialog.Dialogs;
-
-import cl.eos.imp.view.AFormView;
-import cl.eos.interfaces.entity.IEntity;
-import cl.eos.ot.OTHabilidad;
-import cl.eos.persistence.models.Habilidad;
-import cl.eos.util.ExcelSheetWriterObj;
 
 public class HabilidadesView extends AFormView implements
 		EventHandler<ActionEvent> {
@@ -145,10 +144,11 @@ public class HabilidadesView extends AFormView implements
 		ObservableList<OTHabilidad> otSeleccionados = tblHabilidades
 				.getSelectionModel().getSelectedItems();
 		if (otSeleccionados.size() == 0) {
-			Dialogs.create().owner(null).title("Selección registro")
-					.masthead(this.getName())
-					.message("Debe seleccionar registro a procesar")
-					.showInformation();
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Selección registro");
+			alert.setHeaderText(this.getName());
+			alert.setContentText("Debe seleccionar registro a procesar");
+			alert.showAndWait();
 		} else {
 
 			if (otSeleccionados != null && !otSeleccionados.isEmpty()) {

@@ -3,14 +3,18 @@ package cl.eos.view;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.controlsfx.dialog.Dialog;
-import org.controlsfx.dialog.Dialogs;
-
+import cl.eos.imp.view.AFormView;
+import cl.eos.interfaces.entity.IEntity;
+import cl.eos.ot.OTAsignatura;
+import cl.eos.persistence.models.Asignatura;
+import cl.eos.util.ExcelSheetWriterObj;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SelectionMode;
@@ -19,11 +23,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-import cl.eos.imp.view.AFormView;
-import cl.eos.interfaces.entity.IEntity;
-import cl.eos.ot.OTAsignatura;
-import cl.eos.persistence.models.Asignatura;
-import cl.eos.util.ExcelSheetWriterObj;
 
 public class AsignaturasView extends AFormView implements
 		EventHandler<ActionEvent> {
@@ -128,11 +127,11 @@ public class AsignaturasView extends AFormView implements
 		removeAllStyles();
 		if (validate()) {
 			if (validaNombreAsignatura(txtNombre.getText())) {
-//				txtNombre.getStyleClass().add("bad");
-//				lblError.setText("Nombre asignatura repetido");
-				 Dialogs.create().owner(null).title("Información")
-		            .masthead("Asignatura repetida").message("Nombre de astidaignatura repe")
-		            .actions(Dialog.Actions.OK).showInformation();
+					Alert alert = new Alert(AlertType.INFORMATION);
+					alert.setTitle("Información");
+					alert.setHeaderText("Asignatura repetida");
+					alert.setContentText("El nombre de la asignatura se encuentra repetida");
+					alert.showAndWait();
 			} else {
 				if (lblError != null) {
 					lblError.setText(" ");

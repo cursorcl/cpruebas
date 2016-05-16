@@ -2,12 +2,14 @@ package cl.eos.imp.view;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 
 import org.controlsfx.control.action.Action;
-import org.controlsfx.dialog.Dialog;
-import org.controlsfx.dialog.Dialogs;
 
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.interfaces.entity.IPersistenceListener;
@@ -100,11 +102,12 @@ public abstract class AFormView extends AView implements IFormView {
   }
 
   protected boolean confirmaEliminar() {
-    Action response =
-        Dialogs.create().owner(null).title("Confirma eliminación")
-            .masthead("Una vez borrado no se puede recuperar").message("Está seguro de borrar?")
-            .actions(Dialog.Actions.OK, Dialog.Actions.CANCEL).showConfirm();
-    return response == Dialog.Actions.OK;
+	Alert alert = new Alert(AlertType.CONFIRMATION);  
+	alert.setTitle("Confirma eliminación");
+	alert.setHeaderText("Una vez borrado no se puede recuperar");
+	alert.setContentText("Está seguro de borrar?");
+	Optional<ButtonType> result =  alert.showAndWait();
+    return result.get() == ButtonType.OK;
 
   }
 
