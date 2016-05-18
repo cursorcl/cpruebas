@@ -43,7 +43,7 @@ public class ComparativoColegioEjeEvaluacionView extends AFormView implements Ev
 	private static final String ASIGNATURA_ID = "idAsignatura";
 	private static final String COLEGIO_ID = "idColegio";
 	@FXML
-	private TableView tblEjesCantidad;
+	private TableView<ObservableList<String>> tblEjesCantidad;
 	@FXML
 	private ComboBox<Colegio> cmbColegios;
 	@FXML
@@ -68,7 +68,6 @@ public class ComparativoColegioEjeEvaluacionView extends AFormView implements Ev
 		setTitle("Comparativo Colegios Ejes");
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void handle(ActionEvent event) {
 		Object source = event.getSource();

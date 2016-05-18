@@ -52,9 +52,9 @@ public class ComparativoComunalEjeView extends AFormView implements EventHandler
 	@FXML
 	private MenuItem mnuExportarEvaluacion;
 	@FXML
-	private TableView tblEjesTematicos;
+	private TableView<ObservableList<String>> tblEjesTematicos;
 	@FXML
-	private TableView tblEvaluacionEjesTematicos;
+	private TableView<ObservableList<String>> tblEvaluacionEjesTematicos;
 	@FXML
 	private ComboBox<TipoAlumno> cmbTipoAlumno;
 
@@ -66,9 +66,10 @@ public class ComparativoComunalEjeView extends AFormView implements EventHandler
 
 	long tipoAlumno = Constants.PIE_ALL;
 
-	private boolean llegaOnFound = false;
+	
 	private ArrayList<String> titulosColumnas;
 	private Prueba prueba;
+	private boolean llegaOnFound = false;
 	private boolean llegaTipoAlumno = false;
 	private boolean llegaEvaluacionEjeTematico = false;
 
@@ -82,7 +83,8 @@ public class ComparativoComunalEjeView extends AFormView implements EventHandler
 		mnuExportarEvaluacion.setOnAction(this);
 		cmbTipoAlumno.getSelectionModel().select(0);
 		cmbTipoAlumno.setOnAction(event -> {
-			if (prueba != null) {
+			tipoAlumno = cmbTipoAlumno.getSelectionModel().getSelectedIndex();
+			if (prueba != null && tipoAlumno != -1) {
 				procesaDatosReporte();
 			}
 		});
@@ -116,6 +118,7 @@ public class ComparativoComunalEjeView extends AFormView implements EventHandler
 					tAlumnoList.add((TipoAlumno) iEntity);
 				}
 				cmbTipoAlumno.setItems(tAlumnoList);
+				cmbTipoAlumno.getSelectionModel().select((int)Constants.PIE_ALL);
 			}
 		}
 		procesaDatosReporte();
@@ -144,11 +147,6 @@ public class ComparativoComunalEjeView extends AFormView implements EventHandler
 
 		creacionColumnasEjesTematicos(listaEvaluaciones);
 		creacionColumnasEvaluaciones(listaEvaluaciones);
-
-		// ********** generar datos ejes tematicos y evaluaciones
-		/*
-		 * Aqui verificamos el TIPO ALUMNO SELECCIONADO PARA EL REPORTE
-		 */
 
 		for (EvaluacionPrueba evaluacionPrueba : listaEvaluaciones) {
 			String colegioCurso = evaluacionPrueba.getColegiocurso();
@@ -236,8 +234,7 @@ public class ComparativoComunalEjeView extends AFormView implements EventHandler
 		Alert alert = new Alert(AlertType.ERROR);
 		alert.setTitle("Alumno con respuestas incompletas.");
 		alert.setHeaderText(String.format("%s/%s", colegioCurso, al.toString()));
-		alert.setContentText(String
-				.format("La respuesta [%s] es incompleta", respuesta));
+		alert.setContentText(String.format("La respuesta [%s] es incompleta", respuesta));
 		alert.showAndWait();
 
 	}
@@ -286,10 +283,9 @@ public class ComparativoComunalEjeView extends AFormView implements EventHandler
 
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void desplegarDatosEjesTematicos() {
 
-		ObservableList<ObservableList> registros = FXCollections.observableArrayList();
+		ObservableList<ObservableList<String>> registros = FXCollections.observableArrayList();
 
 		for (Entry<EjeTematico, HashMap<String, OTPreguntasEjes>> mapa : mapaEjesTematicos.entrySet()) {
 
@@ -313,12 +309,11 @@ public class ComparativoComunalEjeView extends AFormView implements EventHandler
 		tblEjesTematicos.setItems(registros);
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void desplegarDatosEvaluaciones() {
 
 		Map<String, Integer> totales = new HashMap<>();
 
-		ObservableList<ObservableList> registroseEva = FXCollections.observableArrayList();
+		ObservableList<ObservableList<String>> registroseEva = FXCollections.observableArrayList();
 		ObservableList<String> row = null;
 		int total = 0;
 		for (Entry<EvaluacionEjeTematico, HashMap<String, OTPreguntasEvaluacion>> mapa : mapEvaAlumnos.entrySet()) {
@@ -408,7 +403,6 @@ public class ComparativoComunalEjeView extends AFormView implements EventHandler
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void handle(ActionEvent event) {
 		Object source = event.getSource();

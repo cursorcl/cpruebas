@@ -469,9 +469,9 @@
 }
 /* Sample Page Styles */
 .sample-page {
-    -fx-background-color: #EEEEEE;
-    -fx-text-fill: black;
-    -fx-padding: 8.0px;
+     -fx-background-color: #EEEEEE;
+     -fx-text-fill: black;
+     -fx-padding: 8.0px;
 }
 #code-tool-bar {
     -fx-background-color: #aaaaaa,  linear-gradient(#EEEEEE, #cccccc);

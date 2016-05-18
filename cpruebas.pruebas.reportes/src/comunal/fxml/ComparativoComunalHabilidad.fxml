@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.chart.*?>
-<?import javafx.scene.text.*?>
-<?import javafx.scene.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import java.lang.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.ContextMenu?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="485.0" prefWidth="1087.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comunal.ComparativoComunalHabilidadView">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="485.0" prefWidth="1087.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comunal.ComparativoComunalHabilidadView">
    <center>
       <SplitPane orientation="VERTICAL" prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <items>
@@ -36,23 +41,34 @@
       </SplitPane>
    </center>
    <top>
-      <Pane maxHeight="40.0" styleClass="sample-page" BorderPane.alignment="CENTER">
+      <VBox prefHeight="75.0" prefWidth="1087.0" styleClass="sample-page" BorderPane.alignment="CENTER">
          <children>
-            <HBox>
+            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="35.0" prefWidth="1092.0" text="UNIDADES EDUCATIVA CAUQUENES - COMPARATIVO COMUNAL" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+               <VBox.margin>
+                  <Insets left="10.0" right="10.0" />
+               </VBox.margin>
+            </Label>
+            <HBox spacing="20.0">
                <children>
-                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="35.0" text="UNIDADES EDUCATIVA CAUQUENES - COMPARATIVO COMUNAL" textAlignment="CENTER">
+                  <ComboBox fx:id="cmbTipoAlumno" prefHeight="25.0" prefWidth="194.0" promptText="Tipo de Alumno">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </ComboBox>
+                  <Label fx:id="lblTitulo" prefHeight="32.0" prefWidth="901.0">
                      <font>
-                        <Font name="System Bold" size="20.0" />
+                        <Font size="21.0" />
                      </font>
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin>
                   </Label>
                </children>
             </HBox>
-            <Label fx:id="lblTitulo" layoutX="638.0" layoutY="2.0" prefHeight="32.0" prefWidth="441.0">
-               <font>
-                  <Font size="21.0" />
-               </font>
-            </Label>
          </children>
-      </Pane>
+      </VBox>
    </top>
 </BorderPane>

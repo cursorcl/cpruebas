@@ -14,11 +14,13 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.util.Callback;
+import cl.eos.common.Constants;
 import cl.eos.imp.view.AFormView;
 import cl.eos.ot.EEvaluados;
 import cl.eos.ot.OTPreguntasEvaluacion;
@@ -26,6 +28,7 @@ import cl.eos.persistence.models.EvaluacionEjeTematico;
 import cl.eos.persistence.models.EvaluacionPrueba;
 import cl.eos.persistence.models.Prueba;
 import cl.eos.persistence.models.PruebaRendida;
+import cl.eos.persistence.models.TipoAlumno;
 import cl.eos.persistence.models.TipoCurso;
 
 public class ComunalCursoView extends AFormView implements
@@ -34,15 +37,22 @@ public class ComunalCursoView extends AFormView implements
 	@FXML
 	private Label lblTitulo;
 	@FXML
-	private TableView tblEvaluaciones;
+	private TableView<ObservableList<String>> tblEvaluaciones;
 	@FXML
-	private TableView tblTotales;
+	private TableView<ObservableList<String>> tblTotales;
+	
+	@FXML
+	private ComboBox<TipoAlumno> cmbTipoAlumno;
 
 	private HashMap<Long, EvaluacionEjeTematico> mEvaluaciones;
 
 	private ArrayList<String> titulosColumnas;
-	private boolean llegaOnDAEvaluacion;
-	private boolean llegaOnDAPrueba;
+	
+	long tipoAlumno = Constants.PIE_ALL;
+	
+	private boolean llegaEvaluacionEjeTematico;
+	private boolean llegaOnFound;
+	private boolean llegaTipoAlumno = false;
 	private List<Object> listaPruebas;
 
 	public ComunalCursoView() {
@@ -51,11 +61,28 @@ public class ComunalCursoView extends AFormView implements
 
 	@FXML
 	public void initialize() {
+		cmbTipoAlumno.getSelectionModel().select(0);
+		cmbTipoAlumno.setOnAction(event -> {
+			tipoAlumno = cmbTipoAlumno.getSelectionModel().getSelectedIndex();
+			if (listaPruebas != null && tipoAlumno != -1) {
+				procesaDatosReporte();
+			}
+		});
+	}
 
+	private void procesaDatosReporte() {
+		if (llegaEvaluacionEjeTematico && llegaOnFound && llegaTipoAlumno) {
+			inicializarComponentes();
+			llenarDatosTabla();
+			creacionColumnasEvaluaciones(listaEvaluacionesTitulos);
+			creacionColumnasTotalesEvaluaciones(listaEvaluacionesTitulos);
+			desplegarDatosEvaluaciones();
+			desplegarDatosTotales();
+		}		
 	}
 
 	private void desplegarDatosEvaluaciones() {
-		ObservableList<ObservableList> registros = FXCollections
+		ObservableList<ObservableList<String>> registros = FXCollections
 				.observableArrayList();
 
 		for (Entry<EvaluacionEjeTematico, HashMap<String, OTPreguntasEvaluacion>> mapa : mapEvaAlumnos
@@ -82,7 +109,7 @@ public class ComunalCursoView extends AFormView implements
 		Map<String, Float> totalEvaluados = new HashMap<String, Float>();
 		Map<String, Float> totalInformados = new HashMap<String, Float>();
 
-		ObservableList<ObservableList> registroseEva = FXCollections
+		ObservableList<ObservableList<String>> registroseEva = FXCollections
 				.observableArrayList();
 		ObservableList<String> row = FXCollections.observableArrayList();
 
@@ -151,9 +178,11 @@ public class ComunalCursoView extends AFormView implements
 	}
 
 	private List<EvaluacionPrueba> listaEvaluacionesTitulos = new LinkedList<EvaluacionPrueba>();
-	private Map<EvaluacionEjeTematico, HashMap<String, OTPreguntasEvaluacion>> mapEvaAlumnos = new HashMap<EvaluacionEjeTematico, HashMap<String, OTPreguntasEvaluacion>>();
+	private Map<EvaluacionEjeTematico, HashMap<String, OTPreguntasEvaluacion>> mapEvaAlumnos;
 
 	private void llenarDatosTabla() {
+		
+		mapEvaAlumnos = new HashMap<EvaluacionEjeTematico, HashMap<String, OTPreguntasEvaluacion>>();
 		for (Object object : listaPruebas) {
 			if (object instanceof Prueba) {
 				Prueba prueba = (Prueba) object;
@@ -164,31 +193,32 @@ public class ComunalCursoView extends AFormView implements
 				buffer.append(prueba.getCurso());
 				lblTitulo.setText(buffer.toString());
 
-				List<EvaluacionPrueba> listaEvaluaciones = prueba
-						.getEvaluaciones();
+				List<EvaluacionPrueba> listaEvaluaciones = prueba.getEvaluaciones();
 
 				listaEvaluacionesTitulos.addAll(listaEvaluaciones);
 
 				// ********** generar datos evaluaciones y totales.
 
 				for (EvaluacionPrueba evaluacionPrueba : listaEvaluaciones) {
-					TipoCurso tipoCurso = evaluacionPrueba.getCurso()
-							.getTipoCurso();
+					TipoCurso tipoCurso = evaluacionPrueba.getCurso().getTipoCurso();
 					String nameTpCurso = tipoCurso.getName();
 
 					HashMap<String, OTPreguntasEvaluacion> mapaOT = new HashMap<String, OTPreguntasEvaluacion>();
-					for (PruebaRendida pruebaRendida : evaluacionPrueba
-							.getPruebasRendidas()) {
+					for (PruebaRendida pruebaRendida : evaluacionPrueba.getPruebasRendidas()) {
 
+						
+						if (tipoAlumno != Constants.PIE_ALL
+								&& tipoAlumno != pruebaRendida.getAlumno().getTipoAlumno().getId()) {
+							// En este caso, no se considera este alumno para el
+							// cálculo.
+							continue;
+						}
 						Float pBuenas = pruebaRendida.getPbuenas();
-						for (Entry<Long, EvaluacionEjeTematico> mEvaluacion : mEvaluaciones
-								.entrySet()) {
+						for (Entry<Long, EvaluacionEjeTematico> mEvaluacion : mEvaluaciones.entrySet()) {
 
-							EvaluacionEjeTematico evaluacionAl = mEvaluacion
-									.getValue();
+							EvaluacionEjeTematico evaluacionAl = mEvaluacion.getValue();
 							if (mapEvaAlumnos.containsKey(evaluacionAl)) {
-								HashMap<String, OTPreguntasEvaluacion> evaluacion = mapEvaAlumnos
-										.get(evaluacionAl);
+								HashMap<String, OTPreguntasEvaluacion> evaluacion = mapEvaAlumnos.get(evaluacionAl);
 								if (evaluacion.containsKey(nameTpCurso)) {
 									OTPreguntasEvaluacion otPreguntas = evaluacion
 											.get(nameTpCurso);
@@ -245,6 +275,7 @@ public class ComunalCursoView extends AFormView implements
 		}
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void creacionColumnasEvaluaciones(
 			List<EvaluacionPrueba> pListaEvaluaciones) {
 		TableColumn columna0 = new TableColumn("Niveles de logros");
@@ -285,6 +316,7 @@ public class ComunalCursoView extends AFormView implements
 		}
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void creacionColumnasTotalesEvaluaciones(
 			List<EvaluacionPrueba> pListaEvaluaciones) {
 		TableColumn columna0 = new TableColumn("");
@@ -323,7 +355,7 @@ public class ComunalCursoView extends AFormView implements
 		if (list != null && !list.isEmpty()) {
 			Object entity = list.get(0);
 			if (entity instanceof EvaluacionEjeTematico) {
-				llegaOnDAEvaluacion = true;
+				llegaEvaluacionEjeTematico = true;
 				mEvaluaciones = new HashMap<Long, EvaluacionEjeTematico>();
 				for (Object object : list) {
 					EvaluacionEjeTematico eje = (EvaluacionEjeTematico) object;
@@ -331,20 +363,20 @@ public class ComunalCursoView extends AFormView implements
 				}
 			}
 			if (entity instanceof Prueba) {
-				llegaOnDAPrueba = true;
+				llegaOnFound = true;
 				listaPruebas = list;
 			}
 
-			if (llegaOnDAEvaluacion && llegaOnDAPrueba) {
-				inicializarComponentes();
-				llenarDatosTabla();
-				creacionColumnasEvaluaciones(listaEvaluacionesTitulos);
-				creacionColumnasTotalesEvaluaciones(listaEvaluacionesTitulos);
-				desplegarDatosEvaluaciones();
-				desplegarDatosTotales();
-				llegaOnDAEvaluacion = false;
-				llegaOnDAPrueba = false;
+			if (entity instanceof TipoAlumno) {
+				ObservableList<TipoAlumno> tAlumnoList = FXCollections.observableArrayList();
+				llegaTipoAlumno = true;
+				for (Object iEntity : list) {
+					tAlumnoList.add((TipoAlumno) iEntity);
+				}
+				cmbTipoAlumno.setItems(tAlumnoList);
+				cmbTipoAlumno.getSelectionModel().select((int)Constants.PIE_ALL);
 			}
+			procesaDatosReporte();
 		}
 	}
 
