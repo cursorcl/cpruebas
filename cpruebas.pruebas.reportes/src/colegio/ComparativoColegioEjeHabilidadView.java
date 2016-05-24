@@ -84,6 +84,7 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements Eve
 		setTitle("Comparativo Colegio Ejes Temáticos y Habilidades");
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void handle(ActionEvent event) {
 		Object source = event.getSource();

@@ -60,4 +60,6 @@ public class OTPreguntasEjes {
 		float pvalor =  (float) ((valor/(float )total)*100f);
 		return  Utils.redondeo2Decimales(pvalor);
 	}
+	
+	
 }

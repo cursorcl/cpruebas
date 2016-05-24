@@ -8,7 +8,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="485.0" prefWidth="1087.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.ResumenEjesTematicosView">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="620.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="curso.ResumenEjesTematicosView">
    <center>
       <SplitPane orientation="VERTICAL" prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <items>
@@ -34,7 +34,7 @@
                         <Label layoutX="10.0" layoutY="6.0" prefHeight="17.0" prefWidth="61.0" text="Prueba" AnchorPane.leftAnchor="5.0" />
                         <Label layoutX="10.0" layoutY="48.0" text="Curso" AnchorPane.leftAnchor="5.0" />
                         <Label layoutX="12.0" layoutY="91.0" text="Asignatura" AnchorPane.leftAnchor="5.0" />
-                        <TableView fx:id="tblEjesTematicos" layoutY="179.0" prefHeight="210.0" prefWidth="547.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="179.0">
+                        <TableView fx:id="tblEjesTematicos" layoutY="263.0" prefHeight="350.0" prefWidth="754.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="263.0">
                            <columnResizePolicy>
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
@@ -54,6 +54,9 @@
                         </TableView>
                         <Label layoutX="9.0" layoutY="133.0" text="Eje Temático" AnchorPane.leftAnchor="5.0" />
                         <TextField fx:id="txtEjeTematico" editable="false" layoutX="6.0" layoutY="150.0" prefHeight="25.0" prefWidth="536.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" />
+                        <ComboBox fx:id="cmbTipoAlumno" layoutX="5.0" layoutY="196.0" prefHeight="25.0" prefWidth="745.0" promptText="Tipo de Alumno" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" />
+                        <Label layoutX="7.0" layoutY="175.0" prefHeight="17.0" prefWidth="120.0" text="Tipo de Alumno" />
+                        <Button fx:id="btnGenerar" layoutX="618.0" layoutY="227.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="131.0" text="Generar Reporte" AnchorPane.rightAnchor="5.0" />
                      </children>
                   </AnchorPane>
                 <AnchorPane minHeight="0.0" minWidth="0.0">
@@ -62,7 +65,7 @@
                            <center>
                               <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                                  <children>
-                                    <BarChart fx:id="graficoBarra" layoutY="99.0" prefHeight="216.0" prefWidth="327.0" title="Respuestas por  ejes temáticos">
+                                    <BarChart fx:id="graficoBarra" layoutY="99.0" prefHeight="216.0" prefWidth="322.0" title="Respuestas por  ejes temáticos" AnchorPane.topAnchor="120.0">
                                       <xAxis>
                                         <CategoryAxis side="BOTTOM" />
                                       </xAxis>

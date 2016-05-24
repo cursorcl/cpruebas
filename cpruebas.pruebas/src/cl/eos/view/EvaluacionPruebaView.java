@@ -3,6 +3,22 @@ package cl.eos.view;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.controlsfx.dialog.Dialogs;
+
+import cl.eos.imp.view.AFormView;
+import cl.eos.persistence.models.Curso;
+import cl.eos.persistence.models.EvaluacionPrueba;
+import cl.eos.persistence.models.RangoEvaluacion;
+import cl.eos.persistence.models.TipoAlumno;
+import cl.eos.persistence.models.TipoPrueba;
+import cl.eos.util.ExcelSheetWriterObj;
+import curso.ResumenAlumnoView;
+import curso.ResumenEjesTematicosView;
+import curso.ResumenGeneralPMEView;
+import curso.ResumenGeneralView;
+import curso.ResumenHabilidadesView;
+import curso.ResumenRespuestaView;
+import curso.ResumenXAlumnoEjeHabilidadView;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -16,285 +32,260 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-import org.controlsfx.dialog.Dialogs;
-
-import cl.eos.imp.view.AFormView;
-import cl.eos.persistence.models.Curso;
-import cl.eos.persistence.models.EvaluacionPrueba;
-import cl.eos.persistence.models.RangoEvaluacion;
-import cl.eos.persistence.models.TipoPrueba;
-import cl.eos.util.ExcelSheetWriterObj;
-import curso.ResumenAlumnoView;
-import curso.ResumenEjesTematicosView;
-import curso.ResumenGeneralPMEView;
-import curso.ResumenGeneralView;
-import curso.ResumenHabilidadesView;
-import curso.ResumenRespuestaView;
-import curso.ResumenXAlumnoEjeHabilidadView;
-
 public class EvaluacionPruebaView extends AFormView implements EventHandler<ActionEvent> {
 
-  @FXML
-  private TableView<EvaluacionPrueba> tblListadoPruebas;
-  @FXML
-  private TableColumn<EvaluacionPrueba, LocalDate> fechaCol;
-  @FXML
-  private TableColumn<EvaluacionPrueba, Curso> cursoCol;
-  @FXML
-  private TableColumn<EvaluacionPrueba, String> nameCol;
-  @FXML
-  private TableColumn<EvaluacionPrueba, TipoPrueba> colTipo;
-  @FXML
-  private TableColumn<EvaluacionPrueba, String> asignaturaCol;
-  @FXML
-  private TableColumn<EvaluacionPrueba, String> profesorCol;
-  @FXML
-  private TableColumn<EvaluacionPrueba, Integer> nroPreguntasCol;
-  @FXML
-  private TableColumn<EvaluacionPrueba, Integer> formasCol;
-  @FXML
-  private TableColumn<EvaluacionPrueba, Integer> colExigencia;
-  @FXML
-  private MenuItem mnuResumenGeneral;
-  @FXML
-  private MenuItem mnuResumenAlumno;
-  @FXML
-  private MenuItem mnuResEjeHabxAlumno;
-  @FXML
-  private MenuItem mnuRespuestasPregunta;
-  @FXML
-  private MenuItem mnuRespuestasHabilidad;
-  @FXML
-  private MenuItem mnuRespuestasEje;
-  @FXML
-  private MenuItem menuResumenGeneral;
-  @FXML
-  private MenuItem menuResumenAlumno;
-  @FXML
-  private MenuItem menuRespuestasPregunta;
-  @FXML
-  private MenuItem menuRespuestasHabilidad;
-  @FXML
-  private MenuItem menuRespuestasEje;
-  @FXML
-  private MenuItem mnuResumenPME;
-  @FXML
-  private MenuItem menuResumenPME;
-  @FXML
-  private MenuItem mnuEjeHabXAlumno;
-  @FXML
-  private MenuItem mnuExportarExcel;
-  @FXML
-  private MenuItem menuExportarExcel;
+	@FXML
+	private TableView<EvaluacionPrueba> tblListadoPruebas;
+	@FXML
+	private TableColumn<EvaluacionPrueba, LocalDate> fechaCol;
+	@FXML
+	private TableColumn<EvaluacionPrueba, Curso> cursoCol;
+	@FXML
+	private TableColumn<EvaluacionPrueba, String> nameCol;
+	@FXML
+	private TableColumn<EvaluacionPrueba, TipoPrueba> colTipo;
+	@FXML
+	private TableColumn<EvaluacionPrueba, String> asignaturaCol;
+	@FXML
+	private TableColumn<EvaluacionPrueba, String> profesorCol;
+	@FXML
+	private TableColumn<EvaluacionPrueba, Integer> nroPreguntasCol;
+	@FXML
+	private TableColumn<EvaluacionPrueba, Integer> formasCol;
+	@FXML
+	private TableColumn<EvaluacionPrueba, Integer> colExigencia;
+	@FXML
+	private MenuItem mnuResumenGeneral;
+	@FXML
+	private MenuItem mnuResumenAlumno;
+	@FXML
+	private MenuItem mnuResEjeHabxAlumno;
+	@FXML
+	private MenuItem mnuRespuestasPregunta;
+	@FXML
+	private MenuItem mnuRespuestasHabilidad;
+	@FXML
+	private MenuItem mnuRespuestasEje;
+	@FXML
+	private MenuItem menuResumenGeneral;
+	@FXML
+	private MenuItem menuResumenAlumno;
+	@FXML
+	private MenuItem menuRespuestasPregunta;
+	@FXML
+	private MenuItem menuRespuestasHabilidad;
+	@FXML
+	private MenuItem menuRespuestasEje;
+	@FXML
+	private MenuItem mnuResumenPME;
+	@FXML
+	private MenuItem menuResumenPME;
+	@FXML
+	private MenuItem mnuEjeHabXAlumno;
+	@FXML
+	private MenuItem mnuExportarExcel;
+	@FXML
+	private MenuItem menuExportarExcel;
 
-  private EvaluacionPrueba evaluacionPrueba;
-  private ResumenGeneralView resumenGeneral;
-  private ResumenAlumnoView resumenAlumno;
-  private ResumenRespuestaView resumenRespuestas;
-  private ResumenHabilidadesView resumeHabilidad;
-  private ResumenEjesTematicosView resumeEjeTematico;
-  private ResumenGeneralPMEView resumenGeneralPME;
-
-  public EvaluacionPruebaView() {
-    setTitle("Listado de evaluaciones");
-  }
-
-  @FXML
-  public void initialize() {
-    mnuResumenGeneral.setOnAction(this);
-    mnuResumenAlumno.setOnAction(this);
-    mnuRespuestasPregunta.setOnAction(this);
-    mnuRespuestasHabilidad.setOnAction(this);
-    mnuRespuestasEje.setOnAction(this);
-    mnuResumenPME.setOnAction(this);
-
-    menuResumenGeneral.setOnAction(this);
-    menuResumenAlumno.setOnAction(this);
-    menuRespuestasPregunta.setOnAction(this);
-    menuRespuestasHabilidad.setOnAction(this);
-    menuRespuestasEje.setOnAction(this);
-    menuResumenPME.setOnAction(this);
-    mnuEjeHabXAlumno.setOnAction(this);
-    mnuResEjeHabxAlumno.setOnAction(this);
-
-    mnuExportarExcel.setOnAction(this);
-    menuExportarExcel.setOnAction(this);
-
-    tblListadoPruebas.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-    nameCol.setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba, String>("name"));
-    fechaCol
-        .setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba, LocalDate>("fechaLocal"));
-    colTipo.setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba, TipoPrueba>("tipo"));
-    cursoCol.setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba, Curso>("curso"));
-    asignaturaCol.setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba, String>(
-        "asignatura"));
-    formasCol.setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba, Integer>("formas"));
-    profesorCol.setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba, String>("profesor"));
-    nroPreguntasCol.setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba, Integer>(
-        "nroPreguntas"));
-    colExigencia.setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba, Integer>(
-        "exigencia"));
-    accionClicTabla();
-  }
-
-  @Override
-  public void onDataArrived(List<Object> list) {
-    if (list != null && !list.isEmpty()) {
-      tblListadoPruebas.getSelectionModel().clearSelection();
-      Object entity = list.get(0);
-      if (entity instanceof EvaluacionPrueba) {
-        ObservableList<EvaluacionPrueba> evaluaciones = FXCollections.observableArrayList();
-        for (Object lEntity : list) {
-          if (((EvaluacionPrueba) lEntity).getPruebasRendidas().size() > 0) {
-            evaluaciones.add((EvaluacionPrueba) lEntity);
-          }
-        }
-        tblListadoPruebas.setItems(evaluaciones);
-      }
-    }
-  }
-
-  @Override
-  public void handle(ActionEvent event) {
-    Object source = event.getSource();
-    if (source == mnuResumenGeneral || source == menuResumenGeneral) {
-      handleResumenGeneral();
-    } else if (source == mnuResumenAlumno || source == menuResumenAlumno) {
-      handleResumenAlumno();
-    } else if (source == mnuRespuestasPregunta || source == menuRespuestasPregunta) {
-      handleResumenRespuesta();
-    } else if (source == mnuRespuestasHabilidad || source == menuRespuestasHabilidad) {
-      handleResumenHabilidad();
-    } else if (source == mnuRespuestasEje || source == menuRespuestasEje) {
-      handleResumenEje();
-    } else if (source == mnuResumenPME || source == menuResumenPME) {
-      handlerResumenPME();
-    } else if (source == mnuExportarExcel || source == menuExportarExcel) {
-      handlerResumenExcel();
-    } else if (source == mnuEjeHabXAlumno || source == mnuResEjeHabxAlumno) {
-      handlerResumenEjeHabXAlumno();
-    }
-    tblListadoPruebas.getSelectionModel().clearSelection();
-  }
-
-  /**
-   * Despliega HMI para presentar resultados de EjeHabXAlumno:
-   */
-  private void handlerResumenEjeHabXAlumno() {
-    evaluacionPrueba = tblListadoPruebas.getSelectionModel().getSelectedItem();
-    if (evaluacionPrueba != null) {
-      ResumenXAlumnoEjeHabilidadView resXAlumnoEjeHab =
-          (ResumenXAlumnoEjeHabilidadView) show("/cl/eos/view/ResumenXAlumnoEjeHabilidad.fxml");
-      controller.findById(EvaluacionPrueba.class, evaluacionPrueba.getId(), resXAlumnoEjeHab);
-    } else {
-      Dialogs.create().owner(null).title("Selección registro")
-          .masthead("Resumen Eje/Habilidad por alumno.")
-          .message("Debe seleccionar registro a procesar").showInformation();
-    }
-  }
-
-  private void handlerResumenExcel() {
-    tblListadoPruebas.setId("Listado de pruebas");
-    ExcelSheetWriterObj.convertirDatosALibroDeExcel(tblListadoPruebas);
-  }
-
-  private void handleResumenEje() {
-    evaluacionPrueba = tblListadoPruebas.getSelectionModel().getSelectedItem();
-    if (evaluacionPrueba != null) {
-      resumeEjeTematico = (ResumenEjesTematicosView) show("/cl/eos/view/ResumenEjesTematicos.fxml");
-      controller.findById(EvaluacionPrueba.class, evaluacionPrueba.getId(), resumeEjeTematico);
-    } else {
-      Dialogs.create().owner(null).title("Selección registro")
-          .masthead("Resumen Respuestas por Ejes Temáticos")
-          .message("Debe seleccionar registro a procesar").showInformation();
-    }
-
-  }
-
-  private void handleResumenHabilidad() {
-    evaluacionPrueba = tblListadoPruebas.getSelectionModel().getSelectedItem();
-    if (evaluacionPrueba != null) {
-      resumeHabilidad = (ResumenHabilidadesView) show("/cl/eos/view/ResumenHabilidades.fxml");
-      controller.findById(EvaluacionPrueba.class, evaluacionPrueba.getId(), resumeHabilidad);
-    } else {
-      Dialogs.create().owner(null).title("Selección registro")
-          .masthead("Resumen Respuestas por Habilidades")
-          .message("Debe seleccionar registro a procesar").showInformation();
-    }
-  }
-
-  private void handleResumenAlumno() {
-    evaluacionPrueba = tblListadoPruebas.getSelectionModel().getSelectedItem();
-    if (evaluacionPrueba != null) {
-      resumenAlumno = (ResumenAlumnoView) show("/cl/eos/view/ResumenAlumno.fxml");
+	private EvaluacionPrueba evaluacionPrueba;
+	private ResumenGeneralView resumenGeneral;
+	private ResumenAlumnoView resumenAlumno;
+	private ResumenRespuestaView resumenRespuestas;
+	private ResumenHabilidadesView resumeHabilidad;
+	private ResumenEjesTematicosView resumeEjeTematico;
+	private ResumenGeneralPMEView resumenGeneralPME;
+	
 
 
-      controller.findById(EvaluacionPrueba.class, evaluacionPrueba.getId(), resumenAlumno);
-    } else {
-      Dialogs.create().owner(null).title("Selección registro").masthead(null)
-          .message("Debe seleccionar registro a procesar").showInformation();
-    }
-  }
+	public EvaluacionPruebaView() {
+		setTitle("Listado de evaluaciones");
+	}
 
-  private void handleResumenGeneral() {
-    evaluacionPrueba = tblListadoPruebas.getSelectionModel().getSelectedItem();
-    if (evaluacionPrueba != null) {
-      resumenGeneral = (ResumenGeneralView) show("/cl/eos/view/ResumenGeneral.fxml");
-      controller.findById(EvaluacionPrueba.class, evaluacionPrueba.getId(), resumenGeneral);
-    } else {
-      Dialogs.create().owner(null).title("Selección registro")
-          .masthead("Resumen de respuestas generales")
-          .message("Debe seleccionar registro a procesar").showInformation();
-    }
-  }
+	@FXML
+	public void initialize() {
+		mnuResumenGeneral.setOnAction(this);
+		mnuResumenAlumno.setOnAction(this);
+		mnuRespuestasPregunta.setOnAction(this);
+		mnuRespuestasHabilidad.setOnAction(this);
+		mnuRespuestasEje.setOnAction(this);
+		mnuResumenPME.setOnAction(this);
+		
 
-  private void handleResumenRespuesta() {
-    evaluacionPrueba = tblListadoPruebas.getSelectionModel().getSelectedItem();
-    if (evaluacionPrueba != null) {
-      if (resumenRespuestas == null) {
-        resumenRespuestas = (ResumenRespuestaView) show("/cl/eos/view/ResumenRespuestas.fxml");
-      } else {
-        show(resumenRespuestas);
-      }
-      controller.findById(EvaluacionPrueba.class, evaluacionPrueba.getId(), resumenRespuestas);
-    } else {
-      Dialogs.create().owner(null).title("Selección registro")
-          .masthead("Resumen de respuestas por pregunta")
-          .message("Debe seleccionar registro a procesar").showInformation();
-    }
-  }
+		menuResumenGeneral.setOnAction(this);
+		menuResumenAlumno.setOnAction(this);
+		menuRespuestasPregunta.setOnAction(this);
+		menuRespuestasHabilidad.setOnAction(this);
+		menuRespuestasEje.setOnAction(this);
+		menuResumenPME.setOnAction(this);
+		mnuEjeHabXAlumno.setOnAction(this);
+		mnuResEjeHabxAlumno.setOnAction(this);
 
-  private void handlerResumenPME() {
-    EvaluacionPrueba evaluacion = tblListadoPruebas.getSelectionModel().getSelectedItem();
-    if (evaluacion != null) {
-      if (resumenGeneralPME == null) {
-        resumenGeneralPME = (ResumenGeneralPMEView) show("/cl/eos/view/ResumenGeneralPME.fxml");
-      } else {
-        show(resumenGeneralPME);
-      }
-      controller.findById(EvaluacionPrueba.class, evaluacion.getId(), resumenGeneralPME);
-      controller.findAll(RangoEvaluacion.class);
-    } else {
-      Dialogs.create().owner(null).title("Selección registro").masthead("Resumen general P.M.E.")
-          .message("Debe seleccionar registro a procesar").showInformation();
-    }
-  }
+		mnuExportarExcel.setOnAction(this);
+		menuExportarExcel.setOnAction(this);
 
-  private void accionClicTabla() {
-    tblListadoPruebas.getSelectionModel().selectedItemProperty()
-        .addListener(new ChangeListener<EvaluacionPrueba>() {
+		tblListadoPruebas.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+		nameCol.setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba, String>("name"));
+		fechaCol.setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba, LocalDate>("fechaLocal"));
+		colTipo.setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba, TipoPrueba>("tipo"));
+		cursoCol.setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba, Curso>("curso"));
+		asignaturaCol.setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba, String>("asignatura"));
+		formasCol.setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba, Integer>("formas"));
+		profesorCol.setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba, String>("profesor"));
+		nroPreguntasCol.setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba, Integer>("nroPreguntas"));
+		colExigencia.setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba, Integer>("exigencia"));
+		accionClicTabla();
+	}
 
-          @Override
-          public void changed(ObservableValue<? extends EvaluacionPrueba> arg0,
-              EvaluacionPrueba arg1, EvaluacionPrueba arg2) {
-            ObservableList<EvaluacionPrueba> itemsSelec =
-                tblListadoPruebas.getSelectionModel().getSelectedItems();
+	@Override
+	public void onDataArrived(List<Object> list) {
+		if (list != null && !list.isEmpty()) {
+			tblListadoPruebas.getSelectionModel().clearSelection();
+			Object entity = list.get(0);
+			if (entity instanceof EvaluacionPrueba) {
+				ObservableList<EvaluacionPrueba> evaluaciones = FXCollections.observableArrayList();
+				for (Object lEntity : list) {
+					if (((EvaluacionPrueba) lEntity).getPruebasRendidas().size() > 0) {
+						evaluaciones.add((EvaluacionPrueba) lEntity);
+					}
+				}
+				tblListadoPruebas.setItems(evaluaciones);
+			}
+		}
+	}
 
-            if (itemsSelec.size() == 1) {
-              // System.out.println("Un registro seleccionado");
-            }
-          }
-        });
-  }
+	@Override
+	public void handle(ActionEvent event) {
+		Object source = event.getSource();
+		if (source == mnuResumenGeneral || source == menuResumenGeneral) {
+			handleResumenGeneral();
+		} else if (source == mnuResumenAlumno || source == menuResumenAlumno) {
+			handleResumenAlumno();
+		} else if (source == mnuRespuestasPregunta || source == menuRespuestasPregunta) {
+			handleResumenRespuesta();
+		} else if (source == mnuRespuestasHabilidad || source == menuRespuestasHabilidad) {
+			handleResumenHabilidad();
+		} else if (source == mnuRespuestasEje || source == menuRespuestasEje) {
+			handleResumenEje();
+		} else if (source == mnuResumenPME || source == menuResumenPME) {
+			handlerResumenPME();
+		} else if (source == mnuExportarExcel || source == menuExportarExcel) {
+			handlerResumenExcel();
+		} else if (source == mnuEjeHabXAlumno || source == mnuResEjeHabxAlumno) {
+			handlerResumenEjeHabXAlumno();
+		}
+		tblListadoPruebas.getSelectionModel().clearSelection();
+	}
+
+	/**
+	 * Despliega HMI para presentar resultados de EjeHabXAlumno:
+	 */
+	private void handlerResumenEjeHabXAlumno() {
+		evaluacionPrueba = tblListadoPruebas.getSelectionModel().getSelectedItem();
+		if (evaluacionPrueba != null) {
+			ResumenXAlumnoEjeHabilidadView resXAlumnoEjeHab = (ResumenXAlumnoEjeHabilidadView) show(
+					"/curso/fxml/ResumenXAlumnoEjeHabilidad.fxml");
+			controller.findById(EvaluacionPrueba.class, evaluacionPrueba.getId(), resXAlumnoEjeHab);
+		} else {
+			Dialogs.create().owner(null).title("Selección registro").masthead("Resumen Eje/Habilidad por alumno.")
+					.message("Debe seleccionar registro a procesar").showInformation();
+		}
+	}
+
+	private void handlerResumenExcel() {
+		tblListadoPruebas.setId("Listado de pruebas");
+		ExcelSheetWriterObj.convertirDatosALibroDeExcel(tblListadoPruebas);
+	}
+
+	private void handleResumenEje() {
+		evaluacionPrueba = tblListadoPruebas.getSelectionModel().getSelectedItem();
+		if (evaluacionPrueba != null) {
+			resumeEjeTematico = (ResumenEjesTematicosView) show("/curso/fxml/ResumenEjesTematicos.fxml");
+			controller.findById(EvaluacionPrueba.class, evaluacionPrueba.getId(), resumeEjeTematico);
+			controller.findAll(TipoAlumno.class, resumeEjeTematico);
+		} else {
+			Dialogs.create().owner(null).title("Selección registro").masthead("Resumen Respuestas por Ejes Temáticos")
+					.message("Debe seleccionar registro a procesar").showInformation();
+		}
+
+	}
+
+	private void handleResumenHabilidad() {
+		evaluacionPrueba = tblListadoPruebas.getSelectionModel().getSelectedItem();
+		if (evaluacionPrueba != null) {
+			resumeHabilidad = (ResumenHabilidadesView) show("/curso/fxml/ResumenHabilidades.fxml");
+			controller.findById(EvaluacionPrueba.class, evaluacionPrueba.getId(), resumeHabilidad);
+		} else {
+			Dialogs.create().owner(null).title("Selección registro").masthead("Resumen Respuestas por Habilidades")
+					.message("Debe seleccionar registro a procesar").showInformation();
+		}
+	}
+
+	private void handleResumenAlumno() {
+		evaluacionPrueba = tblListadoPruebas.getSelectionModel().getSelectedItem();
+		if (evaluacionPrueba != null) {
+			resumenAlumno = (ResumenAlumnoView) show("/curso/fxml/ResumenAlumno.fxml");
+
+			controller.findById(EvaluacionPrueba.class, evaluacionPrueba.getId(), resumenAlumno);
+			controller.findAll(TipoAlumno.class, resumenAlumno);
+		} else {
+			Dialogs.create().owner(null).title("Selección registro").masthead(null)
+					.message("Debe seleccionar registro a procesar").showInformation();
+		}
+	}
+
+	private void handleResumenGeneral() {
+		evaluacionPrueba = tblListadoPruebas.getSelectionModel().getSelectedItem();
+		if (evaluacionPrueba != null) {
+			resumenGeneral = (ResumenGeneralView) show("/curso/fxml/ResumenGeneral.fxml");
+			controller.findById(EvaluacionPrueba.class, evaluacionPrueba.getId(), resumenGeneral);
+		} else {
+			Dialogs.create().owner(null).title("Selección registro").masthead("Resumen de respuestas generales")
+					.message("Debe seleccionar registro a procesar").showInformation();
+		}
+	}
+
+	private void handleResumenRespuesta() {
+		evaluacionPrueba = tblListadoPruebas.getSelectionModel().getSelectedItem();
+		if (evaluacionPrueba != null) {
+			if (resumenRespuestas == null) {
+				resumenRespuestas = (ResumenRespuestaView) show("/curso/fxml/ResumenRespuestas.fxml");
+			} else {
+				show(resumenRespuestas);
+			}
+			controller.findById(EvaluacionPrueba.class, evaluacionPrueba.getId(), resumenRespuestas);
+		} else {
+			Dialogs.create().owner(null).title("Selección registro").masthead("Resumen de respuestas por pregunta")
+					.message("Debe seleccionar registro a procesar").showInformation();
+		}
+	}
+
+	private void handlerResumenPME() {
+		EvaluacionPrueba evaluacion = tblListadoPruebas.getSelectionModel().getSelectedItem();
+		if (evaluacion != null) {
+			if (resumenGeneralPME == null) {
+				resumenGeneralPME = (ResumenGeneralPMEView) show("/curso/fxml/ResumenGeneralPME.fxml");
+			} else {
+				show(resumenGeneralPME);
+			}
+			controller.findById(EvaluacionPrueba.class, evaluacion.getId(), resumenGeneralPME);
+			controller.findAll(RangoEvaluacion.class);
+		} else {
+			Dialogs.create().owner(null).title("Selección registro").masthead("Resumen general P.M.E.")
+					.message("Debe seleccionar registro a procesar").showInformation();
+		}
+	}
+
+	private void accionClicTabla() {
+		tblListadoPruebas.getSelectionModel().selectedItemProperty()
+				.addListener(new ChangeListener<EvaluacionPrueba>() {
+
+					@Override
+					public void changed(ObservableValue<? extends EvaluacionPrueba> arg0, EvaluacionPrueba arg1,
+							EvaluacionPrueba arg2) {
+						ObservableList<EvaluacionPrueba> itemsSelec = tblListadoPruebas.getSelectionModel()
+								.getSelectedItems();
+					}
+				});
+	}
 
 }
