@@ -94,8 +94,6 @@ public class EvaluacionPruebaView extends AFormView implements EventHandler<Acti
 	private ResumenHabilidadesView resumeHabilidad;
 	private ResumenEjesTematicosView resumeEjeTematico;
 	private ResumenGeneralPMEView resumenGeneralPME;
-	
-
 
 	public EvaluacionPruebaView() {
 		setTitle("Listado de evaluaciones");
@@ -109,7 +107,6 @@ public class EvaluacionPruebaView extends AFormView implements EventHandler<Acti
 		mnuRespuestasHabilidad.setOnAction(this);
 		mnuRespuestasEje.setOnAction(this);
 		mnuResumenPME.setOnAction(this);
-		
 
 		menuResumenGeneral.setOnAction(this);
 		menuResumenAlumno.setOnAction(this);
@@ -214,6 +211,7 @@ public class EvaluacionPruebaView extends AFormView implements EventHandler<Acti
 		if (evaluacionPrueba != null) {
 			resumeHabilidad = (ResumenHabilidadesView) show("/curso/fxml/ResumenHabilidades.fxml");
 			controller.findById(EvaluacionPrueba.class, evaluacionPrueba.getId(), resumeHabilidad);
+			controller.findAll(TipoAlumno.class, resumeHabilidad);
 		} else {
 			Dialogs.create().owner(null).title("Selección registro").masthead("Resumen Respuestas por Habilidades")
 					.message("Debe seleccionar registro a procesar").showInformation();
@@ -238,6 +236,7 @@ public class EvaluacionPruebaView extends AFormView implements EventHandler<Acti
 		if (evaluacionPrueba != null) {
 			resumenGeneral = (ResumenGeneralView) show("/curso/fxml/ResumenGeneral.fxml");
 			controller.findById(EvaluacionPrueba.class, evaluacionPrueba.getId(), resumenGeneral);
+			controller.findAll(TipoAlumno.class, resumenGeneral);
 		} else {
 			Dialogs.create().owner(null).title("Selección registro").masthead("Resumen de respuestas generales")
 					.message("Debe seleccionar registro a procesar").showInformation();
@@ -269,6 +268,7 @@ public class EvaluacionPruebaView extends AFormView implements EventHandler<Acti
 			}
 			controller.findById(EvaluacionPrueba.class, evaluacion.getId(), resumenGeneralPME);
 			controller.findAll(RangoEvaluacion.class);
+			controller.findAll(TipoAlumno.class);
 		} else {
 			Dialogs.create().owner(null).title("Selección registro").masthead("Resumen general P.M.E.")
 					.message("Debe seleccionar registro a procesar").showInformation();

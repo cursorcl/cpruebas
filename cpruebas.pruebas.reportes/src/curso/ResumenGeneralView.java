@@ -8,21 +8,25 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import cl.eos.common.Constants;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.ot.OTResumenGeneral;
 import cl.eos.persistence.models.EvaluacionPrueba;
 import cl.eos.persistence.models.PruebaRendida;
+import cl.eos.persistence.models.TipoAlumno;
 import cl.eos.util.ExcelSheetWriterObj;
+
 // TODO Auto-generated constructor stub
-public class ResumenGeneralView extends AFormView implements
-EventHandler<ActionEvent> {
+public class ResumenGeneralView extends AFormView implements EventHandler<ActionEvent> {
 	@FXML
 	private TextField txtPrueba;
 	@FXML
@@ -77,16 +81,24 @@ EventHandler<ActionEvent> {
 	private MenuItem mnuExportarAlumnos;
 	@FXML
 	private MenuItem mnuExportarResumen;
-	
+
+	@FXML
+	private ComboBox<TipoAlumno> cmbTipoAlumno;
+
+	@FXML
+	private Button btnGenerar;
+
+	long tipoAlumno = Constants.PIE_ALL;
 
 	private Float notaMin = Float.MAX_VALUE;
 	private Float notaMax = Float.MIN_VALUE;
 	private Float pbuenasMin = Float.MAX_VALUE;
 	private Float pbuenasMax = Float.MIN_VALUE;
 	private Float ppuntajeMin = Float.MAX_VALUE;
-	private Float ppuntajeMax =Float.MIN_VALUE;
+	private Float ppuntajeMax = Float.MIN_VALUE;
 	private Integer puntajeMin = Integer.MAX_VALUE;
 	private Integer puntajeMax = Integer.MIN_VALUE;
+	private EvaluacionPrueba evaluacionPrueba;
 
 	public ResumenGeneralView() {
 		// TODO Auto-generated constructor stub
@@ -99,77 +111,90 @@ EventHandler<ActionEvent> {
 		inicializarTablaAlumnos();
 		mnuExportarAlumnos.setOnAction(this);
 		mnuExportarResumen.setOnAction(this);
+		btnGenerar.setOnAction(this);
+
+		cmbTipoAlumno.setOnAction(event -> {
+			tipoAlumno = cmbTipoAlumno.getSelectionModel().getSelectedIndex();
+		});
 	}
 
 	private void inicializarTablaAlumnos() {
 		tblAlumnos.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-		colRut.setCellValueFactory(new PropertyValueFactory<PruebaRendida, String>(
-				"rut"));
-		colName.setCellValueFactory(new PropertyValueFactory<PruebaRendida, String>(
-				"nombre"));
-		colPaterno
-				.setCellValueFactory(new PropertyValueFactory<PruebaRendida, String>(
-						"paterno"));
-		colMaterno
-				.setCellValueFactory(new PropertyValueFactory<PruebaRendida, String>(
-						"materno"));
-		colABuenas
-				.setCellValueFactory(new PropertyValueFactory<PruebaRendida, Integer>(
-						"buenas"));
-		colAMalas
-				.setCellValueFactory(new PropertyValueFactory<PruebaRendida, Integer>(
-						"malas"));
-		colAOmitidas
-				.setCellValueFactory(new PropertyValueFactory<PruebaRendida, Integer>(
-						"omitidas"));
-		colPBuenas
-				.setCellValueFactory(new PropertyValueFactory<PruebaRendida, Float>(
-						"pbuenas"));
-		colAPuntaje
-				.setCellValueFactory(new PropertyValueFactory<PruebaRendida, Integer>(
-						"puntaje"));
-		colPPuntaje
-				.setCellValueFactory(new PropertyValueFactory<PruebaRendida, Float>(
-						"ppuntajes"));
-		colANota.setCellValueFactory(new PropertyValueFactory<PruebaRendida, Float>(
-				"nota"));
+		colRut.setCellValueFactory(new PropertyValueFactory<PruebaRendida, String>("rut"));
+		colName.setCellValueFactory(new PropertyValueFactory<PruebaRendida, String>("nombre"));
+		colPaterno.setCellValueFactory(new PropertyValueFactory<PruebaRendida, String>("paterno"));
+		colMaterno.setCellValueFactory(new PropertyValueFactory<PruebaRendida, String>("materno"));
+		colABuenas.setCellValueFactory(new PropertyValueFactory<PruebaRendida, Integer>("buenas"));
+		colAMalas.setCellValueFactory(new PropertyValueFactory<PruebaRendida, Integer>("malas"));
+		colAOmitidas.setCellValueFactory(new PropertyValueFactory<PruebaRendida, Integer>("omitidas"));
+		colPBuenas.setCellValueFactory(new PropertyValueFactory<PruebaRendida, Float>("pbuenas"));
+		colAPuntaje.setCellValueFactory(new PropertyValueFactory<PruebaRendida, Integer>("puntaje"));
+		colPPuntaje.setCellValueFactory(new PropertyValueFactory<PruebaRendida, Float>("ppuntajes"));
+		colANota.setCellValueFactory(new PropertyValueFactory<PruebaRendida, Float>("nota"));
 
 	}
 
 	private void inicializarTablaResumen() {
 		tblResumen.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-		colNombre
-				.setCellValueFactory(new PropertyValueFactory<OTResumenGeneral, String>(
-						"name"));
-		colNotas.setCellValueFactory(new PropertyValueFactory<OTResumenGeneral, Float>(
-				"nota"));
-		colBuenas
-				.setCellValueFactory(new PropertyValueFactory<OTResumenGeneral, Float>(
-						"pbuenas"));
-		ColPuntos
-				.setCellValueFactory(new PropertyValueFactory<OTResumenGeneral, Integer>(
-						"puntaje"));
-		colPuntaje
-				.setCellValueFactory(new PropertyValueFactory<OTResumenGeneral, Float>(
-						"ppuntaje"));
+		colNombre.setCellValueFactory(new PropertyValueFactory<OTResumenGeneral, String>("name"));
+		colNotas.setCellValueFactory(new PropertyValueFactory<OTResumenGeneral, Float>("nota"));
+		colBuenas.setCellValueFactory(new PropertyValueFactory<OTResumenGeneral, Float>("pbuenas"));
+		ColPuntos.setCellValueFactory(new PropertyValueFactory<OTResumenGeneral, Integer>("puntaje"));
+		colPuntaje.setCellValueFactory(new PropertyValueFactory<OTResumenGeneral, Float>("ppuntaje"));
 
 	}
 
 	@Override
 	public void onFound(IEntity entity) {
 		if (entity instanceof EvaluacionPrueba) {
-			EvaluacionPrueba evaluacionPrueba = (EvaluacionPrueba) entity;
-			List<PruebaRendida> pRendidas = evaluacionPrueba
-					.getPruebasRendidas();
-			List<OTResumenGeneral> listaResumen = procesarValoresMinMax(pRendidas);
-			asignarDatosEvalucion(evaluacionPrueba, listaResumen);
+			evaluacionPrueba = (EvaluacionPrueba) entity;
+			generateReport();
 		}
 	}
 
-	private List<OTResumenGeneral> procesarValoresMinMax(
-			List<PruebaRendida> pruebasRendidas) {
+	@Override
+	public void onDataArrived(List<Object> list) {
+		if (list != null && !list.isEmpty()) {
+			Object entity = list.get(0);
+			if (entity instanceof TipoAlumno) {
+				ObservableList<TipoAlumno> tAlumnoList = FXCollections.observableArrayList();
+				for (Object iEntity : list) {
+					tAlumnoList.add((TipoAlumno) iEntity);
+				}
+				cmbTipoAlumno.setItems(tAlumnoList);
+				cmbTipoAlumno.getSelectionModel().select(0);
+				generateReport();
+			}
+		}
+	}
 
+	private void generateReport() {
+
+		if (evaluacionPrueba == null || cmbTipoAlumno.getItems().isEmpty())
+			return;
+
+		List<PruebaRendida> pRendidas = evaluacionPrueba.getPruebasRendidas();
+		List<OTResumenGeneral> listaResumen = procesarValoresMinMax(pRendidas);
+		asignarDatosEvalucion(evaluacionPrueba, listaResumen);
+
+	}
+
+	private List<OTResumenGeneral> procesarValoresMinMax(List<PruebaRendida> pruebasRendidas) {
+		notaMin = Float.MAX_VALUE;
+		notaMax = Float.MIN_VALUE;
+		pbuenasMin= Float.MAX_VALUE;
+		pbuenasMax= Float.MIN_VALUE;
+		ppuntajeMin= Float.MAX_VALUE;
+		ppuntajeMax= Float.MIN_VALUE;
+		puntajeMin= Integer.MAX_VALUE;
+		puntajeMax= Integer.MIN_VALUE;
+		int nCount = 0;
 		for (PruebaRendida pruebaRendida : pruebasRendidas) {
+
+			if (tipoAlumno != Constants.PIE_ALL
+					&& !pruebaRendida.getAlumno().getTipoAlumno().getId().equals(tipoAlumno))
+				continue;
+			nCount++;
 			if (pruebaRendida.getNota() < notaMin) {
 				notaMin = pruebaRendida.getNota();
 			}
@@ -199,26 +224,32 @@ EventHandler<ActionEvent> {
 			}
 		}
 
+		
 		List<OTResumenGeneral> listaResumen = new LinkedList<OTResumenGeneral>();
-		listaResumen.add(new OTResumenGeneral("Máximo", notaMax, pbuenasMax,
-				ppuntajeMax, puntajeMax));
-
-		listaResumen.add(new OTResumenGeneral("Mínimo", notaMin, pbuenasMin,
-				ppuntajeMin, puntajeMin));
-
+		
+		if(nCount > 0)
+		{
+		
 		Float promNota = (notaMax + notaMin) / 2;
 		Float prompBuenas = (pbuenasMax + pbuenasMin) / 2;
 		Float prompPuntaje = (ppuntajeMax + ppuntajeMin) / 2;
 		Integer promPuntaje = (puntajeMax + puntajeMin) / 2;
-
-		listaResumen.add(new OTResumenGeneral("Promedio", promNota,
-				prompBuenas, prompPuntaje, promPuntaje));
+		listaResumen.add(new OTResumenGeneral("Máximo", notaMax, pbuenasMax, ppuntajeMax, puntajeMax));
+		listaResumen.add(new OTResumenGeneral("Mínimo", notaMin, pbuenasMin, ppuntajeMin, puntajeMin));
+		listaResumen.add(new OTResumenGeneral("Promedio", promNota, prompBuenas, prompPuntaje, promPuntaje));
+		}
+		else
+		{
+			listaResumen.add(new OTResumenGeneral("Máximo", 0f, 0f, 0f, 0));
+			listaResumen.add(new OTResumenGeneral("Mínimo", 0f, 0f, 0f, 0));
+			listaResumen.add(new OTResumenGeneral("Promedio", 0f, 0f, 0f, 0));
+			
+		}
 
 		return listaResumen;
 	}
 
-	private void asignarDatosEvalucion(EvaluacionPrueba entity,
-			List<OTResumenGeneral> listaResumen) {
+	private void asignarDatosEvalucion(EvaluacionPrueba entity, List<OTResumenGeneral> listaResumen) {
 		if (entity.getCurso() != null) {
 			txtCurso.setText(entity.getCurso().getName());
 			txtExigencia.setText(String.valueOf(entity.getExigencia()));
@@ -226,25 +257,27 @@ EventHandler<ActionEvent> {
 
 		if (entity.getPrueba() != null) {
 			txtPrueba.setText(entity.getPrueba().getName());
-			txtPjePrueba
-					.setText(entity.getPrueba().getPuntajeBase().toString());
-			txtNoPregunta.setText(entity.getPrueba().getNroPreguntas()
-					.toString());
+			txtPjePrueba.setText(entity.getPrueba().getPuntajeBase().toString());
+			txtNoPregunta.setText(entity.getPrueba().getNroPreguntas().toString());
 			if (entity.getPrueba().getAsignatura() != null) {
-				txtAsignatura.setText(entity.getPrueba().getAsignatura()
-						.getName());
+				txtAsignatura.setText(entity.getPrueba().getAsignatura().getName());
 			}
 		}
 
 		List<PruebaRendida> list = entity.getPruebasRendidas();
 		if (list != null && !list.isEmpty()) {
-			ObservableList<PruebaRendida> oList = FXCollections
-					.observableArrayList(list);
+			ObservableList<PruebaRendida> oList = FXCollections.observableArrayList();
+			for (PruebaRendida pruebaRendida : list) {
+				if (tipoAlumno != Constants.PIE_ALL
+						&& !pruebaRendida.getAlumno().getTipoAlumno().getId().equals(tipoAlumno))
+					continue;
+				oList.add(pruebaRendida);
+
+			}
 			tblAlumnos.setItems(oList);
 		}
 
-		ObservableList<OTResumenGeneral> oList = FXCollections
-				.observableArrayList(listaResumen);
+		ObservableList<OTResumenGeneral> oList = FXCollections.observableArrayList(listaResumen);
 		tblResumen.setItems(oList);
 	}
 
@@ -252,16 +285,17 @@ EventHandler<ActionEvent> {
 	public void handle(ActionEvent event) {
 		Object source = event.getSource();
 		if (source == mnuExportarResumen || source == mnuExportarAlumnos) {
-			
+
 			tblAlumnos.setId("Alumnos");
 			tblResumen.setId("Resumen");
-			
+
 			List<TableView<? extends Object>> listaTablas = new LinkedList<>();
 			listaTablas.add((TableView<? extends Object>) tblAlumnos);
 			listaTablas.add((TableView<? extends Object>) tblResumen);
-			
+
 			ExcelSheetWriterObj.convertirDatosALibroDeExcel(listaTablas);
-		} 
-		
+		} else if (source == btnGenerar) {
+			generateReport();
+		}
 	}
 }
