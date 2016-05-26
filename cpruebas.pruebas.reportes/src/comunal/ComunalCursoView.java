@@ -1,6 +1,7 @@
 package comunal;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -14,6 +15,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -24,6 +26,7 @@ import cl.eos.common.Constants;
 import cl.eos.imp.view.AFormView;
 import cl.eos.ot.EEvaluados;
 import cl.eos.ot.OTPreguntasEvaluacion;
+import cl.eos.persistence.models.Alumno;
 import cl.eos.persistence.models.EvaluacionEjeTematico;
 import cl.eos.persistence.models.EvaluacionPrueba;
 import cl.eos.persistence.models.Prueba;
@@ -31,8 +34,7 @@ import cl.eos.persistence.models.PruebaRendida;
 import cl.eos.persistence.models.TipoAlumno;
 import cl.eos.persistence.models.TipoCurso;
 
-public class ComunalCursoView extends AFormView implements
-		EventHandler<ActionEvent> {
+public class ComunalCursoView extends AFormView implements EventHandler<ActionEvent> {
 
 	@FXML
 	private Label lblTitulo;
@@ -40,16 +42,16 @@ public class ComunalCursoView extends AFormView implements
 	private TableView<ObservableList<String>> tblEvaluaciones;
 	@FXML
 	private TableView<ObservableList<String>> tblTotales;
-	
-	@FXML
-	private ComboBox<TipoAlumno> cmbTipoAlumno;
 
 	private HashMap<Long, EvaluacionEjeTematico> mEvaluaciones;
 
 	private ArrayList<String> titulosColumnas;
-	
+	@FXML
+	private ComboBox<TipoAlumno> cmbTipoAlumno;
+	@FXML
+	private Button btnGenerar;
 	long tipoAlumno = Constants.PIE_ALL;
-	
+
 	private boolean llegaEvaluacionEjeTematico;
 	private boolean llegaOnFound;
 	private boolean llegaTipoAlumno = false;
@@ -62,10 +64,12 @@ public class ComunalCursoView extends AFormView implements
 	@FXML
 	public void initialize() {
 		cmbTipoAlumno.getSelectionModel().select(0);
-		cmbTipoAlumno.setOnAction(event -> {
-			tipoAlumno = cmbTipoAlumno.getSelectionModel().getSelectedIndex();
-			if (listaPruebas != null && tipoAlumno != -1) {
-				procesaDatosReporte();
+
+		btnGenerar.setOnAction(this);
+		cmbTipoAlumno.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				tipoAlumno = cmbTipoAlumno.getSelectionModel().getSelectedIndex();
 			}
 		});
 	}
@@ -78,15 +82,13 @@ public class ComunalCursoView extends AFormView implements
 			creacionColumnasTotalesEvaluaciones(listaEvaluacionesTitulos);
 			desplegarDatosEvaluaciones();
 			desplegarDatosTotales();
-		}		
+		}
 	}
 
 	private void desplegarDatosEvaluaciones() {
-		ObservableList<ObservableList<String>> registros = FXCollections
-				.observableArrayList();
+		ObservableList<ObservableList<String>> registros = FXCollections.observableArrayList();
 
-		for (Entry<EvaluacionEjeTematico, HashMap<String, OTPreguntasEvaluacion>> mapa : mapEvaAlumnos
-				.entrySet()) {
+		for (Entry<EvaluacionEjeTematico, HashMap<String, OTPreguntasEvaluacion>> mapa : mapEvaAlumnos.entrySet()) {
 
 			ObservableList<String> row = FXCollections.observableArrayList();
 
@@ -109,21 +111,18 @@ public class ComunalCursoView extends AFormView implements
 		Map<String, Float> totalEvaluados = new HashMap<String, Float>();
 		Map<String, Float> totalInformados = new HashMap<String, Float>();
 
-		ObservableList<ObservableList<String>> registroseEva = FXCollections
-				.observableArrayList();
+		ObservableList<ObservableList<String>> registroseEva = FXCollections.observableArrayList();
 		ObservableList<String> row = FXCollections.observableArrayList();
 
 		// Total evaluados
 		float total = 0;
-		for (HashMap<String, OTPreguntasEvaluacion> resultados : mapEvaAlumnos
-				.values()) {
+		for (HashMap<String, OTPreguntasEvaluacion> resultados : mapEvaAlumnos.values()) {
 
 			for (String string : titulosColumnas) {
 				OTPreguntasEvaluacion otPregunta = resultados.get(string);
 
 				if (totalEvaluados.containsKey(string)) {
-					total = otPregunta.getAlumnos()
-							+ totalEvaluados.get(string);
+					total = otPregunta.getAlumnos() + totalEvaluados.get(string);
 					totalEvaluados.replace(string, total);
 				} else {
 					totalEvaluados.put(string, (float) otPregunta.getAlumnos());
@@ -137,11 +136,16 @@ public class ComunalCursoView extends AFormView implements
 				Prueba prueba = (Prueba) objeto;
 				String tipoCurso = prueba.getCurso().getName();
 
-				List<EvaluacionPrueba> listaEvaluaciones = prueba
-						.getEvaluaciones();
+				List<EvaluacionPrueba> listaEvaluaciones = prueba.getEvaluaciones();
 				for (EvaluacionPrueba evaluacionPrueba : listaEvaluaciones) {
-					int totalAlumnos = evaluacionPrueba.getCurso().getAlumnos()
-							.size();
+					Collection<Alumno> alumnos = evaluacionPrueba.getCurso().getAlumnos();
+					int totalAlumnos = 0;
+					for (Alumno alumno : alumnos) {
+						if (tipoAlumno != Constants.PIE_ALL && tipoAlumno != alumno.getTipoAlumno().getId()) {
+							continue;
+						}
+						totalAlumnos++;
+					}
 					if (totalInformados.containsKey(tipoCurso)) {
 						total = totalInformados.get(tipoCurso) + totalAlumnos;
 						totalInformados.replace(tipoCurso, total);
@@ -154,7 +158,7 @@ public class ComunalCursoView extends AFormView implements
 
 		row.add(EEvaluados.TOTAL_EVA.getName());
 		for (String tipoCurso : titulosColumnas) {
-			row.add(String.valueOf(totalEvaluados.get(tipoCurso)));
+			row.add(String.valueOf(totalEvaluados.get(tipoCurso) == null ? 0: totalEvaluados.get(tipoCurso)));
 		}
 		registroseEva.add(row);
 
@@ -168,8 +172,10 @@ public class ComunalCursoView extends AFormView implements
 		row = FXCollections.observableArrayList();
 		row.add(EEvaluados.VALIDACION.getName());
 		for (String tipoCurso : titulosColumnas) {
-			total = (totalEvaluados.get(tipoCurso) / totalInformados
-					.get(tipoCurso)) * 100;
+			float nroEvaluados = 0f;
+			if (totalEvaluados.get(tipoCurso) != null)
+				nroEvaluados = totalEvaluados.get(tipoCurso);
+			total = (nroEvaluados / totalInformados.get(tipoCurso)) * 100;
 			row.add(String.valueOf(Math.round(total)));
 		}
 		registroseEva.add(row);
@@ -181,7 +187,7 @@ public class ComunalCursoView extends AFormView implements
 	private Map<EvaluacionEjeTematico, HashMap<String, OTPreguntasEvaluacion>> mapEvaAlumnos;
 
 	private void llenarDatosTabla() {
-		
+
 		mapEvaAlumnos = new HashMap<EvaluacionEjeTematico, HashMap<String, OTPreguntasEvaluacion>>();
 		for (Object object : listaPruebas) {
 			if (object instanceof Prueba) {
@@ -206,7 +212,6 @@ public class ComunalCursoView extends AFormView implements
 					HashMap<String, OTPreguntasEvaluacion> mapaOT = new HashMap<String, OTPreguntasEvaluacion>();
 					for (PruebaRendida pruebaRendida : evaluacionPrueba.getPruebasRendidas()) {
 
-						
 						if (tipoAlumno != Constants.PIE_ALL
 								&& tipoAlumno != pruebaRendida.getAlumno().getTipoAlumno().getId()) {
 							// En este caso, no se considera este alumno para el
@@ -220,41 +225,32 @@ public class ComunalCursoView extends AFormView implements
 							if (mapEvaAlumnos.containsKey(evaluacionAl)) {
 								HashMap<String, OTPreguntasEvaluacion> evaluacion = mapEvaAlumnos.get(evaluacionAl);
 								if (evaluacion.containsKey(nameTpCurso)) {
-									OTPreguntasEvaluacion otPreguntas = evaluacion
-											.get(nameTpCurso);
+									OTPreguntasEvaluacion otPreguntas = evaluacion.get(nameTpCurso);
 
-									if (pBuenas >= evaluacionAl
-											.getNroRangoMin()
-											&& pBuenas <= evaluacionAl
-													.getNroRangoMax()) {
-										otPreguntas.setAlumnos(otPreguntas
-												.getAlumnos() + 1);
+									if (pBuenas >= evaluacionAl.getNroRangoMin()
+											&& pBuenas <= evaluacionAl.getNroRangoMax()) {
+										otPreguntas.setAlumnos(otPreguntas.getAlumnos() + 1);
 									}
-									System.out.println("name tp " + nameTpCurso
-											+ " " + evaluacionAl.getName()
-											+ " " + otPreguntas.getAlumnos());
+									System.out.println("name tp " + nameTpCurso + " " + evaluacionAl.getName() + " "
+											+ otPreguntas.getAlumnos());
 								} else {
 
 									OTPreguntasEvaluacion pregunta = new OTPreguntasEvaluacion();
-									if (pBuenas >= evaluacionAl
-											.getNroRangoMin()
-											&& pBuenas <= evaluacionAl
-													.getNroRangoMax()) {
+									if (pBuenas >= evaluacionAl.getNroRangoMin()
+											&& pBuenas <= evaluacionAl.getNroRangoMax()) {
 										pregunta.setAlumnos(1);
 									} else {
 										pregunta.setAlumnos(0);
 									}
 									pregunta.setEvaluacion(evaluacionAl);
 									evaluacion.put(nameTpCurso, pregunta);
-									System.out.println("name tp " + nameTpCurso
-											+ " " + evaluacionAl.getName()
-											+ " " + pregunta.getAlumnos());
+									System.out.println("name tp " + nameTpCurso + " " + evaluacionAl.getName() + " "
+											+ pregunta.getAlumnos());
 								}
 							} else {
 								OTPreguntasEvaluacion pregunta = new OTPreguntasEvaluacion();
 								if (pBuenas >= evaluacionAl.getNroRangoMin()
-										&& pBuenas <= evaluacionAl
-												.getNroRangoMax()) {
+										&& pBuenas <= evaluacionAl.getNroRangoMax()) {
 									pregunta.setAlumnos(1);
 								} else {
 									pregunta.setAlumnos(0);
@@ -276,15 +272,12 @@ public class ComunalCursoView extends AFormView implements
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private void creacionColumnasEvaluaciones(
-			List<EvaluacionPrueba> pListaEvaluaciones) {
+	private void creacionColumnasEvaluaciones(List<EvaluacionPrueba> pListaEvaluaciones) {
 		TableColumn columna0 = new TableColumn("Niveles de logros");
 		columna0.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
-			public ObservableValue<String> call(
-					CellDataFeatures<ObservableList, String> param) {
+			public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
 
-				return new SimpleStringProperty(param.getValue().get(0)
-						.toString());
+				return new SimpleStringProperty(param.getValue().get(0).toString());
 			}
 		});
 		columna0.setPrefWidth(100);
@@ -302,13 +295,12 @@ public class ComunalCursoView extends AFormView implements
 			if (!titulosColumnas.contains(tipoCurso)) {
 				titulosColumnas.add(tipoCurso);
 				TableColumn columna = new TableColumn(tipoCurso);
-				columna.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
-					public ObservableValue<String> call(
-							CellDataFeatures<ObservableList, String> param) {
-						return new SimpleStringProperty(param.getValue()
-								.get(col).toString());
-					}
-				});
+				columna.setCellValueFactory(
+						new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
+							public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
+								return new SimpleStringProperty(param.getValue().get(col).toString());
+							}
+						});
 				columna.setPrefWidth(100);
 				tblEvaluaciones.getColumns().add(columna);
 				indice++;
@@ -317,14 +309,11 @@ public class ComunalCursoView extends AFormView implements
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private void creacionColumnasTotalesEvaluaciones(
-			List<EvaluacionPrueba> pListaEvaluaciones) {
+	private void creacionColumnasTotalesEvaluaciones(List<EvaluacionPrueba> pListaEvaluaciones) {
 		TableColumn columna0 = new TableColumn("");
 		columna0.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
-			public ObservableValue<String> call(
-					CellDataFeatures<ObservableList, String> param) {
-				return new SimpleStringProperty(param.getValue().get(0)
-						.toString());
+			public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
+				return new SimpleStringProperty(param.getValue().get(0).toString());
 			}
 		});
 		columna0.setPrefWidth(100);
@@ -337,13 +326,12 @@ public class ComunalCursoView extends AFormView implements
 			final int col = indice;
 			final String tipoCurso = tpoCurso;
 			TableColumn columna = new TableColumn(tipoCurso);
-			columna.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
-				public ObservableValue<String> call(
-						CellDataFeatures<ObservableList, String> param) {
-					return new SimpleStringProperty(param.getValue().get(col)
-							.toString());
-				}
-			});
+			columna.setCellValueFactory(
+					new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
+						public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
+							return new SimpleStringProperty(param.getValue().get(col).toString());
+						}
+					});
 			columna.setPrefWidth(100);
 			tblTotales.getColumns().add(columna);
 			indice++;
@@ -374,7 +362,7 @@ public class ComunalCursoView extends AFormView implements
 					tAlumnoList.add((TipoAlumno) iEntity);
 				}
 				cmbTipoAlumno.setItems(tAlumnoList);
-				cmbTipoAlumno.getSelectionModel().select((int)Constants.PIE_ALL);
+				cmbTipoAlumno.getSelectionModel().select((int) Constants.PIE_ALL);
 			}
 			procesaDatosReporte();
 		}
@@ -388,7 +376,9 @@ public class ComunalCursoView extends AFormView implements
 
 	@Override
 	public void handle(ActionEvent event) {
-		// TODO Auto-generated method stub
+		if (event.getSource() == btnGenerar) {
+			procesaDatosReporte();
+		}
 
 	}
 

@@ -75,8 +75,8 @@ public class ResumenHabilidadesView extends AFormView implements EventHandler<Ac
 	private ComboBox<TipoAlumno> cmbTipoAlumno;
 	@FXML
 	private Button btnGenerar;
-
 	long tipoAlumno = Constants.PIE_ALL;
+	
 	private EvaluacionPrueba evaluacionPrueba;
 
 	public ResumenHabilidadesView() {

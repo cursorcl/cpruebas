@@ -32,6 +32,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -55,8 +56,6 @@ public class ComparativoComunalEjeView extends AFormView implements EventHandler
 	private TableView<ObservableList<String>> tblEjesTematicos;
 	@FXML
 	private TableView<ObservableList<String>> tblEvaluacionEjesTematicos;
-	@FXML
-	private ComboBox<TipoAlumno> cmbTipoAlumno;
 
 	private HashMap<EjeTematico, HashMap<String, OTPreguntasEjes>> mapaEjesTematicos;
 
@@ -64,9 +63,12 @@ public class ComparativoComunalEjeView extends AFormView implements EventHandler
 
 	private Map<EvaluacionEjeTematico, HashMap<String, OTPreguntasEvaluacion>> mapEvaAlumnos = null;
 
+	@FXML
+	private ComboBox<TipoAlumno> cmbTipoAlumno;
+	@FXML
+	private Button btnGenerar;
 	long tipoAlumno = Constants.PIE_ALL;
 
-	
 	private ArrayList<String> titulosColumnas;
 	private Prueba prueba;
 	private boolean llegaOnFound = false;
@@ -82,10 +84,11 @@ public class ComparativoComunalEjeView extends AFormView implements EventHandler
 		mnuExportarEjesTematicos.setOnAction(this);
 		mnuExportarEvaluacion.setOnAction(this);
 		cmbTipoAlumno.getSelectionModel().select(0);
-		cmbTipoAlumno.setOnAction(event -> {
-			tipoAlumno = cmbTipoAlumno.getSelectionModel().getSelectedIndex();
-			if (prueba != null && tipoAlumno != -1) {
-				procesaDatosReporte();
+		btnGenerar.setOnAction(this);
+		cmbTipoAlumno.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				tipoAlumno = cmbTipoAlumno.getSelectionModel().getSelectedIndex();
 			}
 		});
 	}
@@ -118,7 +121,7 @@ public class ComparativoComunalEjeView extends AFormView implements EventHandler
 					tAlumnoList.add((TipoAlumno) iEntity);
 				}
 				cmbTipoAlumno.setItems(tAlumnoList);
-				cmbTipoAlumno.getSelectionModel().select((int)Constants.PIE_ALL);
+				cmbTipoAlumno.getSelectionModel().select((int) Constants.PIE_ALL);
 			}
 		}
 		procesaDatosReporte();
@@ -415,6 +418,10 @@ public class ComparativoComunalEjeView extends AFormView implements EventHandler
 			listaTablas.add((TableView<? extends Object>) tblEvaluacionEjesTematicos);
 
 			ExcelSheetWriterObj.convertirDatosALibroDeExcel(listaTablas);
+		} else if (source == btnGenerar) {
+			if (prueba != null && tipoAlumno != -1) {
+				procesaDatosReporte();
+			}
 		}
 	}
 }
