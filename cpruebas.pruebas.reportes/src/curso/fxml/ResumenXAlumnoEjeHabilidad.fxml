@@ -8,9 +8,9 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="571.0" prefWidth="1026.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.ResumenXAlumnoEjeHabilidadView">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="571.0" prefWidth="1026.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="curso.ResumenXAlumnoEjeHabilidadView">
    <center>
-      <SplitPane dividerPositions="0.36607142857142855" orientation="VERTICAL" prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <SplitPane dividerPositions="0.3233743409490334" orientation="VERTICAL" prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <items>
             <SplitPane dividerPositions="0.5027563395810364" prefHeight="114.0" prefWidth="685.0">
               <items>
@@ -61,6 +61,22 @@
                            </children>
                         </AnchorPane>
                      </center>
+                     <top>
+                        <HBox alignment="CENTER" prefHeight="32.0" prefWidth="1024.0" spacing="10.0" BorderPane.alignment="CENTER">
+                           <children>
+                              <Label text="Tipo de Alumno" HBox.hgrow="ALWAYS">
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </Label>
+                              <ComboBox fx:id="cmbTipoAlumno" prefHeight="25.0" prefWidth="198.0" promptText="Tipo de Alumno" />
+                              <Button fx:id="btnGenerar" mnemonicParsing="false" text="Generar Reporte" />
+                           </children>
+                           <BorderPane.margin>
+                              <Insets />
+                           </BorderPane.margin>
+                        </HBox>
+                     </top>
                   </BorderPane>
                </children>
             </AnchorPane>

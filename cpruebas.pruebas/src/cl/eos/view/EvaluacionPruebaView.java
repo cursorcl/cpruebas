@@ -182,6 +182,7 @@ public class EvaluacionPruebaView extends AFormView implements EventHandler<Acti
 			ResumenXAlumnoEjeHabilidadView resXAlumnoEjeHab = (ResumenXAlumnoEjeHabilidadView) show(
 					"/curso/fxml/ResumenXAlumnoEjeHabilidad.fxml");
 			controller.findById(EvaluacionPrueba.class, evaluacionPrueba.getId(), resXAlumnoEjeHab);
+			controller.findAll(TipoAlumno.class, resXAlumnoEjeHab);
 		} else {
 			Dialogs.create().owner(null).title("Selección registro").masthead("Resumen Eje/Habilidad por alumno.")
 					.message("Debe seleccionar registro a procesar").showInformation();
@@ -252,6 +253,7 @@ public class EvaluacionPruebaView extends AFormView implements EventHandler<Acti
 				show(resumenRespuestas);
 			}
 			controller.findById(EvaluacionPrueba.class, evaluacionPrueba.getId(), resumenRespuestas);
+			controller.findAll(TipoAlumno.class, resumenRespuestas);
 		} else {
 			Dialogs.create().owner(null).title("Selección registro").masthead("Resumen de respuestas por pregunta")
 					.message("Debe seleccionar registro a procesar").showInformation();

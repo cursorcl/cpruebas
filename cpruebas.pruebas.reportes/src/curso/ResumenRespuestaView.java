@@ -3,6 +3,16 @@ package curso;
 import java.util.LinkedList;
 import java.util.List;
 
+import cl.eos.common.Constants;
+import cl.eos.imp.view.AFormView;
+import cl.eos.interfaces.entity.IEntity;
+import cl.eos.ot.OTRespuestaPreguntas;
+import cl.eos.ot.OTRespuestasPorcentaje;
+import cl.eos.persistence.models.EvaluacionPrueba;
+import cl.eos.persistence.models.PruebaRendida;
+import cl.eos.persistence.models.TipoAlumno;
+import cl.eos.util.ExcelSheetWriterObj;
+import cl.eos.util.Utils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -12,20 +22,14 @@ import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import cl.eos.imp.view.AFormView;
-import cl.eos.interfaces.entity.IEntity;
-import cl.eos.ot.OTRespuestaPreguntas;
-import cl.eos.ot.OTRespuestasPorcentaje;
-import cl.eos.persistence.models.EvaluacionPrueba;
-import cl.eos.persistence.models.PruebaRendida;
-import cl.eos.util.ExcelSheetWriterObj;
-import cl.eos.util.Utils;
 
 public class ResumenRespuestaView extends AFormView implements
 		EventHandler<ActionEvent> {
@@ -66,9 +70,17 @@ public class ResumenRespuestaView extends AFormView implements
 
 	@FXML
 	private MenuItem mnuExportarRespuestas;
+	
+	@FXML
+	private ComboBox<TipoAlumno> cmbTipoAlumno;
+	@FXML
+	private Button btnGenerar;
+
+	long tipoAlumno = Constants.PIE_ALL;
 
 	private LinkedList<OTRespuestaPreguntas> listaRespuestas;
 	private LinkedList<OTRespuestasPorcentaje> listaPorcentaje;
+	private EvaluacionPrueba evaluacionPrueba;
 
 	public ResumenRespuestaView() {
 
@@ -83,6 +95,13 @@ public class ResumenRespuestaView extends AFormView implements
 		xAxis.setLabel("Country");
 		yAxis.setLabel("Value");
 		mnuExportarRespuestas.setOnAction(this);
+		btnGenerar.setOnAction(this);
+		cmbTipoAlumno.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				tipoAlumno = cmbTipoAlumno.getSelectionModel().getSelectedIndex();
+			}
+		});
 	}
 
 	private void inicializarTablaRespuestas() {
@@ -112,20 +131,14 @@ public class ResumenRespuestaView extends AFormView implements
 						"porcentaje"));
 	}
 
-	@Override
-	public void onFound(IEntity entity) {
-		if (entity instanceof EvaluacionPrueba) {
-
-			txtAsignatura.setText(((EvaluacionPrueba) entity).getAsignatura());
-			txtCurso.setText(((EvaluacionPrueba) entity).getCurso().getName());
-			String nroPreguntas = String.valueOf(((EvaluacionPrueba) entity)
-					.getPrueba().getNroPreguntas());
+	private void generateReport() {
+		if (evaluacionPrueba != null && cmbTipoAlumno.getItems() != null && !cmbTipoAlumno.getItems().isEmpty()) {
+			txtAsignatura.setText(evaluacionPrueba.getAsignatura());
+			txtCurso.setText(evaluacionPrueba.getCurso().getName());
+			String nroPreguntas = String.valueOf(evaluacionPrueba.getPrueba().getNroPreguntas());
 			txtNroPreguntas.setText(nroPreguntas);
-			txtPrueba
-					.setText(((EvaluacionPrueba) entity).getPrueba().getName());
-
-			obtenerResultados((EvaluacionPrueba) entity);
-
+			txtPrueba.setText(evaluacionPrueba.getPrueba().getName());
+			obtenerResultados(evaluacionPrueba);
 			if (listaRespuestas != null && !listaRespuestas.isEmpty()) {
 				ObservableList<OTRespuestaPreguntas> oList = FXCollections
 						.observableArrayList(listaRespuestas);
@@ -137,10 +150,37 @@ public class ResumenRespuestaView extends AFormView implements
 						.observableArrayList(listaPorcentaje);
 				tblPorcentaje.setItems(oList);
 			}
+		}
 
+	}
+	
+	
+	@Override
+	public void onFound(IEntity entity) {
+		
+		if (entity instanceof EvaluacionPrueba) {
+			evaluacionPrueba = (EvaluacionPrueba) entity;
+			generateReport();
+		}
+	}
+	
+	@Override
+	public void onDataArrived(List<Object> list) {
+		if (list != null && !list.isEmpty()) {
+			Object entity = list.get(0);
+			if (entity instanceof TipoAlumno) {
+				ObservableList<TipoAlumno> tAlumnoList = FXCollections.observableArrayList();
+				for (Object iEntity : list) {
+					tAlumnoList.add((TipoAlumno) iEntity);
+				}
+				cmbTipoAlumno.setItems(tAlumnoList);
+				cmbTipoAlumno.getSelectionModel().select((int) Constants.PIE_ALL);
+				generateReport();
+			}
 		}
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void obtenerResultados(EvaluacionPrueba entity) {
 		List<PruebaRendida> pruebasRendidas = entity.getPruebasRendidas();
 		Integer nroPreguntas = entity.getPrueba().getNroPreguntas();
@@ -156,6 +196,10 @@ public class ResumenRespuestaView extends AFormView implements
 
 		for (PruebaRendida pruebaRendida : pruebasRendidas) {
 
+			if (tipoAlumno != Constants.PIE_ALL
+					&& !pruebaRendida.getAlumno().getTipoAlumno().getId().equals(tipoAlumno)) {
+				continue;
+			}
 			String responses = entity.getPrueba().getResponses();
 			String respuesta = pruebaRendida.getRespuestas();
 
@@ -246,6 +290,8 @@ public class ResumenRespuestaView extends AFormView implements
 			listaTablas.add((TableView<? extends Object>) tblPorcentaje);
 
 			ExcelSheetWriterObj.convertirDatosALibroDeExcel(listaTablas);
+		} else if (source == btnGenerar) {
+			generateReport();
 		}
 	}
 }

@@ -5,6 +5,18 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
+import cl.eos.common.Constants;
+import cl.eos.imp.view.AFormView;
+import cl.eos.interfaces.entity.IEntity;
+import cl.eos.ot.OTPreguntasHabilidad;
+import cl.eos.persistence.models.EvaluacionPrueba;
+import cl.eos.persistence.models.Habilidad;
+import cl.eos.persistence.models.Prueba;
+import cl.eos.persistence.models.PruebaRendida;
+import cl.eos.persistence.models.RespuestasEsperadasPrueba;
+import cl.eos.persistence.models.TipoAlumno;
+import cl.eos.util.ExcelSheetWriterObj;
+import cl.eos.util.Pair;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -27,20 +39,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
-import cl.eos.common.Constants;
-import cl.eos.imp.view.AFormView;
-import cl.eos.interfaces.entity.IEntity;
-import cl.eos.ot.OTPreguntasEjes;
-import cl.eos.ot.OTPreguntasHabilidad;
-import cl.eos.persistence.models.EjeTematico;
-import cl.eos.persistence.models.EvaluacionPrueba;
-import cl.eos.persistence.models.Habilidad;
-import cl.eos.persistence.models.Prueba;
-import cl.eos.persistence.models.PruebaRendida;
-import cl.eos.persistence.models.RespuestasEsperadasPrueba;
-import cl.eos.persistence.models.TipoAlumno;
-import cl.eos.util.ExcelSheetWriterObj;
-import cl.eos.util.Pair;
 
 public class ResumenHabilidadesView extends AFormView implements EventHandler<ActionEvent> {
 

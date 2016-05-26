@@ -3,6 +3,20 @@ package curso;
 import java.util.ArrayList;
 import java.util.List;
 
+import cl.eos.common.Constants;
+import cl.eos.imp.view.AFormView;
+import cl.eos.interfaces.entity.IEntity;
+import cl.eos.persistence.models.Alumno;
+import cl.eos.persistence.models.EjeTematico;
+import cl.eos.persistence.models.EvaluacionPrueba;
+import cl.eos.persistence.models.Habilidad;
+import cl.eos.persistence.models.PruebaRendida;
+import cl.eos.persistence.models.RespuestasEsperadasPrueba;
+import cl.eos.persistence.models.TipoAlumno;
+import cl.eos.util.ExcelSheetWriterObj;
+import cl.eos.util.Pair;
+import cl.eos.util.Utils;
+import cl.eos.view.ots.resumenxalumno.eje.habilidad.OTAlumnoResumen;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -17,6 +31,8 @@ import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SelectionMode;
@@ -26,21 +42,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.TextAlignment;
 import javafx.util.Callback;
-import cl.eos.imp.view.AFormView;
-import cl.eos.interfaces.entity.IEntity;
-import cl.eos.persistence.models.Alumno;
-import cl.eos.persistence.models.EjeTematico;
-import cl.eos.persistence.models.EvaluacionPrueba;
-import cl.eos.persistence.models.Habilidad;
-import cl.eos.persistence.models.PruebaRendida;
-import cl.eos.persistence.models.RespuestasEsperadasPrueba;
-import cl.eos.util.ExcelSheetWriterObj;
-import cl.eos.util.Pair;
-import cl.eos.util.Utils;
-import cl.eos.view.ots.resumenxalumno.eje.habilidad.OTAlumnoResumen;
 
-public class ResumenXAlumnoEjeHabilidadView extends AFormView implements
-		EventHandler<ActionEvent> {
+public class ResumenXAlumnoEjeHabilidadView extends AFormView implements EventHandler<ActionEvent> {
 
 	private final int FIXED_COLUMNS = 4;
 	@SuppressWarnings("rawtypes")
@@ -50,20 +53,26 @@ public class ResumenXAlumnoEjeHabilidadView extends AFormView implements
 	final NumberAxis xAxisE = new NumberAxis(0, 100, 10);
 	final CategoryAxis yAxisE = new CategoryAxis();
 	@FXML
-	private LineChart<String, Number> grfEjes = new LineChart<String, Number>(
-			yAxisE, xAxisE);
+	private LineChart<String, Number> grfEjes = new LineChart<String, Number>(yAxisE, xAxisE);
 	@FXML
 	private MenuItem mnuExportarAlumnos;
 
 	final NumberAxis xAxisH = new NumberAxis(0, 100, 10);
 	final CategoryAxis yAxisH = new CategoryAxis();
 	@FXML
-	private LineChart<String, Number> grfHabilidades = new LineChart<String, Number>(
-			yAxisH, xAxisH);
+	private LineChart<String, Number> grfHabilidades = new LineChart<String, Number>(yAxisH, xAxisH);
+
+	@FXML
+	private ComboBox<TipoAlumno> cmbTipoAlumno;
+	@FXML
+	private Button btnGenerar;
+
+	long tipoAlumno = Constants.PIE_ALL;
 
 	private List<OTAlumnoResumen> puntos;
 	private List<EjeTematico> lstOtEjes;
 	private List<Habilidad> lstOtHabs;
+	private EvaluacionPrueba evaluacionPrueba;
 
 	public ResumenXAlumnoEjeHabilidadView() {
 		setTitle("Resumen Eje/Habilidad x Alumno");
@@ -73,21 +82,24 @@ public class ResumenXAlumnoEjeHabilidadView extends AFormView implements
 	@FXML
 	public void initialize() {
 		tblAlumnos.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-		tblAlumnos.getSelectionModel().selectedItemProperty()
-				.addListener(new ChangeListener<ObservableList<String>>() {
+		tblAlumnos.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<ObservableList<String>>() {
 
-					@Override
-					public void changed(
-							ObservableValue<? extends ObservableList<String>> observable,
-							ObservableList<String> oldValue,
-							ObservableList<String> newValue) {
-						int index = tblAlumnos.getSelectionModel()
-								.getSelectedIndex();
-						poblarGraficos(index);
-					}
-				});
+			@Override
+			public void changed(ObservableValue<? extends ObservableList<String>> observable,
+					ObservableList<String> oldValue, ObservableList<String> newValue) {
+				int index = tblAlumnos.getSelectionModel().getSelectedIndex();
+				poblarGraficos(index);
+			}
+		});
 
 		mnuExportarAlumnos.setOnAction(this);
+		btnGenerar.setOnAction(this);
+		cmbTipoAlumno.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				tipoAlumno = cmbTipoAlumno.getSelectionModel().getSelectedIndex();
+			}
+		});
 	}
 
 	@Override
@@ -95,19 +107,17 @@ public class ResumenXAlumnoEjeHabilidadView extends AFormView implements
 		if (event.getSource() == mnuExportarAlumnos) {
 			tblAlumnos.setId("ResumenEjeHabilidadesxAlumno");
 			ExcelSheetWriterObj.convertirDatosALibroDeExcel(tblAlumnos);
+		} else if (event.getSource() == btnGenerar) {
+			generateReport();
 		}
 	}
 
-	@Override
-	public void onFound(IEntity entity) {
-		if (entity instanceof EvaluacionPrueba) {
-			EvaluacionPrueba evaluacionPrueba = (EvaluacionPrueba) entity;
-			List<PruebaRendida> pRendidas = evaluacionPrueba
-					.getPruebasRendidas();
+	private void generateReport() {
+		if (evaluacionPrueba != null && cmbTipoAlumno.getItems() != null && !cmbTipoAlumno.getItems().isEmpty()) {
+			List<PruebaRendida> pRendidas = evaluacionPrueba.getPruebasRendidas();
 
 			if (pRendidas != null && !pRendidas.isEmpty()) {
-				List<RespuestasEsperadasPrueba> respEsperadas = evaluacionPrueba
-						.getPrueba().getRespuestas();
+				List<RespuestasEsperadasPrueba> respEsperadas = evaluacionPrueba.getPrueba().getRespuestas();
 
 				// Obteniendo los elementos
 				lstOtEjes = getEjesTematicos(respEsperadas);
@@ -117,7 +127,30 @@ public class ResumenXAlumnoEjeHabilidadView extends AFormView implements
 				construirColumnas(lstOtEjes, lstOtHabs);
 				llenarValores(puntos);
 			}
+		}
+	}
 
+	@Override
+	public void onFound(IEntity entity) {
+		if (entity instanceof EvaluacionPrueba) {
+			evaluacionPrueba = (EvaluacionPrueba) entity;
+			generateReport();
+		}
+	}
+
+	@Override
+	public void onDataArrived(List<Object> list) {
+		if (list != null && !list.isEmpty()) {
+			Object entity = list.get(0);
+			if (entity instanceof TipoAlumno) {
+				ObservableList<TipoAlumno> tAlumnoList = FXCollections.observableArrayList();
+				for (Object iEntity : list) {
+					tAlumnoList.add((TipoAlumno) iEntity);
+				}
+				cmbTipoAlumno.setItems(tAlumnoList);
+				cmbTipoAlumno.getSelectionModel().select((int) Constants.PIE_ALL);
+				generateReport();
+			}
 		}
 	}
 
@@ -129,8 +162,7 @@ public class ResumenXAlumnoEjeHabilidadView extends AFormView implements
 	 */
 	@SuppressWarnings("unchecked")
 	private void llenarValores(List<OTAlumnoResumen> puntos) {
-		ObservableList<ObservableList<String>> contenido = FXCollections
-				.observableArrayList();
+		ObservableList<ObservableList<String>> contenido = FXCollections.observableArrayList();
 		ObservableList<String> row = null;
 		for (OTAlumnoResumen ot : puntos) {
 			row = FXCollections.observableArrayList();
@@ -159,36 +191,38 @@ public class ResumenXAlumnoEjeHabilidadView extends AFormView implements
 	 *            Las habilidades exitentes en la prueba.
 	 * @return Mapa de alumno con todos los puntos por eje y habilidad.
 	 */
-	private List<OTAlumnoResumen> obtenerPuntos(
-			EvaluacionPrueba evaluacionPrueba, List<EjeTematico> lstEjes,
+	private List<OTAlumnoResumen> obtenerPuntos(EvaluacionPrueba evaluacionPrueba, List<EjeTematico> lstEjes,
 			List<Habilidad> lstHabs) {
 
 		List<OTAlumnoResumen> respuesta = new ArrayList<OTAlumnoResumen>();
 
-		List<PruebaRendida> pRendidas = evaluacionPrueba.getPruebasRendidas();
-		List<RespuestasEsperadasPrueba> respEsperadas = evaluacionPrueba
-				.getPrueba().getRespuestas();
+		List<PruebaRendida> pRendidas = new ArrayList<>();
+		for (PruebaRendida pruebaRendida : evaluacionPrueba.getPruebasRendidas()) {
+			if (tipoAlumno != Constants.PIE_ALL
+					&& !pruebaRendida.getAlumno().getTipoAlumno().getId().equals(tipoAlumno)) {
+				continue;
+			}
+			pRendidas.add(pruebaRendida);
+		}
+
+		List<RespuestasEsperadasPrueba> respEsperadas = evaluacionPrueba.getPrueba().getRespuestas();
 
 		for (PruebaRendida pr : pRendidas) {
 			String resps = pr.getRespuestas();
 			Alumno alumno = pr.getAlumno();
 			OTAlumnoResumen ot = new OTAlumnoResumen(alumno);
 			for (EjeTematico eje : lstEjes) {
-				Pair<Integer, Integer> pair = obtenerBuenasTotales(resps,
-						respEsperadas, eje);
+				Pair<Integer, Integer> pair = obtenerBuenasTotales(resps, respEsperadas, eje);
 				Integer buenas = pair.getFirst();
 				Integer cantidad = pair.getSecond();
-				float porcentaje = buenas.floatValue() / cantidad.floatValue()
-						* 100f;
+				float porcentaje = buenas.floatValue() / cantidad.floatValue() * 100f;
 				ot.getPorcentajes().add(porcentaje);
 			}
 			for (Habilidad hab : lstHabs) {
-				Pair<Integer, Integer> pair = obtenerBuenasTotales(resps,
-						respEsperadas, hab);
+				Pair<Integer, Integer> pair = obtenerBuenasTotales(resps, respEsperadas, hab);
 				Integer buenas = pair.getFirst();
 				Integer cantidad = pair.getSecond();
-				float porcentaje = buenas.floatValue() / cantidad.floatValue()
-						* 100f;
+				float porcentaje = buenas.floatValue() / cantidad.floatValue() * 100f;
 				ot.getPorcentajes().add(porcentaje);
 			}
 			respuesta.add(ot);
@@ -217,8 +251,7 @@ public class ResumenXAlumnoEjeHabilidadView extends AFormView implements
 			if (resp.getHabilidad().equals(hab)) {
 				if (respuestas.length() > n) {
 					String sResp = respuestas.substring(n, n + 1);
-					if ("+".equals(sResp)
-							|| resp.getRespuesta().equalsIgnoreCase(sResp)) {
+					if ("+".equals(sResp) || resp.getRespuesta().equalsIgnoreCase(sResp)) {
 						nroBuenas++;
 					}
 				}
@@ -249,8 +282,7 @@ public class ResumenXAlumnoEjeHabilidadView extends AFormView implements
 			if (resp.getEjeTematico().equals(eje)) {
 				if (respuestas.length() > n) {
 					String sResp = respuestas.substring(n, n + 1);
-					if ("+".equals(sResp)
-							|| resp.getRespuesta().equalsIgnoreCase(sResp)) {
+					if ("+".equals(sResp) || resp.getRespuesta().equalsIgnoreCase(sResp)) {
 						nroBuenas++;
 					}
 				}
@@ -269,8 +301,7 @@ public class ResumenXAlumnoEjeHabilidadView extends AFormView implements
 	 * @return Lista con las habilidades y la cantidad de preguntas de cada
 	 *         habilidad en la prueba.
 	 */
-	private List<Habilidad> getHabilidades(
-			List<RespuestasEsperadasPrueba> respEsperadas) {
+	private List<Habilidad> getHabilidades(List<RespuestasEsperadasPrueba> respEsperadas) {
 		List<Habilidad> lstOtHabs = new ArrayList<Habilidad>();
 		for (RespuestasEsperadasPrueba r : respEsperadas) {
 			if (!lstOtHabs.contains(r.getHabilidad())) {
@@ -287,8 +318,7 @@ public class ResumenXAlumnoEjeHabilidadView extends AFormView implements
 	 *            Lista de preguntas esperadas de una prueba.
 	 * @return Lista con los ejes temáticos en la prueba.
 	 */
-	private List<EjeTematico> getEjesTematicos(
-			List<RespuestasEsperadasPrueba> respEsperadas) {
+	private List<EjeTematico> getEjesTematicos(List<RespuestasEsperadasPrueba> respEsperadas) {
 		List<EjeTematico> lstOtEjes = new ArrayList<EjeTematico>();
 		for (RespuestasEsperadasPrueba r : respEsperadas) {
 			if (!lstOtEjes.contains(r.getEjeTematico())) {
@@ -308,17 +338,16 @@ public class ResumenXAlumnoEjeHabilidadView extends AFormView implements
 	@SuppressWarnings("unchecked")
 	private void construirColumnas(List<EjeTematico> ejes, List<Habilidad> habs) {
 		int index = 0;
+		tblAlumnos.getColumns().clear();
 		tblAlumnos.getColumns().add(getFixedColumns("RUT", index++, 250));
 		tblAlumnos.getColumns().add(getFixedColumns("PATERNO", index++, 250));
 		tblAlumnos.getColumns().add(getFixedColumns("MATERNO", index++, 250));
 		tblAlumnos.getColumns().add(getFixedColumns("NOMBRE", index++, 320));
 		for (EjeTematico eje : ejes) {
-			tblAlumnos.getColumns().add(
-					getPercentColumns(eje.getName(), index++));
+			tblAlumnos.getColumns().add(getPercentColumns(eje.getName(), index++));
 		}
 		for (Habilidad hab : habs) {
-			tblAlumnos.getColumns().add(
-					getPercentColumns(hab.getName(), index++));
+			tblAlumnos.getColumns().add(getPercentColumns(hab.getName(), index++));
 		}
 
 	}
@@ -330,10 +359,8 @@ public class ResumenXAlumnoEjeHabilidadView extends AFormView implements
 		tc.setStyle("-fx-alignment: CENTER-LEFT;");
 		tc.prefWidthProperty().set(width);
 		tc.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
-			public ObservableValue<String> call(
-					CellDataFeatures<ObservableList, String> param) {
-				return new SimpleStringProperty(param.getValue().get(index)
-						.toString());
+			public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
+				return new SimpleStringProperty(param.getValue().get(index).toString());
 			}
 		});
 		return tc;
@@ -348,10 +375,8 @@ public class ResumenXAlumnoEjeHabilidadView extends AFormView implements
 		tc.setStyle("-fx-alignment: CENTER;-fx-font-size: 8pt;-fx-text-alignment: center;");
 		tc.prefWidthProperty().set(70f);
 		tc.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
-			public ObservableValue<String> call(
-					CellDataFeatures<ObservableList, String> param) {
-				return new SimpleStringProperty(param.getValue().get(index)
-						.toString());
+			public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
+				return new SimpleStringProperty(param.getValue().get(index).toString());
 			}
 		});
 		return tc;
@@ -383,9 +408,7 @@ public class ResumenXAlumnoEjeHabilidadView extends AFormView implements
 		seriesE.getData().clear();
 		int idx = 0;
 		for (int i = 0; i < lstOtEjes.size(); i++) {
-			seriesE.getData().add(
-					new XYChart.Data<String, Number>(String.valueOf(idx + 1),
-							porcentajes.get(idx++)));
+			seriesE.getData().add(new XYChart.Data<String, Number>(String.valueOf(idx + 1), porcentajes.get(idx++)));
 		}
 		grfEjes.setLegendSide(Side.RIGHT);
 		grfEjes.getData().clear();
@@ -396,9 +419,7 @@ public class ResumenXAlumnoEjeHabilidadView extends AFormView implements
 		seriesH.setName("Porcentaje logro Habilidades");
 		seriesH.getData().clear();
 		for (int i = 0; i < lstOtHabs.size(); i++) {
-			seriesH.getData().add(
-					new XYChart.Data<String, Number>(String.valueOf(idx + 1),
-							porcentajes.get(idx++)));
+			seriesH.getData().add(new XYChart.Data<String, Number>(String.valueOf(idx + 1), porcentajes.get(idx++)));
 		}
 
 		grfHabilidades.setLegendVisible(false);
