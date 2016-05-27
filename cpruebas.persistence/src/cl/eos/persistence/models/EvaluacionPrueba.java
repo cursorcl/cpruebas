@@ -19,10 +19,8 @@ import javax.persistence.Version;
 import cl.eos.persistence.AEntity;
 
 @Entity(name = "evaluacionprueba")
-@NamedQueries({
-		@NamedQuery(name = "EvaluacionPrueba.findAll", query = "SELECT e FROM evaluacionprueba e"),
-		@NamedQuery(name = "EvaluacionPrueba.findEvaluacionByColegioAsig", 
-		query = "SELECT e FROM evaluacionprueba e where e.colegio.id = :idColegio and e.prueba.asignatura.id = :idAsignatura"),
+@NamedQueries({ @NamedQuery(name = "EvaluacionPrueba.findAll", query = "SELECT e FROM evaluacionprueba e"),
+		@NamedQuery(name = "EvaluacionPrueba.findEvaluacionByColegioAsig", query = "SELECT e FROM evaluacionprueba e where e.colegio.id = :idColegio and e.prueba.asignatura.id = :idAsignatura"),
 		@NamedQuery(name = "EvaluacionPrueba.findByPrueba", query = "SELECT e FROM evaluacionprueba e where e.prueba.id = :idPrueba") })
 public class EvaluacionPrueba extends AEntity {
 
@@ -43,7 +41,6 @@ public class EvaluacionPrueba extends AEntity {
 	private Profesor profesor;
 	private Colegio colegio;
 
-	
 	@Override
 	public Long getId() {
 		return id;
@@ -163,12 +160,12 @@ public class EvaluacionPrueba extends AEntity {
 		this.version = version;
 	}
 
-	
 	public String getColegiocurso() {
 		StringBuffer buffer = new StringBuffer();
 		buffer.append(colegio.getName());
 		buffer.append("\n");
-		buffer.append(curso.getName());
+		if (curso != null)
+			buffer.append(curso.getName());
 		return buffer.toString();
 	}
 

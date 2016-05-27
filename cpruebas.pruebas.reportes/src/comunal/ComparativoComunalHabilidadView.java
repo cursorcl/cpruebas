@@ -33,6 +33,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
@@ -58,7 +59,6 @@ public class ComparativoComunalHabilidadView extends AFormView implements EventH
 	@FXML
 	private TableView<ObservableList<String>> tblEvaluaciones;
 	@FXML
-	private ComboBox<TipoAlumno> cmbTipoAlumno;
 
 	private HashMap<Habilidad, HashMap<String, OTPreguntasHabilidad>> mapaHabilidad;
 
@@ -66,6 +66,10 @@ public class ComparativoComunalHabilidadView extends AFormView implements EventH
 
 	private Map<EvaluacionEjeTematico, HashMap<String, OTPreguntasEvaluacion>> mapEvaAlumnos = null;
 
+	@FXML
+	private ComboBox<TipoAlumno> cmbTipoAlumno;
+	@FXML
+	private Button btnGenerar;
 	long tipoAlumno = Constants.PIE_ALL;
 
 	private boolean llegaOnFound = false;
@@ -86,10 +90,11 @@ public class ComparativoComunalHabilidadView extends AFormView implements EventH
 		mnuExportarHabilidad.setOnAction(this);
 		mnuExportarEvaluacion.setOnAction(this);
 		cmbTipoAlumno.getSelectionModel().select(0);
-		cmbTipoAlumno.setOnAction(event -> {
-			tipoAlumno = cmbTipoAlumno.getSelectionModel().getSelectedIndex();
-			if (prueba != null && tipoAlumno != -1) {
-				procesaDatosReporte();
+		btnGenerar.setOnAction(this);
+		cmbTipoAlumno.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				tipoAlumno = cmbTipoAlumno.getSelectionModel().getSelectedIndex();
 			}
 		});
 	}
@@ -436,6 +441,10 @@ public class ComparativoComunalHabilidadView extends AFormView implements EventH
 			listaTablas.add((TableView<? extends Object>) tblHabilidades);
 			listaTablas.add((TableView<? extends Object>) tblEvaluaciones);
 			ExcelSheetWriterObj.convertirDatosALibroDeExcel(listaTablas);
+		} else if (source == btnGenerar) {
+			if (prueba != null && tipoAlumno != -1) {
+				procesaDatosReporte();
+			}
 		}
 	}
 
