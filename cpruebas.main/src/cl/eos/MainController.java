@@ -63,12 +63,14 @@ public class MainController {
 	private MenuItem mnuItemGeneraBD;
 	@FXML
 	private MenuItem mnuCerrarAplicacion;
+
 	@FXML
 	private BreadcrumbBar breadCrumb;
 	@FXML
 	private AnchorPane pnlWindow;
 	@FXML
 	private Group groupRoot;
+	
 
 	private Stage stage;
 	@FXML
@@ -166,14 +168,6 @@ public class MainController {
 				WindowManager.getInstance().show(activator.getView());
 			}
 		});
-		// mnuCerrarAplicacion.setOnAction(new EventHandler<ActionEvent>() {
-		//
-		// @Override
-		// public void handle(ActionEvent event) {
-		// Platform.exit();
-		// }
-		// });
-
 		mnuImportar.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
@@ -181,6 +175,7 @@ public class MainController {
 				importarExcel();
 			}
 		});
+
 
 	}
 
