@@ -190,7 +190,6 @@ public class MainController {
 		Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setTitle("Información a Importar:");
 		alert.setHeaderText("");
-		alert.setContentText("Ingrese cantidad de hojas a imprimir");
 		alert.getButtonTypes().setAll(bTypeAlumno, bTypeColegio, bTypeCurso, bTypeProfesor, bTypeCancel);
 		Optional<ButtonType> result = alert.showAndWait();
 
