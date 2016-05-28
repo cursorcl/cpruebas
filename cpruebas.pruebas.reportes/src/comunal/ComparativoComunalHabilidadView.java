@@ -174,7 +174,9 @@ public class ComparativoComunalHabilidadView extends AFormView implements EventH
 				List<RespuestasEsperadasPrueba> respuestasEsperadas = prueba.getRespuestas();
 
 				for (PruebaRendida pruebaRendida : pruebasRendidas) {
-
+					if (pruebaRendida == null || pruebaRendida.getAlumno() == null
+							|| pruebaRendida.getAlumno().getTipoAlumno() == null)
+						continue;
 					if (tipoAlumno != Constants.PIE_ALL
 							&& tipoAlumno != pruebaRendida.getAlumno().getTipoAlumno().getId()) {
 						// En este caso, no se considera este alumno para el
@@ -355,7 +357,7 @@ public class ComparativoComunalHabilidadView extends AFormView implements EventH
 		row.add("Totales");
 		for (String string : titulosColumnas) {
 			Integer valor = totales.get(string);
-			row.add(String.valueOf(valor));
+			row.add(String.valueOf(valor == null ? 0 : valor));
 		}
 		registroseEva.add(row);
 
