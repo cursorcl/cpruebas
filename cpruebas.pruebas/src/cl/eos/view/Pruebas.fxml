@@ -9,210 +9,207 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.SeparatorMenuItem?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="519.0" prefWidth="1087.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.PruebasView">
-   <top>
-      <VBox prefHeight="24.0" prefWidth="1087.0">
-         <children>
-            <MenuBar BorderPane.alignment="CENTER">
-              <menus>
-                <Menu mnemonicParsing="false" text="Archivo">
-                  <items>
-                        <MenuItem fx:id="mnuNueva" mnemonicParsing="false" text="Nueva Prueba" />
-                        <MenuItem id="mnuGrabar" fx:id="mnuGrabar" mnemonicParsing="false" text="Grabar Prueba">
-                           <accelerator>
-                              <KeyCodeCombination alt="UP" code="G" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-                           </accelerator>
-                        </MenuItem>
-                        <MenuItem fx:id="mnuModificar" mnemonicParsing="false" text="Modificar Prueba">
-                           <accelerator>
-                              <KeyCodeCombination alt="UP" code="M" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-                           </accelerator>
-                        </MenuItem>
-                        <MenuItem fx:id="mnuEliminar" mnemonicParsing="false" text="Eliminar Prueba">
-                           <accelerator>
-                              <KeyCodeCombination alt="UP" code="E" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-                           </accelerator>
-                        </MenuItem>
-                        <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem fx:id="mnuExportar" mnemonicParsing="false" text="Exportar Pruebas" />
-                        <MenuItem fx:id="mnuImportar" mnemonicParsing="false" text="Importar Pruebas" />
-                        <SeparatorMenuItem mnemonicParsing="false" />
-                    <MenuItem mnemonicParsing="false" text="Cerrar" />
-                  </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Edit">
-                  <items>
-                    <MenuItem mnemonicParsing="false" text="Delete" />
-                  </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Help">
-                  <items>
-                    <MenuItem mnemonicParsing="false" text="About" />
-                  </items>
-                </Menu>
-              </menus>
-            </MenuBar>
-         </children>
-      </VBox>
-   </top>
-   <center>
-      <SplitPane dividerPositions="0.2646744930629669" prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-        <items>
-            <AnchorPane fx:id="pnlEdition" prefHeight="459.0" prefWidth="285.0">
-               <children>
-                  <TextField fx:id="txtName" layoutX="10.0" layoutY="44.0" prefHeight="25.0" prefWidth="271.0" promptText="Nombre Prueba" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
-                     <VBox.margin>
-                        <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
-                     </VBox.margin>
-                     <tooltip>
-                        <Tooltip text="Nombre de la prueba" />
-                     </tooltip>
-                  </TextField>
-                  <ComboBox id="cmbColegios" fx:id="cmbTipoPrueba" layoutX="10.0" layoutY="93.0" promptText="Tipo prueba" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
-                     <VBox.margin>
-                        <Insets bottom="5.0" left="10.0" right="10.0" top="10.0" />
-                     </VBox.margin>
-                     <tooltip>
-                        <Tooltip text="Tipo de prueba" />
-                     </tooltip>
-                  </ComboBox>
-                  <ComboBox fx:id="cmbCurso" layoutX="10.0" layoutY="146.0" promptText="Curso" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
-                     <VBox.margin>
-                        <Insets bottom="5.0" left="10.0" right="10.0" />
-                     </VBox.margin>
-                     <tooltip>
-                        <Tooltip text="Curso de la prueba" />
-                     </tooltip>
-                  </ComboBox>
-                  <ComboBox id="cmbProfesor" fx:id="cmbProfesor" layoutX="10.0" layoutY="194.0" promptText="Profesor" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
-                     <VBox.margin>
-                        <Insets bottom="5.0" left="10.0" right="10.0" />
-                     </VBox.margin>
-                     <tooltip>
-                        <Tooltip text="Profesor de la prueba" />
-                     </tooltip>
-                  </ComboBox>
-                  <ComboBox fx:id="cmbAsignatura" layoutX="10.0" layoutY="241.0" promptText="Asignatura" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
-                     <VBox.margin>
-                        <Insets bottom="5.0" left="10.0" right="10.0" />
-                     </VBox.margin>
-                     <tooltip>
-                        <Tooltip text="Asignatura de la prueba" />
-                     </tooltip>
-                  </ComboBox>
-                  <DatePicker fx:id="dpFecha" layoutX="10.0" layoutY="287.0" prefHeight="25.0" prefWidth="131.0" promptText="Fecha" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="143.0">
-                     <VBox.margin>
-                        <Insets bottom="5.0" left="10.0" right="10.0" />
-                     </VBox.margin>
-                     <tooltip>
-                        <Tooltip text="Fecha de la prueba" />
-                     </tooltip>
-                  </DatePicker>
-                  <BigDecimalField fx:id="bigDecimalForma" disable="true" layoutX="153.0" layoutY="286.0" prefHeight="27.0" prefWidth="115.0" promptText="Forma" AnchorPane.leftAnchor="153.0" AnchorPane.rightAnchor="12.0">
-                     <VBox.margin>
-                        <Insets bottom="5.0" left="10.0" right="10.0" />
-                     </VBox.margin>
-                     <tooltip>
-                        <Tooltip text="Número de la Forma" />
-                     </tooltip>
-                  </BigDecimalField>
-                  <BigDecimalField fx:id="bigDecimalNroPreguntas" layoutX="10.0" layoutY="342.0" prefHeight="27.0" prefWidth="133.0" promptText="Nro. Preguntas" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="141.0">
-                     <VBox.margin>
-                        <Insets bottom="5.0" left="10.0" right="10.0" />
-                     </VBox.margin>
-                     <tooltip>
-                        <Tooltip text="Número de Preguntas" />
-                     </tooltip>
-                  </BigDecimalField>
-                  <BigDecimalField fx:id="bigDecimaNroAlternativas" layoutX="153.0" layoutY="342.0" prefHeight="27.0" prefWidth="119.0" promptText="Nro. Alterativas" AnchorPane.leftAnchor="153.0" AnchorPane.rightAnchor="12.0">
-                     <VBox.margin>
-                        <Insets bottom="5.0" left="10.0" right="10.0" />
-                     </VBox.margin>
-                     <tooltip>
-                        <Tooltip text="Número de Alternativas" />
-                     </tooltip>
-                  </BigDecimalField>
-                  <BigDecimalField fx:id="bigDecimalPuntajePregunta" layoutX="11.0" layoutY="386.0" prefHeight="27.0" prefWidth="130.0" promptText="Puntaje pregunta" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="142.0">
-                     <VBox.margin>
-                        <Insets bottom="5.0" left="10.0" right="10.0" />
-                     </VBox.margin>
-                     <tooltip>
-                        <Tooltip text="Puntaje base de cada pregunta" />
-                     </tooltip>
-                  </BigDecimalField>
-                  <Label fx:id="lblError" layoutX="10.0" layoutY="10.0" textAlignment="CENTER" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
-                     <VBox.margin>
-                        <Insets bottom="5.0" left="10.0" right="5.0" top="10.0" />
-                     </VBox.margin>
-                  </Label>
-                  <BigDecimalField fx:id="bigDecimalExigencia" layoutX="153.0" layoutY="386.0" prefHeight="27.0" prefWidth="116.0" promptText="\% Exigencia" AnchorPane.leftAnchor="153.0" AnchorPane.rightAnchor="12.0" />
-                  <ComboBox fx:id="cmbNivelEvaluacion" layoutX="10.0" layoutY="430.0" prefHeight="25.0" prefWidth="223.0" promptText="Nivel de Evaluación" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" />
-                  <Label layoutX="14.0" layoutY="27.0" text="Nombre Prueba" />
-                  <Label layoutX="14.0" layoutY="76.0" text="Tipo Prueba" />
-                  <Label layoutX="14.0" layoutY="126.0" text="Curso" />
-                  <Label layoutX="10.0" layoutY="177.0" text="Profesor" />
-                  <Label layoutX="10.0" layoutY="222.0" text="Asignatura" />
-                  <Label layoutX="10.0" layoutY="270.0" text="Fecha" />
-                  <Label layoutX="14.0" layoutY="369.0" text="Puntaje Pregunta" />
-                  <Label layoutX="153.0" layoutY="369.0" text="\% Exigencia" />
-                  <Label layoutX="14.0" layoutY="413.0" text="Nivel Evaluación" />
-                  <Label layoutX="12.0" layoutY="325.0" text="Nro. Preguntas" />
-                  <Label layoutX="155.0" layoutY="325.0" text="Nro. Alternativas" />
-                  <Label layoutX="153.0" layoutY="270.0" text="Forma" />
-               </children>
-            </AnchorPane>
-            <StackPane fx:id="pnlRoot">
-               <children>
-                  <BorderPane prefHeight="459.0" prefWidth="370.0">
-                     <center>
-                        <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-                           <children>
-                              <TableView id="tblListadoPruebas" fx:id="tblListadoPruebas" layoutX="-10.0" layoutY="-31.0" prefHeight="400.0" prefWidth="696.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="0.0">
-                                <columns>
-                                  <TableColumn fx:id="fechaCol" text="Fecha" />
-                                    <TableColumn fx:id="nameCol" prefWidth="118.0" text="Nombre" />
-                                    <TableColumn fx:id="cursoCol" prefWidth="117.0" text="Curso" />
-                                  <TableColumn fx:id="asignaturaCol" prefWidth="145.0" text="Asignatura" />
-                                    <TableColumn fx:id="profesorCol" prefWidth="158.0" text="Profesor" />
-                                    <TableColumn fx:id="nroPreguntasCol" prefWidth="66.0" text="Preguntas" />
-                                    <TableColumn fx:id="estadoCol" prefWidth="100.0" text="Estado" />
-                                </columns>
-                                 <contextMenu>
-                                    <ContextMenu>
-                                      <items>
-                                          <MenuItem fx:id="mnuPopupModificar" mnemonicParsing="false" text="Modificar Prueba" />
-                                          <MenuItem fx:id="mnuPopupEliminar" mnemonicParsing="false" text="Eliminar Prueba" />
-                                          <MenuItem fx:id="mnuImprimirPrueba" mnemonicParsing="false" text="Imprimir Prueba" />
-                                          <SeparatorMenuItem />
-                                          <MenuItem fx:id="mnuListaEvaluaciones" mnemonicParsing="false" text="Ver Evaluaciones" />
-                                          <SeparatorMenuItem />
-                                          <MenuItem fx:id="mnuDefinirPrueba" mnemonicParsing="false" text="Definir Prueba" />                                         
-                                          <MenuItem fx:id="mnuEvaluarPrueba" mnemonicParsing="false" text="Evaluar Prueba" />
-                                          <MenuItem fx:id="mnuAnularPregunta" mnemonicParsing="false" text="Anular Pregunta" />
-                                          <SeparatorMenuItem />
-                                          <MenuItem fx:id="mnuCompColegioEjeHabilXCurso" mnemonicParsing="false" text="Comparativo Colegio Ejes/Habilidades x Curso" />
-                                          <MenuItem fx:id="mnuComparativoColegioEjeHabil" mnemonicParsing="false" text="Comparativo Colegio Ejes/Habilidades" />
-                                          <MenuItem fx:id="mnuColegio" mnemonicParsing="false" text="Resumen Colegio" />
-                                          <MenuItem fx:id="mnuEjesEvaluacion" mnemonicParsing="false" text="Colegio Ejes/Evaluación" />
-                                          <MenuItem fx:id="mnuHabilidadEvaluacion" mnemonicParsing="false" text="Colegio Habilidad/Evaluación" />
-                                          <MenuItem fx:id="mnuHabilidadEvaluacionXAlumno" mnemonicParsing="false" text="Colegio Habilidad/Evaluación x Alumno" />
-                                          <SeparatorMenuItem />
-                                          <MenuItem fx:id="mnuComunalEje" mnemonicParsing="false" text="Resumen Comunal" />
-                                          <MenuItem fx:id="mnuComparativoComunal" mnemonicParsing="false" text="Comparativo Comunal Ejes Temáticos" />
-                                          <MenuItem fx:id="mnuComparativoComunalHab" mnemonicParsing="false" text="Comparativo Comunal Habilidades" />
-                                          
-                                          
-                                      </items>
-                                    </ContextMenu>
-                                 </contextMenu>
-                              </TableView>
-                           </children>
-                        </AnchorPane>
-                     </center>
-                  </BorderPane>
-               </children>
-            </StackPane>
-        </items>
-      </SplitPane>
-   </center>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="519.0" prefWidth="1112.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.PruebasView">
+	<top>
+		<VBox prefHeight="24.0" prefWidth="1087.0">
+			<children>
+				<MenuBar BorderPane.alignment="CENTER">
+					<menus>
+						<Menu mnemonicParsing="false" text="Archivo">
+							<items>
+								<MenuItem fx:id="mnuNueva" mnemonicParsing="false" text="Nueva Prueba" />
+								<MenuItem id="mnuGrabar" fx:id="mnuGrabar" mnemonicParsing="false" text="Grabar Prueba">
+									<accelerator>
+										<KeyCodeCombination alt="UP" code="G" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+									</accelerator>
+								</MenuItem>
+								<MenuItem fx:id="mnuModificar" mnemonicParsing="false" text="Modificar Prueba">
+									<accelerator>
+										<KeyCodeCombination alt="UP" code="M" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+									</accelerator>
+								</MenuItem>
+								<MenuItem fx:id="mnuEliminar" mnemonicParsing="false" text="Eliminar Prueba">
+									<accelerator>
+										<KeyCodeCombination alt="UP" code="E" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+									</accelerator>
+								</MenuItem>
+								<SeparatorMenuItem mnemonicParsing="false" />
+								<MenuItem fx:id="mnuExportar" mnemonicParsing="false" text="Exportar Pruebas" />
+								<MenuItem fx:id="mnuImportar" mnemonicParsing="false" text="Importar Pruebas" />
+								<SeparatorMenuItem mnemonicParsing="false" />
+								<MenuItem mnemonicParsing="false" text="Cerrar" />
+							</items>
+						</Menu>
+						<Menu mnemonicParsing="false" text="Edit">
+							<items>
+								<MenuItem mnemonicParsing="false" text="Delete" />
+							</items>
+						</Menu>
+						<Menu mnemonicParsing="false" text="Help">
+							<items>
+								<MenuItem mnemonicParsing="false" text="About" />
+							</items>
+						</Menu>
+					</menus>
+				</MenuBar>
+			</children>
+		</VBox>
+	</top>
+	<center>
+		<SplitPane dividerPositions="0.2646744930629669" prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+			<items>
+				<AnchorPane fx:id="pnlEdition" prefHeight="459.0" prefWidth="285.0">
+					<children>
+						<TextField fx:id="txtName" layoutX="10.0" layoutY="44.0" prefHeight="25.0" prefWidth="271.0" promptText="Nombre Prueba" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+							<VBox.margin>
+								<Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+							</VBox.margin>
+							<tooltip>
+								<Tooltip text="Nombre de la prueba" />
+							</tooltip>
+						</TextField>
+						<ComboBox id="cmbColegios" fx:id="cmbTipoPrueba" layoutX="10.0" layoutY="93.0" promptText="Tipo prueba" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+							<VBox.margin>
+								<Insets bottom="5.0" left="10.0" right="10.0" top="10.0" />
+							</VBox.margin>
+							<tooltip>
+								<Tooltip text="Tipo de prueba" />
+							</tooltip>
+						</ComboBox>
+						<ComboBox fx:id="cmbCurso" layoutX="10.0" layoutY="146.0" promptText="Curso" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+							<VBox.margin>
+								<Insets bottom="5.0" left="10.0" right="10.0" />
+							</VBox.margin>
+							<tooltip>
+								<Tooltip text="Curso de la prueba" />
+							</tooltip>
+						</ComboBox>
+						<ComboBox id="cmbProfesor" fx:id="cmbProfesor" layoutX="10.0" layoutY="194.0" promptText="Profesor" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+							<VBox.margin>
+								<Insets bottom="5.0" left="10.0" right="10.0" />
+							</VBox.margin>
+							<tooltip>
+								<Tooltip text="Profesor de la prueba" />
+							</tooltip>
+						</ComboBox>
+						<ComboBox fx:id="cmbAsignatura" layoutX="10.0" layoutY="241.0" promptText="Asignatura" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+							<VBox.margin>
+								<Insets bottom="5.0" left="10.0" right="10.0" />
+							</VBox.margin>
+							<tooltip>
+								<Tooltip text="Asignatura de la prueba" />
+							</tooltip>
+						</ComboBox>
+						<DatePicker fx:id="dpFecha" layoutX="10.0" layoutY="287.0" prefHeight="25.0" prefWidth="131.0" promptText="Fecha" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="143.0">
+							<VBox.margin>
+								<Insets bottom="5.0" left="10.0" right="10.0" />
+							</VBox.margin>
+							<tooltip>
+								<Tooltip text="Fecha de la prueba" />
+							</tooltip>
+						</DatePicker>
+						<BigDecimalField fx:id="bigDecimalForma" disable="true" layoutX="153.0" layoutY="286.0" prefHeight="27.0" prefWidth="115.0" promptText="Forma" AnchorPane.leftAnchor="153.0" AnchorPane.rightAnchor="12.0">
+							<tooltip>
+								<Tooltip text="Número de la Forma" />
+							</tooltip>
+						</BigDecimalField>
+						<BigDecimalField fx:id="bigDecimalNroPreguntas" layoutX="10.0" layoutY="342.0" prefHeight="27.0" prefWidth="133.0" promptText="Nro. Preguntas" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="141.0">
+							<tooltip>
+								<Tooltip text="Número de Preguntas" />
+							</tooltip>
+						</BigDecimalField>
+						<BigDecimalField fx:id="bigDecimaNroAlternativas" layoutX="153.0" layoutY="342.0" prefHeight="27.0" prefWidth="119.0" promptText="Nro. Alterativas" AnchorPane.leftAnchor="153.0" AnchorPane.rightAnchor="12.0">
+							<tooltip>
+								<Tooltip text="Número de Alternativas" />
+							</tooltip>
+						</BigDecimalField>
+						<BigDecimalField fx:id="bigDecimalPuntajePregunta" layoutX="11.0" layoutY="386.0" prefHeight="27.0" prefWidth="130.0" promptText="Puntaje pregunta" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="142.0">
+							<tooltip>
+								<Tooltip text="Puntaje base de cada pregunta" />
+							</tooltip>
+						</BigDecimalField>
+						<Label fx:id="lblError" layoutX="10.0" layoutY="10.0" textAlignment="CENTER" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+							<VBox.margin>
+								<Insets bottom="5.0" left="10.0" right="5.0" top="10.0" />
+							</VBox.margin>
+						</Label>
+						<BigDecimalField fx:id="bigDecimalExigencia" layoutX="153.0" layoutY="386.0" prefHeight="27.0" prefWidth="116.0" promptText="\% Exigencia" AnchorPane.leftAnchor="153.0" AnchorPane.rightAnchor="12.0" />
+						<ComboBox fx:id="cmbNivelEvaluacion" layoutX="10.0" layoutY="430.0" prefHeight="25.0" prefWidth="223.0" promptText="Nivel de Evaluación" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" />
+						<Label layoutX="14.0" layoutY="27.0" text="Nombre Prueba" />
+						<Label layoutX="14.0" layoutY="76.0" text="Tipo Prueba" />
+						<Label layoutX="14.0" layoutY="126.0" text="Curso" />
+						<Label layoutX="10.0" layoutY="177.0" text="Profesor" />
+						<Label layoutX="10.0" layoutY="222.0" text="Asignatura" />
+						<Label layoutX="10.0" layoutY="270.0" text="Fecha" />
+						<Label layoutX="14.0" layoutY="369.0" text="Puntaje Pregunta" />
+						<Label layoutX="153.0" layoutY="369.0" text="\% Exigencia" />
+						<Label layoutX="14.0" layoutY="413.0" text="Nivel Evaluación" />
+						<Label layoutX="12.0" layoutY="325.0" text="Nro. Preguntas" />
+						<Label layoutX="155.0" layoutY="325.0" text="Nro. Alternativas" />
+						<Label layoutX="153.0" layoutY="270.0" text="Forma" />
+					</children>
+				</AnchorPane>
+				<StackPane fx:id="pnlRoot">
+					<children>
+						<BorderPane prefHeight="459.0" prefWidth="370.0">
+							<center>
+								<AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+									<children>
+										<TableView id="tblListadoPruebas" fx:id="tblListadoPruebas" layoutX="-10.0" layoutY="-31.0" prefHeight="400.0" prefWidth="696.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="0.0">
+											<columns>
+												<TableColumn fx:id="fechaCol" text="Fecha" />
+												<TableColumn fx:id="nameCol" prefWidth="118.0" text="Nombre" />
+												<TableColumn fx:id="cursoCol" prefWidth="117.0" text="Curso" />
+												<TableColumn fx:id="asignaturaCol" prefWidth="182.0" text="Asignatura" />
+												<TableColumn fx:id="profesorCol" prefWidth="137.0" text="Profesor" />
+												<TableColumn fx:id="nroPreguntasCol" prefWidth="52.0" text="Preg." />
+												<TableColumn fx:id="estadoCol" prefWidth="98.0" text="Estado" />
+											</columns>
+											<contextMenu>
+												<ContextMenu>
+													<items>
+														<MenuItem fx:id="mnuImprimirPrueba" mnemonicParsing="false" text="Imprimir Prueba" />
+														<MenuItem fx:id="mnuListaEvaluaciones" mnemonicParsing="false" text="Ver Evaluaciones" />
+                                          <Menu mnemonicParsing="false" text="Edición">
+                                            <items>
+      														<MenuItem fx:id="mnuPopupModificar" mnemonicParsing="false" text="Modificar Prueba" />
+      														<MenuItem fx:id="mnuPopupEliminar" mnemonicParsing="false" text="Eliminar Prueba" />
+      														<SeparatorMenuItem />
+      														<MenuItem fx:id="mnuDefinirPrueba" mnemonicParsing="false" text="Definir Prueba" />
+      														<MenuItem fx:id="mnuEvaluarPrueba" mnemonicParsing="false" text="Evaluar Prueba" />
+      														<MenuItem fx:id="mnuAnularPregunta" mnemonicParsing="false" text="Anular Pregunta" />
+                                            </items>
+                                          </Menu>
+                                          <Menu mnemonicParsing="false" text="Reportes Colegio">
+                                            <items>
+      														<MenuItem fx:id="mnuColegio" mnemonicParsing="false" text="Resumen del Colegio" />
+      														<MenuItem fx:id="mnuEjesEvaluacion" mnemonicParsing="false" text="Ejes y Evaluación" />
+      														<MenuItem fx:id="mnuHabilidadEvaluacion" mnemonicParsing="false" text="Habilidad y Evaluación" />
+      														<MenuItem fx:id="mnuHabilidadEvaluacionXAlumno" mnemonicParsing="false" text="Habilidades y Evaluación x Alumno" />
+      														<MenuItem fx:id="mnuCompColegioEjeHabilXCurso" mnemonicParsing="false" text="Comparativo  Ejes y Habilidades x Curso" />
+      														<MenuItem fx:id="mnuComparativoColegioEjeHabil" mnemonicParsing="false" text="Comparativo Ejes y Habilidades" />
+                                            </items>
+                                          </Menu>
+                                          <Menu mnemonicParsing="false" text="Reportes Comunales">
+                                            <items>
+      														<MenuItem fx:id="mnuComunalEje" mnemonicParsing="false" text="Resumen Comunal" />
+      														<MenuItem fx:id="mnuComparativoComunalHab" mnemonicParsing="false" text="Comparativo Habilidades" />
+      														<MenuItem fx:id="mnuComparativoComunal" mnemonicParsing="false" text="Comparativo Ejes Temáticos" />
+                                            </items>
+                                          </Menu>
+
+
+													</items>
+												</ContextMenu>
+											</contextMenu>
+										</TableView>
+									</children>
+								</AnchorPane>
+							</center>
+						</BorderPane>
+					</children>
+				</StackPane>
+			</items>
+		</SplitPane>
+	</center>
 </BorderPane>

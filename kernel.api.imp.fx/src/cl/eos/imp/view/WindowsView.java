@@ -26,7 +26,7 @@ public class WindowsView extends BorderPane {
 	private AnchorPane getAnchorPane() {
 		if (topPane == null) {
 			topPane = new AnchorPane();
-			topPane.setId("ModalDimmer");
+			topPane.setId("windows-title");
 //			AnchorPane.setRightAnchor(getMiniButton(), 1.0);
 //			AnchorPane.setTopAnchor(getMiniButton(), 1.0);
 
