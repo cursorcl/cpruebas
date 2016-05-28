@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.*?>
 <?import jfxtras.scene.control.*?>
@@ -19,12 +21,24 @@
                <children>
                   <AnchorPane id="windows-title" fx:id="pnlWindow" prefHeight="62.0" prefWidth="1024.0">
                      <children>
-                        <ImageView fitHeight="60.0" fitWidth="347.0">
-                           <image>
-                              <Image url="@images/logo128.png" />
-                           </image>
-                        </ImageView>
-                        <AnchorPane id="SearchBox" layoutX="720.0" layoutY="1.0" prefHeight="62.0" prefWidth="191.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="32.0" AnchorPane.topAnchor="1.0" />
+                        <HBox prefHeight="100.0" prefWidth="1020.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <ImageView fitHeight="60.0" fitWidth="347.0">
+                                 <image>
+                                    <Image url="@images/logo128.png" />
+                                 </image>
+                              </ImageView>
+                              <Label alignment="CENTER" text="V. 2.0" textAlignment="CENTER" textFill="WHITE">
+                                 <font>
+                                    <Font name="System Bold" size="26.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets top="25.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <AnchorPane id="SearchBox" prefHeight="62.0" prefWidth="191.0" HBox.hgrow="ALWAYS" />
+                           </children>
+                        </HBox>
                      </children>
                   </AnchorPane>
 										<MenuBar id="mnuPrincipal">
