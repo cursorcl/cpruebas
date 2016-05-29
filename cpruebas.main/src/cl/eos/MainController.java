@@ -70,7 +70,6 @@ public class MainController {
 	private AnchorPane pnlWindow;
 	@FXML
 	private Group groupRoot;
-	
 
 	private Stage stage;
 	@FXML
@@ -176,7 +175,6 @@ public class MainController {
 			}
 		});
 
-
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -212,7 +210,14 @@ public class MainController {
 						ExcelSheetReader excel = new ExcelSheetReader();
 						lista = excel.readExcelFile(file);
 					}
-					PersistenceServiceFactory.getPersistenceService().insert(result.get().getText(), lista, null);
+					if (lista == null || lista.isEmpty()) {
+						alert = new Alert(AlertType.ERROR);
+						alert.setTitle("Error en la importación desde excel");
+						alert.setHeaderText(null);
+						alert.setContentText("No hay registros que importar");
+						alert.showAndWait();
+					} else
+						PersistenceServiceFactory.getPersistenceService().insert(result.get().getText(), lista, null);
 
 				} catch (ExceptionBD e) {
 					alert = new Alert(AlertType.ERROR);

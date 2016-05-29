@@ -9,12 +9,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.Executors;
 
-import javafx.application.Platform;
-import javafx.concurrent.Task;
-import javafx.concurrent.WorkerStateEvent;
-import javafx.event.EventHandler;
-import javafx.stage.FileChooser;
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.LockModeType;
@@ -25,12 +19,20 @@ import javax.persistence.RollbackException;
 import org.apache.log4j.Logger;
 import org.controlsfx.dialog.Dialogs;
 
+import cl.eos.imp.view.ProgressForm;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.interfaces.entity.IPersistenceListener;
 import cl.eos.persistence.IPersistenceService;
 import cl.eos.persistence.models.Prueba;
 import cl.eos.util.Pair;
 import cl.eos.util.Utils;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.EventHandler;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.stage.FileChooser;
 
 /**
  * Instancia de servicio para almacenamiento.
@@ -336,6 +338,10 @@ public class PersistenceService implements IPersistenceService {
 	@Override
 	public void insert(final String entity, final List<Object> list, final IPersistenceListener listener) {
 
+		final ProgressForm dlg = new ProgressForm();
+		dlg.title("Importando datos");
+		dlg.message("Esto tomará algunos minutos.");
+		
 		final Task<Pair<String, Pair<Integer, List<String>>>> task = new Task<Pair<String, Pair<Integer, List<String>>>>() {
 			@SuppressWarnings({ "unchecked", "rawtypes" })
 			@Override
@@ -357,7 +363,7 @@ public class PersistenceService implements IPersistenceService {
 				int largo = string.lastIndexOf(",");
 				String parametros = string.substring(0, largo);
 
-				String insert = "INSERT INTO " + entity + " values ( 0, " + parametros + ")";
+				String insert = "INSERT INTO " + entity + " values ( 0, " + parametros + ",?)";
 
 				int row = 1;
 				EntityManager eManager = eFactory.createEntityManager();
@@ -375,7 +381,8 @@ public class PersistenceService implements IPersistenceService {
 								strRegister.append(columnas.get(i));
 								strRegister.append(" ");
 							}
-							query.setLockMode(LockModeType.OPTIMISTIC).executeUpdate();
+							query.setParameter(indice++, 1);
+							query.executeUpdate();
 							eManager.getTransaction().commit();
 
 							updateMessage(String.format("Procesado[%d]: %s", row++, strRegister.toString().trim()));
@@ -401,10 +408,12 @@ public class PersistenceService implements IPersistenceService {
 					public void run() {
 
 						if (errores.isEmpty()) {
-							Dialogs.create().owner(null).title("Importación desde excel").masthead("")
-									.message("Ha finalizado proceso de importación de [" + pair.getSecond().getFirst()
-											+ "] registros para tabla [" + pair.getFirst() + "]")
-									.showInformation();
+							Alert alert = new Alert(AlertType.INFORMATION);
+							alert.setTitle("Importación desde excel");
+							alert.setHeaderText("Ha finalizado proceso de importación.");
+							alert.setContentText(" Se han importado [" + pair.getSecond().getFirst()
+											+ "] registros de [" + pair.getFirst() + "]");
+							alert.show();
 						} else {
 							final StringBuffer error = new StringBuffer();
 							for (String str : errores) {
@@ -412,9 +421,11 @@ public class PersistenceService implements IPersistenceService {
 								error.append("\n");
 							}
 							try {
-								Dialogs.create().owner(null).title("Error de importación desde excel")
-										.masthead("Se ha presentado algunos problemas")
-										.message("Se grabará el archivo de log.").showError();
+								Alert alert = new Alert(AlertType.ERROR);
+								alert.setTitle("Error de importación desde excel");
+								alert.setHeaderText("Se ha presentado algunos problemas");
+								alert.setContentText("Se grabará el archivo de log.");
+								alert.show();
 
 								FileChooser fileChooser = new FileChooser();
 								fileChooser.setInitialFileName(
@@ -434,23 +445,20 @@ public class PersistenceService implements IPersistenceService {
 								e.printStackTrace();
 							}
 						}
+						dlg.getDialogStage().hide();
 					}
-
 				};
 				Platform.runLater(r);
 			}
 		});
 		task.setOnFailed((WorkerStateEvent t) -> {
+			dlg.getDialogStage().hide();
 			throw new RuntimeException(task.getException());
 		});
 
-		final Dialogs dlg = Dialogs.create();
-		dlg.title("Importando datos");
-		dlg.masthead(null);
-		dlg.message("Esto tomará algunos minutos.");
+		
 		dlg.showWorkerProgress(task);
 		Executors.newSingleThreadExecutor().execute(task);
-
 	}
 
 	@SuppressWarnings("unchecked")
