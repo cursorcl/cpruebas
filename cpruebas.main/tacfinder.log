@@ -1,0 +1,2346 @@
+0    [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+      <dqtable elementPrecision="0" qtableId="1"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="0" htableId="1"/>
+      <dhtable class="1" htableId="0"/>
+      <dhtable class="1" htableId="1"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="3">
+      <componentSpec componentId="1" HsamplingFactor="2" VsamplingFactor="2" QtableSelector="0"/>
+      <componentSpec componentId="2" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+      <componentSpec componentId="3" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+    </sof>
+    <sos numScanComponents="3" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+      <scanComponentSpec componentSelector="2" dcHuffTable="1" acHuffTable="1"/>
+      <scanComponentSpec componentSelector="3" dcHuffTable="1" acHuffTable="1"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+75   [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="1" htableId="0"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="1">
+      <componentSpec componentId="1" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="0"/>
+    </sof>
+    <sos numScanComponents="1" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+109  [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+      <dqtable elementPrecision="0" qtableId="1"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="0" htableId="1"/>
+      <dhtable class="1" htableId="0"/>
+      <dhtable class="1" htableId="1"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="3">
+      <componentSpec componentId="1" HsamplingFactor="2" VsamplingFactor="2" QtableSelector="0"/>
+      <componentSpec componentId="2" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+      <componentSpec componentId="3" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+    </sof>
+    <sos numScanComponents="3" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+      <scanComponentSpec componentSelector="2" dcHuffTable="1" acHuffTable="1"/>
+      <scanComponentSpec componentSelector="3" dcHuffTable="1" acHuffTable="1"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+128  [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="1" htableId="0"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="1">
+      <componentSpec componentId="1" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="0"/>
+    </sof>
+    <sos numScanComponents="1" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+146  [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+      <dqtable elementPrecision="0" qtableId="1"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="0" htableId="1"/>
+      <dhtable class="1" htableId="0"/>
+      <dhtable class="1" htableId="1"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="3">
+      <componentSpec componentId="1" HsamplingFactor="2" VsamplingFactor="2" QtableSelector="0"/>
+      <componentSpec componentId="2" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+      <componentSpec componentId="3" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+    </sof>
+    <sos numScanComponents="3" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+      <scanComponentSpec componentSelector="2" dcHuffTable="1" acHuffTable="1"/>
+      <scanComponentSpec componentSelector="3" dcHuffTable="1" acHuffTable="1"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+165  [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="1" htableId="0"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="1">
+      <componentSpec componentId="1" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="0"/>
+    </sof>
+    <sos numScanComponents="1" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+181  [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+      <dqtable elementPrecision="0" qtableId="1"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="0" htableId="1"/>
+      <dhtable class="1" htableId="0"/>
+      <dhtable class="1" htableId="1"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="3">
+      <componentSpec componentId="1" HsamplingFactor="2" VsamplingFactor="2" QtableSelector="0"/>
+      <componentSpec componentId="2" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+      <componentSpec componentId="3" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+    </sof>
+    <sos numScanComponents="3" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+      <scanComponentSpec componentSelector="2" dcHuffTable="1" acHuffTable="1"/>
+      <scanComponentSpec componentSelector="3" dcHuffTable="1" acHuffTable="1"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+200  [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="1" htableId="0"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="1">
+      <componentSpec componentId="1" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="0"/>
+    </sof>
+    <sos numScanComponents="1" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+217  [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+      <dqtable elementPrecision="0" qtableId="1"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="0" htableId="1"/>
+      <dhtable class="1" htableId="0"/>
+      <dhtable class="1" htableId="1"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="3">
+      <componentSpec componentId="1" HsamplingFactor="2" VsamplingFactor="2" QtableSelector="0"/>
+      <componentSpec componentId="2" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+      <componentSpec componentId="3" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+    </sof>
+    <sos numScanComponents="3" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+      <scanComponentSpec componentSelector="2" dcHuffTable="1" acHuffTable="1"/>
+      <scanComponentSpec componentSelector="3" dcHuffTable="1" acHuffTable="1"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+245  [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="1" htableId="0"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="1">
+      <componentSpec componentId="1" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="0"/>
+    </sof>
+    <sos numScanComponents="1" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+262  [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+      <dqtable elementPrecision="0" qtableId="1"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="0" htableId="1"/>
+      <dhtable class="1" htableId="0"/>
+      <dhtable class="1" htableId="1"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="3">
+      <componentSpec componentId="1" HsamplingFactor="2" VsamplingFactor="2" QtableSelector="0"/>
+      <componentSpec componentId="2" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+      <componentSpec componentId="3" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+    </sof>
+    <sos numScanComponents="3" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+      <scanComponentSpec componentSelector="2" dcHuffTable="1" acHuffTable="1"/>
+      <scanComponentSpec componentSelector="3" dcHuffTable="1" acHuffTable="1"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+284  [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="1" htableId="0"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="1">
+      <componentSpec componentId="1" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="0"/>
+    </sof>
+    <sos numScanComponents="1" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+300  [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+      <dqtable elementPrecision="0" qtableId="1"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="0" htableId="1"/>
+      <dhtable class="1" htableId="0"/>
+      <dhtable class="1" htableId="1"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="3">
+      <componentSpec componentId="1" HsamplingFactor="2" VsamplingFactor="2" QtableSelector="0"/>
+      <componentSpec componentId="2" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+      <componentSpec componentId="3" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+    </sof>
+    <sos numScanComponents="3" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+      <scanComponentSpec componentSelector="2" dcHuffTable="1" acHuffTable="1"/>
+      <scanComponentSpec componentSelector="3" dcHuffTable="1" acHuffTable="1"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+322  [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="1" htableId="0"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="1">
+      <componentSpec componentId="1" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="0"/>
+    </sof>
+    <sos numScanComponents="1" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+340  [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+      <dqtable elementPrecision="0" qtableId="1"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="0" htableId="1"/>
+      <dhtable class="1" htableId="0"/>
+      <dhtable class="1" htableId="1"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="3">
+      <componentSpec componentId="1" HsamplingFactor="2" VsamplingFactor="2" QtableSelector="0"/>
+      <componentSpec componentId="2" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+      <componentSpec componentId="3" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+    </sof>
+    <sos numScanComponents="3" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+      <scanComponentSpec componentSelector="2" dcHuffTable="1" acHuffTable="1"/>
+      <scanComponentSpec componentSelector="3" dcHuffTable="1" acHuffTable="1"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+385  [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="1" htableId="0"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="1">
+      <componentSpec componentId="1" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="0"/>
+    </sof>
+    <sos numScanComponents="1" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+415  [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+      <dqtable elementPrecision="0" qtableId="1"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="0" htableId="1"/>
+      <dhtable class="1" htableId="0"/>
+      <dhtable class="1" htableId="1"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="3">
+      <componentSpec componentId="1" HsamplingFactor="2" VsamplingFactor="2" QtableSelector="0"/>
+      <componentSpec componentId="2" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+      <componentSpec componentId="3" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+    </sof>
+    <sos numScanComponents="3" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+      <scanComponentSpec componentSelector="2" dcHuffTable="1" acHuffTable="1"/>
+      <scanComponentSpec componentSelector="3" dcHuffTable="1" acHuffTable="1"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+452  [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="1" htableId="0"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="1">
+      <componentSpec componentId="1" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="0"/>
+    </sof>
+    <sos numScanComponents="1" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+466  [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+      <dqtable elementPrecision="0" qtableId="1"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="0" htableId="1"/>
+      <dhtable class="1" htableId="0"/>
+      <dhtable class="1" htableId="1"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="3">
+      <componentSpec componentId="1" HsamplingFactor="2" VsamplingFactor="2" QtableSelector="0"/>
+      <componentSpec componentId="2" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+      <componentSpec componentId="3" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+    </sof>
+    <sos numScanComponents="3" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+      <scanComponentSpec componentSelector="2" dcHuffTable="1" acHuffTable="1"/>
+      <scanComponentSpec componentSelector="3" dcHuffTable="1" acHuffTable="1"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+484  [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="1" htableId="0"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="1">
+      <componentSpec componentId="1" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="0"/>
+    </sof>
+    <sos numScanComponents="1" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+499  [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+      <dqtable elementPrecision="0" qtableId="1"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="0" htableId="1"/>
+      <dhtable class="1" htableId="0"/>
+      <dhtable class="1" htableId="1"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="3">
+      <componentSpec componentId="1" HsamplingFactor="2" VsamplingFactor="2" QtableSelector="0"/>
+      <componentSpec componentId="2" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+      <componentSpec componentId="3" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+    </sof>
+    <sos numScanComponents="3" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+      <scanComponentSpec componentSelector="2" dcHuffTable="1" acHuffTable="1"/>
+      <scanComponentSpec componentSelector="3" dcHuffTable="1" acHuffTable="1"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+517  [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="1" htableId="0"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="1">
+      <componentSpec componentId="1" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="0"/>
+    </sof>
+    <sos numScanComponents="1" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+531  [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+      <dqtable elementPrecision="0" qtableId="1"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="0" htableId="1"/>
+      <dhtable class="1" htableId="0"/>
+      <dhtable class="1" htableId="1"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="3">
+      <componentSpec componentId="1" HsamplingFactor="2" VsamplingFactor="2" QtableSelector="0"/>
+      <componentSpec componentId="2" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+      <componentSpec componentId="3" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+    </sof>
+    <sos numScanComponents="3" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+      <scanComponentSpec componentSelector="2" dcHuffTable="1" acHuffTable="1"/>
+      <scanComponentSpec componentSelector="3" dcHuffTable="1" acHuffTable="1"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+549  [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="1" htableId="0"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="1">
+      <componentSpec componentId="1" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="0"/>
+    </sof>
+    <sos numScanComponents="1" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+564  [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+      <dqtable elementPrecision="0" qtableId="1"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="0" htableId="1"/>
+      <dhtable class="1" htableId="0"/>
+      <dhtable class="1" htableId="1"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="3">
+      <componentSpec componentId="1" HsamplingFactor="2" VsamplingFactor="2" QtableSelector="0"/>
+      <componentSpec componentId="2" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+      <componentSpec componentId="3" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+    </sof>
+    <sos numScanComponents="3" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+      <scanComponentSpec componentSelector="2" dcHuffTable="1" acHuffTable="1"/>
+      <scanComponentSpec componentSelector="3" dcHuffTable="1" acHuffTable="1"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+581  [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="1" htableId="0"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="1">
+      <componentSpec componentId="1" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="0"/>
+    </sof>
+    <sos numScanComponents="1" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+596  [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+      <dqtable elementPrecision="0" qtableId="1"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="0" htableId="1"/>
+      <dhtable class="1" htableId="0"/>
+      <dhtable class="1" htableId="1"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="3">
+      <componentSpec componentId="1" HsamplingFactor="2" VsamplingFactor="2" QtableSelector="0"/>
+      <componentSpec componentId="2" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+      <componentSpec componentId="3" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+    </sof>
+    <sos numScanComponents="3" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+      <scanComponentSpec componentSelector="2" dcHuffTable="1" acHuffTable="1"/>
+      <scanComponentSpec componentSelector="3" dcHuffTable="1" acHuffTable="1"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+614  [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="1" htableId="0"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="1">
+      <componentSpec componentId="1" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="0"/>
+    </sof>
+    <sos numScanComponents="1" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+630  [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+      <dqtable elementPrecision="0" qtableId="1"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="0" htableId="1"/>
+      <dhtable class="1" htableId="0"/>
+      <dhtable class="1" htableId="1"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="3">
+      <componentSpec componentId="1" HsamplingFactor="2" VsamplingFactor="2" QtableSelector="0"/>
+      <componentSpec componentId="2" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+      <componentSpec componentId="3" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+    </sof>
+    <sos numScanComponents="3" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+      <scanComponentSpec componentSelector="2" dcHuffTable="1" acHuffTable="1"/>
+      <scanComponentSpec componentSelector="3" dcHuffTable="1" acHuffTable="1"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+647  [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="1" htableId="0"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="1">
+      <componentSpec componentId="1" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="0"/>
+    </sof>
+    <sos numScanComponents="1" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+672  [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+      <dqtable elementPrecision="0" qtableId="1"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="0" htableId="1"/>
+      <dhtable class="1" htableId="0"/>
+      <dhtable class="1" htableId="1"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="3">
+      <componentSpec componentId="1" HsamplingFactor="2" VsamplingFactor="2" QtableSelector="0"/>
+      <componentSpec componentId="2" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+      <componentSpec componentId="3" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+    </sof>
+    <sos numScanComponents="3" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+      <scanComponentSpec componentSelector="2" dcHuffTable="1" acHuffTable="1"/>
+      <scanComponentSpec componentSelector="3" dcHuffTable="1" acHuffTable="1"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+690  [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="1" htableId="0"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="1">
+      <componentSpec componentId="1" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="0"/>
+    </sof>
+    <sos numScanComponents="1" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+706  [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+      <dqtable elementPrecision="0" qtableId="1"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="0" htableId="1"/>
+      <dhtable class="1" htableId="0"/>
+      <dhtable class="1" htableId="1"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="3">
+      <componentSpec componentId="1" HsamplingFactor="2" VsamplingFactor="2" QtableSelector="0"/>
+      <componentSpec componentId="2" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+      <componentSpec componentId="3" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+    </sof>
+    <sos numScanComponents="3" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+      <scanComponentSpec componentSelector="2" dcHuffTable="1" acHuffTable="1"/>
+      <scanComponentSpec componentSelector="3" dcHuffTable="1" acHuffTable="1"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+738  [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="1" htableId="0"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="1">
+      <componentSpec componentId="1" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="0"/>
+    </sof>
+    <sos numScanComponents="1" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+754  [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+      <dqtable elementPrecision="0" qtableId="1"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="0" htableId="1"/>
+      <dhtable class="1" htableId="0"/>
+      <dhtable class="1" htableId="1"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="3">
+      <componentSpec componentId="1" HsamplingFactor="2" VsamplingFactor="2" QtableSelector="0"/>
+      <componentSpec componentId="2" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+      <componentSpec componentId="3" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+    </sof>
+    <sos numScanComponents="3" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+      <scanComponentSpec componentSelector="2" dcHuffTable="1" acHuffTable="1"/>
+      <scanComponentSpec componentSelector="3" dcHuffTable="1" acHuffTable="1"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+772  [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="1" htableId="0"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="1">
+      <componentSpec componentId="1" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="0"/>
+    </sof>
+    <sos numScanComponents="1" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+786  [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+      <dqtable elementPrecision="0" qtableId="1"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="0" htableId="1"/>
+      <dhtable class="1" htableId="0"/>
+      <dhtable class="1" htableId="1"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="3">
+      <componentSpec componentId="1" HsamplingFactor="2" VsamplingFactor="2" QtableSelector="0"/>
+      <componentSpec componentId="2" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+      <componentSpec componentId="3" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+    </sof>
+    <sos numScanComponents="3" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+      <scanComponentSpec componentSelector="2" dcHuffTable="1" acHuffTable="1"/>
+      <scanComponentSpec componentSelector="3" dcHuffTable="1" acHuffTable="1"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+805  [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="1" htableId="0"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="1">
+      <componentSpec componentId="1" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="0"/>
+    </sof>
+    <sos numScanComponents="1" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+819  [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+      <dqtable elementPrecision="0" qtableId="1"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="0" htableId="1"/>
+      <dhtable class="1" htableId="0"/>
+      <dhtable class="1" htableId="1"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="3">
+      <componentSpec componentId="1" HsamplingFactor="2" VsamplingFactor="2" QtableSelector="0"/>
+      <componentSpec componentId="2" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+      <componentSpec componentId="3" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+    </sof>
+    <sos numScanComponents="3" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+      <scanComponentSpec componentSelector="2" dcHuffTable="1" acHuffTable="1"/>
+      <scanComponentSpec componentSelector="3" dcHuffTable="1" acHuffTable="1"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+846  [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="1" htableId="0"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="1">
+      <componentSpec componentId="1" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="0"/>
+    </sof>
+    <sos numScanComponents="1" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+860  [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+      <dqtable elementPrecision="0" qtableId="1"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="0" htableId="1"/>
+      <dhtable class="1" htableId="0"/>
+      <dhtable class="1" htableId="1"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="3">
+      <componentSpec componentId="1" HsamplingFactor="2" VsamplingFactor="2" QtableSelector="0"/>
+      <componentSpec componentId="2" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+      <componentSpec componentId="3" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+    </sof>
+    <sos numScanComponents="3" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+      <scanComponentSpec componentSelector="2" dcHuffTable="1" acHuffTable="1"/>
+      <scanComponentSpec componentSelector="3" dcHuffTable="1" acHuffTable="1"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+879  [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="1" htableId="0"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="1">
+      <componentSpec componentId="1" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="0"/>
+    </sof>
+    <sos numScanComponents="1" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+894  [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+      <dqtable elementPrecision="0" qtableId="1"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="0" htableId="1"/>
+      <dhtable class="1" htableId="0"/>
+      <dhtable class="1" htableId="1"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="3">
+      <componentSpec componentId="1" HsamplingFactor="2" VsamplingFactor="2" QtableSelector="0"/>
+      <componentSpec componentId="2" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+      <componentSpec componentId="3" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+    </sof>
+    <sos numScanComponents="3" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+      <scanComponentSpec componentSelector="2" dcHuffTable="1" acHuffTable="1"/>
+      <scanComponentSpec componentSelector="3" dcHuffTable="1" acHuffTable="1"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+912  [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="1" htableId="0"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="1">
+      <componentSpec componentId="1" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="0"/>
+    </sof>
+    <sos numScanComponents="1" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+929  [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+      <dqtable elementPrecision="0" qtableId="1"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="0" htableId="1"/>
+      <dhtable class="1" htableId="0"/>
+      <dhtable class="1" htableId="1"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="3">
+      <componentSpec componentId="1" HsamplingFactor="2" VsamplingFactor="2" QtableSelector="0"/>
+      <componentSpec componentId="2" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+      <componentSpec componentId="3" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+    </sof>
+    <sos numScanComponents="3" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+      <scanComponentSpec componentSelector="2" dcHuffTable="1" acHuffTable="1"/>
+      <scanComponentSpec componentSelector="3" dcHuffTable="1" acHuffTable="1"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+947  [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="1" htableId="0"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="1">
+      <componentSpec componentId="1" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="0"/>
+    </sof>
+    <sos numScanComponents="1" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+962  [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+      <dqtable elementPrecision="0" qtableId="1"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="0" htableId="1"/>
+      <dhtable class="1" htableId="0"/>
+      <dhtable class="1" htableId="1"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="3">
+      <componentSpec componentId="1" HsamplingFactor="2" VsamplingFactor="2" QtableSelector="0"/>
+      <componentSpec componentId="2" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+      <componentSpec componentId="3" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+    </sof>
+    <sos numScanComponents="3" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+      <scanComponentSpec componentSelector="2" dcHuffTable="1" acHuffTable="1"/>
+      <scanComponentSpec componentSelector="3" dcHuffTable="1" acHuffTable="1"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+981  [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="1" htableId="0"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="1">
+      <componentSpec componentId="1" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="0"/>
+    </sof>
+    <sos numScanComponents="1" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+995  [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+      <dqtable elementPrecision="0" qtableId="1"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="0" htableId="1"/>
+      <dhtable class="1" htableId="0"/>
+      <dhtable class="1" htableId="1"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="3">
+      <componentSpec componentId="1" HsamplingFactor="2" VsamplingFactor="2" QtableSelector="0"/>
+      <componentSpec componentId="2" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+      <componentSpec componentId="3" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+    </sof>
+    <sos numScanComponents="3" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+      <scanComponentSpec componentSelector="2" dcHuffTable="1" acHuffTable="1"/>
+      <scanComponentSpec componentSelector="3" dcHuffTable="1" acHuffTable="1"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+1013 [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="1" htableId="0"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="1">
+      <componentSpec componentId="1" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="0"/>
+    </sof>
+    <sos numScanComponents="1" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+1027 [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+      <dqtable elementPrecision="0" qtableId="1"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="0" htableId="1"/>
+      <dhtable class="1" htableId="0"/>
+      <dhtable class="1" htableId="1"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="3">
+      <componentSpec componentId="1" HsamplingFactor="2" VsamplingFactor="2" QtableSelector="0"/>
+      <componentSpec componentId="2" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+      <componentSpec componentId="3" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+    </sof>
+    <sos numScanComponents="3" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+      <scanComponentSpec componentSelector="2" dcHuffTable="1" acHuffTable="1"/>
+      <scanComponentSpec componentSelector="3" dcHuffTable="1" acHuffTable="1"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+1045 [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="1" htableId="0"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="1">
+      <componentSpec componentId="1" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="0"/>
+    </sof>
+    <sos numScanComponents="1" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+1059 [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+      <dqtable elementPrecision="0" qtableId="1"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="0" htableId="1"/>
+      <dhtable class="1" htableId="0"/>
+      <dhtable class="1" htableId="1"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="3">
+      <componentSpec componentId="1" HsamplingFactor="2" VsamplingFactor="2" QtableSelector="0"/>
+      <componentSpec componentId="2" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+      <componentSpec componentId="3" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+    </sof>
+    <sos numScanComponents="3" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+      <scanComponentSpec componentSelector="2" dcHuffTable="1" acHuffTable="1"/>
+      <scanComponentSpec componentSelector="3" dcHuffTable="1" acHuffTable="1"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+1077 [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="1" htableId="0"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="1">
+      <componentSpec componentId="1" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="0"/>
+    </sof>
+    <sos numScanComponents="1" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+1092 [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+      <dqtable elementPrecision="0" qtableId="1"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="0" htableId="1"/>
+      <dhtable class="1" htableId="0"/>
+      <dhtable class="1" htableId="1"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="3">
+      <componentSpec componentId="1" HsamplingFactor="2" VsamplingFactor="2" QtableSelector="0"/>
+      <componentSpec componentId="2" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+      <componentSpec componentId="3" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+    </sof>
+    <sos numScanComponents="3" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+      <scanComponentSpec componentSelector="2" dcHuffTable="1" acHuffTable="1"/>
+      <scanComponentSpec componentSelector="3" dcHuffTable="1" acHuffTable="1"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+1128 [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="1" htableId="0"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="1">
+      <componentSpec componentId="1" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="0"/>
+    </sof>
+    <sos numScanComponents="1" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+1144 [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+      <dqtable elementPrecision="0" qtableId="1"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="0" htableId="1"/>
+      <dhtable class="1" htableId="0"/>
+      <dhtable class="1" htableId="1"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="3">
+      <componentSpec componentId="1" HsamplingFactor="2" VsamplingFactor="2" QtableSelector="0"/>
+      <componentSpec componentId="2" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+      <componentSpec componentId="3" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+    </sof>
+    <sos numScanComponents="3" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+      <scanComponentSpec componentSelector="2" dcHuffTable="1" acHuffTable="1"/>
+      <scanComponentSpec componentSelector="3" dcHuffTable="1" acHuffTable="1"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+1174 [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="1" htableId="0"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="1">
+      <componentSpec componentId="1" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="0"/>
+    </sof>
+    <sos numScanComponents="1" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+1188 [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+      <dqtable elementPrecision="0" qtableId="1"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="0" htableId="1"/>
+      <dhtable class="1" htableId="0"/>
+      <dhtable class="1" htableId="1"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="3">
+      <componentSpec componentId="1" HsamplingFactor="2" VsamplingFactor="2" QtableSelector="0"/>
+      <componentSpec componentId="2" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+      <componentSpec componentId="3" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+    </sof>
+    <sos numScanComponents="3" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+      <scanComponentSpec componentSelector="2" dcHuffTable="1" acHuffTable="1"/>
+      <scanComponentSpec componentSelector="3" dcHuffTable="1" acHuffTable="1"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+1207 [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="1" htableId="0"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="1">
+      <componentSpec componentId="1" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="0"/>
+    </sof>
+    <sos numScanComponents="1" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+1222 [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+      <dqtable elementPrecision="0" qtableId="1"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="0" htableId="1"/>
+      <dhtable class="1" htableId="0"/>
+      <dhtable class="1" htableId="1"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="3">
+      <componentSpec componentId="1" HsamplingFactor="2" VsamplingFactor="2" QtableSelector="0"/>
+      <componentSpec componentId="2" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+      <componentSpec componentId="3" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+    </sof>
+    <sos numScanComponents="3" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+      <scanComponentSpec componentSelector="2" dcHuffTable="1" acHuffTable="1"/>
+      <scanComponentSpec componentSelector="3" dcHuffTable="1" acHuffTable="1"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+1240 [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="1" htableId="0"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="1">
+      <componentSpec componentId="1" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="0"/>
+    </sof>
+    <sos numScanComponents="1" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+1254 [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+      <dqtable elementPrecision="0" qtableId="1"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="0" htableId="1"/>
+      <dhtable class="1" htableId="0"/>
+      <dhtable class="1" htableId="1"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="3">
+      <componentSpec componentId="1" HsamplingFactor="2" VsamplingFactor="2" QtableSelector="0"/>
+      <componentSpec componentId="2" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+      <componentSpec componentId="3" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+    </sof>
+    <sos numScanComponents="3" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+      <scanComponentSpec componentSelector="2" dcHuffTable="1" acHuffTable="1"/>
+      <scanComponentSpec componentSelector="3" dcHuffTable="1" acHuffTable="1"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+1272 [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="1" htableId="0"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="1">
+      <componentSpec componentId="1" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="0"/>
+    </sof>
+    <sos numScanComponents="1" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+1287 [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+      <dqtable elementPrecision="0" qtableId="1"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="0" htableId="1"/>
+      <dhtable class="1" htableId="0"/>
+      <dhtable class="1" htableId="1"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="3">
+      <componentSpec componentId="1" HsamplingFactor="2" VsamplingFactor="2" QtableSelector="0"/>
+      <componentSpec componentId="2" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+      <componentSpec componentId="3" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+    </sof>
+    <sos numScanComponents="3" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+      <scanComponentSpec componentSelector="2" dcHuffTable="1" acHuffTable="1"/>
+      <scanComponentSpec componentSelector="3" dcHuffTable="1" acHuffTable="1"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+1306 [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="1" htableId="0"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="1">
+      <componentSpec componentId="1" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="0"/>
+    </sof>
+    <sos numScanComponents="1" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+1320 [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+      <dqtable elementPrecision="0" qtableId="1"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="0" htableId="1"/>
+      <dhtable class="1" htableId="0"/>
+      <dhtable class="1" htableId="1"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="3">
+      <componentSpec componentId="1" HsamplingFactor="2" VsamplingFactor="2" QtableSelector="0"/>
+      <componentSpec componentId="2" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+      <componentSpec componentId="3" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+    </sof>
+    <sos numScanComponents="3" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+      <scanComponentSpec componentSelector="2" dcHuffTable="1" acHuffTable="1"/>
+      <scanComponentSpec componentSelector="3" dcHuffTable="1" acHuffTable="1"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+1339 [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="1" htableId="0"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="1">
+      <componentSpec componentId="1" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="0"/>
+    </sof>
+    <sos numScanComponents="1" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+1353 [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+      <dqtable elementPrecision="0" qtableId="1"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="0" htableId="1"/>
+      <dhtable class="1" htableId="0"/>
+      <dhtable class="1" htableId="1"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="3">
+      <componentSpec componentId="1" HsamplingFactor="2" VsamplingFactor="2" QtableSelector="0"/>
+      <componentSpec componentId="2" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+      <componentSpec componentId="3" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+    </sof>
+    <sos numScanComponents="3" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+      <scanComponentSpec componentSelector="2" dcHuffTable="1" acHuffTable="1"/>
+      <scanComponentSpec componentSelector="3" dcHuffTable="1" acHuffTable="1"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+1372 [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="1" htableId="0"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="1">
+      <componentSpec componentId="1" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="0"/>
+    </sof>
+    <sos numScanComponents="1" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+1387 [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+      <dqtable elementPrecision="0" qtableId="1"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="0" htableId="1"/>
+      <dhtable class="1" htableId="0"/>
+      <dhtable class="1" htableId="1"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="3">
+      <componentSpec componentId="1" HsamplingFactor="2" VsamplingFactor="2" QtableSelector="0"/>
+      <componentSpec componentId="2" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+      <componentSpec componentId="3" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+    </sof>
+    <sos numScanComponents="3" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+      <scanComponentSpec componentSelector="2" dcHuffTable="1" acHuffTable="1"/>
+      <scanComponentSpec componentSelector="3" dcHuffTable="1" acHuffTable="1"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+1405 [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="1" htableId="0"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="1">
+      <componentSpec componentId="1" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="0"/>
+    </sof>
+    <sos numScanComponents="1" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+1420 [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+      <dqtable elementPrecision="0" qtableId="1"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="0" htableId="1"/>
+      <dhtable class="1" htableId="0"/>
+      <dhtable class="1" htableId="1"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="3">
+      <componentSpec componentId="1" HsamplingFactor="2" VsamplingFactor="2" QtableSelector="0"/>
+      <componentSpec componentId="2" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+      <componentSpec componentId="3" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+    </sof>
+    <sos numScanComponents="3" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+      <scanComponentSpec componentSelector="2" dcHuffTable="1" acHuffTable="1"/>
+      <scanComponentSpec componentSelector="3" dcHuffTable="1" acHuffTable="1"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+1437 [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="1" htableId="0"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="1">
+      <componentSpec componentId="1" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="0"/>
+    </sof>
+    <sos numScanComponents="1" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+1452 [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+      <dqtable elementPrecision="0" qtableId="1"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="0" htableId="1"/>
+      <dhtable class="1" htableId="0"/>
+      <dhtable class="1" htableId="1"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="3">
+      <componentSpec componentId="1" HsamplingFactor="2" VsamplingFactor="2" QtableSelector="0"/>
+      <componentSpec componentId="2" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+      <componentSpec componentId="3" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+    </sof>
+    <sos numScanComponents="3" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+      <scanComponentSpec componentSelector="2" dcHuffTable="1" acHuffTable="1"/>
+      <scanComponentSpec componentSelector="3" dcHuffTable="1" acHuffTable="1"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+1470 [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="1" htableId="0"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="1">
+      <componentSpec componentId="1" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="0"/>
+    </sof>
+    <sos numScanComponents="1" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+1484 [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+      <dqtable elementPrecision="0" qtableId="1"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="0" htableId="1"/>
+      <dhtable class="1" htableId="0"/>
+      <dhtable class="1" htableId="1"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="3">
+      <componentSpec componentId="1" HsamplingFactor="2" VsamplingFactor="2" QtableSelector="0"/>
+      <componentSpec componentId="2" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+      <componentSpec componentId="3" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+    </sof>
+    <sos numScanComponents="3" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+      <scanComponentSpec componentSelector="2" dcHuffTable="1" acHuffTable="1"/>
+      <scanComponentSpec componentSelector="3" dcHuffTable="1" acHuffTable="1"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+1503 [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="1" htableId="0"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="1">
+      <componentSpec componentId="1" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="0"/>
+    </sof>
+    <sos numScanComponents="1" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+1519 [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+      <dqtable elementPrecision="0" qtableId="1"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="0" htableId="1"/>
+      <dhtable class="1" htableId="0"/>
+      <dhtable class="1" htableId="1"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="3">
+      <componentSpec componentId="1" HsamplingFactor="2" VsamplingFactor="2" QtableSelector="0"/>
+      <componentSpec componentId="2" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+      <componentSpec componentId="3" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+    </sof>
+    <sos numScanComponents="3" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+      <scanComponentSpec componentSelector="2" dcHuffTable="1" acHuffTable="1"/>
+      <scanComponentSpec componentSelector="3" dcHuffTable="1" acHuffTable="1"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+1536 [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="1" htableId="0"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="1">
+      <componentSpec componentId="1" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="0"/>
+    </sof>
+    <sos numScanComponents="1" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+1551 [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+      <dqtable elementPrecision="0" qtableId="1"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="0" htableId="1"/>
+      <dhtable class="1" htableId="0"/>
+      <dhtable class="1" htableId="1"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="3">
+      <componentSpec componentId="1" HsamplingFactor="2" VsamplingFactor="2" QtableSelector="0"/>
+      <componentSpec componentId="2" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+      <componentSpec componentId="3" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+    </sof>
+    <sos numScanComponents="3" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+      <scanComponentSpec componentSelector="2" dcHuffTable="1" acHuffTable="1"/>
+      <scanComponentSpec componentSelector="3" dcHuffTable="1" acHuffTable="1"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+1569 [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="1" htableId="0"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="1">
+      <componentSpec componentId="1" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="0"/>
+    </sof>
+    <sos numScanComponents="1" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+1585 [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+      <dqtable elementPrecision="0" qtableId="1"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="0" htableId="1"/>
+      <dhtable class="1" htableId="0"/>
+      <dhtable class="1" htableId="1"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="3">
+      <componentSpec componentId="1" HsamplingFactor="2" VsamplingFactor="2" QtableSelector="0"/>
+      <componentSpec componentId="2" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+      <componentSpec componentId="3" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+    </sof>
+    <sos numScanComponents="3" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+      <scanComponentSpec componentSelector="2" dcHuffTable="1" acHuffTable="1"/>
+      <scanComponentSpec componentSelector="3" dcHuffTable="1" acHuffTable="1"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+1603 [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="1" htableId="0"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="1">
+      <componentSpec componentId="1" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="0"/>
+    </sof>
+    <sos numScanComponents="1" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+1618 [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+      <dqtable elementPrecision="0" qtableId="1"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="0" htableId="1"/>
+      <dhtable class="1" htableId="0"/>
+      <dhtable class="1" htableId="1"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="3">
+      <componentSpec componentId="1" HsamplingFactor="2" VsamplingFactor="2" QtableSelector="0"/>
+      <componentSpec componentId="2" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+      <componentSpec componentId="3" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+    </sof>
+    <sos numScanComponents="3" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+      <scanComponentSpec componentSelector="2" dcHuffTable="1" acHuffTable="1"/>
+      <scanComponentSpec componentSelector="3" dcHuffTable="1" acHuffTable="1"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+1643 [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="1" htableId="0"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="1">
+      <componentSpec componentId="1" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="0"/>
+    </sof>
+    <sos numScanComponents="1" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+1657 [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+      <dqtable elementPrecision="0" qtableId="1"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="0" htableId="1"/>
+      <dhtable class="1" htableId="0"/>
+      <dhtable class="1" htableId="1"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="3">
+      <componentSpec componentId="1" HsamplingFactor="2" VsamplingFactor="2" QtableSelector="0"/>
+      <componentSpec componentId="2" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+      <componentSpec componentId="3" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+    </sof>
+    <sos numScanComponents="3" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+      <scanComponentSpec componentSelector="2" dcHuffTable="1" acHuffTable="1"/>
+      <scanComponentSpec componentSelector="3" dcHuffTable="1" acHuffTable="1"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+1678 [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="1" htableId="0"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="1">
+      <componentSpec componentId="1" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="0"/>
+    </sof>
+    <sos numScanComponents="1" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+1704 [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+      <dqtable elementPrecision="0" qtableId="1"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="0" htableId="1"/>
+      <dhtable class="1" htableId="0"/>
+      <dhtable class="1" htableId="1"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="3">
+      <componentSpec componentId="1" HsamplingFactor="2" VsamplingFactor="2" QtableSelector="0"/>
+      <componentSpec componentId="2" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+      <componentSpec componentId="3" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+    </sof>
+    <sos numScanComponents="3" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+      <scanComponentSpec componentSelector="2" dcHuffTable="1" acHuffTable="1"/>
+      <scanComponentSpec componentSelector="3" dcHuffTable="1" acHuffTable="1"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+1723 [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="1" htableId="0"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="1">
+      <componentSpec componentId="1" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="0"/>
+    </sof>
+    <sos numScanComponents="1" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+1739 [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+      <dqtable elementPrecision="0" qtableId="1"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="0" htableId="1"/>
+      <dhtable class="1" htableId="0"/>
+      <dhtable class="1" htableId="1"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="3">
+      <componentSpec componentId="1" HsamplingFactor="2" VsamplingFactor="2" QtableSelector="0"/>
+      <componentSpec componentId="2" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+      <componentSpec componentId="3" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="1"/>
+    </sof>
+    <sos numScanComponents="3" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+      <scanComponentSpec componentSelector="2" dcHuffTable="1" acHuffTable="1"/>
+      <scanComponentSpec componentSelector="3" dcHuffTable="1" acHuffTable="1"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+
+1756 [JavaFX Application Thread] DEBUG org.apache.pdfbox.util.TIFFUtil  - 
+<?xml version="1.0" encoding="UTF-8"?><javax_imageio_jpeg_image_1.0>
+  <JPEGvariety>
+    <app0JFIF majorVersion="1" minorVersion="2" resUnits="0" Xdensity="1" Ydensity="1" thumbWidth="0" thumbHeight="0"/>
+  </JPEGvariety>
+  <markerSequence>
+    <dqt>
+      <dqtable elementPrecision="0" qtableId="0"/>
+    </dqt>
+    <dht>
+      <dhtable class="0" htableId="0"/>
+      <dhtable class="1" htableId="0"/>
+    </dht>
+    <sof process="0" samplePrecision="8" numLines="0" samplesPerLine="0" numFrameComponents="1">
+      <componentSpec componentId="1" HsamplingFactor="1" VsamplingFactor="1" QtableSelector="0"/>
+    </sof>
+    <sos numScanComponents="1" startSpectralSelection="0" endSpectralSelection="63" approxHigh="0" approxLow="0">
+      <scanComponentSpec componentSelector="1" dcHuffTable="0" acHuffTable="0"/>
+    </sos>
+  </markerSequence>
+</javax_imageio_jpeg_image_1.0>
+

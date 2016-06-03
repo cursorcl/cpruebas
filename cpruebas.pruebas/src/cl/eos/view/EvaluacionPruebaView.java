@@ -3,8 +3,6 @@ package cl.eos.view;
 import java.time.LocalDate;
 import java.util.List;
 
-import org.controlsfx.dialog.Dialogs;
-
 import cl.eos.imp.view.AFormView;
 import cl.eos.persistence.models.Curso;
 import cl.eos.persistence.models.EvaluacionPrueba;
@@ -26,6 +24,8 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
@@ -184,8 +184,11 @@ public class EvaluacionPruebaView extends AFormView implements EventHandler<Acti
 			controller.findById(EvaluacionPrueba.class, evaluacionPrueba.getId(), resXAlumnoEjeHab);
 			controller.findAll(TipoAlumno.class, resXAlumnoEjeHab);
 		} else {
-			Dialogs.create().owner(null).title("Selección registro").masthead("Resumen Eje/Habilidad por alumno.")
-					.message("Debe seleccionar registro a procesar").showInformation();
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Selección registro");
+			alert.setHeaderText("Resumen Eje/Habilidad por alumno.");
+			alert.setContentText("Debe seleccionar registro a procesar");
+			alert.show();
 		}
 	}
 
@@ -201,8 +204,11 @@ public class EvaluacionPruebaView extends AFormView implements EventHandler<Acti
 			controller.findById(EvaluacionPrueba.class, evaluacionPrueba.getId(), resumeEjeTematico);
 			controller.findAll(TipoAlumno.class, resumeEjeTematico);
 		} else {
-			Dialogs.create().owner(null).title("Selección registro").masthead("Resumen Respuestas por Ejes Temáticos")
-					.message("Debe seleccionar registro a procesar").showInformation();
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Selección registro");
+			alert.setHeaderText("Resumen Respuestas por Ejes Temáticos");
+			alert.setContentText("Debe seleccionar registro a procesar");
+			alert.show();
 		}
 
 	}
@@ -214,8 +220,11 @@ public class EvaluacionPruebaView extends AFormView implements EventHandler<Acti
 			controller.findById(EvaluacionPrueba.class, evaluacionPrueba.getId(), resumeHabilidad);
 			controller.findAll(TipoAlumno.class, resumeHabilidad);
 		} else {
-			Dialogs.create().owner(null).title("Selección registro").masthead("Resumen Respuestas por Habilidades")
-					.message("Debe seleccionar registro a procesar").showInformation();
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Selección registro");
+			alert.setHeaderText("Resumen Respuestas por Habilidades");
+			alert.setContentText("Debe seleccionar registro a procesar");
+			alert.show();			
 		}
 	}
 
@@ -227,8 +236,11 @@ public class EvaluacionPruebaView extends AFormView implements EventHandler<Acti
 			controller.findById(EvaluacionPrueba.class, evaluacionPrueba.getId(), resumenAlumno);
 			controller.findAll(TipoAlumno.class, resumenAlumno);
 		} else {
-			Dialogs.create().owner(null).title("Selección registro").masthead(null)
-					.message("Debe seleccionar registro a procesar").showInformation();
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Selección registro");
+			alert.setHeaderText(null);
+			alert.setContentText("Debe seleccionar registro a procesar");
+			alert.show();	
 		}
 	}
 
@@ -239,8 +251,12 @@ public class EvaluacionPruebaView extends AFormView implements EventHandler<Acti
 			controller.findById(EvaluacionPrueba.class, evaluacionPrueba.getId(), resumenGeneral);
 			controller.findAll(TipoAlumno.class, resumenGeneral);
 		} else {
-			Dialogs.create().owner(null).title("Selección registro").masthead("Resumen de respuestas generales")
-					.message("Debe seleccionar registro a procesar").showInformation();
+						
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Selección registro");
+			alert.setHeaderText("Resumen de respuestas generales");
+			alert.setContentText("Debe seleccionar registro a procesar");
+			alert.show();	
 		}
 	}
 
@@ -255,8 +271,11 @@ public class EvaluacionPruebaView extends AFormView implements EventHandler<Acti
 			controller.findById(EvaluacionPrueba.class, evaluacionPrueba.getId(), resumenRespuestas);
 			controller.findAll(TipoAlumno.class, resumenRespuestas);
 		} else {
-			Dialogs.create().owner(null).title("Selección registro").masthead("Resumen de respuestas por pregunta")
-					.message("Debe seleccionar registro a procesar").showInformation();
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Selección registro");
+			alert.setHeaderText("Resumen de respuestas por pregunta");
+			alert.setContentText("Debe seleccionar registro a procesar");
+			alert.show();
 		}
 	}
 
@@ -272,8 +291,11 @@ public class EvaluacionPruebaView extends AFormView implements EventHandler<Acti
 			controller.findAll(RangoEvaluacion.class);
 			controller.findAll(TipoAlumno.class);
 		} else {
-			Dialogs.create().owner(null).title("Selección registro").masthead("Resumen general P.M.E.")
-					.message("Debe seleccionar registro a procesar").showInformation();
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Selección registro");
+			alert.setHeaderText("Resumen general P.M.E.");
+			alert.setContentText("Debe seleccionar registro a procesar");
+			alert.show();
 		}
 	}
 

@@ -17,7 +17,6 @@ import javax.persistence.Query;
 import javax.persistence.RollbackException;
 
 import org.apache.log4j.Logger;
-import org.controlsfx.dialog.Dialogs;
 
 import cl.eos.imp.view.ProgressForm;
 import cl.eos.interfaces.entity.IEntity;

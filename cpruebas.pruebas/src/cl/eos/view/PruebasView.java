@@ -7,28 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.fxml.FXML;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.SelectionMode;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.StackPane;
-import jfxtras.labs.scene.control.BigDecimalField;
-
-import org.controlsfx.dialog.Dialogs;
-
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.persistence.models.Asignatura;
@@ -55,6 +33,27 @@ import colegio.ResumenColegioXAlumnoEjeHabilidadView;
 import comunal.ComparativoComunalEjeView;
 import comunal.ComparativoComunalHabilidadView;
 import comunal.ComunalCursoView;
+import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.SelectionMode;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
+import jfxtras.labs.scene.control.BigDecimalField;
 
 public class PruebasView extends AFormView implements EventHandler<ActionEvent> {
 
@@ -519,7 +518,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 		if (tblListadoPruebas.getSelectionModel().getSelectedItem() != null) {
 			Prueba pPrueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
 			if (pPrueba != null) {
-				controller.findById(Prueba.class, prueba.getId(), imprimirPrueba);
+				controller.findById(Prueba.class, pPrueba.getId(), imprimirPrueba);
 				Map<String, Object> parameters = new HashMap<>();
 				parameters.put("idAsignatura", pPrueba.getAsignatura().getId());
 				controller.find("EjeTematico.findByAsigntura", parameters, imprimirPrueba);
@@ -637,7 +636,6 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 
 			if (prueba != null) {
 				if (!prueba.getEstado().equals(Estado.EVALUADA)) {
-
 					bigDecimaNroAlternativas.setNumber(new BigDecimal(prueba.getAlternativas()));
 					cmbAsignatura.getSelectionModel().select(prueba.getAsignatura());
 					cmbCurso.getSelectionModel().select(prueba.getCurso());
@@ -651,9 +649,11 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 					cmbTipoPrueba.getSelectionModel().select(prueba.getTipoPrueba());
 					prueba.setExigencia(bigDecimalExigencia.getNumber().intValue());
 				} else {
-					Dialogs.create().owner(null).title("No se puede modificar.")
-							.masthead("La prueba ya se encuentra evaluada.").message("No se podrá modificar.")
-							.showInformation();
+					Alert info = new Alert(AlertType.INFORMATION);
+					info.setTitle("No se puede modificar.");
+					info.setHeaderText("La prueba ya se encuentra evaluada.");
+					info.setContentText("No se podrá modificar.");
+					info.show();
 				}
 			}
 		}
