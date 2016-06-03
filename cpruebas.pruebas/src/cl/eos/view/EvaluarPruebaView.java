@@ -64,6 +64,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
@@ -97,7 +98,12 @@ public class EvaluarPruebaView extends AFormView {
 	@FXML
 	private TableColumn<OTPruebaRendida, Integer> puntajeCol;
 	@FXML
+	private TableColumn<OTPruebaRendida, Boolean> rindeCol;
+	
+	
+	@FXML
 	private TableColumn<OTPruebaRendida, RangoEvaluacion> nivelCol;
+	
 	@FXML
 	private ComboBox<Colegio> cmbColegios;
 	@FXML
@@ -242,6 +248,8 @@ public class EvaluarPruebaView extends AFormView {
 		notaCol.setCellValueFactory(new PropertyValueFactory<OTPruebaRendida, Float>("nota"));
 		puntajeCol.setCellValueFactory(new PropertyValueFactory<OTPruebaRendida, Integer>("puntaje"));
 		nivelCol.setCellValueFactory(new PropertyValueFactory<OTPruebaRendida, RangoEvaluacion>("nivel"));
+		rindeCol.setCellValueFactory(new PropertyValueFactory<OTPruebaRendida, Boolean>("rindioPrueba"));
+		rindeCol.setCellFactory(CheckBoxTableCell.forTableColumn(rindeCol));
 		tblListadoPruebas.setEditable(true);
 
 		respuestasCol.setCellValueFactory(new PropertyValueFactory<OTPruebaRendida, String>("respuestas"));
