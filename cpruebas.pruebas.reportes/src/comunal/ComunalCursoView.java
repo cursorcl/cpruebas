@@ -2,6 +2,7 @@ package comunal;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -33,6 +34,7 @@ import cl.eos.persistence.models.Prueba;
 import cl.eos.persistence.models.PruebaRendida;
 import cl.eos.persistence.models.TipoAlumno;
 import cl.eos.persistence.models.TipoCurso;
+import cl.eos.persistence.util.Comparadores;
 
 public class ComunalCursoView extends AFormView implements EventHandler<ActionEvent> {
 
@@ -88,14 +90,14 @@ public class ComunalCursoView extends AFormView implements EventHandler<ActionEv
 	private void desplegarDatosEvaluaciones() {
 		ObservableList<ObservableList<String>> registros = FXCollections.observableArrayList();
 
-		for (Entry<EvaluacionEjeTematico, HashMap<String, OTPreguntasEvaluacion>> mapa : mapEvaAlumnos.entrySet()) {
-
+		List<EvaluacionEjeTematico> ejes = new ArrayList<>(mapEvaAlumnos.keySet());
+		Collections.sort(ejes, Comparadores.comparaEvaluacionEjeTematico());
+		for(EvaluacionEjeTematico eje: ejes)
+		{
+			HashMap<String, OTPreguntasEvaluacion> resultados = mapEvaAlumnos.get(eje);
+			
 			ObservableList<String> row = FXCollections.observableArrayList();
-
-			row.add(((EvaluacionEjeTematico) mapa.getKey()).getName());
-
-			HashMap<String, OTPreguntasEvaluacion> resultados = mapa.getValue();
-
+			row.add(eje.getName());
 			for (String string : titulosColumnas) {
 				OTPreguntasEvaluacion otPregunta = resultados.get(string);
 				row.add(String.valueOf(otPregunta.getAlumnos()));

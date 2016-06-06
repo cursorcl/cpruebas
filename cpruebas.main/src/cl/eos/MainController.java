@@ -63,6 +63,10 @@ public class MainController {
 	private MenuItem mnuItemGeneraBD;
 	@FXML
 	private MenuItem mnuCerrarAplicacion;
+	@FXML
+	private MenuItem mnuEvaluaciones;
+	@FXML
+	private MenuItem mnuNivelEvaluaciones;
 
 	@FXML
 	private BreadcrumbBar breadCrumb;
@@ -174,7 +178,23 @@ public class MainController {
 				importarExcel();
 			}
 		});
+		mnuEvaluaciones.setOnAction(new EventHandler<ActionEvent>() {
 
+			@Override
+			public void handle(ActionEvent event) {
+				IActivator activator = new EvaluacionEjeTematicoActivator();
+				WindowManager.getInstance().show(activator.getView());
+			}
+		});
+		mnuNivelEvaluaciones.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				IActivator activator = new NivelEvaluacionActivator();
+				WindowManager.getInstance().show(activator.getView());
+			}
+		});
+		
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })

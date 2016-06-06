@@ -4,16 +4,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import cl.eos.interfaces.entity.IEntity;
+import cl.eos.interfaces.entity.IPersistenceListener;
+import cl.eos.interfaces.view.IFormView;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
-
-import org.controlsfx.control.action.Action;
-
-import cl.eos.interfaces.entity.IEntity;
-import cl.eos.interfaces.entity.IPersistenceListener;
-import cl.eos.interfaces.view.IFormView;
 
 public abstract class AFormView extends AView implements IFormView {
 

@@ -97,6 +97,9 @@
                                  </accelerator>
                               </MenuItem>
                               <SeparatorMenuItem mnemonicParsing="false" />
+                              <MenuItem fx:id="mnuEvaluaciones" mnemonicParsing="false" text="Evaluaciones" />
+                              <MenuItem fx:id="mnuNivelEvaluaciones" mnemonicParsing="false" text="Nivel Evaluaciones" />
+                              <SeparatorMenuItem mnemonicParsing="false" />
                               <MenuItem fx:id="mnuImportar" mnemonicParsing="false" text="Importar" />
 													</items>
 												</Menu>

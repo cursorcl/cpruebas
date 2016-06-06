@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.input.*?>
+<?import jfxtras.labs.scene.control.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="352.0" prefWidth="1033.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.NivelEvaluacionRangoEvaluacionController">
+   <top>
+      <MenuBar BorderPane.alignment="CENTER">
+        <menus>
+          <Menu mnemonicParsing="false" text="Archivo">
+            <items>
+                  <MenuItem fx:id="mnuAgregar" mnemonicParsing="false" text="Agregar">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="A" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator>
+                  </MenuItem>
+              <MenuItem fx:id="mnuModificar" mnemonicParsing="false" text="Modificar" />
+                  <MenuItem fx:id="mnuEliminar" mnemonicParsing="false" text="Eliminar" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+   </top>
+   <center>
+      <AnchorPane prefHeight="357.0" prefWidth="1033.0" styleClass="sample-page">
+         <children>
+            <TableView fx:id="tblNiveles" layoutX="14.0" layoutY="25.0" prefHeight="247.0" prefWidth="438.0" AnchorPane.bottomAnchor="55.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="25.0">
+              <columns>
+                <TableColumn fx:id="colNivelNombre" editable="false" prefWidth="424.0" resizable="false" text="Nombre" />
+              </columns>
+               <contextMenu>
+                  <ContextMenu>
+                    <items>
+                        <MenuItem fx:id="mnuItemAgregar" mnemonicParsing="false" text="mnuItemAgregar">
+                           <accelerator>
+                              <KeyCodeCombination alt="UP" code="R" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                           </accelerator>
+                        </MenuItem>
+                      <MenuItem fx:id="mnuItemModificar" mnemonicParsing="false" text="Modificar" />
+                        <MenuItem fx:id="mnuItemEliminar" mnemonicParsing="false" text="Eliminar" />
+                    </items>
+                  </ContextMenu>
+               </contextMenu>
+            </TableView>
+            <Label layoutX="14.0" layoutY="6.0" text="Niveles de Evaluación" />
+            <TableView fx:id="tblRangos" layoutX="519.0" layoutY="25.0" prefHeight="248.0" prefWidth="498.0" AnchorPane.bottomAnchor="55.0" AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="25.0">
+              <columns>
+                <TableColumn fx:id="colRangosNombre" editable="false" prefWidth="271.0" text="Nombre" />
+                <TableColumn fx:id="colRangosAbrev" editable="false" prefWidth="59.0" resizable="false" text="Abrev." />
+                  <TableColumn fx:id="colRangoMinimo" editable="false" prefWidth="64.0" resizable="false" text="Mínimo" />
+                  <TableColumn fx:id="colRangoMaximo" editable="false" prefWidth="75.0" resizable="false" text="Máximo" />
+              </columns>
+            </TableView>
+            <Label layoutX="519.0" layoutY="6.0" prefHeight="17.0" prefWidth="494.0" text="Rangos" />
+            <Button fx:id="btnModificar" layoutX="792.0" layoutY="288.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="103.0" text="Modificar" />
+            <Button fx:id="btnCancelar" layoutX="902.0" layoutY="288.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="115.0" text="Cancelar" />
+         </children>
+      </AnchorPane>
+   </center>
+</BorderPane>

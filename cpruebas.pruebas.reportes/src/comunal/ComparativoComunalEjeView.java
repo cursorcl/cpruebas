@@ -3,6 +3,7 @@ package comunal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -24,6 +25,7 @@ import cl.eos.persistence.models.Prueba;
 import cl.eos.persistence.models.PruebaRendida;
 import cl.eos.persistence.models.RespuestasEsperadasPrueba;
 import cl.eos.persistence.models.TipoAlumno;
+import cl.eos.persistence.util.Comparadores;
 import cl.eos.util.ExcelSheetWriterObj;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -319,10 +321,13 @@ public class ComparativoComunalEjeView extends AFormView implements EventHandler
 		ObservableList<ObservableList<String>> registroseEva = FXCollections.observableArrayList();
 		ObservableList<String> row = null;
 		int total = 0;
-		for (Entry<EvaluacionEjeTematico, HashMap<String, OTPreguntasEvaluacion>> mapa : mapEvaAlumnos.entrySet()) {
+
+		List<EvaluacionEjeTematico> ejes = new ArrayList<>(mapEvaAlumnos.keySet());
+		Collections.sort(ejes, Comparadores.comparaEvaluacionEjeTematico());
+		for (EvaluacionEjeTematico eje : ejes) {
+			HashMap<String, OTPreguntasEvaluacion> resultados = mapEvaAlumnos.get(eje);
 			row = FXCollections.observableArrayList();
-			row.add((mapa.getKey()).getName());
-			HashMap<String, OTPreguntasEvaluacion> resultados = mapa.getValue();
+			row.add(eje.getName());
 
 			for (String string : titulosColumnas) {
 				OTPreguntasEvaluacion otPregunta = resultados.get(string);
