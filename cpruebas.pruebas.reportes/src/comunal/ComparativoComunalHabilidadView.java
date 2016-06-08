@@ -25,6 +25,7 @@ import cl.eos.persistence.models.Prueba;
 import cl.eos.persistence.models.PruebaRendida;
 import cl.eos.persistence.models.RespuestasEsperadasPrueba;
 import cl.eos.persistence.models.TipoAlumno;
+import cl.eos.persistence.models.TipoColegio;
 import cl.eos.persistence.util.Comparadores;
 import cl.eos.util.ExcelSheetWriterObj;
 import javafx.beans.property.SimpleStringProperty;
@@ -60,7 +61,6 @@ public class ComparativoComunalHabilidadView extends AFormView implements EventH
 	private TableView<ObservableList<String>> tblHabilidades;
 	@FXML
 	private TableView<ObservableList<String>> tblEvaluaciones;
-	@FXML
 
 	private HashMap<Habilidad, HashMap<String, OTPreguntasHabilidad>> mapaHabilidad;
 
@@ -72,13 +72,18 @@ public class ComparativoComunalHabilidadView extends AFormView implements EventH
 	private ComboBox<TipoAlumno> cmbTipoAlumno;
 	@FXML
 	private Button btnGenerar;
+	@FXML
+	private ComboBox<TipoColegio> cmbTipoColegio;
+	
 	long tipoAlumno = Constants.PIE_ALL;
+	long tipoColegio = Constants.TIPO_COLEGIO_ALL;
 
 	private boolean llegaOnFound = false;
 	private boolean llegaEvaluacionEjeTematico = false;
 	private boolean llegaTipoAlumno = false;
 	private ArrayList<String> titulosColumnas;
 	private Prueba prueba;
+	private boolean llegaTipoColegio;
 
 	public ComparativoComunalHabilidadView() {
 
@@ -91,14 +96,25 @@ public class ComparativoComunalHabilidadView extends AFormView implements EventH
 		inicializarTablaEvaluacion();
 		mnuExportarHabilidad.setOnAction(this);
 		mnuExportarEvaluacion.setOnAction(this);
-		cmbTipoAlumno.getSelectionModel().select(0);
 		btnGenerar.setOnAction(this);
 		cmbTipoAlumno.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				tipoAlumno = cmbTipoAlumno.getSelectionModel().getSelectedIndex();
+				if(cmbTipoAlumno.getSelectionModel() == null)
+					return;
+				tipoAlumno = cmbTipoAlumno.getSelectionModel().getSelectedItem().getId();
 			}
 		});
+		
+		cmbTipoColegio.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				if(cmbTipoColegio.getSelectionModel().getSelectedItem() == null)
+					return;
+				tipoColegio	= cmbTipoColegio.getSelectionModel().getSelectedItem().getId();
+			}
+		});
+	
 	}
 
 	private void inicializarTablaHabilidades() {
@@ -139,12 +155,23 @@ public class ComparativoComunalHabilidadView extends AFormView implements EventH
 				cmbTipoAlumno.setItems(tAlumnoList);
 				cmbTipoAlumno.getSelectionModel().select((int) Constants.PIE_ALL);
 			}
+			if (entity instanceof TipoColegio) {
+				ObservableList<TipoColegio> tColegioList = FXCollections.observableArrayList();
+				llegaTipoColegio = true;
+				for (Object iEntity : list) {
+					tColegioList.add((TipoColegio) iEntity);
+				}
+				cmbTipoColegio.setItems(tColegioList);
+				TipoColegio tColegio = new TipoColegio();
+				tColegio.setId(Constants.TIPO_COLEGIO_ALL);
+				cmbTipoColegio.getSelectionModel().select(tColegio);
+			}				
 		}
 		procesaDatosReporte();
 	}
 
 	private void procesaDatosReporte() {
-		if (llegaEvaluacionEjeTematico && llegaTipoAlumno && llegaOnFound) {
+		if (llegaEvaluacionEjeTematico && llegaTipoAlumno && llegaOnFound &&  llegaTipoColegio) {
 			llenarDatosTabla();
 			desplegarDatosHabilidades();
 			desplegarDatosEvaluaciones();
@@ -179,12 +206,13 @@ public class ComparativoComunalHabilidadView extends AFormView implements EventH
 					if (pruebaRendida == null || pruebaRendida.getAlumno() == null
 							|| pruebaRendida.getAlumno().getTipoAlumno() == null)
 						continue;
-					if (tipoAlumno != Constants.PIE_ALL
-							&& tipoAlumno != pruebaRendida.getAlumno().getTipoAlumno().getId()) {
-						// En este caso, no se considera este alumno para el
-						// cálculo.
+					Alumno alumno = pruebaRendida.getAlumno();
+							
+					if (tipoAlumno != Constants.PIE_ALL && tipoAlumno != alumno.getTipoAlumno().getId()) 
 						continue;
-					}
+					if(tipoColegio != Constants.TIPO_COLEGIO_ALL && tipoColegio !=  alumno.getColegio().getTipoColegio().getId())
+						continue;
+
 
 					generaDatosEvaluacion(pruebaRendida, colegioCurso);
 

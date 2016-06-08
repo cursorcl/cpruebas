@@ -1,6 +1,7 @@
 package cl.eos.imp.controller;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -56,7 +57,11 @@ public abstract class AController implements IController, IPersistenceListener {
 			entity.remove(0);
 		}
 	}
-
+	@Override
+	public void delete(Collection<? extends IEntity> entity) {
+		List<? extends IEntity> list = new ArrayList<>(entity);
+		delete(list);
+	}
 	@Override
 	public void select(IEntity otObject) {
 		if (model != null) {

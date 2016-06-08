@@ -4,6 +4,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -11,25 +12,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.SelectionMode;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableColumn.CellDataFeatures;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.util.Callback;
 import cl.eos.common.Constants;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
@@ -50,6 +32,25 @@ import cl.eos.persistence.models.TipoAlumno;
 import cl.eos.persistence.util.Comparadores;
 import cl.eos.util.ExcelSheetWriterObj;
 import cl.eos.util.Utils;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.SelectionMode;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellDataFeatures;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.util.Callback;
 
 public class ResumenGeneralPMEView extends AFormView implements EventHandler<ActionEvent> {
 
@@ -119,7 +120,7 @@ public class ResumenGeneralPMEView extends AFormView implements EventHandler<Act
 	private boolean llegaOnFound = false;
 	private EvaluacionPrueba evaluacionPrueba;
 	private ArrayList<EjeTematico> titulosColumnas = new ArrayList<>();
-	private List<RangoEvaluacion> listaRangos;
+	private Collection<RangoEvaluacion> listaRangos;
 	private boolean llegaDatArrived;
 
 	public ResumenGeneralPMEView() {

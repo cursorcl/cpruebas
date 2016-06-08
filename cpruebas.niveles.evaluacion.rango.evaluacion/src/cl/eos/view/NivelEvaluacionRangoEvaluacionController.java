@@ -2,6 +2,7 @@ package cl.eos.view;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Collection;
 import java.util.List;
 
 import cl.eos.NivelEvaluacionActivator;
@@ -54,9 +55,7 @@ public class NivelEvaluacionRangoEvaluacionController extends AFormView implemen
 	@FXML
 	private MenuItem mnuAgregar;
 	@FXML
-	private MenuItem mnuItemAgregar;	
-	@FXML
-	private Button btnCancelar;
+	private MenuItem mnuItemAgregar;
 	@FXML
 	private Button btnModificar;
 	@FXML
@@ -72,7 +71,6 @@ public class NivelEvaluacionRangoEvaluacionController extends AFormView implemen
 		mnuModificar.setOnAction(this);
 		mnuItemModificar.setOnAction(this);
 		btnModificar.setOnAction(this);
-		btnCancelar.setOnAction(this);
 		mnuAgregar.setOnAction(this);
 		mnuItemAgregar.setOnAction(this);
 		mnuEliminar.setOnAction(this);
@@ -92,10 +90,12 @@ public class NivelEvaluacionRangoEvaluacionController extends AFormView implemen
 			@Override
 			public void handle(MouseEvent arg0) {
 				NivelEvaluacion nivel = tblNiveles.getSelectionModel().getSelectedItem();
-				select(nivel);
-				List<RangoEvaluacion> lstRangos = nivel.getRangos();
-				tblRangos.getItems().clear();
-				tblRangos.getItems().setAll(lstRangos);
+				if (nivel != null) {
+					select(nivel);
+					Collection<RangoEvaluacion> lstRangos = nivel.getRangos();
+					tblRangos.getItems().clear();
+					tblRangos.getItems().setAll(lstRangos);
+				}
 			}
 		});
 	}
@@ -132,14 +132,14 @@ public class NivelEvaluacionRangoEvaluacionController extends AFormView implemen
 			ventana.show();
 
 			IEntity nivel = getSelectedEntity();
-			
+
 			lController.findById(NivelEvaluacion.class, nivel.getId());
 
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void mostrarVentanaAgregar() {
 		NivelEvaluacionControllerEdicion lController = new NivelEvaluacionControllerEdicion();
 		URL url = NivelEvaluacionActivator.class
@@ -163,15 +163,17 @@ public class NivelEvaluacionRangoEvaluacionController extends AFormView implemen
 
 	@Override
 	public void handle(ActionEvent event) {
-		if (event.getSource() == mnuModificar || event.getSource() == mnuItemModificar) {
+		if (event.getSource() == mnuModificar || event.getSource() == mnuItemModificar
+				|| event.getSource() == btnModificar) {
 			mostrarVentanaModificar();
-		} else if (event.getSource() == btnCancelar) {
-
-		}
-		else if(event.getSource() == mnuAgregar || event.getSource() ==  mnuItemAgregar)
-		{
+		} else if (event.getSource() == mnuAgregar || event.getSource() == mnuItemAgregar) {
 			mostrarVentanaAgregar();
+		} else if (event.getSource() == mnuEliminar || event.getSource() == mnuItemEliminar) {
+			NivelEvaluacion nivel = (NivelEvaluacion) getSelectedEntity();
+			while (nivel.getRangos().size() > 0) {
+				delete(nivel.getRangos());
+			}
+			delete(nivel);
 		}
-
 	}
 }

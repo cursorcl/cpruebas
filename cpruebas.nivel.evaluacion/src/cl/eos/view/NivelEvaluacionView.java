@@ -1,7 +1,12 @@
 package cl.eos.view;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import cl.eos.imp.view.AFormView;
+import cl.eos.interfaces.entity.IEntity;
+import cl.eos.persistence.models.NivelEvaluacion;
+import cl.eos.persistence.models.RangoEvaluacion;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -9,10 +14,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
-import cl.eos.imp.view.AFormView;
-import cl.eos.interfaces.entity.IEntity;
-import cl.eos.persistence.models.NivelEvaluacion;
-import cl.eos.persistence.models.RangoEvaluacion;
 
 public class NivelEvaluacionView extends AFormView implements
 		EventHandler<ActionEvent> {
@@ -84,7 +85,7 @@ public class NivelEvaluacionView extends AFormView implements
 	}
 
 	private void setDatosNiveles(NivelEvaluacion entity) {
-		List<RangoEvaluacion> rangos = entity.getRangos();
+		List<RangoEvaluacion> rangos = new ArrayList<>(entity.getRangos());
 		if (entity.getNroRangos() == 2) {
 			RangoEvaluacion rango = rangos.get(0);
 			label1.setText(rango.getName());
@@ -200,8 +201,8 @@ public class NivelEvaluacionView extends AFormView implements
 					if (object instanceof NivelEvaluacion) {
 						if (nivel.equals((NivelEvaluacion) object)) {
 							NivelEvaluacion nivelActualizar = (NivelEvaluacion) object;
-							List<RangoEvaluacion> rangos = nivelActualizar
-									.getRangos();
+							List<RangoEvaluacion> rangos = new ArrayList<>(nivelActualizar
+									.getRangos());
 
 							if (nivelActualizar.getNroRangos() == 2) {
 								RangoEvaluacion rango = rangos.get(0);

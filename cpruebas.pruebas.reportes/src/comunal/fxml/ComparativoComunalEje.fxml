@@ -66,6 +66,8 @@
             </Label>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0" VBox.vgrow="ALWAYS">
                <children>
+                  <Label text="Tipo Colegio" />
+                  <ComboBox fx:id="cmbTipoColegio" prefHeight="25.0" prefWidth="181.0" promptText="Tipo Colegio" />
                   <Label text="Tipo de Alumno">
                      <HBox.margin>
                         <Insets top="7.0" />

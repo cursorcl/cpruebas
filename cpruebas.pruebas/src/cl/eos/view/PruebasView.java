@@ -20,6 +20,7 @@ import cl.eos.persistence.models.Prueba;
 import cl.eos.persistence.models.Prueba.Estado;
 import cl.eos.persistence.models.RangoEvaluacion;
 import cl.eos.persistence.models.TipoAlumno;
+import cl.eos.persistence.models.TipoColegio;
 import cl.eos.persistence.models.TipoCurso;
 import cl.eos.persistence.models.TipoPrueba;
 import cl.eos.view.editablecells.PruebaCellFactory;
@@ -487,6 +488,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 			controller.findByAllId(Prueba.class, pruebas, comunalEje);
 			controller.findAll(EvaluacionEjeTematico.class, comunalEje);
 			controller.findAll(TipoAlumno.class, comunalEje);
+			controller.findAll(TipoColegio.class, comunalEje);
 		}
 	}
 
@@ -498,6 +500,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 				controller.findById(Prueba.class, pPrueba.getId(), comparativoComunal);
 				controller.findAll(EvaluacionEjeTematico.class, comparativoComunal);
 				controller.findAll(TipoAlumno.class, comparativoComunal);
+				controller.findAll(TipoColegio.class, comparativoComunal);
 			}
 		}
 	}
@@ -538,6 +541,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 				controller.findById(Prueba.class, prueba.getId(), comparativoComunalHabilidad);
 				controller.findAll(EvaluacionEjeTematico.class, comparativoComunalHabilidad);
 				controller.findAll(TipoAlumno.class, comparativoComunalHabilidad);
+				controller.findAll(TipoColegio.class, comparativoComunalHabilidad);
 			}
 		}
 	}

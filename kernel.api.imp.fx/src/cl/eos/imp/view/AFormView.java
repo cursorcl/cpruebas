@@ -1,5 +1,6 @@
 package cl.eos.imp.view;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -45,6 +46,13 @@ public abstract class AFormView extends AView implements IFormView {
 
   @Override
   public void delete(List<? extends IEntity> otObject) {
+    if (controller != null && confirmaEliminar()) {
+      controller.delete(otObject);
+    }
+  }
+  
+  @Override
+  public void delete(Collection<? extends IEntity> otObject) {
     if (controller != null && confirmaEliminar()) {
       controller.delete(otObject);
     }

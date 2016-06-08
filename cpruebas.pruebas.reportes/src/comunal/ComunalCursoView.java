@@ -33,6 +33,7 @@ import cl.eos.persistence.models.EvaluacionPrueba;
 import cl.eos.persistence.models.Prueba;
 import cl.eos.persistence.models.PruebaRendida;
 import cl.eos.persistence.models.TipoAlumno;
+import cl.eos.persistence.models.TipoColegio;
 import cl.eos.persistence.models.TipoCurso;
 import cl.eos.persistence.util.Comparadores;
 
@@ -52,7 +53,12 @@ public class ComunalCursoView extends AFormView implements EventHandler<ActionEv
 	private ComboBox<TipoAlumno> cmbTipoAlumno;
 	@FXML
 	private Button btnGenerar;
+	@FXML
+	private ComboBox<TipoColegio> cmbTipoColegio;
+
+	
 	long tipoAlumno = Constants.PIE_ALL;
+	long tipoColegio = Constants.TIPO_COLEGIO_ALL;
 
 	private boolean llegaEvaluacionEjeTematico;
 	private boolean llegaOnFound;
@@ -65,19 +71,29 @@ public class ComunalCursoView extends AFormView implements EventHandler<ActionEv
 
 	@FXML
 	public void initialize() {
-		cmbTipoAlumno.getSelectionModel().select(0);
-
 		btnGenerar.setOnAction(this);
 		cmbTipoAlumno.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				tipoAlumno = cmbTipoAlumno.getSelectionModel().getSelectedIndex();
+				if(cmbTipoAlumno.getSelectionModel() == null)
+					return;
+				tipoAlumno = cmbTipoAlumno.getSelectionModel().getSelectedItem().getId();
 			}
 		});
+		
+		cmbTipoColegio.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				if(cmbTipoColegio.getSelectionModel().getSelectedItem() == null)
+					return;
+				tipoColegio	= cmbTipoColegio.getSelectionModel().getSelectedItem().getId();
+			}
+		});
+		
 	}
 
 	private void procesaDatosReporte() {
-		if (llegaEvaluacionEjeTematico && llegaOnFound && llegaTipoAlumno) {
+		if (llegaEvaluacionEjeTematico && llegaOnFound && llegaTipoAlumno && llegaTipoColegio) {
 			inicializarComponentes();
 			llenarDatosTabla();
 			creacionColumnasEvaluaciones(listaEvaluacionesTitulos);
@@ -143,9 +159,11 @@ public class ComunalCursoView extends AFormView implements EventHandler<ActionEv
 					Collection<Alumno> alumnos = evaluacionPrueba.getCurso().getAlumnos();
 					int totalAlumnos = 0;
 					for (Alumno alumno : alumnos) {
-						if (tipoAlumno != Constants.PIE_ALL && tipoAlumno != alumno.getTipoAlumno().getId()) {
+						if (tipoAlumno != Constants.PIE_ALL && tipoAlumno != alumno.getTipoAlumno().getId()) 
 							continue;
-						}
+						if(tipoColegio != Constants.TIPO_COLEGIO_ALL && tipoColegio !=  alumno.getColegio().getTipoColegio().getId())
+							continue;
+							
 						totalAlumnos++;
 					}
 					if (totalInformados.containsKey(tipoCurso)) {
@@ -187,6 +205,7 @@ public class ComunalCursoView extends AFormView implements EventHandler<ActionEv
 
 	private List<EvaluacionPrueba> listaEvaluacionesTitulos = new LinkedList<EvaluacionPrueba>();
 	private Map<EvaluacionEjeTematico, HashMap<String, OTPreguntasEvaluacion>> mapEvaAlumnos;
+	private boolean llegaTipoColegio;
 
 	private void llenarDatosTabla() {
 
@@ -213,13 +232,13 @@ public class ComunalCursoView extends AFormView implements EventHandler<ActionEv
 
 					HashMap<String, OTPreguntasEvaluacion> mapaOT = new HashMap<String, OTPreguntasEvaluacion>();
 					for (PruebaRendida pruebaRendida : evaluacionPrueba.getPruebasRendidas()) {
-
-						if (tipoAlumno != Constants.PIE_ALL
-								&& tipoAlumno != pruebaRendida.getAlumno().getTipoAlumno().getId()) {
-							// En este caso, no se considera este alumno para el
-							// cálculo.
+						Alumno alumno = pruebaRendida.getAlumno();
+						if (tipoAlumno != Constants.PIE_ALL && tipoAlumno != alumno.getTipoAlumno().getId()) 
 							continue;
-						}
+						if(tipoColegio != Constants.TIPO_COLEGIO_ALL && tipoColegio !=  alumno.getColegio().getTipoColegio().getId())
+							continue;
+						
+						
 						Float pBuenas = pruebaRendida.getPbuenas();
 						for (Entry<Long, EvaluacionEjeTematico> mEvaluacion : mEvaluaciones.entrySet()) {
 
@@ -366,6 +385,17 @@ public class ComunalCursoView extends AFormView implements EventHandler<ActionEv
 				cmbTipoAlumno.setItems(tAlumnoList);
 				cmbTipoAlumno.getSelectionModel().select((int) Constants.PIE_ALL);
 			}
+			if (entity instanceof TipoColegio) {
+				ObservableList<TipoColegio> tColegioList = FXCollections.observableArrayList();
+				llegaTipoColegio = true;
+				for (Object iEntity : list) {
+					tColegioList.add((TipoColegio) iEntity);
+				}
+				cmbTipoColegio.setItems(tColegioList);
+				TipoColegio tColegio = new TipoColegio();
+				tColegio.setId(Constants.TIPO_COLEGIO_ALL);
+				cmbTipoColegio.getSelectionModel().select(tColegio);
+			}	
 			procesaDatosReporte();
 		}
 	}

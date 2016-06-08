@@ -25,6 +25,7 @@ import cl.eos.persistence.models.Prueba;
 import cl.eos.persistence.models.PruebaRendida;
 import cl.eos.persistence.models.RespuestasEsperadasPrueba;
 import cl.eos.persistence.models.TipoAlumno;
+import cl.eos.persistence.models.TipoColegio;
 import cl.eos.persistence.util.Comparadores;
 import cl.eos.util.ExcelSheetWriterObj;
 import javafx.beans.property.SimpleStringProperty;
@@ -69,13 +70,18 @@ public class ComparativoComunalEjeView extends AFormView implements EventHandler
 	private ComboBox<TipoAlumno> cmbTipoAlumno;
 	@FXML
 	private Button btnGenerar;
+	@FXML
+	private ComboBox<TipoColegio> cmbTipoColegio;
+	
 	long tipoAlumno = Constants.PIE_ALL;
-
+	long tipoColegio = Constants.TIPO_COLEGIO_ALL;
+	
 	private ArrayList<String> titulosColumnas;
 	private Prueba prueba;
 	private boolean llegaOnFound = false;
 	private boolean llegaTipoAlumno = false;
 	private boolean llegaEvaluacionEjeTematico = false;
+	private boolean llegaTipoColegio;
 
 	@FXML
 	public void initialize() {
@@ -85,14 +91,25 @@ public class ComparativoComunalEjeView extends AFormView implements EventHandler
 
 		mnuExportarEjesTematicos.setOnAction(this);
 		mnuExportarEvaluacion.setOnAction(this);
-		cmbTipoAlumno.getSelectionModel().select(0);
 		btnGenerar.setOnAction(this);
 		cmbTipoAlumno.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				tipoAlumno = cmbTipoAlumno.getSelectionModel().getSelectedIndex();
+				if(cmbTipoAlumno.getSelectionModel() == null)
+					return;
+				tipoAlumno = cmbTipoAlumno.getSelectionModel().getSelectedItem().getId();
 			}
 		});
+		
+		cmbTipoColegio.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				if(cmbTipoColegio.getSelectionModel().getSelectedItem() == null)
+					return;
+				tipoColegio	= cmbTipoColegio.getSelectionModel().getSelectedItem().getId();
+			}
+		});
+	
 	}
 
 	@Override
@@ -125,12 +142,23 @@ public class ComparativoComunalEjeView extends AFormView implements EventHandler
 				cmbTipoAlumno.setItems(tAlumnoList);
 				cmbTipoAlumno.getSelectionModel().select((int) Constants.PIE_ALL);
 			}
+			if (entity instanceof TipoColegio) {
+				ObservableList<TipoColegio> tColegioList = FXCollections.observableArrayList();
+				llegaTipoColegio = true;
+				for (Object iEntity : list) {
+					tColegioList.add((TipoColegio) iEntity);
+				}
+				cmbTipoColegio.setItems(tColegioList);
+				TipoColegio tColegio = new TipoColegio();
+				tColegio.setId(Constants.TIPO_COLEGIO_ALL);
+				cmbTipoColegio.getSelectionModel().select(tColegio);
+			}			
 		}
 		procesaDatosReporte();
 	}
 
 	private void procesaDatosReporte() {
-		if (llegaEvaluacionEjeTematico && llegaTipoAlumno && llegaOnFound) {
+		if (llegaEvaluacionEjeTematico && llegaTipoAlumno && llegaOnFound && llegaTipoColegio) {
 			llenarDatosTabla();
 			desplegarDatosEjesTematicos();
 			desplegarDatosEvaluaciones();
@@ -160,27 +188,25 @@ public class ComparativoComunalEjeView extends AFormView implements EventHandler
 			List<RespuestasEsperadasPrueba> respuestasEsperadas = prueba.getRespuestas();
 
 			for (PruebaRendida pruebaRendida : pruebasRendidas) {
-				Alumno al = pruebaRendida.getAlumno();
-
-				if (tipoAlumno != Constants.PIE_ALL
-						&& tipoAlumno != pruebaRendida.getAlumno().getTipoAlumno().getId()) {
-					// En este caso, no se considera este alumno para el
-					// cálculo.
+				Alumno alumno = pruebaRendida.getAlumno();
+				if (tipoAlumno != Constants.PIE_ALL && tipoAlumno != alumno.getTipoAlumno().getId()) 
 					continue;
-				}
+				if(tipoColegio != Constants.TIPO_COLEGIO_ALL && tipoColegio !=  alumno.getColegio().getTipoColegio().getId())
+					continue;
+				
 				generaDatosEvaluacion(pruebaRendida, colegioCurso);
 
 				String respuesta = pruebaRendida.getRespuestas().toUpperCase();
 
-				if (al == null) {
+				if (alumno == null) {
 					log.error(String.format("NO EXISTE ALUMNO: %s %s", colegioCurso, respuesta));
 					continue; // Caso que el alumno sea nulo.
 				}
-				log.info(String.format("%s %s %s %s %s %s", colegioCurso, al.getRut(), al.getName(), al.getPaterno(),
-						al.getMaterno(), respuesta));
+				log.info(String.format("%s %s %s %s %s %s", colegioCurso, alumno.getRut(), alumno.getName(), alumno.getPaterno(),
+						alumno.getMaterno(), respuesta));
 
 				if (respuesta == null || respuesta.length() < prueba.getNroPreguntas()) {
-					informarProblemas(colegioCurso, al, respuesta);
+					informarProblemas(colegioCurso, alumno, respuesta);
 					continue;
 				}
 				char[] cRespuesta = respuesta.toUpperCase().toCharArray();
@@ -352,7 +378,7 @@ public class ComparativoComunalEjeView extends AFormView implements EventHandler
 		row.add("Totales");
 		for (String string : titulosColumnas) {
 			Integer valor = totales.get(string);
-			row.add(String.valueOf(valor));
+			row.add(valor == null ? "0" : String.valueOf(valor));
 		}
 		registroseEva.add(row);
 

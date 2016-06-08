@@ -34,7 +34,7 @@
                <contextMenu>
                   <ContextMenu>
                     <items>
-                        <MenuItem fx:id="mnuItemAgregar" mnemonicParsing="false" text="mnuItemAgregar">
+                        <MenuItem fx:id="mnuItemAgregar" mnemonicParsing="false" text="Agregar">
                            <accelerator>
                               <KeyCodeCombination alt="UP" code="R" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                            </accelerator>
@@ -55,8 +55,7 @@
               </columns>
             </TableView>
             <Label layoutX="519.0" layoutY="6.0" prefHeight="17.0" prefWidth="494.0" text="Rangos" />
-            <Button fx:id="btnModificar" layoutX="792.0" layoutY="288.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="103.0" text="Modificar" />
-            <Button fx:id="btnCancelar" layoutX="902.0" layoutY="288.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="115.0" text="Cancelar" />
+            <Button fx:id="btnModificar" layoutX="913.0" layoutY="288.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="103.0" text="Modificar" />
          </children>
       </AnchorPane>
    </center>

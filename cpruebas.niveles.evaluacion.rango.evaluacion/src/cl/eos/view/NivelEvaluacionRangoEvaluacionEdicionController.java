@@ -2,6 +2,7 @@ package cl.eos.view;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import cl.eos.imp.view.AFormView;
@@ -127,21 +128,75 @@ public class NivelEvaluacionRangoEvaluacionEdicionController extends AFormView i
 		if (event.getSource() == mnuGrabar || event.getSource() == btnGrabar) {
 			Stage stage = (Stage) btnCancelar.getScene().getWindow();
 			stage.close();
-
+			List<RangoEvaluacion> toRemove = new ArrayList<RangoEvaluacion>();
+			ObservableList<RangoEvaluacion> items = tblRangos.getItems();
+			int size = items == null ? 0 : items.size();
 			if(nivel == null)
 			{
 				nivel = new NivelEvaluacion();
 				nivel.setRangos(new ArrayList<RangoEvaluacion>());
+				for (RangoEvaluacion rango : items) {
+					rango.setNivelEvaluacion(nivel);
+					nivel.getRangos().add(rango);
+				}
+			}
+			else
+			{
+				List<RangoEvaluacion> lst = new ArrayList<>(nivel.getRangos());
+				for(RangoEvaluacion rango: lst)
+				{
+					boolean founded = false;
+					for(RangoEvaluacion rng: items)
+					{
+						if(rango.equals(rng))
+						{
+							founded = true;
+							rango.setAbreviacion(rng.getAbreviacion());
+							rango.setMaximo(rng.getMaximo());
+							rango.setMinimo(rng.getMinimo());
+							rango.setName(rng.getName());
+							break;
+						}
+					}
+					if(!founded)
+					{
+						toRemove.add(rango);
+					}
+				}
+				for(RangoEvaluacion rango: toRemove)
+				{
+					nivel.getRangos().remove(rango);
+				}
+				for(RangoEvaluacion rango: items)
+				{
+					boolean founded = false;
+					for(RangoEvaluacion rng: lst)
+					{
+						if(rango.equals(rng))
+						{
+							founded = true;
+							break;
+						}
+					}
+					if(!founded)
+					{
+						rango.setNivelEvaluacion(nivel);
+						nivel.getRangos().add(rango);
+					}
+				}
 			}
 			
 			nivel.setName(txtNivelEvaluacion.getText());
-			ObservableList<RangoEvaluacion> items = tblRangos.getItems();
-			nivel.setNroRangos(items.size());
-			nivel.getRangos().clear();
-			for (RangoEvaluacion rango : items) {
-				nivel.getRangos().add(rango);
-			}
+			nivel.setNroRangos(size);
 			save(nivel);
+//			for(RangoEvaluacion rango: nivel.getRangos())
+//			{
+//				save(rango);
+//			}
+//			for(RangoEvaluacion rango: toRemove)
+//			{
+//				delete(rango, false);
+//			}
 		}
 		if (event.getSource() == btnCancelar) {
 			Stage stage = (Stage) btnCancelar.getScene().getWindow();

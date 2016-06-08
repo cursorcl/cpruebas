@@ -1,8 +1,11 @@
 package cl.eos.persistence.models;
 
+import java.util.Collection;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -23,8 +26,8 @@ public class NivelEvaluacion extends AEntity {
 	private Long id;
 	private String name;
 	private Integer nroRangos;
-	@OneToMany
-	private List<RangoEvaluacion> rangos;
+	@OneToMany(mappedBy="nivelEvaluacion", cascade=CascadeType.ALL, fetch = FetchType.EAGER)
+	private Collection<RangoEvaluacion> rangos;
 
 	/**
 	 * Se crea para el manejo de multiusuarios
@@ -42,11 +45,11 @@ public class NivelEvaluacion extends AEntity {
 	}
 	
 	
-	public List<RangoEvaluacion> getRangos() {
+	public Collection<RangoEvaluacion> getRangos() {
 		return rangos;
 	}
 
-	public void setRangos(List<RangoEvaluacion> rangos) {
+	public void setRangos(Collection<RangoEvaluacion> rangos) {
 		this.rangos = rangos;
 	}
 

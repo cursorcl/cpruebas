@@ -1,5 +1,6 @@
 package cl.eos.interfaces.view;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -31,6 +32,7 @@ public interface IFormView extends IView {
   void delete(IEntity otObject, boolean confirm);
 
   void delete(List<? extends IEntity> otObject);
+  void delete(Collection<? extends IEntity> otObject);
 
   /**
    * Metodo que se usa para indicar la selección de una entidad.

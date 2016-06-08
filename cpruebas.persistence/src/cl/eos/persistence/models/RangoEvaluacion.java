@@ -4,6 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Version;
@@ -22,6 +24,9 @@ public class RangoEvaluacion extends AEntity {
 	private String abreviacion;
 	private Float minimo;
 	private Float maximo;
+	
+	@ManyToOne
+    private NivelEvaluacion nivelEvaluacion;
 
 	/**
 	 * Se crea para el manejo de multiusuarios
@@ -86,6 +91,14 @@ public class RangoEvaluacion extends AEntity {
 
 	public void setMaximo(Float maximo) {
 		this.maximo = maximo;
+	}
+
+	public NivelEvaluacion getNivelEvaluacion() {
+		return nivelEvaluacion;
+	}
+
+	public void setNivelEvaluacion(NivelEvaluacion nivelEvaluacion) {
+		this.nivelEvaluacion = nivelEvaluacion;
 	}
 
 	@Override

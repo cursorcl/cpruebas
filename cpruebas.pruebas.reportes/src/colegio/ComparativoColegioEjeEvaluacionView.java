@@ -2,6 +2,7 @@ package colegio;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -176,7 +177,7 @@ public class ComparativoColegioEjeEvaluacionView extends AFormView implements Ev
 			}
 			EvaluacionPrueba evaluacionPrueba = (EvaluacionPrueba) entity;
 			rangoEvalList = FXCollections.observableArrayList();
-			List<RangoEvaluacion> rngs = evaluacionPrueba.getPrueba().getNivelEvaluacion().getRangos();
+			Collection<RangoEvaluacion> rngs = evaluacionPrueba.getPrueba().getNivelEvaluacion().getRangos();
 			for (RangoEvaluacion rng : rngs) {
 				rangoEvalList.add(rng);
 			}
