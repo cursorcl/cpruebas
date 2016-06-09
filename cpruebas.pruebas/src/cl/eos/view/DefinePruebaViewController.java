@@ -2,10 +2,28 @@ package cl.eos.view;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
+import cl.eos.PruebasActivator;
+import cl.eos.imp.view.AFormView;
+import cl.eos.imp.view.WindowManager;
+import cl.eos.interfaces.IActivator;
+import cl.eos.interfaces.entity.IEntity;
+import cl.eos.persistence.models.EjeTematico;
+import cl.eos.persistence.models.Formas;
+import cl.eos.persistence.models.Habilidad;
+import cl.eos.persistence.models.Objetivo;
+import cl.eos.persistence.models.Prueba;
+import cl.eos.persistence.models.Prueba.Estado;
+import cl.eos.persistence.models.RespuestasEsperadasPrueba;
+import cl.eos.persistence.util.Comparadores;
+import cl.eos.util.ExcelSheetWriterObj;
+import cl.eos.view.dnd.EjeTematicoDND;
+import cl.eos.view.dnd.HabilidadDND;
+import cl.eos.view.dnd.ObjetivoDND;
+import cl.eos.view.editablecells.EditingCellRespuesta;
+import cl.eos.view.editablecells.StyleChangingRowFactory;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -30,23 +48,6 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.util.Callback;
-import cl.eos.PruebasActivator;
-import cl.eos.imp.view.AFormView;
-import cl.eos.imp.view.WindowManager;
-import cl.eos.interfaces.IActivator;
-import cl.eos.interfaces.entity.IEntity;
-import cl.eos.persistence.models.EjeTematico;
-import cl.eos.persistence.models.Formas;
-import cl.eos.persistence.models.Habilidad;
-import cl.eos.persistence.models.Prueba;
-import cl.eos.persistence.models.Prueba.Estado;
-import cl.eos.persistence.models.RespuestasEsperadasPrueba;
-import cl.eos.persistence.util.Comparadores;
-import cl.eos.util.ExcelSheetWriterObj;
-import cl.eos.view.dnd.EjeTematicoDND;
-import cl.eos.view.dnd.HabilidadDND;
-import cl.eos.view.editablecells.EditingCellRespuesta;
-import cl.eos.view.editablecells.StyleChangingRowFactory;
 
 public class DefinePruebaViewController extends AFormView {
 
@@ -67,11 +68,18 @@ public class DefinePruebaViewController extends AFormView {
 	@FXML
 	private TableColumn<RegistroDefinePrueba, EjeTematico> ejeCol;
 	@FXML
+	private TableColumn<RegistroDefinePrueba, Objetivo> objCol;
+	@FXML
 	private TableColumn<RegistroDefinePrueba, String> badCol;
 	@FXML
 	private TableView<EjeTematico> tblEjesTematicos;
 	@FXML
 	private TableColumn<EjeTematico, String> ejeTematicoCol;
+	@FXML
+	private TableView<Objetivo> tblObjetivos;
+	@FXML
+	private TableColumn<Objetivo, String> objetivoCol;
+
 	@FXML
 	private TableView<Habilidad> tblHabilidades;
 	@FXML
@@ -102,50 +110,37 @@ public class DefinePruebaViewController extends AFormView {
 	public void initialize() {
 
 		tblRegistroDefinePrueba.setEditable(true);
-		tblRegistroDefinePrueba.getSelectionModel().setSelectionMode(
-				SelectionMode.MULTIPLE);
+		tblRegistroDefinePrueba.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 		registerDND();
 
 		rowFactory = new StyleChangingRowFactory<>("bad");
 		tblRegistroDefinePrueba.setRowFactory(rowFactory);
 
-		preguntaCol
-				.setCellValueFactory(new PropertyValueFactory<RegistroDefinePrueba, Integer>(
-						"numero"));
+		preguntaCol.setCellValueFactory(new PropertyValueFactory<RegistroDefinePrueba, Integer>("numero"));
 
 		preguntaCol.setStyle("-fx-alignment: CENTER;");
-		respuestaCol
-				.setCellValueFactory(new PropertyValueFactory<RegistroDefinePrueba, String>(
-						"respuesta"));
+		respuestaCol.setCellValueFactory(new PropertyValueFactory<RegistroDefinePrueba, String>("respuesta"));
 		respuestaCol.setEditable(true);
 		respuestaCol.setStyle("-fx-alignment: CENTER;");
 
-		vfCol.setCellValueFactory(new PropertyValueFactory<RegistroDefinePrueba, Boolean>(
-				"verdaderoFalso"));
+		vfCol.setCellValueFactory(new PropertyValueFactory<RegistroDefinePrueba, Boolean>("verdaderoFalso"));
 		vfCol.setCellFactory(CheckBoxTableCell.forTableColumn(vfCol));
 		vfCol.setEditable(true);
 
-		mentalCol
-				.setCellValueFactory(new PropertyValueFactory<RegistroDefinePrueba, Boolean>(
-						"mental"));
+		mentalCol.setCellValueFactory(new PropertyValueFactory<RegistroDefinePrueba, Boolean>("mental"));
 		mentalCol.setCellFactory(CheckBoxTableCell.forTableColumn(mentalCol));
 		mentalCol.setEditable(true);
 
-		habCol.setCellValueFactory(new PropertyValueFactory<RegistroDefinePrueba, Habilidad>(
-				"habilidad"));
-		ejeCol.setCellValueFactory(new PropertyValueFactory<RegistroDefinePrueba, EjeTematico>(
-				"ejeTematico"));
-		habilidadCol
-				.setCellValueFactory(new PropertyValueFactory<Habilidad, String>(
-						"name"));
-		ejeTematicoCol
-				.setCellValueFactory(new PropertyValueFactory<EjeTematico, String>(
-						"name"));
+		habCol.setCellValueFactory(new PropertyValueFactory<RegistroDefinePrueba, Habilidad>("habilidad"));
+		ejeCol.setCellValueFactory(new PropertyValueFactory<RegistroDefinePrueba, EjeTematico>("ejeTematico"));
+		habilidadCol.setCellValueFactory(new PropertyValueFactory<Habilidad, String>("name"));
+		ejeTematicoCol.setCellValueFactory(new PropertyValueFactory<EjeTematico, String>("name"));
+
+		objetivoCol.setCellValueFactory(new PropertyValueFactory<Objetivo, String>("name"));
 
 		tblHabilidades.setOnDragDetected(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent event) {
-				Dragboard db = tblHabilidades
-						.startDragAndDrop(TransferMode.ANY);
+				Dragboard db = tblHabilidades.startDragAndDrop(TransferMode.ANY);
 				ClipboardContent content = new ClipboardContent();
 				content.putIfAbsent(HabilidadDND.habilidadTrackDataFormat,
 						tblHabilidades.getSelectionModel().getSelectedItem());
@@ -155,8 +150,7 @@ public class DefinePruebaViewController extends AFormView {
 		});
 		tblEjesTematicos.setOnDragDetected(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent event) {
-				Dragboard db = tblHabilidades
-						.startDragAndDrop(TransferMode.ANY);
+				Dragboard db = tblHabilidades.startDragAndDrop(TransferMode.ANY);
 				ClipboardContent content = new ClipboardContent();
 				content.putIfAbsent(EjeTematicoDND.ejeTematicoTrackDataFormat,
 						tblEjesTematicos.getSelectionModel().getSelectedItem());
@@ -165,6 +159,18 @@ public class DefinePruebaViewController extends AFormView {
 			}
 		});
 
+		tblObjetivos.setOnDragDetected(new EventHandler<MouseEvent>() {
+			public void handle(MouseEvent event) {
+				Dragboard db = tblObjetivos.startDragAndDrop(TransferMode.ANY);
+				ClipboardContent content = new ClipboardContent();
+				if (content != null) {
+					content.putIfAbsent(ObjetivoDND.objetivoTrackDataFormat,
+							tblObjetivos.getSelectionModel().getSelectedItem());
+					db.setContent(content);
+					event.consume();
+				}
+			}
+		});
 		mnuGrabar.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -176,8 +182,7 @@ public class DefinePruebaViewController extends AFormView {
 			@Override
 			public void handle(ActionEvent event) {
 				List<TableView<? extends Object>> listaTablas = new LinkedList<>();
-				listaTablas
-						.add((TableView<? extends Object>) tblRegistroDefinePrueba);
+				listaTablas.add((TableView<? extends Object>) tblRegistroDefinePrueba);
 				listaTablas.add((TableView<? extends Object>) tblEjesTematicos);
 				listaTablas.add((TableView<? extends Object>) tblHabilidades);
 				ExcelSheetWriterObj.convertirDatosALibroDeExcel(listaTablas);
@@ -200,16 +205,14 @@ public class DefinePruebaViewController extends AFormView {
 		});
 		txtRespuestas.textProperty().addListener(new ChangeListener<String>() {
 			@Override
-			public void changed(final ObservableValue<? extends String> ov,
-					final String oldValue, final String newValue) {
+			public void changed(final ObservableValue<? extends String> ov, final String oldValue,
+					final String newValue) {
 				if (newValue.length() > prueba.getNroPreguntas().intValue()) {
-					txtRespuestas.setText(newValue.substring(0, prueba
-							.getNroPreguntas().intValue()));
+					txtRespuestas.setText(newValue.substring(0, prueba.getNroPreguntas().intValue()));
 				} else {
 					int len = newValue.length();
 					if (len > 0) {
-						String s = newValue.substring(len - 1, len)
-								.toUpperCase();
+						String s = newValue.substring(len - 1, len).toUpperCase();
 						final String strValid = respsValidas + " VF";
 
 						if (!strValid.contains(s)) {
@@ -226,26 +229,27 @@ public class DefinePruebaViewController extends AFormView {
 		tblRegistroDefinePrueba.setOnDragDropped(new EventHandler<DragEvent>() {
 			@Override
 			public void handle(DragEvent dragEvent) {
-				ObservableList<RegistroDefinePrueba> seleccionados = tblRegistroDefinePrueba
-						.getSelectionModel().getSelectedItems();
+				ObservableList<RegistroDefinePrueba> seleccionados = tblRegistroDefinePrueba.getSelectionModel()
+						.getSelectedItems();
 				if (seleccionados != null && !seleccionados.isEmpty()) {
-					if (dragEvent.getDragboard().getContent(
-							EjeTematicoDND.ejeTematicoTrackDataFormat) != null) {
-						EjeTematico ejeTematico = (EjeTematico) dragEvent
-								.getDragboard()
-								.getContent(
-										EjeTematicoDND.ejeTematicoTrackDataFormat);
+					if (dragEvent.getDragboard().getContent(EjeTematicoDND.ejeTematicoTrackDataFormat) != null) {
+						EjeTematico ejeTematico = (EjeTematico) dragEvent.getDragboard()
+								.getContent(EjeTematicoDND.ejeTematicoTrackDataFormat);
 						for (RegistroDefinePrueba registro : seleccionados) {
 							registro.setEjeTematico(ejeTematico);
 						}
-					} else if (dragEvent.getDragboard().getContent(
-							HabilidadDND.habilidadTrackDataFormat) != null) {
-						Habilidad habilidad = (Habilidad) dragEvent
-								.getDragboard().getContent(
-										HabilidadDND.habilidadTrackDataFormat);
+					} else if (dragEvent.getDragboard().getContent(HabilidadDND.habilidadTrackDataFormat) != null) {
+						Habilidad habilidad = (Habilidad) dragEvent.getDragboard()
+								.getContent(HabilidadDND.habilidadTrackDataFormat);
 						for (RegistroDefinePrueba registro : seleccionados) {
 							registro.setHabilidad(habilidad);
 						}
+					}
+				} else if (dragEvent.getDragboard().getContent(ObjetivoDND.objetivoTrackDataFormat) != null) {
+					Objetivo objetivo = (Objetivo) dragEvent.getDragboard()
+							.getContent(ObjetivoDND.objetivoTrackDataFormat);
+					for (RegistroDefinePrueba registro : seleccionados) {
+						registro.setObjetivo(objetivo);
 					}
 				}
 			}
@@ -268,10 +272,9 @@ public class DefinePruebaViewController extends AFormView {
 		tblRegistroDefinePrueba.setOnDragOver(new EventHandler<DragEvent>() {
 			@Override
 			public void handle(DragEvent dragEvent) {
-				if (dragEvent.getDragboard().getContent(
-						EjeTematicoDND.ejeTematicoTrackDataFormat) != null
-						|| dragEvent.getDragboard().getContent(
-								HabilidadDND.habilidadTrackDataFormat) != null) {
+				if (dragEvent.getDragboard().getContent(EjeTematicoDND.ejeTematicoTrackDataFormat) != null
+						|| dragEvent.getDragboard().getContent(HabilidadDND.habilidadTrackDataFormat) != null
+						|| dragEvent.getDragboard().getContent(ObjetivoDND.objetivoTrackDataFormat) != null) {
 					dragEvent.acceptTransferModes(TransferMode.COPY);
 				}
 			}
@@ -304,20 +307,25 @@ public class DefinePruebaViewController extends AFormView {
 		if (list != null && !list.isEmpty()) {
 			Object entity = list.get(0);
 			if (entity instanceof EjeTematico) {
-				ObservableList<EjeTematico> ejesTematicos = FXCollections
-						.observableArrayList();
+				ObservableList<EjeTematico> ejesTematicos = FXCollections.observableArrayList();
 				for (Object lEntity : list) {
 					ejesTematicos.add((EjeTematico) lEntity);
 				}
 				tblEjesTematicos.setItems(ejesTematicos);
 			} else if (entity instanceof Habilidad) {
-				ObservableList<Habilidad> habilidades = FXCollections
-						.observableArrayList();
+				ObservableList<Habilidad> habilidades = FXCollections.observableArrayList();
 				for (Object lEntity : list) {
 					habilidades.add((Habilidad) lEntity);
 				}
 				tblHabilidades.setItems(habilidades);
+			} else if (entity instanceof Objetivo) {
+				ObservableList<Objetivo> objetivos = FXCollections.observableArrayList();
+				for (Object lEntity : list) {
+					objetivos.add((Objetivo) lEntity);
+				}
+				tblObjetivos.setItems(objetivos);
 			}
+
 		}
 	}
 
@@ -327,11 +335,9 @@ public class DefinePruebaViewController extends AFormView {
 			registros = FXCollections.observableArrayList();
 			prueba = (Prueba) entity;
 
-			
-			
 			respsValidas = VALID_LETTERS.substring(0, prueba.getAlternativas());
-			respuestaCol
-					.setCellFactory(new Callback<TableColumn<RegistroDefinePrueba, String>, TableCell<RegistroDefinePrueba, String>>() {
+			respuestaCol.setCellFactory(
+					new Callback<TableColumn<RegistroDefinePrueba, String>, TableCell<RegistroDefinePrueba, String>>() {
 						@Override
 						public TableCell<RegistroDefinePrueba, String> call(
 								final TableColumn<RegistroDefinePrueba, String> column) {
@@ -342,16 +348,14 @@ public class DefinePruebaViewController extends AFormView {
 					});
 
 			txtRespuestas.setText("");
-			if (prueba.getRespuestas() != null
-					&& !prueba.getRespuestas().isEmpty()) {
+			if (prueba.getRespuestas() != null && !prueba.getRespuestas().isEmpty()) {
 
 				StringBuffer resps = new StringBuffer();
 				List<RespuestasEsperadasPrueba> respuestas = new ArrayList<RespuestasEsperadasPrueba>();
 
 				int nroPreguntas = prueba.getNroPreguntas();
 				int oldNroPreguntas = prueba.getRespuestas().size();
-				for (RespuestasEsperadasPrueba respuesta : prueba
-						.getRespuestas()) {
+				for (RespuestasEsperadasPrueba respuesta : prueba.getRespuestas()) {
 					respuestas.add(respuesta);
 				}
 				if (nroPreguntas > oldNroPreguntas) {
@@ -366,8 +370,7 @@ public class DefinePruebaViewController extends AFormView {
 					}
 				}
 
-				Collections.sort(respuestas,
-						Comparadores.compararRespuestasEsperadas());
+				Collections.sort(respuestas, Comparadores.compararRespuestasEsperadas());
 				for (RespuestasEsperadasPrueba respuesta : respuestas) {
 					RegistroDefinePrueba registro = new RegistroDefinePrueba();
 					registro.setNumero(respuesta.getNumero());
@@ -392,14 +395,14 @@ public class DefinePruebaViewController extends AFormView {
 			}
 
 			tblRegistroDefinePrueba.setItems(registros);
-			
-			 boolean editable =  !prueba.getEstado().equals(Estado.EVALUADA);
-			 txtRespuestas.setEditable(editable);
-			 txtRespuestas.setDisable(!editable);
-		     preguntaCol.setEditable(editable);
-		     respuestaCol.setEditable(editable);
-		     vfCol.setEditable(editable);
-		     mentalCol.setEditable(editable);
+
+			boolean editable = !prueba.getEstado().equals(Estado.EVALUADA);
+			txtRespuestas.setEditable(editable);
+			txtRespuestas.setDisable(!editable);
+			preguntaCol.setEditable(editable);
+			respuestaCol.setEditable(editable);
+			vfCol.setEditable(editable);
+			mentalCol.setEditable(editable);
 		}
 	}
 
@@ -481,7 +484,7 @@ public class DefinePruebaViewController extends AFormView {
 				respuesta.setHabilidad(registro.getHabilidad());
 				respuesta.setMental(registro.getMental());
 				respuesta.setName(registro.getNumero().toString());
-				respuesta.setNumero(new Integer(n+1));
+				respuesta.setNumero(new Integer(n + 1));
 				respuesta.setRespuesta(registro.getRespuesta());
 				respuesta.setVerdaderoFalso(registro.getVerdaderoFalso());
 				respuesta.setPrueba(prueba);
@@ -507,13 +510,9 @@ public class DefinePruebaViewController extends AFormView {
 			valido = (registro.getEjeTematico() != null);
 			valido = valido && (registro.getHabilidad() != null);
 			valido = valido && !registro.getRespuesta().isEmpty();
-			valido = valido
-					&& ((registro.getMental() && " ".equals(registro
-							.getRespuesta()))
-							|| (registro.getVerdaderoFalso() && "VF"
-									.contains(registro.getRespuesta()
-											.toUpperCase())) || (respsValidas
-								.contains(registro.getRespuesta().toUpperCase())));
+			valido = valido && ((registro.getMental() && " ".equals(registro.getRespuesta()))
+					|| (registro.getVerdaderoFalso() && "VF".contains(registro.getRespuesta().toUpperCase()))
+					|| (respsValidas.contains(registro.getRespuesta().toUpperCase())));
 			if (!valido) {
 				badIdx.add(n);
 			}

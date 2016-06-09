@@ -35,6 +35,7 @@ public class RespuestasEsperadasPrueba extends AEntity {
   private Boolean mental = Boolean.FALSE;
   private Habilidad habilidad;
   private EjeTematico ejeTematico;
+  private Objetivo objetivo;
   private Boolean anulada = Boolean.FALSE;
 
   @Id
@@ -148,6 +149,14 @@ public Boolean isAnulada() {
 
 public void setAnulada(Boolean anulada) {
 	this.anulada = anulada;
+}
+
+public Objetivo getObjetivo() {
+	return objetivo;
+}
+
+public void setObjetivo(Objetivo objetivo) {
+	this.objetivo = objetivo;
 }
 
 }

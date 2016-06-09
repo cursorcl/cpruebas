@@ -6,11 +6,12 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefWidth="1087.0" styleClass="sample-page" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.DefinePruebaViewController">
+
+<AnchorPane prefHeight="552.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.DefinePruebaViewController">
    <children>
-      <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="1087.0" AnchorPane.bottomAnchor="16.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <top>
-            <MenuBar BorderPane.alignment="CENTER">
+      <VBox prefHeight="552.0" prefWidth="1080.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <MenuBar>
               <menus>
                 <Menu mnemonicParsing="false" text="Archivo">
                   <items>
@@ -25,21 +26,9 @@
                 </Menu>
               </menus>
             </MenuBar>
-         </top>
-         <center>
-            <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="498.0" prefWidth="1079.0" styleClass="sample-page" BorderPane.alignment="CENTER">
+            <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="524.0" prefWidth="1079.0" styleClass="sample-page">
                <children>
-                  <TableView fx:id="tblEjesTematicos" layoutX="633.0" layoutY="3.0" prefWidth="230.0" AnchorPane.bottomAnchor="3.0" AnchorPane.rightAnchor="216.0" AnchorPane.topAnchor="3.0">
-                    <columns>
-                      <TableColumn fx:id="ejeTematicoCol" editable="false" prefWidth="217.0" resizable="false" sortable="false" text="Ejes temáticos" />
-                    </columns>
-                  </TableView>
-                  <TableView fx:id="tblHabilidades" layoutX="496.0" layoutY="3.0" prefWidth="206.0" AnchorPane.bottomAnchor="3.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="3.0">
-                    <columns>
-                      <TableColumn fx:id="habilidadCol" editable="false" prefWidth="192.0" resizable="false" sortable="false" text="Habilidad" />
-                    </columns>
-                  </TableView>
-                  <TableView fx:id="tblRegistroDefinePrueba" layoutX="1.0" layoutY="40.0" prefWidth="621.0" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="457.0" AnchorPane.topAnchor="33.0">
+                  <TableView fx:id="tblRegistroDefinePrueba" layoutX="1.0" layoutY="40.0" prefHeight="480.0" prefWidth="756.0" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="322.0" AnchorPane.topAnchor="33.0">
                     <columns>
                       <TableColumn fx:id="preguntaCol" prefWidth="35.0" resizable="false" sortable="false" text="#" />
                       <TableColumn fx:id="respuestaCol" prefWidth="56.0" resizable="false" sortable="false" text="Res" />
@@ -47,15 +36,35 @@
                         <TableColumn fx:id="mentalCol" prefWidth="69.0" resizable="false" sortable="false" text="Mental" />
                         <TableColumn fx:id="ejeCol" editable="false" prefWidth="171.0" resizable="false" sortable="false" text="Eje" />
                         <TableColumn fx:id="habCol" editable="false" prefWidth="185.0" sortable="false" text="Habilidad" />
+                        <TableColumn fx:id="objCol" prefWidth="182.0" text="Objetivos" />
                     </columns>
                   </TableView>
                   <Label layoutX="14.0" layoutY="14.0" prefHeight="17.0" prefWidth="69.0" text="Respuestas" AnchorPane.topAnchor="3.0" />
-                  <TextField fx:id="txtRespuestas" layoutX="142.0" layoutY="10.0" prefHeight="25.0" prefWidth="430.0" promptText="Respuestas" AnchorPane.topAnchor="3.0" />
-                  <Button fx:id="btnListo" layoutX="581.0" layoutY="10.0" mnemonicParsing="false" text="Listo" AnchorPane.topAnchor="3.0" />
+                  <TextField fx:id="txtRespuestas" layoutX="142.0" layoutY="10.0" prefHeight="25.0" prefWidth="557.0" promptText="Respuestas" AnchorPane.topAnchor="3.0" />
+                  <Button fx:id="btnListo" layoutX="716.0" layoutY="2.0" mnemonicParsing="false" text="Listo" AnchorPane.topAnchor="2.0" />
                   <Label fx:id="lblCount" layoutX="87.0" layoutY="14.0" prefHeight="17.0" prefWidth="38.0" style="-fx-alignment: CENTER;" text="0/0" textAlignment="CENTER" AnchorPane.topAnchor="3.0" />
+                  <VBox alignment="CENTER" layoutX="831.0" layoutY="31.0" prefHeight="506.0" prefWidth="313.0" spacing="2.0" AnchorPane.bottomAnchor="3.0" AnchorPane.rightAnchor="3.0" AnchorPane.topAnchor="33.0">
+                     <children>
+                        <TableView fx:id="tblHabilidades" prefHeight="170.0" prefWidth="309.0">
+                          <columns>
+                            <TableColumn fx:id="habilidadCol" editable="false" prefWidth="281.0" resizable="false" sortable="false" text="Habilidad" />
+                          </columns>
+                        </TableView>
+                        <TableView fx:id="tblEjesTematicos" prefHeight="170.0" prefWidth="310.0">
+                          <columns>
+                            <TableColumn fx:id="ejeTematicoCol" editable="false" prefWidth="283.0" resizable="false" sortable="false" text="Ejes temáticos" />
+                          </columns>
+                        </TableView>
+                        <TableView fx:id="tblObjetivos" prefHeight="170.0" prefWidth="310.0">
+                           <columns>
+                              <TableColumn fx:id="objetivoCol" editable="false" prefWidth="283.0" resizable="false" sortable="false" text="Objetivos" />
+                           </columns>
+                        </TableView>
+                     </children>
+                  </VBox>
                </children>
             </AnchorPane>
-         </center>
-      </BorderPane>
+         </children>
+      </VBox>
    </children>
 </AnchorPane>

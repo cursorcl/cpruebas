@@ -15,6 +15,7 @@ import cl.eos.persistence.models.Colegio;
 import cl.eos.persistence.models.EvaluacionEjeTematico;
 import cl.eos.persistence.models.Habilidad;
 import cl.eos.persistence.models.NivelEvaluacion;
+import cl.eos.persistence.models.Objetivo;
 import cl.eos.persistence.models.Profesor;
 import cl.eos.persistence.models.Prueba;
 import cl.eos.persistence.models.Prueba.Estado;
@@ -570,6 +571,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 				parameters.put("idAsignatura", prueba.getAsignatura().getId());
 				controller.find("EjeTematico.findByAsigntura", parameters, definePrueba);
 				controller.findAll(Habilidad.class, definePrueba);
+				controller.findAll(Objetivo.class, definePrueba);
 			}
 		}
 	}

@@ -9,6 +9,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import cl.eos.persistence.models.EjeTematico;
 import cl.eos.persistence.models.Habilidad;
+import cl.eos.persistence.models.Objetivo;
 
 /**
  * Clase que permite registrar la definición de un registro de una prueba.
@@ -23,6 +24,7 @@ public class RegistroDefinePrueba {
 	private SimpleBooleanProperty mental;
 	private ObjectProperty<Habilidad> habilidad;
 	private ObjectProperty<EjeTematico> ejeTematico;
+	private ObjectProperty<Objetivo> objetivo;
 	private SimpleStringProperty bad;
 
 	public RegistroDefinePrueba() {
@@ -149,4 +151,19 @@ public class RegistroDefinePrueba {
 	public void setBad(String bad) {
 		this.bad.set(bad);
 	}
+
+	public final ObjectProperty<Objetivo> objetivoProperty() {
+		return this.objetivo;
+	}
+	
+
+	public final cl.eos.persistence.models.Objetivo getObjetivo() {
+		return this.objetivoProperty().get();
+	}
+	
+
+	public final void setObjetivo(final cl.eos.persistence.models.Objetivo objetivo) {
+		this.objetivoProperty().set(objetivo);
+	}
+	
 }

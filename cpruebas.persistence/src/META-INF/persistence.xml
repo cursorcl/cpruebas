@@ -25,6 +25,7 @@
 		<class>cl.eos.persistence.models.Formas</class>
 		<class>cl.eos.persistence.models.EvaluacionEjeTematico</class>
 		<class>cl.eos.persistence.models.TipoColegio</class>
+		<class>cl.eos.persistence.models.Objetivo</class>
 		<properties>
 			<property name="javax.persistence.jdbc.user" value="root" />
 			<property name="javax.persistence.jdbc.password" value="admin" />

@@ -45,7 +45,7 @@
                   </ContextMenu>
                </contextMenu>
             </TableView>
-            <Label layoutX="14.0" layoutY="6.0" text="Niveles de Evaluación" />
+            <Label focusTraversable="false" layoutX="14.0" layoutY="6.0" text="Niveles de Evaluación" />
             <TableView fx:id="tblRangos" layoutX="519.0" layoutY="25.0" prefHeight="248.0" prefWidth="498.0" AnchorPane.bottomAnchor="55.0" AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="25.0">
               <columns>
                 <TableColumn fx:id="colRangosNombre" editable="false" prefWidth="271.0" text="Nombre" />
@@ -54,7 +54,7 @@
                   <TableColumn fx:id="colRangoMaximo" editable="false" prefWidth="75.0" resizable="false" text="Máximo" />
               </columns>
             </TableView>
-            <Label layoutX="519.0" layoutY="6.0" prefHeight="17.0" prefWidth="494.0" text="Rangos" />
+            <Label focusTraversable="false" layoutX="519.0" layoutY="6.0" prefHeight="17.0" prefWidth="494.0" text="Rangos" />
             <Button fx:id="btnModificar" layoutX="913.0" layoutY="288.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="103.0" text="Modificar" />
          </children>
       </AnchorPane>
