@@ -28,5 +28,6 @@
 	<classpathentry kind="lib" path="O:/cpruebas_multiuser/cpruebas/jars/controlsfx-8.40.10.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.evaluacion.eje.tematico"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.niveles.evaluacion.rango.evaluacion"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.objetivos"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.input.*?>
+<?import javafx.scene.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="1051.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.ObjetivosView">
+   <top>
+      <MenuBar BorderPane.alignment="CENTER">
+        <menus>
+            <Menu mnemonicParsing="false" text="Archivo">
+               <items>
+                  <MenuItem fx:id="mnuAgregar" mnemonicParsing="false" text="Agregar Objetivo" />
+                  <MenuItem id="mnuGrabar" fx:id="mnuGrabar" mnemonicParsing="false" text="Grabar Objetivo">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="G" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator>
+                  </MenuItem>
+                  <MenuItem fx:id="mnuModificar" mnemonicParsing="false" text="Modificar Objetivo">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="M" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator>
+                  </MenuItem>
+                  <MenuItem fx:id="mnuEliminar" mnemonicParsing="false" text="Eliminar Objetivo">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="E" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator>
+                  </MenuItem>
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem fx:id="mnuExportar" mnemonicParsing="false" text="Exportar Objetivo" />
+                  <MenuItem fx:id="mnuImportar" mnemonicParsing="false" text="Importar Objetivo" visible="false" />
+               </items>
+            </Menu>
+          <Menu mnemonicParsing="false" text="Help" visible="false">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+   </top>
+   <center>
+      <SplitPane dividerPositions="0.25929456625357483" prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+               <children>
+                  <Label fx:id="lblError" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="10.0" />
+                  <Label text="Objetivo" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="30.0" />
+                  <TextField id="txtNombre" fx:id="txtNombre" prefHeight="25.0" prefWidth="301.0" promptText="Nombre Eje" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="50.0" />
+                  <TextField id="txtNombre" fx:id="txtDescripcion" layoutX="10.0" layoutY="106.0" prefHeight="25.0" prefWidth="239.0" promptText="Descripción" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="15.0" />
+                  <Label layoutX="14.0" layoutY="89.0" text="Descripción" />
+               </children>
+            </AnchorPane>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+               <children>
+                  <BorderPane prefHeight="459.0" prefWidth="370.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <center>
+                        <AnchorPane prefHeight="473.0" prefWidth="722.0" BorderPane.alignment="CENTER">
+                           <children>
+                              <TableView id="tblEjesTematicos" fx:id="tblObjetivos" prefHeight="469.0" prefWidth="524.0" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="2.0">
+                                <columns>
+                                    <TableColumn fx:id="colId" prefWidth="70.0" text="ID" />
+                                  <TableColumn fx:id="colNombre" prefWidth="241.0" text="Nombre" />
+                                    <TableColumn fx:id="colDescripcion" prefWidth="453.0" text="Descripción" />
+                                </columns>
+                                 <contextMenu>
+                                    <ContextMenu>
+                                      <items>
+                                        <MenuItem fx:id="menuModificar" mnemonicParsing="false" text="Modificar" />
+                                          <MenuItem fx:id="menuEliminar" mnemonicParsing="false" text="Eliminar" />
+                                          <SeparatorMenuItem mnemonicParsing="false" />
+                                          <MenuItem fx:id="menuExportar" mnemonicParsing="false" text="Exportar a Excel" />
+                                      </items>
+                                    </ContextMenu>
+                                 </contextMenu>
+                              </TableView>
+                           </children>
+                        </AnchorPane>
+                     </center>
+                  </BorderPane>
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
+   </center>
+</BorderPane>

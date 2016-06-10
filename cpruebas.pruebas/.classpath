@@ -37,5 +37,6 @@
 	<classpathentry kind="lib" path="O:/cpruebas/jars/controlsfx-8.0.6_20.jar"/>
 	<classpathentry kind="lib" path="O:/cpruebas/jars/log4j.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.data"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.definicion"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

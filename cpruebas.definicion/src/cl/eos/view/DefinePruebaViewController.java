@@ -5,10 +5,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import cl.eos.PruebasActivator;
 import cl.eos.imp.view.AFormView;
-import cl.eos.imp.view.WindowManager;
-import cl.eos.interfaces.IActivator;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.persistence.models.EjeTematico;
 import cl.eos.persistence.models.Formas;
@@ -29,6 +26,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -87,8 +85,6 @@ public class DefinePruebaViewController extends AFormView {
 	@FXML
 	private MenuItem mnuGrabar;
 	@FXML
-	private MenuItem mnuVolver;
-	@FXML
 	private MenuItem mnuExportar;
 	@FXML
 	private Button btnListo;
@@ -133,10 +129,22 @@ public class DefinePruebaViewController extends AFormView {
 
 		habCol.setCellValueFactory(new PropertyValueFactory<RegistroDefinePrueba, Habilidad>("habilidad"));
 		ejeCol.setCellValueFactory(new PropertyValueFactory<RegistroDefinePrueba, EjeTematico>("ejeTematico"));
+		objCol.setCellValueFactory(new PropertyValueFactory<RegistroDefinePrueba, Objetivo>("objetivo"));
+
 		habilidadCol.setCellValueFactory(new PropertyValueFactory<Habilidad, String>("name"));
 		ejeTematicoCol.setCellValueFactory(new PropertyValueFactory<EjeTematico, String>("name"));
-
 		objetivoCol.setCellValueFactory(new PropertyValueFactory<Objetivo, String>("name"));
+
+		tblRegistroDefinePrueba.setOnMouseClicked(new EventHandler<Event>() {
+			@Override
+			public void handle(Event event) {
+				boolean ennabled = tblRegistroDefinePrueba.getSelectionModel().getSelectedItems() != null
+						&& !tblRegistroDefinePrueba.getSelectionModel().getSelectedItems().isEmpty();
+				tblEjesTematicos.setDisable(!ennabled);
+				tblHabilidades.setDisable(!ennabled);
+				tblObjetivos.setDisable(!ennabled);
+			}
+		});
 
 		tblHabilidades.setOnDragDetected(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent event) {
@@ -196,13 +204,6 @@ public class DefinePruebaViewController extends AFormView {
 
 			}
 		});
-		mnuVolver.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				IActivator activator = new PruebasActivator();
-				WindowManager.getInstance().show(activator.getView());
-			}
-		});
 		txtRespuestas.textProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(final ObservableValue<? extends String> ov, final String oldValue,
@@ -244,12 +245,12 @@ public class DefinePruebaViewController extends AFormView {
 						for (RegistroDefinePrueba registro : seleccionados) {
 							registro.setHabilidad(habilidad);
 						}
-					}
-				} else if (dragEvent.getDragboard().getContent(ObjetivoDND.objetivoTrackDataFormat) != null) {
-					Objetivo objetivo = (Objetivo) dragEvent.getDragboard()
-							.getContent(ObjetivoDND.objetivoTrackDataFormat);
-					for (RegistroDefinePrueba registro : seleccionados) {
-						registro.setObjetivo(objetivo);
+					} else if (dragEvent.getDragboard().getContent(ObjetivoDND.objetivoTrackDataFormat) != null) {
+						Objetivo objetivo = (Objetivo) dragEvent.getDragboard()
+								.getContent(ObjetivoDND.objetivoTrackDataFormat);
+						for (RegistroDefinePrueba registro : seleccionados) {
+							registro.setObjetivo(objetivo);
+						}
 					}
 				}
 			}
@@ -377,6 +378,7 @@ public class DefinePruebaViewController extends AFormView {
 					registro.setRespuesta(respuesta.getRespuesta());
 					registro.setEjeTematico(respuesta.getEjeTematico());
 					registro.setHabilidad(respuesta.getHabilidad());
+					registro.setObjetivo(respuesta.getObjetivo());
 					registro.setVerdaderoFalso(respuesta.getVerdaderoFalso());
 					registro.setMental(respuesta.getMental());
 					resps.append(respuesta.getRespuesta());
@@ -472,6 +474,7 @@ public class DefinePruebaViewController extends AFormView {
 			respuesta.setName(registro.getNumero().toString());
 			respuesta.setNumero(registro.getNumero());
 			respuesta.setRespuesta(registro.getRespuesta());
+			respuesta.setObjetivo(registro.getObjetivo());
 			respuesta.setVerdaderoFalso(registro.getVerdaderoFalso());
 			n++;
 		}
@@ -527,4 +530,5 @@ public class DefinePruebaViewController extends AFormView {
 		}
 		return todosValidos;
 	}
+
 }

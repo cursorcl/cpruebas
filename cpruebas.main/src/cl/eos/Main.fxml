@@ -86,6 +86,7 @@
                                     <KeyCodeCombination alt="UP" code="H" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                                  </accelerator>
                               </MenuItem>
+                              <MenuItem fx:id="mnuObjetivos" mnemonicParsing="false" text="Objetivos" />
                               <MenuItem fx:id="mnuTipoPrueba" mnemonicParsing="false" text="Tipo prueba">
                                  <accelerator>
                                     <KeyCodeCombination alt="UP" code="T" control="DOWN" meta="UP" shift="UP" shortcut="UP" />

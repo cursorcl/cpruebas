@@ -6,7 +6,6 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-
 <AnchorPane prefHeight="552.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.DefinePruebaViewController">
    <children>
       <VBox prefHeight="552.0" prefWidth="1080.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -21,7 +20,6 @@
                            </accelerator>
                         </MenuItem>
                         <MenuItem fx:id="mnuExportar" mnemonicParsing="false" text="Exportar a excel" />
-                    <MenuItem fx:id="mnuVolver" mnemonicParsing="false" text="Volver a Pruebas" />
                   </items>
                 </Menu>
               </menus>
@@ -45,17 +43,17 @@
                   <Label fx:id="lblCount" layoutX="87.0" layoutY="14.0" prefHeight="17.0" prefWidth="38.0" style="-fx-alignment: CENTER;" text="0/0" textAlignment="CENTER" AnchorPane.topAnchor="3.0" />
                   <VBox alignment="CENTER" layoutX="831.0" layoutY="31.0" prefHeight="506.0" prefWidth="313.0" spacing="2.0" AnchorPane.bottomAnchor="3.0" AnchorPane.rightAnchor="3.0" AnchorPane.topAnchor="33.0">
                      <children>
-                        <TableView fx:id="tblHabilidades" prefHeight="170.0" prefWidth="309.0">
+                        <TableView fx:id="tblHabilidades" disable="true" prefHeight="170.0" prefWidth="309.0">
                           <columns>
                             <TableColumn fx:id="habilidadCol" editable="false" prefWidth="281.0" resizable="false" sortable="false" text="Habilidad" />
                           </columns>
                         </TableView>
-                        <TableView fx:id="tblEjesTematicos" prefHeight="170.0" prefWidth="310.0">
+                        <TableView fx:id="tblEjesTematicos" disable="true" prefHeight="170.0" prefWidth="310.0">
                           <columns>
                             <TableColumn fx:id="ejeTematicoCol" editable="false" prefWidth="283.0" resizable="false" sortable="false" text="Ejes temáticos" />
                           </columns>
                         </TableView>
-                        <TableView fx:id="tblObjetivos" prefHeight="170.0" prefWidth="310.0">
+                        <TableView fx:id="tblObjetivos" disable="true" prefHeight="170.0" prefWidth="310.0">
                            <columns>
                               <TableColumn fx:id="objetivoCol" editable="false" prefWidth="283.0" resizable="false" sortable="false" text="Objetivos" />
                            </columns>

@@ -31,24 +31,21 @@ public class RegistroDefinePrueba {
 		this(0, "", false, false);
 	}
 
-	public RegistroDefinePrueba(Integer numero, String respuesta,
-			Boolean verdaderoFalso, Boolean mental) {
+	public RegistroDefinePrueba(Integer numero, String respuesta, Boolean verdaderoFalso, Boolean mental) {
 		super();
 		this.numero = new SimpleIntegerProperty(numero);
 		this.respuesta = new SimpleStringProperty(respuesta);
-		this.verdaderoFalso = new SimpleBooleanProperty(
-				verdaderoFalso.booleanValue());
+		this.verdaderoFalso = new SimpleBooleanProperty(verdaderoFalso.booleanValue());
 		this.mental = new SimpleBooleanProperty(mental.booleanValue());
-		this.habilidad = new SimpleObjectProperty<Habilidad>();
-		this.ejeTematico = new SimpleObjectProperty<EjeTematico>();
-
+		this.habilidad = new SimpleObjectProperty<>();
+		this.ejeTematico = new SimpleObjectProperty<>();
+		this.objetivo = new SimpleObjectProperty<>();
+		
 		this.mental.addListener(new ChangeListener<Boolean>() {
 			@Override
-			public void changed(ObservableValue<? extends Boolean> observable,
-					Boolean oldValue, Boolean newValue) {
+			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
 				if (newValue.equals(Boolean.TRUE)) {
-					RegistroDefinePrueba.this.verdaderoFalso
-							.set(Boolean.FALSE);
+					RegistroDefinePrueba.this.verdaderoFalso.set(Boolean.FALSE);
 					RegistroDefinePrueba.this.respuesta.set(" ");
 				}
 			}
@@ -56,8 +53,7 @@ public class RegistroDefinePrueba {
 
 		this.verdaderoFalso.addListener(new ChangeListener<Boolean>() {
 			@Override
-			public void changed(ObservableValue<? extends Boolean> observable,
-					Boolean oldValue, Boolean newValue) {
+			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
 				if (newValue.equals(Boolean.TRUE)) {
 					RegistroDefinePrueba.this.mental.set(Boolean.FALSE);
 					if (!"VF".contains(getRespuesta().toUpperCase())) {
@@ -155,15 +151,13 @@ public class RegistroDefinePrueba {
 	public final ObjectProperty<Objetivo> objetivoProperty() {
 		return this.objetivo;
 	}
-	
 
 	public final cl.eos.persistence.models.Objetivo getObjetivo() {
 		return this.objetivoProperty().get();
 	}
-	
 
 	public final void setObjetivo(final cl.eos.persistence.models.Objetivo objetivo) {
 		this.objetivoProperty().set(objetivo);
 	}
-	
+
 }

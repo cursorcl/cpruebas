@@ -5,6 +5,18 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import cl.eos.PruebasActivator;
+import cl.eos.imp.view.AFormView;
+import cl.eos.imp.view.WindowManager;
+import cl.eos.interfaces.IActivator;
+import cl.eos.interfaces.entity.IEntity;
+import cl.eos.persistence.models.EvaluacionPrueba;
+import cl.eos.persistence.models.Prueba;
+import cl.eos.persistence.models.Prueba.Estado;
+import cl.eos.persistence.models.PruebaRendida;
+import cl.eos.persistence.models.RespuestasEsperadasPrueba;
+import cl.eos.persistence.util.Comparadores;
+import cl.eos.util.ExcelSheetWriterObj;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -16,20 +28,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
-import cl.eos.PruebasActivator;
-import cl.eos.imp.view.AFormView;
-import cl.eos.imp.view.WindowManager;
-import cl.eos.interfaces.IActivator;
-import cl.eos.interfaces.entity.IEntity;
-import cl.eos.persistence.models.EvaluacionPrueba;
-import cl.eos.persistence.models.Formas;
-import cl.eos.persistence.models.Prueba;
-import cl.eos.persistence.models.Prueba.Estado;
-import cl.eos.persistence.models.PruebaRendida;
-import cl.eos.persistence.models.RespuestasEsperadasPrueba;
-import cl.eos.persistence.util.Comparadores;
-import cl.eos.util.ExcelSheetWriterObj;
-import cl.eos.view.editablecells.StyleChangingRowFactory;
 
 public class AnularPreguntasViewController extends AFormView {
 

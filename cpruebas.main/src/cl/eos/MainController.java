@@ -67,6 +67,8 @@ public class MainController {
 	private MenuItem mnuEvaluaciones;
 	@FXML
 	private MenuItem mnuNivelEvaluaciones;
+	@FXML
+	private MenuItem mnuObjetivos;
 
 	@FXML
 	private BreadcrumbBar breadCrumb;
@@ -194,7 +196,15 @@ public class MainController {
 				WindowManager.getInstance().show(activator.getView());
 			}
 		});
-		
+		mnuObjetivos.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				IActivator activator = new ObjetivosActivator();
+				WindowManager.getInstance().show(activator.getView());
+			}
+		});
+
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
