@@ -188,15 +188,11 @@ public class NivelEvaluacionRangoEvaluacionEdicionController extends AFormView i
 			
 			nivel.setName(txtNivelEvaluacion.getText());
 			nivel.setNroRangos(size);
-			save(nivel);
-//			for(RangoEvaluacion rango: nivel.getRangos())
-//			{
-//				save(rango);
-//			}
-//			for(RangoEvaluacion rango: toRemove)
-//			{
-//				delete(rango, false);
-//			}
+			nivel = (NivelEvaluacion) save(nivel);
+			for(RangoEvaluacion rango: nivel.getRangos())
+			{
+				save(rango);
+			}
 		}
 		if (event.getSource() == btnCancelar) {
 			Stage stage = (Stage) btnCancelar.getScene().getWindow();

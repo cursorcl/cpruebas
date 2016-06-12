@@ -33,5 +33,6 @@
 	<classpathentry kind="lib" path="O:/cpruebas/jars/boofcv/xpp3_min-1.1.4c.jar"/>
 	<classpathentry kind="lib" path="O:/cpruebas/jars/boofcv/xstream-1.4.7.jar"/>
 	<classpathentry kind="lib" path="O:/cpruebas/jars/log4j.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/kernel.api.imp.fx"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -21,7 +21,7 @@ public interface IFormView extends IView {
    * 
    * @param otObject Objeto que se quire grabar.
    */
-  void save(IEntity otObject);
+	IEntity save(IEntity otObject);
 
   /**
    * Metodo que se usa para enviar a eliminar una entidad.

@@ -31,14 +31,6 @@ public class PrintActionListener implements Runnable {
 	    printAttributes.add(new PrinterResolution(600, 600, PrinterResolution.DPI)); 
 		PrinterJob printJob = PrinterJob.getPrinterJob();
 		
-//		Paper paper = new Paper();
-//		paper.setSize(612, 792);
-		//paper.setImageableArea(0, 0, image.getWidth(), image.getHeight());
-//		PageFormat pageFormat = new PageFormat();
-//		pageFormat.setPaper(paper);
-//		pageFormat.setOrientation(PageFormat.PORTRAIT);
-		
-		
 		printJob.setPrintable(new ImagePrintable(printJob, image), printJob.getPageFormat(printAttributes));
 		if (printJob.printDialog(printAttributes)) {
 			try {

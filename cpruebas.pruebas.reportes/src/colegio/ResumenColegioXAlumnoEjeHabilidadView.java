@@ -191,6 +191,8 @@ public class ResumenColegioXAlumnoEjeHabilidadView extends AFormView implements 
 
 		if (evaluacionesPrueba == null)
 			return;
+		
+		clearContent();
 		FXCollections.sort(evaluacionesPrueba, Comparadores.comparaEvaluacionPruebaXCurso());
 		ProgressForm pForm = new ProgressForm();
 		pForm.title("Procesando Cursos");

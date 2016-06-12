@@ -28,7 +28,7 @@ public interface IController {
 	 * @param entity
 	 *            Objeto a grabar.
 	 */
-	void save(IEntity entity);
+	IEntity save(IEntity entity);
 
 	/**
 	 * Metodo que elimina el objeto. El controlador debe liberar de inmediato el

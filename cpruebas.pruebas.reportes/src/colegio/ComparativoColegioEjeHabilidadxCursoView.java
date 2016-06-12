@@ -448,6 +448,7 @@ public class ComparativoColegioEjeHabilidadxCursoView extends AFormView implemen
 			return;
 		}
 		
+		clearContent();
 		ProgressForm pForm = new ProgressForm();
 		pForm.title("Generando reporte");
 		pForm.message("Esto tomará algunos segundos.");
@@ -492,6 +493,7 @@ public class ComparativoColegioEjeHabilidadxCursoView extends AFormView implemen
 	 */
 	private Pair<Map<IEntity, List<OTCursoRangos>>, Pair<List<EjeTematico>, List<Habilidad>>> generarReporte() {
 
+		
 		// Una iteracion por cada curso asociado al colegio con una evaluacion
 		int nroCursos = listaEvaluacionesPrueba.size();
 

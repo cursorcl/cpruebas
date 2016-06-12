@@ -8,10 +8,11 @@ import cl.eos.interfaces.view.IFormView;
 public abstract class AFormView extends AView implements IFormView {
 
 	@Override
-	public void save(IEntity otObject) {
+	public IEntity save(IEntity otObject) {
 		if (controller != null && validate()) {
-			controller.save(otObject);
+			return controller.save(otObject);
 		}
+		return null;
 	}
 
 	@Override

@@ -30,7 +30,7 @@ public abstract class AController implements IController, IPersistenceListener {
 	public abstract void initialize();
 
 	@Override
-	public void save(IEntity entity) {
+	public IEntity save(IEntity entity) {
 		IEntity result = null;
 		if (model != null) {
 			if (entity.getId() != null) {
@@ -40,6 +40,7 @@ public abstract class AController implements IController, IPersistenceListener {
 			}
 			notifySaved(result);
 		}
+		return result;
 	}
 
 	@Override

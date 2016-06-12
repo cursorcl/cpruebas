@@ -86,7 +86,10 @@
                                     <KeyCodeCombination alt="UP" code="H" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                                  </accelerator>
                               </MenuItem>
-                              <MenuItem fx:id="mnuObjetivos" mnemonicParsing="false" text="Objetivos" />
+                              <MenuItem fx:id="mnuObjetivos" mnemonicParsing="false" text="Objetivos">
+                                 <accelerator>
+                                    <KeyCodeCombination alt="UP" code="O" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                                 </accelerator></MenuItem>
                               <MenuItem fx:id="mnuTipoPrueba" mnemonicParsing="false" text="Tipo prueba">
                                  <accelerator>
                                     <KeyCodeCombination alt="UP" code="T" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
@@ -98,8 +101,14 @@
                                  </accelerator>
                               </MenuItem>
                               <SeparatorMenuItem mnemonicParsing="false" />
-                              <MenuItem fx:id="mnuEvaluaciones" mnemonicParsing="false" text="Evaluaciones" />
-                              <MenuItem fx:id="mnuNivelEvaluaciones" mnemonicParsing="false" text="Nivel Evaluaciones" />
+                              <MenuItem fx:id="mnuEvaluaciones" mnemonicParsing="false" text="Evaluaciones">
+                                 <accelerator>
+                                    <KeyCodeCombination alt="UP" code="V" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                                 </accelerator></MenuItem>
+                              <MenuItem fx:id="mnuNivelEvaluaciones" mnemonicParsing="false" text="Nivel Evaluaciones">
+                                 <accelerator>
+                                    <KeyCodeCombination alt="UP" code="N" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                                 </accelerator></MenuItem>
                               <SeparatorMenuItem mnemonicParsing="false" />
                               <MenuItem fx:id="mnuImportar" mnemonicParsing="false" text="Importar" />
 													</items>

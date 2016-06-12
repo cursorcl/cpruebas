@@ -121,6 +121,7 @@ public class ImprimirPruebaView extends AFormView {
 				boolean disable = cmbColegios.getSelectionModel().getSelectedItem() == null
 						|| cmbCursos.getSelectionModel().getSelectedItem() == null
 						|| cmbProfesor.getSelectionModel().getSelectedItem() == null;
+				mnuImprimir.setDisable(disable);
 				mnuImprimeVacia.setDisable(disable);
 			}
 		});
@@ -131,6 +132,7 @@ public class ImprimirPruebaView extends AFormView {
 				boolean disable = cmbColegios.getSelectionModel().getSelectedItem() == null
 						|| cmbCursos.getSelectionModel().getSelectedItem() == null
 						|| cmbProfesor.getSelectionModel().getSelectedItem() == null;
+				mnuImprimir.setDisable(disable);
 				mnuImprimeVacia.setDisable(disable);
 			}
 		});
@@ -142,11 +144,13 @@ public class ImprimirPruebaView extends AFormView {
 				boolean disable = cmbColegios.getSelectionModel().getSelectedItem() == null
 						|| cmbCursos.getSelectionModel().getSelectedItem() == null
 						|| cmbProfesor.getSelectionModel().getSelectedItem() == null;
+				mnuImprimir.setDisable(disable);
 				mnuImprimeVacia.setDisable(disable);
 
 			}
 		});
 
+		mnuImprimir.setDisable(true);
 		mnuImprimeVacia.setDisable(true);
 
 		RespondeEventos eventHandler = new RespondeEventos();
