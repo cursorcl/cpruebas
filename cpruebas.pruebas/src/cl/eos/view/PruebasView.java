@@ -572,7 +572,9 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 				parameters.put("idAsignatura", prueba.getAsignatura().getId());
 				controller.find("EjeTematico.findByAsigntura", parameters, definePrueba);
 				controller.findAll(Habilidad.class, definePrueba);
-				controller.findAll(Objetivo.class, definePrueba);
+				Map<String, Object> param = new HashMap<String, Object>();
+				param.put("tipoCursoId", prueba.getCurso().getId());
+				controller.find("Objetivo.findByTipoCurso", param, definePrueba);
 			}
 		}
 	}

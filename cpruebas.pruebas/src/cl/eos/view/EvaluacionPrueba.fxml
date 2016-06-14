@@ -12,46 +12,43 @@
    <center>
       <SplitPane prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <items>
-            <StackPane prefHeight="450.0" prefWidth="650.0">
-               <children>
-                  <BorderPane prefHeight="459.0" prefWidth="370.0">
-                     <center>
-                        <AnchorPane BorderPane.alignment="CENTER">
-                           <children>
-                              <TableView id="tblListadoPruebas" fx:id="tblListadoPruebas" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="6.0" AnchorPane.topAnchor="2.0">
-                                <columns>
-                                    <TableColumn fx:id="nameCol" prefWidth="268.0" text="Nombre" />
-                                  <TableColumn fx:id="fechaCol" prefWidth="101.0" text="Fecha" />
-                                    <TableColumn fx:id="colTipo" prefWidth="99.0" text="Tipo" />
-                                    <TableColumn fx:id="cursoCol" prefWidth="85.0" text="Curso" />
-                                  <TableColumn fx:id="asignaturaCol" prefWidth="157.0" text="Asignatura" />
-                                    <TableColumn fx:id="formasCol" prefWidth="69.0" style="-fx-alignment: CENTER;" text="Formas" />
-                                    <TableColumn fx:id="profesorCol" prefWidth="130.0" text="Profesor" />
-                                    <TableColumn fx:id="nroPreguntasCol" prefWidth="68.0" style="-fx-alignment: CENTER;" text="Preguntas" />
-                                    <TableColumn fx:id="colExigencia" maxWidth="231.0" minWidth="-1.0" prefWidth="74.0" style="-fx-alignment: CENTER;" text="Exigencia" />
-                                </columns>
-                                 <contextMenu>
-                                    <ContextMenu>
-                                      <items>
-                                        <MenuItem fx:id="mnuResumenGeneral" mnemonicParsing="false" text="Resumen General" />
-                                          <MenuItem fx:id="mnuResumenAlumno" mnemonicParsing="false" text="Resumen por Alumno" />
-                                          <MenuItem fx:id="mnuEjeHabXAlumno" mnemonicParsing="false" text="Resumen Eje/Habilidad x Alumno" />
-                                          <MenuItem fx:id="mnuRespuestasPregunta" mnemonicParsing="false" text="Resumen Respuestas por Pregunta" />
-                                          <MenuItem fx:id="mnuRespuestasHabilidad" mnemonicParsing="false" text="Resumen Respuestas por Habilidad" />
-                                          <MenuItem fx:id="mnuRespuestasEje" mnemonicParsing="false" text="Resumen Respuestas por Eje Temático" />
-                                          <MenuItem fx:id="mnuResumenPME" mnemonicParsing="false" text="Resumen general P.M.E." />
-                                          <SeparatorMenuItem mnemonicParsing="false" />
-                                          <MenuItem fx:id="mnuExportarExcel" mnemonicParsing="false" text="Exportar a excel" />
-                                      </items>
-                                    </ContextMenu>
-                                 </contextMenu>
-                              </TableView>
-                           </children>
-                        </AnchorPane>
-                     </center>
-                  </BorderPane>
-               </children>
-            </StackPane>
+            <BorderPane prefHeight="459.0" prefWidth="370.0">
+               <center>
+                  <AnchorPane BorderPane.alignment="CENTER">
+                     <children>
+                        <TableView id="tblListadoPruebas" fx:id="tblListadoPruebas" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="6.0" AnchorPane.topAnchor="2.0">
+                          <columns>
+                              <TableColumn fx:id="nameCol" prefWidth="268.0" text="Nombre" />
+                            <TableColumn fx:id="fechaCol" prefWidth="101.0" text="Fecha" />
+                              <TableColumn fx:id="colTipo" prefWidth="99.0" text="Tipo" />
+                              <TableColumn fx:id="cursoCol" prefWidth="85.0" text="Curso" />
+                            <TableColumn fx:id="asignaturaCol" prefWidth="157.0" text="Asignatura" />
+                              <TableColumn fx:id="formasCol" prefWidth="69.0" style="-fx-alignment: CENTER;" text="Formas" />
+                              <TableColumn fx:id="profesorCol" prefWidth="130.0" text="Profesor" />
+                              <TableColumn fx:id="nroPreguntasCol" prefWidth="68.0" style="-fx-alignment: CENTER;" text="Preguntas" />
+                              <TableColumn fx:id="colExigencia" maxWidth="231.0" minWidth="-1.0" prefWidth="74.0" style="-fx-alignment: CENTER;" text="Exigencia" />
+                          </columns>
+                           <contextMenu>
+                              <ContextMenu>
+                                <items>
+                                  <MenuItem fx:id="mnuResumenGeneral" mnemonicParsing="false" text="Resumen General" />
+                                    <MenuItem fx:id="mnuResumenAlumno" mnemonicParsing="false" text="Resumen por Alumno" />
+                                    <MenuItem fx:id="mnuEjeHabXAlumno" mnemonicParsing="false" text="Resumen Eje/Habilidad x Alumno" />
+                                    <MenuItem fx:id="mnuRespuestasPregunta" mnemonicParsing="false" text="Resumen Respuestas por Pregunta" />
+                                    <MenuItem fx:id="mnuRespuestasHabilidad" mnemonicParsing="false" text="Resumen Respuestas por Habilidad" />
+                                    <MenuItem fx:id="mnuRespuestasEje" mnemonicParsing="false" text="Resumen Respuestas por Eje Temático" />
+                                    <MenuItem fx:id="mnuItemPorObjetivos" mnemonicParsing="false" text="Resumen Respuestas por Objetivo" />
+                                    <MenuItem fx:id="mnuResumenPME" mnemonicParsing="false" text="Resumen general P.M.E." />
+                                    <SeparatorMenuItem mnemonicParsing="false" />
+                                    <MenuItem fx:id="mnuExportarExcel" mnemonicParsing="false" text="Exportar a excel" />
+                                </items>
+                              </ContextMenu>
+                           </contextMenu>
+                        </TableView>
+                     </children>
+                  </AnchorPane>
+               </center>
+            </BorderPane>
         </items>
       </SplitPane>
    </center>
@@ -66,6 +63,7 @@
                   <MenuItem fx:id="menuRespuestasPregunta" mnemonicParsing="false" text="Resumen Respuestas por Pregunta" />
                   <MenuItem fx:id="menuRespuestasHabilidad" mnemonicParsing="false" text="Resumen Respuestas por Habilidad" />
                   <MenuItem fx:id="menuRespuestasEje" mnemonicParsing="false" text="Resumen Respuestas por Eje Temático" />
+                  <MenuItem fx:id="mnuPorObjetivos" mnemonicParsing="false" text="Resumen Respuestas por Objetivo" />
                   <MenuItem fx:id="menuResumenPME" mnemonicParsing="false" text="Resumen general P.M.E." />
                   <SeparatorMenuItem mnemonicParsing="false" />
                   <MenuItem fx:id="menuExportarExcel" mnemonicParsing="false" text="Exportar a excel" />

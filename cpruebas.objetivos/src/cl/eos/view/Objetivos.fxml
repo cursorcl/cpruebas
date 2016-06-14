@@ -50,8 +50,10 @@
                   <Label fx:id="lblError" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="10.0" />
                   <Label text="Objetivo" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="30.0" />
                   <TextField id="txtNombre" fx:id="txtNombre" prefHeight="25.0" prefWidth="301.0" promptText="Nombre Eje" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="50.0" />
-                  <TextField id="txtNombre" fx:id="txtDescripcion" layoutX="10.0" layoutY="106.0" prefHeight="25.0" prefWidth="239.0" promptText="Descripción" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="15.0" />
                   <Label layoutX="14.0" layoutY="89.0" text="Descripción" />
+                  <ComboBox fx:id="cmbTipoCurso" layoutX="10.0" layoutY="337.0" prefHeight="25.0" prefWidth="239.0" promptText="Curso Asociado" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="15.0" />
+                  <Label fx:id="cmbCurso" layoutX="14.0" layoutY="320.0" text="Curso Asociado" />
+                  <TextArea fx:id="txtDescripcion" layoutX="10.0" layoutY="106.0" prefHeight="200.0" prefWidth="200.0" promptText="Descripción" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="15.0" />
                </children>
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
@@ -63,8 +65,9 @@
                               <TableView id="tblEjesTematicos" fx:id="tblObjetivos" prefHeight="469.0" prefWidth="524.0" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="2.0">
                                 <columns>
                                     <TableColumn fx:id="colId" prefWidth="70.0" text="ID" />
-                                  <TableColumn fx:id="colNombre" prefWidth="241.0" text="Nombre" />
-                                    <TableColumn fx:id="colDescripcion" prefWidth="453.0" text="Descripción" />
+                                  <TableColumn fx:id="colNombre" prefWidth="219.0" text="Nombre" />
+                                    <TableColumn fx:id="colDescripcion" prefWidth="331.0" text="Descripción" />
+                                    <TableColumn fx:id="colTipoCurso" prefWidth="144.0" text="Curso" />
                                 </columns>
                                  <contextMenu>
                                     <ContextMenu>

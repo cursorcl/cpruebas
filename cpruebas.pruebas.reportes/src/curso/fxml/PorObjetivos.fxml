@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="444.0" prefWidth="863.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="curso.PorObjetivosView">
+   <top>
+      <HBox alignment="CENTER" prefHeight="44.0" prefWidth="863.0" spacing="10.0" styleClass="sample-page">
+         <children>
+            <Label text="Tipo de Alumno" />
+            <ComboBox fx:id="cmbTipoAlumno" prefHeight="25.0" prefWidth="227.0" promptText="Tipo de Alumno" />
+            <Button fx:id="btnGenerarReporte" mnemonicParsing="false" prefHeight="25.0" prefWidth="136.0" text="Generar Reporte" />
+         </children>
+      </HBox>
+   </top>
+   <center>
+      <TableView fx:id="tblObjetivos" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+        <columns>
+          <TableColumn fx:id="colObjetivo" prefWidth="200.0" text="Objetivo" />
+          <TableColumn fx:id="colPregAsociadas" prefWidth="150.0" text="Preguntas Asociadas" />
+            <TableColumn fx:id="colLPorLogro" prefWidth="100.0" text="\% de Logro" />
+            <TableColumn prefWidth="258.0" text="Asociaciones">
+               <columns>
+                  <TableColumn fx:id="colEjes" prefWidth="200.0" text="Ejes" />
+                  <TableColumn fx:id="colHabilidades" prefWidth="200.0" text="Habilidades" />
+               </columns>
+            </TableColumn>
+        </columns>
+      </TableView>
+   </center>
+</BorderPane>

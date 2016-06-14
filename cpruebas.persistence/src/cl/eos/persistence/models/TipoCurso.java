@@ -12,7 +12,7 @@ import javax.persistence.Version;
 import cl.eos.persistence.AEntity;
 
 @Entity(name = "tipocurso")
-@NamedQueries({ @NamedQuery(name = "TipoCurso.findAll", query = "SELECT e FROM tipocurso e order by e.name") })
+@NamedQueries({ @NamedQuery(name = "TipoCurso.findAll", query = "SELECT e FROM tipocurso e order by e.id") })
 public class TipoCurso extends AEntity {
 	private static final long serialVersionUID = 1L;
 
