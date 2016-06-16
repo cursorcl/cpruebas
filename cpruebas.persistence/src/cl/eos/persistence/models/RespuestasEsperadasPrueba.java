@@ -19,144 +19,158 @@ import cl.eos.persistence.AEntity;
  */
 @Entity(name = "respuestasesperadasprueba")
 @NamedQueries({
-    @NamedQuery(name = "RespuestasEsperadasPrueba.findAll", query = "SELECT e FROM respuestasesperadasprueba e"),
-    @NamedQuery(name = "RespuestasEsperadasPrueba.findByPrueba", query = "SELECT e FROM respuestasesperadasprueba e WHERE e.prueba.id = :pruebaId order by e.numero"),
-    @NamedQuery(name = "RespuestasEsperadasPrueba.deleteByPrueba", query = "DELETE FROM respuestasesperadasprueba e WHERE e.prueba.id = :pruebaId")})
+        @NamedQuery(name = "RespuestasEsperadasPrueba.findAll", query = "SELECT e FROM respuestasesperadasprueba e"),
+        @NamedQuery(name = "RespuestasEsperadasPrueba.findByPrueba", query = "SELECT e FROM respuestasesperadasprueba e WHERE e.prueba.id = :pruebaId order by e.numero"),
+        @NamedQuery(name = "RespuestasEsperadasPrueba.deleteByPrueba", query = "DELETE FROM respuestasesperadasprueba e WHERE e.prueba.id = :pruebaId") })
 public class RespuestasEsperadasPrueba extends AEntity {
 
-  private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  private Prueba prueba;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Prueba prueba;
 
-  private Integer numero;
-  private String respuesta = "N";
-  private Boolean verdaderoFalso = Boolean.FALSE;
-  private Boolean mental = Boolean.FALSE;
-  private Habilidad habilidad;
-  private EjeTematico ejeTematico;
-  private Objetivo objetivo;
-  private Boolean anulada = Boolean.FALSE;
+    private Integer numero;
+    private String respuesta = "N";
+    private Boolean verdaderoFalso = Boolean.FALSE;
+    private Boolean mental = Boolean.FALSE;
+    private Habilidad habilidad;
+    private EjeTematico ejeTematico;
+    private Objetivo objetivo;
+    private Boolean anulada = Boolean.FALSE;
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
-  private String name;
-  
-	/**
-	 * Se crea para el manejo de multiusuarios
-	 */
-	@Version 
-	protected int version;
-	
-	
-	public final int getVersion() {
-		return version;
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name;
 
-	public final void setVersion(int version) {
-		this.version = version;
-	}
+    /**
+     * Se crea para el manejo de multiusuarios
+     */
+    @Version
+    protected int version;
 
-  @Override
-  public Long getId() {
-    return id;
-  }
+    public final int getVersion() {
+        return version;
+    }
 
-  @Override
-  public void setId(Long id) {
-    this.id = id;
-  }
+    public final void setVersion(int version) {
+        this.version = version;
+    }
 
-  @Override
-  public String getName() {
-    return name;
-  }
+    @Override
+    public Long getId() {
+        return id;
+    }
 
-  @Override
-  public void setName(String name) {
-    this.name = name;
-  }
+    @Override
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-  @Override
-  public boolean validate() {
-    return false;
-  }
+    @Override
+    public String getName() {
+        return name;
+    }
 
-  public Prueba getPrueba() {
-    return prueba;
-  }
+    @Override
+    public void setName(String name) {
+        this.name = name;
+    }
 
-  public void setPrueba(Prueba prueba) {
-    this.prueba = prueba;
-  }
+    @Override
+    public boolean validate() {
+        return false;
+    }
 
-  public Integer getNumero() {
-    return numero;
-  }
+    public Prueba getPrueba() {
+        return prueba;
+    }
 
-  public void setNumero(Integer numero) {
-    this.numero = numero;
-  }
+    public void setPrueba(Prueba prueba) {
+        this.prueba = prueba;
+    }
 
-  public String getRespuesta() {
-    return respuesta;
-  }
+    public Integer getNumero() {
+        return numero;
+    }
 
-  public void setRespuesta(String respuesta) {
-    this.respuesta = respuesta;
-  }
+    public void setNumero(Integer numero) {
+        this.numero = numero;
+    }
 
-  public Boolean getVerdaderoFalso() {
-    return verdaderoFalso;
-  }
+    public String getRespuesta() {
+        return respuesta;
+    }
 
-  public void setVerdaderoFalso(Boolean verdaderoFalso) {
-    this.verdaderoFalso = verdaderoFalso;
-  }
+    public void setRespuesta(String respuesta) {
+        this.respuesta = respuesta;
+    }
 
-  public Boolean getMental() {
-    return mental;
-  }
+    public Boolean getVerdaderoFalso() {
+        return verdaderoFalso;
+    }
 
-  public void setMental(Boolean mental) {
-    this.mental = mental;
-  }
+    public void setVerdaderoFalso(Boolean verdaderoFalso) {
+        this.verdaderoFalso = verdaderoFalso;
+    }
 
-  public Habilidad getHabilidad() {
-    return habilidad;
-  }
+    public Boolean getMental() {
+        return mental;
+    }
 
-  public void setHabilidad(Habilidad habilidad) {
-    this.habilidad = habilidad;
-  }
+    public void setMental(Boolean mental) {
+        this.mental = mental;
+    }
 
-  public EjeTematico getEjeTematico() {
-    return ejeTematico;
-  }
+    public Habilidad getHabilidad() {
+        return habilidad;
+    }
 
-  public void setEjeTematico(EjeTematico ejeTematico) {
-    this.ejeTematico = ejeTematico;
-  }
+    public void setHabilidad(Habilidad habilidad) {
+        this.habilidad = habilidad;
+    }
 
-public Boolean getAnulada() {
-	return anulada;
-}
+    public EjeTematico getEjeTematico() {
+        return ejeTematico;
+    }
 
-public Boolean isAnulada() {
-	return anulada;
-}
+    public void setEjeTematico(EjeTematico ejeTematico) {
+        this.ejeTematico = ejeTematico;
+    }
 
-public void setAnulada(Boolean anulada) {
-	this.anulada = anulada;
-}
+    public Boolean getAnulada() {
+        return anulada;
+    }
 
-public Objetivo getObjetivo() {
-	return objetivo;
-}
+    public Boolean isAnulada() {
+        return anulada;
+    }
 
-public void setObjetivo(Objetivo objetivo) {
-	this.objetivo = objetivo;
-}
+    public void setAnulada(Boolean anulada) {
+        this.anulada = anulada;
+    }
 
+    public Objetivo getObjetivo() {
+        return objetivo;
+    }
+
+    public void setObjetivo(Objetivo objetivo) {
+        this.objetivo = objetivo;
+    }
+
+    /**
+     * Validará si value es un valore correcto para la respuesta.
+     * 
+     * @param value
+     * @return
+     */
+    public boolean validate(String value) {
+        boolean result = false;
+        if (!isAnulada()) {
+            if ("+".equals(value) || getRespuesta().equalsIgnoreCase(value)) {
+                result = true;
+            }
+        }
+        return result;
+    }
 }

@@ -18,13 +18,13 @@
    <center>
       <TableView fx:id="tblObjetivos" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <columns>
-          <TableColumn fx:id="colObjetivo" prefWidth="200.0" text="Objetivo" />
-          <TableColumn fx:id="colPregAsociadas" prefWidth="150.0" text="Preguntas Asociadas" />
-            <TableColumn fx:id="colLPorLogro" prefWidth="100.0" text="\% de Logro" />
+          <TableColumn fx:id="colObjetivo" prefWidth="200.0" style="-fx-alignment: CENTER-LEFT;" text="Objetivo" />
+          <TableColumn fx:id="colPregAsociadas" prefWidth="150.0" style="-fx-alignment: CENTER-LEFT;" text="Preguntas Asociadas" />
+            <TableColumn fx:id="colLPorLogro" prefWidth="100.0" style="-fx-alignment: CENTER;" text="\% de Logro" />
             <TableColumn prefWidth="258.0" text="Asociaciones">
                <columns>
-                  <TableColumn fx:id="colEjes" prefWidth="200.0" text="Ejes" />
-                  <TableColumn fx:id="colHabilidades" prefWidth="200.0" text="Habilidades" />
+                  <TableColumn fx:id="colEjes" prefWidth="200.0" style="-fx-alignment: CENTER-LEFT;" text="Ejes" />
+                  <TableColumn fx:id="colHabilidades" prefWidth="200.0" style="-fx-alignment: CENTER_LEFT;" text="Habilidades" />
                </columns>
             </TableColumn>
         </columns>
