@@ -40,6 +40,7 @@
                                     <MenuItem fx:id="mnuItemPorObjetivos" mnemonicParsing="false" text="Resumen Respuestas por Objetivo" />
                                     <MenuItem fx:id="mnuResumenPME" mnemonicParsing="false" text="Resumen general P.M.E." />
                                     <SeparatorMenuItem mnemonicParsing="false" />
+                                    <MenuItem fx:id="mnuEliminarEvaluacion" mnemonicParsing="false" text="Eliminar Evaluación" />
                                     <MenuItem fx:id="mnuExportarExcel" mnemonicParsing="false" text="Exportar a excel" />
                                 </items>
                               </ContextMenu>

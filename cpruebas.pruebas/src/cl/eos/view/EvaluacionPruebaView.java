@@ -2,14 +2,17 @@ package cl.eos.view;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import cl.eos.imp.view.AFormView;
 import cl.eos.persistence.models.Curso;
 import cl.eos.persistence.models.EvaluacionPrueba;
+import cl.eos.persistence.models.PruebaRendida;
 import cl.eos.persistence.models.RangoEvaluacion;
 import cl.eos.persistence.models.TipoAlumno;
 import cl.eos.persistence.models.TipoPrueba;
 import cl.eos.util.ExcelSheetWriterObj;
+import cl.eos.view.ots.OTPruebaRendida;
 import curso.PorObjetivosView;
 import curso.ResumenAlumnoView;
 import curso.ResumenEjesTematicosView;
@@ -24,6 +27,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SelectionMode;
@@ -89,6 +93,8 @@ public class EvaluacionPruebaView extends AFormView implements EventHandler<Acti
     private MenuItem mnuPorObjetivos;
     @FXML
     private MenuItem mnuItemPorObjetivos;
+    @FXML
+    private MenuItem mnuEliminarEvaluacion;
 
     private EvaluacionPrueba evaluacionPrueba;
     private ResumenGeneralView resumenGeneral;
@@ -136,8 +142,30 @@ public class EvaluacionPruebaView extends AFormView implements EventHandler<Acti
         profesorCol.setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba, String>("profesor"));
         nroPreguntasCol.setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba, Integer>("nroPreguntas"));
         colExigencia.setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba, Integer>("exigencia"));
+        
+        mnuEliminarEvaluacion.setOnAction(this);
     }
 
+    
+    protected void handleEliminarEvaluacion() {
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("Confirma Eliminación");
+        alert.setHeaderText("Borrará todas las pruebas rendidas asociadas.");
+        alert.setContentText("Está seguro que quiere eliminar la evaluación?");
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK) {
+            int index = tblListadoPruebas.getSelectionModel().getSelectedIndex();
+             EvaluacionPrueba ot = tblListadoPruebas.getSelectionModel().getSelectedItem();
+//             List<PruebaRendida> pRendidas = ot.getPruebasRendidas();
+//             while(pRendidas.size() > 0)
+//             {
+//                 delete(pRendidas.get(0), false);
+//             }
+             delete(ot);
+             tblListadoPruebas.getItems().remove(index);
+        }
+        
+    }
     @Override
     public void onDataArrived(List<Object> list) {
         if (list != null && !list.isEmpty()) {
@@ -176,7 +204,11 @@ public class EvaluacionPruebaView extends AFormView implements EventHandler<Acti
             handlerResumenEjeHabXAlumno();
         } else if (source == mnuPorObjetivos || source == mnuItemPorObjetivos) {
             handlerResumenPorObjetivos();
+        } else if(source == mnuEliminarEvaluacion)
+        {
+            handleEliminarEvaluacion();
         }
+        
         tblListadoPruebas.getSelectionModel().clearSelection();
     }
 
