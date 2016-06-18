@@ -136,7 +136,6 @@ public class EvaluarPruebaView extends AFormView {
     @FXML
     private MenuItem menuExportar;
 
-
     @FXML
     private BorderPane mainPane;
     private ArrayList<RespuestasEsperadasPrueba> respuestas;
@@ -232,9 +231,8 @@ public class EvaluarPruebaView extends AFormView {
                 WindowManager.getInstance().show(activator.getView());
             }
         });
-        
-    }
 
+    }
 
     protected void handlerExportar() {
         ExcelSheetWriterObj.convertirDatosALibroDeExcel(tblListadoPruebas);
@@ -484,7 +482,7 @@ public class EvaluarPruebaView extends AFormView {
             evalPrueba.setName(s);
             prueba.getFormas().size();
             prueba.getRespuestas().size();
-            prueba  = (Prueba) save(prueba);
+            prueba = (Prueba) save(prueba);
             for (PruebaRendida pr : removePruebasRendidas) {
                 delete(pr, false);
             }
@@ -558,23 +556,32 @@ public class EvaluarPruebaView extends AFormView {
                     results.setFirst(FXCollections.observableArrayList());
                     results.setSecond(FXCollections.observableArrayList());
                     ExtractorResultadosPrueba procesador = ExtractorResultadosPrueba.getInstance();
-                    for (File archivo : files) {
+                    if (procesador != null && procesador.isValid()) {
+                        for (File archivo : files) {
 
-                        try {
-                            OTResultadoScanner resultado = procesador.process(archivo, max);
-                            PruebaRendida pRendida;
-                            if (resultado != null) {
-                                pRendida = obtenerPruebaRendida(resultado);
-                                pRendida.setEvaluacionPrueba(evalPrueba);
-                                results.getSecond().add(pRendida);
-                                updateMessage("Procesado:" + pRendida.getAlumno().toString());
+                            try {
+                                OTResultadoScanner resultado = procesador.process(archivo, max);
+                                if (resultado != null) {
+                                    PruebaRendida pRendida;
+                                    pRendida = obtenerPruebaRendida(resultado);
+                                    pRendida.setEvaluacionPrueba(evalPrueba);
+                                    results.getSecond().add(pRendida);
+                                    updateMessage("Procesado:" + pRendida.getAlumno().toString());
+                                    updateProgress(n++, files.size());
+                                }
+                                else
+                                {
+                                    updateMessage("No se obtivieron resultados para el archivo:" + archivo.getName());
+                                    updateProgress(n++, files.size());
+                                    log.error("No se obtivieron resultados");
+                                }
+                                
+                            } catch (CPruebasException e) {
+                                log.error("Archivo:" + archivo.getName() + " " + e.getMessage());
+                                results.getFirst().add(e.getMessage());
+                                updateMessage(e.getMessage());
                                 updateProgress(n++, files.size());
                             }
-                        } catch (CPruebasException e) {
-                            log.info("Archivo:" + archivo.getName() + " " + e.getMessage());
-                            results.getFirst().add(e.getMessage());
-                            updateMessage(e.getMessage());
-                            updateProgress(n++, files.size());
                         }
                     }
                     return results;
@@ -584,6 +591,7 @@ public class EvaluarPruebaView extends AFormView {
 
                 @Override
                 public void handle(WorkerStateEvent event) {
+                    dlg.getDialogStage().hide();
                     Runnable r = new Runnable() {
 
                         @Override
@@ -633,7 +641,7 @@ public class EvaluarPruebaView extends AFormView {
                     }
                     final int nPruebas = pruebas == null ? 0 : pruebas.size();
                     final int nMalas = malas == null ? 0 : malas.size();
-
+                    dlg.getDialogStage().hide();
                     Runnable r = new Runnable() {
 
                         @Override

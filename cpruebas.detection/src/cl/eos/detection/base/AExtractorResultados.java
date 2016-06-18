@@ -429,9 +429,17 @@ public abstract class AExtractorResultados implements IExtractorResultados {
         }
       });
         
+      try
+      {
       for(n = 0; n < 6; n++)
       {
         points[n] = result.get(n);
+      }
+      }
+      catch(IndexOutOfBoundsException e)
+      {
+          log.error("Problemas al obtnener puntos de referencia: " + e.getLocalizedMessage());
+          points = null;
       }
     }
     return points;

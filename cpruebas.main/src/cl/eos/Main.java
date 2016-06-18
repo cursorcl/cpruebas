@@ -3,6 +3,8 @@ package cl.eos;
 import java.io.File;
 import java.io.IOException;
 
+import org.apache.log4j.Logger;
+
 import cl.eos.exceptions.CPruebasException;
 import cl.eos.util.Utils;
 import cl.sisdef.license.ProductKeyValidation;
@@ -22,6 +24,8 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 public class Main extends Application {
+    
+    Logger log =  Logger.getLogger(Main.class);
 	protected double xOffset;
 	protected double yOffset;
 	static final String PRODUCT_KEYSTORE = "keystore";
@@ -30,6 +34,7 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
+		    log.info("--------- Iniciando la aplicación ----------");
 			processProductAuthentication(PRODUCT_ID);
 			setUserAgentStylesheet(STYLESHEET_MODENA);
 			try {
