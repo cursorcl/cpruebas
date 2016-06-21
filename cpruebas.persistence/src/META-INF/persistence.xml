@@ -37,12 +37,6 @@
 			<property name="eclipselink.ddl-generation" value="update-tables" />
 			<property name="eclipselink.ddl-generation" value="drop-and-create-tables"/>
 			-->  
-						
-			
-
-			
-			
-		
 		</properties>
 	</persistence-unit>
 </persistence>

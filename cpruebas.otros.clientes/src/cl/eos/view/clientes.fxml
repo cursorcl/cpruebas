@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.input.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="1098.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <left>
+      <AnchorPane prefHeight="400.0" prefWidth="248.0" BorderPane.alignment="CENTER">
+         <children>
+            <TextField fx:id="txtRut" layoutX="22.0" layoutY="55.0" prefHeight="25.0" prefWidth="193.0" promptText="Rut" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" />
+            <TextField fx:id="txtNombre" layoutX="10.0" layoutY="101.0" prefHeight="25.0" prefWidth="191.0" promptText="Nombre" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" />
+            <TextField fx:id="txtContacto" layoutX="10.0" layoutY="144.0" prefHeight="25.0" prefWidth="190.0" promptText="Contacto" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" />
+            <TextField fx:id="txtDireccion" layoutX="10.0" layoutY="194.0" prefHeight="25.0" prefWidth="191.0" promptText="Dirección" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" />
+            <TextField fx:id="txtFonoContacto" layoutX="10.0" layoutY="241.0" prefHeight="25.0" prefWidth="192.0" promptText="Telefono" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" />
+            <TextField fx:id="txtEmail" layoutX="10.0" layoutY="285.0" prefHeight="25.0" prefWidth="193.0" promptText="email" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" />
+            <Button fx:id="btnGrabar" layoutX="182.0" layoutY="336.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="97.0" text="Grabar" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" />
+            <Label layoutX="14.0" layoutY="32.0" text="Rut" AnchorPane.leftAnchor="10.0" />
+            <Label layoutX="10.0" layoutY="80.0" text="Nombre cliente" AnchorPane.leftAnchor="10.0" />
+            <Label layoutX="10.0" layoutY="126.0" text="Contacto" AnchorPane.leftAnchor="10.0" />
+            <Label layoutX="10.0" layoutY="174.0" text="Dirección" AnchorPane.leftAnchor="10.0" />
+            <Label layoutX="10.0" layoutY="221.0" text="Teléfono contacto" AnchorPane.leftAnchor="10.0" />
+            <Label layoutX="10.0" layoutY="268.0" text="E-Mail de contacto" AnchorPane.leftAnchor="10.0" />
+         </children>
+      </AnchorPane>
+   </left>
+   <center>
+      <TableView fx:id="tblClientes" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+        <columns>
+          <TableColumn fx:id="colRut" prefWidth="97.0" text="RUT" />
+          <TableColumn fx:id="colNombre" prefWidth="136.0" text="NOMBRE" />
+            <TableColumn fx:id="colContacto" prefWidth="171.0" text="CONTACTO" />
+            <TableColumn fx:id="colDireccion" prefWidth="204.0" text="DIRECCION" />
+            <TableColumn fx:id="colFono" prefWidth="121.0" text="TELEFONO" />
+            <TableColumn fx:id="colEmail" prefWidth="108.0" text="E-MAIL" />
+        </columns>
+         <contextMenu>
+            <ContextMenu>
+              <items>
+                <MenuItem fx:id="mnuItemEditar" mnemonicParsing="false" text="Modificar" />
+                  <MenuItem fx:id="mnuEliminar" mnemonicParsing="false" text="Eliminar" />
+              </items>
+            </ContextMenu>
+         </contextMenu>
+      </TableView>
+   </center>
+   <top>
+      <MenuBar BorderPane.alignment="CENTER">
+        <menus>
+          <Menu mnemonicParsing="false" text="Archivo">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Grabar">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="G" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator></MenuItem>
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+   </top>
+</BorderPane>

@@ -785,36 +785,4 @@ public class EvaluarPruebaView extends AFormView {
             }
         };
     }
-
-    public static void main(String[] args) {
-        PersistenceService p = new PersistenceService();
-
-        List<Object> list = p.findAllSynchro(PruebaRendida.class);
-        File f = new File("o:/sqlUpdate.sql");
-        FileWriter wr;
-        try {
-            wr = new FileWriter(f);
-
-            for (Object obj : list) {
-                PruebaRendida pr = (PruebaRendida) obj;
-                float por = Utils.getPorcenta(pr.getNota());
-                RangoEvaluacion rng = pr.getEvaluacionPrueba().getPrueba().getNivelEvaluacion().getRango(por);
-
-                System.out.println(String.format("update cpruebas.pruebarendida set RANGO_ID = %d where ID = %d;",
-                        rng.getId(), pr.getId()));
-                try {
-                    wr.write(String.format("update cpruebas.pruebarendida set RANGO_ID = %d where ID = %d;\n",
-                            rng.getId(), pr.getId()));
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            }
-            wr.close();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
-
 }
