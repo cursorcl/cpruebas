@@ -29,7 +29,7 @@
 		<properties>
 			<property name="javax.persistence.jdbc.user" value="root" />
 			<property name="javax.persistence.jdbc.password" value="admin" />
-			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/multi_cpruebass" />
+			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/multi_cpruebas" />
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
 			<property name="eclipselink.allow-zero-id" value="true"/>
 			
@@ -37,19 +37,6 @@
 			<property name="eclipselink.ddl-generation" value="update-tables" />
 			<property name="eclipselink.ddl-generation" value="drop-and-create-tables"/>
 			-->  
-		</properties>
-	</persistence-unit>
-	
-	<persistence-unit name="clientes_cpruebas" transaction-type="RESOURCE_LOCAL">
-		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-		<class>cl.eos.persistence.models.Clientes</class>
-		<properties>
-			<property name="javax.persistence.jdbc.user" value="root" />
-			<property name="javax.persistence.jdbc.password" value="admin" />
-			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/clientes_cpruebas" />
-			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
-			<property name="eclipselink.allow-zero-id" value="true"/>
-			<property name="eclipselink.ddl-generation" value="drop-and-create-tables"/>
 		</properties>
 	</persistence-unit>
 </persistence>

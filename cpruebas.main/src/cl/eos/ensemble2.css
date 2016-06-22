@@ -920,4 +920,15 @@
 }
 .menu-item:hover {
     -fx-background-color: #C69A07;
+}    
+.button-like {
+  -fx-outer-border: white;
+  -fx-body-color: linear-gradient(to bottom, #FAFAFA, #EAEAEA);
+  -fx-background-color: 
+       -fx-outer-border, 
+       -fx-body-color;
+  -fx-background-insets: 0, 6;
+  -fx-background-radius: 10px, 10px;
+  -fx-background-repeat: no-repeat;
+  -fx-background-position: center;
 }
