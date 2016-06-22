@@ -132,6 +132,9 @@ public class Clientes {
         protected int fono;
         @XmlElement(required = true)
         protected String email;
+        @XmlElement(required = true)
+        protected String alias;
+
 
         /**
          * Obtiene el valor de la propiedad rut.
@@ -245,6 +248,31 @@ public class Clientes {
             this.email = value;
         }
 
+        /**
+         * Obtiene el valor de la propiedad alias.
+         * 
+         * @return
+         *     possible object is
+         *     {@link String }
+         *     
+         */
+        public String getAlias() {
+            return alias;
+        }
+
+        /**
+         * Define el valor de la propiedad alias.
+         * 
+         * @param value
+         *     allowed object is
+         *     {@link String }
+         *     
+         */
+        public void setAlias(String value) {
+            this.alias = value;
+        }
+
+        
         @Override
         public String toString() {
             return nombre;

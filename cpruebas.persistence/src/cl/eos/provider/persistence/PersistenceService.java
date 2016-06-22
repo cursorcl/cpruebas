@@ -18,6 +18,7 @@ import javax.persistence.Query;
 import javax.persistence.RollbackException;
 
 import org.apache.log4j.Logger;
+import org.eclipse.persistence.config.PersistenceUnitProperties;
 
 import cl.eos.imp.view.ProgressForm;
 import cl.eos.interfaces.entity.IEntity;
@@ -49,6 +50,11 @@ public class PersistenceService implements IPersistenceService {
      */
     public PersistenceService(String name) {
 
+        Properties pros = new Properties();
+
+        pros.setProperty(PersistenceUnitProperties.ECLIPSELINK_PERSISTENCE_XML, 
+                         "META-INF/persistence-alternative.xml");
+        
         eFactory = Persistence.createEntityManagerFactory(name);
     }
 
