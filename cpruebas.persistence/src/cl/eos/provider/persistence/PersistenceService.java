@@ -20,6 +20,7 @@ import javax.persistence.RollbackException;
 import org.apache.log4j.Logger;
 import org.eclipse.persistence.config.PersistenceUnitProperties;
 
+import cl.eos.Environment;
 import cl.eos.imp.view.ProgressForm;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.interfaces.entity.IPersistenceListener;
@@ -44,18 +45,21 @@ public class PersistenceService implements IPersistenceService {
 
     static final Logger LOG = Logger.getLogger(PersistenceService.class);
     private EntityManagerFactory eFactory;
+    private final static String NAME = "multi_cpruebas";
 
     /**
      * Constructor de la clase.
      */
-    public PersistenceService(String name) {
+    public PersistenceService() {
 
-        Properties pros = new Properties();
+        Properties props = new Properties();
 
-        pros.setProperty(PersistenceUnitProperties.ECLIPSELINK_PERSISTENCE_XML, 
-                         "META-INF/persistence-alternative.xml");
-        
-        eFactory = Persistence.createEntityManagerFactory(name);
+        props.put("javax.persistence.jdbc.user", "root");
+        props.put("javax.persistence.jdbc.password", "admin");
+        props.put("javax.persistence.jdbc.url", String.format("jdbc:mysql://localhost:3306/%s", Environment.database));
+        props.put("javax.persistence.jdbc.driver", "com.mysql.jdbc.Driver");
+        props.put("eclipselink.allow-zero-id", "true");
+        eFactory = Persistence.createEntityManagerFactory(NAME, props);
     }
 
     /*

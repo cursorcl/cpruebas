@@ -2,17 +2,17 @@
 <Clientes>
 	<Cliente>
 		<rut>10613781-1</rut>
-		<nombre>Cliente 1</nombre>
+		<nombre>Colegio</nombre>
 		<direccion>Su casa</direccion>
 		<fono>83604232</fono>
 		<email>cursor.cl@gmail.com</email>
-		<email>multi_cpruebass</email>
+		<alias>colegio_cpreuebas</alias>
 	</Cliente>
 	<Cliente>
-		<rut>12623503-8</rut>
-		<nombre>Cliente 2</nombre>
+		<rut>12365796-9</rut>
+		<nombre>Muni</nombre>
 		<direccion>Su casa</direccion>
 		<fono>2499275</fono>
-		<email>multi_cpruebass</email>
+		<alias>multi_cpruebas</alias>
 	</Cliente>
 </Clientes>
