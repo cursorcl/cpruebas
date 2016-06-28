@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="520.0" prefWidth="1150.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="colegio.nivel.Nivel_ResumenColegioView">
+   <center>
+      <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="247.0" prefWidth="1085.0">
+               <children>
+                  <SplitPane layoutX="210.0" layoutY="2.0" prefHeight="217.0" prefWidth="865.0" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="210.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="2.0">
+                    <items>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <Label layoutX="2.0" text="TOTAL ALUMNOS " AnchorPane.bottomAnchor="188.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="756.0" AnchorPane.topAnchor="0.0">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="lblColegio" layoutX="125.0" prefHeight="27.0" prefWidth="325.0" AnchorPane.bottomAnchor="188.0" AnchorPane.leftAnchor="125.0" AnchorPane.topAnchor="0.0" />
+                              <TableView fx:id="tblCursos" layoutX="2.0" layoutY="37.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="37.0">
+                                <columns>
+                                  <TableColumn fx:id="colCurso" prefWidth="100.0" text="Nivel" />
+                                  <TableColumn fx:id="colTotal" prefWidth="93.0" style="-fx-alignment: CENTER;" text="Total alumnos" />
+                                    <TableColumn fx:id="colEvaluados" minWidth="0.0" prefWidth="122.0" style="-fx-alignment: CENTER;" text="Alumnos evaluados" />
+                                    <TableColumn fx:id="colAprobados" prefWidth="106.0" style="-fx-alignment: CENTER;" text="Total aprobados" />
+                                    <TableColumn fx:id="colReprobados" prefWidth="116.0" style="-fx-alignment: CENTER;" text="Total reprobados" />
+                                    <TableColumn fx:id="colPEvaluados" prefWidth="150.0" resizable="false" style="-fx-alignment: CENTER;" text="\% Alumnos evaluados" />
+                                    <TableColumn fx:id="colPReprobados" minWidth="0.0" prefWidth="113.0" resizable="false" style="-fx-alignment: CENTER;" text="\%Reprobados" />
+                                    <TableColumn fx:id="colPAprobados" prefWidth="114.0" style="-fx-alignment: CENTER;" text="\% Aprobados" />
+                                </columns>
+                                 <contextMenu>
+                                    <ContextMenu>
+                                      <items>
+                                        <MenuItem fx:id="mnuExportarAlumnos" mnemonicParsing="false" text="Exportar a excel" />
+                                      </items>
+                                    </ContextMenu>
+                                 </contextMenu>
+                              </TableView>
+                           </children>
+                        </AnchorPane>
+                    </items>
+                  </SplitPane>
+                  <AnchorPane layoutX="-86.0" layoutY="4.0" />
+                  <ComboBox fx:id="cmbColegios" layoutX="4.0" layoutY="60.0" prefHeight="25.0" prefWidth="195.0" promptText="Colegio" AnchorPane.bottomAnchor="154.0" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="949.0" AnchorPane.topAnchor="60.0" />
+                  <Label layoutX="5.0" layoutY="43.0" prefHeight="17.0" prefWidth="191.0" text="Seleccione colegio a procesar" AnchorPane.leftAnchor="5.0" />
+                  <Label layoutX="5.0" layoutY="93.0" prefHeight="17.0" prefWidth="176.0" text="Seleccione asignatura" AnchorPane.leftAnchor="5.0" />
+                  <ComboBox fx:id="cmbAsignatura" layoutX="4.0" layoutY="110.0" prefHeight="25.0" prefWidth="198.0" promptText="Asignatura" AnchorPane.bottomAnchor="104.0" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="949.0" AnchorPane.topAnchor="110.0" />
+                  <Button fx:id="btnReportes" layoutX="100.0" layoutY="200.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="106.0" text="Generar reporte" />
+                  <ComboBox fx:id="cmbTipoAlumno" layoutX="4.0" layoutY="166.0" prefHeight="25.0" prefWidth="194.0" promptText="Tipo de Alumno" />
+                  <Label layoutX="5.0" layoutY="149.0" text="Tipo de Alumno" />
+               </children>
+            </AnchorPane>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0">
+               <children>
+                  <SplitPane fx:id="tblGeneral" dividerPositions="0.38966725043782835" prefHeight="160.0" prefWidth="200.0" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="2.0">
+                    <items>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                           <children>
+                              <TableView fx:id="tblPME" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="40.0">
+                                 <contextMenu>
+                                    <ContextMenu>
+                                      <items>
+                                        <MenuItem fx:id="mnuExportarPME" mnemonicParsing="false" text="Exportar a excel" />
+                                      </items>
+                                    </ContextMenu>
+                                 </contextMenu>
+                              </TableView>
+                              <Label layoutX="27.0" layoutY="14.0" text="P.M.E" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="20.0">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </AnchorPane>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                           <children>
+                              <Label layoutX="23.0" layoutY="14.0" text="TOTAL GENERAL " AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="20.0">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="120.0" layoutY="20.0" prefHeight="17.0" prefWidth="365.0" AnchorPane.topAnchor="20.0">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                              <TableView fx:id="tblResumenTotal" layoutX="63.0" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="40.0">
+                                 <contextMenu>
+                                    <ContextMenu>
+                                      <items>
+                                        <MenuItem fx:id="mnuExportarGeneral" mnemonicParsing="false" text="Exportar a excel" />
+                                      </items>
+                                    </ContextMenu>
+                                 </contextMenu></TableView>
+                           </children>
+                        </AnchorPane>
+                    </items>
+                  </SplitPane>
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
+   </center>
+   <top>
+      <Pane maxHeight="40.0" styleClass="sample-page" BorderPane.alignment="CENTER">
+         <children>
+            <HBox>
+               <children>
+                  <Label fx:id="lblTitulo" alignment="CENTER" contentDisplay="CENTER" prefHeight="35.0" prefWidth="1084.0">
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+         </children>
+      </Pane>
+   </top>
+</BorderPane>

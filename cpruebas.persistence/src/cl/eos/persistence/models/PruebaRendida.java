@@ -14,6 +14,11 @@ import javax.persistence.Version;
 import cl.eos.persistence.AEntity;
 import cl.eos.util.Utils;
 
+/**
+ * El la {@link Prueba} que ha rendido un {@link Alumno}.
+ * @author curso
+ *
+ */
 @Entity(name = "pruebarendida")
 @NamedQueries({@NamedQuery(name = "PruebaRendida.findAll", query = "SELECT e FROM pruebarendida e")})
 public class PruebaRendida extends AEntity {

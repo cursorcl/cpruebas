@@ -37,5 +37,4 @@ public class OTCursoRangos {
 	public void setNroAlumnosXEjeHab(int[] nroAlumnosXEjeHab) {
 		this.nroAlumnosXEjeHab = nroAlumnosXEjeHab;
 	}
-
 }

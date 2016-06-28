@@ -188,6 +188,14 @@
       														<MenuItem fx:id="mnuHabilidadEvaluacionXAlumno" mnemonicParsing="false" text="Habilidades y Evaluación x Alumno" />
       														<MenuItem fx:id="mnuCompColegioEjeHabilXCurso" mnemonicParsing="false" text="Comparativo  Ejes y Habilidades x Curso" />
       														<MenuItem fx:id="mnuComparativoColegioEjeHabil" mnemonicParsing="false" text="Comparativo Ejes y Habilidades" />
+                                                <Menu mnemonicParsing="false" text="x Nivel">
+                                                  <items>
+                                                      <MenuItem fx:id="mnuColegioXNivel" mnemonicParsing="false" text="Resumen del Colegio x Nivel" />
+                                                      <MenuItem fx:id="mnuHabilidadEvaluacionXAlumnoXNivel" mnemonicParsing="false" text="Ejes y Evaluación x Nivel" />
+                                                    <MenuItem fx:id="mnuCompEjesHabXNivel" mnemonicParsing="false" text="Comparativo Colegio Ejes Temáticos y Habilidades x Nivel" />
+                                                      <MenuItem fx:id="mnuComparativoColegioEjeHabilXNivel" mnemonicParsing="false" text="Comparativo Ejes y Habilidades x Nivel" />
+                                                  </items>
+                                                </Menu>
                                             </items>
                                           </Menu>
                                           <Menu mnemonicParsing="false" text="Reportes Comunales">
