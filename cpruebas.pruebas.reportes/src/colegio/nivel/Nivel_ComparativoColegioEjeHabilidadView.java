@@ -6,6 +6,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.log4j.Logger;
 
@@ -30,6 +32,7 @@ import cl.eos.persistence.util.Comparadores;
 import cl.eos.util.ExcelSheetWriterObj;
 import cl.eos.util.Pair;
 import cl.eos.util.Utils;
+import comparativo.colegio.eje.habilidad.x.curso.OTTipoCursoRangos;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -216,7 +219,7 @@ public class Nivel_ComparativoColegioEjeHabilidadView extends AFormView implemen
      * @param pCursoList
      */
     @SuppressWarnings({ "rawtypes", "unchecked" })
-    private void llenarColumnas(ObservableList<Curso> pCursoList) {
+    private void llenarColumnas(ObservableList<TipoCurso> tiposCurso) {
         TableColumn tc = new TableColumn("EJE / HABILIDAD");
         tc.setSortable(false);
         tc.setStyle("-fx-alignment: CENTER-LEFT;");
@@ -239,12 +242,7 @@ public class Nivel_ComparativoColegioEjeHabilidadView extends AFormView implemen
         });
         tblEvaluacion.getColumns().add(tc);
 
-        ObservableList<TipoCurso> tiposCurso = FXCollections.observableArrayList();
-        for (Curso curso : pCursoList) {
-            if (!tiposCurso.contains(curso.getTipoCurso())) {
-                tiposCurso.add(curso.getTipoCurso());
-            }
-        }
+
 
         int indice = 1;
         for (TipoCurso curso : tiposCurso) {
@@ -289,15 +287,23 @@ public class Nivel_ComparativoColegioEjeHabilidadView extends AFormView implemen
 
         long tipoAlumno = cmbTipoAlumno.getSelectionModel().getSelectedItem().getId();
 
-        llenarColumnas(cursoList);
-        int nroCursos = cursoList.size();
+        ObservableList<TipoCurso> tiposCurso = FXCollections.observableArrayList();
+        for (Curso curso : cursoList) {
+            if (!tiposCurso.contains(curso.getTipoCurso())) {
+                tiposCurso.add(curso.getTipoCurso());
+            }
+        }
+        
+        llenarColumnas(tiposCurso);
+        int nroTiposCursos = tiposCurso.size();
+        
         Map<EjeTematico, List<OTPreguntasEjes>> mapEjes = new HashMap<>();
         Map<Habilidad, List<OTPreguntasHabilidad>> mapHabilidades = new HashMap<>();
         Map<EvaluacionEjeTematico, List<OTPreguntasEvaluacion>> mapEvaluaciones = new HashMap<>();
 
         for (EvaluacionEjeTematico ejetem : evalEjeTematicoList) {
-            lst = new ArrayList<>(nroCursos);
-            for (int idx = 0; idx < nroCursos; idx++) {
+            lst = new ArrayList<>(nroTiposCursos);
+            for (int idx = 0; idx < nroTiposCursos; idx++) {
                 OTPreguntasEvaluacion otEval = new OTPreguntasEvaluacion();
                 otEval.setEvaluacion(ejetem);
                 lst.add(idx, otEval);
@@ -305,12 +311,12 @@ public class Nivel_ComparativoColegioEjeHabilidadView extends AFormView implemen
             mapEvaluaciones.put(ejetem, lst);
         }
 
-        int[] totalAlumnos = new int[nroCursos];
+        int[] totalAlumnos = new int[nroTiposCursos];
         Arrays.fill(totalAlumnos, 0);
-        int[] alumnosEvaluados = new int[nroCursos];
+        int[] alumnosEvaluados = new int[nroTiposCursos];
         Arrays.fill(alumnosEvaluados, 0);
         
-        AQUI VOY A AGRUPAR CURSOS POR TIPO CURSO
+        //AQUI VOY A AGRUPAR CURSOS POR TIPO CURSO
         
         // Todas las evaluaciones asociadas (Todos los cursos)
         for (EvaluacionPrueba eval : evaluacionesPrueba) {
@@ -325,12 +331,11 @@ public class Nivel_ComparativoColegioEjeHabilidadView extends AFormView implemen
             // Obtengo el index de la columna que tengo que llenar (mas 1
             // por que la primera es de
             // contenido
-            int index = cursoList.indexOf(eval.getCurso());
+            int index = tiposCurso.indexOf(eval.getCurso().getTipoCurso());
 
             if (index == -1) {
                 continue;
             }
-            totalAlumnos[index] = 0;
 
             // Obtengo los alumnos a considerar en el caso que hayan alumnos
             // PIE.
@@ -360,8 +365,9 @@ public class Nivel_ComparativoColegioEjeHabilidadView extends AFormView implemen
                 for (int n = 0; n < respEsperadas.size(); n++) {
                     EjeTematico eje = respEsperadas.get(n).getEjeTematico();
                     if (!mapEjes.containsKey(eje)) {
+                        //List<OTPreguntasEjes> lista = Stream.generate(OTPreguntasEjes::new).limit(nroTiposCursos).collect(Collectors.toList());
                         List<OTPreguntasEjes> lista = new ArrayList<>();
-                        for (int idx = 0; idx < nroCursos; idx++) {
+                        for (int idx = 0; idx < nroTiposCursos; idx++) {
                             lista.add(null);
                         }
                         mapEjes.put(eje, lista);
@@ -370,7 +376,7 @@ public class Nivel_ComparativoColegioEjeHabilidadView extends AFormView implemen
                     if (!mapHabilidades.containsKey(hab)) {
 
                         List<OTPreguntasHabilidad> lista = new ArrayList<>();
-                        for (int idx = 0; idx < nroCursos; idx++) {
+                        for (int idx = 0; idx < nroTiposCursos; idx++) {
                             lista.add(null);
                         }
                         mapHabilidades.put(hab, lista);

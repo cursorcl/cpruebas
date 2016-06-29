@@ -8,7 +8,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="512.0" prefWidth="1150.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="colegio.ComparativoColegioHabilidadesView">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="512.0" prefWidth="1150.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="colegio.nivel.Nivel_ComparativoColegioHabilidadesView">
    <top>
       <AnchorPane prefHeight="38.0" prefWidth="1150.0" styleClass="sample-page" BorderPane.alignment="CENTER">
          <children>
@@ -21,7 +21,7 @@
       </AnchorPane>
    </top>
    <left>
-    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="490.0" prefWidth="244.0" BorderPane.alignment="CENTER">
+    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="490.0" prefWidth="244.0" styleClass="sample-page" BorderPane.alignment="CENTER">
          <children>
             <Label layoutX="16.0" layoutY="33.0" prefHeight="17.0" prefWidth="191.0" text="Seleccione colegio a procesar" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
             <ComboBox fx:id="cmbColegios" layoutX="16.0" layoutY="50.0" prefHeight="25.0" prefWidth="185.0" promptText="Colegio" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
@@ -34,7 +34,7 @@
       </AnchorPane>
    </left>
    <center>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="sample-page" BorderPane.alignment="CENTER">
          <children>
             <TableView fx:id="tblHabilidadesCantidad" layoutX="2.0" layoutY="37.0" prefHeight="233.0" prefWidth="926.0" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="3.0" AnchorPane.topAnchor="0.0">
               <columns>

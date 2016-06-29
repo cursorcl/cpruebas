@@ -1,4 +1,4 @@
-package colegio.nivel.sinHacer;
+package colegio.nivel;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -6,6 +6,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import cl.eos.common.Constants;
 import cl.eos.imp.view.AFormView;
@@ -19,6 +21,7 @@ import cl.eos.persistence.models.PruebaRendida;
 import cl.eos.persistence.models.RangoEvaluacion;
 import cl.eos.persistence.models.RespuestasEsperadasPrueba;
 import cl.eos.persistence.models.TipoAlumno;
+import cl.eos.persistence.models.TipoCurso;
 import cl.eos.persistence.util.Comparadores;
 import cl.eos.util.ExcelSheetWriterObj;
 import cl.eos.view.ots.ejeevaluacion.OTAcumulador;
@@ -255,8 +258,10 @@ public class Nivel_ComparativoColegioHabilidadesView extends AFormView implement
 		if (evaluacionesPrueba == null || rangoEvalList == null) {
 			return;
 		}
-
-		llenarColumnas(cursoList, rangoEvalList);
+		List<TipoCurso> tiposCurso = cursoList.stream().map(item -> item.getTipoCurso()).distinct().collect(Collectors.toList());
+		
+		
+		llenarColumnas(tiposCurso, rangoEvalList);
 		int nroCursos = cursoList.size();
 		int nroRangos = rangoEvalList.size();
 		Map<Habilidad, List<OTAcumulador>> mapEjes = new HashMap<>();
@@ -407,4 +412,35 @@ public class Nivel_ComparativoColegioHabilidadesView extends AFormView implement
 		tblHabilidadesCantidad.getColumns().clear();
 		;
 	}
+	
+	static int static_id = 0;
+	static class Item
+	{
+	    int id;
+	    String name;
+
+	    public Item() {
+	        this.id = (static_id++) / 4;
+	        this.name = "NAME " + static_id;
+        }
+
+        @Override
+        public String toString() {
+            StringBuilder builder = new StringBuilder();
+            builder.append("Item [id=");
+            builder.append(id);
+            builder.append(", name=");
+            builder.append(name);
+            builder.append("]");
+            return builder.toString();
+        }
+	    
+	}
+	public static void main(String[] args) {
+	    
+	    List<Item> items = Stream.generate(Item::new).limit(20).collect(Collectors.toList());
+	    items.forEach((n) -> System.out.println(n));
+	    List<Integer> tiposCurso = items.stream().map(i -> i.id).distinct().collect(Collectors.toList());
+	    tiposCurso.forEach((n) -> System.out.println(n));
+    }
 }

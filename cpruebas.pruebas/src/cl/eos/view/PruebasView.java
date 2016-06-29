@@ -34,6 +34,7 @@ import colegio.ResumenColegioXAlumnoEjeHabilidadView;
 import colegio.nivel.Nivel_ComparativoColegioEjeEvaluacionView;
 import colegio.nivel.Nivel_ComparativoColegioEjeHabilidadView;
 import colegio.nivel.Nivel_ComparativoColegioEjeHabilidadxCursoView;
+import colegio.nivel.Nivel_ComparativoColegioHabilidadesView;
 import colegio.nivel.Nivel_ResumenColegioView;
 import comunal.ComparativoComunalEjeView;
 import comunal.ComparativoComunalHabilidadView;
@@ -149,6 +150,10 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
     private MenuItem mnuEjesEvaluacion;
     @FXML
     private MenuItem mnuHabilidadEvaluacion;
+
+    @FXML
+    private MenuItem mnuHabilidadEvaluacionXNivel;
+
     @FXML
     private MenuItem mnuHabilidadEvaluacionXAlumno;
     @FXML
@@ -238,6 +243,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
         mnuComparativoColegioEjeHabil.setOnAction(this);
         mnuEjesEvaluacion.setOnAction(this);
         mnuHabilidadEvaluacion.setOnAction(this);
+        mnuHabilidadEvaluacionXNivel.setOnAction(this);
         mnuHabilidadEvaluacionXAlumno.setOnAction(this);
         mnuCompColegioEjeHabilXCurso.setOnAction(this);
         mnuCompEjesHabXNivel.setOnAction(this);
@@ -419,12 +425,14 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
             handlerNuevaPrueba();
         } else if (source == mnuComparativoColegioEjeHabil) {
             handlerComparativoColegioEjeHabilidad();
-        } else if(source == mnuComparativoColegioEjeHabilXNivel)  {
-            handlerComparativoColegioEjeHabilidadXNivel();            
+        } else if (source == mnuComparativoColegioEjeHabilXNivel) {
+            handlerComparativoColegioEjeHabilidadXNivel();
         } else if (source == mnuEjesEvaluacion) {
             handlerEjesEvaluacion();
         } else if (source == mnuHabilidadEvaluacion) {
             handlerHabilidadEvaluacion();
+        } else if (source == mnuHabilidadEvaluacionXNivel) {
+            handlerHabilidadEvaluacionXNivel();
         } else if (source == mnuHabilidadEvaluacionXAlumno) {
             handlerHabilidadEvaluacionXAlumno();
         } else if (source == mnuCompColegioEjeHabilXCurso) {
@@ -437,7 +445,6 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
             handlerResumenColegiosXNivel();
 
         }
-            
 
     }
 
@@ -508,6 +515,15 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 
     }
 
+    private void handlerHabilidadEvaluacionXNivel() {
+        Nivel_ComparativoColegioHabilidadesView resumenHabilidades = (Nivel_ComparativoColegioHabilidadesView) show(
+                "/colegio/nivel/fxml/NivelComparativoColegioHabilidades.fxml");
+        show(resumenHabilidades);
+        controller.findAll(Colegio.class, resumenHabilidades);
+        controller.findAll(Asignatura.class, resumenHabilidades);
+        controller.findAll(TipoAlumno.class, resumenHabilidades);
+    }
+
     private void handlerEjesEvaluacion() {
         ComparativoColegioEjeEvaluacionView resumenEjeEvaluacion = (ComparativoColegioEjeEvaluacionView) show(
                 "/colegio/fxml/ComparativoColegioEjeEvaluacion.fxml");
@@ -536,6 +552,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
         controller.findAll(EvaluacionEjeTematico.class, resumenColegioEjeHabiliadad);
         controller.findAll(TipoAlumno.class, resumenColegioEjeHabiliadad);
     }
+
     private void handlerResumenColegios() {
         resumenColegio = (ResumenColegioView) show("/colegio/fxml/ResumenColegio.fxml");
         show(resumenColegio);
