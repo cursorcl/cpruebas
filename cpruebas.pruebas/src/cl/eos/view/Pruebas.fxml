@@ -182,19 +182,19 @@
                                           </Menu>
                                           <Menu mnemonicParsing="false" text="Reportes Colegio">
                                             <items>
-      														<MenuItem fx:id="mnuColegio" mnemonicParsing="false" text="Resumen del Colegio" />
-      														<MenuItem fx:id="mnuEjesEvaluacion" mnemonicParsing="false" text="Ejes y Evaluación" />
-      														<MenuItem fx:id="mnuHabilidadEvaluacion" mnemonicParsing="false" text="Habilidad y Evaluación" />
+      														<MenuItem fx:id="mnuColegio" mnemonicParsing="false" text="Resumen" />
+      														<MenuItem fx:id="mnuEjesEvaluacion" mnemonicParsing="false" text="Evaluación Ejes Temáticos" />
+      														<MenuItem fx:id="mnuHabilidadEvaluacion" mnemonicParsing="false" text="Evaluación-Habilidad" />
       														<MenuItem fx:id="mnuHabilidadEvaluacionXAlumno" mnemonicParsing="false" text="Habilidades y Evaluación x Alumno" />
-      														<MenuItem fx:id="mnuCompColegioEjeHabilXCurso" mnemonicParsing="false" text="Comparativo  Ejes y Habilidades x Curso" />
-      														<MenuItem fx:id="mnuComparativoColegioEjeHabil" mnemonicParsing="false" text="Comparativo Ejes y Habilidades" />
+      														<MenuItem fx:id="mnuCompColegioEjeHabilXCurso" mnemonicParsing="false" text="Comparativo  Ejes Temáticos/Habilidades (Cantidad)" />
+      														<MenuItem fx:id="mnuComparativoColegioEjeHabil" mnemonicParsing="false" text="Comparativo Ejes Temáticos/Habilidades (Porcentaje)" />
                                                 <Menu mnemonicParsing="false" text="x Nivel">
                                                   <items>
                                                       <MenuItem fx:id="mnuColegioXNivel" mnemonicParsing="false" text="Resumen" />
-                                                      <MenuItem fx:id="mnuHabilidadEvaluacionXNivel" mnemonicParsing="false" text="Evaluación-Habilidad" />
                                                       <MenuItem fx:id="mnuHabilidadEvaluacionXAlumnoXNivel" mnemonicParsing="false" text="Evaluación-Ejes  Temáticos" />
-                                                    <MenuItem fx:id="mnuCompEjesHabXNivel" mnemonicParsing="false" text="Comparativo Ejes Temáticos/Habilidades" />
-                                                      <MenuItem fx:id="mnuComparativoColegioEjeHabilXNivel" mnemonicParsing="false" text="Comparativo Ejes y Habilidades" />
+                                                      <MenuItem fx:id="mnuHabilidadEvaluacionXNivel" mnemonicParsing="false" text="Evaluación-Habilidad" />
+                                                    <MenuItem fx:id="mnuCompEjesHabXNivel" mnemonicParsing="false" text="Comparativo Ejes Temáticos/Habilidades (Cantidad)" />
+                                                      <MenuItem fx:id="mnuComparativoColegioEjeHabilXNivel" mnemonicParsing="false" text="Comparativo Ejes Temáticos/Habilidades (Porcentajes)" />
                                                   </items>
                                                 </Menu>
                                             </items>

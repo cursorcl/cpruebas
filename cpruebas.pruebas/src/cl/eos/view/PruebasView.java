@@ -517,7 +517,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 
     private void handlerHabilidadEvaluacionXNivel() {
         Nivel_ComparativoColegioHabilidadesView resumenHabilidades = (Nivel_ComparativoColegioHabilidadesView) show(
-                "/colegio/nivel/fxml/NivelComparativoColegioHabilidades.fxml");
+                "/colegio/nivel/fxml/Nivel_ComparativoColegioHabilidades.fxml");
         show(resumenHabilidades);
         controller.findAll(Colegio.class, resumenHabilidades);
         controller.findAll(Asignatura.class, resumenHabilidades);
