@@ -1,4 +1,4 @@
-package colegio.nivel.sinHacer;
+package colegio.util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +27,7 @@ import cl.eos.util.Pair;
 import cl.eos.util.Utils;
 import cl.eos.view.ots.resumenxalumno.eje.habilidad.OTAlumnoResumen;
 
-public class Nivel_CursoEjeHabilidad {
+public class CursoEjeHabilidad {
 
 	private final int FIXED_COLUMNS = 4;
 	private TableView tblAlumnos;
@@ -38,11 +38,11 @@ public class Nivel_CursoEjeHabilidad {
 	private List<RespuestasEsperadasPrueba> respEsperadas;
 	private  TipoAlumno tipoAlumno;
 
-	public Nivel_CursoEjeHabilidad( TipoAlumno tipoAlumno) {
+	public CursoEjeHabilidad( TipoAlumno tipoAlumno) {
 		this(null, tipoAlumno);
 	}
 
-	public Nivel_CursoEjeHabilidad(EvaluacionPrueba evaluacionPrueba, TipoAlumno tipoAlumno) {
+	public CursoEjeHabilidad(EvaluacionPrueba evaluacionPrueba, TipoAlumno tipoAlumno) {
 		super();
 		this.tipoAlumno =  tipoAlumno;
 		tblAlumnos = new TableView();

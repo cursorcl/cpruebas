@@ -17,6 +17,7 @@ import cl.eos.persistence.models.EvaluacionPrueba;
 import cl.eos.persistence.models.TipoAlumno;
 import cl.eos.persistence.util.Comparadores;
 import cl.eos.util.ExcelSheetWriterObj;
+import colegio.nivel.util.Nivel_CursoEjeHabilidad;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
