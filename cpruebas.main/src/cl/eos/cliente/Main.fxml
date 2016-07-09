@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.*?>
+<?import jfxtras.scene.control.*?>
+<?import jfxtras.labs.scene.control.*?>
+<?import javafx.scene.input.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<StackPane id="ModalDimmer" depthTest="DISABLE" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"  prefHeight="740.0" prefWidth="1024.0" style="-fx-border-color: #71747C; -fx-border-width: 2;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.cliente.MainController">
+	<children>
+		<BorderPane prefHeight="200.0" prefWidth="200.0">
+			<top>
+            <VBox>
+               <children>
+                  <AnchorPane id="windows-title" fx:id="pnlWindow" prefHeight="62.0" prefWidth="1024.0">
+                     <children>
+                        <HBox prefHeight="100.0" prefWidth="1020.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <ImageView fitHeight="60.0" fitWidth="347.0">
+                                 <image>
+                                    <Image url="@images/logo128.png" />
+                                 </image>
+                              </ImageView>
+                              <Label alignment="CENTER" text="V. 2.0" textAlignment="CENTER" textFill="WHITE">
+                                 <font>
+                                    <Font name="System Bold" size="26.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets top="25.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <AnchorPane id="SearchBox" prefHeight="62.0" prefWidth="191.0" HBox.hgrow="ALWAYS" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </AnchorPane>
+										<MenuBar id="mnuPrincipal">
+											<menus>
+                        <Menu mnemonicParsing="false" text="Pruebas">
+                          <items>
+                            <MenuItem fx:id="mnuHacerPrueba" mnemonicParsing="false" text="Listado de Pruebas" />
+                          
+                                      </items>
+                        </Menu>
+												<Menu mnemonicParsing="false" text="Administrador">
+													<items>
+                              <MenuItem id="mnuColegios" fx:id="mnuColegios" mnemonicParsing="false" text="Colegios">
+                                 <accelerator>
+                                    <KeyCodeCombination alt="UP" code="C" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                                 </accelerator>
+                              </MenuItem>
+                              <MenuItem id="mnuCursos" fx:id="mnuCursos" mnemonicParsing="false" text="Cursos">
+                                 <accelerator>
+                                    <KeyCodeCombination alt="UP" code="U" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                                 </accelerator>
+                              </MenuItem>
+                              <MenuItem id="mnuAsignaturas" fx:id="mnuAsignaturas" mnemonicParsing="false" text="Asignaturas">
+                                 <accelerator>
+                                    <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                                 </accelerator>
+                              </MenuItem>
+                              <MenuItem id="mnuProfesores" fx:id="mnuProfesores" mnemonicParsing="false" text="Profesores">
+                                 <accelerator>
+                                    <KeyCodeCombination alt="UP" code="P" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                                 </accelerator>
+                              </MenuItem>
+														<MenuItem id="mnuAlumno" fx:id="mnuAlumno" mnemonicParsing="false" text="Alumnos">
+															<accelerator>
+																<KeyCodeCombination alt="UP" code="A" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+															</accelerator>
+														</MenuItem>
+                              <MenuItem id="mnuEjesTematicos" fx:id="mnuEjesTematicos" mnemonicParsing="false" text="Ejes Temáticos">
+                                 <accelerator>
+                                    <KeyCodeCombination alt="UP" code="E" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                                 </accelerator>
+                              </MenuItem>
+                              <MenuItem id="mnuHabilidades" fx:id="mnuHabilidades" mnemonicParsing="false" text="Habilidades">
+                                 <accelerator>
+                                    <KeyCodeCombination alt="UP" code="H" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                                 </accelerator>
+                              </MenuItem>
+                              <MenuItem fx:id="mnuObjetivos" mnemonicParsing="false" text="Objetivos">
+                                 <accelerator>
+                                    <KeyCodeCombination alt="UP" code="O" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                                 </accelerator></MenuItem>
+                              <MenuItem fx:id="mnuTipoPrueba" mnemonicParsing="false" text="Tipo prueba">
+                                 <accelerator>
+                                    <KeyCodeCombination alt="UP" code="T" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                                 </accelerator>
+                              </MenuItem>
+                              <MenuItem fx:id="mnuNivelEvaluacion" mnemonicParsing="false" text="Nivel evaluación" visible="false">
+                                 <accelerator>
+                                    <KeyCodeCombination alt="UP" code="N" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                                 </accelerator>
+                              </MenuItem>
+                              <SeparatorMenuItem mnemonicParsing="false" />
+                              <MenuItem fx:id="mnuEvaluaciones" mnemonicParsing="false" text="Evaluaciones">
+                                 <accelerator>
+                                    <KeyCodeCombination alt="UP" code="V" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                                 </accelerator></MenuItem>
+                              <MenuItem fx:id="mnuNivelEvaluaciones" mnemonicParsing="false" text="Nivel Evaluaciones">
+                                 <accelerator>
+                                    <KeyCodeCombination alt="UP" code="N" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                                 </accelerator></MenuItem>
+                              <SeparatorMenuItem mnemonicParsing="false" />
+                              <MenuItem fx:id="mnuImportar" mnemonicParsing="false" text="Importar" />
+													</items>
+												</Menu>
+												<Menu mnemonicParsing="false" text="Ayuda">
+													<items>
+														<MenuItem mnemonicParsing="false" text="About" />
+													</items>
+												</Menu>
+											</menus>
+										</MenuBar>
+               </children>
+            </VBox>
+			</top>
+			<center>
+				<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="560.0" prefWidth="943.0" BorderPane.alignment="CENTER">
+					<children>
+						<BorderPane id="page-area" layoutX="133.0" layoutY="62.0" prefHeight="573.0" prefWidth="608.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+							<top>
+								<VBox prefHeight="30.0" prefWidth="1024.0" BorderPane.alignment="CENTER">
+									<children>
+                              <BreadcrumbBar fx:id="breadCrumb" prefWidth="711.0" />
+									</children>
+								</VBox>
+							</top>
+                     <center>
+                        <Group fx:id="groupRoot" BorderPane.alignment="CENTER" />
+                     </center>
+						</BorderPane>
+					</children>
+				</AnchorPane>
+			</center>
+		</BorderPane>
+	</children>
+</StackPane>

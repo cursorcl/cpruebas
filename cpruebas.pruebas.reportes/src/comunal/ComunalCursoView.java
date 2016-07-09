@@ -252,8 +252,6 @@ public class ComunalCursoView extends AFormView implements EventHandler<ActionEv
 											&& pBuenas <= evaluacionAl.getNroRangoMax()) {
 										otPreguntas.setAlumnos(otPreguntas.getAlumnos() + 1);
 									}
-									System.out.println("name tp " + nameTpCurso + " " + evaluacionAl.getName() + " "
-											+ otPreguntas.getAlumnos());
 								} else {
 
 									OTPreguntasEvaluacion pregunta = new OTPreguntasEvaluacion();
@@ -265,8 +263,6 @@ public class ComunalCursoView extends AFormView implements EventHandler<ActionEv
 									}
 									pregunta.setEvaluacion(evaluacionAl);
 									evaluacion.put(nameTpCurso, pregunta);
-									System.out.println("name tp " + nameTpCurso + " " + evaluacionAl.getName() + " "
-											+ pregunta.getAlumnos());
 								}
 							} else {
 								OTPreguntasEvaluacion pregunta = new OTPreguntasEvaluacion();
@@ -281,9 +277,6 @@ public class ComunalCursoView extends AFormView implements EventHandler<ActionEv
 								mapaOT = new HashMap<String, OTPreguntasEvaluacion>();
 								mapaOT.put(nameTpCurso, pregunta);
 								mapEvaAlumnos.put(evaluacionAl, mapaOT);
-								// System.out.println("name tp " + nameTpCurso
-								// + " " + evaluacionAl.getName() + " "
-								// + pregunta.getAlumnos());
 							}
 						}
 					}

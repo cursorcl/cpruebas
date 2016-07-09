@@ -39,6 +39,8 @@ import colegio.nivel.Nivel_ResumenColegioView;
 import comunal.ComparativoComunalEjeView;
 import comunal.ComparativoComunalHabilidadView;
 import comunal.ComunalCursoView;
+import comunal.nivel.Nivel_ComparativoComunalEjeView;
+import comunal.nivel.Nivel_ComparativoComunalHabilidadView;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -134,7 +136,11 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
     @FXML
     private MenuItem mnuComparativoComunal;
     @FXML
+    private MenuItem mnuComparativoComunalNivel;
+    @FXML
     private MenuItem mnuComparativoComunalHab;
+    @FXML
+    private MenuItem mnuComparativoComunalHabNivel;
     @FXML
     private MenuItem mnuComparativoColegioEjeHabil;
     @FXML
@@ -235,7 +241,9 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
         mnuDefinirPrueba.setOnAction(this);
         mnuListaEvaluaciones.setOnAction(this);
         mnuComparativoComunal.setOnAction(this);
+        mnuComparativoComunalNivel.setOnAction(this);
         mnuComparativoComunalHab.setOnAction(this);
+        mnuComparativoComunalHabNivel.setOnAction(this);
         mnuComunalEje.setOnAction(this);
         mnuColegio.setOnAction(this);
         mnuImprimirPrueba.setOnAction(this);
@@ -413,8 +421,12 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
             handlerListaEvaluaciones();
         } else if (source == mnuComparativoComunal) {
             handlerComparativoComunal();
+        } else if (source == mnuComparativoComunalNivel) {
+            handlerComparativoComunalNivel();
         } else if (source == mnuComparativoComunalHab) {
             handlerComparativoComunalHab();
+        } else if (source == mnuComparativoComunalHabNivel) {
+            handlerComparativoComunalHabNivel();
         } else if (source == mnuComunalEje) {
             handlerComunalEje();
         } else if (source == mnuColegio) {
@@ -593,7 +605,19 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
             }
         }
     }
-
+    private void handlerComparativoComunalNivel() {
+        Nivel_ComparativoComunalEjeView comparativoComunalNivel = (Nivel_ComparativoComunalEjeView) show("/comunal/nivel/fxml/Nivel_ComparativoComunalEje.fxml");
+        if (tblListadoPruebas.getSelectionModel().getSelectedItem() != null) {
+            Prueba pPrueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
+            if (pPrueba != null) {
+                controller.findById(Prueba.class, pPrueba.getId(), comparativoComunalNivel);
+                controller.findAll(EvaluacionEjeTematico.class, comparativoComunalNivel);
+                controller.findAll(TipoAlumno.class, comparativoComunalNivel);
+                controller.findAll(TipoColegio.class, comparativoComunalNivel);
+            }
+        }
+    }
+    
     private void handlerNuevaPrueba() {
         removeAllStyles();
         limpiarCampos();
@@ -631,6 +655,20 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
                 controller.findAll(EvaluacionEjeTematico.class, comparativoComunalHabilidad);
                 controller.findAll(TipoAlumno.class, comparativoComunalHabilidad);
                 controller.findAll(TipoColegio.class, comparativoComunalHabilidad);
+            }
+        }
+    }
+
+    private void handlerComparativoComunalHabNivel() {
+        Nivel_ComparativoComunalHabilidadView comparativoComunalHabilidadNivel = (Nivel_ComparativoComunalHabilidadView) show(
+                "/comunal/nivel/fxml/Nivel_ComparativoComunalHabilidad.fxml");
+        if (tblListadoPruebas.getSelectionModel().getSelectedItem() != null) {
+            Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
+            if (prueba != null) {
+                controller.findById(Prueba.class, prueba.getId(), comparativoComunalHabilidadNivel);
+                controller.findAll(EvaluacionEjeTematico.class, comparativoComunalHabilidadNivel);
+                controller.findAll(TipoAlumno.class, comparativoComunalHabilidadNivel);
+                controller.findAll(TipoColegio.class, comparativoComunalHabilidadNivel);
             }
         }
     }

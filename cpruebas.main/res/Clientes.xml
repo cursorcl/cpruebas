@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Clientes>
 	<Cliente>
-		<rut>10613781-1</rut>
-		<nombre>Colegio</nombre>
-		<direccion>Su casa</direccion>
-		<fono>83604232</fono>
-		<email>cursor.cl@gmail.com</email>
+		<rut>-</rut>
+		<nombre>Escuela Mariano Latorre</nombre>
+		<direccion>-</direccion>
+		<fono>-</fono>
+		<email>-</email>
 		<alias>colegio_cpreuebas</alias>
 	</Cliente>
 	<Cliente>
-		<rut>12365796-9</rut>
-		<nombre>Muni</nombre>
-		<direccion>Su casa</direccion>
-		<fono>2499275</fono>
+		<rut>-</rut>
+		<nombre>Municipalidad Cauquenes</nombre>
+		<direccion>-</direccion>
+		<fono>-</fono>
 		<alias>multi_cpruebas</alias>
 	</Cliente>
 </Clientes>

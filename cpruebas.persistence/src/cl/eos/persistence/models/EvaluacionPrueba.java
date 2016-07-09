@@ -175,6 +175,15 @@ public class EvaluacionPrueba extends AEntity {
             buffer.append(curso.getName());
         return buffer.toString();
     }
+    
+    public String getColegioTipoCurso() {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(colegio.getName());
+        buffer.append("\n");
+        if (curso != null)
+            buffer.append(curso.getTipoCurso().getName());
+        return buffer.toString();
+    }
 
     @Override
     public int hashCode() {

@@ -204,6 +204,12 @@
       														<MenuItem fx:id="mnuComunalEje" mnemonicParsing="false" text="Resumen Comunal" />
       														<MenuItem fx:id="mnuComparativoComunalHab" mnemonicParsing="false" text="Comparativo Habilidades" />
       														<MenuItem fx:id="mnuComparativoComunal" mnemonicParsing="false" text="Comparativo Ejes Temáticos" />
+                                                <Menu mnemonicParsing="false" text="x  Nivel">
+                                                  <items>
+                                                    <MenuItem fx:id="mnuComparativoComunalHabNivel" mnemonicParsing="false" text="Comparativo Habilidades" />
+                                                      <MenuItem fx:id="mnuComparativoComunalNivel" mnemonicParsing="false" text="Comparativo Ejes Temáticos" />
+                                                  </items>
+                                                </Menu>
                                             </items>
                                           </Menu>
 
