@@ -6,7 +6,7 @@
 		<direccion>-</direccion>
 		<fono>-</fono>
 		<email>-</email>
-		<alias>colegio_cpreuebas</alias>
+		<alias>colegio_cpruebas</alias>
 	</Cliente>
 	<Cliente>
 		<rut>-</rut>
@@ -15,4 +15,11 @@
 		<fono>-</fono>
 		<alias>multi_cpruebas</alias>
 	</Cliente>
+	<Cliente>
+		<rut>-</rut>
+		<nombre>Municipalidad Vallenar</nombre>
+		<direccion>-</direccion>
+		<fono>-</fono>
+		<alias>vallenar_cpruebas</alias>
+	</Cliente>	
 </Clientes>

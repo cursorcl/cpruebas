@@ -1,7 +1,6 @@
 package cl.eos.view;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -37,7 +36,6 @@ import cl.eos.persistence.models.PruebaRendida;
 import cl.eos.persistence.models.RangoEvaluacion;
 import cl.eos.persistence.models.RespuestasEsperadasPrueba;
 import cl.eos.persistence.util.Comparadores;
-import cl.eos.provider.persistence.PersistenceService;
 import cl.eos.util.ExcelSheetWriterObj;
 import cl.eos.util.Pair;
 import cl.eos.util.Utils;
@@ -408,7 +406,6 @@ public class EvaluarPruebaView extends AFormView {
                     evalPrueba.setPrueba(prueba);
                     evalPrueba.setProfesor(profesor);
                     evalPrueba.setFecha(dtpFecha.getValue().toEpochDay());
-                    evalPrueba.setPruebasRendidas(new ArrayList<PruebaRendida>());
                 }
 
                 if (curso.getAlumnos() != null && !curso.getAlumnos().isEmpty()) {
@@ -439,40 +436,19 @@ public class EvaluarPruebaView extends AFormView {
             if (!prueba.getEvaluaciones().contains(evalPrueba)) {
                 prueba.getEvaluaciones().add(evalPrueba);
             }
+            // evalPrueba.getPruebasRendidas().clear();
             List<PruebaRendida> removePruebasRendidas = new ArrayList<PruebaRendida>();
             ObservableList<OTPruebaRendida> otDeLaTabla = tblListadoPruebas.getItems();
             for (OTPruebaRendida ot : otDeLaTabla) {
-                if (ot.getRespuestas() != null && !ot.getRespuestas().trim().isEmpty()) {
-                    int idx = evalPrueba.getPruebasRendidas().indexOf(ot.getPruebaRendida());
-                    if (idx != -1) {
-                        PruebaRendida nPr = ot.getPruebaRendida();
-                        PruebaRendida oPr = evalPrueba.getPruebasRendidas().get(idx);
-                        oPr.setBuenas(nPr.getBuenas());
-                        oPr.setMalas(nPr.getMalas());
-                        oPr.setOmitidas(nPr.getOmitidas());
-
-                        String respsAlumno = nPr.getRespuestas();
-                        int nroLast = Math.abs(respsAlumno.length() - prueba.getNroPreguntas());
-                        if (nroLast > 0) {
-                            char[] c = new char[nroLast];
-                            Arrays.fill(c, 'O');
-                            StringBuilder sBuilder = new StringBuilder(respsAlumno);
-                            sBuilder.append(c);
-                            respsAlumno = sBuilder.toString();
-                        }
-                        oPr.setRespuestas(respsAlumno);
-                        oPr.setRango(nPr.getRango());
-                        evalPrueba.getPruebasRendidas().set(idx, ot.getPruebaRendida());
-                    } else {
-                        evalPrueba.getPruebasRendidas().add(ot.getPruebaRendida());
-                    }
-
-                } else {
+                if (!(ot.isRindioPrueba() && ot.getRespuestas() != null && !ot.getRespuestas().trim().isEmpty())) {
+                    //ot.getPruebaRendida().eliminada = true;
                     removePruebasRendidas.add(ot.getPruebaRendida());
-                    int idx = evalPrueba.getPruebasRendidas().indexOf(ot.getPruebaRendida());
-                    if (idx != -1) {
-                        evalPrueba.getPruebasRendidas().remove(idx);
-
+                }
+                else
+                {
+                    if(!evalPrueba.getPruebasRendidas().contains(ot.getPruebaRendida()))
+                    {
+                        evalPrueba.getPruebasRendidas().add(ot.getPruebaRendida());
                     }
                 }
             }
@@ -482,17 +458,20 @@ public class EvaluarPruebaView extends AFormView {
             evalPrueba.setName(s);
             prueba.getFormas().size();
             prueba.getRespuestas().size();
+            
             prueba = (Prueba) save(prueba);
             for (PruebaRendida pr : removePruebasRendidas) {
                 delete(pr, false);
             }
 
+            
             mnuGrabar.setDisable(true);
             mnuScanner.setDisable(true);
             cmbProfesor.getSelectionModel().clearSelection();
             cmbColegios.getSelectionModel().clearSelection();
             cmbCursos.getItems().clear();
             cmbProfesor.requestFocus();
+            controller.findById(Prueba.class, prueba.getId(), this);
         }
     }
 
@@ -568,14 +547,12 @@ public class EvaluarPruebaView extends AFormView {
                                     results.getSecond().add(pRendida);
                                     updateMessage("Procesado:" + pRendida.getAlumno().toString());
                                     updateProgress(n++, files.size());
-                                }
-                                else
-                                {
+                                } else {
                                     updateMessage("No se obtivieron resultados para el archivo:" + archivo.getName());
                                     updateProgress(n++, files.size());
                                     log.error("No se obtivieron resultados");
                                 }
-                                
+
                             } catch (CPruebasException e) {
                                 log.error("Archivo:" + archivo.getName() + " " + e.getMessage());
                                 results.getFirst().add(e.getMessage());

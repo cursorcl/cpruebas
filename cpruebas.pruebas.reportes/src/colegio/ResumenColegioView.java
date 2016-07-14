@@ -289,6 +289,12 @@ public class ResumenColegioView extends AFormView implements EventHandler<Action
 			// Estamos procesando un curso/una prueba
 			for (PruebaRendida pruebaRendida : rendidas) {
 				Alumno alumno = pruebaRendida.getAlumno();
+				if(alumno == null  || alumno.getTipoAlumno() == null)
+				{
+				    log.error("Alumno NULO");
+                    totalAlumnos--;
+                    continue;
+				}
 				if (tipoAlumno != Constants.PIE_ALL && tipoAlumno != alumno.getTipoAlumno().getId()) {
 					// En este caso, no se considera este alumno para el
 					// cálculo.

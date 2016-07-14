@@ -14,9 +14,19 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Version;
 
+import org.eclipse.persistence.annotations.Cache;
+import org.eclipse.persistence.annotations.CacheCoordinationType;
+import org.eclipse.persistence.annotations.CacheType;
+
 import cl.eos.persistence.AEntity;
 
 @Entity(name = "nivelevaluacion")
+@Cache(
+        type=CacheType.NONE,
+        size=64000,  // Use 64,000 as the initial cache size.
+        expiry=360000,  // 6 minutes
+        coordinationType=CacheCoordinationType.INVALIDATE_CHANGED_OBJECTS  // if cache coordination is used, only send invalidation messages.
+      )
 @NamedQueries({ @NamedQuery(name = "NivelEvaluacion.findAll", query = "SELECT e FROM nivelevaluacion e") })
 public class NivelEvaluacion extends AEntity {
 

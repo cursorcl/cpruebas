@@ -11,9 +11,19 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Version;
 
+import org.eclipse.persistence.annotations.Cache;
+import org.eclipse.persistence.annotations.CacheCoordinationType;
+import org.eclipse.persistence.annotations.CacheType;
+
 import cl.eos.persistence.AEntity;
 
 @Entity(name = "formas")
+@Cache(
+        type=CacheType.NONE,
+        size=64000,  // Use 64,000 as the initial cache size.
+        expiry=360000,  // 6 minutes
+        coordinationType=CacheCoordinationType.INVALIDATE_CHANGED_OBJECTS  // if cache coordination is used, only send invalidation messages.
+      )
 @NamedQueries({ @NamedQuery(name = "Formas.findAll", query = "SELECT e FROM formas e"),
 		@NamedQuery(name = "Formas.findByPrueba", query = "SELECT e FROM formas e WHERE e.prueba.id = :pruebaId"),
 		@NamedQuery(name = "Formas.deleteByPrueba", query = "DELETE FROM formas e WHERE e.prueba.id = :pruebaId") })

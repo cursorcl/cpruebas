@@ -18,7 +18,9 @@ import javax.persistence.Query;
 import javax.persistence.RollbackException;
 
 import org.apache.log4j.Logger;
+import org.eclipse.persistence.config.HintValues;
 import org.eclipse.persistence.config.PersistenceUnitProperties;
+import org.eclipse.persistence.config.QueryHints;
 
 import cl.eos.Environment;
 import cl.eos.imp.view.ProgressForm;
@@ -59,7 +61,10 @@ public class PersistenceService implements IPersistenceService {
         props.put("javax.persistence.jdbc.url", String.format("jdbc:mysql://localhost:3306/%s", Environment.database));
         props.put("javax.persistence.jdbc.driver", "com.mysql.jdbc.Driver");
         props.put("eclipselink.allow-zero-id", "true");
+        props.put("eclipselink.query-results-cache", "false");
+        props.put("eclipselink.cache.shared.default", "false");
         eFactory = Persistence.createEntityManagerFactory(NAME, props);
+        eFactory.getCache().evictAll();
     }
 
     /*
@@ -143,6 +148,7 @@ public class PersistenceService implements IPersistenceService {
                 Query query = eManager.createNamedQuery(findAll);
 
                 if (query != null) {
+                    query.setHint(QueryHints.CACHE_STORE_MODE, HintValues.TRUE);
                     query.setLockMode(LockModeType.PESSIMISTIC_WRITE);
                     try {
                         lresults = query.getResultList();
@@ -183,6 +189,7 @@ public class PersistenceService implements IPersistenceService {
 
                 Query query = eManager.createNamedQuery(namedQuery);
                 if (query != null) {
+                    query.setHint(QueryHints.CACHE_STORE_MODE, HintValues.TRUE);
                     if (parameters != null && !parameters.isEmpty()) {
                         for (Entry<String, Object> entry : parameters.entrySet()) {
                             query.setParameter(entry.getKey(), entry.getValue());
@@ -222,6 +229,7 @@ public class PersistenceService implements IPersistenceService {
 
                 Query query = eManager.createQuery(strQuery);
                 if (query != null) {
+                    query.setHint(QueryHints.CACHE_STORE_MODE, HintValues.TRUE);
                     query.setParameter("id", id);
                     try {
                         lresult = (IEntity) query.setLockMode(LockModeType.PESSIMISTIC_WRITE).getSingleResult();
@@ -268,6 +276,7 @@ public class PersistenceService implements IPersistenceService {
                 eManager.getTransaction().begin();
                 Query query = eManager.createQuery(strQuery);
                 if (query != null) {
+                    query.setHint(QueryHints.CACHE_STORE_MODE, HintValues.TRUE);
                     try {
                         lresult = query.setLockMode(LockModeType.PESSIMISTIC_WRITE).getResultList();
                     } catch (Exception e) {
@@ -299,6 +308,7 @@ public class PersistenceService implements IPersistenceService {
                 eManager.getTransaction().begin();
                 Query query = eManager.createQuery(String.format("select c from %s c where c.name = :name", strEntity));
                 if (query != null) {
+                    query.setHint(QueryHints.CACHE_STORE_MODE, HintValues.TRUE);
                     query.setParameter("name", name);
                     try {
                         lresult = (IEntity) query.setLockMode(LockModeType.PESSIMISTIC_WRITE).getSingleResult();
@@ -479,6 +489,7 @@ public class PersistenceService implements IPersistenceService {
         Query query = eManager.createNamedQuery(findAll);
 
         if (query != null) {
+            query.setHint(QueryHints.CACHE_STORE_MODE, HintValues.TRUE);
             lresults = query.setLockMode(LockModeType.PESSIMISTIC_WRITE).getResultList();
         }
         eManager.close();

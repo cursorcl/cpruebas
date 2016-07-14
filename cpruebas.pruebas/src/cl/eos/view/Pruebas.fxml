@@ -182,6 +182,7 @@
                                           </Menu>
                                           <Menu mnemonicParsing="false" text="Reportes Colegio">
                                             <items>
+                                                <MenuItem fx:id="mnuInforme" mnemonicParsing="false" text="Informe Completo" />
       														<MenuItem fx:id="mnuColegio" mnemonicParsing="false" text="Resumen" />
       														<MenuItem fx:id="mnuEjesEvaluacion" mnemonicParsing="false" text="Evaluación Ejes Temáticos" />
       														<MenuItem fx:id="mnuHabilidadEvaluacion" mnemonicParsing="false" text="Evaluación-Habilidad" />

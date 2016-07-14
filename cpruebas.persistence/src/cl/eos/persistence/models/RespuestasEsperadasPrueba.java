@@ -10,6 +10,10 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Version;
 
+import org.eclipse.persistence.annotations.Cache;
+import org.eclipse.persistence.annotations.CacheCoordinationType;
+import org.eclipse.persistence.annotations.CacheType;
+
 import cl.eos.persistence.AEntity;
 
 /**
@@ -18,6 +22,12 @@ import cl.eos.persistence.AEntity;
  * @author curso_000
  */
 @Entity(name = "respuestasesperadasprueba")
+@Cache(
+        type=CacheType.NONE,
+        size=64000,  // Use 64,000 as the initial cache size.
+        expiry=360000,  // 6 minutes
+        coordinationType=CacheCoordinationType.INVALIDATE_CHANGED_OBJECTS  // if cache coordination is used, only send invalidation messages.
+      )
 @NamedQueries({
         @NamedQuery(name = "RespuestasEsperadasPrueba.findAll", query = "SELECT e FROM respuestasesperadasprueba e"),
         @NamedQuery(name = "RespuestasEsperadasPrueba.findByPrueba", query = "SELECT e FROM respuestasesperadasprueba e WHERE e.prueba.id = :pruebaId order by e.numero"),

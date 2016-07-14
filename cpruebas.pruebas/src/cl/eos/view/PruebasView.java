@@ -41,6 +41,7 @@ import comunal.ComparativoComunalHabilidadView;
 import comunal.ComunalCursoView;
 import comunal.nivel.Nivel_ComparativoComunalEjeView;
 import comunal.nivel.Nivel_ComparativoComunalHabilidadView;
+import informe.Informe;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -147,7 +148,8 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
     private MenuItem mnuCompColegioEjeHabilXCurso;
     @FXML
     private MenuItem mnuComparativoColegioEjeHabilXNivel;
-
+    @FXML
+    private MenuItem mnuInforme;
     @FXML
     private MenuItem mnuColegio;
     @FXML
@@ -248,6 +250,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
         mnuColegio.setOnAction(this);
         mnuImprimirPrueba.setOnAction(this);
         mnuNueva.setOnAction(this);
+        mnuInforme.setOnAction(this);
         mnuComparativoColegioEjeHabil.setOnAction(this);
         mnuEjesEvaluacion.setOnAction(this);
         mnuHabilidadEvaluacion.setOnAction(this);
@@ -455,11 +458,20 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
             handlerHabilidadEvaluacionXAlumnoXNivel();
         } else if (source == mnuColegioXNivel) {
             handlerResumenColegiosXNivel();
-
+        } else if (source == mnuInforme) {
+            handlerInforme();
         }
 
     }
 
+    private void handlerInforme() {
+        Informe informe = (Informe) show("/informe/informe.fxml");
+        show(informe);
+        controller.findAll(Colegio.class, informe);
+        controller.findAll(Asignatura.class, informe);
+        controller.findAll(TipoAlumno.class, informe);
+    }
+    
     private void handlerHabilidadEvaluacionXAlumnoXNivel() {
         Nivel_ComparativoColegioEjeEvaluacionView resHabEjeAlumno = (Nivel_ComparativoColegioEjeEvaluacionView) show(
                 "/colegio/nivel/fxml/Nivel_ComparativoColegioEjeEvaluacion.fxml");
@@ -605,8 +617,10 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
             }
         }
     }
+
     private void handlerComparativoComunalNivel() {
-        Nivel_ComparativoComunalEjeView comparativoComunalNivel = (Nivel_ComparativoComunalEjeView) show("/comunal/nivel/fxml/Nivel_ComparativoComunalEje.fxml");
+        Nivel_ComparativoComunalEjeView comparativoComunalNivel = (Nivel_ComparativoComunalEjeView) show(
+                "/comunal/nivel/fxml/Nivel_ComparativoComunalEje.fxml");
         if (tblListadoPruebas.getSelectionModel().getSelectedItem() != null) {
             Prueba pPrueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
             if (pPrueba != null) {
@@ -617,7 +631,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
             }
         }
     }
-    
+
     private void handlerNuevaPrueba() {
         removeAllStyles();
         limpiarCampos();
