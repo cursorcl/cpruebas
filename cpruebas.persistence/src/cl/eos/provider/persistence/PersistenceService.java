@@ -19,7 +19,6 @@ import javax.persistence.RollbackException;
 
 import org.apache.log4j.Logger;
 import org.eclipse.persistence.config.HintValues;
-import org.eclipse.persistence.config.PersistenceUnitProperties;
 import org.eclipse.persistence.config.QueryHints;
 
 import cl.eos.Environment;
@@ -494,6 +493,36 @@ public class PersistenceService implements IPersistenceService {
         }
         eManager.close();
         return lresults;
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<Object> findSynchro(final String namedQuery, final Map<String, Object> parameters) {
+
+        List<Object> lresults = null;
+        EntityManager eManager = eFactory.createEntityManager();
+        eManager.getTransaction().begin();
+
+        Query query = eManager.createNamedQuery(namedQuery);
+        if (query != null) {
+            query.setHint(QueryHints.CACHE_STORE_MODE, HintValues.TRUE);
+            if (parameters != null && !parameters.isEmpty()) {
+                for (Entry<String, Object> entry : parameters.entrySet()) {
+                    query.setParameter(entry.getKey(), entry.getValue());
+                }
+            }
+            try {
+                lresults = query.setLockMode(LockModeType.PESSIMISTIC_WRITE).getResultList();
+                eManager.getTransaction().commit();
+            } catch (Exception e) {
+                eManager.getTransaction().rollback();
+                LOG.error("Error en el find del namedQuery:" + namedQuery + " / " + e.getMessage());
+                LOG.error(e);
+            }
+
+        }
+        eManager.close();
+        return lresults;
+
     }
 
 }

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="O:/cpruebas_multiuser/cpruebas/jars/poi-3.9.jar"/>
+	<classpathentry kind="lib" path="O:/cpruebas_multiuser/cpruebas/jars/poi-ooxml-3.9.jar"/>
+	<classpathentry kind="lib" path="O:/cpruebas_multiuser/cpruebas/jars/xmlbeans-5.2.4.jar"/>
+	<classpathentry kind="lib" path="O:/cpruebas_multiuser/cpruebas/jars/dom4j-1.6.1.jar"/>
+	<classpathentry kind="lib" path="O:/cpruebas_multiuser/cpruebas/jars/poi-ooxml-schemas-3.7.jar"/>
+	<classpathentry kind="lib" path="O:/cpruebas_multiuser/cpruebas/jars/ooxml-schemas-1.1.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

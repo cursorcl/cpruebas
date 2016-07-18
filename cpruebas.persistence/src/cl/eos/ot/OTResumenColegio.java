@@ -2,6 +2,7 @@ package cl.eos.ot;
 
 import cl.eos.persistence.models.Colegio;
 import cl.eos.persistence.models.Curso;
+import cl.eos.util.Utils;
 
 
 public class OTResumenColegio {
@@ -54,6 +55,7 @@ public class OTResumenColegio {
 
 	public void setTotalEvaluados(int totalEvaluados) {
 		this.totalEvaluados = totalEvaluados;
+		calculate();
 	}
 
 	public int getTotalAprobados() {
@@ -62,6 +64,7 @@ public class OTResumenColegio {
 
 	public void setTotalAprobados(int totalAprobados) {
 		this.totalAprobados = totalAprobados;
+		calculate();
 	}
 
 	public int getTotalReprobados() {
@@ -70,6 +73,7 @@ public class OTResumenColegio {
 
 	public void setTotalReprobados(int totalReprobados) {
 		this.totalReprobados = totalReprobados;
+		calculate();
 	}
 
 	public float getAlumnosEvaluados() {
@@ -94,6 +98,16 @@ public class OTResumenColegio {
 
 	public void setAlumnosReprobados(float alumnosReprobados) {
 		this.alumnosReprobados = alumnosReprobados;
+	}
+	
+	private void calculate()
+	{
+	    setAlumnosEvaluados(
+                Utils.redondeo2Decimales((((float) totalEvaluados / (float) totalAlumnos) * 100f)));
+        setAlumnosAprobados(
+                Utils.redondeo2Decimales((((float) totalAprobados / (float) totalEvaluados) * 100f)));
+        setAlumnosReprobados(
+                Utils.redondeo2Decimales((((float) totalReprobados / (float) totalEvaluados) * 100f)));
 	}
 
 }

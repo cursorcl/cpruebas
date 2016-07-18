@@ -115,7 +115,31 @@ public abstract class AView implements IView {
 	public void onError(String error) {
 
 	}
-
+	
+	public void showOver(IView pane)
+	{
+	    WindowManager.getInstance().showOver(pane);
+	}
+	
+	   public IView showOver(String fxml) {
+	        IView view = null;
+	        URL url = AView.class.getResource(fxml);
+	        FXMLLoader fxmlLoader = new FXMLLoader();
+	        try {
+	            Pane pane = (Pane) fxmlLoader.load(url.openStream());
+	            view = (IView) fxmlLoader.getController();
+	            view.setPanel(pane);
+	            controller.addView(view);
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            LOG.error(e);
+	        }
+	        if (view != null) {
+	            WindowManager.getInstance().showOver(view);
+	        }
+	        return view;
+	    }
+	
 	public void show(IView pane) {
 		WindowManager.getInstance().show(pane);
 	}

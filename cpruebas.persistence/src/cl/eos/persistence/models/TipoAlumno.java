@@ -25,6 +25,7 @@ import cl.eos.persistence.AEntity;
 public class TipoAlumno extends AEntity {
 
 	private static final long serialVersionUID = -5362288224985235697L;
+	
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

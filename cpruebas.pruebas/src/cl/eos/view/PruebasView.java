@@ -41,7 +41,7 @@ import comunal.ComparativoComunalHabilidadView;
 import comunal.ComunalCursoView;
 import comunal.nivel.Nivel_ComparativoComunalEjeView;
 import comunal.nivel.Nivel_ComparativoComunalHabilidadView;
-import informe.Informe;
+import informe.InformeView;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -465,7 +465,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
     }
 
     private void handlerInforme() {
-        Informe informe = (Informe) show("/informe/informe.fxml");
+        InformeView informe = (InformeView) showOver("/informe/informeView.fxml");
         show(informe);
         controller.findAll(Colegio.class, informe);
         controller.findAll(Asignatura.class, informe);
