@@ -13,9 +13,9 @@ public class OTResumenColegio {
 	private int totalEvaluados;
 	private int totalAprobados;
 	private int totalReprobados;
-	private float alumnosEvaluados;
-	private float alumnosAprobados;
-	private float alumnosReprobados;
+	private float porcAlumnosEvaluados;
+	private float porcAlumnosAprobados;
+	private float porcAlumnosReprobados;
 	
 	public String getName() {
 		return name;
@@ -76,37 +76,37 @@ public class OTResumenColegio {
 		calculate();
 	}
 
-	public float getAlumnosEvaluados() {
-		return alumnosEvaluados;
+	public float getPorcAlumnosEvaluados() {
+		return porcAlumnosEvaluados;
 	}
 
-	public void setAlumnosEvaluados(float alumnosEvaluados) {
-		this.alumnosEvaluados = alumnosEvaluados;
+	public void setPorcAlumnosEvaluados(float alumnosEvaluados) {
+		this.porcAlumnosEvaluados = alumnosEvaluados;
 	}
 
-	public float getAlumnosAprobados() {
-		return alumnosAprobados;
+	public float getPorcAlumnosAprobados() {
+		return porcAlumnosAprobados;
 	}
 
-	public void setAlumnosAprobados(float alumnosAprobados) {
-		this.alumnosAprobados = alumnosAprobados;
+	public void setPorcAlumnosAprobados(float alumnosAprobados) {
+		this.porcAlumnosAprobados = alumnosAprobados;
 	}
 
-	public float getAlumnosReprobados() {
-		return alumnosReprobados;
+	public float getPorcAlumnosReprobados() {
+		return porcAlumnosReprobados;
 	}
 
-	public void setAlumnosReprobados(float alumnosReprobados) {
-		this.alumnosReprobados = alumnosReprobados;
+	public void setPorcAlumnosReprobados(float alumnosReprobados) {
+		this.porcAlumnosReprobados = alumnosReprobados;
 	}
 	
 	private void calculate()
 	{
-	    setAlumnosEvaluados(
+	    setPorcAlumnosEvaluados(
                 Utils.redondeo2Decimales((((float) totalEvaluados / (float) totalAlumnos) * 100f)));
-        setAlumnosAprobados(
+        setPorcAlumnosAprobados(
                 Utils.redondeo2Decimales((((float) totalAprobados / (float) totalEvaluados) * 100f)));
-        setAlumnosReprobados(
+        setPorcAlumnosReprobados(
                 Utils.redondeo2Decimales((((float) totalReprobados / (float) totalEvaluados) * 100f)));
 	}
 

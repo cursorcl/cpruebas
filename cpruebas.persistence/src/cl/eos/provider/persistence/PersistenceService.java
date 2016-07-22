@@ -485,6 +485,7 @@ public class PersistenceService implements IPersistenceService {
         List<Object> lresults = null;
         String findAll = entityClazz.getSimpleName() + ".findAll";
         EntityManager eManager = eFactory.createEntityManager();
+        eManager.getTransaction().begin();
         Query query = eManager.createNamedQuery(findAll);
 
         if (query != null) {

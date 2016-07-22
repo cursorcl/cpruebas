@@ -29,5 +29,6 @@
 	<classpathentry kind="lib" path="O:/cpruebas/jars/log4j.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.evaluacion.eje.tematico"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.objetivos"/>
+	<classpathentry kind="lib" path="O:/cpruebas_multiuser/cpruebas/jars/swingx-all-1.6.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

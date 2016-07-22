@@ -16,6 +16,7 @@ import org.apache.poi.xwpf.usermodel.XWPFRun;
 import cl.eos.persistence.models.Asignatura;
 import cl.eos.persistence.models.Colegio;
 import cl.eos.persistence.models.TipoAlumno;
+import javafx.scene.control.ProgressBar;
 
 /**
  * Se deben inscribir los informes que se han de generar.
@@ -31,11 +32,14 @@ public class InformeManager {
     boolean sorted = false;
     List<Informe> informes;
     private XWPFDocument doc;
+    ProgressBar progressBar;
 
-    public InformeManager() throws FileNotFoundException, IOException {
+    public InformeManager(ProgressBar progressBar) throws FileNotFoundException, IOException {
         // debo leer los informes desde alguna parte o inscribirlos aque
         doc = new XWPFDocument(new FileInputStream(System.getProperty("user.dir") + "/INFORME_PLANTILLA.dotm"));
-        add(new InformeResumen());
+        this.progressBar = progressBar;
+        add(new InformeResumenTotalGeneral());
+        add(new InformeResumenTotalAlumnos());
     }
 
     public void add(Informe informe) {
@@ -70,10 +74,13 @@ public class InformeManager {
 
     public void processAsignatura(TipoAlumno tipoAlumno, Colegio colegio, Asignatura asignatura) {
 
+        float step = 100f / (float)informes.size();
+        progressBar.setProgress(0f);
         generarPaginaAsignatura(doc, asignatura);
         for (Informe informe : informes) {
             informe.execute(tipoAlumno, colegio, asignatura);
             informe.page(doc);
+            progressBar.setProgress(progressBar.getProgress() + step);
         }
     }
 

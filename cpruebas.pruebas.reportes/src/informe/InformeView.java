@@ -1,18 +1,12 @@
 package informe;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.poi.xwpf.usermodel.BreakType;
-import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
-import org.apache.poi.xwpf.usermodel.XWPFParagraph;
-import org.apache.poi.xwpf.usermodel.XWPFRun;
 
 import cl.eos.imp.view.AFormView;
 import cl.eos.persistence.models.Asignatura;
@@ -25,6 +19,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.AnchorPane;
 
 public class InformeView extends AFormView {
@@ -41,6 +36,8 @@ public class InformeView extends AFormView {
     private ComboBox<Colegio> cmbColegio;
     @FXML
     private ComboBox<TipoAlumno> cmbTipoAlumno;
+    @FXML
+    ProgressBar progressBar;
 
     ObservableList<Asignatura> lstAsignaturas;
     protected Colegio colegio;
@@ -73,7 +70,7 @@ public class InformeView extends AFormView {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    InformeManager manager = new InformeManager();
+                    InformeManager manager = new InformeManager(progressBar);
                     for (Asignatura asignatura : lstAsignaturas) {
                         manager.processAsignatura(tipoAlumno, colegio, asignatura);
                     }

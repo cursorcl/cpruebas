@@ -316,11 +316,11 @@ public class ResumenColegioView extends AFormView implements EventHandler<Action
 			resumenCurso.setTotalEvaluados(totalEvaluados);
 			resumenCurso.setTotalAprobados(totalAprobados);
 			resumenCurso.setTotalReprobados(totalReprobados);
-			resumenCurso.setAlumnosEvaluados(
+			resumenCurso.setPorcAlumnosEvaluados(
 					Utils.redondeo2Decimales((((float) totalEvaluados / (float) totalAlumnos) * 100f)));
-			resumenCurso.setAlumnosAprobados(
+			resumenCurso.setPorcAlumnosAprobados(
 					Utils.redondeo2Decimales((((float) totalAprobados / (float) totalEvaluados) * 100f)));
-			resumenCurso.setAlumnosReprobados(
+			resumenCurso.setPorcAlumnosReprobados(
 					Utils.redondeo2Decimales((((float) totalReprobados / (float) totalEvaluados) * 100f)));
 			lstCursos.add(resumenCurso);
 
@@ -340,11 +340,11 @@ public class ResumenColegioView extends AFormView implements EventHandler<Action
 		resumenTotal.setTotalEvaluados(totalColEvaluados);
 		resumenTotal.setTotalAprobados(totalColAprobados);
 		resumenTotal.setTotalReprobados(totalColReprobados);
-		resumenTotal.setAlumnosEvaluados(
+		resumenTotal.setPorcAlumnosEvaluados(
 				(Utils.redondeo2Decimales((float) totalColEvaluados / (float) totalColAlumnos) * 100f));
-		resumenTotal.setAlumnosAprobados(
+		resumenTotal.setPorcAlumnosAprobados(
 				Utils.redondeo2Decimales(((float) totalColAprobados / (float) totalColEvaluados) * 100f));
-		resumenTotal.setAlumnosReprobados(
+		resumenTotal.setPorcAlumnosReprobados(
 				Utils.redondeo2Decimales(((float) totalColReprobados / (float) totalColEvaluados) * 100f));
 		lstCursos.add(resumenTotal);
 
@@ -367,17 +367,17 @@ public class ResumenColegioView extends AFormView implements EventHandler<Action
 		ObservableList<Object> row1 = FXCollections.observableArrayList();
 		row1.add("%");
 		row1.add("100%");
-		row1.add(Utils.redondeo2Decimales(resumenTotal.getAlumnosEvaluados()) + "%");
-		row1.add(Utils.redondeo2Decimales(resumenTotal.getAlumnosAprobados()) + "%");
-		row1.add(Utils.redondeo2Decimales(resumenTotal.getAlumnosReprobados()) + "%");
+		row1.add(Utils.redondeo2Decimales(resumenTotal.getPorcAlumnosEvaluados()) + "%");
+		row1.add(Utils.redondeo2Decimales(resumenTotal.getPorcAlumnosAprobados()) + "%");
+		row1.add(Utils.redondeo2Decimales(resumenTotal.getPorcAlumnosReprobados()) + "%");
 
 		ObservableList<Object> row2 = FXCollections.observableArrayList();
 		row2.add("");
 		row2.add("");
 		row2.add("");
-		row2.add((Utils.redondeo2Decimales(resumenTotal.getAlumnosAprobados() + resumenTotal.getAlumnosReprobados()))
+		row2.add((Utils.redondeo2Decimales(resumenTotal.getPorcAlumnosAprobados() + resumenTotal.getPorcAlumnosReprobados()))
 				+ "%");
-		row2.add((Utils.redondeo2Decimales(resumenTotal.getAlumnosAprobados() + resumenTotal.getAlumnosReprobados()))
+		row2.add((Utils.redondeo2Decimales(resumenTotal.getPorcAlumnosAprobados() + resumenTotal.getPorcAlumnosReprobados()))
 				+ "%");
 
 		float total = 0;

@@ -31,21 +31,22 @@ import cl.eos.provider.persistence.PersistenceServiceFactory;
  * @author curso
  *
  */
-public class InformeResumen implements Informe {
+public class InformeResumenTotalAlumnos implements Informe {
 
 
     private static final String ASIGNATURA_ID = "idAsignatura";
     private static final String COLEGIO_ID = "idColegio";
-    final static String[] TABLE_HEAD = { "CURSO", "TOTAL ALUMNOS", "ALUMNOS EVALUADOS", "TOTAL APROBADOS",
+    final static String[] TABLE_HEAD = { " ", "TOTAL ALUMNOS", "ALUMNOS EVALUADOS", "TOTAL APROBADOS",
             "TOTAL REPROBADOS", "% ALUMNOS EVALUADOS", "% REPROBADOS", "% APROBADOS" };
-    static Logger log = Logger.getLogger(InformeResumen.class);
+
+    static Logger log = Logger.getLogger(InformeResumenTotalAlumnos.class);
     private TipoAlumno tipoAlumno;
     private Colegio colegio;
     private Asignatura asignatura;
     private List<OTResumenColegio> resultado;
     
 
-    public InformeResumen() {
+    public InformeResumenTotalAlumnos() {
         super();
     }
 
