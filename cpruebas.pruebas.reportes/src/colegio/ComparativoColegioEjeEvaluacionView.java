@@ -207,7 +207,6 @@ public class ComparativoColegioEjeEvaluacionView extends AFormView implements Ev
 
 		int indice = 1;
 		for (Curso curso : pCursoList) {
-			final int idx = indice;
 			tc = new TableColumn(curso.getName());
 			tc.prefWidthProperty().set(50f);
 			tc.setStyle("-fx-alignment: CENTER;");

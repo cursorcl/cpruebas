@@ -1,5 +1,6 @@
 package informe;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -7,7 +8,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.poi.xwpf.usermodel.BreakType;
 import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
@@ -33,13 +33,18 @@ public class InformeManager {
     List<Informe> informes;
     private XWPFDocument doc;
     ProgressBar progressBar;
+    File file;
 
-    public InformeManager(ProgressBar progressBar) throws FileNotFoundException, IOException {
-        // debo leer los informes desde alguna parte o inscribirlos aque
+    public InformeManager(ProgressBar progressBar, File selectedFile) throws FileNotFoundException, IOException {
+        
+        this.file =  selectedFile;
         doc = new XWPFDocument(new FileInputStream(System.getProperty("user.dir") + "/INFORME_PLANTILLA.dotm"));
         this.progressBar = progressBar;
         add(new InformeResumenTotalGeneral());
         add(new InformeResumenTotalAlumnos());
+        add(new InformeResumenPME());
+        add(new InformeEjeEvaluacion());
+        add(new InformeHabilidades());
     }
 
     public void add(Informe informe) {
@@ -68,8 +73,8 @@ public class InformeManager {
         XWPFRun run = paragraph.createRun();
         run.setText(asignatura.getName());
         run.addCarriageReturn();
-        run.addBreak(BreakType.PAGE);
-        run.addBreak(BreakType.TEXT_WRAPPING); // cancels effect of page break
+        paragraph = document.createParagraph();
+        paragraph.setPageBreak(true);
     }
 
     public void processAsignatura(TipoAlumno tipoAlumno, Colegio colegio, Asignatura asignatura) {
@@ -80,14 +85,15 @@ public class InformeManager {
         for (Informe informe : informes) {
             informe.execute(tipoAlumno, colegio, asignatura);
             informe.page(doc);
+            XWPFParagraph paragraph = doc.createParagraph();
+            paragraph.setPageBreak(true);
             progressBar.setProgress(progressBar.getProgress() + step);
         }
     }
 
     public void finish() {
         try {
-
-            FileOutputStream out = new FileOutputStream(System.getProperty("user.dir") + "/Informe.docx");
+            FileOutputStream out = new FileOutputStream(file);
             doc.write(out);
             out.close();
         } catch (FileNotFoundException e) {

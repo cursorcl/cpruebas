@@ -1,5 +1,6 @@
 package informe;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
@@ -21,6 +22,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 
 public class InformeView extends AFormView {
 
@@ -70,7 +73,18 @@ public class InformeView extends AFormView {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    InformeManager manager = new InformeManager(progressBar);
+                    
+                    FileChooser fileChooser = new FileChooser();
+                    fileChooser.setTitle("Open Resource File");
+                    fileChooser.getExtensionFilters().addAll(
+                            new ExtensionFilter("Archivos Word", "*.doc", "*.docx"),
+                            new ExtensionFilter("All Files", "*.*"));
+                    File selectedFile = fileChooser.showSaveDialog(null);
+                    if (selectedFile == null) 
+                        return;
+                                           
+                    
+                    InformeManager manager = new InformeManager(progressBar, selectedFile);
                     for (Asignatura asignatura : lstAsignaturas) {
                         manager.processAsignatura(tipoAlumno, colegio, asignatura);
                     }

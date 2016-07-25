@@ -481,8 +481,8 @@ public class PersistenceService implements IPersistenceService {
 
     @SuppressWarnings("unchecked")
     @Override
-    public List<Object> findAllSynchro(final Class<? extends IEntity> entityClazz) {
-        List<Object> lresults = null;
+    public <T extends IEntity> List<T> findAllSynchro(Class<T> entityClazz){
+        List<T> lresults = null;
         String findAll = entityClazz.getSimpleName() + ".findAll";
         EntityManager eManager = eFactory.createEntityManager();
         eManager.getTransaction().begin();
@@ -525,5 +525,6 @@ public class PersistenceService implements IPersistenceService {
         return lresults;
 
     }
+
 
 }

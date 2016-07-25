@@ -12,7 +12,6 @@ import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
-import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 
 import cl.eos.common.Constants;
@@ -25,6 +24,7 @@ import cl.eos.persistence.models.PruebaRendida;
 import cl.eos.persistence.models.TipoAlumno;
 import cl.eos.persistence.util.Comparadores;
 import cl.eos.provider.persistence.PersistenceServiceFactory;
+import cl.eos.util.Pair;
 import utils.WordUtil;
 
 /**
@@ -41,13 +41,13 @@ public class InformeResumenTotalGeneral implements Informe {
     private static final String TOTAL_ESCUELA = "Total Escuela";
     private static final String ASIGNATURA_ID = "idAsignatura";
     private static final String COLEGIO_ID = "idColegio";
-    final static String[] TABLE_HEAD = { " ", TOTAL_ESCUELA, EVALUADOS, APROBADOS, REPORBADOS};
+    final static String[] TABLE_HEAD = { " ", TOTAL_ESCUELA, EVALUADOS, APROBADOS, REPORBADOS };
     static Logger log = Logger.getLogger(InformeResumenTotalGeneral.class);
     private TipoAlumno tipoAlumno;
     private Colegio colegio;
     private Asignatura asignatura;
-    private Map<String, Integer> resultado;
-    private List<Object> evalEjeTematico;
+    private Map<String, Pair<Integer, Float>> resultado;
+    private List<EvaluacionEjeTematico> evalEjeTematico;
 
     public InformeResumenTotalGeneral() {
         super();
@@ -78,61 +78,60 @@ public class InformeResumenTotalGeneral implements Informe {
         run.setText("Instrumento de Evaluación y Resultados Obtenidos en la asignatura de "
                 + asignatura.getName().toUpperCase() + ".");
         paragraph.setStyle("Normal");
-
+        run = paragraph.createRun();
+        run.addCarriageReturn();
+        
         int nroColumnas = resultado.size() + 1;
-        XWPFTable table = document.createTable(4, nroColumnas);
-        for(int n = 0; n < nroColumnas; n++)
-        {
-            table.getRow(0).getCell(n).setColor("777777");
-            table.getRow(1).getCell(n).setColor("777777");
-        }
+        XWPFTable table = document.createTable(5, nroColumnas);
+        WordUtil.setTableFormat(table, 2,0);
         
-        XWPFTableCell cell = table.getRow(0).getCell(1);
-        cell.setText("TOTAL ESCUELA");
-        cell = table.getRow(0).getCell(2);
-        cell.setText("ALUMNOS");
-        cell = table.getRow(0).getCell(5);
-        cell.setText("EVALUACIONES");
- 
-        WordUtil.mergeCellHorizontally(table, 0, 2, 3); 
-        WordUtil.mergeCellHorizontally(table, 0, 4, nroColumnas - 5); 
         
+        table.getRow(0).getCell(0).setText("TOTAL ESCUELA");
+        table.getRow(0).getCell(2).setText("ALUMNOS");
+        table.getRow(0).getCell(5).setText("ESTÁNDARES DE APRENDIZAJE");
+        table.getRow(2).getCell(0).setText("Alumnos");
+        table.getRow(3).getCell(0).setText("%");
+        table.getRow(4).getCell(3).setText("100%");
+        table.getRow(4).getCell(5).setText("100%");
         
         XWPFTableRow tableRow = table.getRow(1);
         int n = 1;
-        for (Map.Entry<String, Integer> entry : resultado.entrySet())
-        {
-            table.getRow(1).getCell(n++).setText(entry.getKey());
+        for (Map.Entry<String, Pair<Integer,Float>> entry : resultado.entrySet()) {
+            tableRow.getCell(n++).setText(entry.getKey());
         }
         
-
         
-        
+        WordUtil.mergeCellHorizontally(table, 0, 0, 1);
+        WordUtil.mergeCellHorizontally(table, 1, 0, 1);
+        WordUtil.mergeCellVertically(table, 0, 0, 1);
+        WordUtil.mergeCellHorizontally(table, 0, 2, 4);
+        WordUtil.mergeCellHorizontally(table, 0, 5, nroColumnas-1);
+        WordUtil.mergeCellHorizontally(table, 4, 0, 2);
+        WordUtil.mergeCellHorizontally(table, 4, 3, 4);
+        WordUtil.mergeCellHorizontally(table, 4, 5, nroColumnas-1);
 
-        // resultado =
-        // resultado.stream().sorted(Comparadores.comparaResumeColegio())
-        // .collect(Collectors.toList());
-        // for (int n = 0; n < resultado.size(); n++) {
-        // tableRow = table.getRow(n + 1);
-        // OTResumenColegio ot = resultado.get(n);
-        // tableRow.getCell(0).setText(ot.getCurso().getName());
-        // }
-
+        n = 1;
+        for (Map.Entry<String, Pair<Integer, Float>> entry : resultado.entrySet()) {
+            Pair<Integer, Float> res = entry.getValue();
+            table.getRow(2).getCell(n).setText(String.format("%d", res.getFirst().intValue()));
+            table.getRow(3).getCell(n++).setText(String.format("%d%%", res.getSecond().intValue()));
+        }
     }
 
     /**
      * Realiza el computo de los valores de la tabla de valores TOTAL GENERAL.
-     * @param list lista de valores obtenidos desde la base de datos.
+     * 
+     * @param list
+     *            lista de valores obtenidos desde la base de datos.
      * @return Mapa con valores <Titulo, Cantidad Alumnos>.
      */
-    protected Map<String, Integer> procesar(List<Object> list) {
+    protected Map<String, Pair<Integer, Float>> procesar(List<Object> list) {
         int totalColAlumnos = 0;
         int totalColEvaluados = 0;
         int totalColAprobados = 0;
         int totalColReprobados = 0;
 
-        
-        Map<String, Integer> mResumen = getMap();
+        Map<String, Pair<Integer, Float>> mResumen = getMap();
 
         for (Object evaluacionPrueba : list) {
             EvaluacionPrueba evaluacion = (EvaluacionPrueba) evaluacionPrueba;
@@ -165,11 +164,8 @@ public class InformeResumenTotalGeneral implements Informe {
                     EvaluacionEjeTematico eET = (EvaluacionEjeTematico) obj;
                     if (eET.isInside(pBuenas)) {
                         if (mResumen.containsKey(eET.getName())) {
-                            Integer valor = mResumen.get(eET.getName());
-                            valor++;
-                            mResumen.put(eET.getName(), valor);
-                        } else {
-                            mResumen.put(eET.getName(), 1);
+                            Pair<Integer, Float> pair = mResumen.get(eET.getName());
+                            pair.setFirst(pair.getFirst() + 1);
                         }
                     }
                 }
@@ -179,39 +175,52 @@ public class InformeResumenTotalGeneral implements Informe {
             totalColEvaluados = totalColEvaluados + totalEvaluados;
             totalColAprobados = totalColAprobados + totalAprobados;
             totalColReprobados = totalColReprobados + totalReprobados;
+            
+
 
         }
-        mResumen.put(TOTAL_ESCUELA, totalColAlumnos);
-        mResumen.put(EVALUADOS,totalColEvaluados);
-        mResumen.put(APROBADOS,totalColAprobados);
-        mResumen.put(REPORBADOS,totalColReprobados);
+        float porEvaluados = 100f * ((float)totalColEvaluados) / ((float)totalColAlumnos);
+        float porAprobados = 100f * ((float)totalColAprobados) / ((float)totalColEvaluados);
+        float porReporbados = 100f * ((float)totalColReprobados) / ((float)totalColEvaluados);
+        
+        mResumen.put(TOTAL_ESCUELA, new Pair<Integer, Float>(totalColAlumnos, 100f));
+        mResumen.put(EVALUADOS, new Pair<Integer, Float>(totalColEvaluados, porEvaluados));
+        mResumen.put(APROBADOS, new Pair<Integer, Float>(totalColAprobados, porAprobados));
+        mResumen.put(REPORBADOS, new Pair<Integer, Float>(totalColReprobados,porReporbados));
+        
+        
+        for (Object obj : evalEjeTematico) {
+            EvaluacionEjeTematico eET = (EvaluacionEjeTematico) obj;
+            Pair<Integer, Float> pair = mResumen.get(eET.getName());
+            pair.setSecond(100f * pair.getFirst().floatValue() / (float)totalColEvaluados);
+        }
 
         return mResumen;
     }
 
     /**
-     * Obtiene el mapa que se usa para los titulos de la tabla.
-     * Establece nombres de las columnas y coloca valor 0, para luego realizar la acumulación. 
-     * @return Mapa de titulos de la tabla y valores. 
+     * Obtiene el mapa que se usa para los titulos de la tabla. Establece
+     * nombres de las columnas y coloca valor 0, para luego realizar la
+     * acumulación.
+     * 
+     * @return Mapa de titulos de la tabla y valores.
      */
-    private Map<String, Integer> getMap()
-    {
-        Map<String, Integer> mResumen = new LinkedHashMap<>();
-        mResumen.put(TOTAL_ESCUELA, 0);
-        mResumen.put(EVALUADOS, 0);
-        mResumen.put(APROBADOS, 0);
-        mResumen.put(REPORBADOS, 0);
-        
+    private Map<String, Pair<Integer, Float>> getMap() {
+        Map<String, Pair<Integer, Float>> mResumen = new LinkedHashMap<>();
+        mResumen.put(TOTAL_ESCUELA, new Pair<Integer, Float>(0, 0f));
+        mResumen.put(EVALUADOS, new Pair<Integer, Float>(0, 0f));
+        mResumen.put(APROBADOS, new Pair<Integer, Float>(0, 0f));
+        mResumen.put(REPORBADOS, new Pair<Integer, Float>(0, 0f));
+
         List<EvaluacionEjeTematico> ejes = new ArrayList<>();
         for (Object obj : evalEjeTematico) {
-            EvaluacionEjeTematico eje = (EvaluacionEjeTematico)obj;
+            EvaluacionEjeTematico eje = (EvaluacionEjeTematico) obj;
             ejes.add(eje);
         }
-        
+
         ejes = ejes.stream().sorted(Comparadores.comparaEvaluacionEjeTematico()).collect(Collectors.toList());
-        for(EvaluacionEjeTematico eje: ejes)
-        {
-            mResumen.put(eje.getName(), 0);
+        for (EvaluacionEjeTematico eje : ejes) {
+            mResumen.put(eje.getName(), new Pair<Integer, Float>(0, 0f));
         }
         return mResumen;
 

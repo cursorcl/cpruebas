@@ -484,7 +484,6 @@ public class ResumenColegioView extends AFormView implements EventHandler<Action
 				rangoCurso.setRango(rango);
 				rangoCurso.setTotal(rangoCurso.getTotal() + 1);
 				prangos.put(rango, rangoCurso);
-
 			}
 
 		} else {

@@ -8,6 +8,7 @@ import cl.eos.ot.OTResumenTipoCursoColegio;
 import cl.eos.persistence.models.Curso;
 import cl.eos.persistence.models.EvaluacionEjeTematico;
 import cl.eos.persistence.models.EvaluacionPrueba;
+import cl.eos.persistence.models.RangoEvaluacion;
 import cl.eos.persistence.models.RespuestasEsperadasPrueba;
 import cl.eos.persistence.models.TipoCurso;
 
@@ -27,6 +28,15 @@ public class Comparadores {
             @Override
             public int compare(final OTRangoEvaluacion respSource, final OTRangoEvaluacion respTarget) {
                 return respSource.getRango().getMinimo().compareTo(respTarget.getRango().getMinimo());
+            }
+        };
+    }
+    
+    public static Comparator<? super RangoEvaluacion> rangoEvaluacionComparator() {
+        return new Comparator<RangoEvaluacion>() {
+            @Override
+            public int compare(final RangoEvaluacion respSource, final RangoEvaluacion respTarget) {
+                return respSource.getMinimo().compareTo(respTarget.getMinimo());
             }
         };
     }

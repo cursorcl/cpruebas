@@ -20,4 +20,16 @@ public class OTAcumulador {
     this.nroPersonas = nroPersonas;
   }
 
+  public int getAlumnos()
+  {
+      int suma = 0;
+      if(nroPersonas != null &&  nroPersonas.length > 0)
+      {
+          for(int n = 0; n < nroPersonas.length; n++)
+          {
+              suma += nroPersonas[n];
+          }
+      }
+      return suma;
+  }
 }

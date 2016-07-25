@@ -46,7 +46,7 @@ public interface IPersistenceService {
      *            Entidad de la que se requieren todos los registros. * @return
      *            return Lista de valores encontrados.
      */
-    List<Object> findAllSynchro(final Class<? extends IEntity> entityClazz);
+    <T extends IEntity> List<T> findAllSynchro(final Class<T> entityClazz);
 
     /**
      * Busca la entidad asociada con el identificador.
