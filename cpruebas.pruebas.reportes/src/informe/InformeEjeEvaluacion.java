@@ -70,7 +70,7 @@ public class InformeEjeEvaluacion implements Informe {
                 .findSynchro("EvaluacionPrueba.findEvaluacionByColegioAsig", params);
 
         params.clear();
-        params.put("coelgioId", colegio.getId());
+        params.put("colegioId", colegio.getId());
         lstCursos = (List<Curso>) (Object) PersistenceServiceFactory.getPersistenceService()
                 .findSynchro("Curso.findByColegio", params);
         resultado = procesar(lst);

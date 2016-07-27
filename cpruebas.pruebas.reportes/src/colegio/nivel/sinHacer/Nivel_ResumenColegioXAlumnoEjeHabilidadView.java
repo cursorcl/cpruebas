@@ -98,7 +98,7 @@ public class Nivel_ResumenColegioXAlumnoEjeHabilidadView extends AFormView imple
 		if (colegio != null) {
 			parameters.put(COLEGIO_ID, colegio.getId());
 			Map<String, Object> param = new HashMap<String, Object>();
-			param.put("coelgioId", colegio.getId());
+			param.put("colegioId", colegio.getId());
 			lblTitulo.setText(colegio.getName());
 			controller.find("Curso.findByColegio", param);
 			clearContent();

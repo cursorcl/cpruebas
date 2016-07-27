@@ -9,6 +9,13 @@ public class OTPreguntasEjes {
 	private Integer buenas = 0;
 	private Integer total = 0;
 	
+	public OTPreguntasEjes() {
+        
+    }
+	public OTPreguntasEjes(EjeTematico ejeTematico) {
+	    this.ejeTematico = ejeTematico;
+	}
+	
 	public EjeTematico getEjeTematico() {
 		return ejeTematico;
 	}

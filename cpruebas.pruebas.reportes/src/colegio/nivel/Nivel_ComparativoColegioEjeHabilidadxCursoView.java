@@ -112,7 +112,7 @@ public class Nivel_ComparativoColegioEjeHabilidadxCursoView extends AFormView im
         if (colegio != null) {
             parameters.put(COLEGIO_ID, colegio.getId());
             Map<String, Object> param = new HashMap<String, Object>();
-            param.put("coelgioId", colegio.getId());
+            param.put("colegioId", colegio.getId());
             lblTitulo.setText(colegio.getName());
             controller.find("Curso.findByColegio", param);
             colegioActivo = colegio;

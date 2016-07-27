@@ -40,11 +40,12 @@ public class InformeManager {
         this.file =  selectedFile;
         doc = new XWPFDocument(new FileInputStream(System.getProperty("user.dir") + "/INFORME_PLANTILLA.dotm"));
         this.progressBar = progressBar;
-        add(new InformeResumenTotalGeneral());
-        add(new InformeResumenTotalAlumnos());
-        add(new InformeResumenPME());
-        add(new InformeEjeEvaluacion());
-        add(new InformeHabilidades());
+//        add(new InformeResumenTotalGeneral());
+//        add(new InformeResumenTotalAlumnos());
+//        add(new InformeResumenPME());
+//        add(new InformeEjeEvaluacion());
+//        add(new InformeHabilidades());
+        add(new InformeEjesXCurso());
     }
 
     public void add(Informe informe) {

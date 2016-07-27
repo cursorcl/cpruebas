@@ -148,7 +148,6 @@ public class WordUtil {
     }
 
     public static void setTableFormat(XWPFTable table, int nroTitleRows, int nroResultRows) {
-        //table.getCTTbl().addNewTblPr().addNewTblW().setW(BigInteger.valueOf(10000));
         setTableAlignment(table, STJc.Enum.forInt(2));
         List<XWPFTableRow> rows = table.getRows();
         int nroRows = table.getRows().size();
@@ -175,12 +174,12 @@ public class WordUtil {
 
                 if (rowCt < nroTitleRows) {
                     ctshd.setFill("A7BFDE");
-                    rh.setFontSize(10);
+                    rh.setFontSize(9);
                     rh.setBold(true);
                     rh.setItalic(true);
                 } else if (nroResultRows > 0 && rowCt == nroRows - nroResultRows) {
                     ctshd.setFill("A7BFDE");
-                    rh.setFontSize(10);
+                    rh.setFontSize(9);
                     rh.setBold(true);
                     rh.setItalic(true);
                 } else if (rowCt % 2 == 0) {
