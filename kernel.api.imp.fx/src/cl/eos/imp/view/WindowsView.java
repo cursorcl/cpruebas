@@ -59,6 +59,31 @@ public class WindowsView extends BorderPane {
 	public void setView(IView view) {
 		this.view = view;
 	}
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((windowTitle == null) ? 0 : windowTitle.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        WindowsView other = (WindowsView) obj;
+        if (windowTitle.getText() == null) {
+            if (other.windowTitle.getText() != null)
+                return false;
+        } else if (!windowTitle.getText().equals(other.windowTitle.getText()))
+            return false;
+        return true;
+    }
 	
 	
 }

@@ -60,7 +60,7 @@ public abstract class AView implements IView {
 
 	@Override
 	public String getName() {
-		return null;
+		return title;
 	}
 
 	@Override

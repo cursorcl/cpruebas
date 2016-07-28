@@ -16,6 +16,14 @@ import org.apache.poi.xwpf.usermodel.XWPFRun;
 import cl.eos.persistence.models.Asignatura;
 import cl.eos.persistence.models.Colegio;
 import cl.eos.persistence.models.TipoAlumno;
+import informe.informes.Informe;
+import informe.informes.InformeEjeEvaluacion;
+import informe.informes.InformeEjesXCurso;
+import informe.informes.InformeHabilidadXCurso;
+import informe.informes.InformeHabilidades;
+import informe.informes.InformeResumenPME;
+import informe.informes.InformeResumenTotalAlumnos;
+import informe.informes.InformeResumenTotalGeneral;
 import javafx.scene.control.ProgressBar;
 
 /**
@@ -40,12 +48,13 @@ public class InformeManager {
         this.file =  selectedFile;
         doc = new XWPFDocument(new FileInputStream(System.getProperty("user.dir") + "/INFORME_PLANTILLA.dotm"));
         this.progressBar = progressBar;
-//        add(new InformeResumenTotalGeneral());
-//        add(new InformeResumenTotalAlumnos());
-//        add(new InformeResumenPME());
-//        add(new InformeEjeEvaluacion());
-//        add(new InformeHabilidades());
+        add(new InformeResumenTotalGeneral());
+        add(new InformeResumenTotalAlumnos());
+        add(new InformeResumenPME());
+        add(new InformeEjeEvaluacion());
+        add(new InformeHabilidades());
         add(new InformeEjesXCurso());
+        add(new InformeHabilidadXCurso());
     }
 
     public void add(Informe informe) {
@@ -80,15 +89,12 @@ public class InformeManager {
 
     public void processAsignatura(TipoAlumno tipoAlumno, Colegio colegio, Asignatura asignatura) {
 
-        float step = 100f / (float)informes.size();
-        progressBar.setProgress(0f);
         generarPaginaAsignatura(doc, asignatura);
         for (Informe informe : informes) {
             informe.execute(tipoAlumno, colegio, asignatura);
             informe.page(doc);
             XWPFParagraph paragraph = doc.createParagraph();
             paragraph.setPageBreak(true);
-            progressBar.setProgress(progressBar.getProgress() + step);
         }
     }
 

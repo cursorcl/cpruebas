@@ -1,4 +1,4 @@
-package informe;
+package informe.informes;
 
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 

@@ -1,4 +1,4 @@
-package informe;
+package informe.informes;
 
 import java.util.ArrayList;
 import java.util.HashMap;
