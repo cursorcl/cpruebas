@@ -1,4 +1,4 @@
-package informe.informes;
+package informe.informes.imp;
 
 import java.util.HashMap;
 import java.util.List;
@@ -26,6 +26,7 @@ import cl.eos.persistence.models.RangoEvaluacion;
 import cl.eos.persistence.models.TipoAlumno;
 import cl.eos.persistence.util.Comparadores;
 import cl.eos.provider.persistence.PersistenceServiceFactory;
+import informe.informes.IInforme;
 import utils.WordUtil;
 
 /**
@@ -34,7 +35,7 @@ import utils.WordUtil;
  * @author curso
  *
  */
-public class InformeResumenPME implements Informe {
+public class InformeResumenPME implements IInforme {
 
     private static final String ASIGNATURA_ID = "idAsignatura";
     private static final String COLEGIO_ID = "idColegio";

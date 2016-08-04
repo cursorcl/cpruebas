@@ -1,4 +1,4 @@
-package informe.informes;
+package informe.informes.imp;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,6 +28,7 @@ import cl.eos.persistence.models.TipoAlumno;
 import cl.eos.persistence.util.Comparadores;
 import cl.eos.provider.persistence.PersistenceServiceFactory;
 import cl.eos.view.ots.ejeevaluacion.OTAcumulador;
+import informe.informes.IInforme;
 import utils.WordUtil;
 
 /**
@@ -36,7 +37,7 @@ import utils.WordUtil;
  * @author curso
  *
  */
-public class InformeHabilidades implements Informe {
+public class InformeHabilidades implements IInforme {
 
     private static final String ASIGNATURA_ID = "idAsignatura";
     private static final String COLEGIO_ID = "idColegio";

@@ -5,6 +5,7 @@ import java.math.BigInteger;
 import java.util.List;
 
 import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
@@ -204,4 +205,7 @@ public class WordUtil {
         CTJc jc = (tblPr.isSetJc() ? tblPr.getJc() : tblPr.addNewJc());
         jc.setVal(justification);
     }
+    
+    
+    
 }

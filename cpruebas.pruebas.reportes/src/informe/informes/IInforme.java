@@ -13,11 +13,11 @@ import cl.eos.persistence.models.TipoAlumno;
  * @author cursor
  *
  */
-public interface Informe {
+public interface IInforme {
 
     public static interface ProcessFinishedListener
     {
-        void onFinished(Informe source);
+        void onFinished(IInforme source);
     }
     /**
      * Es el metodo de entrada al informe. Los parametros son conocidos por el

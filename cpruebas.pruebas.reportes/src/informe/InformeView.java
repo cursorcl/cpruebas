@@ -1,8 +1,8 @@
 package informe;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +16,7 @@ import cl.eos.imp.view.WindowManager;
 import cl.eos.persistence.models.Asignatura;
 import cl.eos.persistence.models.Colegio;
 import cl.eos.persistence.models.TipoAlumno;
+import cl.eos.persistence.models.TipoPrueba;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -25,16 +26,15 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
+import jfxtras.labs.scene.control.BigDecimalField;
 
 public class InformeView extends AFormView {
 
     private static final String INFORME_COMPLETO = "Informe Completo";
-
+    
     @FXML
     private Button btnGenerar;
     @FXML
@@ -42,14 +42,14 @@ public class InformeView extends AFormView {
     @FXML
     private Button btnCancelar;
     @FXML
+    private ComboBox<TipoPrueba> cmbTipoPrueba;
+    @FXML
     private ComboBox<Colegio> cmbColegio;
     @FXML
     private ComboBox<TipoAlumno> cmbTipoAlumno;
     @FXML
-    ProgressBar progressBar;
-    @FXML
-    private Label lblAvance;
-
+    private BigDecimalField bdAnoEscolar;
+    
     ObservableList<Asignatura> lstAsignaturas;
     protected Colegio colegio;
     protected TipoAlumno tipoAlumno;
@@ -96,7 +96,8 @@ public class InformeView extends AFormView {
 
                     @Override
                     protected Boolean call() throws Exception {
-                        InformeManager manager = new InformeManager(progressBar, selectedFile);
+                        InformeManager manager = new InformeManager(selectedFile);
+                        manager.updateFields(cmbTipoPrueba.getValue(), colegio, bdAnoEscolar.getNumber().toString());
                         int nroAsignaturas = lstAsignaturas.size();
                         int n = 1;
                         for (Asignatura asignatura : lstAsignaturas) {
@@ -128,6 +129,10 @@ public class InformeView extends AFormView {
                 WindowManager.getInstance().hide(InformeView.this);
             }
         });
+        bdAnoEscolar.setMinValue(BigDecimal.valueOf(2010));
+        bdAnoEscolar.setMaxValue(BigDecimal.valueOf(2300));
+        bdAnoEscolar.setStepwidth(BigDecimal.valueOf(1));
+        bdAnoEscolar.setStepwidth(BigDecimal.valueOf(LocalDate.now().getYear()));
     }
 
     @Override
@@ -151,7 +156,13 @@ public class InformeView extends AFormView {
                     lstTipoAlumno.add((TipoAlumno) lEntity);
                 }
                 cmbTipoAlumno.setItems(lstTipoAlumno);
-            }
+            } else if (entity instanceof TipoPrueba) {
+                ObservableList<TipoPrueba> lstTipoPrueba = FXCollections.observableArrayList();
+                for (Object lEntity : list) {
+                    lstTipoPrueba.add((TipoPrueba) lEntity);
+                }
+                cmbTipoPrueba.setItems(lstTipoPrueba);
+        }
         }
     }
 
