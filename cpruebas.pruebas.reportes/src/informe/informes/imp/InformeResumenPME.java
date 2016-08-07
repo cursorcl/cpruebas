@@ -3,6 +3,7 @@ package informe.informes.imp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
@@ -52,19 +53,28 @@ public class InformeResumenPME implements IInforme {
         super();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void execute(TipoAlumno tipoAlumno, Colegio colegio, Asignatura asignatura) {
         rangos = PersistenceServiceFactory.getPersistenceService().findAllSynchro(RangoEvaluacion.class);
-        rangos.stream().sorted(Comparadores.rangoEvaluacionComparator()).collect(Collectors.toList());
+
+        if (Objects.isNull(rangos) || rangos.isEmpty())
+            return;
+
+        rangos = rangos.stream().sorted(Comparadores.rangoEvaluacionComparator()).collect(Collectors.toList());
         this.tipoAlumno = tipoAlumno;
         this.colegio = colegio;
         this.asignatura = asignatura;
         Map<String, Object> params = new HashMap<>();
         params.put(COLEGIO_ID, colegio.getId());
         params.put(ASIGNATURA_ID, asignatura.getId());
-        List<Object> lst = PersistenceServiceFactory.getPersistenceService()
-                .findSynchro("EvaluacionPrueba.findEvaluacionByColegioAsig", params);
-        resultado = procesar(lst);
+        List<EvaluacionPrueba> evaluaciones = (List<EvaluacionPrueba>) (Object) PersistenceServiceFactory
+                .getPersistenceService().findSynchro("EvaluacionPrueba.findEvaluacionByColegioAsig", params);
+
+        if (Objects.isNull(evaluaciones) || evaluaciones.isEmpty())
+            return;
+
+        resultado = procesar(evaluaciones);
     }
 
     public void page(XWPFDocument document) {
@@ -72,15 +82,14 @@ public class InformeResumenPME implements IInforme {
         XWPFParagraph paragraph = document.createParagraph();
         XWPFRun run = paragraph.createRun();
         run.addCarriageReturn();
-        
-        
+
         XWPFTable table = document.createTable(resultado.size() + 1, rangos.size() + 1);
         WordUtil.setTableFormat(table, 1, 0);
 
         XWPFTableRow tableRow = table.getRow(0);
         tableRow.getCell(0).setText("Cursos");
         for (int n = 0; n < rangos.size(); n++) {
-            tableRow.getCell(n+1).setText(rangos.get(n).getName());
+            tableRow.getCell(n + 1).setText(rangos.get(n).getName());
         }
 
         int row = 1;
@@ -101,22 +110,22 @@ public class InformeResumenPME implements IInforme {
         paragraph.setStyle("Descripción");
         run = paragraph.createRun();
         paragraph.setAlignment(ParagraphAlignment.CENTER);
-        run.setText(String.format("Tabla Nº %d: INFORME PME %s en %s", InformeManager.TABLA++, colegio.getName(), asignatura.getName()));
+        run.setText(String.format("Tabla  %d: INFORME PME %s en %s", InformeManager.TABLA++, colegio.getName(),
+                asignatura.getName()));
         run.addCarriageReturn();
         paragraph = document.createParagraph();
         paragraph.setStyle("Normal");
         run = paragraph.createRun();
         run.addCarriageReturn();
-        
+
     }
 
-    protected Map<Curso, Map<RangoEvaluacion, OTRangoCurso>> procesar(List<Object> list) {
+    protected Map<Curso, Map<RangoEvaluacion, OTRangoCurso>> procesar(List<EvaluacionPrueba> list) {
 
         Map<Curso, Map<RangoEvaluacion, OTRangoCurso>> pmeCursos = new HashMap<>();
 
         NivelEvaluacion nivel = ((EvaluacionPrueba) list.get(0)).getPrueba().getNivelEvaluacion();
-        for (Object evaluacionPrueba : list) {
-            EvaluacionPrueba evaluacion = (EvaluacionPrueba) evaluacionPrueba;
+        for (EvaluacionPrueba evaluacion : list) {
             List<PruebaRendida> rendidas = evaluacion.getPruebasRendidas();
             for (PruebaRendida pruebaRendida : rendidas) {
                 Alumno alumno = pruebaRendida.getAlumno();

@@ -17,6 +17,7 @@ import cl.eos.persistence.models.Asignatura;
 import cl.eos.persistence.models.Colegio;
 import cl.eos.persistence.models.TipoAlumno;
 import cl.eos.persistence.models.TipoPrueba;
+import cl.eos.util.Utils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -80,6 +81,7 @@ public class InformeView extends AFormView {
             @Override
             public void handle(ActionEvent event) {
                 FileChooser fileChooser = new FileChooser();
+                fileChooser.setInitialDirectory(Utils.getDefaultDirectory());
                 fileChooser.setTitle("Open Resource File");
                 fileChooser.getExtensionFilters().addAll(new ExtensionFilter("Archivos Word", "*.doc", "*.docx"),
                         new ExtensionFilter("All Files", "*.*"));

@@ -79,7 +79,7 @@ public class InformeManager {
 
         this.file = selectedFile;
         this.colegio = colegio;
-        doc = new XWPFDocument(new FileInputStream(System.getProperty("user.dir") + "/PAUTA.dotx"));
+        doc = new XWPFDocument(new FileInputStream(System.getProperty("user.dir") + "/res/PAUTA.dotx"));
 
         add(new InformeResumenTotalGeneral());
         add(new InformeResumenTotalAlumnos());
@@ -158,7 +158,7 @@ public class InformeManager {
         run.addCarriageReturn();
         run.setText(colegio.getName().toUpperCase());
         run.addCarriageReturn();
-        para.setPageBreak(true);
+        //para.setPageBreak(true);
 
         // Se asigna la nueva sección a los párrafos anteriores
         para = document.createParagraph();
@@ -171,14 +171,14 @@ public class InformeManager {
         paragraphProperties.setSectPr(section);
 
         // Se crea nueva sección como las primeras.
-        para = document.createParagraph();
-        ctp = para.getCTP();
-        paragraphProperties = ctp.addNewPPr();
-        section = body.addNewSectPr();
-        textAlignment = CTVerticalJc.Factory.newInstance();
-        textAlignment.setVal(STVerticalJc.TOP);
-        section.setVAlign(textAlignment);
-        paragraphProperties.setSectPr(section);
+//        para = document.createParagraph();
+//        ctp = para.getCTP();
+//        paragraphProperties = ctp.addNewPPr();
+//        section = body.addNewSectPr();
+//        textAlignment = CTVerticalJc.Factory.newInstance();
+//        textAlignment.setVal(STVerticalJc.TOP);
+//        section.setVAlign(textAlignment);
+//        paragraphProperties.setSectPr(section);
 
     }
 

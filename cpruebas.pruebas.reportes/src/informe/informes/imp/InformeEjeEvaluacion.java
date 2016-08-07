@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
@@ -51,7 +52,7 @@ public class InformeEjeEvaluacion implements IInforme {
     private boolean kinder_ciclo;
     private boolean media_ciclo;
     private boolean basica_ciclo;
-    
+
     public InformeEjeEvaluacion() {
         super();
     }
@@ -74,6 +75,9 @@ public class InformeEjeEvaluacion implements IInforme {
         params.put("colegioId", colegio.getId());
         lstCursos = (List<Curso>) (Object) PersistenceServiceFactory.getPersistenceService()
                 .findSynchro("Curso.findByColegio", params);
+
+        if (Objects.isNull(lst) || Objects.isNull(lstCursos) || lstCursos.isEmpty() || lst.isEmpty())
+            return;
         resultado = procesar(lst);
     }
 
@@ -87,10 +91,9 @@ public class InformeEjeEvaluacion implements IInforme {
 
         int idxCurso = 0;
         for (Curso curso : lstCursos) {
-            
+
             String title = getTiteTables(curso);
-            if(title != null)
-            {
+            if (title != null) {
                 paragraph = document.createParagraph();
                 run = paragraph.createRun();
                 paragraph.setAlignment(ParagraphAlignment.CENTER);
@@ -98,22 +101,20 @@ public class InformeEjeEvaluacion implements IInforme {
                 run.addCarriageReturn();
             }
 
-            
             paragraph = document.createParagraph();
             run = paragraph.createRun(); // create new run
             run.addCarriageReturn();
-            
+
             int nRow = 0;
-            for (EjeTematico eje : resultado.keySet())
-            {
+            for (EjeTematico eje : resultado.keySet()) {
                 List<OTAcumulador> lstValues = resultado.get(eje);
                 OTAcumulador ot = lstValues.get(idxCurso);
                 if (ot == null || ot.getNroPersonas() == null || ot.getNroPersonas().length == 0)
                     continue;
                 nRow++;
             }
-            
-            XWPFTable table = document.createTable( nRow + 3, nroRangos + 1);
+
+            XWPFTable table = document.createTable(nRow + 3, nroRangos + 1);
             WordUtil.setTableFormat(table, 3, 0);
 
             XWPFTableRow tableRow = table.getRow(0);
@@ -124,11 +125,25 @@ public class InformeEjeEvaluacion implements IInforme {
             WordUtil.mergeCellVertically(table, 0, 0, 2);
 
             tableRow = table.getRow(2);
-            
-            for (int n = 0; n < rangos.size(); n++) {
-                tableRow.getCell(n + 1).setText(rangos.get(n).getName());
-                XWPFParagraph para = tableRow.getCell(n + 1).getParagraphs().get(0);
+            if (curso.getCiclo().getId() == InformeManager.CICLO_7) {
+                tableRow.getCell(1).setText("<NT1");
+                XWPFParagraph para = tableRow.getCell(1).getParagraphs().get(0);
                 para.setAlignment(ParagraphAlignment.LEFT);
+                tableRow.getCell(2).setText("NT1");
+                para = tableRow.getCell(2).getParagraphs().get(0);
+                para.setAlignment(ParagraphAlignment.LEFT);
+                tableRow.getCell(3).setText("NT2");
+                para = tableRow.getCell(3).getParagraphs().get(0);
+                para.setAlignment(ParagraphAlignment.LEFT);
+                tableRow.getCell(4).setText("1ºEGB");
+                para = tableRow.getCell(4).getParagraphs().get(0);
+                para.setAlignment(ParagraphAlignment.LEFT);
+            } else {
+                for (int n = 0; n < rangos.size(); n++) {
+                    tableRow.getCell(n + 1).setText(rangos.get(n).getName());
+                    XWPFParagraph para = tableRow.getCell(n + 1).getParagraphs().get(0);
+                    para.setAlignment(ParagraphAlignment.LEFT);
+                }
             }
             boolean isTitleSetted = false;
             nRow = 3;
@@ -137,14 +152,14 @@ public class InformeEjeEvaluacion implements IInforme {
                 OTAcumulador ot = lstValues.get(idxCurso);
                 if (ot == null || ot.getNroPersonas() == null || ot.getNroPersonas().length == 0)
                     continue;
-                
+
                 if (!isTitleSetted) {
                     tableRow = table.getRow(1);
                     tableRow.getCell(1).setText("Nº estudiantes alcanzan nivel de logro: " + ot.getAlumnos());
                     WordUtil.mergeCellHorizontally(table, 1, 1, nroRangos);
                     isTitleSetted = true;
                 }
-                
+
                 tableRow = table.getRow(nRow++);
                 tableRow.getCell(0).setText(eje.getName().toUpperCase());
                 int[] values = ot.getNroPersonas();
@@ -159,25 +174,21 @@ public class InformeEjeEvaluacion implements IInforme {
 
     private String getTiteTables(Curso curso) {
         String tableTitle = null;
-        if((curso.getCiclo().getId() < InformeManager.CICLO_7  && !basica_ciclo))
-        {
-            tableTitle = String.format("Tabla Nº %d: RESULTADOS ENSEÑANZA BÁSICA", InformeManager.TABLA++);
+        if ((curso.getCiclo().getId() < InformeManager.CICLO_7 && !basica_ciclo)) {
+            tableTitle = String.format("Tabla  %d: RESULTADOS ENSEÑANZA BÁSICA", InformeManager.TABLA++);
             basica_ciclo = true;
         }
-        if(curso.getCiclo().getId() == InformeManager.CICLO_7 && !kinder_ciclo)
-        {
-            tableTitle = String.format("Tabla Nº %d: RESULTADOS DE PRE-BÁSICA", InformeManager.TABLA++);
+        if (curso.getCiclo().getId() == InformeManager.CICLO_7 && !kinder_ciclo) {
+            tableTitle = String.format("Tabla  %d: RESULTADOS DE PRE-BÁSICA", InformeManager.TABLA++);
             kinder_ciclo = true;
         }
-        if(curso.getCiclo().getId() > InformeManager.CICLO_7  && !media_ciclo)
-        {
-            tableTitle = String.format("Tabla Nº %d: RESULTADOS DESDE 1º a 4º MEDIO", InformeManager.TABLA++);
+        if (curso.getCiclo().getId() > InformeManager.CICLO_7 && !media_ciclo) {
+            tableTitle = String.format("Tabla  %d: RESULTADOS DESDE 1º a 4º MEDIO", InformeManager.TABLA++);
             media_ciclo = true;
         }
         return tableTitle;
     }
-    
-    
+
     protected Map<EjeTematico, List<OTAcumulador>> procesar(List<EvaluacionPrueba> evaluacionesPrueba) {
 
         int nroCursos = lstCursos.size();

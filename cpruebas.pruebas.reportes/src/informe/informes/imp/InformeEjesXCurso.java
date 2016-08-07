@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -62,7 +63,11 @@ public class InformeEjesXCurso implements IInforme {
     @Override
     public void execute(TipoAlumno tipoAlumno, Colegio colegio, Asignatura asignatura) {
         rangos = PersistenceServiceFactory.getPersistenceService().findAllSynchro(RangoEvaluacion.class);
-        rangos.stream().sorted(Comparadores.rangoEvaluacionComparator()).collect(Collectors.toList());
+        
+        if(Objects.isNull(rangos) || rangos.isEmpty())
+            return;
+        
+        rangos = rangos.stream().sorted(Comparadores.rangoEvaluacionComparator()).collect(Collectors.toList());
         this.tipoAlumno = tipoAlumno;
         this.colegio = colegio;
         this.asignatura = asignatura;
@@ -72,6 +77,8 @@ public class InformeEjesXCurso implements IInforme {
         List<EvaluacionPrueba> evaluaciones = (List<EvaluacionPrueba>) (Object) PersistenceServiceFactory
                 .getPersistenceService().findSynchro("EvaluacionPrueba.findEvaluacionByColegioAsig", params);
 
+        if(Objects.isNull(evaluaciones) ||  evaluaciones.isEmpty())
+            return;
         resultado = procesar(evaluaciones);
     }
 
@@ -123,7 +130,7 @@ public class InformeEjesXCurso implements IInforme {
         paragraph.setStyle("Descripción");
         run = paragraph.createRun();
         paragraph.setAlignment(ParagraphAlignment.CENTER);
-        run.setText(String.format("Tabla Nº %d: DISTRIBUCIÓN DE RESULTADOS POR EJES DE APRENDIZAJES %s en %s",
+        run.setText(String.format("Tabla  %d: DISTRIBUCIÓN DE RESULTADOS POR EJES DE APRENDIZAJES %s en %s",
                 InformeManager.TABLA++, colegio.getName(), asignatura.getName()));
         run.addCarriageReturn();
         paragraph = document.createParagraph();

@@ -57,6 +57,7 @@ public class InformeResumenTotalGeneral implements IInforme {
         super();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void execute(TipoAlumno tipoAlumno, Colegio colegio, Asignatura asignatura) {
         this.tipoAlumno = tipoAlumno;
@@ -66,9 +67,9 @@ public class InformeResumenTotalGeneral implements IInforme {
         params.put(COLEGIO_ID, colegio.getId());
         params.put(ASIGNATURA_ID, asignatura.getId());
         evalEjeTematico = PersistenceServiceFactory.getPersistenceService().findAllSynchro(EvaluacionEjeTematico.class);
-        List<Object> lst = PersistenceServiceFactory.getPersistenceService()
+        List<EvaluacionPrueba> evaluaciones =  (List<EvaluacionPrueba>) (Object)PersistenceServiceFactory.getPersistenceService()
                 .findSynchro("EvaluacionPrueba.findEvaluacionByColegioAsig", params);
-        resultado = procesar(lst);
+        resultado = procesar(evaluaciones);
     }
 
     public void page(XWPFDocument document) {
@@ -77,7 +78,7 @@ public class InformeResumenTotalGeneral implements IInforme {
 
         paragraph.setStyle("PEREKE-TITULO");
         XWPFRun run = paragraph.createRun(); // create new run
-        run.setText("INFORME DE RESULTADOS A NIVEL DE ESTABLECIMIENTO (" + colegio.getName().toUpperCase() + ")");
+        run.setText("INFORME DE RESULTADOS A NIVEL DE ESTABLECIMIENTO ");
         run.addCarriageReturn();
         run.setText(colegio.getName().toUpperCase());
 
@@ -133,7 +134,7 @@ public class InformeResumenTotalGeneral implements IInforme {
         paragraph.setStyle("Descripción");
         run = paragraph.createRun();
         paragraph.setAlignment(ParagraphAlignment.CENTER);
-        run.setText(String.format("Tabla Nº %d: TOTAL GENERAL %s en %s", InformeManager.TABLA++, colegio.getName(),
+        run.setText(String.format("Tabla  %d: TOTAL GENERAL %s en %s", InformeManager.TABLA++, colegio.getName(),
                 asignatura.getName()));
         run.addCarriageReturn();
 
@@ -142,7 +143,7 @@ public class InformeResumenTotalGeneral implements IInforme {
         paragraph = document.createParagraph();
         paragraph.setStyle("Normal");
         run = paragraph.createRun();
-        String f = "De la matrícula total del estableceimiento %s, se evaluaron %d alumnos que corresponden al %5.2f del total del liceo. El nivel de aprobación es de %5.2f.";
+        String f = "De la matrícula total del establecimiento %s, se evaluaron %d alumnos que corresponden al %5.2f del total del liceo. El nivel de aprobación es de %5.2f.";
         String row = String.format(f, colegio.getName(), pEvaluados.getFirst(), pEvaluados.getSecond(),
                 pAprobados.getSecond());
         run.setText(row);
@@ -156,7 +157,7 @@ public class InformeResumenTotalGeneral implements IInforme {
      *            lista de valores obtenidos desde la base de datos.
      * @return Mapa con valores <Titulo, Cantidad Alumnos>.
      */
-    protected Map<String, Pair<Integer, Float>> procesar(List<Object> list) {
+    protected Map<String, Pair<Integer, Float>> procesar(List<EvaluacionPrueba> list) {
         int totalColAlumnos = 0;
         int totalColEvaluados = 0;
         int totalColAprobados = 0;
@@ -164,8 +165,7 @@ public class InformeResumenTotalGeneral implements IInforme {
 
         Map<String, Pair<Integer, Float>> mResumen = getMap();
 
-        for (Object evaluacionPrueba : list) {
-            EvaluacionPrueba evaluacion = (EvaluacionPrueba) evaluacionPrueba;
+        for (EvaluacionPrueba evaluacion : list) {
             int totalAlumnos = evaluacion.getCurso().getAlumnos().size();
             int totalEvaluados = 0;
             int totalAprobados = 0;

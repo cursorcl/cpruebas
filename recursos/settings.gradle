@@ -1,0 +1,10 @@
+rootProject.name ='cpruebas.main' 
+
+rootProject.projectDir.listFiles(
+	{ 
+		new File(it, 'build.properties').isFile() 
+	} as FileFilter
+).each 
+{ 
+	File subdir ->  include subdir.absolutePath.substring(rootProject.projectDir.absolutePath.length() + 1).replace(File.separator, ':')
+}

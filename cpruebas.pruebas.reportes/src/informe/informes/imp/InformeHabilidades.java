@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
@@ -60,21 +61,31 @@ public class InformeHabilidades implements IInforme {
     @Override
     public void execute(TipoAlumno tipoAlumno, Colegio colegio, Asignatura asignatura) {
         rangos = PersistenceServiceFactory.getPersistenceService().findAllSynchro(RangoEvaluacion.class);
-        rangos.stream().sorted(Comparadores.rangoEvaluacionComparator()).collect(Collectors.toList());
+        
+        
+        if(Objects.isNull(rangos) || rangos.isEmpty())
+            return;
+        
+        rangos = rangos.stream().sorted(Comparadores.rangoEvaluacionComparator()).collect(Collectors.toList());
 
         this.tipoAlumno = tipoAlumno;
 
         Map<String, Object> params = new HashMap<>();
         params.put(COLEGIO_ID, colegio.getId());
         params.put(ASIGNATURA_ID, asignatura.getId());
-        List<EvaluacionPrueba> lst = (List<EvaluacionPrueba>) (Object) PersistenceServiceFactory.getPersistenceService()
+        List<EvaluacionPrueba> evaluaciones = (List<EvaluacionPrueba>) (Object) PersistenceServiceFactory.getPersistenceService()
                 .findSynchro("EvaluacionPrueba.findEvaluacionByColegioAsig", params);
 
         params.clear();
         params.put("colegioId", colegio.getId());
         lstCursos = (List<Curso>) (Object) PersistenceServiceFactory.getPersistenceService()
                 .findSynchro("Curso.findByColegio", params);
-        resultado = procesar(lst);
+        
+        
+        if(Objects.isNull(evaluaciones) || Objects.isNull(lstCursos) || lstCursos.isEmpty() || evaluaciones.isEmpty())
+            return;
+        
+        resultado = procesar(evaluaciones);
     }
 
     public void page(XWPFDocument document) {
@@ -126,14 +137,14 @@ public class InformeHabilidades implements IInforme {
                 tableRow.getCell(1).setText("<NT1");
                 XWPFParagraph para = tableRow.getCell(1).getParagraphs().get(0);
                 para.setAlignment(ParagraphAlignment.LEFT);
-                tableRow.getCell(1).setText("NT1");
-                para = tableRow.getCell(1).getParagraphs().get(0);
+                tableRow.getCell(2).setText("NT1");
+                para = tableRow.getCell(2).getParagraphs().get(0);
                 para.setAlignment(ParagraphAlignment.LEFT);
-                tableRow.getCell(1).setText("NT2");
-                para = tableRow.getCell(1).getParagraphs().get(0);
+                tableRow.getCell(3).setText("NT2");
+                para = tableRow.getCell(3).getParagraphs().get(0);
                 para.setAlignment(ParagraphAlignment.LEFT);
-                tableRow.getCell(1).setText("1ºEGB");
-                para = tableRow.getCell(1).getParagraphs().get(0);
+                tableRow.getCell(4).setText("1ºEGB");
+                para = tableRow.getCell(4).getParagraphs().get(0);
                 para.setAlignment(ParagraphAlignment.LEFT);
             } else {
                 for (int n = 0; n < rangos.size(); n++) {
@@ -173,15 +184,15 @@ public class InformeHabilidades implements IInforme {
     private String getTiteTables(Curso curso) {
         String tableTitle = null;
         if ((curso.getCiclo().getId() < InformeManager.CICLO_7 && !basica_ciclo)) {
-            tableTitle = String.format("Tabla Nº %d: RESULTADOS ENSEÑANZA BÁSICA", InformeManager.TABLA++);
+            tableTitle = String.format("Tabla  %d: RESULTADOS ENSEÑANZA BÁSICA", InformeManager.TABLA++);
             basica_ciclo = true;
         }
         if (curso.getCiclo().getId() == InformeManager.CICLO_7 && !kinder_ciclo) {
-            tableTitle = String.format("Tabla Nº %d: RESULTADOS DE PRE-BÁSICA", InformeManager.TABLA++);
+            tableTitle = String.format("Tabla  %d: RESULTADOS DE PRE-BÁSICA", InformeManager.TABLA++);
             kinder_ciclo = true;
         }
         if (curso.getCiclo().getId() > InformeManager.CICLO_7 && !media_ciclo) {
-            tableTitle = String.format("Tabla Nº %d: RESULTADOS DESDE 1º a 4º MEDIO", InformeManager.TABLA++);
+            tableTitle = String.format("Tabla  %d: RESULTADOS DESDE 1º a 4º MEDIO", InformeManager.TABLA++);
             media_ciclo = true;
         }
         return tableTitle;

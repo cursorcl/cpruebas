@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
@@ -39,8 +40,8 @@ public class InformeResumenTotalAlumnos implements IInforme {
 
     private static final String ASIGNATURA_ID = "idAsignatura";
     private static final String COLEGIO_ID = "idColegio";
-    final static String[] TABLE_HEAD = { "CURSOS", "TOTAL", "EVALUADOS", "APROBADOS",
-            "REPROBADOS", "% EVALUADOS", "% REPROBADOS", "% APROBADOS" };
+    final static String[] TABLE_HEAD = { "CURSOS", "TOTAL", "EVALUADOS", "APROBADOS", "REPROBADOS", "% EVALUADOS",
+            "% REPROBADOS", "% APROBADOS" };
 
     static Logger log = Logger.getLogger(InformeResumenTotalAlumnos.class);
     private TipoAlumno tipoAlumno;
@@ -52,6 +53,7 @@ public class InformeResumenTotalAlumnos implements IInforme {
         super();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void execute(TipoAlumno tipoAlumno, Colegio colegio, Asignatura asignatura) {
         this.tipoAlumno = tipoAlumno;
@@ -60,33 +62,45 @@ public class InformeResumenTotalAlumnos implements IInforme {
         Map<String, Object> params = new HashMap<>();
         params.put(COLEGIO_ID, colegio.getId());
         params.put(ASIGNATURA_ID, asignatura.getId());
-        List<Object> lst = PersistenceServiceFactory.getPersistenceService()
-                .findSynchro("EvaluacionPrueba.findEvaluacionByColegioAsig", params);
-        resultado = procesar(lst);
+        List<EvaluacionPrueba> evaluaciones = (List<EvaluacionPrueba>) (Object) PersistenceServiceFactory
+                .getPersistenceService().findSynchro("EvaluacionPrueba.findEvaluacionByColegioAsig", params);
+        
+        if (Objects.isNull(evaluaciones) || evaluaciones.isEmpty())
+            return;
+        
+        resultado = procesar(evaluaciones);
     }
 
     public void page(XWPFDocument document) {
 
         resultado = resultado.stream().sorted(Comparadores.comparaResumeColegio()).collect(Collectors.toList());
-        
+
         XWPFParagraph paragraph = document.createParagraph();
+        paragraph.setStyle("PEREKE-TITULO");
         XWPFRun run = paragraph.createRun(); // create new run
-        paragraph.setStyle("Heading1");
-        run.setText("INFORME DE RESULTADOS A NIVEL DE ESTABLECIMIENTO (" + colegio.getName().toUpperCase() + ")");
+        run.setText("INFORME DE RESULTADOS A NIVEL DE ESTABLECIMIENTO ");
         run.addCarriageReturn();
-        paragraph.setStyle("Heading2");
-        run.setText("Instrumento de Evaluación y Resultados Obtenidos en la asignatura de " + asignatura.getName().toUpperCase() + ".");
+        run.setText(colegio.getName().toUpperCase());
+
+        paragraph = document.createParagraph();
+        paragraph.setStyle("PEREKE-SUBTITULO");
+        run = paragraph.createRun(); // create new run
+        run.setText("Instrumento de Evaluación y Resultados Obtenidos en la asignatura de "
+                + asignatura.getName().toUpperCase() + ".");
+        
+        paragraph = document.createParagraph();
         paragraph.setStyle("Normal");
+        run = paragraph.createRun();
+        run.addCarriageReturn();
+        
 
         XWPFTable table = document.createTable(resultado.size() + 2, TABLE_HEAD.length);
         WordUtil.setTableFormat(table, 2, 1);
 
-        
-
         XWPFTableRow tableRow = table.getRow(0);
         tableRow.getCell(1).setText("ALUMNOS");
         WordUtil.mergeCellHorizontally(table, 0, 1, 7);
-        
+
         tableRow = table.getRow(1);
         for (int n = 0; n < TABLE_HEAD.length; n++) {
             tableRow.getCell(n).setText(TABLE_HEAD[n]);
@@ -108,23 +122,23 @@ public class InformeResumenTotalAlumnos implements IInforme {
         paragraph.setStyle("Descripción");
         run = paragraph.createRun();
         paragraph.setAlignment(ParagraphAlignment.CENTER);
-        run.setText(String.format("Tabla Nº %d: TOTAL ALUMNOS %s en %s", InformeManager.TABLA++, colegio.getName(), asignatura.getName()));
+        run.setText(String.format("Tabla  %d: TOTAL ALUMNOS %s en %s", InformeManager.TABLA++, colegio.getName(),
+                asignatura.getName()));
         run.addCarriageReturn();
         paragraph = document.createParagraph();
         paragraph.setStyle("Normal");
         run = paragraph.createRun();
         run.addCarriageReturn();
-        
+
     }
 
-    protected ArrayList<OTResumenColegio> procesar(List<Object> list) {
+    protected ArrayList<OTResumenColegio> procesar(List<EvaluacionPrueba> list) {
         ArrayList<OTResumenColegio> lstCursos = new ArrayList<>();
         int totalColAlumnos = 0;
         int totalColEvaluados = 0;
         int totalColAprobados = 0;
         int totalColReprobados = 0;
-        for (Object evaluacionPrueba : list) {
-            EvaluacionPrueba evaluacion = (EvaluacionPrueba) evaluacionPrueba;
+        for (EvaluacionPrueba evaluacion : list) {
             OTResumenColegio resumenCurso = new OTResumenColegio();
             resumenCurso.setColegio(evaluacion.getColegio());
             resumenCurso.setCurso(evaluacion.getCurso());
