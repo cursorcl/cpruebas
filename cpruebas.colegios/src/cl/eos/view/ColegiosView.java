@@ -2,6 +2,7 @@ package cl.eos.view;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
@@ -27,293 +28,282 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
-public class ColegiosView extends AFormView implements
-		EventHandler<ActionEvent> {
+public class ColegiosView extends AFormView implements EventHandler<ActionEvent> {
 
-	private static final int LARGO_CAMPO_TEXT = 100;
+    private static final int LARGO_CAMPO_TEXT = 100;
 
-	@FXML
-	private MenuItem mnuAgregar;
+    @FXML
+    private MenuItem mnuAgregar;
 
-	@FXML
-	private MenuItem mnuGrabar;
+    @FXML
+    private MenuItem mnuGrabar;
 
-	@FXML
-	private MenuItem mnItemEliminar;
+    @FXML
+    private MenuItem mnItemEliminar;
 
-	@FXML
-	private MenuItem mnItemModificar;
+    @FXML
+    private MenuItem mnItemModificar;
 
-	@FXML
-	private MenuItem mnuEliminar;
+    @FXML
+    private MenuItem mnuEliminar;
 
-	@FXML
-	private MenuItem mnuModificar;
+    @FXML
+    private MenuItem mnuModificar;
 
-	@FXML
-	private MenuItem menuExportar;
+    @FXML
+    private MenuItem menuExportar;
 
-	@FXML
-	private MenuItem mnuExportar;
+    @FXML
+    private MenuItem mnuExportar;
 
-	// @FXML
-	// private Button btnImagen;
+    @FXML
+    private TextField txtCiudad;
 
-	@FXML
-	private TextField txtNombre;
+    @FXML
+    private TextField txtNombre;
 
-	@FXML
-	private TextField txtDireccion;
+    @FXML
+    private TextField txtDireccion;
 
-	@FXML
-	private ImageView imgColegio;
-	
-	@FXML 
-	private ComboBox<TipoColegio> cmbTipoColegio;
-	
-	@FXML
-	private TableView<OTColegio> tblColegio;
+    @FXML
+    private ImageView imgColegio;
 
-	@FXML
-	private TableColumn<OTColegio, Long> colId;
-	@FXML
-	private TableColumn<OTColegio, String> colNombre;
+    @FXML
+    private ComboBox<TipoColegio> cmbTipoColegio;
 
-	@FXML
-	private TableColumn<OTColegio, String> colDireccion;
+    @FXML
+    private TableView<OTColegio> tblColegio;
 
-	@FXML
-	private Label lblError;
-	@FXML
-	private TableColumn<OTColegio, String> colTipoColegio;
+    @FXML
+    private TableColumn<OTColegio, Long> colId;
+    @FXML
+    private TableColumn<OTColegio, String> colNombre;
 
-	public ColegiosView() {
-		setTitle("Colegios");
-	}
+    @FXML
+    private TableColumn<OTColegio, String> colDireccion;
 
-	@FXML
-	public void initialize() {
-		inicializaTabla();
-		accionClicTabla();
-		mnuAgregar.setOnAction(this);
-		mnuGrabar.setOnAction(this);
-		mnuModificar.setOnAction(this);
-		mnuEliminar.setOnAction(this);
-		mnItemEliminar.setOnAction(this);
-		mnItemModificar.setOnAction(this);
-		mnuExportar.setOnAction(this);
-		menuExportar.setOnAction(this);
+    @FXML
+    private Label lblError;
+    @FXML
+    private TableColumn<OTColegio, String> colTipoColegio;
 
-		mnuModificar.setDisable(true);
-		mnuEliminar.setDisable(true);
-		mnItemEliminar.setDisable(true);
-		mnItemModificar.setDisable(true);
+    public ColegiosView() {
+        setTitle("Colegios");
+    }
 
-		// btnImagen.setOnAction(this);
-	}
+    @FXML
+    public void initialize() {
+        inicializaTabla();
+        accionClicTabla();
+        mnuAgregar.setOnAction(this);
+        mnuGrabar.setOnAction(this);
+        mnuModificar.setOnAction(this);
+        mnuEliminar.setOnAction(this);
+        mnItemEliminar.setOnAction(this);
+        mnItemModificar.setOnAction(this);
+        mnuExportar.setOnAction(this);
+        menuExportar.setOnAction(this);
 
-	// private void accionButtonImagen() {
-	// FileChooser fileChooser = new FileChooser();
-	// File file = fileChooser.showOpenDialog(null);
-	// if (file != null) {
-	// Dimension dim = Utils.getImageDim(file.getPath());
-	// if (dim.getHeight() <= 256 && dim.getWidth() <= 256) {
-	// try {
-	// URL url = file.toURI().toURL();
-	// imgColegio.setImage(new Image(url.toString()));
-	// } catch (MalformedURLException e) {
-	// e.printStackTrace();
-	// }
-	// }
-	// }
-	// }
+        mnuModificar.setDisable(true);
+        mnuEliminar.setDisable(true);
+        mnItemEliminar.setDisable(true);
+        mnItemModificar.setDisable(true);
 
-	private void accionClicTabla() {
-		tblColegio.setOnMouseClicked(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent event) {
-				ObservableList<OTColegio> itemsSelec = tblColegio
-						.getSelectionModel().getSelectedItems();
-				if (itemsSelec.size() > 1) {
-					mnItemModificar.setDisable(true);
-					mnItemEliminar.setDisable(false);
+        // btnImagen.setOnAction(this);
+    }
 
-					mnuModificar.setDisable(true);
-					mnuEliminar.setDisable(false);
-				} else if (itemsSelec.size() == 1) {					
-					mnItemModificar.setDisable(false);
-					mnItemEliminar.setDisable(false);
+    // private void accionButtonImagen() {
+    // FileChooser fileChooser = new FileChooser();
+    // File file = fileChooser.showOpenDialog(null);
+    // if (file != null) {
+    // Dimension dim = Utils.getImageDim(file.getPath());
+    // if (dim.getHeight() <= 256 && dim.getWidth() <= 256) {
+    // try {
+    // URL url = file.toURI().toURL();
+    // imgColegio.setImage(new Image(url.toString()));
+    // } catch (MalformedURLException e) {
+    // e.printStackTrace();
+    // }
+    // }
+    // }
+    // }
 
-					mnuModificar.setDisable(false);
-					mnuEliminar.setDisable(false);
-				}
-			}
-		});
-	}
+    private void accionClicTabla() {
+        tblColegio.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                ObservableList<OTColegio> itemsSelec = tblColegio.getSelectionModel().getSelectedItems();
+                if (itemsSelec.size() > 1) {
+                    mnItemModificar.setDisable(true);
+                    mnItemEliminar.setDisable(false);
 
-	private void inicializaTabla() {
-		tblColegio.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-		colId.setCellValueFactory(new PropertyValueFactory<OTColegio, Long>(
-				"id"));
-		colNombre
-				.setCellValueFactory(new PropertyValueFactory<OTColegio, String>(
-						"name"));
-		colDireccion
-				.setCellValueFactory(new PropertyValueFactory<OTColegio, String>(
-						"direccion"));
-		
-		colTipoColegio
-		.setCellValueFactory(new PropertyValueFactory<OTColegio, String>(
-				"tipo"));
-	}
+                    mnuModificar.setDisable(true);
+                    mnuEliminar.setDisable(false);
+                } else if (itemsSelec.size() == 1) {
+                    mnItemModificar.setDisable(false);
+                    mnItemEliminar.setDisable(false);
 
-	private void accionModificar() {
-		OTColegio colegio = tblColegio.getSelectionModel().getSelectedItem();
-		if (colegio != null) {
-			txtNombre.setText(colegio.getName());
-			txtDireccion.setText(colegio.getDireccion());
-			cmbTipoColegio.setValue(colegio.getTipo());
-			select((IEntity) colegio.getColegio());
-		}
-	}
+                    mnuModificar.setDisable(false);
+                    mnuEliminar.setDisable(false);
+                }
+            }
+        });
+    }
 
-	private void accionEliminar() {
-		ObservableList<OTColegio> otSeleccionados = tblColegio
-				.getSelectionModel().getSelectedItems();
-		if (otSeleccionados.size() == 0) {
-			Alert alert = new Alert(AlertType.INFORMATION);
-			alert.setTitle("Selección registro");
-			alert.setHeaderText(this.getName());
-			alert.setContentText("Debe seleccionar registro a procesar");
-			alert.showAndWait();			
-		} else {
-			if (otSeleccionados != null && !otSeleccionados.isEmpty()) {
-				List<Colegio> colegio = new ArrayList<Colegio>(
-						otSeleccionados.size());
-				for (OTColegio ot : otSeleccionados) {
-					colegio.add(ot.getColegio());
-				}
-				delete(colegio);
-				tblColegio.getSelectionModel().clearSelection();
-				limpiarControles();
-			}
-		}
-	}
+    private void inicializaTabla() {
+        tblColegio.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        colId.setCellValueFactory(new PropertyValueFactory<OTColegio, Long>("id"));
+        colNombre.setCellValueFactory(new PropertyValueFactory<OTColegio, String>("name"));
+        colDireccion.setCellValueFactory(new PropertyValueFactory<OTColegio, String>("direccion"));
 
-	private void accionGrabar() {
-		IEntity entitySelected = getSelectedEntity();
-		removeAllStyles();
-		if (validate()) {
-			if (lblError != null) {
-				lblError.setText(" ");
-			}
-			Colegio colegio = null;
-			if (entitySelected != null && entitySelected instanceof Colegio) {
-				colegio = (Colegio) entitySelected;
-			} else {
-				colegio = new Colegio();
-			}
-			colegio.setName(txtNombre.getText());
-			colegio.setDireccion(txtDireccion.getText());
-			colegio.setTipoColegio(cmbTipoColegio.getValue());
-			save(colegio);
-			limpiarControles();
-		} else {
-			lblError.getStyleClass().add("bad");
-			lblError.setText("Corregir campos destacados en color rojo");
-		}
-		
-	}
+        colTipoColegio.setCellValueFactory(new PropertyValueFactory<OTColegio, String>("tipo"));
+    }
 
-	private void limpiarControles() {
-		txtNombre.clear();
-		txtDireccion.clear();
-		cmbTipoColegio.setValue(null);
-		tblColegio.getSelectionModel().clearSelection();
-	}
+    private void accionModificar() {
+        OTColegio colegio = tblColegio.getSelectionModel().getSelectedItem();
+        if (colegio != null) {
+            txtNombre.setText(colegio.getName());
+            txtDireccion.setText(colegio.getDireccion());
+            cmbTipoColegio.setValue(colegio.getTipo());
+            select((IEntity) colegio.getColegio());
+        }
+    }
 
-	@Override
-	public void onSaved(IEntity otObject) {
-		OTColegio otColegio = new OTColegio((Colegio) otObject);
-		int indice = tblColegio.getItems().lastIndexOf(otColegio);
-		if (indice != -1) {
-			tblColegio.getItems().set(indice, otColegio);
-		} else {
-			tblColegio.getItems().add(otColegio);
-		}
-	}
+    private void accionEliminar() {
+        ObservableList<OTColegio> otSeleccionados = tblColegio.getSelectionModel().getSelectedItems();
+        if (otSeleccionados.size() == 0) {
+            Alert alert = new Alert(AlertType.INFORMATION);
+            alert.setTitle("Selección registro");
+            alert.setHeaderText(this.getName());
+            alert.setContentText("Debe seleccionar registro a procesar");
+            alert.showAndWait();
+        } else {
+            if (otSeleccionados != null && !otSeleccionados.isEmpty()) {
+                List<Colegio> colegio = new ArrayList<Colegio>(otSeleccionados.size());
+                for (OTColegio ot : otSeleccionados) {
+                    colegio.add(ot.getColegio());
+                }
+                delete(colegio);
+                tblColegio.getSelectionModel().clearSelection();
+                limpiarControles();
+            }
+        }
+    }
 
-	@Override
-	public void onDeleted(IEntity entity) {
-		tblColegio.getItems().remove(new OTColegio((Colegio) entity));
-	}
+    private void accionGrabar() {
+        IEntity entitySelected = getSelectedEntity();
+        removeAllStyles();
+        if (validate()) {
+            if (lblError != null) {
+                lblError.setText(" ");
+            }
+            Colegio colegio = null;
+            if (entitySelected != null && entitySelected instanceof Colegio) {
+                colegio = (Colegio) entitySelected;
+            } else {
+                colegio = new Colegio();
+            }
+            colegio.setName(txtNombre.getText());
+            colegio.setDireccion(txtDireccion.getText());
+            colegio.setTipoColegio(cmbTipoColegio.getValue());
+            save(colegio);
+            limpiarControles();
+        } else {
+            lblError.getStyleClass().add("bad");
+            lblError.setText("Corregir campos destacados en color rojo");
+        }
 
-	public boolean validate() {
-		boolean valida = true;
-		if (txtNombre.getText() == null || txtNombre.getText().equals("")) {
-			txtNombre.getStyleClass().add("bad");
-			valida = false;
-		}
-		if (txtNombre.getText() != null
-				&& txtNombre.getText().length() > LARGO_CAMPO_TEXT) {
-			txtNombre.getStyleClass().add("bad");
-			valida = false;
-		}
-		if(cmbTipoColegio.getValue() == null)
-		{
-			cmbTipoColegio.getStyleClass().add("bad");
-			valida = false;
-		}
-		return valida;
-	}
+    }
 
-	@Override
-	public void onDataArrived(List<Object> list) {
-		if (list != null && !list.isEmpty()) {
-			Object entity = list.get(0);
-			if (entity instanceof Colegio) {
-				ObservableList<OTColegio> oList = FXCollections
-						.observableArrayList();
-				for (Object iEntity : list) {
-					oList.add(new OTColegio((Colegio) iEntity));
-				}
-				tblColegio.setItems(oList);
-			}
-			else if (entity instanceof TipoColegio) {
-				ObservableList<TipoColegio> value = FXCollections
-						.observableArrayList();
-				for (Object iEntity : list) {
-					value.add((TipoColegio) iEntity);
-				}
-				cmbTipoColegio.setItems(value);
-			}
-		}
-	}
+    private void limpiarControles() {
+        txtNombre.clear();
+        txtDireccion.clear();
+        cmbTipoColegio.setValue(null);
+        tblColegio.getSelectionModel().clearSelection();
+    }
 
-	private void removeAllStyles() {
-		removeAllStyle(lblError);
-		removeAllStyle(txtNombre);
-		removeAllStyle(txtDireccion);
-		removeAllStyle(cmbTipoColegio);
-	}
+    @Override
+    public void onSaved(IEntity otObject) {
+        OTColegio otColegio = new OTColegio((Colegio) otObject);
+        int indice = tblColegio.getItems().lastIndexOf(otColegio);
+        if (indice != -1) {
+            tblColegio.getItems().set(indice, otColegio);
+        } else {
+            tblColegio.getItems().add(otColegio);
+        }
+    }
 
-	@Override
-	public void handle(ActionEvent event) {
-		Object source = event.getSource();
-		if (source == mnuAgregar) {
-			limpiarControles();
-		} else if (source == mnuModificar || source == mnItemModificar) {
-			accionModificar();
-		} else if (source == mnuGrabar) {
-			accionGrabar();
-		} else if (source == mnuEliminar || source == mnItemEliminar) {
-			accionEliminar();
-			// } else if (source == btnImagen) {
-			// accionButtonImagen();
-		} else if (source == mnuExportar || source == menuExportar) {
-			tblColegio.setId("Colegio");
-			ExcelSheetWriterObj.convertirDatosALibroDeExcel(tblColegio);
-		}
-	}
+    @Override
+    public void onDeleted(IEntity entity) {
+        tblColegio.getItems().remove(new OTColegio((Colegio) entity));
+    }
+
+    public boolean validate() {
+        boolean valida = true;
+        if (txtNombre.getText() == null || txtNombre.getText().equals("")) {
+            txtNombre.getStyleClass().add("bad");
+            valida = false;
+        }
+        if (txtNombre.getText() != null && txtNombre.getText().length() > LARGO_CAMPO_TEXT) {
+            txtNombre.getStyleClass().add("bad");
+            valida = false;
+        }
+        if (cmbTipoColegio.getValue() == null) {
+            cmbTipoColegio.getStyleClass().add("bad");
+            valida = false;
+        }
+
+        if (Objects.isNull(txtCiudad.getText()) || txtCiudad.getText().isEmpty()) {
+            txtCiudad.getStyleClass().add("bad");
+            valida = false;
+        }
+        return valida;
+    }
+
+    @Override
+    public void onDataArrived(List<Object> list) {
+        if (list != null && !list.isEmpty()) {
+            Object entity = list.get(0);
+            if (entity instanceof Colegio) {
+                ObservableList<OTColegio> oList = FXCollections.observableArrayList();
+                for (Object iEntity : list) {
+                    oList.add(new OTColegio((Colegio) iEntity));
+                }
+                tblColegio.setItems(oList);
+            } else if (entity instanceof TipoColegio) {
+                ObservableList<TipoColegio> value = FXCollections.observableArrayList();
+                for (Object iEntity : list) {
+                    value.add((TipoColegio) iEntity);
+                }
+                cmbTipoColegio.setItems(value);
+            }
+        }
+    }
+
+    private void removeAllStyles() {
+        removeAllStyle(lblError);
+        removeAllStyle(txtNombre);
+        removeAllStyle(txtDireccion);
+        removeAllStyle(cmbTipoColegio);
+    }
+
+    @Override
+    public void handle(ActionEvent event) {
+        Object source = event.getSource();
+        if (source == mnuAgregar) {
+            limpiarControles();
+        } else if (source == mnuModificar || source == mnItemModificar) {
+            accionModificar();
+        } else if (source == mnuGrabar) {
+            accionGrabar();
+        } else if (source == mnuEliminar || source == mnItemEliminar) {
+            accionEliminar();
+            // } else if (source == btnImagen) {
+            // accionButtonImagen();
+        } else if (source == mnuExportar || source == menuExportar) {
+            tblColegio.setId("Colegio");
+            ExcelSheetWriterObj.convertirDatosALibroDeExcel(tblColegio);
+        }
+    }
 
 }

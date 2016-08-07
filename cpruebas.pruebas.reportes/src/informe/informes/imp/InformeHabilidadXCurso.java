@@ -16,12 +16,12 @@ import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 
 import cl.eos.common.Constants;
-import cl.eos.ot.OTPreguntasEjes;
+import cl.eos.ot.OTPreguntasHabilidad;
 import cl.eos.persistence.models.Alumno;
 import cl.eos.persistence.models.Asignatura;
 import cl.eos.persistence.models.Colegio;
 import cl.eos.persistence.models.Curso;
-import cl.eos.persistence.models.EjeTematico;
+import cl.eos.persistence.models.Habilidad;
 import cl.eos.persistence.models.EvaluacionPrueba;
 import cl.eos.persistence.models.PruebaRendida;
 import cl.eos.persistence.models.RangoEvaluacion;
@@ -40,21 +40,21 @@ import utils.WordUtil;
  * @author curso
  *
  */
-public class InformeEjesXCurso implements IInforme {
+public class InformeHabilidadXCurso implements IInforme {
 
     private static final String ASIGNATURA_ID = "idAsignatura";
     private static final String COLEGIO_ID = "idColegio";
 
-    static Logger log = Logger.getLogger(InformeEjesXCurso.class);
+    static Logger log = Logger.getLogger(InformeHabilidadXCurso.class);
     private TipoAlumno tipoAlumno;
     private Colegio colegio;
     private Asignatura asignatura;
-    private Map<EjeTematico, List<OTPreguntasEjes>> resultado;
+    private Map<Habilidad, List<OTPreguntasHabilidad>> resultado;
     private List<RangoEvaluacion> rangos;
     private List<Curso> cursoList;
     private int nroCursos;
 
-    public InformeEjesXCurso() {
+    public InformeHabilidadXCurso() {
         super();
     }
 
@@ -88,32 +88,35 @@ public class InformeEjesXCurso implements IInforme {
             paragraph = document.createParagraph();
             run = paragraph.createRun(); // create new run
             run.addCarriageReturn();
-            
+
             int cursos = Math.min(12, nroCursos - n);
             XWPFTable table = document.createTable(nRows + 1, cursos + 1);
             WordUtil.setTableFormat(table, 1, 0);
 
             XWPFTableRow tableRow = table.getRow(0);
-            tableRow.getCell(0).getParagraphs().get(0).getRuns().get(0).setText("EJE");
+            tableRow.getCell(0).getParagraphs().get(0).getRuns().get(0).setText("HABILIDAD");
             int col = 1;
             for (int r = n; r < n + cursos; r++) {
                 String title = cursoList.get(r).getName();
                 tableRow.getCell(col++).getParagraphs().get(0).getRuns().get(0).setText(title);
             }
             int row = 1;
-            for (EjeTematico eje : resultado.keySet()) {
+            for (Habilidad eje : resultado.keySet()) {
                 tableRow = table.getRow(row++);
                 tableRow.getCell(0).getParagraphs().get(0).getRuns().get(0).setText(eje.getName().toUpperCase());
-                List<OTPreguntasEjes> notas = resultado.get(eje);
+                List<OTPreguntasHabilidad> notas = resultado.get(eje);
                 col = 1;
                 for (int r = n; r < n + cursos; r++) {
-                    OTPreguntasEjes nota = notas.get(r);
-                    if(nota != null)
-                        tableRow.getCell(col++).getParagraphs().get(0).getRuns().get(0).setText(String.format("%5.1f", nota.getSlogrado()));
-//                        tableRow.getCell(col++).setText(String.format("%5.2f", nota.getSlogrado()));
+                    OTPreguntasHabilidad nota = notas.get(r);
+                    if (nota != null)
+                        tableRow.getCell(col++).getParagraphs().get(0).getRuns().get(0).setText(nota.getSlogrado());
+                    // tableRow.getCell(col++).setText(String.format("%5.2f",
+                    // nota.getSlogrado()));
                     else
-                        tableRow.getCell(col++).getParagraphs().get(0).getRuns().get(0).setText(String.format("%5.1f", 0f));
-//                        tableRow.getCell(col++).setText(String.format("%5.2f", 0f));
+                        tableRow.getCell(col++).getParagraphs().get(0).getRuns().get(0)
+                                .setText(String.format("%5.1f", 0f));
+                    // tableRow.getCell(col++).setText(String.format("%5.2f",
+                    // 0f));
                 }
             }
 
@@ -123,7 +126,7 @@ public class InformeEjesXCurso implements IInforme {
         paragraph.setStyle("Descripción");
         run = paragraph.createRun();
         paragraph.setAlignment(ParagraphAlignment.CENTER);
-        run.setText(String.format("Tabla Nº %d: DISTRIBUCIÓN DE RESULTADOS POR EJES DE APRENDIZAJES %s en %s",
+        run.setText(String.format("Tabla Nº %d: DISTRIBUCIÓN DE RESULTADOS POR HABILIDADES %s en %s",
                 InformeManager.TABLA++, colegio.getName(), asignatura.getName()));
         run.addCarriageReturn();
         paragraph = document.createParagraph();
@@ -132,9 +135,9 @@ public class InformeEjesXCurso implements IInforme {
         run.addCarriageReturn();
     }
 
-    protected Map<EjeTematico, List<OTPreguntasEjes>> procesar(List<EvaluacionPrueba> evaluacionesPrueba) {
+    protected Map<Habilidad, List<OTPreguntasHabilidad>> procesar(List<EvaluacionPrueba> evaluacionesPrueba) {
 
-        Map<EjeTematico, List<OTPreguntasEjes>> mapEjes = new HashMap<>();
+        Map<Habilidad, List<OTPreguntasHabilidad>> mapEjes = new HashMap<>();
 
         cursoList = evaluacionesPrueba.stream().map(EvaluacionPrueba::getCurso).distinct()
                 .sorted(Comparadores.comparaResumeCurso()).collect(Collectors.toList());
@@ -173,17 +176,17 @@ public class InformeEjesXCurso implements IInforme {
                     continue;
 
                 for (int n = 0; n < respEsperadas.size(); n++) {
-                    EjeTematico eje = respEsperadas.get(n).getEjeTematico();
+                    Habilidad eje = respEsperadas.get(n).getHabilidad();
                     if (!mapEjes.containsKey(eje)) {
-                        mapEjes.put(eje,
-                                Stream.generate(OTPreguntasEjes::new).limit(nroCursos).collect(Collectors.toList()));
+                        mapEjes.put(eje, Stream.generate(OTPreguntasHabilidad::new).limit(nroCursos)
+                                .collect(Collectors.toList()));
                     }
                 }
-                for (EjeTematico eje : mapEjes.keySet()) {
-                    List<OTPreguntasEjes> lstEjes = mapEjes.get(eje);
-                    OTPreguntasEjes otEje = lstEjes.get(index);
-                    if (otEje == null || otEje.getEjeTematico() == null) {
-                        otEje = new OTPreguntasEjes(eje);
+                for (Habilidad eje : mapEjes.keySet()) {
+                    List<OTPreguntasHabilidad> lstEjes = mapEjes.get(eje);
+                    OTPreguntasHabilidad otEje = lstEjes.get(index);
+                    if (otEje == null || otEje.getHabilidad() == null) {
+                        otEje = new OTPreguntasHabilidad(eje);
                         lstEjes.set(index, otEje);
                     }
                     Pair<Integer, Integer> buenasTotal = obtenerBuenasTotales(respuestas, respEsperadas, eje);
@@ -210,13 +213,13 @@ public class InformeEjesXCurso implements IInforme {
      * @return Par <Preguntas buenas, Total de Preguntas> del eje.
      */
     private Pair<Integer, Integer> obtenerBuenasTotales(String respuestas,
-            List<RespuestasEsperadasPrueba> respEsperadas, EjeTematico eje) {
+            List<RespuestasEsperadasPrueba> respEsperadas, Habilidad eje) {
         int nroBuenas = 0;
         int nroPreguntas = 0;
         for (int n = 0; n < respEsperadas.size(); n++) {
             RespuestasEsperadasPrueba resp = respEsperadas.get(n);
             if (!resp.isAnulada()) {
-                if (resp.getEjeTematico().equals(eje)) {
+                if (resp.getHabilidad().equals(eje)) {
                     if (respuestas.length() > n) {
                         String sResp = respuestas.substring(n, n + 1);
                         if ("+".equals(sResp) || resp.getRespuesta().equalsIgnoreCase(sResp)) {

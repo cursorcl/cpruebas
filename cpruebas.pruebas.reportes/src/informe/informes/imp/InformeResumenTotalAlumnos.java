@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
+import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
@@ -24,6 +25,7 @@ import cl.eos.persistence.models.PruebaRendida;
 import cl.eos.persistence.models.TipoAlumno;
 import cl.eos.persistence.util.Comparadores;
 import cl.eos.provider.persistence.PersistenceServiceFactory;
+import informe.InformeManager;
 import informe.informes.IInforme;
 import utils.WordUtil;
 
@@ -102,7 +104,17 @@ public class InformeResumenTotalAlumnos implements IInforme {
             tableRow.getCell(6).setText(String.format("%5.2f", ot.getPorcAlumnosAprobados()));
             tableRow.getCell(7).setText(String.format("%5.2f", ot.getPorcAlumnosReprobados()));
         }
-
+        paragraph = document.createParagraph();
+        paragraph.setStyle("Descripción");
+        run = paragraph.createRun();
+        paragraph.setAlignment(ParagraphAlignment.CENTER);
+        run.setText(String.format("Tabla Nº %d: TOTAL ALUMNOS %s en %s", InformeManager.TABLA++, colegio.getName(), asignatura.getName()));
+        run.addCarriageReturn();
+        paragraph = document.createParagraph();
+        paragraph.setStyle("Normal");
+        run = paragraph.createRun();
+        run.addCarriageReturn();
+        
     }
 
     protected ArrayList<OTResumenColegio> procesar(List<Object> list) {

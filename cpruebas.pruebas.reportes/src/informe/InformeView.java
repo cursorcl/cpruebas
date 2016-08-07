@@ -34,7 +34,7 @@ import jfxtras.labs.scene.control.BigDecimalField;
 public class InformeView extends AFormView {
 
     private static final String INFORME_COMPLETO = "Informe Completo";
-    
+
     @FXML
     private Button btnGenerar;
     @FXML
@@ -49,7 +49,7 @@ public class InformeView extends AFormView {
     private ComboBox<TipoAlumno> cmbTipoAlumno;
     @FXML
     private BigDecimalField bdAnoEscolar;
-    
+
     ObservableList<Asignatura> lstAsignaturas;
     protected Colegio colegio;
     protected TipoAlumno tipoAlumno;
@@ -90,14 +90,13 @@ public class InformeView extends AFormView {
                 final ProgressForm dlg = new ProgressForm();
                 dlg.title("Procesando Informe");
                 dlg.message("Esto tomará algunos segundos...");
-                
-                
+
                 final Task<Boolean> task = new Task<Boolean>() {
 
                     @Override
                     protected Boolean call() throws Exception {
-                        InformeManager manager = new InformeManager(selectedFile);
-                        manager.updateFields(cmbTipoPrueba.getValue(), colegio, bdAnoEscolar.getNumber().toString());
+                        InformeManager manager = new InformeManager(colegio, selectedFile);
+                        manager.updateFields(cmbTipoPrueba.getValue(), bdAnoEscolar.getNumber().toString());
                         int nroAsignaturas = lstAsignaturas.size();
                         int n = 1;
                         for (Asignatura asignatura : lstAsignaturas) {
@@ -117,7 +116,7 @@ public class InformeView extends AFormView {
                     dlg.getDialogStage().hide();
                     throw new RuntimeException(task.getException());
                 });
-                
+
                 dlg.showWorkerProgress(task);
                 Executors.newSingleThreadExecutor().execute(task);
 
@@ -162,7 +161,7 @@ public class InformeView extends AFormView {
                     lstTipoPrueba.add((TipoPrueba) lEntity);
                 }
                 cmbTipoPrueba.setItems(lstTipoPrueba);
-        }
+            }
         }
     }
 

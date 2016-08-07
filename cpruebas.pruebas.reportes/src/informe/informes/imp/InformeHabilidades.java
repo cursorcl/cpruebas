@@ -19,8 +19,8 @@ import cl.eos.common.Constants;
 import cl.eos.persistence.models.Asignatura;
 import cl.eos.persistence.models.Colegio;
 import cl.eos.persistence.models.Curso;
-import cl.eos.persistence.models.Habilidad;
 import cl.eos.persistence.models.EvaluacionPrueba;
+import cl.eos.persistence.models.Habilidad;
 import cl.eos.persistence.models.PruebaRendida;
 import cl.eos.persistence.models.RangoEvaluacion;
 import cl.eos.persistence.models.RespuestasEsperadasPrueba;
@@ -28,6 +28,7 @@ import cl.eos.persistence.models.TipoAlumno;
 import cl.eos.persistence.util.Comparadores;
 import cl.eos.provider.persistence.PersistenceServiceFactory;
 import cl.eos.view.ots.ejeevaluacion.OTAcumulador;
+import informe.InformeManager;
 import informe.informes.IInforme;
 import utils.WordUtil;
 
@@ -44,11 +45,12 @@ public class InformeHabilidades implements IInforme {
 
     static Logger log = Logger.getLogger(InformeHabilidades.class);
     private TipoAlumno tipoAlumno;
-    private Colegio colegio;
-    private Asignatura asignatura;
     private Map<Habilidad, List<OTAcumulador>> resultado;
     private List<RangoEvaluacion> rangos;
     private List<Curso> lstCursos;
+    private boolean kinder_ciclo;
+    private boolean media_ciclo;
+    private boolean basica_ciclo;
 
     public InformeHabilidades() {
         super();
@@ -61,8 +63,6 @@ public class InformeHabilidades implements IInforme {
         rangos.stream().sorted(Comparadores.rangoEvaluacionComparator()).collect(Collectors.toList());
 
         this.tipoAlumno = tipoAlumno;
-        this.colegio = colegio;
-        this.asignatura = asignatura;
 
         Map<String, Object> params = new HashMap<>();
         params.put(COLEGIO_ID, colegio.getId());
@@ -82,49 +82,65 @@ public class InformeHabilidades implements IInforme {
         int nroRangos = rangos.size();
 
         XWPFParagraph paragraph = document.createParagraph();
-        XWPFRun run = paragraph.createRun(); // create new run
-        paragraph.setStyle("Heading1");
-        run.setText("INFORME DE RESULTADOS A NIVEL DE ESTABLECIMIENTO (" + colegio.getName().toUpperCase() + ")");
+        XWPFRun run = paragraph.createRun();
         run.addCarriageReturn();
-        paragraph.setStyle("Heading2");
-        run.setText("Instrumento de Evaluación y Resultados Obtenidos en la asignatura de "
-                + asignatura.getName().toUpperCase() + ".");
-        paragraph.setStyle("Normal");
-        paragraph.setAlignment(ParagraphAlignment.CENTER);
 
         int idxCurso = 0;
         for (Curso curso : lstCursos) {
-            
+
+            String title = getTiteTables(curso);
+            if (title != null) {
+                paragraph = document.createParagraph();
+                run = paragraph.createRun();
+                paragraph.setAlignment(ParagraphAlignment.CENTER);
+                run.setText(title);
+                run.addCarriageReturn();
+            }
+
             paragraph = document.createParagraph();
             run = paragraph.createRun(); // create new run
             run.addCarriageReturn();
-            
+
             int nRow = 0;
-            for (Habilidad eje : resultado.keySet())
-            {
+            for (Habilidad eje : resultado.keySet()) {
                 List<OTAcumulador> lstValues = resultado.get(eje);
                 OTAcumulador ot = lstValues.get(idxCurso);
                 if (ot == null || ot.getNroPersonas() == null || ot.getNroPersonas().length == 0)
                     continue;
                 nRow++;
             }
-            
-            XWPFTable table = document.createTable( nRow + 3, nroRangos + 1);
+
+            XWPFTable table = document.createTable(nRow + 3, nroRangos + 1);
             WordUtil.setTableFormat(table, 3, 0);
 
             XWPFTableRow tableRow = table.getRow(0);
-            tableRow.getCell(0).setText("Eje Aprendizaje");
+            tableRow.getCell(0).setText("HABILIDADES");
             tableRow.getCell(1).setText("Curso: " + curso.getName());
 
             WordUtil.mergeCellHorizontally(table, 0, 1, nroRangos);
             WordUtil.mergeCellVertically(table, 0, 0, 2);
 
             tableRow = table.getRow(2);
-            
-            for (int n = 0; n < rangos.size(); n++) {
-                tableRow.getCell(n + 1).setText(rangos.get(n).getName());
-                XWPFParagraph para = tableRow.getCell(n + 1).getParagraphs().get(0);
+
+            if (curso.getCiclo().getId() == InformeManager.CICLO_7) {
+                tableRow.getCell(1).setText("<NT1");
+                XWPFParagraph para = tableRow.getCell(1).getParagraphs().get(0);
                 para.setAlignment(ParagraphAlignment.LEFT);
+                tableRow.getCell(1).setText("NT1");
+                para = tableRow.getCell(1).getParagraphs().get(0);
+                para.setAlignment(ParagraphAlignment.LEFT);
+                tableRow.getCell(1).setText("NT2");
+                para = tableRow.getCell(1).getParagraphs().get(0);
+                para.setAlignment(ParagraphAlignment.LEFT);
+                tableRow.getCell(1).setText("1ºEGB");
+                para = tableRow.getCell(1).getParagraphs().get(0);
+                para.setAlignment(ParagraphAlignment.LEFT);
+            } else {
+                for (int n = 0; n < rangos.size(); n++) {
+                    tableRow.getCell(n + 1).setText(rangos.get(n).getName());
+                    XWPFParagraph para = tableRow.getCell(n + 1).getParagraphs().get(0);
+                    para.setAlignment(ParagraphAlignment.LEFT);
+                }
             }
             boolean isTitleSetted = false;
             nRow = 3;
@@ -133,14 +149,14 @@ public class InformeHabilidades implements IInforme {
                 OTAcumulador ot = lstValues.get(idxCurso);
                 if (ot == null || ot.getNroPersonas() == null || ot.getNroPersonas().length == 0)
                     continue;
-                
+
                 if (!isTitleSetted) {
                     tableRow = table.getRow(1);
                     tableRow.getCell(1).setText("Nº estudiantes alcanzan nivel de logro: " + ot.getAlumnos());
                     WordUtil.mergeCellHorizontally(table, 1, 1, nroRangos);
                     isTitleSetted = true;
                 }
-                
+
                 tableRow = table.getRow(nRow++);
                 tableRow.getCell(0).setText(eje.getName().toUpperCase());
                 int[] values = ot.getNroPersonas();
@@ -148,9 +164,27 @@ public class InformeHabilidades implements IInforme {
                     tableRow.getCell(n + 1).setText(String.format("%d", values[n]));
                 }
             }
+
             idxCurso++;
 
         }
+    }
+
+    private String getTiteTables(Curso curso) {
+        String tableTitle = null;
+        if ((curso.getCiclo().getId() < InformeManager.CICLO_7 && !basica_ciclo)) {
+            tableTitle = String.format("Tabla Nº %d: RESULTADOS ENSEÑANZA BÁSICA", InformeManager.TABLA++);
+            basica_ciclo = true;
+        }
+        if (curso.getCiclo().getId() == InformeManager.CICLO_7 && !kinder_ciclo) {
+            tableTitle = String.format("Tabla Nº %d: RESULTADOS DE PRE-BÁSICA", InformeManager.TABLA++);
+            kinder_ciclo = true;
+        }
+        if (curso.getCiclo().getId() > InformeManager.CICLO_7 && !media_ciclo) {
+            tableTitle = String.format("Tabla Nº %d: RESULTADOS DESDE 1º a 4º MEDIO", InformeManager.TABLA++);
+            media_ciclo = true;
+        }
+        return tableTitle;
     }
 
     protected Map<Habilidad, List<OTAcumulador>> procesar(List<EvaluacionPrueba> evaluacionesPrueba) {

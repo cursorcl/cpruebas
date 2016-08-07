@@ -28,6 +28,7 @@ import cl.eos.persistence.models.TipoAlumno;
 import cl.eos.persistence.util.Comparadores;
 import cl.eos.provider.persistence.PersistenceServiceFactory;
 import cl.eos.view.ots.ejeevaluacion.OTAcumulador;
+import informe.InformeManager;
 import informe.informes.IInforme;
 import utils.WordUtil;
 
@@ -44,12 +45,13 @@ public class InformeEjeEvaluacion implements IInforme {
 
     static Logger log = Logger.getLogger(InformeEjeEvaluacion.class);
     private TipoAlumno tipoAlumno;
-    private Colegio colegio;
-    private Asignatura asignatura;
     private Map<EjeTematico, List<OTAcumulador>> resultado;
     private List<RangoEvaluacion> rangos;
     private List<Curso> lstCursos;
-
+    private boolean kinder_ciclo;
+    private boolean media_ciclo;
+    private boolean basica_ciclo;
+    
     public InformeEjeEvaluacion() {
         super();
     }
@@ -61,8 +63,6 @@ public class InformeEjeEvaluacion implements IInforme {
         rangos.stream().sorted(Comparadores.rangoEvaluacionComparator()).collect(Collectors.toList());
 
         this.tipoAlumno = tipoAlumno;
-        this.colegio = colegio;
-        this.asignatura = asignatura;
 
         Map<String, Object> params = new HashMap<>();
         params.put(COLEGIO_ID, colegio.getId());
@@ -82,18 +82,22 @@ public class InformeEjeEvaluacion implements IInforme {
         int nroRangos = rangos.size();
 
         XWPFParagraph paragraph = document.createParagraph();
-        XWPFRun run = paragraph.createRun(); // create new run
-        paragraph.setStyle("Heading1");
-        run.setText("INFORME DE RESULTADOS A NIVEL DE ESTABLECIMIENTO (" + colegio.getName().toUpperCase() + ")");
+        XWPFRun run = paragraph.createRun();
         run.addCarriageReturn();
-        paragraph.setStyle("Heading2");
-        run.setText("Instrumento de Evaluación y Resultados Obtenidos en la asignatura de "
-                + asignatura.getName().toUpperCase() + ".");
-        paragraph.setStyle("Normal");
-        paragraph.setAlignment(ParagraphAlignment.CENTER);
 
         int idxCurso = 0;
         for (Curso curso : lstCursos) {
+            
+            String title = getTiteTables(curso);
+            if(title != null)
+            {
+                paragraph = document.createParagraph();
+                run = paragraph.createRun();
+                paragraph.setAlignment(ParagraphAlignment.CENTER);
+                run.setText(title);
+                run.addCarriageReturn();
+            }
+
             
             paragraph = document.createParagraph();
             run = paragraph.createRun(); // create new run
@@ -153,6 +157,27 @@ public class InformeEjeEvaluacion implements IInforme {
         }
     }
 
+    private String getTiteTables(Curso curso) {
+        String tableTitle = null;
+        if((curso.getCiclo().getId() < InformeManager.CICLO_7  && !basica_ciclo))
+        {
+            tableTitle = String.format("Tabla Nº %d: RESULTADOS ENSEÑANZA BÁSICA", InformeManager.TABLA++);
+            basica_ciclo = true;
+        }
+        if(curso.getCiclo().getId() == InformeManager.CICLO_7 && !kinder_ciclo)
+        {
+            tableTitle = String.format("Tabla Nº %d: RESULTADOS DE PRE-BÁSICA", InformeManager.TABLA++);
+            kinder_ciclo = true;
+        }
+        if(curso.getCiclo().getId() > InformeManager.CICLO_7  && !media_ciclo)
+        {
+            tableTitle = String.format("Tabla Nº %d: RESULTADOS DESDE 1º a 4º MEDIO", InformeManager.TABLA++);
+            media_ciclo = true;
+        }
+        return tableTitle;
+    }
+    
+    
     protected Map<EjeTematico, List<OTAcumulador>> procesar(List<EvaluacionPrueba> evaluacionesPrueba) {
 
         int nroCursos = lstCursos.size();

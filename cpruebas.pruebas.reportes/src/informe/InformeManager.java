@@ -26,6 +26,7 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTVerticalJc;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STTextAlignment;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STVerticalJc;
 
+import cl.eos.imp.view.UtilsAlert;
 import cl.eos.persistence.models.Asignatura;
 import cl.eos.persistence.models.Colegio;
 import cl.eos.persistence.models.TipoAlumno;
@@ -38,6 +39,8 @@ import informe.informes.imp.InformeHabilidades;
 import informe.informes.imp.InformeResumenPME;
 import informe.informes.imp.InformeResumenTotalAlumnos;
 import informe.informes.imp.InformeResumenTotalGeneral;
+import javafx.application.Platform;
+import javafx.scene.control.Alert;
 
 /**
  * Se deben inscribir los informes que se han de generar.
@@ -55,14 +58,27 @@ public class InformeManager {
     static String FIELD_CIUDAD = "Ciudad";
     static String FIELD_ANOESCOLAR = "AnoEscolar";
 
+    public static int CICLO_1 = 1;
+    public static int CICLO_2 = 2;
+    public static int CICLO_3 = 3;
+    public static int CICLO_4 = 4;
+    public static int CICLO_5 = 5;
+    public static int CICLO_6 = 6;
+    public static int CICLO_7 = 7;
+    public static int CICLO_8 = 8;
+
+    public static int TABLA = 1;
+
     boolean sorted = false;
     List<IInforme> informes;
     private XWPFDocument doc;
     File file;
+    Colegio colegio;
 
-    public InformeManager(File selectedFile) throws FileNotFoundException, IOException {
+    public InformeManager(Colegio colegio, File selectedFile) throws FileNotFoundException, IOException {
 
         this.file = selectedFile;
+        this.colegio = colegio;
         doc = new XWPFDocument(new FileInputStream(System.getProperty("user.dir") + "/PAUTA.dotx"));
 
         add(new InformeResumenTotalGeneral());
@@ -75,7 +91,7 @@ public class InformeManager {
 
     }
 
-    public void updateFields(TipoPrueba tipoPrueba, Colegio colegio, String anoEscolar) {
+    public void updateFields(TipoPrueba tipoPrueba, String anoEscolar) {
         POIXMLProperties props = doc.getProperties();
         POIXMLProperties.CustomProperties cp = props.getCustomProperties();
         if (cp != null) {
@@ -122,33 +138,47 @@ public class InformeManager {
 
         CTDocument1 lDoc = document.getDocument();
         CTBody body = lDoc.getBody();
-        CTSectPr section = body.addNewSectPr();
-        CTVerticalJc textAlignment = CTVerticalJc.Factory.newInstance();
-        textAlignment.setVal(STVerticalJc.CENTER);
-        section.setVAlign(textAlignment);
-        
+
+        // Establece el estilo a la sección que ya existe.
         XWPFParagraph para = document.createParagraph();
         CTP ctp = para.getCTP();
-        CTPPr br = ctp.addNewPPr();
-        CTTextAlignment txtAlign = br.addNewTextAlignment();
-        txtAlign.setVal(STTextAlignment.CENTER);
-        para.setVerticalAlignment(TextAlignment.BOTTOM);
-        br.setSectPr(section);
+        CTPPr paragraphProperties = ctp.addNewPPr();
+        CTSectPr section = body.addNewSectPr();
+        CTVerticalJc textAlignment = CTVerticalJc.Factory.newInstance();
+        textAlignment.setVal(STVerticalJc.TOP);
+        section.setVAlign(textAlignment);
+        paragraphProperties.setSectPr(section);
 
+        // Se escribe el nuevo párrafo
         para = document.createParagraph();
-        
+        para.setAlignment(ParagraphAlignment.CENTER);
         XWPFRun run = para.createRun();
-        run.setText(asignatura.getName());
+        run.setFontSize(20);
+        run.setText(asignatura.getName().toUpperCase());
+        run.addCarriageReturn();
+        run.setText(colegio.getName().toUpperCase());
         run.addCarriageReturn();
         para.setPageBreak(true);
-        
+
+        // Se asigna la nueva sección a los párrafos anteriores
         para = document.createParagraph();
         ctp = para.getCTP();
-        br = ctp.addNewPPr();
-        br.setSectPr(section);
+        paragraphProperties = ctp.addNewPPr();
+        section = body.addNewSectPr();
+        textAlignment = CTVerticalJc.Factory.newInstance();
+        textAlignment.setVal(STVerticalJc.CENTER);
+        section.setVAlign(textAlignment);
+        paragraphProperties.setSectPr(section);
+
+        // Se crea nueva sección como las primeras.
+        para = document.createParagraph();
+        ctp = para.getCTP();
+        paragraphProperties = ctp.addNewPPr();
+        section = body.addNewSectPr();
         textAlignment = CTVerticalJc.Factory.newInstance();
         textAlignment.setVal(STVerticalJc.TOP);
         section.setVAlign(textAlignment);
+        paragraphProperties.setSectPr(section);
 
     }
 
@@ -165,13 +195,19 @@ public class InformeManager {
 
     public void finish() {
         try {
+
             FileOutputStream out = new FileOutputStream(file);
             doc.write(out);
             out.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    Alert dlg = UtilsAlert.makeExceptionAlert("No se ha podido grabar el archivo.",
+                            "Debe generalo nuevamente", e);
+                    dlg.show();
+                }
+            });
         }
     }
 

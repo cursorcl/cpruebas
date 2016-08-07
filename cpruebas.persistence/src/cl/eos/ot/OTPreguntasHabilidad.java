@@ -12,6 +12,14 @@ public class OTPreguntasHabilidad {
 	private Integer buenas = 0;
 	private Integer total = 0;
 
+	public OTPreguntasHabilidad() {
+     
+    }
+	
+	public OTPreguntasHabilidad(Habilidad habilidad) {
+	    this.habilidad = habilidad;
+    }
+    
 	public Habilidad getHabilidad() {
 		return habilidad;
 	}

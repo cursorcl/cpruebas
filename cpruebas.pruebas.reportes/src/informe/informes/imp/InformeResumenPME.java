@@ -26,6 +26,7 @@ import cl.eos.persistence.models.RangoEvaluacion;
 import cl.eos.persistence.models.TipoAlumno;
 import cl.eos.persistence.util.Comparadores;
 import cl.eos.provider.persistence.PersistenceServiceFactory;
+import informe.InformeManager;
 import informe.informes.IInforme;
 import utils.WordUtil;
 
@@ -69,15 +70,8 @@ public class InformeResumenPME implements IInforme {
     public void page(XWPFDocument document) {
 
         XWPFParagraph paragraph = document.createParagraph();
-        XWPFRun run = paragraph.createRun(); // create new run
-        paragraph.setStyle("Heading1");
-        run.setText("INFORME DE RESULTADOS A NIVEL DE ESTABLECIMIENTO (" + colegio.getName().toUpperCase() + ")");
+        XWPFRun run = paragraph.createRun();
         run.addCarriageReturn();
-        paragraph.setStyle("Heading2");
-        run.setText("Instrumento de Evaluación y Resultados Obtenidos en la asignatura de "
-                + asignatura.getName().toUpperCase() + ".");
-        paragraph.setStyle("Normal");
-        paragraph.setAlignment(ParagraphAlignment.CENTER);
         
         
         XWPFTable table = document.createTable(resultado.size() + 1, rangos.size() + 1);
@@ -103,6 +97,17 @@ public class InformeResumenPME implements IInforme {
                     tableRow.getCell(col++).setText(String.format("%d", 0));
             }
         }
+        paragraph = document.createParagraph();
+        paragraph.setStyle("Descripción");
+        run = paragraph.createRun();
+        paragraph.setAlignment(ParagraphAlignment.CENTER);
+        run.setText(String.format("Tabla Nº %d: INFORME PME %s en %s", InformeManager.TABLA++, colegio.getName(), asignatura.getName()));
+        run.addCarriageReturn();
+        paragraph = document.createParagraph();
+        paragraph.setStyle("Normal");
+        run = paragraph.createRun();
+        run.addCarriageReturn();
+        
     }
 
     protected Map<Curso, Map<RangoEvaluacion, OTRangoCurso>> procesar(List<Object> list) {

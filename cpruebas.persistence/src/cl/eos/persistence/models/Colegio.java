@@ -33,6 +33,8 @@ public class Colegio extends AEntity {
 	
 	private String name;
 	
+	private String ciudad;
+	
 	private String direccion;
 	
 	@ManyToOne
@@ -96,7 +98,21 @@ public class Colegio extends AEntity {
 		this.direccion = direccion;
 	}
 
-	@Override
+	/**
+     * @return the ciudad
+     */
+    public String getCiudad() {
+        return ciudad;
+    }
+
+    /**
+     * @param ciudad the ciudad to set
+     */
+    public void setCiudad(String ciudad) {
+        this.ciudad = ciudad;
+    }
+
+    @Override
 	public String toString() {
 		return name;
 	}

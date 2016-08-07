@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
+import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
@@ -25,6 +26,7 @@ import cl.eos.persistence.models.TipoAlumno;
 import cl.eos.persistence.util.Comparadores;
 import cl.eos.provider.persistence.PersistenceServiceFactory;
 import cl.eos.util.Pair;
+import informe.InformeManager;
 import informe.informes.IInforme;
 import utils.WordUtil;
 
@@ -36,6 +38,7 @@ import utils.WordUtil;
  */
 public class InformeResumenTotalGeneral implements IInforme {
 
+    private static final String ALUMNOS = "ALUMNOS";
     private static final String REPORBADOS = "Reprobados";
     private static final String APROBADOS = "Aprobados";
     private static final String EVALUADOS = "Evaluados";
@@ -71,52 +74,79 @@ public class InformeResumenTotalGeneral implements IInforme {
     public void page(XWPFDocument document) {
 
         XWPFParagraph paragraph = document.createParagraph();
+
+        paragraph.setStyle("PEREKE-TITULO");
         XWPFRun run = paragraph.createRun(); // create new run
-        paragraph.setStyle("Heading1");
         run.setText("INFORME DE RESULTADOS A NIVEL DE ESTABLECIMIENTO (" + colegio.getName().toUpperCase() + ")");
         run.addCarriageReturn();
-        paragraph.setStyle("Heading2");
+        run.setText(colegio.getName().toUpperCase());
+
+        paragraph = document.createParagraph();
+        paragraph.setStyle("PEREKE-SUBTITULO");
+        run = paragraph.createRun(); // create new run
         run.setText("Instrumento de Evaluación y Resultados Obtenidos en la asignatura de "
                 + asignatura.getName().toUpperCase() + ".");
+
+        paragraph = document.createParagraph();
         paragraph.setStyle("Normal");
         run = paragraph.createRun();
         run.addCarriageReturn();
-        
+
         int nroColumnas = resultado.size() + 1;
         XWPFTable table = document.createTable(5, nroColumnas);
-        WordUtil.setTableFormat(table, 2,0);
-        
-        
-        table.getRow(0).getCell(0).setText("TOTAL ESCUELA");
-        table.getRow(0).getCell(2).setText("ALUMNOS");
+        WordUtil.setTableFormat(table, 2, 0);
+
+        table.getRow(0).setRepeatHeader(true);
+        table.getRow(0).setCantSplitRow(false);
+        table.getRow(0).getCell(0).setText(TOTAL_ESCUELA);
+        table.getRow(0).getCell(2).setText(ALUMNOS);
         table.getRow(0).getCell(5).setText("ESTÁNDARES DE APRENDIZAJE");
-        table.getRow(2).getCell(0).setText("Alumnos");
+        table.getRow(2).getCell(0).setText(ALUMNOS);
         table.getRow(3).getCell(0).setText("%");
         table.getRow(4).getCell(3).setText("100%");
         table.getRow(4).getCell(5).setText("100%");
-        
+
         XWPFTableRow tableRow = table.getRow(1);
         int n = 1;
-        for (Map.Entry<String, Pair<Integer,Float>> entry : resultado.entrySet()) {
+        for (Map.Entry<String, Pair<Integer, Float>> entry : resultado.entrySet()) {
             tableRow.getCell(n++).setText(entry.getKey());
         }
-        
-        
+
         WordUtil.mergeCellHorizontally(table, 0, 0, 1);
         WordUtil.mergeCellHorizontally(table, 1, 0, 1);
         WordUtil.mergeCellVertically(table, 0, 0, 1);
         WordUtil.mergeCellHorizontally(table, 0, 2, 4);
-        WordUtil.mergeCellHorizontally(table, 0, 5, nroColumnas-1);
+        WordUtil.mergeCellHorizontally(table, 0, 5, nroColumnas - 1);
         WordUtil.mergeCellHorizontally(table, 4, 0, 2);
         WordUtil.mergeCellHorizontally(table, 4, 3, 4);
-        WordUtil.mergeCellHorizontally(table, 4, 5, nroColumnas-1);
+        WordUtil.mergeCellHorizontally(table, 4, 5, nroColumnas - 1);
 
         n = 1;
         for (Map.Entry<String, Pair<Integer, Float>> entry : resultado.entrySet()) {
             Pair<Integer, Float> res = entry.getValue();
             table.getRow(2).getCell(n).setText(String.format("%d", res.getFirst().intValue()));
             table.getRow(3).getCell(n++).setText(String.format("%d%%", res.getSecond().intValue()));
+
         }
+
+        paragraph = document.createParagraph();
+        paragraph.setStyle("Descripción");
+        run = paragraph.createRun();
+        paragraph.setAlignment(ParagraphAlignment.CENTER);
+        run.setText(String.format("Tabla Nº %d: TOTAL GENERAL %s en %s", InformeManager.TABLA++, colegio.getName(),
+                asignatura.getName()));
+        run.addCarriageReturn();
+
+        Pair<Integer, Float> pEvaluados = resultado.get(EVALUADOS);
+        Pair<Integer, Float> pAprobados = resultado.get(APROBADOS);
+        paragraph = document.createParagraph();
+        paragraph.setStyle("Normal");
+        run = paragraph.createRun();
+        String f = "De la matrícula total del estableceimiento %s, se evaluaron %d alumnos que corresponden al %5.2f del total del liceo. El nivel de aprobación es de %5.2f.";
+        String row = String.format(f, colegio.getName(), pEvaluados.getFirst(), pEvaluados.getSecond(),
+                pAprobados.getSecond());
+        run.setText(row);
+        run.addCarriageReturn();
     }
 
     /**
@@ -176,24 +206,21 @@ public class InformeResumenTotalGeneral implements IInforme {
             totalColEvaluados = totalColEvaluados + totalEvaluados;
             totalColAprobados = totalColAprobados + totalAprobados;
             totalColReprobados = totalColReprobados + totalReprobados;
-            
-
 
         }
-        float porEvaluados = 100f * ((float)totalColEvaluados) / ((float)totalColAlumnos);
-        float porAprobados = 100f * ((float)totalColAprobados) / ((float)totalColEvaluados);
-        float porReporbados = 100f * ((float)totalColReprobados) / ((float)totalColEvaluados);
-        
+        float porEvaluados = 100f * ((float) totalColEvaluados) / ((float) totalColAlumnos);
+        float porAprobados = 100f * ((float) totalColAprobados) / ((float) totalColEvaluados);
+        float porReporbados = 100f * ((float) totalColReprobados) / ((float) totalColEvaluados);
+
         mResumen.put(TOTAL_ESCUELA, new Pair<Integer, Float>(totalColAlumnos, 100f));
         mResumen.put(EVALUADOS, new Pair<Integer, Float>(totalColEvaluados, porEvaluados));
         mResumen.put(APROBADOS, new Pair<Integer, Float>(totalColAprobados, porAprobados));
-        mResumen.put(REPORBADOS, new Pair<Integer, Float>(totalColReprobados,porReporbados));
-        
-        
+        mResumen.put(REPORBADOS, new Pair<Integer, Float>(totalColReprobados, porReporbados));
+
         for (Object obj : evalEjeTematico) {
             EvaluacionEjeTematico eET = (EvaluacionEjeTematico) obj;
             Pair<Integer, Float> pair = mResumen.get(eET.getName());
-            pair.setSecond(100f * pair.getFirst().floatValue() / (float)totalColEvaluados);
+            pair.setSecond(100f * pair.getFirst().floatValue() / (float) totalColEvaluados);
         }
 
         return mResumen;
