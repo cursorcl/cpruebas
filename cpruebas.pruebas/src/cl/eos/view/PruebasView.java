@@ -470,7 +470,6 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
         controller.findAll(Colegio.class, informe);
         controller.findAll(Asignatura.class, informe);
         controller.findAll(TipoAlumno.class, informe);
-        controller.findAll(TipoPrueba.class, informe);
     }
     
     private void handlerHabilidadEvaluacionXAlumnoXNivel() {

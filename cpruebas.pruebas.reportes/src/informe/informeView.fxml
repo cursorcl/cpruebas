@@ -14,7 +14,6 @@
 	<center>
 				<AnchorPane fx:id="pnlEdition" prefHeight="371.0" prefWidth="279.0">
 					<children>
-            <ComboBox fx:id="cmbTipoPrueba" layoutX="14.0" layoutY="120.0" prefHeight="25.0" prefWidth="233.0" promptText="Tipo de Prueba" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
 						<ComboBox id="cmbColegios" fx:id="cmbColegio" layoutX="14.0" layoutY="182.0" prefHeight="25.0" prefWidth="233.0" promptText="Seleccione Establecimiento" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
             <ComboBox fx:id="cmbTipoAlumno" layoutX="14.0" layoutY="244.0" prefHeight="25.0" prefWidth="231.0" promptText="Seleccione Tipo Alumno" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
             <Button fx:id="btnCancelar" layoutX="14.0" layoutY="292.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="114.0" text="Cancelar" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="14.0" />
@@ -24,6 +23,7 @@
             <Label layoutX="14.0" layoutY="217.0" prefHeight="17.0" prefWidth="195.0" text="Tipo de Alumno" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
             <BigDecimalField fx:id="bdAnoEscolar" layoutX="14.0" layoutY="52.0" prefHeight="27.0" prefWidth="236.0" promptText="Año Escolar" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
             <Label layoutX="14.0" layoutY="29.0" text="Año escolar" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
+            <TextField fx:id="txtTipoPrueba" layoutX="14.0" layoutY="124.0" prefHeight="25.0" prefWidth="203.0" promptText="Tipo de prueba" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
 					</children>
 				</AnchorPane>
 	</center>

@@ -16,7 +16,6 @@ import cl.eos.imp.view.WindowManager;
 import cl.eos.persistence.models.Asignatura;
 import cl.eos.persistence.models.Colegio;
 import cl.eos.persistence.models.TipoAlumno;
-import cl.eos.persistence.models.TipoPrueba;
 import cl.eos.util.Utils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -27,6 +26,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
@@ -43,7 +43,7 @@ public class InformeView extends AFormView {
     @FXML
     private Button btnCancelar;
     @FXML
-    private ComboBox<TipoPrueba> cmbTipoPrueba;
+    private TextField txtTipoPrueba;
     @FXML
     private ComboBox<Colegio> cmbColegio;
     @FXML
@@ -98,7 +98,7 @@ public class InformeView extends AFormView {
                     @Override
                     protected Boolean call() throws Exception {
                         InformeManager manager = new InformeManager(colegio, selectedFile);
-                        manager.updateFields(cmbTipoPrueba.getValue(), bdAnoEscolar.getNumber().toString());
+                        manager.updateFields(txtTipoPrueba.getText(), bdAnoEscolar.getNumber().toString());
                         int nroAsignaturas = lstAsignaturas.size();
                         int n = 1;
                         for (Asignatura asignatura : lstAsignaturas) {
@@ -133,7 +133,7 @@ public class InformeView extends AFormView {
         bdAnoEscolar.setMinValue(BigDecimal.valueOf(2010));
         bdAnoEscolar.setMaxValue(BigDecimal.valueOf(2300));
         bdAnoEscolar.setStepwidth(BigDecimal.valueOf(1));
-        bdAnoEscolar.setStepwidth(BigDecimal.valueOf(LocalDate.now().getYear()));
+        bdAnoEscolar.setText(String.format("%d", LocalDate.now().getYear()));
     }
 
     @Override
@@ -157,13 +157,7 @@ public class InformeView extends AFormView {
                     lstTipoAlumno.add((TipoAlumno) lEntity);
                 }
                 cmbTipoAlumno.setItems(lstTipoAlumno);
-            } else if (entity instanceof TipoPrueba) {
-                ObservableList<TipoPrueba> lstTipoPrueba = FXCollections.observableArrayList();
-                for (Object lEntity : list) {
-                    lstTipoPrueba.add((TipoPrueba) lEntity);
-                }
-                cmbTipoPrueba.setItems(lstTipoPrueba);
-            }
+            } 
         }
     }
 

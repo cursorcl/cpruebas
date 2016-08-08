@@ -10,7 +10,6 @@ import java.util.List;
 
 import org.apache.poi.POIXMLProperties;
 import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
-import org.apache.poi.xwpf.usermodel.TextAlignment;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
@@ -19,18 +18,14 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTBody;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTDocument1;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTP;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTPPr;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTPageSz;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSectPr;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTextAlignment;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTVerticalJc;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.STTextAlignment;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STVerticalJc;
 
 import cl.eos.imp.view.UtilsAlert;
 import cl.eos.persistence.models.Asignatura;
 import cl.eos.persistence.models.Colegio;
 import cl.eos.persistence.models.TipoAlumno;
-import cl.eos.persistence.models.TipoPrueba;
 import informe.informes.IInforme;
 import informe.informes.imp.InformeEjeEvaluacion;
 import informe.informes.imp.InformeEjesXCurso;
@@ -53,7 +48,7 @@ import javafx.scene.control.Alert;
  */
 public class InformeManager {
 
-    static String FIELD_TIPOPRUEBA = "TipodePrueba";
+    static String FIELD_TIPOPRUEBA = "TipoPrueba";
     static String FIELD_ESTABLECIMIENTO = "Establecimiento";
     static String FIELD_CIUDAD = "Ciudad";
     static String FIELD_ANOESCOLAR = "AnoEscolar";
@@ -91,21 +86,20 @@ public class InformeManager {
 
     }
 
-    public void updateFields(TipoPrueba tipoPrueba, String anoEscolar) {
+    public void updateFields(String tipoPrueba, String anoEscolar) {
         POIXMLProperties props = doc.getProperties();
         POIXMLProperties.CustomProperties cp = props.getCustomProperties();
         if (cp != null) {
             List<CTProperty> ctProperties = cp.getUnderlyingProperties().getPropertyList();
             for (CTProperty ctp : ctProperties) {
-                if (ctp.getName().equals(FIELD_TIPOPRUEBA)) {
-                    ctp.setLpwstr(tipoPrueba.getName().toUpperCase().trim());
-                } else if (ctp.getName().equals(FIELD_ESTABLECIMIENTO)) {
+                if (ctp.getName().equalsIgnoreCase(FIELD_TIPOPRUEBA)) {
+                    ctp.setLpwstr(tipoPrueba.toUpperCase().trim());
+                } else if (ctp.getName().equalsIgnoreCase(FIELD_ESTABLECIMIENTO)) {
                     ctp.setLpwstr(colegio.getName().toUpperCase().trim());
-                } else if (ctp.getName().equals(FIELD_CIUDAD)) {
-
+                } else if (ctp.getName().equalsIgnoreCase(FIELD_CIUDAD)) {
                     String ciudad = colegio.getCiudad() == null ? "-----" : colegio.getCiudad();
                     ctp.setLpwstr(ciudad.toUpperCase().trim());
-                } else if (ctp.getName().equals(FIELD_ANOESCOLAR)) {
+                } else if (ctp.getName().equalsIgnoreCase(FIELD_ANOESCOLAR)) {
                     ctp.setLpwstr(anoEscolar.toUpperCase().trim());
                 }
 
@@ -158,7 +152,7 @@ public class InformeManager {
         run.addCarriageReturn();
         run.setText(colegio.getName().toUpperCase());
         run.addCarriageReturn();
-        //para.setPageBreak(true);
+        // para.setPageBreak(true);
 
         // Se asigna la nueva sección a los párrafos anteriores
         para = document.createParagraph();
@@ -171,14 +165,14 @@ public class InformeManager {
         paragraphProperties.setSectPr(section);
 
         // Se crea nueva sección como las primeras.
-//        para = document.createParagraph();
-//        ctp = para.getCTP();
-//        paragraphProperties = ctp.addNewPPr();
-//        section = body.addNewSectPr();
-//        textAlignment = CTVerticalJc.Factory.newInstance();
-//        textAlignment.setVal(STVerticalJc.TOP);
-//        section.setVAlign(textAlignment);
-//        paragraphProperties.setSectPr(section);
+        // para = document.createParagraph();
+        // ctp = para.getCTP();
+        // paragraphProperties = ctp.addNewPPr();
+        // section = body.addNewSectPr();
+        // textAlignment = CTVerticalJc.Factory.newInstance();
+        // textAlignment.setVal(STVerticalJc.TOP);
+        // section.setVAlign(textAlignment);
+        // paragraphProperties.setSectPr(section);
 
     }
 
