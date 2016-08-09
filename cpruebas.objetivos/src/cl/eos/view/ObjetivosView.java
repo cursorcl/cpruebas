@@ -5,6 +5,7 @@ import java.util.List;
 
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
+import cl.eos.persistence.models.Asignatura;
 import cl.eos.persistence.models.Objetivo;
 import cl.eos.persistence.models.TipoCurso;
 import cl.eos.util.ExcelSheetWriterObj;
@@ -16,19 +17,23 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SelectionMode;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.text.Text;
+import javafx.util.Callback;
 
 public class ObjetivosView extends AFormView implements EventHandler<ActionEvent> {
 
-    private static final int LARGO_CAMPO_TEXT = 100;
+    private static final int LARGO_CAMPO_TEXT = 1024;
     @FXML
     private MenuItem mnuAgregar;
 
@@ -62,6 +67,9 @@ public class ObjetivosView extends AFormView implements EventHandler<ActionEvent
     private ComboBox<TipoCurso> cmbTipoCurso;
 
     @FXML
+    private ComboBox<Asignatura> cmbAsignatura;
+    
+    @FXML
     private Label lblError;
 
     @FXML
@@ -75,6 +83,8 @@ public class ObjetivosView extends AFormView implements EventHandler<ActionEvent
     private TableColumn<Objetivo, String> colDescripcion;
     @FXML
     private TableColumn<Objetivo, TipoCurso> colTipoCurso;
+    @FXML
+    private TableColumn<Objetivo, Asignatura> colAsignatura;
 
     public ObjetivosView() {
         setTitle("Objetivos");
@@ -98,6 +108,9 @@ public class ObjetivosView extends AFormView implements EventHandler<ActionEvent
         mnuEliminar.setDisable(true);
         menuEliminar.setDisable(true);
         menuModificar.setDisable(true);
+        
+        txtDescripcion.wrapTextProperty().set(true);
+        
 
     }
 
@@ -117,6 +130,7 @@ public class ObjetivosView extends AFormView implements EventHandler<ActionEvent
             objetivo.setName(txtNombre.getText());
             objetivo.setDescripcion(txtDescripcion.getText());
             objetivo.setTipoCurso(cmbTipoCurso.getValue());
+            objetivo.setAsignatura(cmbAsignatura.getValue());
             save(objetivo);
             limpiarControles();
         } else {
@@ -131,6 +145,7 @@ public class ObjetivosView extends AFormView implements EventHandler<ActionEvent
             txtNombre.setText(objetivo.getName());
             txtDescripcion.setText(objetivo.getDescripcion());
             cmbTipoCurso.getSelectionModel().select(objetivo.getTipoCurso());
+            cmbAsignatura.getSelectionModel().select(objetivo.getAsignatura());
             select(objetivo);
         }
     }
@@ -154,6 +169,8 @@ public class ObjetivosView extends AFormView implements EventHandler<ActionEvent
 
                     menuModificar.setDisable(false);
                     menuEliminar.setDisable(false);
+                    
+                    accionModificar();
                 }
             }
         });
@@ -164,6 +181,7 @@ public class ObjetivosView extends AFormView implements EventHandler<ActionEvent
         removeAllStyle(txtNombre);
         removeAllStyle(txtDescripcion);
         removeAllStyle(cmbTipoCurso);
+        removeAllStyle(cmbAsignatura);
     }
 
     @Override
@@ -180,6 +198,8 @@ public class ObjetivosView extends AFormView implements EventHandler<ActionEvent
     private void limpiarControles() {
         txtNombre.clear();
         txtDescripcion.clear();
+        cmbAsignatura.getSelectionModel().clearSelection();
+        cmbTipoCurso.getSelectionModel().clearSelection();
         select(null);
     }
 
@@ -189,6 +209,25 @@ public class ObjetivosView extends AFormView implements EventHandler<ActionEvent
         colNombre.setCellValueFactory(new PropertyValueFactory<Objetivo, String>("name"));
         colDescripcion.setCellValueFactory(new PropertyValueFactory<Objetivo, String>("descripcion"));
         colTipoCurso.setCellValueFactory(new PropertyValueFactory<Objetivo, TipoCurso>("tipoCurso"));
+        colAsignatura.setCellValueFactory(new PropertyValueFactory<Objetivo, Asignatura>("asignatura"));
+        
+        colDescripcion.setCellFactory(new Callback<TableColumn<Objetivo, String>, TableCell<Objetivo, String>>() {
+
+            @Override
+            public TableCell<Objetivo, String> call(TableColumn<Objetivo, String> param) {
+                TableCell<Objetivo, String> cell = new TableCell<>();
+                Text text = new Text();
+                cell.setGraphic(text);
+                cell.setPrefHeight(Control.USE_COMPUTED_SIZE);
+//                text.wrappingWidthProperty().bind(cell.widthProperty());
+                text.wrappingWidthProperty().bind(colDescripcion.widthProperty());
+                text.textProperty().bind(cell.itemProperty());
+                
+                return cell ;
+            }
+
+        });
+        
     }
 
     private void accionEliminar() {
@@ -229,6 +268,12 @@ public class ObjetivosView extends AFormView implements EventHandler<ActionEvent
                     value.add((TipoCurso) iEntity);
                 }
                 cmbTipoCurso.setItems(value);
+            }else if (entity instanceof Asignatura) {
+                ObservableList<Asignatura> value = FXCollections.observableArrayList();
+                for (Object iEntity : list) {
+                    value.add((Asignatura) iEntity);
+                }
+                cmbAsignatura.setItems(value);
             }
         }
     }
@@ -284,7 +329,11 @@ public class ObjetivosView extends AFormView implements EventHandler<ActionEvent
             cmbTipoCurso.getStyleClass().add("bad");
             valida = false;
         }
-        
+        if(cmbAsignatura.getValue() == null)
+        {
+            cmbAsignatura.getStyleClass().add("bad");
+            valida = false;
+        }
         return valida;
     }
 }

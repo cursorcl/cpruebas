@@ -7,7 +7,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="1051.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.ObjetivosView">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="1187.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.ObjetivosView">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
@@ -47,13 +47,15 @@
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
-                  <Label fx:id="lblError" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="10.0" />
-                  <Label text="Objetivo" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="30.0" />
-                  <TextField id="txtNombre" fx:id="txtNombre" prefHeight="25.0" prefWidth="301.0" promptText="Nombre Eje" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="50.0" />
-                  <Label layoutX="14.0" layoutY="89.0" text="Descripción" />
-                  <ComboBox fx:id="cmbTipoCurso" layoutX="10.0" layoutY="337.0" prefHeight="25.0" prefWidth="239.0" promptText="Curso Asociado" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="15.0" />
-                  <Label fx:id="cmbCurso" layoutX="14.0" layoutY="320.0" text="Curso Asociado" />
-                  <TextArea fx:id="txtDescripcion" layoutX="10.0" layoutY="106.0" prefHeight="200.0" prefWidth="200.0" promptText="Descripción" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="15.0" />
+                  <Label fx:id="lblError" focusTraversable="false" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="10.0" />
+                  <ComboBox fx:id="cmbTipoCurso" layoutX="13.0" layoutY="44.0" prefHeight="25.0" prefWidth="239.0" promptText="Curso" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="12.0" />
+                  <ComboBox fx:id="cmbAsignatura" layoutX="13.0" layoutY="95.0" prefHeight="25.0" prefWidth="244.0" promptText="Asignatura" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="12.0" />
+                  <Label focusTraversable="false" layoutX="13.0" layoutY="130.0" text="Objetivo" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="12.0" />
+                  <TextField id="txtNombre" fx:id="txtNombre" focusTraversable="false" layoutX="13.0" layoutY="147.0" prefHeight="25.0" prefWidth="301.0" promptText="Nombre Objetivo" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="12.0" />
+                  <Label focusTraversable="false" layoutX="17.0" layoutY="195.0" text="Descripción" />
+                  <Label fx:id="cmbCurso" focusTraversable="false" layoutX="14.0" layoutY="27.0" text="Curso Asociado" />
+                  <TextArea fx:id="txtDescripcion" layoutX="13.0" layoutY="212.0" prefHeight="249.0" prefWidth="244.0" promptText="Descripción" AnchorPane.bottomAnchor="12.0" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="12.0" />
+                  <Label focusTraversable="false" layoutX="14.0" layoutY="78.0" text="Asginatura Asociada" />
                </children>
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
@@ -64,10 +66,11 @@
                            <children>
                               <TableView id="tblEjesTematicos" fx:id="tblObjetivos" prefHeight="469.0" prefWidth="524.0" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="2.0">
                                 <columns>
-                                    <TableColumn fx:id="colId" prefWidth="70.0" text="ID" />
-                                  <TableColumn fx:id="colNombre" prefWidth="219.0" text="Nombre" />
-                                    <TableColumn fx:id="colDescripcion" prefWidth="331.0" text="Descripción" />
-                                    <TableColumn fx:id="colTipoCurso" prefWidth="144.0" text="Curso" />
+                                    <TableColumn fx:id="colId" prefWidth="50.0" text="ID" />
+                                  <TableColumn fx:id="colNombre" prefWidth="155.0" text="Nombre" />
+                                    <TableColumn fx:id="colTipoCurso" prefWidth="136.0" text="Curso" />
+                                    <TableColumn fx:id="colAsignatura" prefWidth="158.0" text="Asignatura" />
+                                    <TableColumn fx:id="colDescripcion" prefWidth="340.0" text="Descripción" />
                                 </columns>
                                  <contextMenu>
                                     <ContextMenu>

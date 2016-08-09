@@ -39,7 +39,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import jfxtras.labs.scene.control.BreadcrumbBar;
-import sun.applet.Main;
 
 public class MainController {
 
