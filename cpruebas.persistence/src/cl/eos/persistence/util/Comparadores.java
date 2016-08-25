@@ -31,7 +31,7 @@ public class Comparadores {
             }
         };
     }
-    
+
     public static Comparator<? super RangoEvaluacion> rangoEvaluacionComparator() {
         return new Comparator<RangoEvaluacion>() {
             @Override
@@ -93,6 +93,25 @@ public class Comparadores {
         };
     }
 
+    public static Comparator<? super Curso> odenarCurso() {
+        return new Comparator<Curso>() {
+            @Override
+            public int compare(final Curso cursoSource, final Curso cursoTarget) {
+
+                String source = "";
+                String target = "";
+                if (cursoSource.getName() != null) {
+                    source = cursoSource.getName().toUpperCase();
+                }
+                if (cursoTarget.getName() != null) {
+                    target = cursoTarget.getName().toUpperCase();
+                }
+                int result = cursoSource.getTipoCurso().getId().compareTo(cursoTarget.getTipoCurso().getId());
+                return result == 0 ? source.compareTo(target) : result;
+            }
+        };
+    }
+
     public static Comparator<? super TipoCurso> comparaTipoCurso() {
         return new Comparator<TipoCurso>() {
             @Override
@@ -119,7 +138,7 @@ public class Comparadores {
             }
         };
     }
-    
+
     public static Comparator<? super EvaluacionPrueba> comparaEvaluacionPruebaXCurso() {
         return new Comparator<EvaluacionPrueba>() {
             @Override

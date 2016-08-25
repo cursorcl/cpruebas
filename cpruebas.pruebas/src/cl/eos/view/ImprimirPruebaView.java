@@ -164,7 +164,7 @@ public class ImprimirPruebaView extends AFormView {
 		mnuQuitarPopup.setOnAction(eventHandler);
 
 		colegioCol.setCellValueFactory(new PropertyValueFactory<OTImprimirPrueba, String>("colegio"));
-		cursoCol.setCellValueFactory(new PropertyValueFactory<OTImprimirPrueba, String>("curso"));
+		cursoCol.setCellValueFactory(new PropertyValueFactory<OTImprimirPrueba, String>("colegio"));
 		profesorCol.setCellValueFactory(new PropertyValueFactory<OTImprimirPrueba, String>("profesor"));
 		fechaCol.setCellValueFactory(new PropertyValueFactory<OTImprimirPrueba, String>("fechaLocal"));
 		nroAlumnosCol.setCellValueFactory(new PropertyValueFactory<OTImprimirPrueba, Integer>("nroAlumnos"));

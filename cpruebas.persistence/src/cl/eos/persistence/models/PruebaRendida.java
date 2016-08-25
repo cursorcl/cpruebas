@@ -27,12 +27,19 @@ import cl.eos.util.Utils;
  *
  */
 @Entity(name = "pruebarendida")
-@Cache(
-        type=CacheType.NONE,
-        size=64000,  // Use 64,000 as the initial cache size.
-        expiry=360000,  // 6 minutes
-        coordinationType=CacheCoordinationType.INVALIDATE_CHANGED_OBJECTS  // if cache coordination is used, only send invalidation messages.
-      )
+@Cache(type = CacheType.NONE, size = 64000, // Use 64,000 as the initial cache
+                                            // size.
+        expiry = 360000, // 6 minutes
+        coordinationType = CacheCoordinationType.INVALIDATE_CHANGED_OBJECTS // if
+                                                                            // cache
+                                                                            // coordination
+                                                                            // is
+                                                                            // used,
+                                                                            // only
+                                                                            // send
+                                                                            // invalidation
+                                                                            // messages.
+)
 @NamedQueries({ @NamedQuery(name = "PruebaRendida.findAll", query = "SELECT e FROM pruebarendida e") })
 public class PruebaRendida extends AEntity {
 
@@ -187,15 +194,18 @@ public class PruebaRendida extends AEntity {
     }
 
     public String getCurso() {
-        // if(alumno == null || alumno.getCurso() == null)
-        // {
-        // System.out.println("Alumno sin curso=" + alumno);
-        // return "";
-        // }
-        //
         return alumno.getCurso().getName();
     }
 
+    public Curso getObjCurso() {
+        return alumno.getCurso();
+    }
+
+    public Colegio getColegio() {
+        return alumno.getCurso().getColegio();
+    }
+
+    
     public Float getPbuenas() {
         Float totalRespuestas = (float) (this.malas + this.buenas + this.omitidas);
         float valor = ((float) this.buenas) / totalRespuestas * 100f;

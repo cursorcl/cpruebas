@@ -27,7 +27,7 @@ public class TareaProcesaEvaluacionScanner extends
 		Task<ObservableList<PruebaRendida>> {
 
 	/**
-	 * El curso al que se le esta procesando la prueba.
+	 * El colegio al que se le esta procesando la prueba.
 	 */
 	private Curso curso;
 	private Prueba prueba;

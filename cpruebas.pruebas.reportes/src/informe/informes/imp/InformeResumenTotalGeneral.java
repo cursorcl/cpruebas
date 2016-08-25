@@ -33,7 +33,7 @@ import utils.WordUtil;
 /**
  * Esta clase genera los valores para el resumen.
  * 
- * @author curso
+ * @author colegio
  *
  */
 public class InformeResumenTotalGeneral implements IInforme {
@@ -66,9 +66,11 @@ public class InformeResumenTotalGeneral implements IInforme {
         Map<String, Object> params = new HashMap<>();
         params.put(COLEGIO_ID, colegio.getId());
         params.put(ASIGNATURA_ID, asignatura.getId());
-        evalEjeTematico = PersistenceServiceFactory.getPersistenceService().findAllSynchro(EvaluacionEjeTematico.class);
         List<EvaluacionPrueba> evaluaciones =  (List<EvaluacionPrueba>) (Object)PersistenceServiceFactory.getPersistenceService()
                 .findSynchro("EvaluacionPrueba.findEvaluacionByColegioAsig", params);
+        if(evaluaciones == null || evaluaciones.isEmpty())
+            return;
+        evalEjeTematico = PersistenceServiceFactory.getPersistenceService().findAllSynchro(EvaluacionEjeTematico.class);
         resultado = procesar(evaluaciones);
     }
 
@@ -143,7 +145,7 @@ public class InformeResumenTotalGeneral implements IInforme {
         paragraph = document.createParagraph();
         paragraph.setStyle("Normal");
         run = paragraph.createRun();
-        String f = "De la matrícula total del establecimiento %s, se evaluaron %d alumnos que corresponden al %5.2f del total del liceo. El nivel de aprobación es de %5.2f.";
+        String f = "De la matrícula total del establecimiento %s, se evaluaron %d items que corresponden al %5.2f del total del liceo. El nivel de aprobación es de %5.2f.";
         String row = String.format(f, colegio.getName(), pEvaluados.getFirst(), pEvaluados.getSecond(),
                 pAprobados.getSecond());
         run.setText(row);

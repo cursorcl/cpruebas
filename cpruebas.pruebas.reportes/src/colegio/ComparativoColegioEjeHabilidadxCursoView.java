@@ -494,7 +494,7 @@ public class ComparativoColegioEjeHabilidadxCursoView extends AFormView implemen
 	private Pair<Map<IEntity, List<OTCursoRangos>>, Pair<List<EjeTematico>, List<Habilidad>>> generarReporte() {
 
 		
-		// Una iteracion por cada curso asociado al colegio con una evaluacion
+		// Una iteracion por cada colegio asociado al colegio con una evaluacion
 		int nroCursos = listaEvaluacionesPrueba.size();
 
 		List<EjeTematico> listaEjesTematicos = makeListEjesTematicos();
@@ -509,17 +509,17 @@ public class ComparativoColegioEjeHabilidadxCursoView extends AFormView implemen
 
 			List<OTUnCursoUnEjeHabilidad> listaOTUnCurso = evaluarUnCurso(respEsperadas, evaluacion);
 
-			// Aqui cuento la cantida de alumnos en los rangos
+			// Aqui cuento la cantida de items en los rangos
 			for (OTUnCursoUnEjeHabilidad ot : listaOTUnCurso) {
-				// Calcula cantidad de alumnos en los rangos para un eje y un
-				// curso
+				// Calcula cantidad de items en los rangos para un eje y un
+				// colegio
 				int[] alumXRango = ot.calculateAlumnosXRango(rangosEvaluacionPorcentaje);
 				OTCursoRangos cursoRango = new OTCursoRangos(evaluacion.getCurso(), alumXRango);
 				List<OTCursoRangos> listCursos = reporte.get(ot.getEjeHabilidad());
 				listCursos.set(nroCurso, cursoRango); // Establesco el la
-														// cantidad de alumnos
+														// cantidad de items
 														// en un porcentaje para
-														// el curso
+														// el colegio
 			}
 
 			nroCurso++;

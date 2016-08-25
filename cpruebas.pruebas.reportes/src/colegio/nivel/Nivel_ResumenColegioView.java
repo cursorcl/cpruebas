@@ -295,7 +295,7 @@ public class Nivel_ResumenColegioView extends AFormView implements EventHandler<
 			int totalReprobados = 0;
 
 			List<PruebaRendida> rendidas = evaluacion.getPruebasRendidas();
-			// Estamos procesando un curso/una prueba
+			// Estamos procesando un colegio/una prueba
 			for (PruebaRendida pruebaRendida : rendidas) {
 				Alumno alumno = pruebaRendida.getAlumno();
 				if (tipoAlumno != Constants.PIE_ALL && tipoAlumno != alumno.getTipoAlumno().getId()) {

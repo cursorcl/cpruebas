@@ -254,7 +254,7 @@ public class Nivel_ComparativoColegioHabilidadesView extends AFormView implement
      * Aqui se llenan las tablas con los valores correspondientes.<br>
      * 1) Se obtienen los ejes tematicos de todas las pruebas.<br>
      * 2) Se obtienen las habilidades de todas las pruebas.<br>
-     * 3) Se obtienen los porcentajes de aprobacion de cada curso con respecto a
+     * 3) Se obtienen los porcentajes de aprobacion de cada colegio con respecto a
      * cada habilidad y habilidad.
      */
     private void generarReporte() {
@@ -270,12 +270,12 @@ public class Nivel_ComparativoColegioHabilidadesView extends AFormView implement
         long tipoAlumno = cmbTipoAlumno.getSelectionModel().getSelectedItem().getId();
         // Todas las evaluaciones asociadas (Todos los cursos)
         for (EvaluacionPrueba eval : evaluacionesPrueba) {
-            // Se esta revisando un curso.
+            // Se esta revisando un colegio.
             eval.getPruebasRendidas().size();
             List<PruebaRendida> pruebasRendidas = eval.getPruebasRendidas();
             eval.getPrueba().getRespuestas().size();
             List<RespuestasEsperadasPrueba> respEsperadas = eval.getPrueba().getRespuestas();
-            // Estamos procesando un curso/una prueba
+            // Estamos procesando un colegio/una prueba
             for (PruebaRendida pruebaRendida : pruebasRendidas) {
                 // Se procesa un alumno.
 
@@ -352,12 +352,12 @@ public class Nivel_ComparativoColegioHabilidadesView extends AFormView implement
 
     /**
      * Se genera la tabal que contiene los % de logro por cada habilidad y por
-     * cada habilidad asociado a cada curso.
+     * cada habilidad asociado a cada colegio.
      * 
      * @param mapEjes
-     *            Mapa que contiene los valores para cada curso de los ejes.
+     *            Mapa que contiene los valores para cada colegio de los ejes.
      * @param mapHabilidades
-     *            Mapa que contiene los valores para cada curso de las
+     *            Mapa que contiene los valores para cada colegio de las
      *            habilidades.
      */
     @SuppressWarnings("unchecked")

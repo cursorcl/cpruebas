@@ -654,7 +654,7 @@ public class EvaluarPruebaView extends AFormView {
 
             Alumno alumno = obtenerAlumno(rut, curso);
             if (alumno == null) {
-                throw new CPruebasException(String.format("El rut: %s no pertenece al curso", rut));
+                throw new CPruebasException(String.format("El rut: %s no pertenece al colegio", rut));
             } else {
                 StringBuilder strResps = new StringBuilder(resultado.getRespuestas());
 

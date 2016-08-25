@@ -9,7 +9,7 @@ import javafx.beans.value.ObservableValue;
 /**
  * Clase que permite registrar la definición de un registro de una prueba.
  * 
- * @author curso
+ * @author colegio
  */
 public class RegistroAnularPreguntas {
 

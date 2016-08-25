@@ -36,7 +36,7 @@ import utils.WordUtil;
 /**
  * Esta clase genera los valores para el resumen.
  * 
- * @author curso
+ * @author colegio
  *
  */
 public class InformeHabilidades implements IInforme {
@@ -75,7 +75,8 @@ public class InformeHabilidades implements IInforme {
         params.put(ASIGNATURA_ID, asignatura.getId());
         List<EvaluacionPrueba> evaluaciones = (List<EvaluacionPrueba>) (Object) PersistenceServiceFactory.getPersistenceService()
                 .findSynchro("EvaluacionPrueba.findEvaluacionByColegioAsig", params);
-
+        if(evaluaciones == null || evaluaciones.isEmpty())
+            return;
         params.clear();
         params.put("colegioId", colegio.getId());
         lstCursos = (List<Curso>) (Object) PersistenceServiceFactory.getPersistenceService()

@@ -43,7 +43,7 @@ import javafx.scene.control.Alert;
  * Cada informe debe tener indicado el número de sección al que pertenece con el
  * fin de poder ordenarlos.
  * 
- * @author curso
+ * @author colegio
  *
  */
 public class InformeManager {

@@ -495,10 +495,10 @@ public class Nivel_ComparativoColegioEjeHabilidadxCursoView extends AFormView im
 
             List<OTUnCursoUnEjeHabilidad> listaOTUnCurso = evaluarUnCurso(respEsperadas, evaluacion);
 
-            // Aqui cuento la cantida de alumnos en los rangos
+            // Aqui cuento la cantida de items en los rangos
             for (OTUnCursoUnEjeHabilidad ot : listaOTUnCurso) {
-                // Calcula cantidad de alumnos en los rangos para un eje y un
-                // curso
+                // Calcula cantidad de items en los rangos para un eje y un
+                // colegio
                 int[] alumXRango = ot.calculateAlumnosXRango(rangosEvaluacionPorcentaje);
                 OTTipoCursoRangos cursoRango = new OTTipoCursoRangos(evaluacion.getCurso().getTipoCurso(), alumXRango);
                 List<OTTipoCursoRangos> listCursos = reporte.get(ot.getEjeHabilidad());

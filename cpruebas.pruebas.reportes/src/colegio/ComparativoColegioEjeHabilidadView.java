@@ -270,7 +270,7 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements Eve
 	 * Aqui se llenan las tablas con los valores correspondientes.<br>
 	 * 1) Se obtienen los ejes tematicos de todas las pruebas.<br>
 	 * 2) Se obtienen las habilidades de todas las pruebas.<br>
-	 * 3) Se obtienen los porcentajes de aprobacion de de cada curso con
+	 * 3) Se obtienen los porcentajes de aprobacion de de cada colegio con
 	 * respecto a cada eje y habilidad.
 	 */
 	private void generarReporte() {
@@ -305,12 +305,12 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements Eve
 		// Todas las evaluaciones asociadas (Todos los cursos)
 		for (EvaluacionPrueba eval : evaluacionesPrueba) {
 
-			// Se esta revisando un curso.
+			// Se esta revisando un colegio.
 			eval.getPruebasRendidas().size();
 			List<PruebaRendida> pruebasRendidas = eval.getPruebasRendidas();
 			eval.getPrueba().getRespuestas().size();
 			List<RespuestasEsperadasPrueba> respEsperadas = eval.getPrueba().getRespuestas();
-			// Estamos procesando un curso/una prueba
+			// Estamos procesando un colegio/una prueba
 
 			// Obtengo el index de la columna que tengo que llenar (mas 1
 			// por que la primera es de
@@ -322,11 +322,11 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements Eve
 			}
 			totalAlumnos[index] = 0;
 
-			// Obtengo los alumnos a considerar en el caso que hayan alumnos
+			// Obtengo los items a considerar en el caso que hayan items
 			// PIE.
 			for (Alumno alumno : eval.getCurso().getAlumnos()) {
 				if (tipoAlumno == Constants.PIE_ALL || alumno.getTipoAlumno().getId().equals(tipoAlumno)) {
-					// le quito 1 al total de alumnos, ya que este alumno no es
+					// le quito 1 al total de items, ya que este alumno no es
 					// del grupo que sequiere representar en el reporte.
 					totalAlumnos[index] = totalAlumnos[index] + 1;
 				}
@@ -463,12 +463,12 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements Eve
 
 	/**
 	 * Se genera la tabal que contiene los % de logro por cada eje y por cada
-	 * habilidad asociado a cada curso.
+	 * habilidad asociado a cada colegio.
 	 * 
 	 * @param mapEjes
-	 *            Mapa que contiene los valores para cada curso de los ejes.
+	 *            Mapa que contiene los valores para cada colegio de los ejes.
 	 * @param mapHabilidades
-	 *            Mapa que contiene los valores para cada curso de las
+	 *            Mapa que contiene los valores para cada colegio de las
 	 *            habilidades.
 	 */
 	private void generarTablaEjesHabilidades(Map<EjeTematico, List<OTPreguntasEjes>> mapEjes,

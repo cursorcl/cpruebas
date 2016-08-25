@@ -5,14 +5,14 @@ import java.util.List;
 import java.util.Optional;
 
 import cl.eos.imp.view.AFormView;
+import cl.eos.persistence.models.Asignatura;
+import cl.eos.persistence.models.Colegio;
 import cl.eos.persistence.models.Curso;
 import cl.eos.persistence.models.EvaluacionPrueba;
-import cl.eos.persistence.models.PruebaRendida;
 import cl.eos.persistence.models.RangoEvaluacion;
 import cl.eos.persistence.models.TipoAlumno;
 import cl.eos.persistence.models.TipoPrueba;
 import cl.eos.util.ExcelSheetWriterObj;
-import cl.eos.view.ots.OTPruebaRendida;
 import curso.PorObjetivosView;
 import curso.ResumenAlumnoView;
 import curso.ResumenEjesTematicosView;
@@ -27,8 +27,8 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
@@ -215,10 +215,13 @@ public class EvaluacionPruebaView extends AFormView implements EventHandler<Acti
     private void handlerResumenPorObjetivos() {
         evaluacionPrueba = tblListadoPruebas.getSelectionModel().getSelectedItem();
         if (evaluacionPrueba != null) {
+            
             PorObjetivosView porObjetivosView = (PorObjetivosView) show(
                     "/curso/fxml/PorObjetivos.fxml");
             controller.findById(EvaluacionPrueba.class, evaluacionPrueba.getId(), porObjetivosView);
+            controller.findAll(Colegio.class, porObjetivosView);
             controller.findAll(TipoAlumno.class, porObjetivosView);
+            controller.findAll(Asignatura.class, porObjetivosView);
         } else {
             Alert alert = new Alert(AlertType.INFORMATION);
             alert.setTitle("Selección registro");

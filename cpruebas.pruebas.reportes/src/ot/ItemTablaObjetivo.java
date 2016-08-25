@@ -1,20 +1,30 @@
 package ot;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import cl.eos.persistence.models.Objetivo;
 
 /**
- * Clase que da soporte al reporte por objetivos de un solo curso.
+ * Representa un registro del reporte final.
  * 
- * @author curso
+ * Por cada objetivo, se tiene las preguntas, ejes y habilidades asociados.
+ * 
+ * Contiene columnas (cursos, colegios, etc.) de acuerdo a lo que corresponde al
+ * reporte.
+ * 
+ * @author colegio
  */
-public class OTPorObjetivosCurso {
-    
+public class ItemTablaObjetivo {
+
     private Objetivo objetivo;
     private String preguntas = "";
-    private String ejesAsociados ="";
-    private String habilidadesAsociadas ="";
-    private Float porcentajes = 0f;
-    private int nroPreguntas = 0;
+    private String ejesAsociados = "";
+    private String habilidades = "";
+    /**
+     * Contiene los valores de todos los cursos.
+     */
+    List<ItemObjetivo> items = new ArrayList<>();
 
     public Objetivo getObjetivo() {
         return objetivo;
@@ -40,29 +50,20 @@ public class OTPorObjetivosCurso {
         this.ejesAsociados = ejesAsociados;
     }
 
-    public String getHabilidadesAsociadas() {
-        return habilidadesAsociadas;
+    public String getHabilidades() {
+        return habilidades;
     }
 
-    public void setHabilidadesAsociadas(String habilidadesAsociadas) {
-        this.habilidadesAsociadas = habilidadesAsociadas;
+    public void setHabilidades(String habilidades) {
+        this.habilidades = habilidades;
     }
 
-    public Float getPorcentajes() {
-        return porcentajes;
+    public List<ItemObjetivo> getItems() {
+        return items;
     }
 
-    public void setPorcentajes(Float porcentajes) {
-        this.porcentajes = porcentajes;
-    }
-    
-
-    public int getNroPreguntas() {
-        return nroPreguntas;
-    }
-
-    public void setNroPreguntas(int nroPreguntas) {
-        this.nroPreguntas = nroPreguntas;
+    public void setItems(List<ItemObjetivo> items) {
+        this.items = items;
     }
 
     @Override
@@ -81,7 +82,7 @@ public class OTPorObjetivosCurso {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        OTPorObjetivosCurso other = (OTPorObjetivosCurso) obj;
+        ItemTablaObjetivo other = (ItemTablaObjetivo) obj;
         if (objetivo == null) {
             if (other.objetivo != null)
                 return false;
@@ -94,10 +95,9 @@ public class OTPorObjetivosCurso {
         private Objetivo objetivo;
         private String preguntas = "";
         private String ejesAsociados = "";
-        private String habilidadesAsociadas = "";
-        private Float porcentajes = 0f;
-        private int nroPreguntas = 0;
-        
+        private String habilidades = "";
+        private List<ItemObjetivo> items = new ArrayList<>();
+
         public Builder objetivo(Objetivo objetivo) {
             this.objetivo = objetivo;
             return this;
@@ -113,31 +113,26 @@ public class OTPorObjetivosCurso {
             return this;
         }
 
-        public Builder habilidadesAsociadas(String habilidadesAsociadas) {
-            this.habilidadesAsociadas = habilidadesAsociadas;
+        public Builder habilidades(String habilidades) {
+            this.habilidades = habilidades;
             return this;
         }
 
-        public Builder porcentajes(Float porcentajes) {
-            this.porcentajes = porcentajes;
+        public Builder items(List<ItemObjetivo> items) {
+            this.items = items;
             return this;
         }
 
-        public Builder nroPreguntas(int nroPreguntas)
-        {
-            this.nroPreguntas = nroPreguntas;
-            return this;
+        public ItemTablaObjetivo build() {
+            return new ItemTablaObjetivo(this);
         }
-        
-        public OTPorObjetivosCurso build() {
-            OTPorObjetivosCurso oTPorObjetivosCurso = new OTPorObjetivosCurso();
-            oTPorObjetivosCurso.objetivo = objetivo;
-            oTPorObjetivosCurso.preguntas = preguntas;
-            oTPorObjetivosCurso.ejesAsociados = ejesAsociados;
-            oTPorObjetivosCurso.habilidadesAsociadas = habilidadesAsociadas;
-            oTPorObjetivosCurso.porcentajes = porcentajes;
-            oTPorObjetivosCurso.nroPreguntas = nroPreguntas;
-            return oTPorObjetivosCurso;
-        }
+    }
+
+    private ItemTablaObjetivo(Builder builder) {
+        this.objetivo = builder.objetivo;
+        this.preguntas = builder.preguntas;
+        this.ejesAsociados = builder.ejesAsociados;
+        this.habilidades = builder.habilidades;
+        this.items = builder.items;
     }
 }

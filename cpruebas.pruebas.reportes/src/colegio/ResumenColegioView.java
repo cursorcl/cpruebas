@@ -185,7 +185,7 @@ public class ResumenColegioView extends AFormView implements EventHandler<Action
 
 	private void inicializarTablaCursos() {
 		tblCursos.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-		colCurso.setCellValueFactory(new PropertyValueFactory<OTResumenColegio, String>("curso"));
+		colCurso.setCellValueFactory(new PropertyValueFactory<OTResumenColegio, String>("colegio"));
 		colTotal.setCellValueFactory(new PropertyValueFactory<OTResumenColegio, Integer>("totalAlumnos"));
 		colEvaluados.setCellValueFactory(new PropertyValueFactory<OTResumenColegio, Integer>("totalEvaluados"));
 		colAprobados.setCellValueFactory(new PropertyValueFactory<OTResumenColegio, Integer>("totalAprobados"));
@@ -286,7 +286,7 @@ public class ResumenColegioView extends AFormView implements EventHandler<Action
 			int totalReprobados = 0;
 
 			List<PruebaRendida> rendidas = evaluacion.getPruebasRendidas();
-			// Estamos procesando un curso/una prueba
+			// Estamos procesando un colegio/una prueba
 			for (PruebaRendida pruebaRendida : rendidas) {
 				Alumno alumno = pruebaRendida.getAlumno();
 				if(alumno == null  || alumno.getTipoAlumno() == null)

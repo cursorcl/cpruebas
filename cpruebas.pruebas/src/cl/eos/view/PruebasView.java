@@ -200,7 +200,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
         asignaturaCol.setCellValueFactory(new PropertyValueFactory<OTPrueba, String>("asignatura"));
         profesorCol.setCellValueFactory(new PropertyValueFactory<OTPrueba, String>("profesor"));
 
-        cursoCol.setCellValueFactory(new PropertyValueFactory<OTPrueba, String>("curso"));
+        cursoCol.setCellValueFactory(new PropertyValueFactory<OTPrueba, String>("colegio"));
         nroPreguntasCol.setCellValueFactory(new PropertyValueFactory<OTPrueba, Integer>("nroPreguntas"));
 
         estadoCol.setCellValueFactory(new PropertyValueFactory<OTPrueba, Estado>("estado"));

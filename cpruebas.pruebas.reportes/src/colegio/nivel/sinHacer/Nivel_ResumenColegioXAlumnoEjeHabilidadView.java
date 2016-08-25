@@ -185,7 +185,7 @@ public class Nivel_ResumenColegioXAlumnoEjeHabilidadView extends AFormView imple
 	 * Aqui se llenan las tablas con los valores correspondientes.<br>
 	 * 1) Se obtienen los ejes tematicos de todas las pruebas.<br>
 	 * 2) Se obtienen las habilidades de todas las pruebas.<br>
-	 * 3) Se obtienen los porcentajes de aprobacion de cada curso con respecto a
+	 * 3) Se obtienen los porcentajes de aprobacion de cada colegio con respecto a
 	 * cada eje y habilidad.
 	 */
 	private void generarReporte() {
@@ -220,7 +220,7 @@ public class Nivel_ResumenColegioXAlumnoEjeHabilidadView extends AFormView imple
 
 						lst.add(curso);
 					} else {
-						log.error(eval.getName() + " Sin curso");
+						log.error(eval.getName() + " Sin colegio");
 					}
 				}
 				return lst;
