@@ -62,6 +62,7 @@ public class PersistenceService implements IPersistenceService {
         props.put("eclipselink.allow-zero-id", "true");
         props.put("eclipselink.query-results-cache", "false");
         props.put("eclipselink.cache.shared.default", "false");
+//        props.put("eclipselink.ddl-generation", "create-or-extend-tables");
         eFactory = Persistence.createEntityManagerFactory(NAME, props);
         eFactory.getCache().evictAll();
     }

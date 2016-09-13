@@ -6,7 +6,7 @@
 		transaction-type="RESOURCE_LOCAL">
 		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
 
-		<class>cl.eos.persistence.models.TipoAlumno</class>
+ 		<class>cl.eos.persistence.models.TipoAlumno</class>
 		<class>cl.eos.persistence.models.Alumno</class>
 		<class>cl.eos.persistence.models.Asignatura</class>
 		<class>cl.eos.persistence.models.Curso</class>
@@ -27,6 +27,13 @@
 		<class>cl.eos.persistence.models.EvaluacionEjeTematico</class>
 		<class>cl.eos.persistence.models.TipoColegio</class>
 		<class>cl.eos.persistence.models.Objetivo</class>
+		
+		
+		<class>cl.eos.persistence.models.CalidadLectora</class>
+		<class>cl.eos.persistence.models.ComprensionLectora</class>
+		<class>cl.eos.persistence.models.VelocidadLectora</class>
+		<class>cl.eos.persistence.models.RangosLectura</class>
+		
 		<properties>
 		<!--
 			<property name="eclipselink.allow-zero-id" value="true" />

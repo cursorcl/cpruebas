@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.input.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="344.0" prefWidth="862.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.calidadlectora.ViewCalidadLectora">
+   <top>
+      <MenuBar BorderPane.alignment="CENTER">
+        <menus>
+            <Menu mnemonicParsing="false" text="Archivo">
+               <items>
+                  <MenuItem fx:id="mnuAgregar" mnemonicParsing="false" text="Agregar Colegio" />
+                  <MenuItem id="mnuGrabar" fx:id="mnuGrabar" mnemonicParsing="false" text="Grabar Colegio">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="G" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator>
+                  </MenuItem>
+                  <MenuItem fx:id="mnuModificar" mnemonicParsing="false" text="Modificar Colegio">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="M" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator>
+                  </MenuItem>
+                  <MenuItem fx:id="mnuEliminar" mnemonicParsing="false" text="Eliminar Colegio">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="E" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator>
+                  </MenuItem>
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem fx:id="mnuExportar" mnemonicParsing="false" text="Exportar a Excel" />
+                  <MenuItem fx:id="mnuImportar" mnemonicParsing="false" text="Importar  Colegio" visible="false" />
+               </items>
+            </Menu>
+          <Menu mnemonicParsing="false" text="Help" visible="false">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+   </top>
+   <center>
+      <SplitPane dividerPositions="0.3343065693430657" prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+               <children>
+                  <Label fx:id="lblError" layoutX="10.0" layoutY="-1.0" prefHeight="24.0" prefWidth="202.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="10.0">
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                     </VBox.margin>
+                  </Label>
+                  <TextField id="txtNombre" fx:id="txtNombre" layoutX="13.0" layoutY="103.0" promptText="Nombre" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="12.0">
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                     </VBox.margin>
+                  </TextField>
+                  <Label layoutX="13.0" layoutY="86.0" text="Nombre" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="12.0" />
+                  <Button fx:id="btnAceptar" layoutX="256.0" layoutY="434.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="80.0" text="Aceptar" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="15.0" />
+                  <Label layoutX="14.0" layoutY="34.0" text="Identificador" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="12.0" />
+                  <TextField fx:id="txtId" layoutX="13.0" layoutY="51.0" promptText="Identificador" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="12.0" />
+               </children>
+            </AnchorPane>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+               <children>
+                  <BorderPane prefHeight="459.0" prefWidth="370.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <center>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                           <children>
+                              <TableView id="tblColegios" fx:id="tblTable" prefHeight="473.0" prefWidth="701.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <columns>
+                                    <TableColumn fx:id="colId" prefWidth="103.0" text="Identificador" />
+                                  <TableColumn id="colName" fx:id="colNombre" prefWidth="304.0" text="Nombre" />
+                                </columns>
+                                 <contextMenu>
+                                    <ContextMenu>
+                                      <items>
+                                        <MenuItem fx:id="mnItemModificar" mnemonicParsing="false" text="Modificar" />
+                                          <MenuItem fx:id="mnItemEliminar" mnemonicParsing="false" text="Eliminar" />
+                                          <SeparatorMenuItem mnemonicParsing="false" />
+                                          <MenuItem fx:id="menuExportar" mnemonicParsing="false" text="Exportar a Excel" />
+                                      </items>
+                                    </ContextMenu>
+                                 </contextMenu>
+                              </TableView>
+                           </children>
+                        </AnchorPane>
+                     </center>
+                  </BorderPane>
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
+   </center>
+</BorderPane>

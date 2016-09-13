@@ -13,7 +13,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<StackPane id="ModalDimmer" depthTest="DISABLE" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"  prefHeight="740.0" prefWidth="1024.0" style="-fx-border-color: #71747C; -fx-border-width: 2;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.cliente.MainController">
+<StackPane id="ModalDimmer" depthTest="DISABLE" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="740.0" prefWidth="1024.0" style="-fx-border-color: #71747C; -fx-border-width: 2;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.cliente.MainController">
 	<children>
 		<BorderPane prefHeight="200.0" prefWidth="200.0">
 			<top>
@@ -109,6 +109,11 @@
                                  <accelerator>
                                     <KeyCodeCombination alt="UP" code="N" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                                  </accelerator></MenuItem>
+                              <SeparatorMenuItem mnemonicParsing="false" />
+                              <MenuItem fx:id="mnuVelocidadLectora" mnemonicParsing="false" text="Velocidad Lectora" />
+                              <MenuItem fx:id="mnuCalidadLectora" mnemonicParsing="false" text="Calidad Lectora" />
+                              <MenuItem fx:id="mnuComprensionLectora" mnemonicParsing="false" text="Comprensión Lectora" />
+                              <MenuItem fx:id="mnuRangoLectores" mnemonicParsing="false" text="Rangos Lectores" />
                               <SeparatorMenuItem mnemonicParsing="false" />
                               <MenuItem fx:id="mnuImportar" mnemonicParsing="false" text="Importar" />
 													</items>

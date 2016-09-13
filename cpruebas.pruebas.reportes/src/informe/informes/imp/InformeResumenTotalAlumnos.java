@@ -41,7 +41,7 @@ public class InformeResumenTotalAlumnos implements IInforme {
     private static final String ASIGNATURA_ID = "idAsignatura";
     private static final String COLEGIO_ID = "idColegio";
     final static String[] TABLE_HEAD = { "CURSOS", "TOTAL", "EVALUADOS", "APROBADOS", "REPROBADOS", "% EVALUADOS",
-            "% REPROBADOS", "% APROBADOS" };
+            "% APROBADOS", "% REPROBADOS" };
 
     static Logger log = Logger.getLogger(InformeResumenTotalAlumnos.class);
     private TipoAlumno tipoAlumno;

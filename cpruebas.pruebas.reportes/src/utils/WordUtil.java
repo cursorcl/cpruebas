@@ -207,5 +207,25 @@ public class WordUtil {
     }
     
     
+    public static void setAlignmentCell(XWPFTableCell cell, String text, ParagraphAlignment alignment)
+    {
+        XWPFParagraph para =  cell.getParagraphs().get(0);
+        XWPFRun rh = para.createRun();
+        para.setAlignment(alignment);
+        rh.setText(text);
+    }
+    public static void setCenterText(XWPFTableCell cell, String text)
+    {
+        setAlignmentCell(cell, text, ParagraphAlignment.CENTER);
+    }
+    public static void setLeftText(XWPFTableCell cell, String text)
+    {
+        setAlignmentCell(cell, text, ParagraphAlignment.LEFT);
+    }
+    public static void setRightText(XWPFTableCell cell, String text)
+    {
+        setAlignmentCell(cell, text, ParagraphAlignment.RIGHT);
+    }
+    
     
 }

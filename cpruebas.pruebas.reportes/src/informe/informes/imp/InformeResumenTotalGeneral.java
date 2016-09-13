@@ -101,6 +101,8 @@ public class InformeResumenTotalGeneral implements IInforme {
 
         table.getRow(0).setRepeatHeader(true);
         table.getRow(0).setCantSplitRow(false);
+        
+        
         table.getRow(0).getCell(0).setText(TOTAL_ESCUELA);
         table.getRow(0).getCell(2).setText(ALUMNOS);
         table.getRow(0).getCell(5).setText("ESTÁNDARES DE APRENDIZAJE");
@@ -128,7 +130,7 @@ public class InformeResumenTotalGeneral implements IInforme {
         for (Map.Entry<String, Pair<Integer, Float>> entry : resultado.entrySet()) {
             Pair<Integer, Float> res = entry.getValue();
             table.getRow(2).getCell(n).setText(String.format("%d", res.getFirst().intValue()));
-            table.getRow(3).getCell(n++).setText(String.format("%d%%", res.getSecond().intValue()));
+            table.getRow(3).getCell(n++).setText(String.format("%5.2f%%", res.getSecond().intValue()));
 
         }
 
