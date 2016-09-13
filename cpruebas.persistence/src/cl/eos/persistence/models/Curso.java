@@ -26,10 +26,12 @@ import cl.eos.persistence.AEntity;
         expiry=360000,  // 6 minutes
         coordinationType=CacheCoordinationType.INVALIDATE_CHANGED_OBJECTS  // if cache coordination is used, only send invalidation messages.
       )
-@NamedQueries({ @NamedQuery(name = "Curso.findAll", query = "SELECT e FROM curso e order by e.name"),
+@NamedQueries({ 
+        @NamedQuery(name = "Curso.findAll", query = "SELECT e FROM curso e order by e.name"),
 		@NamedQuery(name = "Curso.findByTipo", query = "SELECT e FROM curso e where e.tipoCurso.id = :tcursoId"),
 		@NamedQuery(name = "Curso.findByColegio", query = "SELECT e FROM curso e where e.colegio.id = :colegioId"),
-		@NamedQuery(name = "Curso.findByTipoColegio", query = "SELECT e FROM curso e where e.colegio.id = :colegioId and e.tipoCurso.id = :tcursoId") })
+		@NamedQuery(name = "Curso.findByTipoColegio", query = "SELECT e FROM curso e where e.colegio.id = :colegioId and e.tipoCurso.id = :tcursoId") 
+        })
 public class Curso extends AEntity {
 
 	private static final long serialVersionUID = 1L;
