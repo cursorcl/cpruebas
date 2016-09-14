@@ -38,5 +38,6 @@
 	<classpathentry kind="lib" path="O:/cpruebas/jars/log4j.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.data"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.definicion"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.make.prueba"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

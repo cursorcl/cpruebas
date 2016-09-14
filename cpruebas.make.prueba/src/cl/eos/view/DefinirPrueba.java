@@ -2,6 +2,8 @@ package cl.eos.view;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import cl.eos.imp.view.AFormView;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -12,7 +14,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import jfxtras.labs.scene.control.BigDecimalField;
 
-public class DefinirPrueba {
+public class DefinirPrueba extends AFormView{
     @FXML
     private ResourceBundle resources;
     @FXML
@@ -85,7 +87,7 @@ public class DefinirPrueba {
     private ImageView img1;
     @FXML
     void initialize() {
-
+        setTitle("Creación de Pruebas");
     }
 
 }

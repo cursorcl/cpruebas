@@ -10,7 +10,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="628.0" prefWidth="1010.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.DefinirPrueba">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="560.0" prefWidth="1056.0" styleClass="sample-page" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.DefinirPrueba">
    <left>
       <VBox style="-fx-border-color: #aaaaa0;">
          <children>
@@ -47,7 +47,7 @@
       </VBox>
    </left>
    <top>
-      <AnchorPane prefHeight="155.0" prefWidth="1008.0" style="-fx-background-color: #eeeeee; -fx-border-color: #aaaaaa;" BorderPane.alignment="CENTER">
+      <AnchorPane prefHeight="122.0" prefWidth="1008.0" style="-fx-background-color: #eeeeee; -fx-border-color: #aaaaaa;" BorderPane.alignment="CENTER">
          <children>
             <ComboBox fx:id="cmbTipoPrueba" layoutX="261.0" layoutY="34.0" prefHeight="25.0" prefWidth="196.0" promptText="Tipo de Prueba" />
             <ComboBox fx:id="cmbCurso" layoutX="10.0" layoutY="34.0" prefHeight="25.0" prefWidth="228.0" promptText="Curso" />
@@ -82,7 +82,7 @@
             </AnchorPane>
             <VBox layoutX="14.0" layoutY="52.0" prefHeight="478.0" prefWidth="813.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <VBox prefHeight="100.0" prefWidth="813.0">
+                  <VBox prefHeight="77.0" prefWidth="859.0" VBox.vgrow="NEVER">
                      <children>
                         <Label text="Ingrese la pregunta">
                            <VBox.margin>
@@ -99,9 +99,9 @@
                         <Insets bottom="5.0" />
                      </VBox.margin>
                   </VBox>
-                  <HBox prefHeight="170.0" prefWidth="809.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" VBox.vgrow="ALWAYS">
+                  <HBox prefHeight="193.0" prefWidth="859.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <VBox prefHeight="168.0" prefWidth="296.0" spacing="3.0" style="-fx-border-radius: 5; -fx-border-color: #cccccc;">
+                        <VBox prefHeight="168.0" prefWidth="296.0" spacing="3.0" style="-fx-border-radius: 5; -fx-border-color: #cccccc;" HBox.hgrow="ALWAYS">
                            <children>
                               <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="297.0" text="Asociaciones">
                                  <font>
@@ -143,7 +143,7 @@
                               <Insets left="5.0" right="3.0" top="2.0" />
                            </HBox.margin>
                         </VBox>
-                        <VBox prefHeight="170.0" prefWidth="294.0" spacing="7.0" style="-fx-border-color: #cccccc; -fx-border-radius: 5;">
+                        <VBox prefHeight="170.0" prefWidth="294.0" spacing="7.0" style="-fx-border-color: #cccccc; -fx-border-radius: 5;" HBox.hgrow="ALWAYS">
                            <children>
                               <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="291.0" text="Alternativas" textAlignment="CENTER">
                                  <font>
@@ -188,7 +188,7 @@
                               <Insets left="5.0" right="3.0" top="2.0" />
                            </HBox.margin>
                         </VBox>
-                        <VBox prefHeight="170.0" prefWidth="206.0" spacing="30.0" style="-fx-border-color: #cccccc; -fx-border-radius: 5;">
+                        <VBox prefHeight="170.0" prefWidth="206.0" spacing="20.0" style="-fx-border-color: #cccccc; -fx-border-radius: 5;" HBox.hgrow="ALWAYS">
                            <children>
                               <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="20.0" prefWidth="205.0" text="Alternativa Correcta">
                                  <font>
@@ -249,7 +249,7 @@
                         </VBox>
                      </children>
                   </HBox>
-                  <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-border-color: #cccccc; -fx-border-radius: 5;">
+                  <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-border-color: #cccccc; -fx-border-radius: 5;" VBox.vgrow="ALWAYS">
                      <children>
                         <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #aaaaa0;">
                            <children>
