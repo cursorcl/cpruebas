@@ -1,93 +1,119 @@
 package cl.eos.view;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import cl.eos.imp.view.AFormView;
+import cl.eos.persistence.models.Asignatura;
+import cl.eos.persistence.models.EjeTematico;
+import cl.eos.persistence.models.Habilidad;
+import cl.eos.persistence.models.NivelEvaluacion;
+import cl.eos.persistence.models.Objetivo;
+import cl.eos.persistence.models.Profesor;
+import cl.eos.persistence.models.TipoCurso;
+import cl.eos.persistence.models.TipoPrueba;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.ListView;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.ImageView;
 import jfxtras.labs.scene.control.BigDecimalField;
 
 public class DefinirPrueba extends AFormView{
     @FXML
-    private ResourceBundle resources;
+    ResourceBundle resources;
     @FXML
-    private URL location;
+    URL location;
     @FXML
-    private ComboBox<?> cmbHabilidades;
+    ComboBox<Habilidad> cmbHabilidades;
     @FXML
-    private ComboBox<?> cmbAdignatura;
+    ComboBox<Asignatura> cmbAsignatura;
     @FXML
-    private ComboBox<?> cmbProfesor;
+    ComboBox<Profesor> cmbProfesor;
     @FXML
-    private TextArea txtPregunta;
+    TextArea txtPregunta;
     @FXML
-    private RadioButton chkOpcionV;
+    BigDecimalField spnExigencia;
     @FXML
-    private BigDecimalField spnExigencia;
+    BigDecimalField spnPjeBase;
     @FXML
-    private BigDecimalField spnPjeBase;
+    ComboBox<NivelEvaluacion> cmbNivelEvaluacion;
     @FXML
-    private ComboBox<?> spnNivelEvaluacion;
+    ComboBox<Objetivo> cmbObjetivos;
+
     @FXML
-    private ComboBox<?> cmbObjetivos;
+    ComboBox<EjeTematico> cmbEjesTematicos;
     @FXML
-    private RadioButton chkOpcionMental;
+    ComboBox<TipoPrueba> cmbTipoPrueba;
     @FXML
-    private TextField txtAlternativaE;
+    TextField txtAlternativaA;
     @FXML
-    private ImageView img4;
+    TextField txtAlternativaB;
     @FXML
-    private ImageView img3;
+    TextField txtAlternativaC;
     @FXML
-    private ComboBox<?> cmbEjesTematicos;
+    TextField txtAlternativaD;
     @FXML
-    private ComboBox<?> cmbTipoPrueba;
+    TextField txtAlternativaE;
     @FXML
-    private TextField txtAlternativaA;
+    ListView<ItemList> lstPreguntas;
     @FXML
-    private BigDecimalField spnNroAlternativas;
+    BigDecimalField spnNroAlternativas;
     @FXML
-    private TextField txtAlternativaB;
+    BigDecimalField spnNroPreguntas;
     @FXML
-    private TextField txtAlternativaC;
+    DatePicker fecFeha;
+    
     @FXML
-    private TextField txtAlternativaD;
+    RadioButton chkOpcionA;
     @FXML
-    private ListView<?> lstPreguntas;
+    RadioButton chkOpcionB;
     @FXML
-    private RadioButton chkOpcionA;
+    RadioButton chkOpcionC;
     @FXML
-    private BigDecimalField spnNroPreguntas;
+    RadioButton chkOpcionE;
     @FXML
-    private DatePicker fecFeha;
+    RadioButton chkOpcionD;
+
     @FXML
-    private RadioButton chkOpcionC;
+    ComboBox<TipoCurso> cmbCurso;
     @FXML
-    private RadioButton chkOpcionB;
+    RadioButton chkOpcionV;
     @FXML
-    private RadioButton chkOpcionE;
+    RadioButton chkOpcionF;
     @FXML
-    private RadioButton chkOpcionD;
+    RadioButton chkOpcionMental;
     @FXML
-    private ImageView emg5;
+    MenuItem mnuEliminarPregunta;
+
     @FXML
-    private ComboBox<?> cmbCurso;
+    ImageView img1;
     @FXML
-    private RadioButton chkOpcionF;
+    ImageView img2;
     @FXML
-    private ImageView img2;
+    ImageView img3;
     @FXML
-    private ImageView img1;
+    ImageView img4;
     @FXML
+    ImageView img5;
+    
+    ToggleGroup group;
+    @FXML
+    
     void initialize() {
         setTitle("Creación de Pruebas");
+        Initializer.initialize(this);
     }
 
+    @Override
+    public void onDataArrived(List<Object> list) {
+        DataProcessor.process(list, this);
+    }
+    
 }

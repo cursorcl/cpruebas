@@ -14,6 +14,7 @@ import cl.eos.persistence.models.Curso;
 import cl.eos.persistence.models.EjeTematico;
 import cl.eos.persistence.models.EvaluacionEjeTematico;
 import cl.eos.persistence.models.Habilidad;
+import cl.eos.persistence.models.NivelEvaluacion;
 import cl.eos.persistence.models.Objetivo;
 import cl.eos.persistence.models.Profesor;
 import cl.eos.persistence.models.Prueba;
@@ -22,6 +23,7 @@ import cl.eos.persistence.models.RangoEvaluacion;
 import cl.eos.persistence.models.TipoAlumno;
 import cl.eos.persistence.models.TipoColegio;
 import cl.eos.persistence.models.TipoCurso;
+import cl.eos.persistence.models.TipoPrueba;
 import cl.eos.view.editablecells.PruebaCellFactory;
 import cl.eos.view.ots.OTPrueba;
 import colegio.ComparativoColegioEjeEvaluacionView;
@@ -162,7 +164,7 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
         asignaturaCol.setCellValueFactory(new PropertyValueFactory<OTPrueba, String>("asignatura"));
         profesorCol.setCellValueFactory(new PropertyValueFactory<OTPrueba, String>("profesor"));
 
-        cursoCol.setCellValueFactory(new PropertyValueFactory<OTPrueba, String>("colegio"));
+        cursoCol.setCellValueFactory(new PropertyValueFactory<OTPrueba, String>("curso"));
         nroPreguntasCol.setCellValueFactory(new PropertyValueFactory<OTPrueba, Integer>("nroPreguntas"));
 
         estadoCol.setCellValueFactory(new PropertyValueFactory<OTPrueba, Estado>("estado"));
@@ -290,15 +292,14 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
     }
 
     private void handleCrear() {
-        DefinirPrueba listado = (DefinirPrueba) show("/cl/eos/view/definir_prueba.fxml");
-//        show(listado);
-        controller.findAll(TipoCurso.class, listado);
-        controller.findAll(Profesor.class, listado);
-        controller.findAll(Colegio.class, listado);
-        controller.findAll(Curso.class, listado);
-        controller.findAll(Habilidad.class, listado);
-        controller.findAll(EjeTematico.class, listado);
-        controller.findAll(Objetivo.class, listado);
+        DefinirPrueba definicion = (DefinirPrueba) show("/cl/eos/view/definir_prueba.fxml");
+        controller.findAll(TipoCurso.class, definicion);
+        controller.findAll(Profesor.class, definicion);
+        controller.findAll(Asignatura.class, definicion);
+        controller.findAll(TipoPrueba.class, definicion);
+        controller.findAll(NivelEvaluacion.class, definicion);
+        controller.findAll(Curso.class, definicion);
+        controller.findAll(Habilidad.class, definicion);
     }
 
     private void handlerInforme() {

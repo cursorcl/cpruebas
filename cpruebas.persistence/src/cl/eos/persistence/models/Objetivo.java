@@ -19,10 +19,10 @@ import cl.eos.persistence.AEntity;
 @Cache(type = CacheType.NONE, size = 64000, // Use 64,000 as the initial cache
                                             // size.
         expiry = 360000, // 6 minutes
-        coordinationType = CacheCoordinationType.INVALIDATE_CHANGED_OBJECTS 
-)
+        coordinationType = CacheCoordinationType.INVALIDATE_CHANGED_OBJECTS)
 @NamedQueries({ @NamedQuery(name = "Objetivo.findAll", query = "SELECT e FROM objetivo e order by e.name"),
-        @NamedQuery(name = "Objetivo.findByTipoCurso", query = "SELECT e FROM objetivo e where e.tipoCurso.id = :tipoCursoId order by e.name ") })
+        @NamedQuery(name = "Objetivo.findByTipoCurso", query = "SELECT e FROM objetivo e where e.tipoCurso.id = :tipoCursoId order by e.name "),
+        @NamedQuery(name = "Objetivo.findByTipoCursoAsignatura", query = "SELECT e FROM objetivo e where e.tipoCurso.id = :tipoCursoId and e.asignatura.id = :asignaturaId order by e.name ") })
 public class Objetivo extends AEntity {
     private static final long serialVersionUID = 1L;
     @Id

@@ -45,6 +45,7 @@
 											<menus>
                         <Menu mnemonicParsing="false" text="Pruebas">
                           <items>
+                              <MenuItem fx:id="mnuListarPruebasPlus" mnemonicParsing="false" text="Listar Pruebas +" />
                             <MenuItem fx:id="mnuHacerPrueba" mnemonicParsing="false" text="Listado de Pruebas" />
                           
                                       </items>

@@ -17,13 +17,13 @@ import cl.eos.ObjetivosActivator;
 import cl.eos.ProfesoresActivator;
 import cl.eos.PruebasActivator;
 import cl.eos.TipoPruebaActivator;
+import cl.eos.activator.ListadoPruebasActivator;
 import cl.eos.calidadlectora.CalidadLectoraActivator;
 import cl.eos.comprensionlectora.ComprensionLectoraActivator;
 import cl.eos.exception.ExceptionBD;
 import cl.eos.imp.view.WindowButtons;
 import cl.eos.imp.view.WindowManager;
 import cl.eos.interfaces.IActivator;
-import cl.eos.persistence.models.VelocidadLectora;
 import cl.eos.provider.persistence.PersistenceServiceFactory;
 import cl.eos.rangoslectura.RangosLecturaActivator;
 import cl.eos.util.ExcelSheetReader;
@@ -50,6 +50,8 @@ public class MainController {
     private static final String EXTENSION_XLSX = "xlsx";
     @FXML
     private MenuContainer mnuPrincipal;
+    @FXML
+    private MenuItem mnuListarPruebasPlus;
     @FXML
     private Menu mnuAdministrar;
     @FXML
@@ -257,6 +259,13 @@ public class MainController {
             @Override
             public void handle(ActionEvent event) {
                 IActivator activator = new RangosLecturaActivator();
+                WindowManager.getInstance().show(activator.getView());
+            }
+        });
+        mnuListarPruebasPlus.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                IActivator activator = new ListadoPruebasActivator();
                 WindowManager.getInstance().show(activator.getView());
             }
         });

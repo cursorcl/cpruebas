@@ -16,16 +16,13 @@
          <children>
             <AnchorPane prefHeight="30.0" prefWidth="191.0">
                <children>
-                  <Label style="-fx-background-color: #aaaaaa; -fx-alignment: center;" text="PREGUNTAS" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="3.0" AnchorPane.rightAnchor="3.0" AnchorPane.topAnchor="3.0" HBox.hgrow="ALWAYS">
+                  <Label style="-fx-alignment: center;" text="PREGUNTAS" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="3.0" AnchorPane.rightAnchor="3.0" AnchorPane.topAnchor="3.0" HBox.hgrow="ALWAYS">
                      <VBox.margin>
                         <Insets left="3.0" />
                      </VBox.margin>
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
-                     <effect>
-                        <DropShadow />
-                     </effect>
                   </Label>
                </children>
             </AnchorPane>
@@ -39,6 +36,13 @@
                <effect>
                   <SepiaTone />
                </effect>
+               <contextMenu>
+                  <ContextMenu>
+                    <items>
+                      <MenuItem fx:id="mnuEliminarPregunta" mnemonicParsing="false" text="Eliminar Pregunta" />
+                    </items>
+                  </ContextMenu>
+               </contextMenu>
             </ListView>
          </children>
          <BorderPane.margin>
@@ -51,14 +55,24 @@
          <children>
             <ComboBox fx:id="cmbTipoPrueba" layoutX="261.0" layoutY="34.0" prefHeight="25.0" prefWidth="196.0" promptText="Tipo de Prueba" />
             <ComboBox fx:id="cmbCurso" layoutX="10.0" layoutY="34.0" prefHeight="25.0" prefWidth="228.0" promptText="Curso" />
-            <ComboBox fx:id="cmbProfesor" layoutX="261.0" layoutY="96.0" prefHeight="25.0" prefWidth="198.0" promptText="Profesor" />
-            <ComboBox fx:id="cmbAdignatura" layoutX="9.0" layoutY="96.0" prefHeight="25.0" prefWidth="230.0" promptText="Asignatura" />
+            <ComboBox fx:id="cmbProfesor" layoutX="262.0" layoutY="88.0" prefHeight="25.0" prefWidth="198.0" promptText="Profesor" />
+            <ComboBox fx:id="cmbAsignatura" layoutX="10.0" layoutY="88.0" prefHeight="25.0" prefWidth="230.0" promptText="Asignatura" />
             <BigDecimalField fx:id="spnNroPreguntas" layoutX="493.0" layoutY="33.0" prefHeight="27.0" prefWidth="121.0" promptText="Nro Preguntas" />
-            <BigDecimalField fx:id="spnNroAlternativas" layoutX="493.0" layoutY="95.0" prefHeight="27.0" prefWidth="121.0" promptText="Nro Alternativas" />
-            <BigDecimalField fx:id="spnPjeBase" layoutX="650.0" layoutY="95.0" prefHeight="27.0" prefWidth="119.0" promptText="Pje Base" />
+            <BigDecimalField fx:id="spnNroAlternativas" layoutX="494.0" layoutY="87.0" prefHeight="27.0" prefWidth="121.0" promptText="Nro Alternativas" />
+            <BigDecimalField fx:id="spnPjeBase" layoutX="651.0" layoutY="87.0" prefHeight="27.0" prefWidth="119.0" promptText="Pje Base" />
             <BigDecimalField fx:id="spnExigencia" layoutX="647.0" layoutY="33.0" prefHeight="27.0" prefWidth="126.0" promptText="Exigencia" />
-            <ComboBox fx:id="spnNivelEvaluacion" layoutX="817.0" layoutY="96.0" prefHeight="25.0" prefWidth="170.0" promptText="Nivel Evaluación" />
+            <ComboBox fx:id="cmbNivelEvaluacion" layoutX="818.0" layoutY="88.0" prefHeight="25.0" prefWidth="170.0" promptText="Nivel Evaluación" />
             <DatePicker fx:id="fecFeha" layoutX="817.0" layoutY="34.0" prefHeight="25.0" prefWidth="167.0" promptText="Fecha" />
+            <Label layoutX="14.0" layoutY="14.0" prefHeight="17.0" prefWidth="221.0" text="Cursos" />
+            <Label layoutX="14.0" layoutY="70.0" prefHeight="17.0" prefWidth="221.0" text="Asignatura" />
+            <Label layoutX="261.0" layoutY="14.0" prefHeight="17.0" prefWidth="194.0" text="Tipo de Prueba" />
+            <Label layoutX="261.0" layoutY="70.0" prefHeight="17.0" prefWidth="195.0" text="Profesor" />
+            <Label layoutX="493.0" layoutY="14.0" prefHeight="17.0" prefWidth="119.0" text="Nro. Preguntas" />
+            <Label layoutX="493.0" layoutY="70.0" text="Nro. Alternativas" />
+            <Label layoutX="650.0" layoutY="14.0" prefHeight="17.0" prefWidth="122.0" text="Nivel de Exigencia" />
+            <Label layoutX="650.0" layoutY="70.0" prefHeight="17.0" prefWidth="121.0" text="Puntaje Base" />
+            <Label layoutX="817.0" layoutY="14.0" prefHeight="17.0" prefWidth="168.0" text="Fecha de Creación" />
+            <Label layoutX="817.0" layoutY="70.0" prefHeight="17.0" prefWidth="168.0" text="Nivel de Evaluación" />
          </children>
          <BorderPane.margin>
             <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
@@ -70,13 +84,10 @@
          <children>
             <AnchorPane prefHeight="34.0" prefWidth="658.0">
                <children>
-                  <Label layoutX="193.0" layoutY="6.0" style="-fx-alignment: center; -fx-background-color: #aaaaaa;" text="DEFINICIÓN PREGUNTAS" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="3.0" AnchorPane.rightAnchor="3.0" AnchorPane.topAnchor="3.0">
+                  <Label layoutX="193.0" layoutY="6.0" style="-fx-alignment: center;" text="DEFINICIÓN PREGUNTAS" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="3.0" AnchorPane.rightAnchor="3.0" AnchorPane.topAnchor="3.0">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
-                     <effect>
-                        <DropShadow />
-                     </effect>
                   </Label>
                </children>
             </AnchorPane>
@@ -254,7 +265,7 @@
                         <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #aaaaa0;">
                            <children>
                               <Label contentDisplay="CENTER" prefHeight="17.0" prefWidth="103.0" style="-fx-alignment: center; -fx-background-color: darkblue; -fx-border-radius: 8; -fx-background-radius: 8;" text="Imagen 1" textAlignment="CENTER" textFill="WHITE" />
-                              <ImageView fx:id="img1" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" style="-fx-padding: 10; -fx-background-color: firebrick; -fx-background-radius: 5;" />
+                              <ImageView fx:id="img1" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
                            </children>
                            <HBox.margin>
                               <Insets bottom="1.0" left="2.0" right="2.0" top="1.0" />
@@ -290,7 +301,7 @@
                         <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #aaaaa0;">
                            <children>
                               <Label contentDisplay="CENTER" prefHeight="17.0" prefWidth="103.0" style="-fx-alignment: center; -fx-background-color: darkblue; -fx-border-radius: 8; -fx-background-radius: 8;" text="Imagen 5" textAlignment="CENTER" textFill="WHITE" />
-                              <ImageView fx:id="emg5" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="img5" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
                            </children>
                            <HBox.margin>
                               <Insets bottom="1.0" left="2.0" right="2.0" top="1.0" />
