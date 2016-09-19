@@ -194,7 +194,8 @@ public class Prueba extends AEntity {
 		return LocalDate.ofEpochDay(this.fecha.longValue());
 	}
 
-	public List<Formas> getFormas() {
+
+    public List<Formas> getFormas() {
 		return formas;
 	}
 

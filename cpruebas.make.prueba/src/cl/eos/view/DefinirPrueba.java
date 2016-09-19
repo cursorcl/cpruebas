@@ -11,6 +11,7 @@ import cl.eos.persistence.models.Habilidad;
 import cl.eos.persistence.models.NivelEvaluacion;
 import cl.eos.persistence.models.Objetivo;
 import cl.eos.persistence.models.Profesor;
+import cl.eos.persistence.models.Prueba;
 import cl.eos.persistence.models.TipoCurso;
 import cl.eos.persistence.models.TipoPrueba;
 import javafx.fxml.FXML;
@@ -22,10 +23,11 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
 import jfxtras.labs.scene.control.BigDecimalField;
 
-public class DefinirPrueba extends AFormView{
+public class DefinirPrueba extends AFormView {
     @FXML
     ResourceBundle resources;
     @FXML
@@ -52,6 +54,8 @@ public class DefinirPrueba extends AFormView{
     @FXML
     ComboBox<TipoPrueba> cmbTipoPrueba;
     @FXML
+    TextField txtNombre;
+    @FXML
     TextField txtAlternativaA;
     @FXML
     TextField txtAlternativaB;
@@ -68,8 +72,13 @@ public class DefinirPrueba extends AFormView{
     @FXML
     BigDecimalField spnNroPreguntas;
     @FXML
+    BigDecimalField spnForma;
+
+    @FXML
     DatePicker fecFeha;
-    
+    @FXML
+    Tooltip objetivoToolTips;
+
     @FXML
     RadioButton chkOpcionA;
     @FXML
@@ -91,6 +100,8 @@ public class DefinirPrueba extends AFormView{
     RadioButton chkOpcionMental;
     @FXML
     MenuItem mnuEliminarPregunta;
+    @FXML
+    MenuItem mnuGrabar;
 
     @FXML
     ImageView img1;
@@ -102,18 +113,30 @@ public class DefinirPrueba extends AFormView{
     ImageView img4;
     @FXML
     ImageView img5;
-    
+
     ToggleGroup group;
-    @FXML
     
+    Prueba prueba;
+
+    public DefinirPrueba() {
+        this.prueba = null;
+    }
+    
+    public DefinirPrueba(Prueba prueba)
+    {
+        this.prueba =  prueba;
+    }
+
+    @FXML
     void initialize() {
         setTitle("Creación de Pruebas");
         Initializer.initialize(this);
+
     }
 
     @Override
     public void onDataArrived(List<Object> list) {
         DataProcessor.process(list, this);
     }
-    
+
 }

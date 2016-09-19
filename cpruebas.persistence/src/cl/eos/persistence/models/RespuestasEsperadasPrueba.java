@@ -1,5 +1,8 @@
 package cl.eos.persistence.models;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -8,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Version;
 
 import org.eclipse.persistence.annotations.Cache;
@@ -22,12 +26,10 @@ import cl.eos.persistence.AEntity;
  * @author curso_000
  */
 @Entity(name = "respuestasesperadasprueba")
-@Cache(
-        type=CacheType.NONE,
-        size=64000,  // Use 64,000 as the initial cache size.
-        expiry=360000,  // 6 minutes
-        coordinationType=CacheCoordinationType.INVALIDATE_CHANGED_OBJECTS  // if cache coordination is used, only send invalidation messages.
-      )
+@Cache(type = CacheType.NONE, size = 64000, // Use 64,000 as the initial cache size.
+        expiry = 360000, // 6 minutes
+        coordinationType = CacheCoordinationType.INVALIDATE_CHANGED_OBJECTS // if cache coordination is used, only send invalidation messages.
+)
 @NamedQueries({
         @NamedQuery(name = "RespuestasEsperadasPrueba.findAll", query = "SELECT e FROM respuestasesperadasprueba e"),
         @NamedQuery(name = "RespuestasEsperadasPrueba.findByPrueba", query = "SELECT e FROM respuestasesperadasprueba e WHERE e.prueba.id = :pruebaId order by e.numero"),
@@ -47,6 +49,12 @@ public class RespuestasEsperadasPrueba extends AEntity {
     private EjeTematico ejeTematico;
     private Objetivo objetivo;
     private Boolean anulada = Boolean.FALSE;
+
+    @OneToMany(mappedBy = "respuesta", cascade = CascadeType.ALL)
+    private List<Imagenes> imagenes;
+
+    @OneToMany(mappedBy = "respuesta", cascade = CascadeType.ALL)
+    private List<Alternativas> alternativas;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -182,5 +190,127 @@ public class RespuestasEsperadasPrueba extends AEntity {
             }
         }
         return result;
+    }
+
+    public List<Imagenes> getImagenes() {
+        return imagenes;
+    }
+
+    public void setImagenes(List<Imagenes> imagenes) {
+        this.imagenes = imagenes;
+    }
+
+    public List<Alternativas> getAlternativas() {
+        return alternativas;
+    }
+
+    public void setAlternativas(List<Alternativas> alternativas) {
+        this.alternativas = alternativas;
+    }
+
+    public static class Builder {
+        private Prueba prueba;
+        private Integer numero;
+        private String respuesta;
+        private Boolean verdaderoFalso;
+        private Boolean mental;
+        private Habilidad habilidad;
+        private EjeTematico ejeTematico;
+        private Objetivo objetivo;
+        private Boolean anulada;
+        private List<Imagenes> imagenes;
+        private List<Alternativas> alternativas;
+        private Long id;
+        private String name;
+        private int version;
+
+        public Builder prueba(Prueba prueba) {
+            this.prueba = prueba;
+            return this;
+        }
+
+        public Builder numero(Integer numero) {
+            this.numero = numero;
+            return this;
+        }
+
+        public Builder respuesta(String respuesta) {
+            this.respuesta = respuesta;
+            return this;
+        }
+
+        public Builder verdaderoFalso(Boolean verdaderoFalso) {
+            this.verdaderoFalso = verdaderoFalso;
+            return this;
+        }
+
+        public Builder mental(Boolean mental) {
+            this.mental = mental;
+            return this;
+        }
+
+        public Builder habilidad(Habilidad habilidad) {
+            this.habilidad = habilidad;
+            return this;
+        }
+
+        public Builder ejeTematico(EjeTematico ejeTematico) {
+            this.ejeTematico = ejeTematico;
+            return this;
+        }
+
+        public Builder objetivo(Objetivo objetivo) {
+            this.objetivo = objetivo;
+            return this;
+        }
+
+        public Builder anulada(Boolean anulada) {
+            this.anulada = anulada;
+            return this;
+        }
+
+        public Builder imagenes(List<Imagenes> imagenes) {
+            this.imagenes = imagenes;
+            return this;
+        }
+
+        public Builder alternativas(List<Alternativas> alternativas) {
+            this.alternativas = alternativas;
+            return this;
+        }
+
+        public Builder id(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder version(int version) {
+            this.version = version;
+            return this;
+        }
+
+        public RespuestasEsperadasPrueba build() {
+            RespuestasEsperadasPrueba respuestasEsperadasPrueba = new RespuestasEsperadasPrueba();
+            respuestasEsperadasPrueba.prueba = prueba;
+            respuestasEsperadasPrueba.numero = numero;
+            respuestasEsperadasPrueba.respuesta = respuesta;
+            respuestasEsperadasPrueba.verdaderoFalso = verdaderoFalso;
+            respuestasEsperadasPrueba.mental = mental;
+            respuestasEsperadasPrueba.habilidad = habilidad;
+            respuestasEsperadasPrueba.ejeTematico = ejeTematico;
+            respuestasEsperadasPrueba.objetivo = objetivo;
+            respuestasEsperadasPrueba.anulada = anulada;
+            respuestasEsperadasPrueba.imagenes = imagenes;
+            respuestasEsperadasPrueba.alternativas = alternativas;
+            respuestasEsperadasPrueba.id = id;
+            respuestasEsperadasPrueba.name = name;
+            respuestasEsperadasPrueba.version = version;
+            return respuestasEsperadasPrueba;
+        }
     }
 }

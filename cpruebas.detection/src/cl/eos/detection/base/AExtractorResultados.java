@@ -1,7 +1,5 @@
 package cl.eos.detection.base;
 
-import georegression.struct.point.Point2D_I32;
-
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -35,10 +33,9 @@ import cl.cursor.card.Recognizer;
 import cl.eos.detection.ExtractorResultadosPrueba;
 import cl.eos.detection.OTResultadoScanner;
 import cl.eos.exceptions.CPruebasException;
-import cl.eos.persistence.models.RespuestasEsperadasPrueba;
-import cl.eos.persistence.util.Comparadores;
 import cl.eos.util.Utils;
 import cl.sisdef.util.Pair;
+import georegression.struct.point.Point2D_I32;
 
 /**
  * Imagen escaneada en una resolucion de 300dpi. 1) 1.l) El primer rectangulo oscuro está en 58,1541

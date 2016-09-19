@@ -6,5 +6,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/kernel.api"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/kernel.api.imp.fx"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.persistence"/>
+	<classpathentry kind="lib" path="O:/cpruebas_multiuser/cpruebas/jars/imgscalr-lib-4.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

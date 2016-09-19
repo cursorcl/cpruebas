@@ -3,6 +3,7 @@ package cl.eos.view;
 import java.io.File;
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
+import java.text.Normalizer;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
@@ -35,9 +36,9 @@ public class Initializer {
         images[2] = defPrueba.img3;
         images[3] = defPrueba.img4;
         images[4] = defPrueba.img5;
-
-
-        defPrueba.fecFeha.setValue(LocalDate.now());
+        
+        defPrueba.mnuGrabar.setOnAction(new MenuGrabarListener(defPrueba));
+        
         defPrueba.group = new ToggleGroup();
         defPrueba.chkOpcionA.setToggleGroup(defPrueba.group);
         defPrueba.chkOpcionA.setSelected(true);
@@ -51,14 +52,16 @@ public class Initializer {
 
         defPrueba.spnExigencia.setMinValue(new BigDecimal(0));
         defPrueba.spnExigencia.setMaxValue(new BigDecimal(80));
-        defPrueba.spnExigencia.setNumber(new BigDecimal(60));
+        
+        defPrueba.spnForma.setMinValue(new BigDecimal(1));
+        defPrueba.spnForma.setMaxValue(new BigDecimal(3));
 
         defPrueba.spnPjeBase.setMinValue(new BigDecimal(0));
         defPrueba.spnPjeBase.setMaxValue(new BigDecimal(7));
-        defPrueba.spnPjeBase.setNumber(new BigDecimal(1));
+
         defPrueba.spnNroAlternativas.setMinValue(new BigDecimal(2));
         defPrueba.spnNroAlternativas.setMaxValue(new BigDecimal(5));
-        defPrueba.spnNroAlternativas.setNumber(new BigDecimal(5));
+        
         defPrueba.spnNroPreguntas.setMinValue(new BigDecimal(1));
         defPrueba.spnNroPreguntas.setMaxValue(new BigDecimal(75));
 
@@ -82,7 +85,6 @@ public class Initializer {
                 }
             }
         });
-        defPrueba.spnNroPreguntas.setNumber(new BigDecimal(25));
 
         defPrueba.spnNroAlternativas.numberProperty().addListener(new ChangeListener<BigDecimal>() {
             @Override
@@ -107,14 +109,19 @@ public class Initializer {
                 }
             }
         });
+        
+        assignValues(defPrueba);
+        
         defPrueba.cmbAsignatura.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 Map<String, Object> parameters = new HashMap<>();
                 parameters.put("idAsignatura", defPrueba.cmbAsignatura.getSelectionModel().getSelectedItem().getId());
                 defPrueba.getController().find("EjeTematico.findByAsigntura", parameters, defPrueba);
+                
                 parameters = new HashMap<>();
                 if (defPrueba.cmbCurso.getSelectionModel().getSelectedItem() != null) {
+                    asinarNombrePrueba(defPrueba);
                     parameters.put("asignaturaId",
                             defPrueba.cmbAsignatura.getSelectionModel().getSelectedItem().getId());
                     parameters.put("tipoCursoId", defPrueba.cmbCurso.getSelectionModel().getSelectedItem().getId());
@@ -122,12 +129,14 @@ public class Initializer {
                 }
             }
         });
+       
         defPrueba.cmbCurso.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
             public void handle(ActionEvent event) {
                 Map<String, Object> parameters = new HashMap<>();
                 if (defPrueba.cmbAsignatura.getSelectionModel().getSelectedItem() != null) {
+                    asinarNombrePrueba(defPrueba);
                     parameters.put("asignaturaId",
                             defPrueba.cmbAsignatura.getSelectionModel().getSelectedItem().getId());
                     parameters.put("tipoCursoId", defPrueba.cmbCurso.getSelectionModel().getSelectedItem().getId());
@@ -155,9 +164,20 @@ public class Initializer {
         
         initializeImages(defPrueba);
         initializeList(defPrueba);
-        initializeIntaraction(defPrueba);
+        initializeInteraction(defPrueba);
     }
-    private static void initializeIntaraction(DefinirPrueba defPrueba) {
+    protected static void asinarNombrePrueba(DefinirPrueba defPrueba) {
+        
+        String asign = defPrueba.cmbAsignatura.getValue().getName().replace(" ", "").replace(".", "_").toUpperCase();
+        String curso = defPrueba.cmbCurso.getValue().getName().replace(" ", "").replace(".", "_").toUpperCase();
+        String name =  String.format("%s%s%04d.%02d%02d", asign, curso, defPrueba.fecFeha.getValue().getYear(), defPrueba.fecFeha.getValue().getMonthValue(), defPrueba.fecFeha.getValue().getDayOfMonth());
+        String normalized = Normalizer.normalize(name, Normalizer.Form.NFD);
+        name = normalized.replaceAll("[\\p{InCombiningDiacriticalMarks}]", "");
+        
+        defPrueba.txtNombre.setText(name);
+        
+    }
+    private static void initializeInteraction(DefinirPrueba defPrueba) {
         defPrueba.txtPregunta.textProperty().addListener((observable, oldValue, newValue) -> {
             if(selected == null) return;
             selected.question =newValue;
@@ -289,8 +309,6 @@ public class Initializer {
                 defPrueba.chkOpcionMental.setSelected(ranswer.equals("M"));
             }
         });
-        
-        
     }
 
     
@@ -330,6 +348,39 @@ public class Initializer {
         defPrueba.img3.setOnMouseClicked(handler);
         defPrueba.img4.setOnMouseClicked(handler);
         defPrueba.img5.setOnMouseClicked(handler);
+    }
+ 
+    
+    private static void assignValues(DefinirPrueba defPrueba)
+    {
+        if(defPrueba.prueba == null)
+        {
+            defPrueba.spnNroPreguntas.setNumber(new BigDecimal(25));
+            defPrueba.spnNroAlternativas.setNumber(new BigDecimal(5));
+            defPrueba.spnPjeBase.setNumber(new BigDecimal(1));
+            defPrueba.spnForma.setNumber(new BigDecimal(1));
+            defPrueba.spnExigencia.setNumber(new BigDecimal(60));
+            defPrueba.fecFeha.setValue(LocalDate.now());
+        }
+        else
+        {
+//            Prueba prueba =  defPrueba.prueba;
+//            defPrueba.cmbAsignatura.;
+//            defPrueba.cmbProfesor;
+//            defPrueba.spnExigencia;
+//            defPrueba.spnPjeBase;
+//            defPrueba.cmbNivelEvaluacion;
+//            defPrueba.cmbTipoPrueba;
+//            defPrueba.cmbCurso;
+//            defPrueba.txtNombre;
+//            defPrueba.spnNroAlternativas;
+//            defPrueba.spnNroPreguntas;
+//            defPrueba.spnForma;
+//            defPrueba.fecFeha;
+//            
+//            ListView<ItemList> lstPreguntas;
+            
+        }
         
     }
 }

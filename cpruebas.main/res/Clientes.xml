@@ -21,5 +21,19 @@
 		<direccion>-</direccion>
 		<fono>-</fono>
 		<alias>vallenar_cpruebas</alias>
+	</Cliente>
+	<Cliente>
+		<rut>-</rut>
+		<nombre>Pruebas</nombre>
+		<direccion>-</direccion>
+		<fono>-</fono>
+		<alias>pruebas_cpruebas</alias>
 	</Cliente>	
+	<Cliente>
+		<rut>-</rut>
+		<nombre>Recupera</nombre>
+		<direccion>-</direccion>
+		<fono>-</fono>
+		<alias>recupera</alias>
+	</Cliente>			
 </Clientes>
