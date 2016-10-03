@@ -1,9 +1,14 @@
 package utils;
 
 import java.awt.Font;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.math.BigInteger;
 import java.util.List;
 
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.util.Units;
 import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
@@ -228,4 +233,16 @@ public class WordUtil {
     }
     
     
+    public static void addImage(File file, String title, XWPFParagraph paragraph) throws InvalidFormatException, IOException
+    {
+        XWPFRun run = paragraph.createRun();
+        run.setText(title);
+        run.setBold(true);
+        paragraph.setAlignment(ParagraphAlignment.CENTER);
+        
+        FileInputStream is = new FileInputStream(file);
+        run.addBreak();
+        run.addPicture(is, XWPFDocument.PICTURE_TYPE_PNG, title, Units.toEMU(300), Units.toEMU(150)); // 300x150 pixels
+        is.close();
+    }
 }

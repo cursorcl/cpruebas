@@ -121,7 +121,9 @@ public class Initializer {
                 
                 parameters = new HashMap<>();
                 if (defPrueba.cmbCurso.getSelectionModel().getSelectedItem() != null) {
+                    
                     asinarNombrePrueba(defPrueba);
+                    defPrueba.cmbObjetivos.getItems().clear();
                     parameters.put("asignaturaId",
                             defPrueba.cmbAsignatura.getSelectionModel().getSelectedItem().getId());
                     parameters.put("tipoCursoId", defPrueba.cmbCurso.getSelectionModel().getSelectedItem().getId());
@@ -137,6 +139,7 @@ public class Initializer {
                 Map<String, Object> parameters = new HashMap<>();
                 if (defPrueba.cmbAsignatura.getSelectionModel().getSelectedItem() != null) {
                     asinarNombrePrueba(defPrueba);
+                    defPrueba.cmbObjetivos.getItems().clear();
                     parameters.put("asignaturaId",
                             defPrueba.cmbAsignatura.getSelectionModel().getSelectedItem().getId());
                     parameters.put("tipoCursoId", defPrueba.cmbCurso.getSelectionModel().getSelectedItem().getId());

@@ -20,5 +20,7 @@
 	<classpathentry kind="lib" path="O:/cpruebas_multiuser/cpruebas/jars/poi-ooxml-3.14-20160307.jar"/>
 	<classpathentry kind="lib" path="O:/cpruebas_multiuser/cpruebas/jars/poi-ooxml-schemas-3.14-20160307.jar"/>
 	<classpathentry kind="lib" path="O:/cpruebas_multiuser/cpruebas/jars/dom4j-1.6.1.jar"/>
+	<classpathentry kind="lib" path="O:/cpruebas_multiuser/cpruebas/recursos/jfreechart-1.0.19/lib/jcommon-1.0.23.jar"/>
+	<classpathentry kind="lib" path="O:/cpruebas_multiuser/cpruebas/recursos/jfreechart-1.0.19/lib/jfreechart-1.0.19.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
