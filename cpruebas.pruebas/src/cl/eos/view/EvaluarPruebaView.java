@@ -436,7 +436,7 @@ public class EvaluarPruebaView extends AFormView {
             if (!prueba.getEvaluaciones().contains(evalPrueba)) {
                 prueba.getEvaluaciones().add(evalPrueba);
             }
-            // evalPrueba.getPruebasRendidas().clear();
+
             List<PruebaRendida> removePruebasRendidas = new ArrayList<PruebaRendida>();
             ObservableList<OTPruebaRendida> otDeLaTabla = tblListadoPruebas.getItems();
             for (OTPruebaRendida ot : otDeLaTabla) {

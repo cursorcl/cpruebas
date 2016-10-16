@@ -26,19 +26,6 @@ import cl.eos.util.Utils;
  *
  */
 @Entity(name = "pruebarendida")
-@Cache(type = CacheType.NONE, size = 64000, // Use 64,000 as the initial cache
-                                            // size.
-        expiry = 360000, // 6 minutes
-        coordinationType = CacheCoordinationType.INVALIDATE_CHANGED_OBJECTS // if
-                                                                            // cache
-                                                                            // coordination
-                                                                            // is
-                                                                            // used,
-                                                                            // only
-                                                                            // send
-                                                                            // invalidation
-                                                                            // messages.
-)
 @NamedQueries({ @NamedQuery(name = "PruebaRendida.findAll", query = "SELECT e FROM pruebarendida e") })
 public class PruebaRendida extends AEntity {
 
