@@ -185,14 +185,14 @@ public class ResumenColegioView extends AFormView implements EventHandler<Action
 
 	private void inicializarTablaCursos() {
 		tblCursos.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-		colCurso.setCellValueFactory(new PropertyValueFactory<OTResumenColegio, String>("colegio"));
+		colCurso.setCellValueFactory(new PropertyValueFactory<OTResumenColegio, String>("curso"));
 		colTotal.setCellValueFactory(new PropertyValueFactory<OTResumenColegio, Integer>("totalAlumnos"));
 		colEvaluados.setCellValueFactory(new PropertyValueFactory<OTResumenColegio, Integer>("totalEvaluados"));
 		colAprobados.setCellValueFactory(new PropertyValueFactory<OTResumenColegio, Integer>("totalAprobados"));
 		colReprobados.setCellValueFactory(new PropertyValueFactory<OTResumenColegio, Integer>("totalReprobados"));
-		colPEvaluados.setCellValueFactory(new PropertyValueFactory<OTResumenColegio, Float>("alumnosEvaluados"));
-		colPAprobados.setCellValueFactory(new PropertyValueFactory<OTResumenColegio, Float>("alumnosAprobados"));
-		colPReprobados.setCellValueFactory(new PropertyValueFactory<OTResumenColegio, Float>("alumnosReprobados"));
+		colPEvaluados.setCellValueFactory(new PropertyValueFactory<OTResumenColegio, Float>("porcAlumnosEvaluados"));
+		colPAprobados.setCellValueFactory(new PropertyValueFactory<OTResumenColegio, Float>("porcAlumnosAprobados"));
+		colPReprobados.setCellValueFactory(new PropertyValueFactory<OTResumenColegio, Float>("porcAlumnosReprobados"));
 
 	}
 

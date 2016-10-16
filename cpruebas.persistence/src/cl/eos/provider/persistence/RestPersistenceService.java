@@ -47,16 +47,16 @@ import javafx.stage.FileChooser;
  * 
  * @author cursor
  */
-public class PersistenceService implements IPersistenceService {
+public class RestPersistenceService implements IPersistenceService {
 
-    static final Logger LOG = Logger.getLogger(PersistenceService.class);
+    static final Logger LOG = Logger.getLogger(RestPersistenceService.class);
     private EntityManagerFactory eFactory;
     private final static String NAME = "multi_cpruebas";
 
     /**
      * Constructor de la clase.
      */
-    public PersistenceService() {
+    public RestPersistenceService() {
 
         Properties props = new Properties();
 
@@ -67,13 +67,11 @@ public class PersistenceService implements IPersistenceService {
         props.put("eclipselink.allow-zero-id", "true");
         props.put("eclipselink.query-results-cache", "false");
         props.put("eclipselink.cache.shared.default", "false");
-
-        // props.put("eclipselink.ddl-generation", "create-tables");
-        // //create-or-extend-tables");
-        // props.put("PersistenceUnitProperties.CREATE_JDBC_DDL_FILE",
-        // "create.sql");
-        // props.put("eclipselink.ddl-generation.output-mode", "sql-script");
-
+        
+        //props.put("eclipselink.ddl-generation", "create-tables"); //create-or-extend-tables");
+//        props.put("PersistenceUnitProperties.CREATE_JDBC_DDL_FILE", "create.sql");
+//        props.put("eclipselink.ddl-generation.output-mode", "sql-script");
+        
         eFactory = Persistence.createEntityManagerFactory(NAME, props);
         eFactory.getCache().evictAll();
     }
@@ -493,7 +491,7 @@ public class PersistenceService implements IPersistenceService {
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T extends IEntity> List<T> findAllSynchro(Class<T> entityClazz) {
+    public <T extends IEntity> List<T> findAllSynchro(Class<T> entityClazz){
         List<T> lresults = null;
         String findAll = entityClazz.getSimpleName() + ".findAll";
         EntityManager eManager = eFactory.createEntityManager();
@@ -535,6 +533,40 @@ public class PersistenceService implements IPersistenceService {
         }
         eManager.close();
         return lresults;
+
+    }
+
+    
+    public static void main(String[] args) {
+        try {
+            URL url = new URL("http://localhost/tpruebas/tipoalumno");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("Accept", "application/json");
+
+            if (conn.getResponseCode() != 200) {
+                throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
+            }
+
+            BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
+
+            String output;
+            System.out.println("Output from Server .... \n");
+            while ((output = br.readLine()) != null) {
+                System.out.println(output);
+            }
+
+            conn.disconnect();
+
+        } catch (MalformedURLException e) {
+
+            e.printStackTrace();
+
+        } catch (IOException e) {
+
+            e.printStackTrace();
+
+        }
 
     }
 

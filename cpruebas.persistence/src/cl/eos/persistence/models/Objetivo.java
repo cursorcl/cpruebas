@@ -1,6 +1,5 @@
 package cl.eos.persistence.models;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,17 +10,9 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Version;
 
-import org.eclipse.persistence.annotations.Cache;
-import org.eclipse.persistence.annotations.CacheCoordinationType;
-import org.eclipse.persistence.annotations.CacheType;
-
 import cl.eos.persistence.AEntity;
 
 @Entity(name = "objetivo")
-@Cache(type = CacheType.NONE, size = 64000, // Use 64,000 as the initial cache
-                                            // size.
-        expiry = 360000, // 6 minutes
-        coordinationType = CacheCoordinationType.INVALIDATE_CHANGED_OBJECTS)
 @NamedQueries({ @NamedQuery(name = "Objetivo.findAll", query = "SELECT e FROM objetivo e order by e.name"),
         @NamedQuery(name = "Objetivo.findByTipoCurso", query = "SELECT e FROM objetivo e where e.tipoCurso.id = :tipoCursoId order by e.name "),
         @NamedQuery(name = "Objetivo.findByTipoCursoAsignatura", query = "SELECT e FROM objetivo e where e.tipoCurso.id = :tipoCursoId and e.asignatura.id = :asignaturaId order by e.name ") })

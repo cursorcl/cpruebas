@@ -17,10 +17,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Version;
 
-import org.eclipse.persistence.annotations.Cache;
-import org.eclipse.persistence.annotations.CacheCoordinationType;
-import org.eclipse.persistence.annotations.CacheType;
-
 import cl.eos.persistence.AEntity;
 
 /**
@@ -31,13 +27,7 @@ import cl.eos.persistence.AEntity;
  *
  */
 @Entity(name = "evaluacionprueba")
-@Cache(
-        type=CacheType.NONE,
-        size=64000,  // Use 64,000 as the initial cache size.
-        expiry=360000,  // 6 minutes
-        coordinationType=CacheCoordinationType.INVALIDATE_CHANGED_OBJECTS  // if cache coordination is used, only send invalidation messages.
-      )
-@NamedQueries({ @NamedQuery(name = "EvaluacionPrueba.findAll", query = "SELECT e FROM evaluacionprueba e"),
+        @NamedQueries({ @NamedQuery(name = "EvaluacionPrueba.findAll", query = "SELECT e FROM evaluacionprueba e"),
         @NamedQuery(name = "EvaluacionPrueba.findEvaluacionByColegioAsig", query = "SELECT e FROM evaluacionprueba e where e.colegio.id = :idColegio and e.prueba.asignatura.id = :idAsignatura"),
         @NamedQuery(name = "EvaluacionPrueba.findByPrueba", query = "SELECT e FROM evaluacionprueba e where e.prueba.id = :idPrueba") })
 public class EvaluacionPrueba extends AEntity {
@@ -60,6 +50,11 @@ public class EvaluacionPrueba extends AEntity {
     private Profesor profesor;
     private Colegio colegio;
 
+    /**
+     * Se crea para el manejo de multiusuarios
+     */
+    @Version
+    protected int version;
     
     public EvaluacionPrueba() {
         pruebasRendidas = new ArrayList<>();
@@ -171,11 +166,6 @@ public class EvaluacionPrueba extends AEntity {
         return prueba.getExigencia();
     }
 
-    /**
-     * Se crea para el manejo de multiusuarios
-     */
-    @Version
-    protected int version;
 
     public final int getVersion() {
         return version;

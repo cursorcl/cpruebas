@@ -35,5 +35,12 @@
 		<direccion>-</direccion>
 		<fono>-</fono>
 		<alias>recupera</alias>
-	</Cliente>			
+	</Cliente>
+		<Cliente>
+		<rut>-</rut>
+		<nombre>Balmaceda</nombre>
+		<direccion>-</direccion>
+		<fono>-</fono>
+		<alias>balmaceda</alias>
+	</Cliente>				
 </Clientes>
