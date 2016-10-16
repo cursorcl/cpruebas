@@ -168,4 +168,10 @@ public class InformeResumenPME implements IInforme {
         return pmeCursos;
     }
 
+    @Override
+    public void graph(XWPFDocument document) {
+        // TODO Auto-generated method stub
+        
+    }
+
 }

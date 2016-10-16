@@ -294,4 +294,10 @@ public class InformeHabilidades implements IInforme {
         return porcentaje;
     }
 
+    @Override
+    public void graph(XWPFDocument document) {
+        // TODO Auto-generated method stub
+        
+    }
+
 }

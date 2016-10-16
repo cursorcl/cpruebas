@@ -242,4 +242,10 @@ public class InformeHabilidadXCurso implements IInforme {
         return new Pair<Integer, Integer>(nroBuenas, nroPreguntas);
     }
 
+    @Override
+    public void graph(XWPFDocument document) {
+        // TODO Auto-generated method stub
+        
+    }
+
 }

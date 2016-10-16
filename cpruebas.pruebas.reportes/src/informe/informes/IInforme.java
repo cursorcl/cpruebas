@@ -15,10 +15,10 @@ import cl.eos.persistence.models.TipoAlumno;
  */
 public interface IInforme {
 
-    public static interface ProcessFinishedListener
-    {
+    public static interface ProcessFinishedListener {
         void onFinished(IInforme source);
     }
+
     /**
      * Es el metodo de entrada al informe. Los parametros son conocidos por el
      * informe, quien lo solicite debe saber que parametros debe enviar.
@@ -33,10 +33,19 @@ public interface IInforme {
      *            Otros parámetros que se requieran.
      */
     void execute(TipoAlumno tipoAlumno, Colegio colegio, Asignatura asignatura);
+
     /**
      * Construye la sección de página asociada al inoforme. Se asume que utiliza
      * la información que se generó en el metodo Procesar.
      */
     void page(XWPFDocument document);
+
+    /**
+     * Construye la sección de página asociada al gráfico. Se asume que utiliza
+     * la información que se generó en el método procesar.
+     * 
+     * @param document
+     */
+    void graph(XWPFDocument document);
 
 }

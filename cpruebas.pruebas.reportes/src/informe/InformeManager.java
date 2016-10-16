@@ -182,6 +182,7 @@ public class InformeManager {
         for (IInforme informe : informes) {
             informe.execute(tipoAlumno, colegio, asignatura);
             informe.page(doc);
+            informe.graph(doc);
             XWPFParagraph paragraph = doc.createParagraph();
             paragraph.setPageBreak(true);
         }

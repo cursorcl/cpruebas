@@ -1,5 +1,7 @@
 package informe.informes.imp;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -8,6 +10,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
@@ -28,6 +31,7 @@ import cl.eos.provider.persistence.PersistenceServiceFactory;
 import cl.eos.util.Pair;
 import informe.InformeManager;
 import informe.informes.IInforme;
+import utils.ChartsUtil;
 import utils.WordUtil;
 
 /**
@@ -76,6 +80,9 @@ public class InformeResumenTotalGeneral implements IInforme {
 
     public void page(XWPFDocument document) {
 
+        if(resultado == null || resultado.isEmpty())
+            return;
+        
         XWPFParagraph paragraph = document.createParagraph();
 
         paragraph.setStyle("PEREKE-TITULO");
@@ -130,7 +137,7 @@ public class InformeResumenTotalGeneral implements IInforme {
         for (Map.Entry<String, Pair<Integer, Float>> entry : resultado.entrySet()) {
             Pair<Integer, Float> res = entry.getValue();
             table.getRow(2).getCell(n).setText(String.format("%d", res.getFirst().intValue()));
-            table.getRow(3).getCell(n++).setText(String.format("%5.2f%%", res.getSecond().intValue()));
+            table.getRow(3).getCell(n++).setText(String.format("%5.2f%%", res.getSecond().floatValue()));
 
         }
 
@@ -256,5 +263,37 @@ public class InformeResumenTotalGeneral implements IInforme {
         }
         return mResumen;
 
+    }
+
+    @Override
+    public void graph(XWPFDocument document) {
+        
+        if(resultado == null || resultado.isEmpty())
+            return;
+
+        
+        XWPFParagraph paragraph = document.createParagraph();
+
+        paragraph.setStyle("PEREKE-TITULO");
+        List<String> titles =  new ArrayList<>();
+        List<Double> values = new ArrayList<>();
+        
+        for (Object obj : evalEjeTematico) {
+            EvaluacionEjeTematico eET = (EvaluacionEjeTematico) obj;
+            Pair<Integer, Float> pair = resultado.get(eET.getName());
+            
+            titles.add(String.format( "%s\n%5.2f%%",eET.getName(),  pair.getSecond()));
+            values.add(new Double(pair.getSecond()));
+        }
+        
+        try {
+            File file = ChartsUtil.createPieChart("TOTAL GENERAL", titles, values);
+            WordUtil.addImage(file, "TOTAL GENERAL", paragraph);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InvalidFormatException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 }

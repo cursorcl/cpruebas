@@ -236,8 +236,6 @@ public class WordUtil {
     public static void addImage(File file, String title, XWPFParagraph paragraph) throws InvalidFormatException, IOException
     {
         XWPFRun run = paragraph.createRun();
-        run.setText(title);
-        run.setBold(true);
         paragraph.setAlignment(ParagraphAlignment.CENTER);
         
         FileInputStream is = new FileInputStream(file);

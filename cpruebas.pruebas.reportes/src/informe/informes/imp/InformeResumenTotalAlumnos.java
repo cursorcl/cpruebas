@@ -1,5 +1,7 @@
 package informe.informes.imp;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,6 +10,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
@@ -28,6 +31,7 @@ import cl.eos.persistence.util.Comparadores;
 import cl.eos.provider.persistence.PersistenceServiceFactory;
 import informe.InformeManager;
 import informe.informes.IInforme;
+import utils.ChartsUtil;
 import utils.WordUtil;
 
 /**
@@ -64,11 +68,11 @@ public class InformeResumenTotalAlumnos implements IInforme {
         params.put(ASIGNATURA_ID, asignatura.getId());
         List<EvaluacionPrueba> evaluaciones = (List<EvaluacionPrueba>) (Object) PersistenceServiceFactory
                 .getPersistenceService().findSynchro("EvaluacionPrueba.findEvaluacionByColegioAsig", params);
-        if(evaluaciones == null || evaluaciones.isEmpty())
+        if (evaluaciones == null || evaluaciones.isEmpty())
             return;
         if (Objects.isNull(evaluaciones) || evaluaciones.isEmpty())
             return;
-        
+
         resultado = procesar(evaluaciones);
     }
 
@@ -88,12 +92,11 @@ public class InformeResumenTotalAlumnos implements IInforme {
         run = paragraph.createRun(); // create new run
         run.setText("Instrumento de Evaluación y Resultados Obtenidos en la asignatura de "
                 + asignatura.getName().toUpperCase() + ".");
-        
+
         paragraph = document.createParagraph();
         paragraph.setStyle("Normal");
         run = paragraph.createRun();
         run.addCarriageReturn();
-        
 
         XWPFTable table = document.createTable(resultado.size() + 2, TABLE_HEAD.length);
         WordUtil.setTableFormat(table, 2, 1);
@@ -192,6 +195,38 @@ public class InformeResumenTotalAlumnos implements IInforme {
         resumenTotal.setTotalReprobados(totalColReprobados);
         lstCursos.add(resumenTotal);
         return lstCursos;
+    }
+
+    @Override
+    public void graph(XWPFDocument document) {
+        if (resultado == null || resultado.isEmpty())
+            return;
+
+        XWPFParagraph paragraph = document.createParagraph();
+
+        paragraph.setStyle("PEREKE-TITULO");
+        List<String> titles = new ArrayList<>();
+        Map<String, List<Double>> values = new HashMap<>();
+        values.put("Aprobados", new ArrayList<Double>());
+        values.put("Reprobados", new ArrayList<Double>());
+        for (OTResumenColegio ot : resultado) {
+            if (!ot.getCurso().getName().equals("Total")) {
+                values.get("Aprobados").add(new Double(ot.getPorcAlumnosAprobados()));
+                values.get("Reprobados").add(new Double(ot.getPorcAlumnosReprobados()));
+                titles.add(ot.getCurso().getName());
+            }
+        }
+
+        try {
+            File file = ChartsUtil.createBarChartSeries("% ALUMNOS", titles, values);
+            WordUtil.addImage(file, "TOTAL ALUMNOS", paragraph);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InvalidFormatException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
     }
 
 }
