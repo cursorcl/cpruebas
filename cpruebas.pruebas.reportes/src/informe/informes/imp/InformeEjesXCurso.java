@@ -1,5 +1,8 @@
 package informe.informes.imp;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -9,6 +12,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.log4j.Logger;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
@@ -18,12 +22,14 @@ import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 
 import cl.eos.common.Constants;
 import cl.eos.ot.OTPreguntasEjes;
+import cl.eos.ot.OTPreguntasHabilidad;
 import cl.eos.persistence.models.Alumno;
 import cl.eos.persistence.models.Asignatura;
 import cl.eos.persistence.models.Colegio;
 import cl.eos.persistence.models.Curso;
 import cl.eos.persistence.models.EjeTematico;
 import cl.eos.persistence.models.EvaluacionPrueba;
+import cl.eos.persistence.models.Habilidad;
 import cl.eos.persistence.models.PruebaRendida;
 import cl.eos.persistence.models.RangoEvaluacion;
 import cl.eos.persistence.models.RespuestasEsperadasPrueba;
@@ -33,6 +39,7 @@ import cl.eos.provider.persistence.PersistenceServiceFactory;
 import cl.eos.util.Pair;
 import informe.InformeManager;
 import informe.informes.IInforme;
+import utils.ChartsUtil;
 import utils.WordUtil;
 
 /**
@@ -242,7 +249,43 @@ public class InformeEjesXCurso implements IInforme {
 
     @Override
     public void graph(XWPFDocument document) {
-        // TODO Auto-generated method stub
+        if(resultado == null || resultado.isEmpty())
+            return;
+
+        
+        XWPFParagraph paragraph = document.createParagraph();
+
+        paragraph.setStyle("PEREKE-TITULO");
+        List<String> titles =  new ArrayList<>();
+        List<Double> values = new ArrayList<>();
+        
+        for (EjeTematico eje : resultado.keySet()) {
+            List<OTPreguntasEjes> percents = resultado.get(eje);
+            double cantidad = 0;
+            double percent = 0;
+            for(OTPreguntasEjes ot: percents)
+            {
+                if(ot.getBuenas() != 0 && ot.getTotal() != 0)
+                {
+                    cantidad++;
+                    percent += ot.getBuenas().doubleValue() /  ot.getTotal().doubleValue() * 100d;
+                }
+            }
+            
+            percent = percent / cantidad;
+            titles.add(eje.getName());
+            values.add(new Double(percent));
+        }
+        
+        try {
+            File file = ChartsUtil.createLineChart("DISTRIBUCIÓN x EJES", "Ejes",  titles, values);
+            WordUtil.addImage(file, "DISTRIBUCIÓN x EJES", paragraph);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InvalidFormatException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         
     }
 

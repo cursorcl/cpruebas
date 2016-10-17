@@ -1,5 +1,7 @@
 package informe.informes.imp;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -9,6 +11,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
@@ -21,6 +24,7 @@ import cl.eos.persistence.models.Asignatura;
 import cl.eos.persistence.models.Colegio;
 import cl.eos.persistence.models.Curso;
 import cl.eos.persistence.models.EjeTematico;
+import cl.eos.persistence.models.EvaluacionEjeTematico;
 import cl.eos.persistence.models.EvaluacionPrueba;
 import cl.eos.persistence.models.PruebaRendida;
 import cl.eos.persistence.models.RangoEvaluacion;
@@ -28,9 +32,11 @@ import cl.eos.persistence.models.RespuestasEsperadasPrueba;
 import cl.eos.persistence.models.TipoAlumno;
 import cl.eos.persistence.util.Comparadores;
 import cl.eos.provider.persistence.PersistenceServiceFactory;
+import cl.eos.util.Pair;
 import cl.eos.view.ots.ejeevaluacion.OTAcumulador;
 import informe.InformeManager;
 import informe.informes.IInforme;
+import utils.ChartsUtil;
 import utils.WordUtil;
 
 /**
@@ -288,7 +294,6 @@ public class InformeEjeEvaluacion implements IInforme {
 
     @Override
     public void graph(XWPFDocument document) {
-        // TODO Auto-generated method stub
         
     }
 

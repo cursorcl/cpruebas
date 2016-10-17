@@ -1,5 +1,6 @@
 package utils;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
@@ -17,6 +18,7 @@ import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PiePlot3D;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.BarRenderer;
+import org.jfree.chart.renderer.category.LineAndShapeRenderer;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.util.Rotation;
@@ -121,6 +123,44 @@ public class ChartsUtil {
 
         File f = File.createTempFile("report", "image");
         ChartUtilities.saveChartAsPNG(f, chart, 600, 300);
+        return f;
+    }
+    
+    
+    public static File createLineChart(String title, String serie,  List<String> xValues,
+            List<Double> yValues) throws IOException {
+        final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        for (int n = 0; n < xValues.size(); n++) {
+            dataset.addValue(yValues.get(n),serie, xValues.get(n));
+        }
+        final JFreeChart chart = ChartFactory.createLineChart(title, // chart
+                                                                    // title
+                serie, // domain axis label
+                "", // range axis label
+                dataset, // data
+                PlotOrientation.VERTICAL, // orientation
+                true, // include legend
+                true, // tooltips?
+                false // URLs?
+        );
+        chart.setBackgroundPaint(Color.white);
+
+        final CategoryPlot plot = chart.getCategoryPlot();
+        plot.setBackgroundPaint(Color.WHITE);
+        plot.setDomainGridlinePaint(Color.BLACK);
+        plot.setRangeGridlinePaint(Color.BLACK);
+        plot.setRangeCrosshairPaint(Color.RED);
+        
+
+        final NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
+        rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+        final LineAndShapeRenderer renderer = (LineAndShapeRenderer) plot.getRenderer();
+        renderer.setSeriesShape(0, LineAndShapeRenderer.DEFAULT_SHAPE);
+        final CategoryAxis domainAxis = plot.getDomainAxis();
+        domainAxis.setCategoryLabelPositions(CategoryLabelPositions.createUpRotationLabelPositions(Math.PI / 2.0));
+
+        File f = File.createTempFile("report", "image");
+        ChartUtilities.saveChartAsPNG(f, chart, 700, 300);
         return f;
     }
 
