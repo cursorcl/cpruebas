@@ -235,12 +235,17 @@ public class WordUtil {
     
     public static void addImage(File file, String title, XWPFParagraph paragraph) throws InvalidFormatException, IOException
     {
+        addImage(file, title, paragraph, 350, 200);
+    }
+    
+    public static void addImage(File file, String title, XWPFParagraph paragraph, int width, int height) throws InvalidFormatException, IOException
+    {
         XWPFRun run = paragraph.createRun();
         paragraph.setAlignment(ParagraphAlignment.CENTER);
         
         FileInputStream is = new FileInputStream(file);
         run.addBreak();
-        run.addPicture(is, XWPFDocument.PICTURE_TYPE_PNG, title, Units.toEMU(300), Units.toEMU(150)); // 300x150 pixels
+        run.addPicture(is, XWPFDocument.PICTURE_TYPE_PNG, title, Units.toEMU(width), Units.toEMU(height)); // 300x150 pixels
         is.close();
     }
 }

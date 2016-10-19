@@ -6,7 +6,7 @@
 		<direccion>-</direccion>
 		<fono>-</fono>
 		<email>-</email>
-		<alias>colegio_cpruebas</alias>
+		<alias>colegio_pruebas</alias>
 	</Cliente>
 	<Cliente>
 		<rut>-</rut>
@@ -20,27 +20,28 @@
 		<nombre>Municipalidad Vallenar</nombre>
 		<direccion>-</direccion>
 		<fono>-</fono>
-		<alias>vallenar_cpruebas</alias>
+		<alias>vallenar_pruebas</alias>
 	</Cliente>
 	<Cliente>
 		<rut>-</rut>
-		<nombre>Pruebas</nombre>
+		<nombre>Colegio Balmaceda</nombre>
 		<direccion>-</direccion>
 		<fono>-</fono>
-		<alias>pruebas_cpruebas</alias>
+		<alias>balmaceda_cpruebas</alias>
+	</Cliente>		
+	<Cliente>
+		<rut>-</rut>
+		<nombre>CPruebas</nombre>
+		<direccion>-</direccion>
+		<fono>-</fono>
+		<alias>cpruebas</alias>
+	</Cliente>
+	<Cliente>
+		<rut>-</rut>
+		<nombre>CPruebas2</nombre>
+		<direccion>-</direccion>
+		<fono>-</fono>
+		<alias>cpruebas2</alias>
 	</Cliente>	
-	<Cliente>
-		<rut>-</rut>
-		<nombre>Recupera</nombre>
-		<direccion>-</direccion>
-		<fono>-</fono>
-		<alias>recupera</alias>
-	</Cliente>
-		<Cliente>
-		<rut>-</rut>
-		<nombre>Balmaceda</nombre>
-		<direccion>-</direccion>
-		<fono>-</fono>
-		<alias>balmaceda</alias>
-	</Cliente>				
+			
 </Clientes>

@@ -29,6 +29,7 @@ public class MenuGrabarListener implements EventHandler<ActionEvent> {
     private String name;
     private Object idAsignatura;
     private Object idCurso;
+    private int nroAlternativas;
 
     public MenuGrabarListener(DefinirPrueba defPrueba) {
         this.defPrueba = defPrueba;
@@ -40,6 +41,7 @@ public class MenuGrabarListener implements EventHandler<ActionEvent> {
         name = defPrueba.txtNombre.getText();
         idAsignatura = defPrueba.cmbAsignatura.getValue().getId();
         idCurso = defPrueba.cmbAsignatura.getValue().getId();
+        nroAlternativas = defPrueba.spnNroAlternativas.getNumber().intValue();
 
         Prueba prueba = new Prueba();
 
@@ -52,19 +54,20 @@ public class MenuGrabarListener implements EventHandler<ActionEvent> {
         prueba.setProfesor(defPrueba.cmbProfesor.getValue());
         prueba.setPuntajeBase(defPrueba.spnPjeBase.getNumber().intValue());
         prueba.setNroPreguntas(defPrueba.spnNroPreguntas.getNumber().intValue());
-        prueba.setAlternativas(defPrueba.spnNroAlternativas.getNumber().intValue());
+        prueba.setAlternativas(nroAlternativas);
         prueba.setTipoPrueba(defPrueba.cmbTipoPrueba.getValue());
         prueba.setExigencia(defPrueba.spnExigencia.getNumber().intValue());
 
-
         ObservableList<ItemList> items = defPrueba.lstPreguntas.getItems();
-        List<RespuestasEsperadasPrueba> lstRespuestas = new ArrayList<>();
+        // List<RespuestasEsperadasPrueba> lstRespuestas = new ArrayList<>();
         String respuestas = "";
 
         for (ItemList item : items) {
             respuestas = respuestas + item.rightAnswer;
         }
         prueba.setResponses(respuestas);
+
+        prueba = (Prueba) defPrueba.save(prueba);
 
         for (ItemList item : items) {
             String itemName = String.format("%d", item.nro);
@@ -79,24 +82,41 @@ public class MenuGrabarListener implements EventHandler<ActionEvent> {
             List<Imagenes> lstImages = processImages(item, respuesta);
             List<Alternativas> lstAlternativas = processAlteratives(item, respuesta);
 
+            respuesta = (RespuestasEsperadasPrueba) defPrueba.save(respuesta);
 
+            //respuesta.setAlternativas(lstAlternativas);
 
-            respuesta.setAlternativas(lstAlternativas);
-            respuesta.setImagenes(lstImages);
-            lstRespuestas.add(respuesta);
+            for (int n = 0; n < lstAlternativas.size(); n++) {
+                Alternativas alt = lstAlternativas.get(n);
+                alt.setRespuesta(respuesta);
+                alt = (Alternativas) defPrueba.save(alt);
+                lstAlternativas.set(n, alt);
+            }
+
+            if (lstImages != null && !lstImages.isEmpty()) {
+                for (int n = 0; n < lstImages.size(); n++) {
+                    Imagenes img = lstImages.get(n);
+                    img.setRespuesta(respuesta);
+                    img = (Imagenes) defPrueba.save(img);
+                    lstImages.set(n, img);
+                }
+            }
+
+            // respuesta.setImagenes(lstImages);
+            // lstRespuestas.add(respuesta);
         }
-        prueba.setRespuestas(lstRespuestas);
-        
-        defPrueba.save(prueba);
+        // prueba.setRespuestas(lstRespuestas);
+
     }
 
     private List<Alternativas> processAlteratives(ItemList item, RespuestasEsperadasPrueba respuesta) {
         List<Alternativas> lstAlternatives = null;
-        for (int n = 0; n < item.alternatives.size(); n++) {
-            if(lstAlternatives == null)
+        for (int n = 0; n < nroAlternativas; n++) {
+            if (lstAlternatives == null)
                 lstAlternatives = new ArrayList<>();
             String altName = String.format("%d_%d", item.nro, (n + 1));
-            Alternativas alternative = new Alternativas.Builder().name(altName).numero(n).texto(item.question).respuesta(respuesta).build();
+            Alternativas alternative = new Alternativas.Builder().name(altName).numero(n).texto(item.question)
+                    .respuesta(respuesta).build();
             lstAlternatives.add(alternative);
         }
         return lstAlternatives;
@@ -126,7 +146,7 @@ public class MenuGrabarListener implements EventHandler<ActionEvent> {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                if(lstImages == null)
+                if (lstImages == null)
                     lstImages = new ArrayList<>();
                 Imagenes image = new Imagenes.Builder().numero(item.nro).name(fName).respuesta(respuesta).build();
                 lstImages.add(image);

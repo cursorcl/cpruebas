@@ -415,12 +415,25 @@ public class DefinePruebaViewController extends AFormView {
 	protected void ejecutaGrabar() {
 		if (validate()) {
 			String responses = txtRespuestas.getText();
-			List<RespuestasEsperadasPrueba> fromPrueba = getRespuestasEsperadas();
-			prueba.setRespuestas(fromPrueba);
 			prueba.setResponses(responses);
+			prueba = (Prueba) save(prueba);
+			List<RespuestasEsperadasPrueba> fromPrueba = getRespuestasEsperadas();
+			for(RespuestasEsperadasPrueba resp: fromPrueba)
+			{
+			    resp.setPrueba(prueba);
+			    resp = (RespuestasEsperadasPrueba) save(resp);
+			}
+			
+//			prueba.setRespuestas(fromPrueba);
+			
 			List<Formas> formas = getFormasPrueba();
-			prueba.setFormas(formas);
-			save(prueba);
+			for(Formas forma: formas)
+			{
+			    forma.setPrueba(prueba);
+			    forma = (Formas)save(forma);
+			}
+//			prueba.setFormas(formas);
+//			save(prueba);
 		}
 	}
 
@@ -490,7 +503,7 @@ public class DefinePruebaViewController extends AFormView {
 				respuesta.setNumero(new Integer(n + 1));
 				respuesta.setRespuesta(registro.getRespuesta());
 				respuesta.setVerdaderoFalso(registro.getVerdaderoFalso());
-				respuesta.setPrueba(prueba);
+				respuesta.setObjetivo(registro.getObjetivo());
 				fromPrueba.add(respuesta);
 				n++;
 			}

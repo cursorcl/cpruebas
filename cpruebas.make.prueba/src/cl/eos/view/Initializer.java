@@ -39,6 +39,8 @@ public class Initializer {
         
         defPrueba.mnuGrabar.setOnAction(new MenuGrabarListener(defPrueba));
         
+        defPrueba.dataContainer.setDisable(true);
+        
         defPrueba.group = new ToggleGroup();
         defPrueba.chkOpcionA.setToggleGroup(defPrueba.group);
         defPrueba.chkOpcionA.setSelected(true);
@@ -59,7 +61,7 @@ public class Initializer {
         defPrueba.spnPjeBase.setMinValue(new BigDecimal(0));
         defPrueba.spnPjeBase.setMaxValue(new BigDecimal(7));
 
-        defPrueba.spnNroAlternativas.setMinValue(new BigDecimal(2));
+        defPrueba.spnNroAlternativas.setMinValue(new BigDecimal(3));
         defPrueba.spnNroAlternativas.setMaxValue(new BigDecimal(5));
         
         defPrueba.spnNroPreguntas.setMinValue(new BigDecimal(1));
@@ -162,6 +164,8 @@ public class Initializer {
                     item.nro = idx + 1;
                     idx++;
                 }
+                defPrueba.lstPreguntas.getSelectionModel().clearSelection();
+                defPrueba.dataContainer.setDisable(true);
             }
         });
         
@@ -285,7 +289,7 @@ public class Initializer {
             @Override
             public void changed(ObservableValue<? extends ItemList> observable, ItemList oldValue, ItemList newValue) {
                 
-                //clearQuestion(defPrueba);
+                defPrueba.dataContainer.setDisable(false);
                 selected = newValue;
                 defPrueba.txtPregunta.setText(selected.question);
                 defPrueba.cmbEjesTematicos.getSelectionModel().select(selected.thematic);
@@ -310,6 +314,8 @@ public class Initializer {
                 defPrueba.chkOpcionV.setSelected(ranswer.equals("V"));
                 defPrueba.chkOpcionF.setSelected(ranswer.equals("E"));
                 defPrueba.chkOpcionMental.setSelected(ranswer.equals("M"));
+                
+                
             }
         });
     }

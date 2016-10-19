@@ -431,40 +431,34 @@ public class EvaluarPruebaView extends AFormView {
     }
 
     protected void handlerGrabar() {
+
         evalPrueba.setProfesor(cmbProfesor.getSelectionModel().getSelectedItem());
         if (validate()) {
             if (!prueba.getEvaluaciones().contains(evalPrueba)) {
-                prueba.getEvaluaciones().add(evalPrueba);
+                String s = String.format("%s %s %s %s", evalPrueba.getAsignatura(), evalPrueba.getColegio(),
+                        evalPrueba.getCurso(), evalPrueba.getFechaLocal().toString());
+                evalPrueba.setPrueba(prueba);
+                evalPrueba.setName(s);
+                evalPrueba = (EvaluacionPrueba) save(evalPrueba);
+                // prueba.getEvaluaciones().add(evalPrueba);
             }
-
-            List<PruebaRendida> removePruebasRendidas = new ArrayList<PruebaRendida>();
-            ObservableList<OTPruebaRendida> otDeLaTabla = tblListadoPruebas.getItems();
-            for (OTPruebaRendida ot : otDeLaTabla) {
-                if (!(ot.isRindioPrueba() && ot.getRespuestas() != null && !ot.getRespuestas().trim().isEmpty())) {
-                    //ot.getPruebaRendida().eliminada = true;
-                    removePruebasRendidas.add(ot.getPruebaRendida());
+            for (OTPruebaRendida otPRendida : tblListadoPruebas.getItems()) {
+                if (otPRendida.isRindioPrueba() && otPRendida.getRespuestas() != null
+                        && !otPRendida.getRespuestas().trim().isEmpty()) {
+                    otPRendida.getPruebaRendida().setEvaluacionPrueba(evalPrueba);
+                    PruebaRendida pRendida = otPRendida.getPruebaRendida();
+                    pRendida = (PruebaRendida) save(pRendida);
+                    otPRendida.setPruebaRendida(pRendida);
                 }
                 else
                 {
-                    if(!evalPrueba.getPruebasRendidas().contains(ot.getPruebaRendida()))
+                    if(otPRendida.getPruebaRendida() != null)
                     {
-                        evalPrueba.getPruebasRendidas().add(ot.getPruebaRendida());
+                        delete(otPRendida.getPruebaRendida());
                     }
                 }
             }
 
-            String s = String.format("%s %s %s %s", evalPrueba.getAsignatura(), evalPrueba.getColegio(),
-                    evalPrueba.getCurso(), evalPrueba.getFechaLocal().toString());
-            evalPrueba.setName(s);
-            prueba.getFormas().size();
-            prueba.getRespuestas().size();
-            
-            prueba = (Prueba) save(prueba);
-            for (PruebaRendida pr : removePruebasRendidas) {
-                delete(pr, false);
-            }
-
-            
             mnuGrabar.setDisable(true);
             mnuScanner.setDisable(true);
             cmbProfesor.getSelectionModel().clearSelection();

@@ -279,7 +279,7 @@ public class InformeEjesXCurso implements IInforme {
         
         try {
             File file = ChartsUtil.createLineChart("DISTRIBUCIÓN x EJES", "Ejes",  titles, values);
-            WordUtil.addImage(file, "DISTRIBUCIÓN x EJES", paragraph);
+            WordUtil.addImage(file, "DISTRIBUCIÓN x EJES", paragraph, 500, 350);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InvalidFormatException e) {

@@ -25,9 +25,13 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
 import jfxtras.labs.scene.control.BigDecimalField;
 
 public class DefinirPrueba extends AFormView {
+    
+    @FXML
+    VBox dataContainer;
     @FXML
     ResourceBundle resources;
     @FXML

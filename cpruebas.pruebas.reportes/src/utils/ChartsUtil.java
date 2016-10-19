@@ -144,23 +144,27 @@ public class ChartsUtil {
                 false // URLs?
         );
         chart.setBackgroundPaint(Color.white);
-
+        
+        
         final CategoryPlot plot = chart.getCategoryPlot();
         plot.setBackgroundPaint(Color.WHITE);
         plot.setDomainGridlinePaint(Color.BLACK);
         plot.setRangeGridlinePaint(Color.BLACK);
         plot.setRangeCrosshairPaint(Color.RED);
-        
+        plot.setOutlinePaint(Color.BLUE);
+        LineAndShapeRenderer renderer = new LineAndShapeRenderer();
+        renderer.setSeriesStroke(0, new BasicStroke(2.0f));
+        plot.setRenderer(renderer);
 
         final NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
         rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
-        final LineAndShapeRenderer renderer = (LineAndShapeRenderer) plot.getRenderer();
+        
         renderer.setSeriesShape(0, LineAndShapeRenderer.DEFAULT_SHAPE);
         final CategoryAxis domainAxis = plot.getDomainAxis();
-        domainAxis.setCategoryLabelPositions(CategoryLabelPositions.createUpRotationLabelPositions(Math.PI / 2.0));
+        domainAxis.setCategoryLabelPositions(CategoryLabelPositions.createUpRotationLabelPositions(Math.PI / 4.0));
 
         File f = File.createTempFile("report", "image");
-        ChartUtilities.saveChartAsPNG(f, chart, 700, 300);
+        ChartUtilities.saveChartAsPNG(f, chart, 800, 600);
         return f;
     }
 
