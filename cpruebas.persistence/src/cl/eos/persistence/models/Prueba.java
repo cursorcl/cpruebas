@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -59,14 +60,14 @@ public class Prueba extends AEntity {
 	private Integer exigencia;
 
 	
-	@OneToMany(mappedBy = "prueba", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "prueba", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
 	private List<Formas> formas;
 
-	@OneToMany(mappedBy = "prueba", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "prueba", cascade = CascadeType.ALL,  fetch=FetchType.EAGER)
 	@OrderBy("numero ASC")
 	private List<RespuestasEsperadasPrueba> respuestas;
 
-	@OneToMany(mappedBy = "prueba", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "prueba", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
 	private List<EvaluacionPrueba> evaluaciones;
 	
 	/**
@@ -74,7 +75,7 @@ public class Prueba extends AEntity {
 	 */
 	@Version 
 	protected int version;
-	
+
 	
 	public final int getVersion() {
 		return version;

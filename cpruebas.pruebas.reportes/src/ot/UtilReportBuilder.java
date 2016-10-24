@@ -36,7 +36,7 @@ public class UtilReportBuilder {
         if (!first.isPresent())
             return null;
         List<RespuestasEsperadasPrueba> respEsperadas = first.get().getEvaluacionPrueba().getPrueba().getRespuestas();
-        List<ItemTablaObjetivo> objetivos = buildFixedReportClumns(respEsperadas);
+        List<ItemTablaObjetivo> objetivos = buildFixedColumnsReport(respEsperadas);
         List<ItemObjetivo> eval = UtilEvaluations.evaluarCurso(pruebas);
         for(ItemTablaObjetivo obj : objetivos)
         {
@@ -72,7 +72,7 @@ public class UtilReportBuilder {
         if (!first.isPresent())
             return null;
         List<RespuestasEsperadasPrueba> respEsperadas = first.get().getEvaluacionPrueba().getPrueba().getRespuestas();
-        List<ItemTablaObjetivo> objetivos = buildFixedReportClumns(respEsperadas);
+        List<ItemTablaObjetivo> objetivos = buildFixedColumnsReport(respEsperadas);
 
         Map<Curso, List<ItemObjetivo>> eval = UtilEvaluations.evaluarColegio(pruebas);
 
@@ -99,7 +99,7 @@ public class UtilReportBuilder {
         if (!first.isPresent())
             return null;
         List<RespuestasEsperadasPrueba> respEsperadas = first.get().getEvaluacionPrueba().getPrueba().getRespuestas();
-        List<ItemTablaObjetivo> objetivos = buildFixedReportClumns(respEsperadas);
+        List<ItemTablaObjetivo> objetivos = buildFixedColumnsReport(respEsperadas);
 
         Map<TipoCurso, List<ItemObjetivo>> eval =  UtilEvaluations.evaluarColegioxNivel(pruebas);
         
@@ -163,7 +163,7 @@ public class UtilReportBuilder {
      * @return Lista con el contenido de ItemTablaObjetivo asociados al
      *         requerimiento.
      */
-    static List<ItemTablaObjetivo> buildFixedReportClumns(List<RespuestasEsperadasPrueba> respEsperadas) {
+    static List<ItemTablaObjetivo> buildFixedColumnsReport(List<RespuestasEsperadasPrueba> respEsperadas) {
         List<ItemTablaObjetivo> objetivos = new ArrayList<>();
         for (RespuestasEsperadasPrueba re : respEsperadas) {
             ItemTablaObjetivo ot = new ItemTablaObjetivo.Builder().objetivo(re.getObjetivo()).build();

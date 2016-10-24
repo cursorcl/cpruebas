@@ -35,6 +35,7 @@ import cl.eos.persistence.models.Prueba;
 import cl.eos.persistence.models.PruebaRendida;
 import cl.eos.persistence.models.RangoEvaluacion;
 import cl.eos.persistence.models.RespuestasEsperadasPrueba;
+import cl.eos.persistence.models.Prueba.Estado;
 import cl.eos.persistence.util.Comparadores;
 import cl.eos.util.ExcelSheetWriterObj;
 import cl.eos.util.Pair;
@@ -440,7 +441,6 @@ public class EvaluarPruebaView extends AFormView {
                 evalPrueba.setPrueba(prueba);
                 evalPrueba.setName(s);
                 evalPrueba = (EvaluacionPrueba) save(evalPrueba);
-                // prueba.getEvaluaciones().add(evalPrueba);
             }
             for (OTPruebaRendida otPRendida : tblListadoPruebas.getItems()) {
                 if (otPRendida.isRindioPrueba() && otPRendida.getRespuestas() != null
@@ -454,17 +454,18 @@ public class EvaluarPruebaView extends AFormView {
                 {
                     if(otPRendida.getPruebaRendida() != null)
                     {
-                        delete(otPRendida.getPruebaRendida());
+                        delete(otPRendida.getPruebaRendida(), false);
                     }
                 }
             }
-
+            //prueba = (Prueba) save(prueba);
             mnuGrabar.setDisable(true);
             mnuScanner.setDisable(true);
             cmbProfesor.getSelectionModel().clearSelection();
             cmbColegios.getSelectionModel().clearSelection();
             cmbCursos.getItems().clear();
             cmbProfesor.requestFocus();
+            
             controller.findById(Prueba.class, prueba.getId(), this);
         }
     }

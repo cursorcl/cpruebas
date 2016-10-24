@@ -13,12 +13,14 @@ import cl.eos.persistence.models.Asignatura;
 // github.com/cursorcl/cpruebas
 import cl.eos.persistence.models.Colegio;
 import cl.eos.persistence.models.EvaluacionEjeTematico;
+import cl.eos.persistence.models.EvaluacionPrueba;
 import cl.eos.persistence.models.Habilidad;
 import cl.eos.persistence.models.NivelEvaluacion;
 import cl.eos.persistence.models.Profesor;
 import cl.eos.persistence.models.Prueba;
 import cl.eos.persistence.models.Prueba.Estado;
 import cl.eos.persistence.models.RangoEvaluacion;
+import cl.eos.persistence.models.RespuestasEsperadasPrueba;
 import cl.eos.persistence.models.TipoAlumno;
 import cl.eos.persistence.models.TipoColegio;
 import cl.eos.persistence.models.TipoCurso;
@@ -316,8 +318,24 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 
     @Override
     public void onSaved(IEntity otObject) {
+        Prueba prueba = null;
         if (otObject instanceof Prueba) {
-            OTPrueba ot = new OTPrueba((Prueba) otObject);
+            prueba = (Prueba)otObject;
+        }
+        else if(otObject instanceof RespuestasEsperadasPrueba)
+        {
+            RespuestasEsperadasPrueba r = (RespuestasEsperadasPrueba)otObject;
+            prueba = r.getPrueba();
+        }
+        else if(otObject instanceof EvaluacionPrueba)
+        {
+            EvaluacionPrueba e = (EvaluacionPrueba)otObject;
+            prueba =  e.getPrueba();
+        }
+        
+        if(prueba !=  null)
+        {
+            OTPrueba ot = new OTPrueba(prueba);
             int indice = tblListadoPruebas.getItems().lastIndexOf(ot);
             if (indice != -1) {
                 tblListadoPruebas.getItems().set(indice, ot);
@@ -326,7 +344,9 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
             }
             limpiarCampos();
             prueba = null;
+
         }
+
     }
 
     @Override

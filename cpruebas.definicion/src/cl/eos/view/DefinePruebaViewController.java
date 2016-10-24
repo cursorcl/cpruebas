@@ -424,16 +424,12 @@ public class DefinePruebaViewController extends AFormView {
 			    resp = (RespuestasEsperadasPrueba) save(resp);
 			}
 			
-//			prueba.setRespuestas(fromPrueba);
-			
 			List<Formas> formas = getFormasPrueba();
 			for(Formas forma: formas)
 			{
 			    forma.setPrueba(prueba);
 			    forma = (Formas)save(forma);
 			}
-//			prueba.setFormas(formas);
-//			save(prueba);
 		}
 	}
 
@@ -466,7 +462,7 @@ public class DefinePruebaViewController extends AFormView {
 			}
 			forma.setOrden(orden);
 			forma.setPrueba(prueba);
-			formas.add(forma);
+			formas.set(n, forma);
 			Collections.shuffle(numeros);
 		}
 		return formas;

@@ -45,7 +45,7 @@ public abstract class AController implements IController, IPersistenceListener {
 
 	@Override
 	public void delete(IEntity entity) {
-		if (model != null) {
+		if (model != null && entity.getId() != null) {
 			IEntity result = model.delete(entity);
 			notifyDeleted(result);
 		}
@@ -79,6 +79,7 @@ public abstract class AController implements IController, IPersistenceListener {
 			views.add(view);
 			if (view.getController() == null || view.getController() != view) {
 				view.setController(this);
+				
 			}
 		}
 	}
