@@ -35,7 +35,6 @@ import cl.eos.persistence.models.Prueba;
 import cl.eos.persistence.models.PruebaRendida;
 import cl.eos.persistence.models.RangoEvaluacion;
 import cl.eos.persistence.models.RespuestasEsperadasPrueba;
-import cl.eos.persistence.models.Prueba.Estado;
 import cl.eos.persistence.util.Comparadores;
 import cl.eos.util.ExcelSheetWriterObj;
 import cl.eos.util.Pair;
@@ -440,32 +439,33 @@ public class EvaluarPruebaView extends AFormView {
                         evalPrueba.getCurso(), evalPrueba.getFechaLocal().toString());
                 evalPrueba.setPrueba(prueba);
                 evalPrueba.setName(s);
-                evalPrueba = (EvaluacionPrueba) save(evalPrueba);
             }
+            List<PruebaRendida> lstPruebasRendidas = new ArrayList<>();
             for (OTPruebaRendida otPRendida : tblListadoPruebas.getItems()) {
                 if (otPRendida.isRindioPrueba() && otPRendida.getRespuestas() != null
                         && !otPRendida.getRespuestas().trim().isEmpty()) {
-                    otPRendida.getPruebaRendida().setEvaluacionPrueba(evalPrueba);
                     PruebaRendida pRendida = otPRendida.getPruebaRendida();
-                    pRendida = (PruebaRendida) save(pRendida);
-                    otPRendida.setPruebaRendida(pRendida);
-                }
-                else
-                {
-                    if(otPRendida.getPruebaRendida() != null)
+                    pRendida.setEvaluacionPrueba(evalPrueba);
+                    if(pRendida.getId() != null)
                     {
+                        pRendida = (PruebaRendida) save(pRendida);
+                    }
+                    lstPruebasRendidas.add(pRendida);
+                } else {
+                    if (otPRendida.getPruebaRendida() != null) {
                         delete(otPRendida.getPruebaRendida(), false);
                     }
                 }
             }
-            //prueba = (Prueba) save(prueba);
+            evalPrueba.setPruebasRendidas(lstPruebasRendidas);
+            evalPrueba = (EvaluacionPrueba) save(evalPrueba);
             mnuGrabar.setDisable(true);
             mnuScanner.setDisable(true);
             cmbProfesor.getSelectionModel().clearSelection();
             cmbColegios.getSelectionModel().clearSelection();
             cmbCursos.getItems().clear();
             cmbProfesor.requestFocus();
-            
+
             controller.findById(Prueba.class, prueba.getId(), this);
         }
     }

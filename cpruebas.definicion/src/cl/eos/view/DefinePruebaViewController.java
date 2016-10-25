@@ -416,20 +416,25 @@ public class DefinePruebaViewController extends AFormView {
 		if (validate()) {
 			String responses = txtRespuestas.getText();
 			prueba.setResponses(responses);
-			prueba = (Prueba) save(prueba);
 			List<RespuestasEsperadasPrueba> fromPrueba = getRespuestasEsperadas();
+			int n = 0;
 			for(RespuestasEsperadasPrueba resp: fromPrueba)
 			{
 			    resp.setPrueba(prueba);
 			    resp = (RespuestasEsperadasPrueba) save(resp);
+			    fromPrueba.set(n++, resp);
 			}
+			prueba.setRespuestas(fromPrueba);
 			
 			List<Formas> formas = getFormasPrueba();
+			n = 0;
 			for(Formas forma: formas)
 			{
 			    forma.setPrueba(prueba);
-			    forma = (Formas)save(forma);
+			    formas.set(n++, forma);
 			}
+			prueba.setFormas(formas);
+			prueba = (Prueba) save(prueba);
 		}
 	}
 

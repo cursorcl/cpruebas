@@ -60,14 +60,14 @@ public class Prueba extends AEntity {
 	private Integer exigencia;
 
 	
-	@OneToMany(mappedBy = "prueba", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+	@OneToMany(mappedBy = "prueba", cascade = CascadeType.REMOVE, fetch=FetchType.EAGER)
 	private List<Formas> formas;
 
-	@OneToMany(mappedBy = "prueba", cascade = CascadeType.ALL,  fetch=FetchType.EAGER)
+	@OneToMany(mappedBy = "prueba", cascade = CascadeType.REMOVE,  fetch=FetchType.EAGER)
 	@OrderBy("numero ASC")
 	private List<RespuestasEsperadasPrueba> respuestas;
 
-	@OneToMany(mappedBy = "prueba", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+	@OneToMany(mappedBy = "prueba", cascade = CascadeType.REMOVE, fetch=FetchType.EAGER)
 	private List<EvaluacionPrueba> evaluaciones;
 	
 	/**

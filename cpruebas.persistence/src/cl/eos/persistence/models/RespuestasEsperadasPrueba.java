@@ -50,10 +50,10 @@ public class RespuestasEsperadasPrueba extends AEntity {
     private Objetivo objetivo;
     private Boolean anulada = Boolean.FALSE;
 
-    @OneToMany(mappedBy = "respuesta", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "respuesta", cascade = CascadeType.REMOVE)
     private List<Imagenes> imagenes;
 
-    @OneToMany(mappedBy = "respuesta", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "respuesta", cascade = CascadeType.REMOVE)
     private List<Alternativas> alternativas;
 
     @Id

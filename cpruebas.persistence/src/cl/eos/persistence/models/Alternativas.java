@@ -37,7 +37,7 @@ public class Alternativas extends AEntity {
     private int numero;
     private String texto;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private RespuestasEsperadasPrueba respuesta;
 
     @Version

@@ -27,7 +27,7 @@ import cl.eos.persistence.AEntity;
  *
  */
 @Entity(name = "evaluacionprueba")
-        @NamedQueries({ @NamedQuery(name = "EvaluacionPrueba.findAll", query = "SELECT e FROM evaluacionprueba e"),
+@NamedQueries({ @NamedQuery(name = "EvaluacionPrueba.findAll", query = "SELECT e FROM evaluacionprueba e"),
         @NamedQuery(name = "EvaluacionPrueba.findEvaluacionByColegioAsig", query = "SELECT e FROM evaluacionprueba e where e.colegio.id = :idColegio and e.prueba.asignatura.id = :idAsignatura"),
         @NamedQuery(name = "EvaluacionPrueba.findByPrueba", query = "SELECT e FROM evaluacionprueba e where e.prueba.id = :idPrueba") })
 public class EvaluacionPrueba extends AEntity {
@@ -43,8 +43,7 @@ public class EvaluacionPrueba extends AEntity {
     private Prueba prueba;
 
     private Curso curso;
-//    @OneToMany(orphanRemoval=true)
-    @OneToMany(mappedBy = "evaluacionPrueba", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "evaluacionPrueba", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<PruebaRendida> pruebasRendidas;
     private Long fecha;
     private Profesor profesor;
@@ -55,12 +54,11 @@ public class EvaluacionPrueba extends AEntity {
      */
     @Version
     protected int version;
-    
+
     public EvaluacionPrueba() {
         pruebasRendidas = new ArrayList<>();
     }
-    
-    
+
     @Override
     public Long getId() {
         return id;
@@ -105,10 +103,10 @@ public class EvaluacionPrueba extends AEntity {
     public List<PruebaRendida> getPruebasRendidas() {
         return pruebasRendidas;
     }
-//
-//    public void setPruebasRendidas(List<PruebaRendida> pruebasRendidas) {
-//        this.pruebasRendidas = pruebasRendidas;
-//    }
+    //
+    public void setPruebasRendidas(List<PruebaRendida> pruebasRendidas) {
+        this.pruebasRendidas = pruebasRendidas;
+    }
 
     public Long getFecha() {
         return fecha;
@@ -166,7 +164,6 @@ public class EvaluacionPrueba extends AEntity {
         return prueba.getExigencia();
     }
 
-
     public final int getVersion() {
         return version;
     }
@@ -183,7 +180,7 @@ public class EvaluacionPrueba extends AEntity {
             buffer.append(curso.getName());
         return buffer.toString();
     }
-    
+
     public String getColegioTipoCurso() {
         StringBuffer buffer = new StringBuffer();
         buffer.append(colegio.getName());

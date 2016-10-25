@@ -36,7 +36,7 @@ public class TipoColegio extends AEntity {
 	private Long id;
 	private String name;
 	
-	@OneToMany(mappedBy = "tipoColegio", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+	@OneToMany(mappedBy = "tipoColegio", cascade = CascadeType.REMOVE, fetch=FetchType.EAGER)
 	private Collection<Colegio> colegios;
 
 	

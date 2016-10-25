@@ -25,7 +25,7 @@ public class NivelEvaluacion extends AEntity {
 	private Long id;
 	private String name;
 	private Integer nroRangos;
-	@OneToMany(mappedBy="nivelEvaluacion", cascade=CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy="nivelEvaluacion", cascade=CascadeType.REMOVE, fetch = FetchType.EAGER)
 	private Collection<RangoEvaluacion> rangos;
 
 	/**

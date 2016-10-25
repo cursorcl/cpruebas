@@ -42,7 +42,7 @@ public class Curso extends AEntity {
 	private Ciclo ciclo;
 	private Colegio colegio;
 
-	@OneToMany(mappedBy = "curso", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "curso", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
 	private Collection<Alumno> alumnos;
 	private TipoCurso tipoCurso;
 

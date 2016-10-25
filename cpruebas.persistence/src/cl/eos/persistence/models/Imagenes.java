@@ -26,7 +26,7 @@ public class Imagenes extends AEntity {
     private String name;
     private int numero;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private RespuestasEsperadasPrueba respuesta;
 
     @javax.persistence.Transient

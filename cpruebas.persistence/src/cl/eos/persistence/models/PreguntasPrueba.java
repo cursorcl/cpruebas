@@ -66,14 +66,14 @@ public class PreguntasPrueba extends AEntity {
 	private String responses;
 	private Integer exigencia;
 
-	@OneToMany(mappedBy = "prueba", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "prueba", cascade = CascadeType.REMOVE)
 	private List<Formas> formas;
 
-	@OneToMany(mappedBy = "prueba", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "prueba", cascade = CascadeType.REMOVE)
 	@OrderBy("numero ASC")
 	private List<RespuestasEsperadasPrueba> respuestas;
 
-	@OneToMany(mappedBy = "prueba", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "prueba", cascade = CascadeType.REMOVE)
 	private List<EvaluacionPrueba> evaluaciones;
 
 	/**
