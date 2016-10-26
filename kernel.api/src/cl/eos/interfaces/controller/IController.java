@@ -82,6 +82,7 @@ public interface IController {
 	void findByName(Class<? extends IEntity> entityClazz, String name,
 			IView ... view);
 
+	IEntity findSynchroById(Class<? extends IEntity> entityClazz, Long id);
 	void findById(Class<? extends IEntity> entityClazz, Long id);
 	void findById(Class<? extends IEntity> entityClazz, Long id,
 			IPersistenceListener listener);

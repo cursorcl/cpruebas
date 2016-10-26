@@ -570,4 +570,32 @@ public class RestPersistenceService implements IPersistenceService {
 
     }
 
+    @Override
+    public IEntity findSynchroById(Class<? extends IEntity> entityClazz, Long id) {
+        IEntity lresult = null;
+        String strEntity = entityClazz.getSimpleName();
+        String strQuery = String.format("select c from %s c where c.id = :id", strEntity.toLowerCase());
+
+        EntityManager eManager = eFactory.createEntityManager();
+        eManager.getTransaction().begin();
+
+        Query query = eManager.createQuery(strQuery);
+        if (query != null) {
+            query.setHint(QueryHints.CACHE_STORE_MODE, HintValues.TRUE);
+            query.setParameter("id", id);
+            try {
+                lresult = (IEntity) query.setLockMode(LockModeType.PESSIMISTIC_WRITE).getSingleResult();
+                eManager.getTransaction().commit();
+            } catch (Exception e) {
+                eManager.getTransaction().rollback();
+                LOG.error(
+                        "Error en el findById de la entidad:" + entityClazz.getName() + " / " + e.getMessage());
+                LOG.error(e);
+            }
+
+        }
+        eManager.close();
+        return lresult;
+    }
+
 }

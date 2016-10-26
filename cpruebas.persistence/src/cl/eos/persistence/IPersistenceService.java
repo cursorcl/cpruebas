@@ -96,4 +96,5 @@ public interface IPersistenceService {
 
     void insert(String entity, List<Object> list, IPersistenceListener listener) throws ExceptionBD;
 
+    IEntity findSynchroById(Class<? extends IEntity> entityClazz, Long id);
 }

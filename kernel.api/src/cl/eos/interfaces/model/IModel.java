@@ -99,6 +99,8 @@ public interface IModel {
 
 	void findByName(Class<? extends IEntity> entityClazz, String name);
 
+	IEntity findSynchroById(Class<? extends IEntity> entityClazz, Long id);
+	
 	/**
 	 * Realiza la busqueda del elemento que tiene el mismo identificador de
 	 * entity en la persistencia.

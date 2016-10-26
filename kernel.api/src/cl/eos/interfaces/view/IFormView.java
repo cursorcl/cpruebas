@@ -58,6 +58,8 @@ public interface IFormView extends IView {
   void find(String namedQuery, Map<String, Object> parameters, IPersistenceListener listener);
 
   void findById(Class<? extends IEntity> entityClazz, Long id, IPersistenceListener listener);
+  
+  IEntity findSynchroById(Class<? extends IEntity> entityClazz, Long id);
 
   void findByName(Class<? extends IEntity> entityClazz, String name, IPersistenceListener listener);
 

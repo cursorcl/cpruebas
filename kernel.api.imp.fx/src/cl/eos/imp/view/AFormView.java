@@ -146,4 +146,10 @@ public abstract class AFormView extends AView implements IFormView {
 	public void findByName(Class<? extends IEntity> entityClazz, String name) {
 		controller.findByName(entityClazz, name, (IPersistenceListener) this);
 	}
+
+    @Override
+    public IEntity findSynchroById(Class<? extends IEntity> entityClazz, Long id) {
+        // TODO Auto-generated method stub
+        return controller.findSynchroById(entityClazz, id);
+    }
 }

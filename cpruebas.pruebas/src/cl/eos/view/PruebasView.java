@@ -322,19 +322,21 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
         if (otObject instanceof Prueba) {
             prueba = (Prueba)otObject;
         }
-//        else if(otObject instanceof RespuestasEsperadasPrueba)
-//        {
-//            RespuestasEsperadasPrueba r = (RespuestasEsperadasPrueba)otObject;
-//            prueba = r.getPrueba();
-//        }
-//        else if(otObject instanceof EvaluacionPrueba)
-//        {
-//            EvaluacionPrueba e = (EvaluacionPrueba)otObject;
-//            prueba =  e.getPrueba();
-//        }
+        else if(otObject instanceof RespuestasEsperadasPrueba)
+        {
+            RespuestasEsperadasPrueba r = (RespuestasEsperadasPrueba)otObject;
+            prueba = r.getPrueba();
+        }
+        else if(otObject instanceof EvaluacionPrueba)
+        {
+            EvaluacionPrueba e = (EvaluacionPrueba)otObject;
+            prueba =  e.getPrueba();
+
+        }
         
         if(prueba !=  null)
         {
+            prueba =  (Prueba) findSynchroById(Prueba.class, prueba.getId());
             OTPrueba ot = new OTPrueba(prueba);
             int indice = tblListadoPruebas.getItems().lastIndexOf(ot);
             if (indice != -1) {

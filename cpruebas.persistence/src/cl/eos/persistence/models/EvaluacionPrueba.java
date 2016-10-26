@@ -43,7 +43,7 @@ public class EvaluacionPrueba extends AEntity {
     private Prueba prueba;
 
     private Curso curso;
-    @OneToMany(mappedBy = "evaluacionPrueba", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "evaluacionPrueba", cascade = { CascadeType.REMOVE, CascadeType.REFRESH}, orphanRemoval = true)
     private List<PruebaRendida> pruebasRendidas;
     private Long fecha;
     private Profesor profesor;

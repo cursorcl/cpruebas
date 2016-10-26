@@ -38,6 +38,9 @@ public abstract class AController implements IController, IPersistenceListener {
 			} else {
 				result = model.save(entity);
 			}
+
+
+
 			notifySaved(result);
 		}
 		return result;
@@ -204,6 +207,11 @@ public abstract class AController implements IController, IPersistenceListener {
 		model.findById(entityClazz, id, (IPersistenceListener) this);
 	}
 
+	public IEntity findSynchroById(Class<? extends IEntity> entityClazz, Long id)
+	{
+	    return model.findSynchroById(entityClazz, id);
+	}
+	
 	public void findById(Class<? extends IEntity> entityClazz, Long id, IPersistenceListener listener) {
 		model.findById(entityClazz, id, listener);
 	}
