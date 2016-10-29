@@ -19,27 +19,41 @@ public class CalidadLectora extends AEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    
+
     /**
      * Se crea para el manejo de multiusuarios
      */
-    @Version 
+    @Version
     protected int version;
-    
+
+    @Override
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
+    @Override
     public String getName() {
         return name;
     }
 
+    @Override
+    public final int getVersion() {
+        return version;
+    }
+
+    @Override
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    @Override
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public final void setVersion(int version) {
+        this.version = version;
     }
 
     @Override
@@ -47,14 +61,4 @@ public class CalidadLectora extends AEntity {
         return true;
     }
 
-    @Override
-    public final int getVersion() {
-        return version;
-    }
-    @Override
-    public final void setVersion(int version) {
-        this.version = version;
-    }
-    
-    
 }

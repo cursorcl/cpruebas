@@ -5,41 +5,39 @@ import java.util.List;
 
 /**
  * Contiene el resultado de cada uno de los items que conforman el colegio.
+ * 
  * @author colegio
  */
-public class ObjetivosComuna implements IResultado{
+public class ObjetivosComuna implements IResultado {
+
+    public static class Builder {
+        private List<ObjetivosColegio> objetivosColegio;
+        private String comuna;
+
+        public ObjetivosComuna build() {
+            final ObjetivosComuna objColegio = new ObjetivosComuna();
+            objColegio.objetivosColegio = objetivosColegio;
+            objColegio.comuna = comuna;
+            return objColegio;
+        }
+
+        public Builder comuna(String comuna) {
+            this.comuna = comuna;
+            return this;
+        }
+
+        public Builder objetivosComuna(List<ObjetivosColegio> objetivosColegio) {
+            this.objetivosColegio = objetivosColegio;
+            return this;
+        }
+    }
 
     String comuna;
+
     List<ObjetivosColegio> objetivosColegio = new ArrayList<>();
 
     public ObjetivosComuna() {
         comuna = "--";
-    }
-    
-    public List<ObjetivosColegio> getObjetivosColegio() {
-        return objetivosColegio;
-    }
-
-    public void setObjetivosColegio(List<ObjetivosColegio> objetivosColegio) {
-        this.objetivosColegio = objetivosColegio;
-    }
-
-    public String getComuna() {
-        return comuna;
-    }
-
-    public void setColegio(String comuna) {
-        this.comuna = comuna;
-    }
-
-    
-    
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((comuna == null) ? 0 : comuna.hashCode());
-        return result;
     }
 
     @Override
@@ -50,7 +48,7 @@ public class ObjetivosComuna implements IResultado{
             return false;
         if (getClass() != obj.getClass())
             return false;
-        ObjetivosComuna other = (ObjetivosComuna) obj;
+        final ObjetivosComuna other = (ObjetivosComuna) obj;
         if (comuna == null) {
             if (other.comuna != null)
                 return false;
@@ -59,37 +57,34 @@ public class ObjetivosComuna implements IResultado{
         return true;
     }
 
-
-
-    public static class Builder {
-        private List<ObjetivosColegio> objetivosColegio;
-        private String comuna;
-
-        public Builder objetivosComuna(List<ObjetivosColegio> objetivosColegio) {
-            this.objetivosColegio = objetivosColegio;
-            return this;
-        }
-
-        public Builder comuna(String comuna) {
-            this.comuna =  comuna;
-            return this;
-        }
-
-        public ObjetivosComuna build() {
-            ObjetivosComuna objColegio = new ObjetivosComuna();
-            objColegio.objetivosColegio = objetivosColegio;
-            objColegio.comuna = comuna;
-            return objColegio;
-        }
+    public String getComuna() {
+        return comuna;
     }
 
-
+    public List<ObjetivosColegio> getObjetivosColegio() {
+        return objetivosColegio;
+    }
 
     @Override
     public List<TitledItemObjetivo> getResultados() {
         // TODO Auto-generated method stub
         return null;
     }
-    
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + (comuna == null ? 0 : comuna.hashCode());
+        return result;
+    }
+
+    public void setColegio(String comuna) {
+        this.comuna = comuna;
+    }
+
+    public void setObjetivosColegio(List<ObjetivosColegio> objetivosColegio) {
+        this.objetivosColegio = objetivosColegio;
+    }
 
 }

@@ -12,16 +12,12 @@ import javax.persistence.NamedQuery;
 import javax.persistence.PreUpdate;
 import javax.persistence.Version;
 
-import org.eclipse.persistence.annotations.Cache;
-import org.eclipse.persistence.annotations.CacheCoordinationType;
-import org.eclipse.persistence.annotations.CacheType;
-
 import cl.eos.persistence.AEntity;
 import cl.eos.util.Utils;
 
 /**
  * El la {@link Prueba} que ha rendido un {@link Alumno}.
- * 
+ *
  * @author curso
  *
  */
@@ -58,14 +54,6 @@ public class PruebaRendida extends AEntity {
     @Version
     protected int version;
 
-    public final int getVersion() {
-        return version;
-    }
-
-    public final void setVersion(int version) {
-        this.version = version;
-    }
-
     /**
      * Corresponde a la forma asociada a la prueba del alumno.
      */
@@ -81,161 +69,12 @@ public class PruebaRendida extends AEntity {
         alumno = null;
     }
 
-    @Override
-    public Long getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(Long id) {
-        this.id = id;
-
-    }
-
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Alumno getAlumno() {
-        return alumno;
-    }
-
-    public void setAlumno(Alumno alumno) {
-        this.alumno = alumno;
-    }
-
-    public String getRespuestas() {
-        return respuestas;
-    }
-
-    public void setRespuestas(String respuestas) {
-        this.respuestas = respuestas;
-    }
-
-    public Integer getBuenas() {
-        return buenas;
-    }
-
-    public void setBuenas(Integer buenas) {
-        this.buenas = buenas;
-    }
-
-    public Integer getMalas() {
-        return malas;
-    }
-
-    public void setMalas(Integer malas) {
-        this.malas = malas;
-    }
-
-    public Integer getOmitidas() {
-        return omitidas;
-    }
-
-    public void setOmitidas(Integer omitidas) {
-        this.omitidas = omitidas;
-    }
-
-    @Override
-    public boolean validate() {
-        return true;
-    }
-
-    public Float getNota() {
-        return Utils.redondeo2Decimales(nota);
-    }
-
-    public void setNota(Float nota) {
-        this.nota = nota;
-    }
-
-    public Integer getForma() {
-        return forma;
-    }
-
-    public void setForma(Integer forma) {
-        this.forma = forma;
-    }
-
-    public String getRut() {
-        return alumno.getRut();
-    }
-
-    public String getPaterno() {
-        return alumno.getPaterno();
-    }
-
-    public String getMaterno() {
-        return alumno.getMaterno();
-    }
-
-    public String getNombre() {
-        return alumno.getName();
-    }
-
-    public String getCurso() {
-        return alumno.getCurso().getName();
-    }
-
-    public Curso getObjCurso() {
-        return alumno.getCurso();
-    }
-
-    public Colegio getColegio() {
-        return alumno.getCurso().getColegio();
-    }
-
-    
-    public Float getPbuenas() {
-        Float totalRespuestas = (float) (this.malas + this.buenas + this.omitidas);
-        float valor = ((float) this.buenas) / totalRespuestas * 100f;
-        return Utils.redondeo2Decimales(valor);
-    }
-
-    public Integer getPuntaje() {
-        return (Integer) Utils.getPuntaje(getNota().floatValue());
-    }
-
-    public Float getPpuntaje() {
-        float valor = ((float) (Utils.getPuntaje(getNota().floatValue()) / Utils.MAX_PUNTAJE)) * 100f;
-        return Utils.redondeo2Decimales(valor);
-    }
-
-    public Float getPpuntajes() {
-        float valor = ((float) (Utils.getPuntaje(getNota().floatValue()) / Utils.MAX_PUNTAJE)) * 100f;
-        return Utils.redondeo2Decimales(valor);
-
-    }
-
-    public EvaluacionPrueba getEvaluacionPrueba() {
-        return evaluacionPrueba;
-    }
-
-    public void setEvaluacionPrueba(EvaluacionPrueba evaluacionPrueba) {
-        this.evaluacionPrueba = evaluacionPrueba;
-    }
-
-    public RangoEvaluacion getRango() {
-        return rango;
-    }
-
-    public void setRango(RangoEvaluacion rango) {
-        this.rango = rango;
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((alumno == null) ? 0 : alumno.hashCode());
-        result = prime * result + ((evaluacionPrueba == null) ? 0 : evaluacionPrueba.hashCode());
-        return result;
+    @PreUpdate
+    public void detachFromEvaluacion() {
+        if (eliminada) {
+            evaluacionPrueba.getPruebasRendidas().remove(this);
+            evaluacionPrueba = null;
+        }
     }
 
     @Override
@@ -246,7 +85,7 @@ public class PruebaRendida extends AEntity {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        PruebaRendida other = (PruebaRendida) obj;
+        final PruebaRendida other = (PruebaRendida) obj;
         if (alumno == null) {
             if (other.alumno != null)
                 return false;
@@ -260,21 +99,130 @@ public class PruebaRendida extends AEntity {
         return true;
     }
 
+    public Alumno getAlumno() {
+        return alumno;
+    }
+
+    public Integer getBuenas() {
+        return buenas;
+    }
+
+    public Colegio getColegio() {
+        return alumno.getCurso().getColegio();
+    }
+
+    public String getCurso() {
+        return alumno.getCurso().getName();
+    }
+
+    public EvaluacionPrueba getEvaluacionPrueba() {
+        return evaluacionPrueba;
+    }
+
+    public Integer getForma() {
+        return forma;
+    }
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    public Integer getMalas() {
+        return malas;
+    }
+
+    public String getMaterno() {
+        return alumno.getMaterno();
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    public String getNombre() {
+        return alumno.getName();
+    }
+
+    public Float getNota() {
+        return Utils.redondeo2Decimales(nota);
+    }
+
+    public Curso getObjCurso() {
+        return alumno.getCurso();
+    }
+
+    public Integer getOmitidas() {
+        return omitidas;
+    }
+
+    public String getPaterno() {
+        return alumno.getPaterno();
+    }
+
+    public Float getPbuenas() {
+        final Float totalRespuestas = (float) (malas + buenas + omitidas);
+        final float valor = (float) buenas / totalRespuestas * 100f;
+        return Utils.redondeo2Decimales(valor);
+    }
+
+    public Float getPpuntaje() {
+        final float valor = Utils.getPuntaje(getNota().floatValue()) / Utils.MAX_PUNTAJE * 100f;
+        return Utils.redondeo2Decimales(valor);
+    }
+
+    public Float getPpuntajes() {
+        final float valor = Utils.getPuntaje(getNota().floatValue()) / Utils.MAX_PUNTAJE * 100f;
+        return Utils.redondeo2Decimales(valor);
+
+    }
+
+    public Integer getPuntaje() {
+        return Utils.getPuntaje(getNota().floatValue());
+    }
+
+    public RangoEvaluacion getRango() {
+        return rango;
+    }
+
+    public String getRespuestas() {
+        return respuestas;
+    }
+
+    public String getRut() {
+        return alumno.getRut();
+    }
+
+    @Override
+    public final int getVersion() {
+        return version;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + (alumno == null ? 0 : alumno.hashCode());
+        result = prime * result + (evaluacionPrueba == null ? 0 : evaluacionPrueba.hashCode());
+        return result;
+    }
+
     /**
      * Este metodo recalcula la nota y el rango de la prueba rendida. Esto se
      * hace cuando se ha realizado una anulación de alguna pregunta.
      */
     public void reEvaluate() {
-        Prueba prueba = this.getEvaluacionPrueba().getPrueba();
-        List<RespuestasEsperadasPrueba> respuestasEsperadas = prueba.getRespuestas();
-        StringBuilder strResps = new StringBuilder(this.getRespuestas());
+        final Prueba prueba = getEvaluacionPrueba().getPrueba();
+        final List<RespuestasEsperadasPrueba> respuestasEsperadas = prueba.getRespuestas();
+        final StringBuilder strResps = new StringBuilder(getRespuestas());
 
         int buenas = 0;
         int malas = 0;
         int omitidas = 0;
         int anuladas = 0;
-        int nroRespuestas = prueba.getNroPreguntas();
-        int nroLast = Math.abs(strResps.length() - nroRespuestas);
+        final int nroRespuestas = prueba.getNroPreguntas();
+        final int nroLast = Math.abs(strResps.length() - nroRespuestas);
         if (nroLast > 0) {
             for (int n = 0; n < nroLast; n++) {
                 strResps.append("O");
@@ -283,7 +231,7 @@ public class PruebaRendida extends AEntity {
 
         for (int n = 0; n < nroRespuestas; n++) {
             String letter = strResps.substring(n, n + 1);
-            RespuestasEsperadasPrueba rEsperada = respuestasEsperadas.get(n);
+            final RespuestasEsperadasPrueba rEsperada = respuestasEsperadas.get(n);
 
             if (rEsperada.isAnulada()) {
                 rEsperada.setRespuesta("*");
@@ -330,23 +278,72 @@ public class PruebaRendida extends AEntity {
                 }
             }
         }
-        int nroPreguntas = prueba.getNroPreguntas() - anuladas;
-        float nota = Utils.getNota(nroPreguntas, prueba.getExigencia(), buenas, prueba.getPuntajeBase());
-        this.setRespuestas(strResps.toString());
-        this.setBuenas(buenas);
-        this.setMalas(malas);
-        this.setOmitidas(omitidas);
-        this.setNota(nota);
-        float porcentaje = ((float) this.getBuenas()) / nroPreguntas * 100f;
-        RangoEvaluacion rango = prueba.getNivelEvaluacion().getRango(porcentaje);
-        this.setRango(rango);
+        final int nroPreguntas = prueba.getNroPreguntas() - anuladas;
+        final float nota = Utils.getNota(nroPreguntas, prueba.getExigencia(), buenas, prueba.getPuntajeBase());
+        setRespuestas(strResps.toString());
+        setBuenas(buenas);
+        setMalas(malas);
+        setOmitidas(omitidas);
+        setNota(nota);
+        final float porcentaje = (float) getBuenas() / nroPreguntas * 100f;
+        final RangoEvaluacion rango = prueba.getNivelEvaluacion().getRango(porcentaje);
+        setRango(rango);
     }
 
-    @PreUpdate
-    public void detachFromEvaluacion() {
-        if (this.eliminada) {
-            evaluacionPrueba.getPruebasRendidas().remove(this);
-            evaluacionPrueba = null;
-        }
+    public void setAlumno(Alumno alumno) {
+        this.alumno = alumno;
+    }
+
+    public void setBuenas(Integer buenas) {
+        this.buenas = buenas;
+    }
+
+    public void setEvaluacionPrueba(EvaluacionPrueba evaluacionPrueba) {
+        this.evaluacionPrueba = evaluacionPrueba;
+    }
+
+    public void setForma(Integer forma) {
+        this.forma = forma;
+    }
+
+    @Override
+    public void setId(Long id) {
+        this.id = id;
+
+    }
+
+    public void setMalas(Integer malas) {
+        this.malas = malas;
+    }
+
+    @Override
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setNota(Float nota) {
+        this.nota = nota;
+    }
+
+    public void setOmitidas(Integer omitidas) {
+        this.omitidas = omitidas;
+    }
+
+    public void setRango(RangoEvaluacion rango) {
+        this.rango = rango;
+    }
+
+    public void setRespuestas(String respuestas) {
+        this.respuestas = respuestas;
+    }
+
+    @Override
+    public final void setVersion(int version) {
+        this.version = version;
+    }
+
+    @Override
+    public boolean validate() {
+        return true;
     }
 }

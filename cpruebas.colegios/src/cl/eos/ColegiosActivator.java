@@ -3,28 +3,26 @@ package cl.eos;
 import java.io.IOException;
 import java.net.URL;
 
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import cl.eos.controller.ColegiosContoller;
 import cl.eos.interfaces.AActivator;
+import javafx.fxml.FXMLLoader;
 
 public class ColegiosActivator extends AActivator {
-	public ColegiosActivator() {
+    public ColegiosActivator() {
 
-		controller = new ColegiosContoller();
-		
-		URL url = ColegiosActivator.class
-				.getResource("/cl/eos/view/Colegios.fxml");
-		FXMLLoader fxmlLoader = new FXMLLoader();
-		try {
-			pane = (Parent) fxmlLoader.load(url.openStream());
-			view = fxmlLoader.getController();
-			view.setPanel(pane);
-			controller.addView(view);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+        controller = new ColegiosContoller();
 
-	}
+        final URL url = ColegiosActivator.class.getResource("/cl/eos/view/Colegios.fxml");
+        final FXMLLoader fxmlLoader = new FXMLLoader();
+        try {
+            pane = fxmlLoader.load(url.openStream());
+            view = fxmlLoader.getController();
+            view.setPanel(pane);
+            controller.addView(view);
+        } catch (final IOException e) {
+            e.printStackTrace();
+        }
+
+    }
 
 }

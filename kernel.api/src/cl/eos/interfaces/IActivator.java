@@ -5,7 +5,9 @@ import cl.eos.interfaces.view.IView;
 
 public interface IActivator {
 
-	IController getController();
-	IView getView();
-	Object getPane();
+    IController getController();
+
+    Object getPane();
+
+    IView getView();
 }

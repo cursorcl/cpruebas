@@ -7,48 +7,40 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 
-
 /**
  * An entity that map any image to a grid.
- * 
+ *
  * @author Turbo7
  */
-public class ImageInput
-{
+public class ImageInput {
 
-  final int width;
-  final int height;
-  final BufferedImage gridImage;
+    final int width;
+    final int height;
+    final BufferedImage gridImage;
 
-  public ImageInput(int width, int height)
-  {
-    this.width = width;
-    this.height = height;
+    public ImageInput(int width, int height) {
+        this.width = width;
+        this.height = height;
 
-    gridImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-  }
+        gridImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+    }
 
-  public void map(Image image)
-  {
-    Image scaledImage =
-        image.getScaledInstance(width, height, Image.SCALE_SMOOTH);
-    Graphics2D grph = gridImage.createGraphics();
-    grph.drawImage(scaledImage, 0, 0, null);
-    grph.dispose();
-  }
+    public int getHeight() {
+        return height;
+    }
 
-  public double getValue(int x, int y)
-  {
-    return gridImage.getRGB(x, y);
-  }
+    public double getValue(int x, int y) {
+        return gridImage.getRGB(x, y);
+    }
 
-  public int getWidth()
-  {
-    return width;
-  }
+    public int getWidth() {
+        return width;
+    }
 
-  public int getHeight()
-  {
-    return height;
-  }
+    public void map(Image image) {
+        final Image scaledImage = image.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+        final Graphics2D grph = gridImage.createGraphics();
+        grph.drawImage(scaledImage, 0, 0, null);
+        grph.dispose();
+    }
 }

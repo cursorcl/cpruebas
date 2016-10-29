@@ -22,7 +22,7 @@ import cl.eos.persistence.AEntity;
 /**
  * Corresponde a la evaluación de un {@link Curso}. Tiene asociada lista de
  * {@link PruebaRendida} del {@link Curso}.
- * 
+ *
  * @author curso
  *
  */
@@ -43,7 +43,8 @@ public class EvaluacionPrueba extends AEntity {
     private Prueba prueba;
 
     private Curso curso;
-    @OneToMany(mappedBy = "evaluacionPrueba", cascade = { CascadeType.REMOVE, CascadeType.REFRESH}, orphanRemoval = true)
+    @OneToMany(mappedBy = "evaluacionPrueba", cascade = { CascadeType.REMOVE,
+            CascadeType.REFRESH }, orphanRemoval = true)
     private List<PruebaRendida> pruebasRendidas;
     private Long fecha;
     private Profesor profesor;
@@ -60,52 +61,54 @@ public class EvaluacionPrueba extends AEntity {
     }
 
     @Override
-    public Long getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @Override
-    public boolean validate() {
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        final EvaluacionPrueba other = (EvaluacionPrueba) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
         return true;
     }
 
-    public Prueba getPrueba() {
-        return prueba;
+    public String getAsignatura() {
+        return prueba.getAsignatura().getName();
     }
 
-    public void setPrueba(Prueba prueba) {
-        this.prueba = prueba;
+    public Colegio getColegio() {
+        return colegio;
+    }
+
+    public String getColegiocurso() {
+        final StringBuffer buffer = new StringBuffer();
+        buffer.append(colegio.getName());
+        buffer.append("\n");
+        if (curso != null)
+            buffer.append(curso.getName());
+        return buffer.toString();
+    }
+
+    public String getColegioTipoCurso() {
+        final StringBuffer buffer = new StringBuffer();
+        buffer.append(colegio.getName());
+        buffer.append("\n");
+        if (curso != null)
+            buffer.append(curso.getTipoCurso().getName());
+        return buffer.toString();
     }
 
     public Curso getCurso() {
         return curso;
     }
 
-    public void setCurso(Curso curso) {
-        this.curso = curso;
-    }
-
-    public List<PruebaRendida> getPruebasRendidas() {
-        return pruebasRendidas;
-    }
-    //
-    public void setPruebasRendidas(List<PruebaRendida> pruebasRendidas) {
-        this.pruebasRendidas = pruebasRendidas;
+    public Integer getExigencia() {
+        return prueba.getExigencia();
     }
 
     public Long getFecha() {
@@ -113,43 +116,37 @@ public class EvaluacionPrueba extends AEntity {
     }
 
     public LocalDate getFechaLocal() {
-        return LocalDate.ofEpochDay(this.fecha.longValue());
-    }
-
-    public void setFecha(Long fecha) {
-        this.fecha = fecha;
-    }
-
-    public Profesor getProfesor() {
-        return profesor;
-    }
-
-    public void setProfesor(Profesor profesor) {
-        this.profesor = profesor;
-    }
-
-    public Colegio getColegio() {
-        return colegio;
-    }
-
-    public void setColegio(Colegio colegio) {
-        this.colegio = colegio;
-    }
-
-    public String getAsignatura() {
-        return prueba.getAsignatura().getName();
+        return LocalDate.ofEpochDay(fecha.longValue());
     }
 
     public Integer getFormas() {
         return prueba.getNroFormas();
     }
 
-    public String getTipoCurso() {
-        return curso.getTipoCurso().getName();
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 
     public Integer getNroPreguntas() {
         return prueba.getNroPreguntas();
+    }
+
+    public Profesor getProfesor() {
+        return profesor;
+    }
+
+    public Prueba getPrueba() {
+        return prueba;
+    }
+
+    public List<PruebaRendida> getPruebasRendidas() {
+        return pruebasRendidas;
     }
 
     public String getResponses() {
@@ -160,58 +157,65 @@ public class EvaluacionPrueba extends AEntity {
         return prueba.getTipoPrueba();
     }
 
-    public Integer getExigencia() {
-        return prueba.getExigencia();
+    public String getTipoCurso() {
+        return curso.getTipoCurso().getName();
     }
 
+    @Override
     public final int getVersion() {
         return version;
-    }
-
-    public final void setVersion(int version) {
-        this.version = version;
-    }
-
-    public String getColegiocurso() {
-        StringBuffer buffer = new StringBuffer();
-        buffer.append(colegio.getName());
-        buffer.append("\n");
-        if (curso != null)
-            buffer.append(curso.getName());
-        return buffer.toString();
-    }
-
-    public String getColegioTipoCurso() {
-        StringBuffer buffer = new StringBuffer();
-        buffer.append(colegio.getName());
-        buffer.append("\n");
-        if (curso != null)
-            buffer.append(curso.getTipoCurso().getName());
-        return buffer.toString();
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        result = prime * result + (id == null ? 0 : id.hashCode());
         return result;
     }
 
+    public void setColegio(Colegio colegio) {
+        this.colegio = colegio;
+    }
+
+    public void setCurso(Curso curso) {
+        this.curso = curso;
+    }
+
+    public void setFecha(Long fecha) {
+        this.fecha = fecha;
+    }
+
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        EvaluacionPrueba other = (EvaluacionPrueba) obj;
-        if (id == null) {
-            if (other.id != null)
-                return false;
-        } else if (!id.equals(other.id))
-            return false;
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    @Override
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setProfesor(Profesor profesor) {
+        this.profesor = profesor;
+    }
+
+    public void setPrueba(Prueba prueba) {
+        this.prueba = prueba;
+    }
+
+    //
+    public void setPruebasRendidas(List<PruebaRendida> pruebasRendidas) {
+        this.pruebasRendidas = pruebasRendidas;
+    }
+
+    @Override
+    public final void setVersion(int version) {
+        this.version = version;
+    }
+
+    @Override
+    public boolean validate() {
         return true;
     }
 

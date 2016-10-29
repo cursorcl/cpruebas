@@ -6,12 +6,9 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
@@ -21,149 +18,147 @@ import javafx.scene.control.SelectionMode;
 
 public class MigratorController {
 
-	static Connection connection = null;
-	static DatabaseMetaData metadata = null;
-	static Connection connection_multi;
+    static Connection connection = null;
+    static DatabaseMetaData metadata = null;
+    static Connection connection_multi;
 
-	static {
-		try {
-			connection = DriverManager
-					.getConnection("jdbc:mysql://localhost:3306/cpruebas?" + "user=root&password=admin");
-			connection_multi = DriverManager
-					.getConnection("jdbc:mysql://localhost:3306/multi_cpruebas?" + "user=root&password=admin");
-		} catch (SQLException e) {
-			System.err.println("There was an error getting the connection: " + e.getMessage());
-		}
-		try {
-			metadata = connection.getMetaData();
-		} catch (SQLException e) {
-			System.err.println("There was an error getting the metadata: " + e.getMessage());
-		}
-	}
+    static {
+        try {
+            MigratorController.connection = DriverManager
+                    .getConnection("jdbc:mysql://localhost:3306/cpruebas?" + "user=root&password=admin");
+            MigratorController.connection_multi = DriverManager
+                    .getConnection("jdbc:mysql://localhost:3306/multi_cpruebas?" + "user=root&password=admin");
+        } catch (final SQLException e) {
+            System.err.println("There was an error getting the connection: " + e.getMessage());
+        }
+        try {
+            MigratorController.metadata = MigratorController.connection.getMetaData();
+        } catch (final SQLException e) {
+            System.err.println("There was an error getting the metadata: " + e.getMessage());
+        }
+    }
 
-	@FXML
-	ListView<String> lstCpruebas;
-	@FXML
-	ListView<String> lstMulti;
-	@FXML
-	Button btnMigrar;
-	@FXML
-	ProgressBar progress;
-	@FXML
-	ProgressIndicator pIndicator;
+    @FXML
+    ListView<String> lstCpruebas;
+    @FXML
+    ListView<String> lstMulti;
+    @FXML
+    Button btnMigrar;
+    @FXML
+    ProgressBar progress;
+    @FXML
+    ProgressIndicator pIndicator;
 
-	String[] tablas = { "Alumno", "Asignatura", "Curso", "Profesor", "Colegio", "EjeTematico", "Habilidad", "Prueba",
-			"TipoPrueba", "Ciclo", "PruebaRendida", "NivelEvaluacion", "RangoEvaluacion", "TipoCurso",
-			"EvaluacionPrueba", "RespuestasEsperadasPrueba", "Formas", "EvaluacionEjeTematico" };
+    String[] tablas = { "Alumno", "Asignatura", "Curso", "Profesor", "Colegio", "EjeTematico", "Habilidad", "Prueba",
+            "TipoPrueba", "Ciclo", "PruebaRendida", "NivelEvaluacion", "RangoEvaluacion", "TipoCurso",
+            "EvaluacionPrueba", "RespuestasEsperadasPrueba", "Formas", "EvaluacionEjeTematico" };
 
-	public MigratorController() {
-		super();
-	}
+    public MigratorController() {
+        super();
+    }
 
-	@FXML
-	public void initialize() {
+    @FXML
+    public void initialize() {
 
-		initializeMulti();
-		initializeCPruebas();
-		btnMigrar.setOnAction(new EventHandler<ActionEvent>() {
+        initializeMulti();
+        initializeCPruebas();
+        btnMigrar.setOnAction(event -> {
+            try {
+                migrar();
+            } catch (final SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        });
+    }
 
-			@Override
-			public void handle(ActionEvent event) {
-				try {
-					migrar();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+    void initializeCPruebas() {
 
-	void initializeMulti() {
-		ObservableList<String> oList = FXCollections.observableArrayList(tablas);
-		lstMulti.setItems(oList);
-		lstMulti.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        final ObservableList<String> oList = FXCollections.observableArrayList(tablas);
+        lstCpruebas.setItems(oList);
+    }
 
-	}
+    void initializeMulti() {
+        final ObservableList<String> oList = FXCollections.observableArrayList(tablas);
+        lstMulti.setItems(oList);
+        lstMulti.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
-	void initializeCPruebas() {
+    }
 
-		ObservableList<String> oList = FXCollections.observableArrayList(tablas);
-		lstCpruebas.setItems(oList);
-	}
+    protected void migrar() throws SQLException {
+        final float total = tablas.length + 1;
+        // Primero creo valores de TipoColegio
+        int n = 1;
 
-	protected void migrar() throws SQLException {
-		float total = tablas.length + 1;
-		// Primero creo valores de TipoColegio
-		int n = 1;
+        final ObservableList<String> lst = lstMulti.getItems();
+        for (final String table : lst) {
+            lstMulti.getSelectionModel().select(n - 1);
+            n = n + 1;
+            final float prog = n / total;
+            pIndicator.setProgress(prog);
+            progress.setProgress(prog);
+        }
+        procesar(lstMulti.getItems());
+    }
 
-		ObservableList<String> lst = lstMulti.getItems();
-		for (String table : lst) {
-			lstMulti.getSelectionModel().select(n - 1);
-			n = n + 1;
-			float prog = ((float) n) / total;
-			pIndicator.setProgress(prog);
-			progress.setProgress(prog);
-		}
-		procesar(lstMulti.getItems());
-	}
+    public void procesar(ObservableList<String> tables) throws SQLException {
 
-	public void procesar(ObservableList<String> tables) throws SQLException {
+        ResultSet rs = null;
+        for (final String actualTable : tables) {
+            rs = MigratorController.metadata.getColumns(null, null, actualTable, null);
 
-		ResultSet rs = null;
-		for (String actualTable : tables) {
-			rs = metadata.getColumns(null, null, actualTable, null);
+            final String sqlI = "insert into %s (%s) values (%s)";
+            final StringBuffer values = new StringBuffer();
+            final StringBuffer params = new StringBuffer();
+            int count = 0;
+            while (rs.next()) {
+                if (values.length() > 0)
+                    values.append(", ");
+                values.append(rs.getString("COLUMN_NAME"));
 
-			String sqlI = "insert into %s (%s) values (%s)";
-			StringBuffer values = new StringBuffer();
-			StringBuffer params = new StringBuffer();
-			int count = 0;
-			while (rs.next()) {
-				if (values.length() > 0)
-					values.append(", ");
-				values.append(rs.getString("COLUMN_NAME"));
+                if (params.length() > 0)
+                    params.append(", ");
+                params.append("?");
+                count++;
+            }
 
-				if (params.length() > 0)
-					params.append(", ");
-				params.append("?");
-				count++;
-			}
+            if (actualTable.equalsIgnoreCase("alumno")) {
+                values.append(", " + "TIPOALUMNO_ID");
+                params.append(", ?");
 
-			if (actualTable.equalsIgnoreCase("alumno")) {
-				values.append(", " + "TIPOALUMNO_ID");
-				params.append(", ?");
+            }
+            values.append(", " + "VERSION");
+            params.append(", ?");
 
-			}
-			values.append(", " + "VERSION");
-			params.append(", ?");
+            final String sqlInsert = String.format(sqlI, actualTable, values.toString(), params.toString());
 
-			String sqlInsert = String.format(sqlI, actualTable, values.toString(), params.toString());
+            PreparedStatement pInsertStat = MigratorController.connection_multi
+                    .prepareStatement("insert into tipoalumno (0, 'TODOS', 1)");
+            pInsertStat.execute();
+            pInsertStat = MigratorController.connection_multi.prepareStatement("insert into tipoalumno (1, 'PIE', 1)");
+            pInsertStat.execute();
+            pInsertStat = MigratorController.connection_multi
+                    .prepareStatement("insert into tipoalumno (2, 'NO PIE', 1)");
+            pInsertStat.execute();
 
-			PreparedStatement pInsertStat = connection_multi.prepareStatement("insert into tipoalumno (0, 'TODOS', 1)");
-			pInsertStat.execute();
-			pInsertStat = connection_multi.prepareStatement("insert into tipoalumno (1, 'PIE', 1)");
-			pInsertStat.execute();
-			pInsertStat = connection_multi.prepareStatement("insert into tipoalumno (2, 'NO PIE', 1)");
-			pInsertStat.execute();
+            final String sqlSelect = "select * from " + actualTable.toLowerCase();
+            final PreparedStatement pStat = MigratorController.connection.prepareStatement(sqlSelect);
+            final ResultSet res = pStat.executeQuery();
+            while (res.next()) {
+                pInsertStat = MigratorController.connection_multi.prepareStatement(sqlInsert);
+                int n = 0;
+                for (n = 1; n <= count; n++) {
+                    pInsertStat.setObject(n, res.getObject(n));
+                }
+                if (actualTable.equalsIgnoreCase("alumno")) {
+                    pInsertStat.setInt(n++, 2);
+                }
+                pInsertStat.setInt(n++, 1);
+                pInsertStat.execute();
+            }
 
-			String sqlSelect = "select * from " + actualTable.toLowerCase();
-			PreparedStatement pStat = connection.prepareStatement(sqlSelect);
-			ResultSet res = pStat.executeQuery();
-			while (res.next()) {
-				pInsertStat = connection_multi.prepareStatement(sqlInsert);
-				int n = 0;
-				for (n = 1; n <= count; n++) {
-					pInsertStat.setObject(n, res.getObject(n));
-				}
-				if (actualTable.equalsIgnoreCase("alumno")) {
-					pInsertStat.setInt(n++, 2);
-				}
-				pInsertStat.setInt(n++, 1);
-				pInsertStat.execute();
-			}
+        }
 
-		}
-
-	}
+    }
 
 }

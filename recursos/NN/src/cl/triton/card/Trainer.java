@@ -13,48 +13,41 @@ import cl.sisdef.util.UtilLineLogging;
 /**
  * @author Turbo7
  */
-public class Trainer extends JFrame
-{
-  private static final long serialVersionUID = 1L;
+public class Trainer extends JFrame {
+    private static final long serialVersionUID = 1L;
 
-  Trainer(String title)
-  {
-    super(title);
+    static void createAndShowGUI() {
+        // Create and set up the window.
+        final JFrame frame = new Trainer("Trainer");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setPreferredSize(new Dimension(600, 540));
 
-    initialize();
-  }
+        // Display the window.
+        frame.pack();
+        frame.setVisible(true);
+    }
 
-  final void initialize()
-  {
-    getContentPane().add(new TrainerPanel(), BorderLayout.CENTER);
-  }
+    /**
+     * @param args
+     */
+    public static void main(String[] args) {
+        UtilLineLogging.initialize(null);
+        javax.swing.SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                Trainer.createAndShowGUI();
+            }
+        });
+    }
 
-  static void createAndShowGUI()
-  {
-    // Create and set up the window.
-    JFrame frame = new Trainer("Trainer");
-    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    frame.setPreferredSize(new Dimension(600, 540));
+    Trainer(String title) {
+        super(title);
 
-    // Display the window.
-    frame.pack();
-    frame.setVisible(true);
-  }
+        initialize();
+    }
 
-  /**
-   * @param args
-   */
-  public static void main(String[] args)
-  {
-    UtilLineLogging.initialize(null);
-    javax.swing.SwingUtilities.invokeLater(new Runnable()
-    {
-      @Override
-      public void run()
-      {
-        createAndShowGUI();
-      }
-    });
-  }
+    final void initialize() {
+        getContentPane().add(new TrainerPanel(), BorderLayout.CENTER);
+    }
 
 }

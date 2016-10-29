@@ -16,158 +16,165 @@ import org.eclipse.persistence.annotations.CacheType;
 import cl.eos.persistence.AEntity;
 
 @Entity(name = "alumno")
-@Cache(
-        type=CacheType.NONE,
-        size=64000,  // Use 64,000 as the initial cache size.
-        expiry=360000,  // 6 minutes
-        coordinationType=CacheCoordinationType.INVALIDATE_CHANGED_OBJECTS  // if cache coordination is used, only send invalidation messages.
-      )
+@Cache(type = CacheType.NONE, size = 64000, // Use 64,000 as the initial cache
+                                            // size.
+        expiry = 360000, // 6 minutes
+        coordinationType = CacheCoordinationType.INVALIDATE_CHANGED_OBJECTS // if
+                                                                            // cache
+                                                                            // coordination
+                                                                            // is
+                                                                            // used,
+                                                                            // only
+                                                                            // send
+                                                                            // invalidation
+                                                                            // messages.
+)
 @NamedQueries({
-		@NamedQuery(name = "Alumno.findAll", query = "SELECT e FROM alumno e order by e.colegio.name, e.curso.name, e.paterno, e.materno, e.name") })
+        @NamedQuery(name = "Alumno.findAll", query = "SELECT e FROM alumno e order by e.colegio.name, e.curso.name, e.paterno, e.materno, e.name") })
 public class Alumno extends AEntity {
 
-	private static final long serialVersionUID = 1L;
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	private String rut;
-	private String name;
-	private String paterno;
-	private String materno;
-	private String direccion;
-	private Colegio colegio;
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String rut;
+    private String name;
+    private String paterno;
+    private String materno;
+    private String direccion;
+    private Colegio colegio;
 
-	@ManyToOne
-	private TipoAlumno tipoAlumno;
+    @ManyToOne
+    private TipoAlumno tipoAlumno;
 
-	@ManyToOne
-	private Curso curso;
+    @ManyToOne
+    private Curso curso;
 
+    /**
+     * Se crea para el manejo de multiusuarios
+     */
+    @Version
+    protected int version;
 
-	@Override
-	public Long getId() {
-		return id;
-	}
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        final Alumno other = (Alumno) obj;
+        if (rut == null) {
+            if (other.rut != null)
+                return false;
+        } else if (!rut.equals(other.rut))
+            return false;
+        return true;
+    }
 
-	@Override
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public Colegio getColegio() {
+        return colegio;
+    }
 
-	@Override
-	public String getName() {
-		return name;
-	}
+    public Curso getCurso() {
+        return curso;
+    }
 
-	@Override
-	public void setName(String name) {
-		this.name = name;
-	}
+    public String getDireccion() {
+        return direccion;
+    }
 
-	@Override
-	public boolean validate() {
-		return true;
-	}
+    @Override
+    public Long getId() {
+        return id;
+    }
 
-	public String getRut() {
-		return rut;
-	}
+    public String getMaterno() {
+        return materno;
+    }
 
-	public void setRut(String rut) {
-		this.rut = rut;
-	}
+    @Override
+    public String getName() {
+        return name;
+    }
 
-	public String getPaterno() {
-		return paterno;
-	}
+    public String getPaterno() {
+        return paterno;
+    }
 
-	public void setPaterno(String paterno) {
-		this.paterno = paterno;
-	}
+    public String getRut() {
+        return rut;
+    }
 
-	public String getMaterno() {
-		return materno;
-	}
+    public final TipoAlumno getTipoAlumno() {
+        return tipoAlumno;
+    }
 
-	public void setMaterno(String materno) {
-		this.materno = materno;
-	}
+    @Override
+    public final int getVersion() {
+        return version;
+    }
 
-	public String getDireccion() {
-		return direccion;
-	}
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + (rut == null ? 0 : rut.hashCode());
+        return result;
+    }
 
-	public void setDireccion(String direccion) {
-		this.direccion = direccion;
-	}
+    public void setColegio(Colegio colegio) {
+        this.colegio = colegio;
+    }
 
-	public Colegio getColegio() {
-		return colegio;
-	}
+    public void setCurso(Curso curso) {
+        this.curso = curso;
+    }
 
-	public void setColegio(Colegio colegio) {
-		this.colegio = colegio;
-	}
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
 
-	public Curso getCurso() {
-		return curso;
-	}
+    @Override
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setCurso(Curso curso) {
-		this.curso = curso;
-	}
+    public void setMaterno(String materno) {
+        this.materno = materno;
+    }
 
-	public final TipoAlumno getTipoAlumno() {
-		return tipoAlumno;
-	}
+    @Override
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public final void setTipoAlumno(TipoAlumno tipoAlumno) {
-		this.tipoAlumno = tipoAlumno;
-	}
+    public void setPaterno(String paterno) {
+        this.paterno = paterno;
+    }
 
-	/**
-	 * Se crea para el manejo de multiusuarios
-	 */
-	@Version
-	protected int version;
+    public void setRut(String rut) {
+        this.rut = rut;
+    }
 
-	public final int getVersion() {
-		return version;
-	}
+    public final void setTipoAlumno(TipoAlumno tipoAlumno) {
+        this.tipoAlumno = tipoAlumno;
+    }
 
-	public final void setVersion(int version) {
-		this.version = version;
-	}
+    @Override
+    public final void setVersion(int version) {
+        this.version = version;
+    }
 
-	
-	@Override
-	public String toString() {
-		return String.format("%s %s %s", paterno, materno, name);
-	}
+    @Override
+    public String toString() {
+        return String.format("%s %s %s", paterno, materno, name);
+    }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((rut == null) ? 0 : rut.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Alumno other = (Alumno) obj;
-		if (rut == null) {
-			if (other.rut != null)
-				return false;
-		} else if (!rut.equals(other.rut))
-			return false;
-		return true;
-	}
+    @Override
+    public boolean validate() {
+        return true;
+    }
 
 }

@@ -18,102 +18,111 @@ import org.eclipse.persistence.annotations.CacheType;
 import cl.eos.persistence.AEntity;
 
 @Entity(name = "formas")
-@Cache(
-        type=CacheType.NONE,
-        size=64000,  // Use 64,000 as the initial cache size.
-        expiry=360000,  // 6 minutes
-        coordinationType=CacheCoordinationType.INVALIDATE_CHANGED_OBJECTS  // if cache coordination is used, only send invalidation messages.
-      )
+@Cache(type = CacheType.NONE, size = 64000, // Use 64,000 as the initial cache
+                                            // size.
+        expiry = 360000, // 6 minutes
+        coordinationType = CacheCoordinationType.INVALIDATE_CHANGED_OBJECTS // if
+                                                                            // cache
+                                                                            // coordination
+                                                                            // is
+                                                                            // used,
+                                                                            // only
+                                                                            // send
+                                                                            // invalidation
+                                                                            // messages.
+)
 @NamedQueries({ @NamedQuery(name = "Formas.findAll", query = "SELECT e FROM formas e"),
-		@NamedQuery(name = "Formas.findByPrueba", query = "SELECT e FROM formas e WHERE e.prueba.id = :pruebaId"),
-		@NamedQuery(name = "Formas.deleteByPrueba", query = "DELETE FROM formas e WHERE e.prueba.id = :pruebaId") })
+        @NamedQuery(name = "Formas.findByPrueba", query = "SELECT e FROM formas e WHERE e.prueba.id = :pruebaId"),
+        @NamedQuery(name = "Formas.deleteByPrueba", query = "DELETE FROM formas e WHERE e.prueba.id = :pruebaId") })
 
 public class Formas extends AEntity {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@Column(length = 100)
-	private String name;
+    @Column(length = 100)
+    private String name;
 
-	private Integer forma;
-	/**
-	 * Indica el orden en que se imprimieron las preguntas.
-	 */
-	private String orden;
+    private Integer forma;
+    /**
+     * Indica el orden en que se imprimieron las preguntas.
+     */
+    private String orden;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	private Prueba prueba;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Prueba prueba;
 
-	/**
-	 * Se crea para el manejo de multiusuarios
-	 */
-	@Version
-	protected int version;
+    /**
+     * Se crea para el manejo de multiusuarios
+     */
+    @Version
+    protected int version;
 
-	public final int getVersion() {
-		return version;
-	}
+    public Integer getForma() {
+        return forma;
+    }
 
-	public final void setVersion(int version) {
-		this.version = version;
-	}
+    @Override
+    public Long getId() {
+        return id;
+    }
 
-	public Prueba getPrueba() {
-		return prueba;
-	}
+    @Override
+    public String getName() {
+        return name;
+    }
 
-	public void setPrueba(Prueba prueba) {
-		this.prueba = prueba;
-	}
+    public String getOrden() {
+        return orden;
+    }
 
-	@Override
-	public Long getId() {
-		return id;
-	}
+    public Prueba getPrueba() {
+        return prueba;
+    }
 
-	@Override
-	public void setId(Long id) {
-		this.id = id;
-	}
+    @Override
+    public final int getVersion() {
+        return version;
+    }
 
-	@Override
-	public String getName() {
-		return name;
-	}
+    public void setForma(Integer forma) {
+        this.forma = forma;
+    }
 
-	@Override
-	public void setName(String name) {
-		this.name = name;
-	}
+    @Override
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	@Override
-	public boolean validate() {
-		return true;
-	}
+    @Override
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public Integer getForma() {
-		return forma;
-	}
+    public void setOrden(String orden) {
+        this.orden = orden;
+    }
 
-	public void setForma(Integer forma) {
-		this.forma = forma;
-	}
+    public void setPrueba(Prueba prueba) {
+        this.prueba = prueba;
+    }
 
-	public String getOrden() {
-		return orden;
-	}
+    @Override
+    public final void setVersion(int version) {
+        this.version = version;
+    }
 
-	public void setOrden(String orden) {
-		this.orden = orden;
-	}
+    @Override
+    public String toString() {
+        return name;
+    }
 
-	@Override
-	public String toString() {
-		return name;
-	}
+    @Override
+    public boolean validate() {
+        return true;
+    }
 
 }

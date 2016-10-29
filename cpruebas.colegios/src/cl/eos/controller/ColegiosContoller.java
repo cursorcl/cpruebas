@@ -7,14 +7,14 @@ import cl.eos.persistence.models.TipoColegio;
 
 public class ColegiosContoller extends AController {
 
-	public ColegiosContoller() {
-		
-	}
+    public ColegiosContoller() {
 
-	@Override
-	public void initialize() {
-		model = new ColegiosModel();
-		model.findAll(Colegio.class, this);
-		model.findAll(TipoColegio.class, this);
-	}
+    }
+
+    @Override
+    public void initialize() {
+        model = new ColegiosModel();
+        model.findAll(Colegio.class, this);
+        model.findAll(TipoColegio.class, this);
+    }
 }

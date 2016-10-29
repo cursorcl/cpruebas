@@ -16,116 +16,111 @@ import cl.eos.interfaces.entity.IPersistenceListener;
  * <p>
  * Un modelo sabe que Entity accede en la persistencia, por lo tanto todas las
  * operaciones que realiza son sobre la entidad que maneja.
- * 
+ *
  * <p>
- * 
+ *
  * @author eosorio
  */
 public interface IModel {
 
-	/**
-	 * Establece el controlador al modelo.
-	 * 
-	 * @param controller
-	 *            Controlador de la funcion que se asocia al modelo.
-	 */
+    /**
+     * Elimina el elemento en el medio de persistencia.
+     * 
+     * @param entity
+     *            El elemento a ser eliminado.
+     */
+    IEntity delete(IEntity entity);
 
-	void setController(IController controller);
+    /**
+     * Elimina los elementos en el medio de persistencia.
+     * 
+     * @param entity
+     *            Lista de elementos a ser eliminados.
+     */
+    void delete(List<? extends IEntity> entity);
 
-	/**
-	 * Obtiene el controlador asociado al modelo.
-	 * 
-	 * @return Controlador que se encuentra asociado al modelo.
-	 */
-	IController getController();
+    void find(final String namedQuery, final Map<String, Object> parameters);
 
-	/**
-	 * Graba el elemento en el medio de persistencia.
-	 * 
-	 * @param entity
-	 *            El elemento a ser grabado.
-	 */
-	IEntity save(IEntity entity);
+    void find(final String namedQuery, final Map<String, Object> parameters, IPersistenceListener listener);
 
-	/**
-	 * Elimina el elemento en el medio de persistencia.
-	 * 
-	 * @param entity
-	 *            El elemento a ser eliminado.
-	 */
-	IEntity delete(IEntity entity);
+    void findAll(Class<? extends IEntity> entityClazz);
 
-	/**
-	 * Elimina los elementos en el medio de persistencia.
-	 * 
-	 * @param entity
-	 *            Lista de elementos a ser eliminados.
-	 */
-	void delete(List<? extends IEntity> entity);
+    /**
+     * Busca todos los registros de una entidad.
+     * 
+     * @param entityClazz
+     *            Clase que se quiere buscar.
+     * @param listener
+     *            A quien se le notifica del termino de la ejecucion.
+     */
+    void findAll(Class<? extends IEntity> entityClazz, IPersistenceListener listener);
 
-	/**
-	 * Graba el elemento en el medio de persistencia, asumiendo que existe.
-	 * 
-	 * @param entity
-	 *            El elemento a ser grabado.
-	 */
-	IEntity update(IEntity entity);
+    void findByAllId(Class<? extends IEntity> entityClazz, Object[] id);
 
-	/**
-	 * Busca todos los registros de una entidad.
-	 * 
-	 * @param entityClazz
-	 *            Clase que se quiere buscar.
-	 * @param listener
-	 *            A quien se le notifica del termino de la ejecucion.
-	 */
-	void findAll(Class<? extends IEntity> entityClazz,
-			IPersistenceListener listener);
+    void findByAllId(Class<? extends IEntity> entityClazz, Object[] id, IPersistenceListener listener);
 
-	void findAll(Class<? extends IEntity> entityClazz);
+    void findById(Class<? extends IEntity> entityClazz, Long id);
 
-	void find(final String namedQuery, final Map<String, Object> parameters,
-			IPersistenceListener listener);
+    void findById(Class<? extends IEntity> entityClazz, Long id, IPersistenceListener listener);
 
-	void find(final String namedQuery, final Map<String, Object> parameters);
+    void findByName(Class<? extends IEntity> entityClazz, String name);
 
-	void findById(Class<? extends IEntity> entityClazz, Long id,
-			IPersistenceListener listener);
+    void findByName(Class<? extends IEntity> entityClazz, String name, IPersistenceListener listener);
 
-	void findById(Class<? extends IEntity> entityClazz, Long id);
+    IEntity findSynchroById(Class<? extends IEntity> entityClazz, Long id);
 
-	void findByName(Class<? extends IEntity> entityClazz, String name,
-			IPersistenceListener listener);
+    /**
+     * Realiza la busqueda del elemento que tiene el mismo identificador de
+     * entity en la persistencia.
+     * 
+     * @param entity
+     *            Entidad que se quiere buscar, se hace uso del identificador
+     *            para la busqueda.
+     * @return Entidad encontrada en la BD, de no encontrarse retorna
+     *         <code>null</code>.
+     */
+    IEntity get(IEntity entity);
 
-	void findByName(Class<? extends IEntity> entityClazz, String name);
+    /**
+     * Realiza la busqueda del elemento que tiene el <code>id</code> en la
+     * persistencia.
+     * 
+     * @param id
+     *            Identificador del elemento a buscar.
+     * @return Entidad encontrada en la BD, de no encontrarse retorna
+     *         <code>null</code>.
+     */
+    IEntity get(Long id);
 
-	IEntity findSynchroById(Class<? extends IEntity> entityClazz, Long id);
-	
-	/**
-	 * Realiza la busqueda del elemento que tiene el mismo identificador de
-	 * entity en la persistencia.
-	 * 
-	 * @param entity
-	 *            Entidad que se quiere buscar, se hace uso del identificador
-	 *            para la busqueda.
-	 * @return Entidad encontrada en la BD, de no encontrarse retorna
-	 *         <code>null</code>.
-	 */
-	IEntity get(IEntity entity);
+    /**
+     * Obtiene el controlador asociado al modelo.
+     * 
+     * @return Controlador que se encuentra asociado al modelo.
+     */
+    IController getController();
 
-	/**
-	 * Realiza la busqueda del elemento que tiene el <code>id</code> en la
-	 * persistencia.
-	 * 
-	 * @param id
-	 *            Identificador del elemento a buscar.
-	 * @return Entidad encontrada en la BD, de no encontrarse retorna
-	 *         <code>null</code>.
-	 */
-	IEntity get(Long id);
+    /**
+     * Graba el elemento en el medio de persistencia.
+     * 
+     * @param entity
+     *            El elemento a ser grabado.
+     */
+    IEntity save(IEntity entity);
 
-	void findByAllId(Class<? extends IEntity> entityClazz, Object[] id);
+    /**
+     * Establece el controlador al modelo.
+     * 
+     * @param controller
+     *            Controlador de la funcion que se asocia al modelo.
+     */
 
-	void findByAllId(Class<? extends IEntity> entityClazz, Object[] id,
-			IPersistenceListener listener);
+    void setController(IController controller);
+
+    /**
+     * Graba el elemento en el medio de persistencia, asumiendo que existe.
+     * 
+     * @param entity
+     *            El elemento a ser grabado.
+     */
+    IEntity update(IEntity entity);
 }

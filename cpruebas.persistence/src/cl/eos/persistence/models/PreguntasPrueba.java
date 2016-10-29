@@ -22,234 +22,242 @@ import org.eclipse.persistence.annotations.CacheType;
 import cl.eos.persistence.AEntity;
 
 /**
- * Esta clase contiene las preguntas asociadas a una prueba.
- * Las preguntas contienen información del tipo de pregunta
+ * Esta clase contiene las preguntas asociadas a una prueba. Las preguntas
+ * contienen información del tipo de pregunta
+ * 
  * @author cursor
  *
  */
 @Entity(name = "preguntasprueba")
-@Cache(
-        type=CacheType.NONE,
-        size=64000,  // Use 64,000 as the initial cache size.
-        expiry=360000,  // 6 minutes
-        coordinationType=CacheCoordinationType.INVALIDATE_CHANGED_OBJECTS  // if cache coordination is used, only send invalidation messages.
-      )
+@Cache(type = CacheType.NONE, size = 64000, // Use 64,000 as the initial cache
+                                            // size.
+        expiry = 360000, // 6 minutes
+        coordinationType = CacheCoordinationType.INVALIDATE_CHANGED_OBJECTS // if
+                                                                            // cache
+                                                                            // coordination
+                                                                            // is
+                                                                            // used,
+                                                                            // only
+                                                                            // send
+                                                                            // invalidation
+                                                                            // messages.
+)
 @NamedQueries({ @NamedQuery(name = "PreuntasPrueba.findAll", query = "SELECT e FROM preguntasprueba e"),
-	 			@NamedQuery(name = "PreuntasPrueba.findByPrueba", query = "SELECT e FROM PreuntasPrueba e WHERE e.prueba.id = :pruebaId order by e.numero")
-			})
+        @NamedQuery(name = "PreuntasPrueba.findByPrueba", query = "SELECT e FROM PreuntasPrueba e WHERE e.prueba.id = :pruebaId order by e.numero") })
 public class PreguntasPrueba extends AEntity {
 
-	public enum Estado {
-		CREADA, DEFINIDA, EVALUADA
-	};
+    public enum Estado {
+        CREADA, DEFINIDA, EVALUADA
+    };
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@Column(length = 100)
-	private String name;
+    @Column(length = 100)
+    private String name;
 
-	private TipoPrueba tipoPrueba;
-	private TipoCurso curso;
-	private Asignatura asignatura;
-	private NivelEvaluacion nivelEvaluacion;
+    private TipoPrueba tipoPrueba;
+    private TipoCurso curso;
+    private Asignatura asignatura;
+    private NivelEvaluacion nivelEvaluacion;
 
-	private Long fecha;
-	private Integer nroPreguntas;
-	private Integer nroFormas;
-	private Integer alternativas;
-	private Profesor profesor;
-	private Integer puntajeBase;
-	private String responses;
-	private Integer exigencia;
+    private Long fecha;
+    private Integer nroPreguntas;
+    private Integer nroFormas;
+    private Integer alternativas;
+    private Profesor profesor;
+    private Integer puntajeBase;
+    private String responses;
+    private Integer exigencia;
 
-	@OneToMany(mappedBy = "prueba", cascade = CascadeType.REMOVE)
-	private List<Formas> formas;
+    @OneToMany(mappedBy = "prueba", cascade = CascadeType.REMOVE)
+    private List<Formas> formas;
 
-	@OneToMany(mappedBy = "prueba", cascade = CascadeType.REMOVE)
-	@OrderBy("numero ASC")
-	private List<RespuestasEsperadasPrueba> respuestas;
+    @OneToMany(mappedBy = "prueba", cascade = CascadeType.REMOVE)
+    @OrderBy("numero ASC")
+    private List<RespuestasEsperadasPrueba> respuestas;
 
-	@OneToMany(mappedBy = "prueba", cascade = CascadeType.REMOVE)
-	private List<EvaluacionPrueba> evaluaciones;
+    @OneToMany(mappedBy = "prueba", cascade = CascadeType.REMOVE)
+    private List<EvaluacionPrueba> evaluaciones;
 
-	/**
-	 * Se crea para el manejo de multiusuarios
-	 */
-	@Version 
-	protected int version;
-	
-	
-	public final int getVersion() {
-		return version;
-	}
+    /**
+     * Se crea para el manejo de multiusuarios
+     */
+    @Version
+    protected int version;
 
-	public final void setVersion(int version) {
-		this.version = version;
-	}
-	
-	public TipoPrueba getTipoPrueba() {
-		return tipoPrueba;
-	}
+    public Integer getAlternativas() {
+        return alternativas;
+    }
 
-	public void setTipoPrueba(TipoPrueba tipoPrueba) {
-		this.tipoPrueba = tipoPrueba;
-	}
+    public Asignatura getAsignatura() {
+        return asignatura;
+    }
 
-	public TipoCurso getCurso() {
-		return curso;
-	}
+    public TipoCurso getCurso() {
+        return curso;
+    }
 
-	public void setCurso(TipoCurso curso) {
-		this.curso = curso;
-	}
+    public Estado getEstado() {
+        Estado estado = Estado.CREADA;
+        if (respuestas != null && !respuestas.isEmpty()) {
+            estado = Estado.DEFINIDA;
+        }
+        if (evaluaciones != null && !evaluaciones.isEmpty()) {
+            estado = Estado.EVALUADA;
+        }
+        return estado;
+    }
 
-	public Asignatura getAsignatura() {
-		return asignatura;
-	}
+    public List<EvaluacionPrueba> getEvaluaciones() {
+        return evaluaciones;
+    }
 
-	public void setAsignatura(Asignatura asignatura) {
-		this.asignatura = asignatura;
-	}
+    public Integer getExigencia() {
+        return exigencia;
+    }
 
-	public Long getFecha() {
-		return fecha;
-	}
+    public Long getFecha() {
+        return fecha;
+    }
 
-	public void setFecha(Long fecha) {
-		this.fecha = fecha;
-	}
+    public LocalDate getFechaLocal() {
+        return LocalDate.ofEpochDay(fecha.longValue());
+    }
 
-	public Integer getNroPreguntas() {
-		return nroPreguntas;
-	}
+    public List<Formas> getFormas() {
+        return formas;
+    }
 
-	public void setNroPreguntas(Integer nroPreguntas) {
-		this.nroPreguntas = nroPreguntas;
-	}
+    @Override
+    public Long getId() {
+        return id;
+    }
 
-	public Integer getNroFormas() {
-		return nroFormas;
-	}
+    @Override
+    public String getName() {
+        return name;
+    }
 
-	public void setNroFormas(Integer nroFormas) {
-		this.nroFormas = nroFormas;
-	}
+    public NivelEvaluacion getNivelEvaluacion() {
+        return nivelEvaluacion;
+    }
 
-	public Integer getAlternativas() {
-		return alternativas;
-	}
+    public Integer getNroFormas() {
+        return nroFormas;
+    }
 
-	public void setAlternativas(Integer alternativas) {
-		this.alternativas = alternativas;
-	}
+    public Integer getNroPreguntas() {
+        return nroPreguntas;
+    }
 
-	public NivelEvaluacion getNivelEvaluacion() {
-		return nivelEvaluacion;
-	}
+    public Profesor getProfesor() {
+        return profesor;
+    }
 
-	public void setNivelEvaluacion(NivelEvaluacion nivelEvaluacion) {
-		this.nivelEvaluacion = nivelEvaluacion;
-	}
+    public Integer getPuntajeBase() {
+        return puntajeBase;
+    }
 
-	public Integer getPuntajeBase() {
-		return puntajeBase;
-	}
+    public String getResponses() {
+        return responses;
+    }
 
-	public void setPuntajeBase(Integer puntajeBase) {
-		this.puntajeBase = puntajeBase;
-	}
+    public List<RespuestasEsperadasPrueba> getRespuestas() {
+        return respuestas;
+    }
 
-	@Override
-	public Long getId() {
-		return id;
-	}
+    public TipoPrueba getTipoPrueba() {
+        return tipoPrueba;
+    }
 
-	@Override
-	public void setId(Long id) {
-		this.id = id;
-	}
+    @Override
+    public final int getVersion() {
+        return version;
+    }
 
-	@Override
-	public String getName() {
-		return name;
-	}
+    public void setAlternativas(Integer alternativas) {
+        this.alternativas = alternativas;
+    }
 
-	@Override
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setAsignatura(Asignatura asignatura) {
+        this.asignatura = asignatura;
+    }
 
-	@Override
-	public boolean validate() {
-		return true;
-	}
+    public void setCurso(TipoCurso curso) {
+        this.curso = curso;
+    }
 
-	public Profesor getProfesor() {
-		return profesor;
-	}
+    public void setExigencia(Integer exigencia) {
+        this.exigencia = exigencia;
+    }
 
-	public void setProfesor(Profesor profesor) {
-		this.profesor = profesor;
-	}
+    public void setFecha(Long fecha) {
+        this.fecha = fecha;
+    }
 
-	public LocalDate getFechaLocal() {
-		return LocalDate.ofEpochDay(this.fecha.longValue());
-	}
+    public void setFormas(List<Formas> formas) {
+        this.formas = formas;
+    }
 
-	public List<Formas> getFormas() {
-		return formas;
-	}
+    @Override
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public Integer getExigencia() {
-		return exigencia;
-	}
+    @Override
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setExigencia(Integer exigencia) {
-		this.exigencia = exigencia;
-	}
+    public void setNivelEvaluacion(NivelEvaluacion nivelEvaluacion) {
+        this.nivelEvaluacion = nivelEvaluacion;
+    }
 
-	public void setFormas(List<Formas> formas) {
-		this.formas = formas;
-	}
+    public void setNroFormas(Integer nroFormas) {
+        this.nroFormas = nroFormas;
+    }
 
-	public List<RespuestasEsperadasPrueba> getRespuestas() {
-		return respuestas;
-	}
+    public void setNroPreguntas(Integer nroPreguntas) {
+        this.nroPreguntas = nroPreguntas;
+    }
 
-	public void setRespuestas(List<RespuestasEsperadasPrueba> respuestas) {
-		this.respuestas = respuestas;
-	}
+    public void setProfesor(Profesor profesor) {
+        this.profesor = profesor;
+    }
 
-	@Override
-	public String toString() {
-		return name;
-	}
+    public void setPuntajeBase(Integer puntajeBase) {
+        this.puntajeBase = puntajeBase;
+    }
 
-	public String getResponses() {
-		return responses;
-	}
+    public void setResponses(String responses) {
+        this.responses = responses;
+    }
 
-	public void setResponses(String responses) {
-		this.responses = responses;
-	}
+    public void setRespuestas(List<RespuestasEsperadasPrueba> respuestas) {
+        this.respuestas = respuestas;
+    }
 
-	public Estado getEstado() {
-		Estado estado = Estado.CREADA;
-		if (respuestas != null && !respuestas.isEmpty()) {
-			estado = Estado.DEFINIDA;
-		}
-		if (evaluaciones != null && !evaluaciones.isEmpty()) {
-			estado = Estado.EVALUADA;
-		}
-		return estado;
-	}
+    public void setTipoPrueba(TipoPrueba tipoPrueba) {
+        this.tipoPrueba = tipoPrueba;
+    }
 
-	public List<EvaluacionPrueba> getEvaluaciones() {
-		return evaluaciones;
-	}
+    @Override
+    public final void setVersion(int version) {
+        this.version = version;
+    }
+
+    @Override
+    public String toString() {
+        return name;
+    }
+
+    @Override
+    public boolean validate() {
+        return true;
+    }
 
 }

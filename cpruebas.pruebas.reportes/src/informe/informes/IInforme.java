@@ -9,7 +9,7 @@ import cl.eos.persistence.models.TipoAlumno;
 /**
  * Representa a los informes que se deben generar dentro del documento word. Se
  * debe crear una clase por cada informe que debe ir en el documento.
- * 
+ *
  * @author cursor
  *
  */
@@ -22,7 +22,7 @@ public interface IInforme {
     /**
      * Es el metodo de entrada al informe. Los parametros son conocidos por el
      * informe, quien lo solicite debe saber que parametros debe enviar.
-     * 
+     *
      * @param tipoAlumno
      *            Tipo de alumno que se considera en el informe.
      * @param colegio
@@ -35,17 +35,17 @@ public interface IInforme {
     void execute(TipoAlumno tipoAlumno, Colegio colegio, Asignatura asignatura);
 
     /**
+     * Construye la sección de página asociada al gráfico. Se asume que utiliza
+     * la información que se generó en el método procesar.
+     *
+     * @param document
+     */
+    void graph(XWPFDocument document);
+
+    /**
      * Construye la sección de página asociada al inoforme. Se asume que utiliza
      * la información que se generó en el metodo Procesar.
      */
     void page(XWPFDocument document);
-
-    /**
-     * Construye la sección de página asociada al gráfico. Se asume que utiliza
-     * la información que se generó en el método procesar.
-     * 
-     * @param document
-     */
-    void graph(XWPFDocument document);
 
 }

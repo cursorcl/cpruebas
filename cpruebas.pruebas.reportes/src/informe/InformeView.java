@@ -21,8 +21,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -58,78 +56,62 @@ public class InformeView extends AFormView {
     Map<String, Object> parameters = new HashMap<>();
 
     public InformeView() {
-        setTitle(INFORME_COMPLETO);
+        setTitle(InformeView.INFORME_COMPLETO);
     }
 
     @FXML
     public void initialize() {
-        cmbColegio.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                colegio = cmbColegio.getSelectionModel().getSelectedItem();
-                if (colegio == null)
-                    return;
-            }
+        cmbColegio.setOnAction(event -> {
+            colegio = cmbColegio.getSelectionModel().getSelectedItem();
+            if (colegio == null)
+                return;
         });
-        cmbTipoAlumno.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                tipoAlumno = cmbTipoAlumno.getSelectionModel().getSelectedItem();
-            }
-        });
-        btnGenerar.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                FileChooser fileChooser = new FileChooser();
-                fileChooser.setInitialDirectory(Utils.getDefaultDirectory());
-                fileChooser.setTitle("Open Resource File");
-                fileChooser.getExtensionFilters().addAll(new ExtensionFilter("Archivos Word", "*.doc", "*.docx"),
-                        new ExtensionFilter("All Files", "*.*"));
-                File selectedFile = fileChooser.showSaveDialog(null);
-                if (selectedFile == null)
-                    return;
+        cmbTipoAlumno.setOnAction(event -> tipoAlumno = cmbTipoAlumno.getSelectionModel().getSelectedItem());
+        btnGenerar.setOnAction(event -> {
+            final FileChooser fileChooser = new FileChooser();
+            fileChooser.setInitialDirectory(Utils.getDefaultDirectory());
+            fileChooser.setTitle("Open Resource File");
+            fileChooser.getExtensionFilters().addAll(new ExtensionFilter("Archivos Word", "*.doc", "*.docx"),
+                    new ExtensionFilter("All Files", "*.*"));
+            final File selectedFile = fileChooser.showSaveDialog(null);
+            if (selectedFile == null)
+                return;
 
-                final ProgressForm dlg = new ProgressForm();
-                dlg.title("Procesando Informe");
-                dlg.message("Esto tomará algunos segundos...");
+            final ProgressForm dlg = new ProgressForm();
+            dlg.title("Procesando Informe");
+            dlg.message("Esto tomará algunos segundos...");
 
-                final Task<Boolean> task = new Task<Boolean>() {
+            final Task<Boolean> task = new Task<Boolean>() {
 
-                    @Override
-                    protected Boolean call() throws Exception {
-                        InformeManager manager = new InformeManager(colegio, selectedFile);
-                        manager.updateFields(txtTipoPrueba.getText(), bdAnoEscolar.getNumber().toString());
-                        int nroAsignaturas = lstAsignaturas.size();
-                        int n = 1;
-                        for (Asignatura asignatura : lstAsignaturas) {
-                            updateMessage(String.format("Procesado asignatura:" + asignatura.getName()));
-                            manager.processAsignatura(tipoAlumno, colegio, asignatura);
-                            updateProgress(n++, nroAsignaturas);
-                        }
-                        manager.finish();
-                        return Boolean.TRUE;
+                @Override
+                protected Boolean call() throws Exception {
+                    final InformeManager manager = new InformeManager(colegio, selectedFile);
+                    manager.updateFields(txtTipoPrueba.getText(), bdAnoEscolar.getNumber().toString());
+                    final int nroAsignaturas = lstAsignaturas.size();
+                    int n = 1;
+                    for (final Asignatura asignatura : lstAsignaturas) {
+                        updateMessage(String.format("Procesado asignatura:" + asignatura.getName()));
+                        manager.processAsignatura(tipoAlumno, colegio, asignatura);
+                        updateProgress(n++, nroAsignaturas);
                     }
-                };
-                task.setOnSucceeded((WorkerStateEvent t) -> {
-                    dlg.getDialogStage().hide();
-                    WindowManager.getInstance().hide(InformeView.this);
-                });
-                task.setOnFailed((WorkerStateEvent t) -> {
-                    dlg.getDialogStage().hide();
-                    throw new RuntimeException(task.getException());
-                });
-
-                dlg.showWorkerProgress(task);
-                Executors.newSingleThreadExecutor().execute(task);
-
-            }
-        });
-        btnCancelar.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
+                    manager.finish();
+                    return Boolean.TRUE;
+                }
+            };
+            task.setOnSucceeded((WorkerStateEvent t1) -> {
+                dlg.getDialogStage().hide();
                 WindowManager.getInstance().hide(InformeView.this);
-            }
+            });
+            task.setOnFailed((WorkerStateEvent t2) -> {
+                dlg.getDialogStage().hide();
+                throw new RuntimeException(task.getException());
+            });
+
+            dlg.showWorkerProgress(task);
+            Executors.newSingleThreadExecutor().execute(task);
+
         });
+        btnCancelar.setOnAction(event -> WindowManager.getInstance().hide(InformeView.this));
         bdAnoEscolar.setMinValue(BigDecimal.valueOf(2010));
         bdAnoEscolar.setMaxValue(BigDecimal.valueOf(2300));
         bdAnoEscolar.setStepwidth(BigDecimal.valueOf(1));
@@ -139,25 +121,25 @@ public class InformeView extends AFormView {
     @Override
     public void onDataArrived(List<Object> list) {
         if (list != null && !list.isEmpty()) {
-            Object entity = list.get(0);
+            final Object entity = list.get(0);
             if (entity instanceof Colegio) {
-                ObservableList<Colegio> pruebas = FXCollections.observableArrayList();
-                for (Object lEntity : list) {
+                final ObservableList<Colegio> pruebas = FXCollections.observableArrayList();
+                for (final Object lEntity : list) {
                     pruebas.add((Colegio) lEntity);
                 }
                 cmbColegio.setItems(pruebas);
             } else if (entity instanceof Asignatura) {
                 lstAsignaturas = FXCollections.observableArrayList();
-                for (Object lEntity : list) {
+                for (final Object lEntity : list) {
                     lstAsignaturas.add((Asignatura) lEntity);
                 }
             } else if (entity instanceof TipoAlumno) {
-                ObservableList<TipoAlumno> lstTipoAlumno = FXCollections.observableArrayList();
-                for (Object lEntity : list) {
+                final ObservableList<TipoAlumno> lstTipoAlumno = FXCollections.observableArrayList();
+                for (final Object lEntity : list) {
                     lstTipoAlumno.add((TipoAlumno) lEntity);
                 }
                 cmbTipoAlumno.setItems(lstTipoAlumno);
-            } 
+            }
         }
     }
 

@@ -33,7 +33,7 @@ import utils.WordUtil;
 
 /**
  * Esta clase genera los valores para el resumen.
- * 
+ *
  * @author colegio
  *
  */
@@ -65,12 +65,12 @@ public class InformeResumenPME implements IInforme {
         this.tipoAlumno = tipoAlumno;
         this.colegio = colegio;
         this.asignatura = asignatura;
-        Map<String, Object> params = new HashMap<>();
-        params.put(COLEGIO_ID, colegio.getId());
-        params.put(ASIGNATURA_ID, asignatura.getId());
-        List<EvaluacionPrueba> evaluaciones = (List<EvaluacionPrueba>) (Object) PersistenceServiceFactory
+        final Map<String, Object> params = new HashMap<>();
+        params.put(InformeResumenPME.COLEGIO_ID, colegio.getId());
+        params.put(InformeResumenPME.ASIGNATURA_ID, asignatura.getId());
+        final List<EvaluacionPrueba> evaluaciones = (List<EvaluacionPrueba>) (Object) PersistenceServiceFactory
                 .getPersistenceService().findSynchro("EvaluacionPrueba.findEvaluacionByColegioAsig", params);
-        if(evaluaciones == null || evaluaciones.isEmpty())
+        if (evaluaciones == null || evaluaciones.isEmpty())
             return;
         if (Objects.isNull(evaluaciones) || evaluaciones.isEmpty())
             return;
@@ -78,13 +78,20 @@ public class InformeResumenPME implements IInforme {
         resultado = procesar(evaluaciones);
     }
 
+    @Override
+    public void graph(XWPFDocument document) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
     public void page(XWPFDocument document) {
 
         XWPFParagraph paragraph = document.createParagraph();
         XWPFRun run = paragraph.createRun();
         run.addCarriageReturn();
 
-        XWPFTable table = document.createTable(resultado.size() + 1, rangos.size() + 1);
+        final XWPFTable table = document.createTable(resultado.size() + 1, rangos.size() + 1);
         WordUtil.setTableFormat(table, 1, 0);
 
         XWPFTableRow tableRow = table.getRow(0);
@@ -94,13 +101,13 @@ public class InformeResumenPME implements IInforme {
         }
 
         int row = 1;
-        for (Curso curso : resultado.keySet()) {
+        for (final Curso curso : resultado.keySet()) {
             tableRow = table.getRow(row++);
             tableRow.getCell(0).setText(curso.getName().toUpperCase());
-            Map<RangoEvaluacion, OTRangoCurso> item = resultado.get(curso);
+            final Map<RangoEvaluacion, OTRangoCurso> item = resultado.get(curso);
             int col = 1;
-            for (RangoEvaluacion rango : rangos) {
-                OTRangoCurso rngCurso = item.get(rango);
+            for (final RangoEvaluacion rango : rangos) {
+                final OTRangoCurso rngCurso = item.get(rango);
                 if (rngCurso != null)
                     tableRow.getCell(col++).setText(String.format("%d", rngCurso.getTotal()));
                 else
@@ -123,55 +130,49 @@ public class InformeResumenPME implements IInforme {
 
     protected Map<Curso, Map<RangoEvaluacion, OTRangoCurso>> procesar(List<EvaluacionPrueba> list) {
 
-        Map<Curso, Map<RangoEvaluacion, OTRangoCurso>> pmeCursos = new HashMap<>();
+        final Map<Curso, Map<RangoEvaluacion, OTRangoCurso>> pmeCursos = new HashMap<>();
 
-        NivelEvaluacion nivel = ((EvaluacionPrueba) list.get(0)).getPrueba().getNivelEvaluacion();
-        for (EvaluacionPrueba evaluacion : list) {
-            List<PruebaRendida> rendidas = evaluacion.getPruebasRendidas();
-            for (PruebaRendida pruebaRendida : rendidas) {
-                Alumno alumno = pruebaRendida.getAlumno();
+        final NivelEvaluacion nivel = list.get(0).getPrueba().getNivelEvaluacion();
+        for (final EvaluacionPrueba evaluacion : list) {
+            final List<PruebaRendida> rendidas = evaluacion.getPruebasRendidas();
+            for (final PruebaRendida pruebaRendida : rendidas) {
+                final Alumno alumno = pruebaRendida.getAlumno();
                 if (alumno == null || alumno.getTipoAlumno() == null) {
                     continue;
                 }
                 if (tipoAlumno.getId() != Constants.PIE_ALL && tipoAlumno.getId() != alumno.getTipoAlumno().getId()) {
                     continue;
                 }
-                float porcentaje = (float) pruebaRendida.getBuenas()
+                final float porcentaje = (float) pruebaRendida.getBuenas()
                         / (float) pruebaRendida.getEvaluacionPrueba().getPrueba().getNroPreguntas() * 100f;
-                RangoEvaluacion rango = nivel.getRango(porcentaje);
-                Curso curso = pruebaRendida.getEvaluacionPrueba().getCurso();
+                final RangoEvaluacion rango = nivel.getRango(porcentaje);
+                final Curso curso = pruebaRendida.getEvaluacionPrueba().getCurso();
 
                 if (pmeCursos.containsKey(curso)) {
-                    Map<RangoEvaluacion, OTRangoCurso> prangos = pmeCursos.get(curso);
+                    final Map<RangoEvaluacion, OTRangoCurso> prangos = pmeCursos.get(curso);
                     if (prangos.containsKey(rango)) {
-                        OTRangoCurso uRango = prangos.get(rango);
+                        final OTRangoCurso uRango = prangos.get(rango);
                         uRango.setTotal(uRango.getTotal() + 1);
                     } else {
-                        OTRangoCurso rangoCurso = new OTRangoCurso();
+                        final OTRangoCurso rangoCurso = new OTRangoCurso();
                         rangoCurso.setCurso(curso);
                         rangoCurso.setRango(rango);
                         rangoCurso.setTotal(rangoCurso.getTotal() + 1);
                         prangos.put(rango, rangoCurso);
                     }
                 } else {
-                    OTRangoCurso rangoCurso = new OTRangoCurso();
+                    final OTRangoCurso rangoCurso = new OTRangoCurso();
                     rangoCurso.setCurso(curso);
                     rangoCurso.setRango(rango);
                     rangoCurso.setTotal(rangoCurso.getTotal() + 1);
 
-                    Map<RangoEvaluacion, OTRangoCurso> pmeRangos = new HashMap<>();
+                    final Map<RangoEvaluacion, OTRangoCurso> pmeRangos = new HashMap<>();
                     pmeRangos.put(rango, rangoCurso);
                     pmeCursos.put(curso, pmeRangos);
                 }
             }
         }
         return pmeCursos;
-    }
-
-    @Override
-    public void graph(XWPFDocument document) {
-        // TODO Auto-generated method stub
-        
     }
 
 }

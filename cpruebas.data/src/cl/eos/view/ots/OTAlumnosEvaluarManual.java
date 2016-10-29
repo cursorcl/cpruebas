@@ -4,31 +4,31 @@ import cl.eos.persistence.models.Alumno;
 
 public class OTAlumnosEvaluarManual {
 
-  private String respuestas;
-  private Alumno alumno;
+    private final String respuestas;
+    private final Alumno alumno;
 
-  public OTAlumnosEvaluarManual(Alumno alumno, String respuestas) {
-    this.alumno = alumno;
-    this.respuestas = respuestas;
-  }
+    public OTAlumnosEvaluarManual(Alumno alumno, String respuestas) {
+        this.alumno = alumno;
+        this.respuestas = respuestas;
+    }
 
-  public String getRut() {
-    return alumno.getRut();
-  }
+    public String getMaterno() {
+        return alumno.getMaterno();
+    }
 
-  public String getPaterno() {
-    return alumno.getPaterno();
-  }
+    public String getNombres() {
+        return alumno.getName();
+    }
 
-  public String getMaterno() {
-    return alumno.getMaterno();
-  }
+    public String getPaterno() {
+        return alumno.getPaterno();
+    }
 
-  public String getNombres() {
-    return alumno.getName();
-  }
+    public String getRespuestas() {
+        return respuestas;
+    }
 
-  public String getRespuestas() {
-    return respuestas;
-  }
+    public String getRut() {
+        return alumno.getRut();
+    }
 }

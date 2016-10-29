@@ -5,32 +5,32 @@ import cl.eos.persistence.models.RangoEvaluacion;
 
 public class OTRangoCurso {
 
-	private RangoEvaluacion rango;
-	private int total;
-	private Curso curso;
+    private RangoEvaluacion rango;
+    private int total;
+    private Curso curso;
 
-	public RangoEvaluacion getRango() {
-		return rango;
-	}
+    public Curso getCurso() {
+        return curso;
+    }
 
-	public void setRango(RangoEvaluacion rango) {
-		this.rango = rango;
-	}
+    public RangoEvaluacion getRango() {
+        return rango;
+    }
 
-	public int getTotal() {
-		return total;
-	}
+    public int getTotal() {
+        return total;
+    }
 
-	public void setTotal(int total) {
-		this.total = total;
-	}
+    public void setCurso(Curso curso) {
+        this.curso = curso;
+    }
 
-	public Curso getCurso() {
-		return curso;
-	}
+    public void setRango(RangoEvaluacion rango) {
+        this.rango = rango;
+    }
 
-	public void setCurso(Curso curso) {
-		this.curso = curso;
-	}
+    public void setTotal(int total) {
+        this.total = total;
+    }
 
 }

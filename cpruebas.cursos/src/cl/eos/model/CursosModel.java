@@ -4,7 +4,4 @@ import cl.eos.imp.model.AModel;
 
 public class CursosModel extends AModel {
 
-
-	
-	
 }

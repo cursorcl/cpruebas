@@ -5,8 +5,6 @@ import java.util.List;
 
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
-import cl.eos.persistence.models.CalidadLectora;
-import cl.eos.persistence.models.RangosLectura;
 import cl.eos.persistence.models.VelocidadLectora;
 import cl.eos.util.ExcelSheetWriterObj;
 import javafx.collections.FXCollections;
@@ -15,15 +13,14 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
 
 public class ViewVelocidadLectora extends AFormView implements EventHandler<ActionEvent> {
     private static final int LARGO_CAMPO_TEXT = 100;
@@ -61,70 +58,18 @@ public class ViewVelocidadLectora extends AFormView implements EventHandler<Acti
         setTitle("Velocidad de Lectura");
     }
 
-    @FXML
-    public void initialize() {
-        inicializaTabla();
-        mnuAgregar.setOnAction(this);
-        mnuGrabar.setOnAction(this);
-        mnuModificar.setOnAction(this);
-        mnuEliminar.setOnAction(this);
-        mnItemEliminar.setOnAction(this);
-        mnItemModificar.setOnAction(this);
-        mnuExportar.setOnAction(this);
-        menuExportar.setOnAction(this);
-
-        mnuModificar.setDisable(true);
-        mnuEliminar.setDisable(true);
-        mnItemEliminar.setDisable(true);
-        mnItemModificar.setDisable(true);
-    }
-
-    private void inicializaTabla() {
-        tblTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        colId.setCellValueFactory(new PropertyValueFactory<VelocidadLectora, Long>("id"));
-        colNombre.setCellValueFactory(new PropertyValueFactory<VelocidadLectora, String>("name"));
-        tblTable.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                ObservableList<VelocidadLectora> itemsSelec = tblTable.getSelectionModel().getSelectedItems();
-                if (itemsSelec.size() > 1) {
-                    mnItemModificar.setDisable(true);
-                    mnItemEliminar.setDisable(false);
-
-                    mnuModificar.setDisable(true);
-                    mnuEliminar.setDisable(false);
-                } else if (itemsSelec.size() == 1) {
-                    
-                    mnItemModificar.setDisable(false);
-                    mnItemEliminar.setDisable(false);
-
-                    mnuModificar.setDisable(false);
-                    mnuEliminar.setDisable(false);
-                }
-            }
-        });
-    }
-
-    private void accionModificar() {
-        VelocidadLectora calidadLectora = tblTable.getSelectionModel().getSelectedItem();
-        if (calidadLectora != null) {
-            txtId.setText(String.format("%d", calidadLectora.getId()));
-            txtNombre.setText(calidadLectora.getName());
-        }
-    }
-
     private void accionEliminar() {
-        ObservableList<VelocidadLectora> otSeleccionados = tblTable.getSelectionModel().getSelectedItems();
+        final ObservableList<VelocidadLectora> otSeleccionados = tblTable.getSelectionModel().getSelectedItems();
         if (otSeleccionados.size() == 0) {
-            Alert alert = new Alert(AlertType.INFORMATION);
+            final Alert alert = new Alert(AlertType.INFORMATION);
             alert.setTitle("Selección registro");
-            alert.setHeaderText(this.getName());
+            alert.setHeaderText(getName());
             alert.setContentText("Debe seleccionar registro a procesar");
             alert.showAndWait();
         } else {
             if (otSeleccionados != null && !otSeleccionados.isEmpty()) {
-                List<VelocidadLectora> colegio = new ArrayList<VelocidadLectora>(otSeleccionados.size());
-                for (VelocidadLectora seleccionado : otSeleccionados) {
+                final List<VelocidadLectora> colegio = new ArrayList<VelocidadLectora>(otSeleccionados.size());
+                for (final VelocidadLectora seleccionado : otSeleccionados) {
                     colegio.add(seleccionado);
                 }
                 delete(colegio);
@@ -135,7 +80,7 @@ public class ViewVelocidadLectora extends AFormView implements EventHandler<Acti
     }
 
     private void accionGrabar() {
-        IEntity entitySelected = getSelectedEntity();
+        final IEntity entitySelected = getSelectedEntity();
         removeAllStyles();
         if (validate()) {
             if (lblError != null) {
@@ -157,54 +102,17 @@ public class ViewVelocidadLectora extends AFormView implements EventHandler<Acti
 
     }
 
-    private void limpiarControles() {
-        txtId.clear();
-        txtNombre.clear();
-    }
-
-    @Override
-    public void onSaved(IEntity entity) {
-        VelocidadLectora calidadLectora = (VelocidadLectora) entity;
-        int indice = tblTable.getItems().lastIndexOf(calidadLectora);
-        if (indice != -1) {
-            tblTable.getItems().set(indice, calidadLectora);
-        } else {
-            tblTable.getItems().add(calidadLectora);
+    private void accionModificar() {
+        final VelocidadLectora calidadLectora = tblTable.getSelectionModel().getSelectedItem();
+        if (calidadLectora != null) {
+            txtId.setText(String.format("%d", calidadLectora.getId()));
+            txtNombre.setText(calidadLectora.getName());
         }
-    }
-
-    @Override
-    public void onDeleted(IEntity entity) {
-        tblTable.getItems().remove((VelocidadLectora) entity);
-    }
-
-    private void removeAllStyles() {
-        removeAllStyle(lblError);
-        removeAllStyle(txtId);
-        removeAllStyle(txtNombre);
-    }
-
-    public boolean validate() {
-        boolean valida = true;
-        if (txtId.getText() == null || txtId.getText().equals("")) {
-            txtId.getStyleClass().add("bad");
-            valida = false;
-        }
-
-        if (txtNombre.getText() == null || txtNombre.getText().equals("")) {
-            txtNombre.getStyleClass().add("bad");
-            valida = false;
-        }
-        if (txtNombre.getText() != null && txtNombre.getText().length() > LARGO_CAMPO_TEXT) {
-            txtNombre.getStyleClass().add("bad");
-            valida = false;
-        }
-        return valida;
     }
 
     @Override
     public void handle(ActionEvent event) {
-        Object source = event.getSource();
+        final Object source = event.getSource();
         if (source == mnuAgregar) {
             limpiarControles();
         } else if (source == mnuModificar || source == mnItemModificar) {
@@ -218,18 +126,105 @@ public class ViewVelocidadLectora extends AFormView implements EventHandler<Acti
             ExcelSheetWriterObj.convertirDatosALibroDeExcel(tblTable);
         }
     }
-    
+
+    private void inicializaTabla() {
+        tblTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        colId.setCellValueFactory(new PropertyValueFactory<VelocidadLectora, Long>("id"));
+        colNombre.setCellValueFactory(new PropertyValueFactory<VelocidadLectora, String>("name"));
+        tblTable.setOnMouseClicked(event -> {
+            final ObservableList<VelocidadLectora> itemsSelec = tblTable.getSelectionModel().getSelectedItems();
+            if (itemsSelec.size() > 1) {
+                mnItemModificar.setDisable(true);
+                mnItemEliminar.setDisable(false);
+
+                mnuModificar.setDisable(true);
+                mnuEliminar.setDisable(false);
+            } else if (itemsSelec.size() == 1) {
+
+                mnItemModificar.setDisable(false);
+                mnItemEliminar.setDisable(false);
+
+                mnuModificar.setDisable(false);
+                mnuEliminar.setDisable(false);
+            }
+        });
+    }
+
+    @FXML
+    public void initialize() {
+        inicializaTabla();
+        mnuAgregar.setOnAction(this);
+        mnuGrabar.setOnAction(this);
+        mnuModificar.setOnAction(this);
+        mnuEliminar.setOnAction(this);
+        mnItemEliminar.setOnAction(this);
+        mnItemModificar.setOnAction(this);
+        mnuExportar.setOnAction(this);
+        menuExportar.setOnAction(this);
+
+        mnuModificar.setDisable(true);
+        mnuEliminar.setDisable(true);
+        mnItemEliminar.setDisable(true);
+        mnItemModificar.setDisable(true);
+    }
+
+    private void limpiarControles() {
+        txtId.clear();
+        txtNombre.clear();
+    }
+
     @Override
     public void onDataArrived(List<Object> list) {
         if (list != null && !list.isEmpty()) {
-            Object entity = list.get(0);
+            final Object entity = list.get(0);
             if (entity instanceof VelocidadLectora) {
-                ObservableList<VelocidadLectora> value = FXCollections.observableArrayList();
-                for (Object iEntity : list) {
+                final ObservableList<VelocidadLectora> value = FXCollections.observableArrayList();
+                for (final Object iEntity : list) {
                     value.add((VelocidadLectora) iEntity);
                 }
                 tblTable.setItems(value.sorted());
             }
         }
+    }
+
+    @Override
+    public void onDeleted(IEntity entity) {
+        tblTable.getItems().remove(entity);
+    }
+
+    @Override
+    public void onSaved(IEntity entity) {
+        final VelocidadLectora calidadLectora = (VelocidadLectora) entity;
+        final int indice = tblTable.getItems().lastIndexOf(calidadLectora);
+        if (indice != -1) {
+            tblTable.getItems().set(indice, calidadLectora);
+        } else {
+            tblTable.getItems().add(calidadLectora);
+        }
+    }
+
+    private void removeAllStyles() {
+        removeAllStyle(lblError);
+        removeAllStyle(txtId);
+        removeAllStyle(txtNombre);
+    }
+
+    @Override
+    public boolean validate() {
+        boolean valida = true;
+        if (txtId.getText() == null || txtId.getText().equals("")) {
+            txtId.getStyleClass().add("bad");
+            valida = false;
+        }
+
+        if (txtNombre.getText() == null || txtNombre.getText().equals("")) {
+            txtNombre.getStyleClass().add("bad");
+            valida = false;
+        }
+        if (txtNombre.getText() != null && txtNombre.getText().length() > ViewVelocidadLectora.LARGO_CAMPO_TEXT) {
+            txtNombre.getStyleClass().add("bad");
+            valida = false;
+        }
+        return valida;
     }
 }

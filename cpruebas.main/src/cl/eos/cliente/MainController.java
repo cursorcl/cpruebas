@@ -30,8 +30,6 @@ import cl.eos.util.ExcelSheetReader;
 import cl.eos.util.ExcelSheetReaderx;
 import cl.eos.util.Utils;
 import cl.eos.velocidadlectora.VelocidadLectoraActivator;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.control.Alert;
@@ -98,7 +96,6 @@ public class MainController {
     @FXML
     private MenuItem mnuRangoLectores;
 
-
     @FXML
     private BreadcrumbBar breadCrumb;
     @FXML
@@ -114,194 +111,45 @@ public class MainController {
         super();
     }
 
-    @FXML
-    public void initialize() {
-        try {
-            WindowManager.getInstance().setRoot(groupRoot);
-            WindowManager.getInstance().setBreadcrumbBar(breadCrumb);
-            IActivator activator = new PruebasActivator();
-            WindowManager.getInstance().setHomeView(activator.getView());
+    public Group getGroup() {
+        return groupRoot;
+    }
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        mnuAlumno.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent arg0) {
-                IActivator activator = new AlumnosActivator();
-                WindowManager.getInstance().show(activator.getView());
-            }
-        });
-
-        mnuCursos.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent arg0) {
-                IActivator activator = new CursosActivator();
-                WindowManager.getInstance().show(activator.getView());
-            }
-        });
-
-        mnuAsignaturas.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent arg0) {
-                IActivator activator = new AsignaturasActivator();
-                WindowManager.getInstance().show(activator.getView());
-            }
-        });
-
-        mnuProfesores.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent arg0) {
-                IActivator activator = new ProfesoresActivator();
-                WindowManager.getInstance().show(activator.getView());
-            }
-        });
-
-        mnuColegios.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent arg0) {
-                IActivator activator = new ColegiosActivator();
-                WindowManager.getInstance().show(activator.getView());
-            }
-        });
-
-        mnuHabilidades.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent arg0) {
-                IActivator activator = new HabilidadesActivator();
-                WindowManager.getInstance().show(activator.getView());
-            }
-        });
-
-        mnuEjesTematicos.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent arg0) {
-                IActivator activator = new EjesTematicosActivator();
-                WindowManager.getInstance().show(activator.getView());
-            }
-        });
-
-        mnuHacerPrueba.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent arg0) {
-                IActivator activator = new PruebasActivator();
-                WindowManager.getInstance().show(activator.getView());
-            }
-        });
-        mnuTipoPrueba.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent arg0) {
-                IActivator activator = new TipoPruebaActivator();
-                WindowManager.getInstance().show(activator.getView());
-            }
-        });
-        mnuNivelEvaluacion.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent arg0) {
-                IActivator activator = new NivelEvaluacionActivator();
-                WindowManager.getInstance().show(activator.getView());
-            }
-        });
-        mnuImportar.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent event) {
-                importarExcel();
-            }
-        });
-        mnuEvaluaciones.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent event) {
-                IActivator activator = new EvaluacionEjeTematicoActivator();
-                WindowManager.getInstance().show(activator.getView());
-            }
-        });
-        mnuNivelEvaluaciones.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent event) {
-                IActivator activator = new NivelEvaluacionActivator();
-                WindowManager.getInstance().show(activator.getView());
-            }
-        });
-        mnuObjetivos.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent event) {
-                IActivator activator = new ObjetivosActivator();
-                WindowManager.getInstance().show(activator.getView());
-            }
-        });
-        mnuVelocidadLectora.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                IActivator activator = new VelocidadLectoraActivator();
-                WindowManager.getInstance().show(activator.getView());
-            }
-        });
-
-        mnuCalidadLectora.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                IActivator activator = new CalidadLectoraActivator();
-                WindowManager.getInstance().show(activator.getView());
-            }
-        });
-        mnuComprensionLectora.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                IActivator activator = new ComprensionLectoraActivator();
-                WindowManager.getInstance().show(activator.getView());
-            }
-        });
-        mnuRangoLectores.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                IActivator activator = new RangosLecturaActivator();
-                WindowManager.getInstance().show(activator.getView());
-            }
-        });
-        mnuListarPruebasPlus.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                IActivator activator = new ListadoPruebasActivator();
-                WindowManager.getInstance().show(activator.getView());
-            }
-        });
+    public Stage getStage() {
+        return stage;
     }
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
     protected void importarExcel() {
-        ButtonType bTypeAlumno = new ButtonType("Alumno");
-        ButtonType bTypeColegio = new ButtonType("Colegio");
-        ButtonType bTypeCurso = new ButtonType("Curso");
-        ButtonType bTypeProfesor = new ButtonType("Profesor");
-        ButtonType bTypeCancel = new ButtonType("Cancelar", ButtonData.CANCEL_CLOSE);
+        final ButtonType bTypeAlumno = new ButtonType("Alumno");
+        final ButtonType bTypeColegio = new ButtonType("Colegio");
+        final ButtonType bTypeCurso = new ButtonType("Curso");
+        final ButtonType bTypeProfesor = new ButtonType("Profesor");
+        final ButtonType bTypeCancel = new ButtonType("Cancelar", ButtonData.CANCEL_CLOSE);
 
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("Información a Importar:");
         alert.setHeaderText("");
         alert.getButtonTypes().setAll(bTypeAlumno, bTypeColegio, bTypeCurso, bTypeProfesor, bTypeCancel);
-        Optional<ButtonType> result = alert.showAndWait();
+        final Optional<ButtonType> result = alert.showAndWait();
 
         if (result.get() != bTypeCancel) {
-            FileChooser fileChooser = new FileChooser();
-            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("XLS files (*.xls), (*.xlsx)",
+            final FileChooser fileChooser = new FileChooser();
+            final FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("XLS files (*.xls), (*.xlsx)",
                     "*.xls", "*.xlsx");
             fileChooser.getExtensionFilters().add(extFilter);
             fileChooser.setInitialDirectory(Utils.getDefaultDirectory());
 
-            File file = fileChooser.showOpenDialog(null);
+            final File file = fileChooser.showOpenDialog(null);
             if (file != null) {
                 List lista = null;
-                String extension = Utils.getFileExtension(file);
+                final String extension = Utils.getFileExtension(file);
                 try {
-                    if (extension.equals(EXTENSION_XLSX)) {
-                        ExcelSheetReaderx excel = new ExcelSheetReaderx();
+                    if (extension.equals(MainController.EXTENSION_XLSX)) {
+                        final ExcelSheetReaderx excel = new ExcelSheetReaderx();
                         lista = excel.readExcelFile(file);
                     } else {
-                        ExcelSheetReader excel = new ExcelSheetReader();
+                        final ExcelSheetReader excel = new ExcelSheetReader();
                         lista = excel.readExcelFile(file);
                     }
                     if (lista == null || lista.isEmpty()) {
@@ -313,14 +161,14 @@ public class MainController {
                     } else
                         PersistenceServiceFactory.getPersistenceService().insert(result.get().getText(), lista, null);
 
-                } catch (ExceptionBD e) {
+                } catch (final ExceptionBD e) {
                     alert = new Alert(AlertType.ERROR);
                     alert.setTitle("Error en la importación desde excel");
                     alert.setHeaderText(null);
                     alert.setContentText(e.getMessage());
                     alert.showAndWait();
 
-                } catch (OutOfMemoryError e) {
+                } catch (final OutOfMemoryError e) {
                     alert = new Alert(AlertType.ERROR);
                     alert.setTitle("Error en la importación desde excel");
                     alert.setHeaderText(null);
@@ -332,17 +180,103 @@ public class MainController {
         }
     }
 
-    public Group getGroup() {
-        return groupRoot;
-    }
+    @FXML
+    public void initialize() {
+        try {
+            WindowManager.getInstance().setRoot(groupRoot);
+            WindowManager.getInstance().setBreadcrumbBar(breadCrumb);
+            final IActivator activator = new PruebasActivator();
+            WindowManager.getInstance().setHomeView(activator.getView());
 
-    public Stage getStage() {
-        return stage;
+        } catch (final Exception e) {
+            e.printStackTrace();
+        }
+        mnuAlumno.setOnAction(arg0 -> {
+            final IActivator activator = new AlumnosActivator();
+            WindowManager.getInstance().show(activator.getView());
+        });
+
+        mnuCursos.setOnAction(arg0 -> {
+            final IActivator activator = new CursosActivator();
+            WindowManager.getInstance().show(activator.getView());
+        });
+
+        mnuAsignaturas.setOnAction(arg0 -> {
+            final IActivator activator = new AsignaturasActivator();
+            WindowManager.getInstance().show(activator.getView());
+        });
+
+        mnuProfesores.setOnAction(arg0 -> {
+            final IActivator activator = new ProfesoresActivator();
+            WindowManager.getInstance().show(activator.getView());
+        });
+
+        mnuColegios.setOnAction(arg0 -> {
+            final IActivator activator = new ColegiosActivator();
+            WindowManager.getInstance().show(activator.getView());
+        });
+
+        mnuHabilidades.setOnAction(arg0 -> {
+            final IActivator activator = new HabilidadesActivator();
+            WindowManager.getInstance().show(activator.getView());
+        });
+
+        mnuEjesTematicos.setOnAction(arg0 -> {
+            final IActivator activator = new EjesTematicosActivator();
+            WindowManager.getInstance().show(activator.getView());
+        });
+
+        mnuHacerPrueba.setOnAction(arg0 -> {
+            final IActivator activator = new PruebasActivator();
+            WindowManager.getInstance().show(activator.getView());
+        });
+        mnuTipoPrueba.setOnAction(arg0 -> {
+            final IActivator activator = new TipoPruebaActivator();
+            WindowManager.getInstance().show(activator.getView());
+        });
+        mnuNivelEvaluacion.setOnAction(arg0 -> {
+            final IActivator activator = new NivelEvaluacionActivator();
+            WindowManager.getInstance().show(activator.getView());
+        });
+        mnuImportar.setOnAction(event -> importarExcel());
+        mnuEvaluaciones.setOnAction(event -> {
+            final IActivator activator = new EvaluacionEjeTematicoActivator();
+            WindowManager.getInstance().show(activator.getView());
+        });
+        mnuNivelEvaluaciones.setOnAction(event -> {
+            final IActivator activator = new NivelEvaluacionActivator();
+            WindowManager.getInstance().show(activator.getView());
+        });
+        mnuObjetivos.setOnAction(event -> {
+            final IActivator activator = new ObjetivosActivator();
+            WindowManager.getInstance().show(activator.getView());
+        });
+        mnuVelocidadLectora.setOnAction(event -> {
+            final IActivator activator = new VelocidadLectoraActivator();
+            WindowManager.getInstance().show(activator.getView());
+        });
+
+        mnuCalidadLectora.setOnAction(event -> {
+            final IActivator activator = new CalidadLectoraActivator();
+            WindowManager.getInstance().show(activator.getView());
+        });
+        mnuComprensionLectora.setOnAction(event -> {
+            final IActivator activator = new ComprensionLectoraActivator();
+            WindowManager.getInstance().show(activator.getView());
+        });
+        mnuRangoLectores.setOnAction(event -> {
+            final IActivator activator = new RangosLecturaActivator();
+            WindowManager.getInstance().show(activator.getView());
+        });
+        mnuListarPruebasPlus.setOnAction(event -> {
+            final IActivator activator = new ListadoPruebasActivator();
+            WindowManager.getInstance().show(activator.getView());
+        });
     }
 
     public void setStage(Stage stage) {
         this.stage = stage;
-        WindowButtons wButtons = new WindowButtons(stage);
+        final WindowButtons wButtons = new WindowButtons(stage);
         AnchorPane.setRightAnchor(wButtons, 1.0);
         AnchorPane.setTopAnchor(wButtons, 1.0);
         pnlWindow.getChildren().add(wButtons);

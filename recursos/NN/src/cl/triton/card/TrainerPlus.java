@@ -13,51 +13,44 @@ import cl.sisdef.util.UtilLineLogging;
 /**
  * @author Turbo7
  */
-public class TrainerPlus extends JFrame
-{
-  private static final long serialVersionUID = 1L;
+public class TrainerPlus extends JFrame {
+    private static final long serialVersionUID = 1L;
 
-  TrainerPlus(String title)
-  {
-    super(title);
+    static void createAndShowGUI() {
+        // Create and set up the window.
+        final JFrame frame = new TrainerPlus("Trainer");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setPreferredSize(new Dimension(800, 400));
 
-    initialize();
-  }
+        // Display the window.
+        frame.pack();
+        frame.setVisible(true);
+    }
 
-  final void initialize()
-  {
-    getContentPane().add(new AnswerTrainerPanel(), BorderLayout.CENTER);
-  }
+    /**
+     * @param args
+     */
+    public static void main(String[] args) {
+        UtilLineLogging.initialize(null);
 
-  static void createAndShowGUI()
-  {
-    // Create and set up the window.
-    JFrame frame = new TrainerPlus("Trainer");
-    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    frame.setPreferredSize(new Dimension(800, 400));
+        System.setProperty("java.util.Arrays.useLegacyMergeSort", "true");
 
-    // Display the window.
-    frame.pack();
-    frame.setVisible(true);
-  }
+        javax.swing.SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                TrainerPlus.createAndShowGUI();
+            }
+        });
+    }
 
-  /**
-   * @param args
-   */
-  public static void main(String[] args)
-  {
-    UtilLineLogging.initialize(null);
+    TrainerPlus(String title) {
+        super(title);
 
-    System.setProperty("java.util.Arrays.useLegacyMergeSort", "true");
+        initialize();
+    }
 
-    javax.swing.SwingUtilities.invokeLater(new Runnable()
-    {
-      @Override
-      public void run()
-      {
-        createAndShowGUI();
-      }
-    });
-  }
+    final void initialize() {
+        getContentPane().add(new AnswerTrainerPanel(), BorderLayout.CENTER);
+    }
 
 }

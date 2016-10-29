@@ -19,102 +19,101 @@ import cl.eos.persistence.AEntity;
 @NamedQueries({ @NamedQuery(name = "NivelEvaluacion.findAll", query = "SELECT e FROM nivelevaluacion e") })
 public class NivelEvaluacion extends AEntity {
 
-	private static final long serialVersionUID = 1L;
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	private String name;
-	private Integer nroRangos;
-	@OneToMany(mappedBy="nivelEvaluacion", cascade=CascadeType.REMOVE, fetch = FetchType.EAGER)
-	private Collection<RangoEvaluacion> rangos;
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name;
+    private Integer nroRangos;
+    @OneToMany(mappedBy = "nivelEvaluacion", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+    private Collection<RangoEvaluacion> rangos;
 
-	/**
-	 * Se crea para el manejo de multiusuarios
-	 */
-	@Version 
-	protected int version;
-	
-	
-	public final int getVersion() {
-		return version;
-	}
+    /**
+     * Se crea para el manejo de multiusuarios
+     */
+    @Version
+    protected int version;
 
-	public final void setVersion(int version) {
-		this.version = version;
-	}
-	
-	
-	public Collection<RangoEvaluacion> getRangos() {
-		return rangos;
-	}
+    @Override
+    public Long getId() {
+        return id;
+    }
 
-	public void setRangos(Collection<RangoEvaluacion> rangos) {
-		this.rangos = rangos;
-	}
+    @Override
+    public String getName() {
+        return name;
+    }
 
-	@Override
-	public Long getId() {
-		return id;
-	}
+    public Integer getNroRangos() {
+        return nroRangos;
+    }
 
-	@Override
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public RangoEvaluacion getRango(float porcentaje) {
+        RangoEvaluacion result = null;
+        int n = 0;
 
-	@Override
-	public String getName() {
-		return name;
-	}
+        for (final RangoEvaluacion rango : rangos) {
+            if (n == 0) {
+                if (porcentaje < rango.getMaximo()) {
+                    result = rango;
+                    break;
+                }
+            } else if (n == nroRangos - 1) {
+                if (porcentaje >= rango.getMinimo()) {
+                    result = rango;
+                    break;
+                }
+            } else {
+                if (porcentaje >= rango.getMinimo() && porcentaje < rango.getMaximo()) {
+                    result = rango;
+                    break;
+                }
+            }
+            n++;
+        }
+        return result;
+    }
 
-	@Override
-	public void setName(String name) {
-		this.name = name;
-	}
+    public Collection<RangoEvaluacion> getRangos() {
+        return rangos;
+    }
 
-	@Override
-	public boolean validate() {
-		return false;
-	}
+    @Override
+    public final int getVersion() {
+        return version;
+    }
 
-	public Integer getNroRangos() {
-		return nroRangos;
-	}
+    @Override
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setNroRangos(Integer nroRangos) {
-		this.nroRangos = nroRangos;
-	}
+    @Override
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	@Override
-	public String toString() {
-		return name;
-	}
+    public void setNroRangos(Integer nroRangos) {
+        this.nroRangos = nroRangos;
+    }
 
-	public RangoEvaluacion getRango(float porcentaje) {
-		RangoEvaluacion result = null;
-		int n = 0;
+    public void setRangos(Collection<RangoEvaluacion> rangos) {
+        this.rangos = rangos;
+    }
 
-		for (RangoEvaluacion rango : rangos) {
-			if (n == 0) {
-				if (porcentaje < rango.getMaximo()) {
-					result = rango;
-					break;
-				}
-			} else if (n == nroRangos - 1) {
-				if (porcentaje >= rango.getMinimo()) {
-					result = rango;
-					break;
-				}
-			} else {
-				if (porcentaje >= rango.getMinimo()
-						&& porcentaje < rango.getMaximo()) {
-					result = rango;
-					break;
-				}
-			}
-			n++;
-		}
-		return result;
-	}
+    @Override
+    public final void setVersion(int version) {
+        this.version = version;
+    }
+
+    @Override
+    public String toString() {
+        return name;
+    }
+
+    @Override
+    public boolean validate() {
+        return false;
+    }
 
 }

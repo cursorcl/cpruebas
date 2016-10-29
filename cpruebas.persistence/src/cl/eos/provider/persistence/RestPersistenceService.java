@@ -37,28 +37,61 @@ import cl.eos.util.Utils;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
-import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.FileChooser;
 
 /**
  * Instancia de servicio para almacenamiento.
- * 
+ *
  * @author cursor
  */
 public class RestPersistenceService implements IPersistenceService {
 
     static final Logger LOG = Logger.getLogger(RestPersistenceService.class);
-    private EntityManagerFactory eFactory;
     private final static String NAME = "multi_cpruebas";
+
+    public static void main(String[] args) {
+        try {
+            final URL url = new URL("http://localhost/tpruebas/tipoalumno");
+            final HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("Accept", "application/json");
+
+            if (conn.getResponseCode() != 200) {
+                throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
+            }
+
+            final BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+
+            String output;
+            System.out.println("Output from Server .... \n");
+            while ((output = br.readLine()) != null) {
+                System.out.println(output);
+            }
+
+            conn.disconnect();
+
+        } catch (final MalformedURLException e) {
+
+            e.printStackTrace();
+
+        } catch (final IOException e) {
+
+            e.printStackTrace();
+
+        }
+
+    }
+
+    private final EntityManagerFactory eFactory;
 
     /**
      * Constructor de la clase.
      */
     public RestPersistenceService() {
 
-        Properties props = new Properties();
+        final Properties props = new Properties();
 
         props.put("javax.persistence.jdbc.user", "root");
         props.put("javax.persistence.jdbc.password", "admin");
@@ -67,36 +100,20 @@ public class RestPersistenceService implements IPersistenceService {
         props.put("eclipselink.allow-zero-id", "true");
         props.put("eclipselink.query-results-cache", "false");
         props.put("eclipselink.cache.shared.default", "false");
-        
-        //props.put("eclipselink.ddl-generation", "create-tables"); //create-or-extend-tables");
-//        props.put("PersistenceUnitProperties.CREATE_JDBC_DDL_FILE", "create.sql");
-//        props.put("eclipselink.ddl-generation.output-mode", "sql-script");
-        
-        eFactory = Persistence.createEntityManagerFactory(NAME, props);
+
+        // props.put("eclipselink.ddl-generation", "create-tables");
+        // //create-or-extend-tables");
+        // props.put("PersistenceUnitProperties.CREATE_JDBC_DDL_FILE",
+        // "create.sql");
+        // props.put("eclipselink.ddl-generation.output-mode", "sql-script");
+
+        eFactory = Persistence.createEntityManagerFactory(RestPersistenceService.NAME, props);
         eFactory.getCache().evictAll();
     }
 
     /*
      * (non-Javadoc)
-     * 
-     * @see
-     * cpruebas.osgi.persistence.IPersistenceService#save(cl.eos.interfaces.
-     * entity.IEntity)
-     */
-    @Override
-    public IEntity save(IEntity entity) {
-        EntityManager eManager = eFactory.createEntityManager();
-        eManager.getTransaction().begin();
-        IEntity eMerged = eManager.merge(entity);
-        eManager.persist(eMerged);
-        eManager.getTransaction().commit();
-        eManager.close();
-        return eMerged;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
+     *
      * @see
      * cpruebas.osgi.persistence.IPersistenceService#delete(cl.eos.interfaces
      * .entity.IEntity)
@@ -105,7 +122,7 @@ public class RestPersistenceService implements IPersistenceService {
     public IEntity delete(IEntity entity) {
         IEntity mEntity = null;
         try {
-            EntityManager eManager = eFactory.createEntityManager();
+            final EntityManager eManager = eFactory.createEntityManager();
 
             eManager.getTransaction().begin();
             mEntity = eManager.merge(entity);
@@ -114,9 +131,9 @@ public class RestPersistenceService implements IPersistenceService {
             eManager.getTransaction().commit();
 
             eManager.close();
-        } catch (RollbackException exception) {
+        } catch (final RollbackException exception) {
             mEntity = null;
-            LOG.error(exception);
+            RestPersistenceService.LOG.error(exception);
         }
         return mEntity;
     }
@@ -129,59 +146,25 @@ public class RestPersistenceService implements IPersistenceService {
     }
 
     @Override
-    public IEntity update(IEntity entity) {
+    public int executeUpdate(final String namedQuery, Map<String, Object> parameters) {
 
-        EntityManager eManager = eFactory.createEntityManager();
+        final EntityManager eManager = eFactory.createEntityManager();
         eManager.getTransaction().begin();
-        IEntity mEntity = eManager.merge(entity);
-        eManager.lock(mEntity, LockModeType.OPTIMISTIC);
-        eManager.persist(mEntity);
-        eManager.getTransaction().commit();
+        final Query query = eManager.createNamedQuery(namedQuery);
+        for (final Entry<String, Object> entry : parameters.entrySet()) {
+            query.setParameter(entry.getKey(), entry.getValue());
+        }
+        int res = 0;
+        try {
+            res = query.executeUpdate();
+            eManager.getTransaction().commit();
+        } catch (final Exception e) {
+            RestPersistenceService.LOG.error("Error en el executeUpdate de:" + namedQuery + " / " + e.getMessage());
+            eManager.getTransaction().rollback();
+
+        }
         eManager.close();
-        return mEntity;
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public void findAll(final Class<? extends IEntity> entityClazz, final IPersistenceListener listener) {
-
-        final Task<List<Object>> task = new Task<List<Object>>() {
-            @Override
-            protected List<Object> call() throws Exception {
-                List<Object> lresults = null;
-                String findAll = entityClazz.getSimpleName() + ".findAll";
-
-                EntityManager eManager = eFactory.createEntityManager();
-                eManager.getTransaction().begin();
-
-                Query query = eManager.createNamedQuery(findAll);
-
-                if (query != null) {
-                    query.setHint(QueryHints.CACHE_STORE_MODE, HintValues.TRUE);
-                    query.setLockMode(LockModeType.PESSIMISTIC_WRITE);
-                    try {
-                        lresults = query.getResultList();
-                        eManager.getTransaction().commit();
-                    } catch (Exception e) {
-                        eManager.getTransaction().rollback();
-                        LOG.error(
-                                "Error en el findAll de la entidad:" + entityClazz.getName() + " / " + e.getMessage());
-                        LOG.error(e);
-                    }
-                }
-
-                eManager.close();
-                return lresults;
-            }
-        };
-        task.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED, new EventHandler<WorkerStateEvent>() {
-            @Override
-            public void handle(WorkerStateEvent t) {
-                listener.onFindAllFinished(task.getValue());
-            }
-        });
-        new Thread(task).start();
-
+        return res;
     }
 
     @Override
@@ -193,24 +176,25 @@ public class RestPersistenceService implements IPersistenceService {
             @Override
             protected List<Object> call() throws Exception {
                 List<Object> lresults = null;
-                EntityManager eManager = eFactory.createEntityManager();
+                final EntityManager eManager = eFactory.createEntityManager();
                 eManager.getTransaction().begin();
 
-                Query query = eManager.createNamedQuery(namedQuery);
+                final Query query = eManager.createNamedQuery(namedQuery);
                 if (query != null) {
                     query.setHint(QueryHints.CACHE_STORE_MODE, HintValues.TRUE);
                     if (parameters != null && !parameters.isEmpty()) {
-                        for (Entry<String, Object> entry : parameters.entrySet()) {
+                        for (final Entry<String, Object> entry : parameters.entrySet()) {
                             query.setParameter(entry.getKey(), entry.getValue());
                         }
                     }
                     try {
                         lresults = query.setLockMode(LockModeType.PESSIMISTIC_WRITE).getResultList();
                         eManager.getTransaction().commit();
-                    } catch (Exception e) {
+                    } catch (final Exception e) {
                         eManager.getTransaction().rollback();
-                        LOG.error("Error en el find del namedQuery:" + namedQuery + " / " + e.getMessage());
-                        LOG.error(e);
+                        RestPersistenceService.LOG
+                                .error("Error en el find del namedQuery:" + namedQuery + " / " + e.getMessage());
+                        RestPersistenceService.LOG.error(e);
                     }
 
                 }
@@ -223,41 +207,59 @@ public class RestPersistenceService implements IPersistenceService {
 
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public void findById(final Class<? extends IEntity> entityClazz, final Long id,
-            final IPersistenceListener listener) {
-        final Task<IEntity> task = new Task<IEntity>() {
-            @Override
-            protected IEntity call() throws Exception {
-                IEntity lresult = null;
-                String strEntity = entityClazz.getSimpleName();
-                String strQuery = String.format("select c from %s c where c.id = :id", strEntity.toLowerCase());
+    public void findAll(final Class<? extends IEntity> entityClazz, final IPersistenceListener listener) {
 
-                EntityManager eManager = eFactory.createEntityManager();
+        final Task<List<Object>> task = new Task<List<Object>>() {
+            @Override
+            protected List<Object> call() throws Exception {
+                List<Object> lresults = null;
+                final String findAll = entityClazz.getSimpleName() + ".findAll";
+
+                final EntityManager eManager = eFactory.createEntityManager();
                 eManager.getTransaction().begin();
 
-                Query query = eManager.createQuery(strQuery);
+                final Query query = eManager.createNamedQuery(findAll);
+
                 if (query != null) {
                     query.setHint(QueryHints.CACHE_STORE_MODE, HintValues.TRUE);
-                    query.setParameter("id", id);
+                    query.setLockMode(LockModeType.PESSIMISTIC_WRITE);
                     try {
-                        lresult = (IEntity) query.setLockMode(LockModeType.PESSIMISTIC_WRITE).getSingleResult();
+                        lresults = query.getResultList();
                         eManager.getTransaction().commit();
-                    } catch (Exception e) {
+                    } catch (final Exception e) {
                         eManager.getTransaction().rollback();
-                        LOG.error(
-                                "Error en el findById de la entidad:" + entityClazz.getName() + " / " + e.getMessage());
-                        LOG.error(e);
+                        RestPersistenceService.LOG.error(
+                                "Error en el findAll de la entidad:" + entityClazz.getName() + " / " + e.getMessage());
+                        RestPersistenceService.LOG.error(e);
                     }
-
                 }
+
                 eManager.close();
-                return lresult;
+                return lresults;
             }
         };
-        task.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED, t -> listener.onFound(task.getValue()));
+        task.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED, t -> listener.onFindAllFinished(task.getValue()));
         new Thread(task).start();
 
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T extends IEntity> List<T> findAllSynchro(Class<T> entityClazz) {
+        List<T> lresults = null;
+        final String findAll = entityClazz.getSimpleName() + ".findAll";
+        final EntityManager eManager = eFactory.createEntityManager();
+        eManager.getTransaction().begin();
+        final Query query = eManager.createNamedQuery(findAll);
+
+        if (query != null) {
+            query.setHint(QueryHints.CACHE_STORE_MODE, HintValues.TRUE);
+            lresults = query.setLockMode(LockModeType.PESSIMISTIC_WRITE).getResultList();
+        }
+        eManager.close();
+        return lresults;
     }
 
     @SuppressWarnings("unchecked")
@@ -268,31 +270,31 @@ public class RestPersistenceService implements IPersistenceService {
             @Override
             protected List<Object> call() throws Exception {
                 List<Object> lresult = null;
-                StringBuffer ids = new StringBuffer();
-                for (Object object : id) {
+                final StringBuffer ids = new StringBuffer();
+                for (final Object object : id) {
                     if (object instanceof Prueba) {
                         ids.append(((Prueba) object).getId());
                         ids.append(",");
                     }
                 }
-                int idLast = ids.lastIndexOf(",");
-                String listaIds = ids.substring(0, idLast);
-                String strEntity = entityClazz.getSimpleName();
-                String strQuery = String.format("select c from %s c where c.id in (%s)", strEntity.toLowerCase(),
+                final int idLast = ids.lastIndexOf(",");
+                final String listaIds = ids.substring(0, idLast);
+                final String strEntity = entityClazz.getSimpleName();
+                final String strQuery = String.format("select c from %s c where c.id in (%s)", strEntity.toLowerCase(),
                         listaIds);
 
-                EntityManager eManager = eFactory.createEntityManager();
+                final EntityManager eManager = eFactory.createEntityManager();
                 eManager.getTransaction().begin();
-                Query query = eManager.createQuery(strQuery);
+                final Query query = eManager.createQuery(strQuery);
                 if (query != null) {
                     query.setHint(QueryHints.CACHE_STORE_MODE, HintValues.TRUE);
                     try {
                         lresult = query.setLockMode(LockModeType.PESSIMISTIC_WRITE).getResultList();
-                    } catch (Exception e) {
+                    } catch (final Exception e) {
                         eManager.getTransaction().rollback();
-                        LOG.error("Error en el findByAllId de la entidad:" + entityClazz.getName() + " / "
-                                + e.getMessage());
-                        LOG.error(e);
+                        RestPersistenceService.LOG.error("Error en el findByAllId de la entidad:"
+                                + entityClazz.getName() + " / " + e.getMessage());
+                        RestPersistenceService.LOG.error(e);
                     }
                 }
                 eManager.close();
@@ -305,28 +307,66 @@ public class RestPersistenceService implements IPersistenceService {
     }
 
     @Override
+    public void findById(final Class<? extends IEntity> entityClazz, final Long id,
+            final IPersistenceListener listener) {
+        final Task<IEntity> task = new Task<IEntity>() {
+            @Override
+            protected IEntity call() throws Exception {
+                IEntity lresult = null;
+                final String strEntity = entityClazz.getSimpleName();
+                final String strQuery = String.format("select c from %s c where c.id = :id", strEntity.toLowerCase());
+
+                final EntityManager eManager = eFactory.createEntityManager();
+                eManager.getTransaction().begin();
+
+                final Query query = eManager.createQuery(strQuery);
+                if (query != null) {
+                    query.setHint(QueryHints.CACHE_STORE_MODE, HintValues.TRUE);
+                    query.setParameter("id", id);
+                    try {
+                        lresult = (IEntity) query.setLockMode(LockModeType.PESSIMISTIC_WRITE).getSingleResult();
+                        eManager.getTransaction().commit();
+                    } catch (final Exception e) {
+                        eManager.getTransaction().rollback();
+                        RestPersistenceService.LOG.error(
+                                "Error en el findById de la entidad:" + entityClazz.getName() + " / " + e.getMessage());
+                        RestPersistenceService.LOG.error(e);
+                    }
+
+                }
+                eManager.close();
+                return lresult;
+            }
+        };
+        task.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED, t -> listener.onFound(task.getValue()));
+        new Thread(task).start();
+
+    }
+
+    @Override
     public void findByName(final Class<? extends IEntity> entityClazz, final String name,
             final IPersistenceListener listener) {
         final Task<IEntity> task = new Task<IEntity>() {
             @Override
             protected IEntity call() throws Exception {
                 IEntity lresult = null;
-                String strEntity = entityClazz.getSimpleName();
+                final String strEntity = entityClazz.getSimpleName();
 
-                EntityManager eManager = eFactory.createEntityManager();
+                final EntityManager eManager = eFactory.createEntityManager();
                 eManager.getTransaction().begin();
-                Query query = eManager.createQuery(String.format("select c from %s c where c.name = :name", strEntity));
+                final Query query = eManager
+                        .createQuery(String.format("select c from %s c where c.name = :name", strEntity));
                 if (query != null) {
                     query.setHint(QueryHints.CACHE_STORE_MODE, HintValues.TRUE);
                     query.setParameter("name", name);
                     try {
                         lresult = (IEntity) query.setLockMode(LockModeType.PESSIMISTIC_WRITE).getSingleResult();
                         eManager.getTransaction().commit();
-                    } catch (Exception e) {
+                    } catch (final Exception e) {
                         eManager.getTransaction().rollback();
-                        LOG.error("Error en el findByName de la entidad:" + entityClazz.getName() + " / "
-                                + e.getMessage());
-                        LOG.error(e);
+                        RestPersistenceService.LOG.error("Error en el findByName de la entidad:" + entityClazz.getName()
+                                + " / " + e.getMessage());
+                        RestPersistenceService.LOG.error(e);
                     }
 
                 }
@@ -343,25 +383,63 @@ public class RestPersistenceService implements IPersistenceService {
     }
 
     @Override
-    public int executeUpdate(final String namedQuery, Map<String, Object> parameters) {
+    @SuppressWarnings("unchecked")
+    public List<Object> findSynchro(final String namedQuery, final Map<String, Object> parameters) {
 
-        EntityManager eManager = eFactory.createEntityManager();
+        List<Object> lresults = null;
+        final EntityManager eManager = eFactory.createEntityManager();
         eManager.getTransaction().begin();
-        Query query = eManager.createNamedQuery(namedQuery);
-        for (Entry<String, Object> entry : parameters.entrySet()) {
-            query.setParameter(entry.getKey(), entry.getValue());
-        }
-        int res = 0;
-        try {
-            res = query.executeUpdate();
-            eManager.getTransaction().commit();
-        } catch (Exception e) {
-            LOG.error("Error en el executeUpdate de:" + namedQuery + " / " + e.getMessage());
-            eManager.getTransaction().rollback();
+
+        final Query query = eManager.createNamedQuery(namedQuery);
+        if (query != null) {
+            query.setHint(QueryHints.CACHE_STORE_MODE, HintValues.TRUE);
+            if (parameters != null && !parameters.isEmpty()) {
+                for (final Entry<String, Object> entry : parameters.entrySet()) {
+                    query.setParameter(entry.getKey(), entry.getValue());
+                }
+            }
+            try {
+                lresults = query.setLockMode(LockModeType.PESSIMISTIC_WRITE).getResultList();
+                eManager.getTransaction().commit();
+            } catch (final Exception e) {
+                eManager.getTransaction().rollback();
+                RestPersistenceService.LOG
+                        .error("Error en el find del namedQuery:" + namedQuery + " / " + e.getMessage());
+                RestPersistenceService.LOG.error(e);
+            }
 
         }
         eManager.close();
-        return res;
+        return lresults;
+
+    }
+
+    @Override
+    public IEntity findSynchroById(Class<? extends IEntity> entityClazz, Long id) {
+        IEntity lresult = null;
+        final String strEntity = entityClazz.getSimpleName();
+        final String strQuery = String.format("select c from %s c where c.id = :id", strEntity.toLowerCase());
+
+        final EntityManager eManager = eFactory.createEntityManager();
+        eManager.getTransaction().begin();
+
+        final Query query = eManager.createQuery(strQuery);
+        if (query != null) {
+            query.setHint(QueryHints.CACHE_STORE_MODE, HintValues.TRUE);
+            query.setParameter("id", id);
+            try {
+                lresult = (IEntity) query.setLockMode(LockModeType.PESSIMISTIC_WRITE).getSingleResult();
+                eManager.getTransaction().commit();
+            } catch (final Exception e) {
+                eManager.getTransaction().rollback();
+                RestPersistenceService.LOG
+                        .error("Error en el findById de la entidad:" + entityClazz.getName() + " / " + e.getMessage());
+                RestPersistenceService.LOG.error(e);
+            }
+
+        }
+        eManager.close();
+        return lresult;
     }
 
     @Override
@@ -375,36 +453,36 @@ public class RestPersistenceService implements IPersistenceService {
             @SuppressWarnings({ "unchecked", "rawtypes" })
             @Override
             protected Pair<String, Pair<Integer, List<String>>> call() {
-                String name = entity;
-                StringBuffer string = new StringBuffer();
-                List<Object> filas = list;
+                final String name = entity;
+                final StringBuffer string = new StringBuffer();
+                final List<Object> filas = list;
                 if (filas.size() > 0) {
-                    List columnas = (List) filas.get(0);
+                    final List columnas = (List) filas.get(0);
                     for (int i = 0; i < columnas.size(); i++) {
                         string.append("?,");
                     }
                 }
-                List<String> errores = new ArrayList<String>();
-                Integer size = new Integer(filas.size());
-                Pair<String, Pair<Integer, List<String>>> pair = new Pair<String, Pair<Integer, List<String>>>();
+                final List<String> errores = new ArrayList<String>();
+                final Integer size = new Integer(filas.size());
+                final Pair<String, Pair<Integer, List<String>>> pair = new Pair<String, Pair<Integer, List<String>>>();
                 pair.setFirst(name);
                 pair.setSecond(new Pair<Integer, List<String>>(size, errores));
-                int largo = string.lastIndexOf(",");
-                String parametros = string.substring(0, largo);
+                final int largo = string.lastIndexOf(",");
+                final String parametros = string.substring(0, largo);
 
-                String insert = "INSERT INTO " + entity + " values ( 0, " + parametros + ",?)";
+                final String insert = "INSERT INTO " + entity + " values ( 0, " + parametros + ",?)";
 
                 int row = 1;
-                EntityManager eManager = eFactory.createEntityManager();
-                for (Object fila : filas) {
+                final EntityManager eManager = eFactory.createEntityManager();
+                for (final Object fila : filas) {
                     int indice = 1;
 
-                    Query query = eManager.createNativeQuery(insert);
+                    final Query query = eManager.createNativeQuery(insert);
                     if (query != null) {
                         try {
-                            StringBuffer strRegister = new StringBuffer();
+                            final StringBuffer strRegister = new StringBuffer();
                             eManager.getTransaction().begin();
-                            List<Object> columnas = ((List<Object>) fila);
+                            final List<Object> columnas = (List<Object>) fila;
                             for (int i = 0; i < columnas.size(); i++) {
                                 query.setParameter(indice++, columnas.get(i));
                                 strRegister.append(columnas.get(i));
@@ -415,7 +493,7 @@ public class RestPersistenceService implements IPersistenceService {
                             eManager.getTransaction().commit();
 
                             updateMessage(String.format("Procesado[%d]: %s", row++, strRegister.toString().trim()));
-                        } catch (Exception e) {
+                        } catch (final Exception e) {
                             updateMessage("Error en la fila " + row);
                             errores.add(String.format("Error [%s] en la fila %d", e.getCause(), row++));
                             eManager.getTransaction().rollback();
@@ -427,58 +505,51 @@ public class RestPersistenceService implements IPersistenceService {
             }
         };
 
-        task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
-            @Override
-            public void handle(WorkerStateEvent arg0) {
-                Pair<String, Pair<Integer, List<String>>> pair = task.getValue();
-                final List<String> errores = pair.getSecond().getSecond();
-                Runnable r = new Runnable() {
-                    @Override
-                    public void run() {
+        task.setOnSucceeded(arg0 -> {
+            final Pair<String, Pair<Integer, List<String>>> pair = task.getValue();
+            final List<String> errores = pair.getSecond().getSecond();
+            final Runnable r = () -> {
 
-                        if (errores.isEmpty()) {
-                            Alert alert = new Alert(AlertType.INFORMATION);
-                            alert.setTitle("Importación desde excel");
-                            alert.setHeaderText("Ha finalizado proceso de importación.");
-                            alert.setContentText(" Se han importado [" + pair.getSecond().getFirst()
-                                    + "] registros de [" + pair.getFirst() + "]");
-                            alert.show();
-                        } else {
-                            final StringBuffer error = new StringBuffer();
-                            for (String str : errores) {
-                                error.append(str);
-                                error.append("\n");
-                            }
-                            try {
-                                Alert alert = new Alert(AlertType.ERROR);
-                                alert.setTitle("Error de importación desde excel");
-                                alert.setHeaderText("Se ha presentado algunos problemas");
-                                alert.setContentText("Se grabará el archivo de log.");
-                                alert.show();
-
-                                FileChooser fileChooser = new FileChooser();
-                                fileChooser.setInitialFileName(
-                                        "import_" + entity + "_" + System.currentTimeMillis() + ".log");
-                                fileChooser.setInitialDirectory(Utils.getDefaultDirectory());
-                                FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(
-                                        "Archivo de log", "*.log");
-                                fileChooser.getExtensionFilters().add(extFilter);
-                                File file = fileChooser.showSaveDialog(null);
-                                if (file != null) {
-                                    FileWriter writer = new FileWriter(file);
-                                    writer.write(error.toString());
-                                    writer.close();
-                                }
-
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                        dlg.getDialogStage().hide();
+                if (errores.isEmpty()) {
+                    final Alert alert1 = new Alert(AlertType.INFORMATION);
+                    alert1.setTitle("Importación desde excel");
+                    alert1.setHeaderText("Ha finalizado proceso de importación.");
+                    alert1.setContentText(" Se han importado [" + pair.getSecond().getFirst() + "] registros de ["
+                            + pair.getFirst() + "]");
+                    alert1.show();
+                } else {
+                    final StringBuffer error = new StringBuffer();
+                    for (final String str : errores) {
+                        error.append(str);
+                        error.append("\n");
                     }
-                };
-                Platform.runLater(r);
-            }
+                    try {
+                        final Alert alert2 = new Alert(AlertType.ERROR);
+                        alert2.setTitle("Error de importación desde excel");
+                        alert2.setHeaderText("Se ha presentado algunos problemas");
+                        alert2.setContentText("Se grabará el archivo de log.");
+                        alert2.show();
+
+                        final FileChooser fileChooser = new FileChooser();
+                        fileChooser.setInitialFileName("import_" + entity + "_" + System.currentTimeMillis() + ".log");
+                        fileChooser.setInitialDirectory(Utils.getDefaultDirectory());
+                        final FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Archivo de log",
+                                "*.log");
+                        fileChooser.getExtensionFilters().add(extFilter);
+                        final File file = fileChooser.showSaveDialog(null);
+                        if (file != null) {
+                            final FileWriter writer = new FileWriter(file);
+                            writer.write(error.toString());
+                            writer.close();
+                        }
+
+                    } catch (final IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                dlg.getDialogStage().hide();
+            };
+            Platform.runLater(r);
         });
         task.setOnFailed((WorkerStateEvent t) -> {
             dlg.getDialogStage().hide();
@@ -489,113 +560,35 @@ public class RestPersistenceService implements IPersistenceService {
         Executors.newSingleThreadExecutor().execute(task);
     }
 
-    @SuppressWarnings("unchecked")
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * cpruebas.osgi.persistence.IPersistenceService#save(cl.eos.interfaces.
+     * entity.IEntity)
+     */
     @Override
-    public <T extends IEntity> List<T> findAllSynchro(Class<T> entityClazz){
-        List<T> lresults = null;
-        String findAll = entityClazz.getSimpleName() + ".findAll";
-        EntityManager eManager = eFactory.createEntityManager();
+    public IEntity save(IEntity entity) {
+        final EntityManager eManager = eFactory.createEntityManager();
         eManager.getTransaction().begin();
-        Query query = eManager.createNamedQuery(findAll);
-
-        if (query != null) {
-            query.setHint(QueryHints.CACHE_STORE_MODE, HintValues.TRUE);
-            lresults = query.setLockMode(LockModeType.PESSIMISTIC_WRITE).getResultList();
-        }
+        final IEntity eMerged = eManager.merge(entity);
+        eManager.persist(eMerged);
+        eManager.getTransaction().commit();
         eManager.close();
-        return lresults;
-    }
-
-    @SuppressWarnings("unchecked")
-    public List<Object> findSynchro(final String namedQuery, final Map<String, Object> parameters) {
-
-        List<Object> lresults = null;
-        EntityManager eManager = eFactory.createEntityManager();
-        eManager.getTransaction().begin();
-
-        Query query = eManager.createNamedQuery(namedQuery);
-        if (query != null) {
-            query.setHint(QueryHints.CACHE_STORE_MODE, HintValues.TRUE);
-            if (parameters != null && !parameters.isEmpty()) {
-                for (Entry<String, Object> entry : parameters.entrySet()) {
-                    query.setParameter(entry.getKey(), entry.getValue());
-                }
-            }
-            try {
-                lresults = query.setLockMode(LockModeType.PESSIMISTIC_WRITE).getResultList();
-                eManager.getTransaction().commit();
-            } catch (Exception e) {
-                eManager.getTransaction().rollback();
-                LOG.error("Error en el find del namedQuery:" + namedQuery + " / " + e.getMessage());
-                LOG.error(e);
-            }
-
-        }
-        eManager.close();
-        return lresults;
-
-    }
-
-    
-    public static void main(String[] args) {
-        try {
-            URL url = new URL("http://localhost/tpruebas/tipoalumno");
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-            conn.setRequestProperty("Accept", "application/json");
-
-            if (conn.getResponseCode() != 200) {
-                throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
-            }
-
-            BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
-
-            String output;
-            System.out.println("Output from Server .... \n");
-            while ((output = br.readLine()) != null) {
-                System.out.println(output);
-            }
-
-            conn.disconnect();
-
-        } catch (MalformedURLException e) {
-
-            e.printStackTrace();
-
-        } catch (IOException e) {
-
-            e.printStackTrace();
-
-        }
-
+        return eMerged;
     }
 
     @Override
-    public IEntity findSynchroById(Class<? extends IEntity> entityClazz, Long id) {
-        IEntity lresult = null;
-        String strEntity = entityClazz.getSimpleName();
-        String strQuery = String.format("select c from %s c where c.id = :id", strEntity.toLowerCase());
+    public IEntity update(IEntity entity) {
 
-        EntityManager eManager = eFactory.createEntityManager();
+        final EntityManager eManager = eFactory.createEntityManager();
         eManager.getTransaction().begin();
-
-        Query query = eManager.createQuery(strQuery);
-        if (query != null) {
-            query.setHint(QueryHints.CACHE_STORE_MODE, HintValues.TRUE);
-            query.setParameter("id", id);
-            try {
-                lresult = (IEntity) query.setLockMode(LockModeType.PESSIMISTIC_WRITE).getSingleResult();
-                eManager.getTransaction().commit();
-            } catch (Exception e) {
-                eManager.getTransaction().rollback();
-                LOG.error(
-                        "Error en el findById de la entidad:" + entityClazz.getName() + " / " + e.getMessage());
-                LOG.error(e);
-            }
-
-        }
+        final IEntity mEntity = eManager.merge(entity);
+        eManager.lock(mEntity, LockModeType.OPTIMISTIC);
+        eManager.persist(mEntity);
+        eManager.getTransaction().commit();
         eManager.close();
-        return lresult;
+        return mEntity;
     }
 
 }

@@ -1,79 +1,59 @@
 package cl.eos.view.dnd;
 
-import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
-import javafx.scene.control.TableCell;
-import javafx.scene.effect.BlendMode;
-import javafx.scene.input.DragEvent;
-import javafx.scene.input.TransferMode;
 import cl.eos.persistence.models.EjeTematico;
 import cl.eos.persistence.models.Habilidad;
 import cl.eos.view.RegistroDefinePrueba;
+import javafx.collections.ObservableList;
+import javafx.scene.control.TableCell;
+import javafx.scene.effect.BlendMode;
+import javafx.scene.input.TransferMode;
 
 public class TableDND extends TableCell<RegistroDefinePrueba, Object> {
 
-  public TableDND() {
-    setOnDragDropped(new EventHandler<DragEvent>() {
-      @Override
-      public void handle(DragEvent dragEvent) {
-        ObservableList<RegistroDefinePrueba> seleccionados =
-            getTableView().getSelectionModel().getSelectedItems();
-        if (seleccionados != null && !seleccionados.isEmpty()) {
-          if (dragEvent.getDragboard().getContent(EjeTematicoDND.ejeTematicoTrackDataFormat) != null) {
-            EjeTematico ejeTematico =
-                (EjeTematico) dragEvent.getDragboard().getContent(
-                    EjeTematicoDND.ejeTematicoTrackDataFormat);
-            for (RegistroDefinePrueba registro : seleccionados) {
-              registro.setEjeTematico(ejeTematico);
+    public TableDND() {
+        setOnDragDropped(dragEvent -> {
+            final ObservableList<RegistroDefinePrueba> seleccionados = getTableView().getSelectionModel()
+                    .getSelectedItems();
+            if (seleccionados != null && !seleccionados.isEmpty()) {
+                if (dragEvent.getDragboard().getContent(EjeTematicoDND.ejeTematicoTrackDataFormat) != null) {
+                    final EjeTematico ejeTematico = (EjeTematico) dragEvent.getDragboard()
+                            .getContent(EjeTematicoDND.ejeTematicoTrackDataFormat);
+                    for (final RegistroDefinePrueba registro1 : seleccionados) {
+                        registro1.setEjeTematico(ejeTematico);
+                    }
+                } else if (dragEvent.getDragboard().getContent(HabilidadDND.habilidadTrackDataFormat) != null) {
+                    final Habilidad habilidad = (Habilidad) dragEvent.getDragboard()
+                            .getContent(HabilidadDND.habilidadTrackDataFormat);
+                    for (final RegistroDefinePrueba registro2 : seleccionados) {
+                        registro2.setHabilidad(habilidad);
+                    }
+                }
             }
-          } else if (dragEvent.getDragboard().getContent(HabilidadDND.habilidadTrackDataFormat) != null) {
-            Habilidad habilidad =
-                (Habilidad) dragEvent.getDragboard().getContent(
-                    HabilidadDND.habilidadTrackDataFormat);
-            for (RegistroDefinePrueba registro : seleccionados) {
-              registro.setHabilidad(habilidad);
+        });
+
+        setOnDragEntered(dragEvent -> TableDND.this.setBlendMode(BlendMode.DARKEN));
+
+        setOnDragExited(dragEvent -> TableDND.this.setBlendMode(null));
+
+        setOnDragOver(dragEvent -> {
+            if (dragEvent.getDragboard().getContent(EjeTematicoDND.ejeTematicoTrackDataFormat) != null
+                    || dragEvent.getDragboard().getContent(HabilidadDND.habilidadTrackDataFormat) != null) {
+                dragEvent.acceptTransferModes(TransferMode.COPY);
             }
-          }
-        }
-      }
-    });
-
-    setOnDragEntered(new EventHandler<DragEvent>() {
-      @Override
-      public void handle(DragEvent dragEvent) {
-        TableDND.this.setBlendMode(BlendMode.DARKEN);
-      }
-    });
-
-    setOnDragExited(new EventHandler<DragEvent>() {
-      @Override
-      public void handle(DragEvent dragEvent) {
-        TableDND.this.setBlendMode(null);
-      }
-    });
-
-    setOnDragOver(new EventHandler<DragEvent>() {
-      @Override
-      public void handle(DragEvent dragEvent) {
-        if (dragEvent.getDragboard().getContent(EjeTematicoDND.ejeTematicoTrackDataFormat) != null
-            || dragEvent.getDragboard().getContent(HabilidadDND.habilidadTrackDataFormat) != null) {
-          dragEvent.acceptTransferModes(TransferMode.COPY);
-        }
-      }
-    });
-  }
-
-  @Override
-  public void updateItem(Object t, boolean empty) {
-    super.updateItem(t, empty);
-    if (t == null) {
-      setTooltip(null);
-      setText(null);
-    } else {
-      // RegistroDefinePrueba myModel = getTableView().getItems().get(getTableRow().getIndex());
-      setText(t.toString());
+        });
     }
-  }
 
+    @Override
+    public void updateItem(Object t, boolean empty) {
+        super.updateItem(t, empty);
+        if (t == null) {
+            setTooltip(null);
+            setText(null);
+        } else {
+            // RegistroDefinePrueba myModel =
+            // getTableView().getItems().get(getTableRow().getIndex());
+            setText(t.toString());
+        }
+    }
 
 }

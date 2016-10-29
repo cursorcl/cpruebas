@@ -8,17 +8,15 @@ import cl.eos.persistence.models.TipoCurso;
 
 public class ObjetivosContoller extends AController {
 
-	public ObjetivosContoller() {
-		
-		
-		
-	}
+    public ObjetivosContoller() {
 
-	@Override
-	public void initialize() {
-		model = new ObjetivosModel();
-		model.findAll(Objetivo.class, this);
-		model.findAll(TipoCurso.class, this);
-		model.findAll(Asignatura.class, this);
-	}
+    }
+
+    @Override
+    public void initialize() {
+        model = new ObjetivosModel();
+        model.findAll(Objetivo.class, this);
+        model.findAll(TipoCurso.class, this);
+        model.findAll(Asignatura.class, this);
+    }
 }

@@ -18,157 +18,143 @@ import cl.sisdef.util.UtilForm;
 
 /**
  * A panel that can map any image to their grid size.
- * 
+ *
  * @author Turbo7
  */
-public class ImagePanel extends JPanel implements InputProvider
-{
-  private static final long serialVersionUID = 1L;
+public class ImagePanel extends JPanel implements InputProvider {
+    private static final long serialVersionUID = 1L;
 
-  static final Logger log = Logger.getLogger(ImagePanel.class.getName());
+    static final Logger log = Logger.getLogger(ImagePanel.class.getName());
 
-  static final int DEFAULT_WIDTH = 18;
-  static final int DEFAULT_HEIGHT = 24;
+    static final int DEFAULT_WIDTH = 18;
+    static final int DEFAULT_HEIGHT = 24;
 
-  int width = DEFAULT_WIDTH;
-  int height = DEFAULT_HEIGHT;
-  JLabel[][] pixels = null;
+    static final int RANDOM_RANGE = 10;
 
-  ImageInput imgi = null;
+    static double colorToGrayscale(int rgb) {
+        final double red = (rgb & 0x000000FF) / 255.0;
+        final double green = ((rgb & 0x0000FF00) >> 8) / 255.0;
+        final double blue = ((rgb & 0x00FF0000) >> 16) / 255.0;
 
-  public ImagePanel()
-  {
-    super(new BorderLayout());
-    setBorder(UtilForm.createBorder("Input Pattern", null, BevelBorder.LOWERED));
-    initialize();
-  }
+        return 0.2126 * red + 0.7152 * green + 0.0722 * blue;
+    }
 
-  final void initialize()
-  {
-    removeAll();
+    int width = ImagePanel.DEFAULT_WIDTH;
 
-    pixels = new JLabel[width][height];
+    int height = ImagePanel.DEFAULT_HEIGHT;
 
-    JPanel pixelsPanel = new JPanel(new GridLayout(height, width, 2, 2));
-    for (int row=0; row<height; row++)
-      for (int col=0; col<width; col++)
-      {
-        pixels[col][row] = new JLabel();
-        pixels[col][row].setOpaque(true);
-        pixelsPanel.add(pixels[col][row]);
-      }
-    add(pixelsPanel, BorderLayout.CENTER);
+    JLabel[][] pixels = null;
 
-    validate();
-  }
+    ImageInput imgi = null;
 
-  public void resetSize(int iwidth, int iheight)
-  {
-    this.width = iwidth;
-    this.height = iheight;
+    final Random random = new Random(System.currentTimeMillis());
 
-    initialize();
-  }
+    public ImagePanel() {
+        super(new BorderLayout());
+        setBorder(UtilForm.createBorder("Input Pattern", null, BevelBorder.LOWERED));
+        initialize();
+    }
 
-  public void setImage(ImageInput ii)
-  {
-    imgi = ii;
-    draw();
-  }
+    void draw() {
+        for (int col = 0; col < width; col++)
+            for (int row = 0; row < height; row++) {
+                final int rgb = (int) imgi.getValue(col, row);
+                final Color color = new Color(rgb);
+                // System.out.printf("painting color %s\n", color);
+                pixels[col][row].setBackground(color);
+            }
+    }
 
-  public void setImage(Image image)
-  {
-    imgi = new ImageInput(width, height);
-    imgi.map(image);
-    draw();
-  }
+    @Override
+    public double getInput(int index) {
+        final int col = index % width;
+        final int row = index / width;
 
-  void draw()
-  {
-    for (int col=0; col<width; col++)
-      for (int row=0; row<height; row++)
-      {
-        int rgb =  (int)imgi.getValue(col, row);
-        Color color = new Color(rgb);
-//        System.out.printf("painting color %s\n", color);
-        pixels[col][row].setBackground(color);
-      }
-  }
+        final int currentColor = pixels[col][row].getBackground().getRGB();
+        final double value = ImagePanel.colorToGrayscale(currentColor);
 
-  static final int RANDOM_RANGE = 10;
+        // double value = colorToGrayscale( (int) imgi.getValue(col, row));
+        //// log.info(String.format("(%3d): %f", index, value));
+        return 1 - value;
+    }
 
-  final Random random = new Random(System.currentTimeMillis());
+    public int getInputHeight() {
+        return height;
+    }
 
-  int pixelNoise(int value)
-  {
-    int r = random.nextInt(2 * RANDOM_RANGE) - RANDOM_RANGE;
-    value = value + r;
-    if (value < 0) value = 0;
-    else if (value > 255) value = 255;
-    else ;
-    return value;
-  }
+    @Override
+    public int getInputSize() {
+        return width * height;
+    }
 
-  public void noise()
-  {
-    for (int col=0; col<width; col++)
-      for (int row=0; row<height; row++)
-      {
-        Color color = pixels[col][row].getBackground();
-        Color noiseColor = new Color(
-            pixelNoise(color.getRed()),
-            pixelNoise(color.getGreen()),
-            pixelNoise(color.getBlue()));
-        pixels[col][row].setBackground(noiseColor);
-      }
-  }
+    public int getInputWidth() {
+        return width;
+    }
 
-  public void setHint(int col, int row, String hint)
-  {
-    pixels[col][row].setToolTipText(hint);
-  }
+    final void initialize() {
+        removeAll();
 
-//  @Override
-//  public double getValue(int x, int y)
-//  {
-//    return imgi.getValue(x, y);
-//  }
+        pixels = new JLabel[width][height];
 
-  public int getInputWidth()
-  {
-    return width;
-  }
-  public int getInputHeight()
-  {
-    return height;
-  }
+        final JPanel pixelsPanel = new JPanel(new GridLayout(height, width, 2, 2));
+        for (int row = 0; row < height; row++)
+            for (int col = 0; col < width; col++) {
+                pixels[col][row] = new JLabel();
+                pixels[col][row].setOpaque(true);
+                pixelsPanel.add(pixels[col][row]);
+            }
+        add(pixelsPanel, BorderLayout.CENTER);
 
-  @Override
-  public int getInputSize()
-  {
-    return width * height;
-  }
+        validate();
+    }
 
-  static double colorToGrayscale(int rgb)
-  {
-    double red = (rgb & 0x000000FF) / 255.0;
-    double green = ( (rgb & 0x0000FF00) >> 8) / 255.0;
-    double blue = ( (rgb & 0x00FF0000) >> 16) / 255.0;
+    public void noise() {
+        for (int col = 0; col < width; col++)
+            for (int row = 0; row < height; row++) {
+                final Color color = pixels[col][row].getBackground();
+                final Color noiseColor = new Color(pixelNoise(color.getRed()), pixelNoise(color.getGreen()),
+                        pixelNoise(color.getBlue()));
+                pixels[col][row].setBackground(noiseColor);
+            }
+    }
 
-    return 0.2126 * red + 0.7152 * green + 0.0722 * blue;
-  }
+    // @Override
+    // public double getValue(int x, int y)
+    // {
+    // return imgi.getValue(x, y);
+    // }
 
-  @Override
-  public double getInput(int index)
-  {
-    int col = index % width;
-    int row = index / width;
+    int pixelNoise(int value) {
+        final int r = random.nextInt(2 * ImagePanel.RANDOM_RANGE) - ImagePanel.RANDOM_RANGE;
+        value = value + r;
+        if (value < 0)
+            value = 0;
+        else if (value > 255)
+            value = 255;
+        else
+            ;
+        return value;
+    }
 
-    int currentColor = pixels[col][row].getBackground().getRGB();
-    double value = colorToGrayscale(currentColor);
+    public void resetSize(int iwidth, int iheight) {
+        width = iwidth;
+        height = iheight;
 
-//    double value = colorToGrayscale( (int) imgi.getValue(col, row));
-////    log.info(String.format("(%3d): %f", index, value));
-    return 1 - value;
-  }
+        initialize();
+    }
+
+    public void setHint(int col, int row, String hint) {
+        pixels[col][row].setToolTipText(hint);
+    }
+
+    public void setImage(Image image) {
+        imgi = new ImageInput(width, height);
+        imgi.map(image);
+        draw();
+    }
+
+    public void setImage(ImageInput ii) {
+        imgi = ii;
+        draw();
+    }
 }

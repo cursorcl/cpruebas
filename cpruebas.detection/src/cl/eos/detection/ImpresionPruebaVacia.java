@@ -45,7 +45,7 @@ public class ImpresionPruebaVacia {
     private final int GROUP_SIZE = 5;
 
     private final int CIRCLE_WIDTH = 10;
-    private final int STEP_ROW = (CIRCLE_WIDTH + CIRCLE_WIDTH / 3);
+    private final int STEP_ROW = CIRCLE_WIDTH + CIRCLE_WIDTH / 3;
     private final int STEP_COL = CIRCLE_WIDTH / 2;
 
     private final String[] TITLE_LETER = { "A", "B", "C", "D", "E" };
@@ -70,167 +70,27 @@ public class ImpresionPruebaVacia {
 
     }
 
-    public PDDocument imprimir(Prueba prueba, Curso curso, Profesor profesor, Colegio colegio, LocalDate fecha,
-            int nPruebas) {
-        PDDocument doc = null;
-        respEsperadas = prueba.getRespuestas();
-        nroAlternativas = prueba.getAlternativas();
-        colAlternativas = 5;
+    private void addImageToPdf(BufferedImage image, PDDocument doc) {
         try {
-
-            File file = new File("res/cpruebas.vacia.png");
-            BufferedImage imageEmpty = ImageIO.read(file);
-            image = new BufferedImage(imageEmpty.getWidth(), imageEmpty.getHeight(), imageEmpty.getType());
-            g2 = (Graphics2D) image.getGraphics();
-            RenderingHints rh = new RenderingHints(RenderingHints.KEY_TEXT_ANTIALIASING,
-                    RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-            g2.setRenderingHints(rh);
-
-            g2.setFont(LETTERS_FONT);
-            HEIGHT_FONT = (int) (g2.getFontMetrics().getHeight() * 0.75);
-
-            g2.setStroke(new BasicStroke(1f));
-
-            doc = new PDDocument();
-
-            /* Por ahora solo la forma 1 */
-            Formas forma = prueba.getFormas().get(0);
-
-            for (int n = 0; n < nPruebas; n++) {
-                g2.setColor(Color.WHITE);
-                g2.fillRect(0, 0, imageEmpty.getWidth(), imageEmpty.getHeight());
-                g2.drawImage(imageEmpty, 0, 0, null);
-                g2.setColor(Color.BLACK);
-                g2.setFont(LETTERS_FONT);
-                row = FIRST_ROW;
-                col = FIRST_COL;
-                nro = 1;
-                drawCirclesRut();
-                drawForma(forma.getForma());
-                BufferedImage image = drawAlternativas(forma);
-                addImageToPdf(image, doc);
-            }
-            String fileName = String.format("%s-%s-%s-%s-Vacia", fecha.toString(), prueba.getName(), colegio.getName(),
-                    curso.getName());
-
-            FileChooser fileChooser = new FileChooser();
-            fileChooser.setInitialFileName(fileName);
-            FileChooser.ExtensionFilter imageExtFilter = new FileChooser.ExtensionFilter("Archivos PDF ", "*.pdf");
-            fileChooser.getExtensionFilters().add(imageExtFilter);
-            fileChooser.setInitialDirectory(Utils.getDefaultDirectory());
-            fileChooser.setTitle("Seleccione Archivo a grabar");
-            File output = fileChooser.showSaveDialog(null);
-
-            if (!output.getAbsolutePath().toLowerCase().endsWith("pdf")) {
-                output = new File(output + ".pdf");
-            }
-
-            if (output != null) {
-                doc.setDocumentInformation(new PDDocumentInformation());
-                doc.getDocumentInformation().setTitle(fileName);
-                doc.getDocumentInformation().setAuthor("EOS");
-                try {
-                    doc.save(output);
-                } catch (Exception ex) {
-                    Alert alert = UtilsAlert.makeExceptionAlert("Problemas con el archivo, no se ha podido almacenar.",
-                            ex);
-                    alert.showAndWait();
-                }
-            }
-        } catch (IOException e) {
+            final PDPage page = new PDPage();
+            doc.addPage(page);
+            PDPageContentStream content;
+            content = new PDPageContentStream(doc, page, true, true);
+            final PDXObjectImage ximage = new PDJpeg(doc, image, 1f);
+            ximage.setWidth((int) page.getMediaBox().getWidth());
+            ximage.setHeight((int) page.getMediaBox().getHeight());
+            content.drawImage(ximage, 0, 0);
+            content.close();
+        } catch (final IOException e) {
             e.printStackTrace();
         }
-        return doc;
-    }
 
-    private void drawForma(Integer forma) {
-        g2.fillOval(FORMA_COLS[forma - 1], FORMA_ROW, CIRCLE_WIDTH, CIRCLE_WIDTH);
-    }
-
-    private void drawCirclesRut() {
-        int x = RUT_POINT.x;
-        int y = RUT_POINT.y;
-
-        for (int n = -1; n < RUT_COLS.length; n++) {
-            y = RUT_POINT.y;
-            for (int m = 0; m < 11; m++) {
-                if (n == -1) {
-                    if (m == 0) {
-                        g2.fillRect(21, y, 15, 5);
-                    }
-                    if (m != 10) {
-                        g2.drawString(String.valueOf(m), x, y + HEIGHT_FONT);
-                    } else {
-                        g2.drawString("K", x, y + HEIGHT_FONT);
-                    }
-                } else {
-                    boolean canDraw = (m < 10) || (m == 10 && n == RUT_COLS.length - 1);
-                    if (canDraw) {
-                        g2.drawOval(RUT_COLS[n], y, CIRCLE_WIDTH, CIRCLE_WIDTH);
-                    }
-                }
-                y = y + CIRCLE_WIDTH + 2;
-            }
-        }
-
-    }
-
-    private BufferedImage drawAlternativas(Formas forma) throws IOException {
-        String orden = forma.getOrden();
-        String[] nOrden = orden.split(",");
-
-        for (int n = 1; n <= 25; n++) {
-            if (n % GROUP_SIZE == 1) {
-                if (n % 25 == 1) {
-                    row = FIRST_ROW;
-                } else {
-                    row += STEP_ROW * 2;
-                }
-                drawMarks(row);
-                row += STEP_ROW / 2;
-            } else {
-                row += STEP_ROW;
-            }
-        }
-
-        int n = 1;
-        for (String sIdx : nOrden) {
-            RespuestasEsperadasPrueba resp = respEsperadas.get(Integer.parseInt(sIdx) - 1);
-            if (n % GROUP_SIZE == 1) {
-                if (n % 25 == 1) {
-                    row = FIRST_ROW;
-                    if (n != 1) {
-                        col = col + (STEP_COL + CIRCLE_WIDTH) * (colAlternativas + 2);
-                    }
-                } else {
-                    row += STEP_ROW * 2;
-                }
-                drawTitle();
-                row += STEP_ROW / 2;
-            } else {
-                row += STEP_ROW;
-            }
-            if (Boolean.TRUE.equals(resp.getVerdaderoFalso())) {
-                // dibujo linea Verdadero falso
-                drawVFLine();
-
-            } else if (Boolean.TRUE.equals(resp.getMental())) {
-                // Dibujo linea Calculo
-                drawCalcLine();
-            } else {
-                // Dibujo alternativa completa
-                drawLine();
-            }
-            nro++;
-            n++;
-        }
-        return image;
     }
 
     public BufferedImage drawAlternativas() throws IOException {
         int n = 1;
 
-        for (RespuestasEsperadasPrueba resp : respEsperadas) {
+        for (final RespuestasEsperadasPrueba resp : respEsperadas) {
             if (n % GROUP_SIZE == 1) {
                 if (n % 25 == 1) {
                     row = FIRST_ROW;
@@ -266,21 +126,56 @@ public class ImpresionPruebaVacia {
         return image;
     }
 
-    private void drawMarks(int lRow) {
+    private BufferedImage drawAlternativas(Formas forma) throws IOException {
+        final String orden = forma.getOrden();
+        final String[] nOrden = orden.split(",");
 
-        g2.fillRect(17, lRow + HEIGHT_FONT, 15, 5);
-        g2.fillRect(578, lRow + HEIGHT_FONT, 15, 5);
-
-    }
-
-    private void drawLine() {
-        int c = col;
-        g2.drawString(String.valueOf(nro), c, row + HEIGHT_FONT);
-        c = c + CIRCLE_WIDTH + STEP_COL * 2;
-        for (int k = 0; k < nroAlternativas; k++) {
-            g2.drawOval(c, row, CIRCLE_WIDTH, CIRCLE_WIDTH);
-            c = c + CIRCLE_WIDTH + STEP_COL;
+        for (int n = 1; n <= 25; n++) {
+            if (n % GROUP_SIZE == 1) {
+                if (n % 25 == 1) {
+                    row = FIRST_ROW;
+                } else {
+                    row += STEP_ROW * 2;
+                }
+                drawMarks(row);
+                row += STEP_ROW / 2;
+            } else {
+                row += STEP_ROW;
+            }
         }
+
+        int n = 1;
+        for (final String sIdx : nOrden) {
+            final RespuestasEsperadasPrueba resp = respEsperadas.get(Integer.parseInt(sIdx) - 1);
+            if (n % GROUP_SIZE == 1) {
+                if (n % 25 == 1) {
+                    row = FIRST_ROW;
+                    if (n != 1) {
+                        col = col + (STEP_COL + CIRCLE_WIDTH) * (colAlternativas + 2);
+                    }
+                } else {
+                    row += STEP_ROW * 2;
+                }
+                drawTitle();
+                row += STEP_ROW / 2;
+            } else {
+                row += STEP_ROW;
+            }
+            if (Boolean.TRUE.equals(resp.getVerdaderoFalso())) {
+                // dibujo linea Verdadero falso
+                drawVFLine();
+
+            } else if (Boolean.TRUE.equals(resp.getMental())) {
+                // Dibujo linea Calculo
+                drawCalcLine();
+            } else {
+                // Dibujo alternativa completa
+                drawLine();
+            }
+            nro++;
+            n++;
+        }
+        return image;
     }
 
     private void drawCalcLine() {
@@ -299,6 +194,70 @@ public class ImpresionPruebaVacia {
         g2.setFont(LETTERS_FONT);
     }
 
+    private void drawCirclesRut() {
+        final int x = ImpresionPruebaVacia.RUT_POINT.x;
+        int y = ImpresionPruebaVacia.RUT_POINT.y;
+
+        for (int n = -1; n < ImpresionPruebaVacia.RUT_COLS.length; n++) {
+            y = ImpresionPruebaVacia.RUT_POINT.y;
+            for (int m = 0; m < 11; m++) {
+                if (n == -1) {
+                    if (m == 0) {
+                        g2.fillRect(21, y, 15, 5);
+                    }
+                    if (m != 10) {
+                        g2.drawString(String.valueOf(m), x, y + HEIGHT_FONT);
+                    } else {
+                        g2.drawString("K", x, y + HEIGHT_FONT);
+                    }
+                } else {
+                    final boolean canDraw = m < 10 || m == 10 && n == ImpresionPruebaVacia.RUT_COLS.length - 1;
+                    if (canDraw) {
+                        g2.drawOval(ImpresionPruebaVacia.RUT_COLS[n], y, CIRCLE_WIDTH, CIRCLE_WIDTH);
+                    }
+                }
+                y = y + CIRCLE_WIDTH + 2;
+            }
+        }
+
+    }
+
+    private void drawForma(Integer forma) {
+        g2.fillOval(ImpresionPruebaVacia.FORMA_COLS[forma - 1], ImpresionPruebaVacia.FORMA_ROW, CIRCLE_WIDTH,
+                CIRCLE_WIDTH);
+    }
+
+    private void drawLine() {
+        int c = col;
+        g2.drawString(String.valueOf(nro), c, row + HEIGHT_FONT);
+        c = c + CIRCLE_WIDTH + STEP_COL * 2;
+        for (int k = 0; k < nroAlternativas; k++) {
+            g2.drawOval(c, row, CIRCLE_WIDTH, CIRCLE_WIDTH);
+            c = c + CIRCLE_WIDTH + STEP_COL;
+        }
+    }
+
+    private void drawMarks(int lRow) {
+
+        g2.fillRect(17, lRow + HEIGHT_FONT, 15, 5);
+        g2.fillRect(578, lRow + HEIGHT_FONT, 15, 5);
+
+    }
+
+    /**
+     * Dibuja el titulo de una fila.
+     *
+     * @param nroAlternativas
+     */
+    private void drawTitle() {
+        int c = col;
+        c = c + CIRCLE_WIDTH + STEP_COL * 2 + 2;
+        for (int k = 0; k < nroAlternativas; k++) {
+            g2.drawString(TITLE_LETER[k], c, row);
+            c = c + CIRCLE_WIDTH + STEP_COL;
+        }
+    }
+
     private void drawVFLine() {
         int c = col;
 
@@ -315,34 +274,77 @@ public class ImpresionPruebaVacia {
         g2.setFont(LETTERS_FONT);
     }
 
-    /**
-     * Dibuja el titulo de una fila.
-     * 
-     * @param nroAlternativas
-     */
-    private void drawTitle() {
-        int c = col;
-        c = c + CIRCLE_WIDTH + STEP_COL * 2 + 2;
-        for (int k = 0; k < nroAlternativas; k++) {
-            g2.drawString(TITLE_LETER[k], c, row);
-            c = c + CIRCLE_WIDTH + STEP_COL;
-        }
-    }
-
-    private void addImageToPdf(BufferedImage image, PDDocument doc) {
+    public PDDocument imprimir(Prueba prueba, Curso curso, Profesor profesor, Colegio colegio, LocalDate fecha,
+            int nPruebas) {
+        PDDocument doc = null;
+        respEsperadas = prueba.getRespuestas();
+        nroAlternativas = prueba.getAlternativas();
+        colAlternativas = 5;
         try {
-            PDPage page = new PDPage();
-            doc.addPage(page);
-            PDPageContentStream content;
-            content = new PDPageContentStream(doc, page, true, true);
-            PDXObjectImage ximage = new PDJpeg(doc, image, 1f);
-            ximage.setWidth((int) page.getMediaBox().getWidth());
-            ximage.setHeight((int) page.getMediaBox().getHeight());
-            content.drawImage(ximage, 0, 0);
-            content.close();
-        } catch (IOException e) {
+
+            final File file = new File("res/cpruebas.vacia.png");
+            final BufferedImage imageEmpty = ImageIO.read(file);
+            image = new BufferedImage(imageEmpty.getWidth(), imageEmpty.getHeight(), imageEmpty.getType());
+            g2 = (Graphics2D) image.getGraphics();
+            final RenderingHints rh = new RenderingHints(RenderingHints.KEY_TEXT_ANTIALIASING,
+                    RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+            g2.setRenderingHints(rh);
+
+            g2.setFont(LETTERS_FONT);
+            HEIGHT_FONT = (int) (g2.getFontMetrics().getHeight() * 0.75);
+
+            g2.setStroke(new BasicStroke(1f));
+
+            doc = new PDDocument();
+
+            /* Por ahora solo la forma 1 */
+            final Formas forma = prueba.getFormas().get(0);
+
+            for (int n = 0; n < nPruebas; n++) {
+                g2.setColor(Color.WHITE);
+                g2.fillRect(0, 0, imageEmpty.getWidth(), imageEmpty.getHeight());
+                g2.drawImage(imageEmpty, 0, 0, null);
+                g2.setColor(Color.BLACK);
+                g2.setFont(LETTERS_FONT);
+                row = FIRST_ROW;
+                col = FIRST_COL;
+                nro = 1;
+                drawCirclesRut();
+                drawForma(forma.getForma());
+                final BufferedImage image = drawAlternativas(forma);
+                addImageToPdf(image, doc);
+            }
+            final String fileName = String.format("%s-%s-%s-%s-Vacia", fecha.toString(), prueba.getName(),
+                    colegio.getName(), curso.getName());
+
+            final FileChooser fileChooser = new FileChooser();
+            fileChooser.setInitialFileName(fileName);
+            final FileChooser.ExtensionFilter imageExtFilter = new FileChooser.ExtensionFilter("Archivos PDF ",
+                    "*.pdf");
+            fileChooser.getExtensionFilters().add(imageExtFilter);
+            fileChooser.setInitialDirectory(Utils.getDefaultDirectory());
+            fileChooser.setTitle("Seleccione Archivo a grabar");
+            File output = fileChooser.showSaveDialog(null);
+
+            if (!output.getAbsolutePath().toLowerCase().endsWith("pdf")) {
+                output = new File(output + ".pdf");
+            }
+
+            if (output != null) {
+                doc.setDocumentInformation(new PDDocumentInformation());
+                doc.getDocumentInformation().setTitle(fileName);
+                doc.getDocumentInformation().setAuthor("EOS");
+                try {
+                    doc.save(output);
+                } catch (final Exception ex) {
+                    final Alert alert = UtilsAlert
+                            .makeExceptionAlert("Problemas con el archivo, no se ha podido almacenar.", ex);
+                    alert.showAndWait();
+                }
+            }
+        } catch (final IOException e) {
             e.printStackTrace();
         }
-
+        return doc;
     }
 }

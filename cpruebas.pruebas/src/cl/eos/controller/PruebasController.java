@@ -12,21 +12,20 @@ import cl.eos.persistence.models.TipoPrueba;
 
 public class PruebasController extends AController {
 
-	public PruebasController() {
-		
-	}
+    public PruebasController() {
 
-	@Override
-	public void initialize() {
-		model = new PruebasModel();
-		model.findAll(Prueba.class, this);
-		model.findAll(TipoPrueba.class, this);
-		model.findAll(Profesor.class, this);
-		model.findAll(TipoCurso.class, this);
-		model.findAll(Asignatura.class, this);
-		model.findAll(NivelEvaluacion.class, this);
-		model.findAll(EvaluacionPrueba.class, this);
-	}
-	
+    }
+
+    @Override
+    public void initialize() {
+        model = new PruebasModel();
+        model.findAll(Prueba.class, this);
+        model.findAll(TipoPrueba.class, this);
+        model.findAll(Profesor.class, this);
+        model.findAll(TipoCurso.class, this);
+        model.findAll(Asignatura.class, this);
+        model.findAll(NivelEvaluacion.class, this);
+        model.findAll(EvaluacionPrueba.class, this);
+    }
 
 }

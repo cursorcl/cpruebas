@@ -8,37 +8,35 @@ import cl.eos.persistence.models.Alumno;
 
 /**
  * Contiene el resultado de cada uno de los items que conforman el alumno.
+ * 
  * @author colegio
  */
-public class ObjetivosAlumno implements IResultado{
+public class ObjetivosAlumno implements IResultado {
+    public static class Builder {
+        private List<ItemObjetivo> items;
+        private Alumno alumno;
+
+        public Builder alumno(Alumno alumno) {
+            this.alumno = alumno;
+            return this;
+        }
+
+        public ObjetivosAlumno build() {
+            final ObjetivosAlumno oTxObjCurso = new ObjetivosAlumno();
+            oTxObjCurso.items = items;
+            oTxObjCurso.alumno = alumno;
+            return oTxObjCurso;
+        }
+
+        public Builder items(List<ItemObjetivo> items) {
+            this.items = items;
+            return this;
+        }
+    }
+
     Alumno alumno;
+
     List<ItemObjetivo> items;
-
-    public List<ItemObjetivo> getItems() {
-        return items;
-    }
-
-    public void setItems(List<ItemObjetivo> alumnos) {
-        this.items = alumnos;
-    }
-
-    
-    
-    public Alumno getAlumno() {
-        return alumno;
-    }
-
-    public void setAlumno(Alumno alumno) {
-        this.alumno = alumno;
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((alumno == null) ? 0 : alumno.hashCode());
-        return result;
-    }
 
     @Override
     public boolean equals(Object obj) {
@@ -48,7 +46,7 @@ public class ObjetivosAlumno implements IResultado{
             return false;
         if (getClass() != obj.getClass())
             return false;
-        ObjetivosAlumno other = (ObjetivosAlumno) obj;
+        final ObjetivosAlumno other = (ObjetivosAlumno) obj;
         if (alumno == null) {
             if (other.alumno != null)
                 return false;
@@ -57,34 +55,32 @@ public class ObjetivosAlumno implements IResultado{
         return true;
     }
 
-
-
-    public static class Builder {
-        private List<ItemObjetivo> items;
-        private Alumno alumno;
-
-        public Builder items(List<ItemObjetivo> items) {
-            this.items = items;
-            return this;
-        }
-
-        public Builder alumno(Alumno alumno) {
-            this.alumno = alumno;
-            return this;
-        }
-
-        public ObjetivosAlumno build() {
-            ObjetivosAlumno oTxObjCurso = new ObjetivosAlumno();
-            oTxObjCurso.items = items;
-            oTxObjCurso.alumno = alumno;
-            return oTxObjCurso;
-        }
+    public Alumno getAlumno() {
+        return alumno;
     }
 
-
+    public List<ItemObjetivo> getItems() {
+        return items;
+    }
 
     @Override
     public List<TitledItemObjetivo> getResultados() {
         return Stream.of(new TitledItemObjetivo(items, alumno)).collect(Collectors.toList());
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + (alumno == null ? 0 : alumno.hashCode());
+        return result;
+    }
+
+    public void setAlumno(Alumno alumno) {
+        this.alumno = alumno;
+    }
+
+    public void setItems(List<ItemObjetivo> alumnos) {
+        items = alumnos;
     }
 }

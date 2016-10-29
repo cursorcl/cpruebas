@@ -1,161 +1,152 @@
 package cl.eos.imp.view;
 
+import cl.eos.interfaces.view.IView;
+import cl.eos.interfaces.view.IWindowManager;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import jfxtras.labs.scene.control.BreadcrumbBar;
 import jfxtras.labs.scene.control.BreadcrumbItem;
-import jfxtras.labs.util.BreadcrumbBarEventHandler;
-import cl.eos.interfaces.view.IView;
-import cl.eos.interfaces.view.IWindowManager;
 
 public class WindowManager implements IWindowManager {
 
-	private Pane root;
-	private Group group;
+    private static WindowManager instance = null;
 
-	private BreadcrumbBar breadCrum;
-	private static WindowManager instance = null;
+    public static WindowManager getInstance() {
+        if (WindowManager.instance == null) {
+            WindowManager.instance = new WindowManager();
+        }
+        return WindowManager.instance;
+    }
 
-	private WindowManager() {
-		// secondStage.initStyle(StageStyle.UNDECORATED);
-		// secondStage.initStyle(StageStyle.TRANSPARENT);
-	}
+    private Pane root;
+    private Group group;
 
-	public static WindowManager getInstance() {
-		if (instance == null) {
-			instance = new WindowManager();
-		}
-		return instance;
-	}
+    private BreadcrumbBar breadCrum;
 
-	@Override
-	public void show(IView window) {
-		if (group != null) {
-			WindowsView w = new WindowsView();
-			w.setView(window);
-			w.setId(window.getName());
-			w.setText(window.getTitle());
-			w.setContent((Parent) window.getPanel());
-			w.setVisible(true);
-			BreadcrumbItem item = null;
-			int n = 0;
-			for (n = 0; n < breadCrum.itemsProperty().getSize(); n++) {
-				BreadcrumbItem bItem = breadCrum.itemsProperty().get(n);
-				if (bItem.getText().equals(window.getTitle())) {
-					item = bItem;
-					break;
-				}
-			}
-			if (item != null) {
-				while (breadCrum.itemsProperty().getSize() > (n+1)) {
-					breadCrum
-							.removeItem(breadCrum.itemsProperty().getSize() - 1);
-				}
-			} else {
-				breadCrum.addItem(window.getTitle(), w);
-			}
-			
-			group.getChildren().setAll(w);
-		}
-	}
+    private WindowManager() {
+        // secondStage.initStyle(StageStyle.UNDECORATED);
+        // secondStage.initStyle(StageStyle.TRANSPARENT);
+    }
 
-	
-	   public void showOver(IView window) {
-	        if (group != null) {
-	            WindowsView w = new WindowsView();
-	            w.setView(window);
-	            w.setId(window.getName());
-	            w.setText(window.getTitle());
-	            w.setContent((Parent) window.getPanel());
-	            w.setVisible(true);
-	            BreadcrumbItem item = null;
-	            int n = 0;
-	            for (n = 0; n < breadCrum.itemsProperty().getSize(); n++) {
-	                BreadcrumbItem bItem = breadCrum.itemsProperty().get(n);
-	                if (bItem.getText().equals(window.getTitle())) {
-	                    item = bItem;
-	                    break;
-	                }
-	            }
-	            if (item != null) {
-	                while (breadCrum.itemsProperty().getSize() > (n+1)) {
-	                    breadCrum
-	                            .removeItem(breadCrum.itemsProperty().getSize() - 1);
-	                }
-	            } else {
-	                breadCrum.addItem(window.getTitle(), w);
-	            }
-	            
-	            group.getChildren().add(w);
-	        }
-	    }
-	
-	@Override
-	public void hide(IView window) {
-		for (int n = 0; n < breadCrum.itemsProperty().size(); n++) {
-			BreadcrumbItem b = breadCrum.itemsProperty().get(n);
-			if (b.getText() != null && b.getText().equals(window.getTitle())) {
-				breadCrum.removeItem(n);
-				group.getChildren().remove(b.getContent());
-				break;
-			}
-		}
-	}
+    @Override
+    public Object getBreadcrumbBar() {
+        return breadCrum;
+    }
 
-	@Override
-	public void hideAll() {
-		for (Node node : root.getChildren()) {
-			root.getChildren().remove(node);
-		}
-	}
+    @Override
+    public Object getRoot() {
+        return root;
+    }
 
-	@Override
-	public Object getRoot() {
-		return root;
-	}
+    @Override
+    public void hide(IView window) {
+        for (int n = 0; n < breadCrum.itemsProperty().size(); n++) {
+            final BreadcrumbItem b = breadCrum.itemsProperty().get(n);
+            if (b.getText() != null && b.getText().equals(window.getTitle())) {
+                breadCrum.removeItem(n);
+                group.getChildren().remove(b.getContent());
+                break;
+            }
+        }
+    }
 
-	@Override
-	public void setRoot(Object root) throws Exception {
-		if (root instanceof Group) {
-			this.group = (Group) root;
-		}
-	}
+    @Override
+    public void hideAll() {
+        for (final Node node : root.getChildren()) {
+            root.getChildren().remove(node);
+        }
+    }
 
-	@Override
-	public Object getBreadcrumbBar() {
-		return breadCrum;
-	}
+    @Override
+    public void setBreadcrumbBar(Object breadCrumb) {
+        breadCrum = (BreadcrumbBar) breadCrumb;
+        breadCrum.setOnItemAction(event -> {
+            final BreadcrumbItem item = (BreadcrumbItem) event.getSource();
+            final Node node = item.getContent();
+            group.getChildren().setAll(node);
+        });
+    }
 
-	@Override
-	public void setBreadcrumbBar(Object breadCrumb) {
-		this.breadCrum = (BreadcrumbBar) breadCrumb;
-		this.breadCrum
-				.setOnItemAction(new BreadcrumbBarEventHandler<BreadcrumbItem>() {
+    @Override
+    public void setHomeView(IView window) {
+        if (group != null) {
+            final WindowsView w = new WindowsView();
+            w.setView(window);
+            w.setId(window.getName());
+            w.setText(window.getTitle());
+            w.setContent((Parent) window.getPanel());
+            w.setVisible(true);
+            breadCrum.addHome(w);
+        }
+    }
 
-					@Override
-					public void handle(MouseEvent event) {
-						BreadcrumbItem item = (BreadcrumbItem) event
-								.getSource();
-						Node node = item.getContent();
-						group.getChildren().setAll(node);
-					}
-				});
-	}
+    @Override
+    public void setRoot(Object root) throws Exception {
+        if (root instanceof Group) {
+            group = (Group) root;
+        }
+    }
 
-	@Override
-	public void setHomeView(IView window) {
-		if (group != null) {
-			WindowsView w = new WindowsView();
-			w.setView(window);
-			w.setId(window.getName());
-			w.setText(window.getTitle());
-			w.setContent((Parent) window.getPanel());
-			w.setVisible(true);
-			breadCrum.addHome(w);
-		}
-	}
+    @Override
+    public void show(IView window) {
+        if (group != null) {
+            final WindowsView w = new WindowsView();
+            w.setView(window);
+            w.setId(window.getName());
+            w.setText(window.getTitle());
+            w.setContent((Parent) window.getPanel());
+            w.setVisible(true);
+            BreadcrumbItem item = null;
+            int n = 0;
+            for (n = 0; n < breadCrum.itemsProperty().getSize(); n++) {
+                final BreadcrumbItem bItem = breadCrum.itemsProperty().get(n);
+                if (bItem.getText().equals(window.getTitle())) {
+                    item = bItem;
+                    break;
+                }
+            }
+            if (item != null) {
+                while (breadCrum.itemsProperty().getSize() > n + 1) {
+                    breadCrum.removeItem(breadCrum.itemsProperty().getSize() - 1);
+                }
+            } else {
+                breadCrum.addItem(window.getTitle(), w);
+            }
+
+            group.getChildren().setAll(w);
+        }
+    }
+
+    @Override
+    public void showOver(IView window) {
+        if (group != null) {
+            final WindowsView w = new WindowsView();
+            w.setView(window);
+            w.setId(window.getName());
+            w.setText(window.getTitle());
+            w.setContent((Parent) window.getPanel());
+            w.setVisible(true);
+            BreadcrumbItem item = null;
+            int n = 0;
+            for (n = 0; n < breadCrum.itemsProperty().getSize(); n++) {
+                final BreadcrumbItem bItem = breadCrum.itemsProperty().get(n);
+                if (bItem.getText().equals(window.getTitle())) {
+                    item = bItem;
+                    break;
+                }
+            }
+            if (item != null) {
+                while (breadCrum.itemsProperty().getSize() > n + 1) {
+                    breadCrum.removeItem(breadCrum.itemsProperty().getSize() - 1);
+                }
+            } else {
+                breadCrum.addItem(window.getTitle(), w);
+            }
+
+            group.getChildren().add(w);
+        }
+    }
 
 }

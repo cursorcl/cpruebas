@@ -5,13 +5,13 @@ import cl.eos.model.NivelEvaluacionModel;
 import cl.eos.persistence.models.NivelEvaluacion;
 
 public class NivelEvaluacionController extends AController {
-	public NivelEvaluacionController() {
-	}
+    public NivelEvaluacionController() {
+    }
 
-	@Override
-	public void initialize() {
-		model = new NivelEvaluacionModel();
-		model.findAll(NivelEvaluacion.class, this);
-	}
+    @Override
+    public void initialize() {
+        model = new NivelEvaluacionModel();
+        model.findAll(NivelEvaluacion.class, this);
+    }
 
 }

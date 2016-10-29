@@ -35,8 +35,8 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
@@ -47,412 +47,408 @@ import javafx.scene.control.TableView;
 
 public class ComparativoComunalEjeView extends AFormView implements EventHandler<ActionEvent> {
 
-	private static Logger log = Logger.getLogger(ComparativoComunalEjeView.class);
-	private NumberFormat formatter = new DecimalFormat("#0.00");
-	@FXML
-	private Label lblTitulo;
-	@FXML
-	private MenuItem mnuExportarEjesTematicos;
-	@FXML
-	private MenuItem mnuExportarEvaluacion;
-	@FXML
-	private TableView<ObservableList<String>> tblEjesTematicos;
-	@FXML
-	private TableView<ObservableList<String>> tblEvaluacionEjesTematicos;
+    private static Logger log = Logger.getLogger(ComparativoComunalEjeView.class);
+    private final NumberFormat formatter = new DecimalFormat("#0.00");
+    @FXML
+    private Label lblTitulo;
+    @FXML
+    private MenuItem mnuExportarEjesTematicos;
+    @FXML
+    private MenuItem mnuExportarEvaluacion;
+    @FXML
+    private TableView<ObservableList<String>> tblEjesTematicos;
+    @FXML
+    private TableView<ObservableList<String>> tblEvaluacionEjesTematicos;
 
-	private HashMap<EjeTematico, HashMap<String, OTPreguntasEjes>> mapaEjesTematicos;
+    private HashMap<EjeTematico, HashMap<String, OTPreguntasEjes>> mapaEjesTematicos;
 
-	private Map<Long, EvaluacionEjeTematico> mEvaluaciones;
+    private Map<Long, EvaluacionEjeTematico> mEvaluaciones;
 
-	private Map<EvaluacionEjeTematico, HashMap<String, OTPreguntasEvaluacion>> mapEvaAlumnos = null;
+    private Map<EvaluacionEjeTematico, HashMap<String, OTPreguntasEvaluacion>> mapEvaAlumnos = null;
 
-	@FXML
-	private ComboBox<TipoAlumno> cmbTipoAlumno;
-	@FXML
-	private Button btnGenerar;
-	@FXML
-	private ComboBox<TipoColegio> cmbTipoColegio;
-	
-	long tipoAlumno = Constants.PIE_ALL;
-	long tipoColegio = Constants.TIPO_COLEGIO_ALL;
-	
-	private ArrayList<String> titulosColumnas;
-	private Prueba prueba;
-	private boolean llegaOnFound = false;
-	private boolean llegaTipoAlumno = false;
-	private boolean llegaEvaluacionEjeTematico = false;
-	private boolean llegaTipoColegio;
+    @FXML
+    private ComboBox<TipoAlumno> cmbTipoAlumno;
+    @FXML
+    private Button btnGenerar;
+    @FXML
+    private ComboBox<TipoColegio> cmbTipoColegio;
 
-	@FXML
-	public void initialize() {
-		this.setTitle("Resumen comparativo comunal ejes temáticas");
-		tblEjesTematicos.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-		tblEvaluacionEjesTematicos.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+    long tipoAlumno = Constants.PIE_ALL;
+    long tipoColegio = Constants.TIPO_COLEGIO_ALL;
 
-		mnuExportarEjesTematicos.setOnAction(this);
-		mnuExportarEvaluacion.setOnAction(this);
-		btnGenerar.setOnAction(this);
-		cmbTipoAlumno.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				if(cmbTipoAlumno.getSelectionModel() == null)
-					return;
-				tipoAlumno = cmbTipoAlumno.getSelectionModel().getSelectedItem().getId();
-			}
-		});
-		
-		cmbTipoColegio.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				if(cmbTipoColegio.getSelectionModel().getSelectedItem() == null)
-					return;
-				tipoColegio	= cmbTipoColegio.getSelectionModel().getSelectedItem().getId();
-			}
-		});
-	
-	}
+    private ArrayList<String> titulosColumnas;
+    private Prueba prueba;
+    private boolean llegaOnFound = false;
+    private boolean llegaTipoAlumno = false;
+    private boolean llegaEvaluacionEjeTematico = false;
+    private boolean llegaTipoColegio;
 
-	@Override
-	public void onFound(IEntity entity) {
-		if (entity instanceof Prueba) {
-			prueba = (Prueba) entity;
-			llegaOnFound = true;
-		}
-		procesaDatosReporte();
-	}
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    private void creacionColumnasEjesTematicos(List<EvaluacionPrueba> pListaEvaluaciones) {
 
-	@Override
-	public void onDataArrived(List<Object> list) {
-		if (list != null && !list.isEmpty()) {
-			Object entity = list.get(0);
-			if (entity instanceof EvaluacionEjeTematico) {
-				llegaEvaluacionEjeTematico = true;
-				mEvaluaciones = new HashMap<>();
-				for (Object object : list) {
-					EvaluacionEjeTematico eje = (EvaluacionEjeTematico) object;
-					mEvaluaciones.put(eje.getId(), eje);
-				}
-			}
-			if (entity instanceof TipoAlumno) {
-				ObservableList<TipoAlumno> tAlumnoList = FXCollections.observableArrayList();
-				llegaTipoAlumno = true;
-				for (Object iEntity : list) {
-					tAlumnoList.add((TipoAlumno) iEntity);
-				}
-				cmbTipoAlumno.setItems(tAlumnoList);
-				cmbTipoAlumno.getSelectionModel().select((int) Constants.PIE_ALL);
-			}
-			if (entity instanceof TipoColegio) {
-				ObservableList<TipoColegio> tColegioList = FXCollections.observableArrayList();
-				llegaTipoColegio = true;
-				for (Object iEntity : list) {
-					tColegioList.add((TipoColegio) iEntity);
-				}
-				cmbTipoColegio.setItems(tColegioList);
-				TipoColegio tColegio = new TipoColegio();
-				tColegio.setId(Constants.TIPO_COLEGIO_ALL);
-				cmbTipoColegio.getSelectionModel().select(tColegio);
-			}			
-		}
-		procesaDatosReporte();
-	}
+        tblEjesTematicos.getColumns().clear();
 
-	private void procesaDatosReporte() {
-		if (llegaEvaluacionEjeTematico && llegaTipoAlumno && llegaOnFound && llegaTipoColegio) {
-			llenarDatosTabla();
-			desplegarDatosEjesTematicos();
-			desplegarDatosEvaluaciones();
-		}
-	}
+        final TableColumn columna0 = new TableColumn("Eje Temático");
+        columna0.setCellValueFactory(param -> new SimpleStringProperty(
+                ((CellDataFeatures<ObservableList, String>) param).getValue().get(0).toString()));
+        columna0.setPrefWidth(100);
+        tblEjesTematicos.getColumns().add(columna0);
 
-	private void llenarDatosTabla() {
-		StringBuilder buffer = new StringBuilder();
-		buffer.append(prueba.getAsignatura());
-		buffer.append(" ");
-		buffer.append(prueba.getCurso());
-		lblTitulo.setText(buffer.toString());
+        titulosColumnas = new ArrayList<>();
+        int indice = 1;
+        final List<EvaluacionPrueba> listaEvaluaciones = pListaEvaluaciones;
+        for (final EvaluacionPrueba evaluacion : listaEvaluaciones) {
+            // Columnas
+            final int col = indice;
+            final String colegioCurso = evaluacion.getColegiocurso();
+            titulosColumnas.add(colegioCurso);
+            final TableColumn columna = new TableColumn(colegioCurso);
+            columna.setCellValueFactory(param -> new SimpleStringProperty(
+                    ((CellDataFeatures<ObservableList, String>) param).getValue().get(col).toString()));
+            columna.setPrefWidth(100);
+            tblEjesTematicos.getColumns().add(columna);
+            indice++;
+        }
+    }
 
-		mapaEjesTematicos = new HashMap<>();
-		mapEvaAlumnos = new HashMap<>();
-		HashMap<String, OTPreguntasEjes> mapaColegios;
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    private void creacionColumnasEvaluaciones(List<EvaluacionPrueba> pListaEvaluaciones) {
+        tblEvaluacionEjesTematicos.getColumns().clear();
+        final TableColumn columna0 = new TableColumn("");
+        columna0.setCellValueFactory(param -> new SimpleStringProperty(
+                ((CellDataFeatures<ObservableList, String>) param).getValue().get(0).toString()));
+        columna0.setPrefWidth(100);
+        tblEvaluacionEjesTematicos.getColumns().add(columna0);
 
-		List<EvaluacionPrueba> listaEvaluaciones = prueba.getEvaluaciones();
+        int indice = 1;
+        for (final String evaluacion : titulosColumnas) {
 
-		creacionColumnasEjesTematicos(listaEvaluaciones);
-		creacionColumnasEvaluaciones(listaEvaluaciones);
+            // Columnas
+            final int col = indice;
+            final String colegioCurso = evaluacion;
+            final TableColumn columna = new TableColumn(colegioCurso);
+            columna.setCellValueFactory(param -> new SimpleStringProperty(
+                    ((CellDataFeatures<ObservableList, String>) param).getValue().get(col).toString()));
+            columna.setPrefWidth(100);
+            tblEvaluacionEjesTematicos.getColumns().add(columna);
+            indice++;
+        }
+    }
 
-		for (EvaluacionPrueba evaluacionPrueba : listaEvaluaciones) {
-			String colegioCurso = evaluacionPrueba.getColegiocurso();
+    private void desplegarDatosEjesTematicos() {
 
-			List<PruebaRendida> pruebasRendidas = evaluacionPrueba.getPruebasRendidas();
-			List<RespuestasEsperadasPrueba> respuestasEsperadas = prueba.getRespuestas();
+        final ObservableList<ObservableList<String>> registros = FXCollections.observableArrayList();
 
-			for (PruebaRendida pruebaRendida : pruebasRendidas) {
-				Alumno alumno = pruebaRendida.getAlumno();
-				if (tipoAlumno != Constants.PIE_ALL && tipoAlumno != alumno.getTipoAlumno().getId()) 
-					continue;
-				if(tipoColegio != Constants.TIPO_COLEGIO_ALL && tipoColegio !=  alumno.getColegio().getTipoColegio().getId())
-					continue;
-				
-				generaDatosEvaluacion(pruebaRendida, colegioCurso);
+        for (final Entry<EjeTematico, HashMap<String, OTPreguntasEjes>> mapa : mapaEjesTematicos.entrySet()) {
 
-				String respuesta = pruebaRendida.getRespuestas().toUpperCase();
+            final ObservableList<String> row = FXCollections.observableArrayList();
 
-				if (alumno == null) {
-					log.error(String.format("NO EXISTE ALUMNO: %s %s", colegioCurso, respuesta));
-					continue; // Caso que el alumno sea nulo.
-				}
-				log.info(String.format("%s %s %s %s %s %s", colegioCurso, alumno.getRut(), alumno.getName(), alumno.getPaterno(),
-						alumno.getMaterno(), respuesta));
+            row.add(mapa.getKey().getName());
 
-				if (respuesta == null || respuesta.length() < prueba.getNroPreguntas()) {
-					informarProblemas(colegioCurso, alumno, respuesta);
-					continue;
-				}
-				char[] cRespuesta = respuesta.toUpperCase().toCharArray();
+            final HashMap<String, OTPreguntasEjes> resultados = mapa.getValue();
 
-				for (RespuestasEsperadasPrueba respuestasEsperadasPrueba : respuestasEsperadas) {
-					if (respuestasEsperadasPrueba.isAnulada()) {
-						continue;
-					}
-					EjeTematico ejeTematico = respuestasEsperadasPrueba.getEjeTematico();
-					Integer numeroPreg = respuestasEsperadasPrueba.getNumero();
-					if (mapaEjesTematicos.containsKey(ejeTematico)) {
-						HashMap<String, OTPreguntasEjes> mapa = mapaEjesTematicos.get(ejeTematico);
+            for (final String string : titulosColumnas) {
+                final OTPreguntasEjes otPregunta = resultados.get(string);
+                if (otPregunta != null) {// EOS
+                    row.add(formatter.format(otPregunta.getLogrado()));
+                } else {// EOS
+                    row.add("");
+                }
+            }
 
-						if (mapa.containsKey(colegioCurso)) {
-							OTPreguntasEjes otPregunta = mapa.get(colegioCurso);
+            registros.add(row);
+        }
+        tblEjesTematicos.setItems(registros);
+    }
 
-							if (cRespuesta[numeroPreg - 1] == respuestasEsperadasPrueba.getRespuesta()
-									.toCharArray()[0]) {
-								otPregunta.setBuenas(otPregunta.getBuenas() + 1);
-							}
-							otPregunta.setTotal(otPregunta.getTotal() + 1);
-						} else {
-							OTPreguntasEjes otPreguntas = new OTPreguntasEjes();
-							otPreguntas.setEjeTematico(ejeTematico);
-							if (cRespuesta[numeroPreg - 1] == respuestasEsperadasPrueba.getRespuesta()
-									.toCharArray()[0]) {
-								otPreguntas.setBuenas(1);
-							} else {
-								otPreguntas.setBuenas(0);
-							}
-							otPreguntas.setTotal(1);
+    private void desplegarDatosEvaluaciones() {
 
-							mapa.put(colegioCurso, otPreguntas);
-						}
-					} else {
-						OTPreguntasEjes otPreguntas = new OTPreguntasEjes();
-						otPreguntas.setEjeTematico(ejeTematico);
-						if (cRespuesta[numeroPreg - 1] == respuestasEsperadasPrueba.getRespuesta().toCharArray()[0]) {
-							otPreguntas.setBuenas(1);
-						} else {
-							otPreguntas.setBuenas(0);
-						}
-						otPreguntas.setTotal(1);
+        final Map<String, Integer> totales = new HashMap<>();
 
-						mapaColegios = new HashMap<>();
-						mapaColegios.put(colegioCurso, otPreguntas);
-						mapaEjesTematicos.put(ejeTematico, mapaColegios);
-					}
-				}
-			}
+        final ObservableList<ObservableList<String>> registroseEva = FXCollections.observableArrayList();
+        ObservableList<String> row = null;
+        int total = 0;
 
-		}
-	}
+        final List<EvaluacionEjeTematico> ejes = new ArrayList<>(mapEvaAlumnos.keySet());
+        Collections.sort(ejes, Comparadores.comparaEvaluacionEjeTematico());
+        for (final EvaluacionEjeTematico eje : ejes) {
+            final HashMap<String, OTPreguntasEvaluacion> resultados = mapEvaAlumnos.get(eje);
+            row = FXCollections.observableArrayList();
+            row.add(eje.getName());
 
-	private void informarProblemas(String colegioCurso, Alumno al, String respuesta) {
-		Alert alert = new Alert(AlertType.ERROR);
-		alert.setTitle("Alumno con respuestas incompletas.");
-		alert.setHeaderText(String.format("%s/%s", colegioCurso, al.toString()));
-		alert.setContentText(String.format("La respuesta [%s] es incompleta", respuesta));
-		alert.showAndWait();
+            for (final String string : titulosColumnas) {
+                final OTPreguntasEvaluacion otPregunta = resultados.get(string);
+                if (otPregunta != null) { // EOS
+                    if (totales.containsKey(string)) {
+                        total = otPregunta.getAlumnos() + totales.get(string);
+                        totales.replace(string, total);
+                    } else {
+                        totales.put(string, otPregunta.getAlumnos());
+                    }
+                    row.add(String.valueOf(otPregunta.getAlumnos()));
+                } else {// EOS
+                    row.add("");
+                    totales.put(string, 0);
+                }
 
-	}
+            }
+            registroseEva.add(row);
 
-	private void generaDatosEvaluacion(PruebaRendida pruebaRendida, String colegioCurso) {
+        }
+        row = FXCollections.observableArrayList();
+        row.add("Totales");
+        for (final String string : titulosColumnas) {
+            final Integer valor = totales.get(string);
+            row.add(valor == null ? "0" : String.valueOf(valor));
+        }
+        registroseEva.add(row);
 
-		HashMap<String, OTPreguntasEvaluacion> mapaOT;
+        tblEvaluacionEjesTematicos.setItems(registroseEva);
+    }
 
-		Float pBuenas = pruebaRendida.getPbuenas();
-		for (Entry<Long, EvaluacionEjeTematico> mEvaluacion : mEvaluaciones.entrySet()) {
+    private void generaDatosEvaluacion(PruebaRendida pruebaRendida, String colegioCurso) {
 
-			EvaluacionEjeTematico evaluacionAl = mEvaluacion.getValue();
-			if (mapEvaAlumnos.containsKey(evaluacionAl)) {
-				HashMap<String, OTPreguntasEvaluacion> evaluacion = mapEvaAlumnos.get(evaluacionAl);
-				if (evaluacion.containsKey(colegioCurso)) {
-					OTPreguntasEvaluacion otPreguntas = evaluacion.get(colegioCurso);
+        HashMap<String, OTPreguntasEvaluacion> mapaOT;
 
-					if (pBuenas >= evaluacionAl.getNroRangoMin() && pBuenas <= evaluacionAl.getNroRangoMax()) {
-						otPreguntas.setAlumnos(otPreguntas.getAlumnos() + 1);
-					}
-				} else {
+        final Float pBuenas = pruebaRendida.getPbuenas();
+        for (final Entry<Long, EvaluacionEjeTematico> mEvaluacion : mEvaluaciones.entrySet()) {
 
-					OTPreguntasEvaluacion pregunta = new OTPreguntasEvaluacion();
-					if (pBuenas >= evaluacionAl.getNroRangoMin() && pBuenas <= evaluacionAl.getNroRangoMax()) {
-						pregunta.setAlumnos(1);
-					} else {
-						pregunta.setAlumnos(0);
-					}
-					pregunta.setEvaluacion(evaluacionAl);
-					evaluacion.put(colegioCurso, pregunta);
-				}
-			} else {
-				OTPreguntasEvaluacion pregunta = new OTPreguntasEvaluacion();
-				if (pBuenas >= evaluacionAl.getNroRangoMin() && pBuenas <= evaluacionAl.getNroRangoMax()) {
-					pregunta.setAlumnos(1);
-				} else {
-					pregunta.setAlumnos(0);
-				}
-				pregunta.setEvaluacion(evaluacionAl);
+            final EvaluacionEjeTematico evaluacionAl = mEvaluacion.getValue();
+            if (mapEvaAlumnos.containsKey(evaluacionAl)) {
+                final HashMap<String, OTPreguntasEvaluacion> evaluacion = mapEvaAlumnos.get(evaluacionAl);
+                if (evaluacion.containsKey(colegioCurso)) {
+                    final OTPreguntasEvaluacion otPreguntas = evaluacion.get(colegioCurso);
 
-				mapaOT = new HashMap<>();
-				mapaOT.put(colegioCurso, pregunta);
-				mapEvaAlumnos.put(evaluacionAl, mapaOT);
-			}
-		}
+                    if (pBuenas >= evaluacionAl.getNroRangoMin() && pBuenas <= evaluacionAl.getNroRangoMax()) {
+                        otPreguntas.setAlumnos(otPreguntas.getAlumnos() + 1);
+                    }
+                } else {
 
-	}
+                    final OTPreguntasEvaluacion pregunta = new OTPreguntasEvaluacion();
+                    if (pBuenas >= evaluacionAl.getNroRangoMin() && pBuenas <= evaluacionAl.getNroRangoMax()) {
+                        pregunta.setAlumnos(1);
+                    } else {
+                        pregunta.setAlumnos(0);
+                    }
+                    pregunta.setEvaluacion(evaluacionAl);
+                    evaluacion.put(colegioCurso, pregunta);
+                }
+            } else {
+                final OTPreguntasEvaluacion pregunta = new OTPreguntasEvaluacion();
+                if (pBuenas >= evaluacionAl.getNroRangoMin() && pBuenas <= evaluacionAl.getNroRangoMax()) {
+                    pregunta.setAlumnos(1);
+                } else {
+                    pregunta.setAlumnos(0);
+                }
+                pregunta.setEvaluacion(evaluacionAl);
 
-	private void desplegarDatosEjesTematicos() {
+                mapaOT = new HashMap<>();
+                mapaOT.put(colegioCurso, pregunta);
+                mapEvaAlumnos.put(evaluacionAl, mapaOT);
+            }
+        }
 
-		ObservableList<ObservableList<String>> registros = FXCollections.observableArrayList();
+    }
 
-		for (Entry<EjeTematico, HashMap<String, OTPreguntasEjes>> mapa : mapaEjesTematicos.entrySet()) {
+    @Override
+    public void handle(ActionEvent event) {
+        final Object source = event.getSource();
+        if (source == mnuExportarEjesTematicos || source == mnuExportarEvaluacion) {
 
-			ObservableList<String> row = FXCollections.observableArrayList();
+            tblEjesTematicos.setId("Ejes temáticos");
+            tblEvaluacionEjesTematicos.setId("Evaluación");
+            final List<TableView<? extends Object>> listaTablas = new LinkedList<>();
+            listaTablas.add(tblEjesTematicos);
+            listaTablas.add(tblEvaluacionEjesTematicos);
 
-			row.add((mapa.getKey()).getName());
+            ExcelSheetWriterObj.convertirDatosALibroDeExcel(listaTablas);
+        } else if (source == btnGenerar) {
+            if (prueba != null && tipoAlumno != -1) {
+                procesaDatosReporte();
+            }
+        }
+    }
 
-			HashMap<String, OTPreguntasEjes> resultados = mapa.getValue();
+    private void informarProblemas(String colegioCurso, Alumno al, String respuesta) {
+        final Alert alert = new Alert(AlertType.ERROR);
+        alert.setTitle("Alumno con respuestas incompletas.");
+        alert.setHeaderText(String.format("%s/%s", colegioCurso, al.toString()));
+        alert.setContentText(String.format("La respuesta [%s] es incompleta", respuesta));
+        alert.showAndWait();
 
-			for (String string : titulosColumnas) {
-				OTPreguntasEjes otPregunta = resultados.get(string);
-				if (otPregunta != null) {// EOS
-					row.add(formatter.format(otPregunta.getLogrado()));
-				} else {// EOS
-					row.add("");
-				}
-			}
+    }
 
-			registros.add(row);
-		}
-		tblEjesTematicos.setItems(registros);
-	}
+    @FXML
+    public void initialize() {
+        setTitle("Resumen comparativo comunal ejes temáticas");
+        tblEjesTematicos.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        tblEvaluacionEjesTematicos.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
-	private void desplegarDatosEvaluaciones() {
+        mnuExportarEjesTematicos.setOnAction(this);
+        mnuExportarEvaluacion.setOnAction(this);
+        btnGenerar.setOnAction(this);
+        cmbTipoAlumno.setOnAction(event -> {
+            if (cmbTipoAlumno.getSelectionModel() == null)
+                return;
+            tipoAlumno = cmbTipoAlumno.getSelectionModel().getSelectedItem().getId();
+        });
 
-		Map<String, Integer> totales = new HashMap<>();
+        cmbTipoColegio.setOnAction(event -> {
+            if (cmbTipoColegio.getSelectionModel().getSelectedItem() == null)
+                return;
+            tipoColegio = cmbTipoColegio.getSelectionModel().getSelectedItem().getId();
+        });
 
-		ObservableList<ObservableList<String>> registroseEva = FXCollections.observableArrayList();
-		ObservableList<String> row = null;
-		int total = 0;
+    }
 
-		List<EvaluacionEjeTematico> ejes = new ArrayList<>(mapEvaAlumnos.keySet());
-		Collections.sort(ejes, Comparadores.comparaEvaluacionEjeTematico());
-		for (EvaluacionEjeTematico eje : ejes) {
-			HashMap<String, OTPreguntasEvaluacion> resultados = mapEvaAlumnos.get(eje);
-			row = FXCollections.observableArrayList();
-			row.add(eje.getName());
+    private void llenarDatosTabla() {
+        final StringBuilder buffer = new StringBuilder();
+        buffer.append(prueba.getAsignatura());
+        buffer.append(" ");
+        buffer.append(prueba.getCurso());
+        lblTitulo.setText(buffer.toString());
 
-			for (String string : titulosColumnas) {
-				OTPreguntasEvaluacion otPregunta = resultados.get(string);
-				if (otPregunta != null) { // EOS
-					if (totales.containsKey(string)) {
-						total = otPregunta.getAlumnos() + totales.get(string);
-						totales.replace(string, total);
-					} else {
-						totales.put(string, otPregunta.getAlumnos());
-					}
-					row.add(String.valueOf(otPregunta.getAlumnos()));
-				} else {// EOS
-					row.add("");
-					totales.put(string, 0);
-				}
+        mapaEjesTematicos = new HashMap<>();
+        mapEvaAlumnos = new HashMap<>();
+        HashMap<String, OTPreguntasEjes> mapaColegios;
 
-			}
-			registroseEva.add(row);
+        final List<EvaluacionPrueba> listaEvaluaciones = prueba.getEvaluaciones();
 
-		}
-		row = FXCollections.observableArrayList();
-		row.add("Totales");
-		for (String string : titulosColumnas) {
-			Integer valor = totales.get(string);
-			row.add(valor == null ? "0" : String.valueOf(valor));
-		}
-		registroseEva.add(row);
+        creacionColumnasEjesTematicos(listaEvaluaciones);
+        creacionColumnasEvaluaciones(listaEvaluaciones);
 
-		tblEvaluacionEjesTematicos.setItems(registroseEva);
-	}
+        for (final EvaluacionPrueba evaluacionPrueba : listaEvaluaciones) {
+            final String colegioCurso = evaluacionPrueba.getColegiocurso();
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	private void creacionColumnasEjesTematicos(List<EvaluacionPrueba> pListaEvaluaciones) {
+            final List<PruebaRendida> pruebasRendidas = evaluacionPrueba.getPruebasRendidas();
+            final List<RespuestasEsperadasPrueba> respuestasEsperadas = prueba.getRespuestas();
 
-		tblEjesTematicos.getColumns().clear();
+            for (final PruebaRendida pruebaRendida : pruebasRendidas) {
+                final Alumno alumno = pruebaRendida.getAlumno();
+                if (tipoAlumno != Constants.PIE_ALL && tipoAlumno != alumno.getTipoAlumno().getId())
+                    continue;
+                if (tipoColegio != Constants.TIPO_COLEGIO_ALL
+                        && tipoColegio != alumno.getColegio().getTipoColegio().getId())
+                    continue;
 
-		TableColumn columna0 = new TableColumn("Eje Temático");
-		columna0.setCellValueFactory(param -> new SimpleStringProperty(
-				((CellDataFeatures<ObservableList, String>) param).getValue().get(0).toString()));
-		columna0.setPrefWidth(100);
-		tblEjesTematicos.getColumns().add(columna0);
+                generaDatosEvaluacion(pruebaRendida, colegioCurso);
 
-		titulosColumnas = new ArrayList<>();
-		int indice = 1;
-		List<EvaluacionPrueba> listaEvaluaciones = pListaEvaluaciones;
-		for (EvaluacionPrueba evaluacion : listaEvaluaciones) {
-			// Columnas
-			final int col = indice;
-			final String colegioCurso = evaluacion.getColegiocurso();
-			titulosColumnas.add(colegioCurso);
-			TableColumn columna = new TableColumn(colegioCurso);
-			columna.setCellValueFactory(param -> new SimpleStringProperty(
-					((CellDataFeatures<ObservableList, String>) param).getValue().get(col).toString()));
-			columna.setPrefWidth(100);
-			tblEjesTematicos.getColumns().add(columna);
-			indice++;
-		}
-	}
+                final String respuesta = pruebaRendida.getRespuestas().toUpperCase();
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	private void creacionColumnasEvaluaciones(List<EvaluacionPrueba> pListaEvaluaciones) {
-		tblEvaluacionEjesTematicos.getColumns().clear();
-		TableColumn columna0 = new TableColumn("");
-		columna0.setCellValueFactory(param -> new SimpleStringProperty(
-				((CellDataFeatures<ObservableList, String>) param).getValue().get(0).toString()));
-		columna0.setPrefWidth(100);
-		tblEvaluacionEjesTematicos.getColumns().add(columna0);
+                if (alumno == null) {
+                    ComparativoComunalEjeView.log
+                            .error(String.format("NO EXISTE ALUMNO: %s %s", colegioCurso, respuesta));
+                    continue; // Caso que el alumno sea nulo.
+                }
+                ComparativoComunalEjeView.log.info(String.format("%s %s %s %s %s %s", colegioCurso, alumno.getRut(),
+                        alumno.getName(), alumno.getPaterno(), alumno.getMaterno(), respuesta));
 
-		int indice = 1;
-		for (String evaluacion : titulosColumnas) {
+                if (respuesta == null || respuesta.length() < prueba.getNroPreguntas()) {
+                    informarProblemas(colegioCurso, alumno, respuesta);
+                    continue;
+                }
+                final char[] cRespuesta = respuesta.toUpperCase().toCharArray();
 
-			// Columnas
-			final int col = indice;
-			final String colegioCurso = evaluacion;
-			TableColumn columna = new TableColumn(colegioCurso);
-			columna.setCellValueFactory(param -> new SimpleStringProperty(
-					((CellDataFeatures<ObservableList, String>) param).getValue().get(col).toString()));
-			columna.setPrefWidth(100);
-			tblEvaluacionEjesTematicos.getColumns().add(columna);
-			indice++;
-		}
-	}
+                for (final RespuestasEsperadasPrueba respuestasEsperadasPrueba : respuestasEsperadas) {
+                    if (respuestasEsperadasPrueba.isAnulada()) {
+                        continue;
+                    }
+                    final EjeTematico ejeTematico = respuestasEsperadasPrueba.getEjeTematico();
+                    final Integer numeroPreg = respuestasEsperadasPrueba.getNumero();
+                    if (mapaEjesTematicos.containsKey(ejeTematico)) {
+                        final HashMap<String, OTPreguntasEjes> mapa = mapaEjesTematicos.get(ejeTematico);
 
-	@Override
-	public void handle(ActionEvent event) {
-		Object source = event.getSource();
-		if (source == mnuExportarEjesTematicos || source == mnuExportarEvaluacion) {
+                        if (mapa.containsKey(colegioCurso)) {
+                            final OTPreguntasEjes otPregunta = mapa.get(colegioCurso);
 
-			tblEjesTematicos.setId("Ejes temáticos");
-			tblEvaluacionEjesTematicos.setId("Evaluación");
-			List<TableView<? extends Object>> listaTablas = new LinkedList<>();
-			listaTablas.add((TableView<? extends Object>) tblEjesTematicos);
-			listaTablas.add((TableView<? extends Object>) tblEvaluacionEjesTematicos);
+                            if (cRespuesta[numeroPreg - 1] == respuestasEsperadasPrueba.getRespuesta()
+                                    .toCharArray()[0]) {
+                                otPregunta.setBuenas(otPregunta.getBuenas() + 1);
+                            }
+                            otPregunta.setTotal(otPregunta.getTotal() + 1);
+                        } else {
+                            final OTPreguntasEjes otPreguntas = new OTPreguntasEjes();
+                            otPreguntas.setEjeTematico(ejeTematico);
+                            if (cRespuesta[numeroPreg - 1] == respuestasEsperadasPrueba.getRespuesta()
+                                    .toCharArray()[0]) {
+                                otPreguntas.setBuenas(1);
+                            } else {
+                                otPreguntas.setBuenas(0);
+                            }
+                            otPreguntas.setTotal(1);
 
-			ExcelSheetWriterObj.convertirDatosALibroDeExcel(listaTablas);
-		} else if (source == btnGenerar) {
-			if (prueba != null && tipoAlumno != -1) {
-				procesaDatosReporte();
-			}
-		}
-	}
+                            mapa.put(colegioCurso, otPreguntas);
+                        }
+                    } else {
+                        final OTPreguntasEjes otPreguntas = new OTPreguntasEjes();
+                        otPreguntas.setEjeTematico(ejeTematico);
+                        if (cRespuesta[numeroPreg - 1] == respuestasEsperadasPrueba.getRespuesta().toCharArray()[0]) {
+                            otPreguntas.setBuenas(1);
+                        } else {
+                            otPreguntas.setBuenas(0);
+                        }
+                        otPreguntas.setTotal(1);
+
+                        mapaColegios = new HashMap<>();
+                        mapaColegios.put(colegioCurso, otPreguntas);
+                        mapaEjesTematicos.put(ejeTematico, mapaColegios);
+                    }
+                }
+            }
+
+        }
+    }
+
+    @Override
+    public void onDataArrived(List<Object> list) {
+        if (list != null && !list.isEmpty()) {
+            final Object entity = list.get(0);
+            if (entity instanceof EvaluacionEjeTematico) {
+                llegaEvaluacionEjeTematico = true;
+                mEvaluaciones = new HashMap<>();
+                for (final Object object : list) {
+                    final EvaluacionEjeTematico eje = (EvaluacionEjeTematico) object;
+                    mEvaluaciones.put(eje.getId(), eje);
+                }
+            }
+            if (entity instanceof TipoAlumno) {
+                final ObservableList<TipoAlumno> tAlumnoList = FXCollections.observableArrayList();
+                llegaTipoAlumno = true;
+                for (final Object iEntity : list) {
+                    tAlumnoList.add((TipoAlumno) iEntity);
+                }
+                cmbTipoAlumno.setItems(tAlumnoList);
+                cmbTipoAlumno.getSelectionModel().select((int) Constants.PIE_ALL);
+            }
+            if (entity instanceof TipoColegio) {
+                final ObservableList<TipoColegio> tColegioList = FXCollections.observableArrayList();
+                llegaTipoColegio = true;
+                for (final Object iEntity : list) {
+                    tColegioList.add((TipoColegio) iEntity);
+                }
+                cmbTipoColegio.setItems(tColegioList);
+                final TipoColegio tColegio = new TipoColegio();
+                tColegio.setId(Constants.TIPO_COLEGIO_ALL);
+                cmbTipoColegio.getSelectionModel().select(tColegio);
+            }
+        }
+        procesaDatosReporte();
+    }
+
+    @Override
+    public void onFound(IEntity entity) {
+        if (entity instanceof Prueba) {
+            prueba = (Prueba) entity;
+            llegaOnFound = true;
+        }
+        procesaDatosReporte();
+    }
+
+    private void procesaDatosReporte() {
+        if (llegaEvaluacionEjeTematico && llegaTipoAlumno && llegaOnFound && llegaTipoColegio) {
+            llenarDatosTabla();
+            desplegarDatosEjesTematicos();
+            desplegarDatosEvaluaciones();
+        }
+    }
 }

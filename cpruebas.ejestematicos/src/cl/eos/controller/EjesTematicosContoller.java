@@ -8,17 +8,15 @@ import cl.eos.persistence.models.TipoPrueba;
 
 public class EjesTematicosContoller extends AController {
 
-	public EjesTematicosContoller() {
-		
-		
-		
-	}
+    public EjesTematicosContoller() {
 
-	@Override
-	public void initialize() {
-		model = new EjesTematicosModel();
-		model.findAll(EjeTematico.class, this);
-		model.findAll(TipoPrueba.class, this);
-		model.findAll(Asignatura.class, this);
-	}
+    }
+
+    @Override
+    public void initialize() {
+        model = new EjesTematicosModel();
+        model.findAll(EjeTematico.class, this);
+        model.findAll(TipoPrueba.class, this);
+        model.findAll(Asignatura.class, this);
+    }
 }

@@ -52,26 +52,11 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.STVerticalJc;
  */
 public class SimpleTable {
 
-    public static void main(String[] args) throws Exception {
-        try {
-            createSimpleTable();
-        } catch (Exception e) {
-            System.out.println("Error trying to create simple table.");
-            throw (e);
-        }
-        try {
-            createStyledTable();
-        } catch (Exception e) {
-            System.out.println("Error trying to create styled table.");
-            throw (e);
-        }
-    }
-
     public static void createSimpleTable() throws Exception {
-        XWPFDocument doc = new XWPFDocument();
+        final XWPFDocument doc = new XWPFDocument();
 
         try {
-            XWPFTable table = doc.createTable(3, 3);
+            final XWPFTable table = doc.createTable(3, 3);
 
             table.getRow(1).getCell(1).setText("EXAMPLE OF TABLE");
 
@@ -80,9 +65,9 @@ public class SimpleTable {
             // paragraph in the document to put in the cell, it will also
             // appear in the document following the table, which is probably
             // not the desired result.
-            XWPFParagraph p1 = table.getRow(0).getCell(0).getParagraphs().get(0);
+            final XWPFParagraph p1 = table.getRow(0).getCell(0).getParagraphs().get(0);
 
-            XWPFRun r1 = p1.createRun();
+            final XWPFRun r1 = p1.createRun();
             r1.setBold(true);
             r1.setText("The quick brown fox");
             r1.setItalic(true);
@@ -92,7 +77,7 @@ public class SimpleTable {
 
             table.getRow(2).getCell(2).setText("only text");
 
-            OutputStream out = new FileOutputStream("simpleTable.docx");
+            final OutputStream out = new FileOutputStream("simpleTable.docx");
             try {
                 doc.write(out);
             } finally {
@@ -113,12 +98,12 @@ public class SimpleTable {
      * "right" way to do it, but it worked for me. Given the scarcity of XWPF
      * examples, I thought this may prove instructive and give you ideas for
      * your own solutions.
-     * 
+     *
      * @throws Exception
      */
     public static void createStyledTable() throws Exception {
         // Create a new document from scratch
-        XWPFDocument doc = new XWPFDocument();
+        final XWPFDocument doc = new XWPFDocument();
 
         try {
             // -- OR --
@@ -127,39 +112,39 @@ public class SimpleTable {
             // FileInputStream("base_document.docx"));
 
             // Create a new table with 6 rows and 3 columns
-            int nRows = 6;
-            int nCols = 3;
-            XWPFTable table = doc.createTable(nRows, nCols);
+            final int nRows = 6;
+            final int nCols = 3;
+            final XWPFTable table = doc.createTable(nRows, nCols);
 
             // Set the table style. If the style is not defined, the table style
             // will become "Normal".
-            CTTblPr tblPr = table.getCTTbl().getTblPr();
-            CTString styleStr = tblPr.addNewTblStyle();
+            final CTTblPr tblPr = table.getCTTbl().getTblPr();
+            final CTString styleStr = tblPr.addNewTblStyle();
             styleStr.setVal("StyledTable");
 
             // Get a list of the rows in the table
-            List<XWPFTableRow> rows = table.getRows();
+            final List<XWPFTableRow> rows = table.getRows();
             int rowCt = 0;
             int colCt = 0;
-            for (XWPFTableRow row : rows) {
+            for (final XWPFTableRow row : rows) {
                 // get table row properties (trPr)
-                CTTrPr trPr = row.getCtRow().addNewTrPr();
+                final CTTrPr trPr = row.getCtRow().addNewTrPr();
                 // set row height; units = twentieth of a point, 360 = 0.25"
-                CTHeight ht = trPr.addNewTrHeight();
+                final CTHeight ht = trPr.addNewTrHeight();
                 ht.setVal(BigInteger.valueOf(360));
 
                 // get the cells in this row
-                List<XWPFTableCell> cells = row.getTableCells();
+                final List<XWPFTableCell> cells = row.getTableCells();
                 // add content to each cell
-                for (XWPFTableCell cell : cells) {
+                for (final XWPFTableCell cell : cells) {
                     // get a table cell properties element (tcPr)
-                    CTTcPr tcpr = cell.getCTTc().addNewTcPr();
+                    final CTTcPr tcpr = cell.getCTTc().addNewTcPr();
                     // set vertical alignment to "center"
-                    CTVerticalJc va = tcpr.addNewVAlign();
+                    final CTVerticalJc va = tcpr.addNewVAlign();
                     va.setVal(STVerticalJc.CENTER);
 
                     // create cell color element
-                    CTShd ctshd = tcpr.addNewShd();
+                    final CTShd ctshd = tcpr.addNewShd();
                     ctshd.setColor("auto");
                     ctshd.setVal(STShd.CLEAR);
                     if (rowCt == 0) {
@@ -174,9 +159,9 @@ public class SimpleTable {
                     }
 
                     // get 1st paragraph in cell's paragraph list
-                    XWPFParagraph para = cell.getParagraphs().get(0);
+                    final XWPFParagraph para = cell.getParagraphs().get(0);
                     // create a run to contain the content
-                    XWPFRun rh = para.createRun();
+                    final XWPFRun rh = para.createRun();
                     // style cell as desired
                     if (colCt == nCols - 1) {
                         // last column is 10pt Courier
@@ -200,13 +185,28 @@ public class SimpleTable {
             } // for row
 
             // write the file
-            OutputStream out = new FileOutputStream("styledTable.docx");
+            final OutputStream out = new FileOutputStream("styledTable.docx");
             try {
                 doc.write(out);
             } finally {
                 out.close();
             }
         } finally {
+        }
+    }
+
+    public static void main(String[] args) throws Exception {
+        try {
+            SimpleTable.createSimpleTable();
+        } catch (final Exception e) {
+            System.out.println("Error trying to create simple table.");
+            throw e;
+        }
+        try {
+            SimpleTable.createStyledTable();
+        } catch (final Exception e) {
+            System.out.println("Error trying to create styled table.");
+            throw e;
         }
     }
 }

@@ -36,7 +36,7 @@ import utils.WordUtil;
 
 /**
  * Esta clase genera los valores para el resumen.
- * 
+ *
  * @author colegio
  *
  */
@@ -63,10 +63,10 @@ public class InformeResumenTotalAlumnos implements IInforme {
         this.tipoAlumno = tipoAlumno;
         this.colegio = colegio;
         this.asignatura = asignatura;
-        Map<String, Object> params = new HashMap<>();
-        params.put(COLEGIO_ID, colegio.getId());
-        params.put(ASIGNATURA_ID, asignatura.getId());
-        List<EvaluacionPrueba> evaluaciones = (List<EvaluacionPrueba>) (Object) PersistenceServiceFactory
+        final Map<String, Object> params = new HashMap<>();
+        params.put(InformeResumenTotalAlumnos.COLEGIO_ID, colegio.getId());
+        params.put(InformeResumenTotalAlumnos.ASIGNATURA_ID, asignatura.getId());
+        final List<EvaluacionPrueba> evaluaciones = (List<EvaluacionPrueba>) (Object) PersistenceServiceFactory
                 .getPersistenceService().findSynchro("EvaluacionPrueba.findEvaluacionByColegioAsig", params);
         if (evaluaciones == null || evaluaciones.isEmpty())
             return;
@@ -76,6 +76,39 @@ public class InformeResumenTotalAlumnos implements IInforme {
         resultado = procesar(evaluaciones);
     }
 
+    @Override
+    public void graph(XWPFDocument document) {
+        if (resultado == null || resultado.isEmpty())
+            return;
+
+        final XWPFParagraph paragraph = document.createParagraph();
+
+        paragraph.setStyle("PEREKE-TITULO");
+        final List<String> titles = new ArrayList<>();
+        final Map<String, List<Double>> values = new HashMap<>();
+        values.put("Aprobados", new ArrayList<Double>());
+        values.put("Reprobados", new ArrayList<Double>());
+        for (final OTResumenColegio ot : resultado) {
+            if (!ot.getCurso().getName().equals("Total")) {
+                values.get("Aprobados").add(new Double(ot.getPorcAlumnosAprobados()));
+                values.get("Reprobados").add(new Double(ot.getPorcAlumnosReprobados()));
+                titles.add(ot.getCurso().getName());
+            }
+        }
+
+        try {
+            final File file = ChartsUtil.createBarChartSeries("% ALUMNOS", titles, values);
+            WordUtil.addImage(file, "TOTAL ALUMNOS", paragraph);
+        } catch (final IOException e) {
+            e.printStackTrace();
+        } catch (final InvalidFormatException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
     public void page(XWPFDocument document) {
 
         resultado = resultado.stream().sorted(Comparadores.comparaResumeColegio()).collect(Collectors.toList());
@@ -98,7 +131,8 @@ public class InformeResumenTotalAlumnos implements IInforme {
         run = paragraph.createRun();
         run.addCarriageReturn();
 
-        XWPFTable table = document.createTable(resultado.size() + 2, TABLE_HEAD.length);
+        final XWPFTable table = document.createTable(resultado.size() + 2,
+                InformeResumenTotalAlumnos.TABLE_HEAD.length);
         WordUtil.setTableFormat(table, 2, 1);
 
         XWPFTableRow tableRow = table.getRow(0);
@@ -106,13 +140,13 @@ public class InformeResumenTotalAlumnos implements IInforme {
         WordUtil.mergeCellHorizontally(table, 0, 1, 7);
 
         tableRow = table.getRow(1);
-        for (int n = 0; n < TABLE_HEAD.length; n++) {
-            tableRow.getCell(n).setText(TABLE_HEAD[n]);
+        for (int n = 0; n < InformeResumenTotalAlumnos.TABLE_HEAD.length; n++) {
+            tableRow.getCell(n).setText(InformeResumenTotalAlumnos.TABLE_HEAD[n]);
         }
 
         for (int n = 0; n < resultado.size(); n++) {
             tableRow = table.getRow(n + 2);
-            OTResumenColegio ot = resultado.get(n);
+            final OTResumenColegio ot = resultado.get(n);
             tableRow.getCell(0).setText(ot.getCurso().getName());
             tableRow.getCell(1).setText(String.format("%d", ot.getTotalAlumnos()));
             tableRow.getCell(2).setText(String.format("%d", ot.getTotalEvaluados()));
@@ -137,13 +171,13 @@ public class InformeResumenTotalAlumnos implements IInforme {
     }
 
     protected ArrayList<OTResumenColegio> procesar(List<EvaluacionPrueba> list) {
-        ArrayList<OTResumenColegio> lstCursos = new ArrayList<>();
+        final ArrayList<OTResumenColegio> lstCursos = new ArrayList<>();
         int totalColAlumnos = 0;
         int totalColEvaluados = 0;
         int totalColAprobados = 0;
         int totalColReprobados = 0;
-        for (EvaluacionPrueba evaluacion : list) {
-            OTResumenColegio resumenCurso = new OTResumenColegio();
+        for (final EvaluacionPrueba evaluacion : list) {
+            final OTResumenColegio resumenCurso = new OTResumenColegio();
             resumenCurso.setColegio(evaluacion.getColegio());
             resumenCurso.setCurso(evaluacion.getCurso());
 
@@ -152,11 +186,11 @@ public class InformeResumenTotalAlumnos implements IInforme {
             int totalAprobados = 0;
             int totalReprobados = 0;
 
-            List<PruebaRendida> rendidas = evaluacion.getPruebasRendidas();
-            for (PruebaRendida pruebaRendida : rendidas) {
-                Alumno alumno = pruebaRendida.getAlumno();
+            final List<PruebaRendida> rendidas = evaluacion.getPruebasRendidas();
+            for (final PruebaRendida pruebaRendida : rendidas) {
+                final Alumno alumno = pruebaRendida.getAlumno();
                 if (alumno == null || alumno.getTipoAlumno() == null) {
-                    log.error("Alumno NULO");
+                    InformeResumenTotalAlumnos.log.error("Alumno NULO");
                     totalAlumnos--;
                     continue;
                 }
@@ -184,8 +218,8 @@ public class InformeResumenTotalAlumnos implements IInforme {
             totalColReprobados = totalColReprobados + totalReprobados;
 
         }
-        OTResumenColegio resumenTotal = new OTResumenColegio();
-        Curso curso = new Curso();
+        final OTResumenColegio resumenTotal = new OTResumenColegio();
+        final Curso curso = new Curso();
         curso.setId(Long.MAX_VALUE);
         curso.setName("Total");
         resumenTotal.setCurso(curso);
@@ -195,38 +229,6 @@ public class InformeResumenTotalAlumnos implements IInforme {
         resumenTotal.setTotalReprobados(totalColReprobados);
         lstCursos.add(resumenTotal);
         return lstCursos;
-    }
-
-    @Override
-    public void graph(XWPFDocument document) {
-        if (resultado == null || resultado.isEmpty())
-            return;
-
-        XWPFParagraph paragraph = document.createParagraph();
-
-        paragraph.setStyle("PEREKE-TITULO");
-        List<String> titles = new ArrayList<>();
-        Map<String, List<Double>> values = new HashMap<>();
-        values.put("Aprobados", new ArrayList<Double>());
-        values.put("Reprobados", new ArrayList<Double>());
-        for (OTResumenColegio ot : resultado) {
-            if (!ot.getCurso().getName().equals("Total")) {
-                values.get("Aprobados").add(new Double(ot.getPorcAlumnosAprobados()));
-                values.get("Reprobados").add(new Double(ot.getPorcAlumnosReprobados()));
-                titles.add(ot.getCurso().getName());
-            }
-        }
-
-        try {
-            File file = ChartsUtil.createBarChartSeries("% ALUMNOS", titles, values);
-            WordUtil.addImage(file, "TOTAL ALUMNOS", paragraph);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InvalidFormatException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
     }
 
 }

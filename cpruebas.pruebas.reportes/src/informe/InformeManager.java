@@ -39,10 +39,10 @@ import javafx.scene.control.Alert;
 
 /**
  * Se deben inscribir los informes que se han de generar.
- * 
+ *
  * Cada informe debe tener indicado el número de sección al que pertenece con el
  * fin de poder ordenarlos.
- * 
+ *
  * @author colegio
  *
  */
@@ -66,13 +66,13 @@ public class InformeManager {
 
     boolean sorted = false;
     List<IInforme> informes;
-    private XWPFDocument doc;
+    private final XWPFDocument doc;
     File file;
     Colegio colegio;
 
     public InformeManager(Colegio colegio, File selectedFile) throws FileNotFoundException, IOException {
 
-        this.file = selectedFile;
+        file = selectedFile;
         this.colegio = colegio;
         doc = new XWPFDocument(new FileInputStream(System.getProperty("user.dir") + "/res/PAUTA.dotx"));
 
@@ -86,28 +86,6 @@ public class InformeManager {
 
     }
 
-    public void updateFields(String tipoPrueba, String anoEscolar) {
-        POIXMLProperties props = doc.getProperties();
-        POIXMLProperties.CustomProperties cp = props.getCustomProperties();
-        if (cp != null) {
-            List<CTProperty> ctProperties = cp.getUnderlyingProperties().getPropertyList();
-            for (CTProperty ctp : ctProperties) {
-                if (ctp.getName().equalsIgnoreCase(FIELD_TIPOPRUEBA)) {
-                    ctp.setLpwstr(tipoPrueba.toUpperCase().trim());
-                } else if (ctp.getName().equalsIgnoreCase(FIELD_ESTABLECIMIENTO)) {
-                    ctp.setLpwstr(colegio.getName().toUpperCase().trim());
-                } else if (ctp.getName().equalsIgnoreCase(FIELD_CIUDAD)) {
-                    String ciudad = colegio.getCiudad() == null ? "-----" : colegio.getCiudad();
-                    ctp.setLpwstr(ciudad.toUpperCase().trim());
-                } else if (ctp.getName().equalsIgnoreCase(FIELD_ANOESCOLAR)) {
-                    ctp.setLpwstr(anoEscolar.toUpperCase().trim());
-                }
-
-            }
-            doc.enforceUpdateFields();
-        }
-    }
-
     public void add(IInforme informe) {
         if (informes == null) {
             informes = new ArrayList<IInforme>();
@@ -116,22 +94,25 @@ public class InformeManager {
         sorted = false;
     }
 
-    public void remove(IInforme informe) {
-        if (informes == null)
-            return;
-        informes.remove(informe);
-    }
+    public void finish() {
+        try {
 
-    public List<IInforme> getInformes() {
-        if (informes == null)
-            return null;
-        return informes;
+            final FileOutputStream out = new FileOutputStream(file);
+            doc.write(out);
+            out.close();
+        } catch (final IOException e) {
+            Platform.runLater(() -> {
+                final Alert dlg = UtilsAlert.makeExceptionAlert("No se ha podido grabar el archivo.",
+                        "Debe generalo nuevamente", e);
+                dlg.show();
+            });
+        }
     }
 
     protected void generarPaginaAsignatura(XWPFDocument document, Asignatura asignatura) {
 
-        CTDocument1 lDoc = document.getDocument();
-        CTBody body = lDoc.getBody();
+        final CTDocument1 lDoc = document.getDocument();
+        final CTBody body = lDoc.getBody();
 
         // Establece el estilo a la sección que ya existe.
         XWPFParagraph para = document.createParagraph();
@@ -146,7 +127,7 @@ public class InformeManager {
         // Se escribe el nuevo párrafo
         para = document.createParagraph();
         para.setAlignment(ParagraphAlignment.CENTER);
-        XWPFRun run = para.createRun();
+        final XWPFRun run = para.createRun();
         run.setFontSize(20);
         run.setText(asignatura.getName().toUpperCase());
         run.addCarriageReturn();
@@ -176,33 +157,49 @@ public class InformeManager {
 
     }
 
+    public List<IInforme> getInformes() {
+        if (informes == null)
+            return null;
+        return informes;
+    }
+
     public void processAsignatura(TipoAlumno tipoAlumno, Colegio colegio, Asignatura asignatura) {
 
         generarPaginaAsignatura(doc, asignatura);
-        for (IInforme informe : informes) {
+        for (final IInforme informe : informes) {
             informe.execute(tipoAlumno, colegio, asignatura);
             informe.page(doc);
             informe.graph(doc);
-            XWPFParagraph paragraph = doc.createParagraph();
+            final XWPFParagraph paragraph = doc.createParagraph();
             paragraph.setPageBreak(true);
         }
     }
 
-    public void finish() {
-        try {
+    public void remove(IInforme informe) {
+        if (informes == null)
+            return;
+        informes.remove(informe);
+    }
 
-            FileOutputStream out = new FileOutputStream(file);
-            doc.write(out);
-            out.close();
-        } catch (IOException e) {
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    Alert dlg = UtilsAlert.makeExceptionAlert("No se ha podido grabar el archivo.",
-                            "Debe generalo nuevamente", e);
-                    dlg.show();
+    public void updateFields(String tipoPrueba, String anoEscolar) {
+        final POIXMLProperties props = doc.getProperties();
+        final POIXMLProperties.CustomProperties cp = props.getCustomProperties();
+        if (cp != null) {
+            final List<CTProperty> ctProperties = cp.getUnderlyingProperties().getPropertyList();
+            for (final CTProperty ctp : ctProperties) {
+                if (ctp.getName().equalsIgnoreCase(InformeManager.FIELD_TIPOPRUEBA)) {
+                    ctp.setLpwstr(tipoPrueba.toUpperCase().trim());
+                } else if (ctp.getName().equalsIgnoreCase(InformeManager.FIELD_ESTABLECIMIENTO)) {
+                    ctp.setLpwstr(colegio.getName().toUpperCase().trim());
+                } else if (ctp.getName().equalsIgnoreCase(InformeManager.FIELD_CIUDAD)) {
+                    final String ciudad = colegio.getCiudad() == null ? "-----" : colegio.getCiudad();
+                    ctp.setLpwstr(ciudad.toUpperCase().trim());
+                } else if (ctp.getName().equalsIgnoreCase(InformeManager.FIELD_ANOESCOLAR)) {
+                    ctp.setLpwstr(anoEscolar.toUpperCase().trim());
                 }
-            });
+
+            }
+            doc.enforceUpdateFields();
         }
     }
 

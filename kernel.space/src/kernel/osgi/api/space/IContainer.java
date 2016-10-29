@@ -5,16 +5,16 @@ import java.awt.Container;
 /**
  * Es la interface que deben implementar todos aquellos que quieren ser un
  * contenedor de la aplicacion.
- * 
+ *
  * @author eosorio
- * 
+ *
  */
 public interface IContainer {
 
-	IMenuContainer getMenuContainer();
+    IMainContainer getMainContainer();
 
-	Container getStatusContainer();
+    IMenuContainer getMenuContainer();
 
-	IMainContainer getMainContainer();
+    Container getStatusContainer();
 
 }

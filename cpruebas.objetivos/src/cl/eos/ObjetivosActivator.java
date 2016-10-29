@@ -3,29 +3,27 @@ package cl.eos;
 import java.io.IOException;
 import java.net.URL;
 
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import cl.eos.controller.ObjetivosContoller;
 import cl.eos.interfaces.AActivator;
+import javafx.fxml.FXMLLoader;
 
 public class ObjetivosActivator extends AActivator {
 
-	public ObjetivosActivator() {
+    public ObjetivosActivator() {
 
-		controller = new ObjetivosContoller();
-		
-		URL url = ObjetivosActivator.class
-				.getResource("/cl/eos/view/Objetivos.fxml");
-		FXMLLoader fxmlLoader = new FXMLLoader();
-		try {
-			pane = (Parent) fxmlLoader.load(url.openStream());
-			view = fxmlLoader.getController();
-			view.setPanel(pane);
-			controller.addView(view);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+        controller = new ObjetivosContoller();
 
-	}
+        final URL url = ObjetivosActivator.class.getResource("/cl/eos/view/Objetivos.fxml");
+        final FXMLLoader fxmlLoader = new FXMLLoader();
+        try {
+            pane = fxmlLoader.load(url.openStream());
+            view = fxmlLoader.getController();
+            view.setPanel(pane);
+            controller.addView(view);
+        } catch (final IOException e) {
+            e.printStackTrace();
+        }
+
+    }
 
 }

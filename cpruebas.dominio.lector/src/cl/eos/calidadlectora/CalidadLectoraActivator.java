@@ -5,25 +5,23 @@ import java.net.URL;
 
 import cl.eos.interfaces.AActivator;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 
 public class CalidadLectoraActivator extends AActivator {
-	public CalidadLectoraActivator() {
+    public CalidadLectoraActivator() {
 
-		controller = new Contoller();
-		
-		URL url = CalidadLectoraActivator.class
-				.getResource("/cl/eos/calidadlectora/CalidadLectora.fxml");
-		FXMLLoader fxmlLoader = new FXMLLoader();
-		try {
-			pane = (Parent) fxmlLoader.load(url.openStream());
-			view = fxmlLoader.getController();
-			view.setPanel(pane);
-			controller.addView(view);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+        controller = new Contoller();
 
-	}
+        final URL url = CalidadLectoraActivator.class.getResource("/cl/eos/calidadlectora/CalidadLectora.fxml");
+        final FXMLLoader fxmlLoader = new FXMLLoader();
+        try {
+            pane = fxmlLoader.load(url.openStream());
+            view = fxmlLoader.getController();
+            view.setPanel(pane);
+            controller.addView(view);
+        } catch (final IOException e) {
+            e.printStackTrace();
+        }
+
+    }
 
 }

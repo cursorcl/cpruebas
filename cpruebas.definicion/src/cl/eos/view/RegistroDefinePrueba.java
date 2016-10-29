@@ -1,163 +1,156 @@
 package cl.eos.view;
 
+import cl.eos.persistence.models.EjeTematico;
+import cl.eos.persistence.models.Habilidad;
+import cl.eos.persistence.models.Objetivo;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import cl.eos.persistence.models.EjeTematico;
-import cl.eos.persistence.models.Habilidad;
-import cl.eos.persistence.models.Objetivo;
 
 /**
  * Clase que permite registrar la definición de un registro de una prueba.
- * 
+ *
  * @author curso
  */
 public class RegistroDefinePrueba {
 
-	private SimpleIntegerProperty numero;
-	private SimpleStringProperty respuesta;
-	private SimpleBooleanProperty verdaderoFalso;
-	private SimpleBooleanProperty mental;
-	private ObjectProperty<Habilidad> habilidad;
-	private ObjectProperty<EjeTematico> ejeTematico;
-	private ObjectProperty<Objetivo> objetivo;
-	private SimpleStringProperty bad;
+    private final SimpleIntegerProperty numero;
+    private final SimpleStringProperty respuesta;
+    private final SimpleBooleanProperty verdaderoFalso;
+    private final SimpleBooleanProperty mental;
+    private final ObjectProperty<Habilidad> habilidad;
+    private final ObjectProperty<EjeTematico> ejeTematico;
+    private final ObjectProperty<Objetivo> objetivo;
+    private SimpleStringProperty bad;
 
-	public RegistroDefinePrueba() {
-		this(0, "", false, false);
-	}
+    public RegistroDefinePrueba() {
+        this(0, "", false, false);
+    }
 
-	public RegistroDefinePrueba(Integer numero, String respuesta, Boolean verdaderoFalso, Boolean mental) {
-		super();
-		this.numero = new SimpleIntegerProperty(numero);
-		this.respuesta = new SimpleStringProperty(respuesta);
-		this.verdaderoFalso = new SimpleBooleanProperty(verdaderoFalso.booleanValue());
-		this.mental = new SimpleBooleanProperty(mental.booleanValue());
-		this.habilidad = new SimpleObjectProperty<>();
-		this.ejeTematico = new SimpleObjectProperty<>();
-		this.objetivo = new SimpleObjectProperty<>();
-		
-		this.mental.addListener(new ChangeListener<Boolean>() {
-			@Override
-			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-				if (newValue.equals(Boolean.TRUE)) {
-					RegistroDefinePrueba.this.verdaderoFalso.set(Boolean.FALSE);
-					RegistroDefinePrueba.this.respuesta.set(" ");
-				}
-			}
-		});
+    public RegistroDefinePrueba(Integer numero, String respuesta, Boolean verdaderoFalso, Boolean mental) {
+        super();
+        this.numero = new SimpleIntegerProperty(numero);
+        this.respuesta = new SimpleStringProperty(respuesta);
+        this.verdaderoFalso = new SimpleBooleanProperty(verdaderoFalso.booleanValue());
+        this.mental = new SimpleBooleanProperty(mental.booleanValue());
+        habilidad = new SimpleObjectProperty<>();
+        ejeTematico = new SimpleObjectProperty<>();
+        objetivo = new SimpleObjectProperty<>();
 
-		this.verdaderoFalso.addListener(new ChangeListener<Boolean>() {
-			@Override
-			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-				if (newValue.equals(Boolean.TRUE)) {
-					RegistroDefinePrueba.this.mental.set(Boolean.FALSE);
-					if (!"VF".contains(getRespuesta().toUpperCase())) {
-						setRespuesta("");
-					}
-				}
-			}
-		});
+        this.mental.addListener((ChangeListener<Boolean>) (observable, oldValue, newValue) -> {
+            if (newValue.equals(Boolean.TRUE)) {
+                RegistroDefinePrueba.this.verdaderoFalso.set(Boolean.FALSE);
+                RegistroDefinePrueba.this.respuesta.set(" ");
+            }
+        });
 
-	}
+        this.verdaderoFalso.addListener((ChangeListener<Boolean>) (observable, oldValue, newValue) -> {
+            if (newValue.equals(Boolean.TRUE)) {
+                RegistroDefinePrueba.this.mental.set(Boolean.FALSE);
+                if (!"VF".contains(getRespuesta().toUpperCase())) {
+                    setRespuesta("");
+                }
+            }
+        });
 
-	public Integer getNumero() {
-		return numero.getValue();
-	}
+    }
 
-	public void setNumero(Integer numero) {
-		this.numero.set(numero);
-	}
+    public SimpleStringProperty badProperty() {
+        return bad;
+    }
 
-	public String getRespuesta() {
-		return respuesta.getValue();
-	}
+    public ObjectProperty<EjeTematico> ejeTematicoProperty() {
+        return ejeTematico;
+    }
 
-	public SimpleStringProperty respuestaProperty() {
-		return respuesta;
-	}
+    public String getBad() {
+        return bad.getValue();
+    }
 
-	public void setRespuesta(String respuesta) {
-		this.respuesta.set(respuesta);
-	}
+    public EjeTematico getEjeTematico() {
+        return ejeTematico.getValue();
+    }
 
-	public Boolean getVerdaderoFalso() {
-		return verdaderoFalso.getValue();
-	}
+    public Habilidad getHabilidad() {
+        return habilidad.getValue();
+    }
 
-	public void setVerdaderoFalso(Boolean verdaderoFalso) {
-		this.verdaderoFalso.set(verdaderoFalso);
-	}
+    public Boolean getMental() {
+        return mental.getValue();
+    }
 
-	public SimpleBooleanProperty verdaderoFalsoProperty() {
-		return verdaderoFalso;
-	}
+    public Integer getNumero() {
+        return numero.getValue();
+    }
 
-	public Boolean getMental() {
-		return mental.getValue();
-	}
+    public final cl.eos.persistence.models.Objetivo getObjetivo() {
+        return objetivoProperty().get();
+    }
 
-	public void setMental(Boolean mental) {
-		this.mental.set(mental);
-		if (mental) {
-			setVerdaderoFalso(false);
-		}
-	}
+    public String getRespuesta() {
+        return respuesta.getValue();
+    }
 
-	public SimpleBooleanProperty mentalProperty() {
-		return mental;
-	}
+    public Boolean getVerdaderoFalso() {
+        return verdaderoFalso.getValue();
+    }
 
-	public Habilidad getHabilidad() {
-		return habilidad.getValue();
-	}
+    public ObjectProperty<Habilidad> habilidadProperty() {
+        return habilidad;
+    }
 
-	public ObjectProperty<Habilidad> habilidadProperty() {
-		return habilidad;
-	}
+    public SimpleBooleanProperty mentalProperty() {
+        return mental;
+    }
 
-	public void setHabilidad(Habilidad habilidad) {
-		this.habilidad.set(habilidad);
-	}
+    public final ObjectProperty<Objetivo> objetivoProperty() {
+        return objetivo;
+    }
 
-	public ObjectProperty<EjeTematico> ejeTematicoProperty() {
-		return ejeTematico;
-	}
+    public SimpleStringProperty respuestaProperty() {
+        return respuesta;
+    }
 
-	public EjeTematico getEjeTematico() {
-		return ejeTematico.getValue();
-	}
+    public void setBad(String bad) {
+        this.bad.set(bad);
+    }
 
-	public void setEjeTematico(EjeTematico ejeTematico) {
-		this.ejeTematico.set(ejeTematico);
-	}
+    public void setEjeTematico(EjeTematico ejeTematico) {
+        this.ejeTematico.set(ejeTematico);
+    }
 
-	public String getBad() {
-		return bad.getValue();
-	}
+    public void setHabilidad(Habilidad habilidad) {
+        this.habilidad.set(habilidad);
+    }
 
-	public SimpleStringProperty badProperty() {
-		return bad;
-	}
+    public void setMental(Boolean mental) {
+        this.mental.set(mental);
+        if (mental) {
+            setVerdaderoFalso(false);
+        }
+    }
 
-	public void setBad(String bad) {
-		this.bad.set(bad);
-	}
+    public void setNumero(Integer numero) {
+        this.numero.set(numero);
+    }
 
-	public final ObjectProperty<Objetivo> objetivoProperty() {
-		return this.objetivo;
-	}
+    public final void setObjetivo(final cl.eos.persistence.models.Objetivo objetivo) {
+        objetivoProperty().set(objetivo);
+    }
 
-	public final cl.eos.persistence.models.Objetivo getObjetivo() {
-		return this.objetivoProperty().get();
-	}
+    public void setRespuesta(String respuesta) {
+        this.respuesta.set(respuesta);
+    }
 
-	public final void setObjetivo(final cl.eos.persistence.models.Objetivo objetivo) {
-		this.objetivoProperty().set(objetivo);
-	}
+    public void setVerdaderoFalso(Boolean verdaderoFalso) {
+        this.verdaderoFalso.set(verdaderoFalso);
+    }
+
+    public SimpleBooleanProperty verdaderoFalsoProperty() {
+        return verdaderoFalso;
+    }
 
 }

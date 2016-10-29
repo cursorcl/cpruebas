@@ -58,33 +58,33 @@ public class MenuGrabarListener implements EventHandler<ActionEvent> {
         prueba.setTipoPrueba(defPrueba.cmbTipoPrueba.getValue());
         prueba.setExigencia(defPrueba.spnExigencia.getNumber().intValue());
 
-        ObservableList<ItemList> items = defPrueba.lstPreguntas.getItems();
+        final ObservableList<ItemList> items = defPrueba.lstPreguntas.getItems();
         // List<RespuestasEsperadasPrueba> lstRespuestas = new ArrayList<>();
         String respuestas = "";
 
-        for (ItemList item : items) {
+        for (final ItemList item : items) {
             respuestas = respuestas + item.rightAnswer;
         }
         prueba.setResponses(respuestas);
 
         prueba = (Prueba) defPrueba.save(prueba);
 
-        for (ItemList item : items) {
-            String itemName = String.format("%d", item.nro);
+        for (final ItemList item : items) {
+            final String itemName = String.format("%d", item.nro);
 
-            boolean isMental = item.rightAnswer.equals("M");
-            boolean isTrueFalse = "VF".contains(item.rightAnswer.toUpperCase());
+            final boolean isMental = item.rightAnswer.equals("M");
+            final boolean isTrueFalse = "VF".contains(item.rightAnswer.toUpperCase());
 
             RespuestasEsperadasPrueba respuesta = new RespuestasEsperadasPrueba.Builder().anulada(false)
                     .ejeTematico(item.thematic).habilidad(item.ability).mental(isMental).name(itemName).numero(item.nro)
                     .objetivo(item.objetive).respuesta(item.rightAnswer).verdaderoFalso(isTrueFalse).prueba(prueba)
                     .build();
-            List<Imagenes> lstImages = processImages(item, respuesta);
-            List<Alternativas> lstAlternativas = processAlteratives(item, respuesta);
+            final List<Imagenes> lstImages = processImages(item, respuesta);
+            final List<Alternativas> lstAlternativas = processAlteratives(item, respuesta);
 
             respuesta = (RespuestasEsperadasPrueba) defPrueba.save(respuesta);
 
-            //respuesta.setAlternativas(lstAlternativas);
+            // respuesta.setAlternativas(lstAlternativas);
 
             for (int n = 0; n < lstAlternativas.size(); n++) {
                 Alternativas alt = lstAlternativas.get(n);
@@ -114,8 +114,8 @@ public class MenuGrabarListener implements EventHandler<ActionEvent> {
         for (int n = 0; n < nroAlternativas; n++) {
             if (lstAlternatives == null)
                 lstAlternatives = new ArrayList<>();
-            String altName = String.format("%d_%d", item.nro, (n + 1));
-            Alternativas alternative = new Alternativas.Builder().name(altName).numero(n).texto(item.question)
+            final String altName = String.format("%d_%d", item.nro, n + 1);
+            final Alternativas alternative = new Alternativas.Builder().name(altName).numero(n).texto(item.question)
                     .respuesta(respuesta).build();
             lstAlternatives.add(alternative);
         }
@@ -127,28 +127,28 @@ public class MenuGrabarListener implements EventHandler<ActionEvent> {
         for (int n = 0; n < item.images.size(); n++) {
             if (item.images.get(n) == null)
                 break;
-            Image img = item.images.get(n);
-            BufferedImage bimg = SwingFXUtils.fromFXImage(img, null);
-            BufferedImage scaledImg = Scalr.resize(bimg, Method.ULTRA_QUALITY, Mode.AUTOMATIC, 512, 512,
+            final Image img = item.images.get(n);
+            final BufferedImage bimg = SwingFXUtils.fromFXImage(img, null);
+            final BufferedImage scaledImg = Scalr.resize(bimg, Method.ULTRA_QUALITY, Mode.AUTOMATIC, 512, 512,
                     Scalr.OP_ANTIALIAS);
 
-            String dirName = Utils.getDefaultDirectory() + "/images/." + name;
-            File theDir = new File(dirName);
+            final String dirName = Utils.getDefaultDirectory() + "/images/." + name;
+            final File theDir = new File(dirName);
             if (!theDir.exists())
                 theDir.mkdirs();
 
             if (theDir.exists()) {
-                String fName = String.format("%02d_%02d_%02d_%02d.png", idAsignatura, idCurso, item.nro, n);
-                String fileName = String.format("%s/%s", dirName, fName);
+                final String fName = String.format("%02d_%02d_%02d_%02d.png", idAsignatura, idCurso, item.nro, n);
+                final String fileName = String.format("%s/%s", dirName, fName);
 
                 try {
                     ImageIO.write(scaledImg, "png", new File(fileName));
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     e.printStackTrace();
                 }
                 if (lstImages == null)
                     lstImages = new ArrayList<>();
-                Imagenes image = new Imagenes.Builder().numero(item.nro).name(fName).respuesta(respuesta).build();
+                final Imagenes image = new Imagenes.Builder().numero(item.nro).name(fName).respuesta(respuesta).build();
                 lstImages.add(image);
             }
         }

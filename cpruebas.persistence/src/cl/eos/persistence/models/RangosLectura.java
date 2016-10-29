@@ -13,7 +13,7 @@ import cl.eos.persistence.AEntity;
 @Entity(name = "dl_rangolecturas")
 @NamedQueries({
         @NamedQuery(name = "RangoLecturas.findAll", query = "SELECT r FROM dl_velocidadlectora r order by r.name") })
-public class RangosLectura extends AEntity{
+public class RangosLectura extends AEntity {
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -23,55 +23,69 @@ public class RangosLectura extends AEntity{
     private TipoCurso tipoCurso;
     private VelocidadLectora velocidadLectora;
     int value;
-    
+
     /**
      * Se crea para el manejo de multiusuarios
      */
-    @Version 
+    @Version
     protected int version;
-    
+
+    @Override
     public Long getId() {
         return id;
     }
-    public void setId(Long id) {
-        this.id = id;
-    }
-    public TipoCurso getTipoCurso() {
-        return tipoCurso;
-    }
-    public void setTipoCurso(TipoCurso tipoCurso) {
-        this.tipoCurso = tipoCurso;
-    }
-    public VelocidadLectora getVelocidadLectora() {
-        return velocidadLectora;
-    }
-    public void setVelocidadLectora(VelocidadLectora velocidadLectora) {
-        this.velocidadLectora = velocidadLectora;
-    }
-    public int getValue() {
-        return value;
-    }
-    public void setValue(int value) {
-        this.value = value;
-    }
-    @Override
-    public final int getVersion() {
-        return version;
-    }
-    @Override
-    public final void setVersion(int version) {
-        this.version = version;
-    }
-    @Override
-    public boolean validate() {
-        return true;
-    }
+
     @Override
     public String getName() {
         return null;
     }
+
+    public TipoCurso getTipoCurso() {
+        return tipoCurso;
+    }
+
+    public int getValue() {
+        return value;
+    }
+
+    public VelocidadLectora getVelocidadLectora() {
+        return velocidadLectora;
+    }
+
+    @Override
+    public final int getVersion() {
+        return version;
+    }
+
+    @Override
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     @Override
     public void setName(String name) {
-        
-    }    
+
+    }
+
+    public void setTipoCurso(TipoCurso tipoCurso) {
+        this.tipoCurso = tipoCurso;
+    }
+
+    public void setValue(int value) {
+        this.value = value;
+    }
+
+    public void setVelocidadLectora(VelocidadLectora velocidadLectora) {
+        this.velocidadLectora = velocidadLectora;
+    }
+
+    @Override
+    public final void setVersion(int version) {
+        this.version = version;
+    }
+
+    @Override
+    public boolean validate() {
+        return true;
+    }
 }

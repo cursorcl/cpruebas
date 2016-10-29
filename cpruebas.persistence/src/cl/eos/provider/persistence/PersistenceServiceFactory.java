@@ -4,13 +4,13 @@ import cl.eos.persistence.IPersistenceService;
 
 public class PersistenceServiceFactory {
     private static IPersistenceService persistenceService;
-    
+
     public static IPersistenceService getPersistenceService() {
-        if (persistenceService == null) {
-            
-            persistenceService = new PersistenceService();
+        if (PersistenceServiceFactory.persistenceService == null) {
+
+            PersistenceServiceFactory.persistenceService = new PersistenceService();
         }
-        return persistenceService;
+        return PersistenceServiceFactory.persistenceService;
     }
 
 }

@@ -61,7 +61,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import jfxtras.labs.scene.control.BigDecimalField;
@@ -193,6 +192,464 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
         setTitle("Pruebas");
     }
 
+    private void accionClicTabla() {
+        tblListadoPruebas.setOnMouseClicked(event -> {
+            final ObservableList<OTPrueba> itemsSelec = tblListadoPruebas.getSelectionModel().getSelectedItems();
+
+            if (itemsSelec.size() > 1) {
+                mnuPopupEliminar.setDisable(false);
+                mnuEliminar.setDisable(false);
+                mnuComunalEje.setDisable(false);
+
+                mnuPopupModificar.setDisable(true);
+                mnuModificar.setDisable(true);
+                mnuImprimirPrueba.setDisable(true);
+                mnuListaEvaluaciones.setDisable(true);
+                mnuDefinirPrueba.setDisable(true);
+                mnuEvaluarPrueba.setDisable(true);
+                mnuAnularPregunta.setDisable(true);
+                mnuComparativoComunal.setDisable(true);
+                mnuComparativoComunalHab.setDisable(true);
+
+            } else if (itemsSelec.size() == 1) {
+
+                final OTPrueba prueba = itemsSelec.get(0);
+                mnuModificar.setDisable(false);
+                mnuEliminar.setDisable(false);
+                mnuPopupModificar.setDisable(false);
+                mnuPopupEliminar.setDisable(false);
+                mnuImprimirPrueba.setDisable(false);
+                mnuAnularPregunta.setDisable(false);
+                final boolean estadoDefinida = prueba.getEstado().equals(Estado.DEFINIDA);
+                final boolean estadoEvaluada = prueba.getEstado().equals(Estado.EVALUADA);
+                final boolean estadoCreada = prueba.getEstado().equals(Estado.CREADA);
+
+                if (estadoDefinida) {
+                    mnuEvaluarPrueba.setDisable(!estadoDefinida);
+                    mnuListaEvaluaciones.setDisable(estadoDefinida);
+                    mnuComunalEje.setDisable(estadoDefinida);
+                    mnuComparativoComunal.setDisable(estadoDefinida);
+                    mnuComparativoComunalHab.setDisable(estadoDefinida);
+                } else if (estadoEvaluada) {
+
+                    mnuEvaluarPrueba.setDisable(!estadoEvaluada);
+                    mnuDefinirPrueba.setDisable(!estadoEvaluada);
+                    mnuListaEvaluaciones.setDisable(!estadoEvaluada);
+                    mnuComunalEje.setDisable(!estadoEvaluada);
+                    mnuComparativoComunal.setDisable(!estadoEvaluada);
+                    mnuComparativoComunalHab.setDisable(!estadoEvaluada);
+                } else if (estadoCreada) {
+                    mnuEvaluarPrueba.setDisable(estadoCreada);
+                    mnuDefinirPrueba.setDisable(!estadoCreada);
+                    mnuListaEvaluaciones.setDisable(estadoCreada);
+                    mnuComunalEje.setDisable(estadoCreada);
+                    mnuComparativoComunal.setDisable(estadoCreada);
+                    mnuComparativoComunalHab.setDisable(estadoCreada);
+                    mnuAnularPregunta.setDisable(true);
+                }
+                mnuModificar.setDisable(!estadoCreada);
+                mnuPopupModificar.setDisable(!estadoCreada);
+            }
+        });
+    }
+
+    @Override
+    public void handle(ActionEvent event) {
+        final Object source = event.getSource();
+        if (source == mnuModificar || source == mnuPopupModificar) {
+            handleModificar();
+        } else if (source == mnuGrabar) {
+            handleGrabar();
+        } else if (source == mnuEliminar || source == mnuPopupEliminar) {
+            handleEliminar();
+        } else if (source == mnuEvaluarPrueba) {
+            handlerEvaluar();
+        } else if (source == mnuAnularPregunta) {
+            handlerAnularPregunta();
+        } else if (source == mnuDefinirPrueba) {
+            handlerDefinirPrueba();
+        } else if (source == mnuListaEvaluaciones) {
+            handlerListaEvaluaciones();
+        } else if (source == mnuComparativoComunal) {
+            handlerComparativoComunal();
+        } else if (source == mnuComparativoComunalNivel) {
+            handlerComparativoComunalNivel();
+        } else if (source == mnuComparativoComunalHab) {
+            handlerComparativoComunalHab();
+        } else if (source == mnuComparativoComunalHabNivel) {
+            handlerComparativoComunalHabNivel();
+        } else if (source == mnuComunalEje) {
+            handlerComunalEje();
+        } else if (source == mnuColegio) {
+            handlerResumenColegios();
+        } else if (source == mnuImprimirPrueba) {
+            handlerImrpimirPrueba();
+        } else if (source == mnuNueva) {
+            handlerNuevaPrueba();
+        } else if (source == mnuComparativoColegioEjeHabil) {
+            handlerComparativoColegioEjeHabilidad();
+        } else if (source == mnuComparativoColegioEjeHabilXNivel) {
+            handlerComparativoColegioEjeHabilidadXNivel();
+        } else if (source == mnuEjesEvaluacion) {
+            handlerEjesEvaluacion();
+        } else if (source == mnuHabilidadEvaluacion) {
+            handlerHabilidadEvaluacion();
+        } else if (source == mnuHabilidadEvaluacionXNivel) {
+            handlerHabilidadEvaluacionXNivel();
+        } else if (source == mnuHabilidadEvaluacionXAlumno) {
+            handlerHabilidadEvaluacionXAlumno();
+        } else if (source == mnuCompColegioEjeHabilXCurso) {
+            handlerCompColegioEjeHabilXCurso();
+        } else if (source == mnuCompEjesHabXNivel) {
+            handlerCompEjesHabXNivel();
+        } else if (source == mnuHabilidadEvaluacionXAlumnoXNivel) {
+            handlerHabilidadEvaluacionXAlumnoXNivel();
+        } else if (source == mnuColegioXNivel) {
+            handlerResumenColegiosXNivel();
+        } else if (source == mnuInforme) {
+            handlerInforme();
+        }
+
+    }
+
+    private void handleEliminar() {
+
+        final ObservableList<OTPrueba> otSeleccionados = tblListadoPruebas.getSelectionModel().getSelectedItems();
+        if (otSeleccionados != null && !otSeleccionados.isEmpty()) {
+            final List<Prueba> pruebas = new ArrayList<Prueba>(otSeleccionados.size());
+            for (final OTPrueba ot : otSeleccionados) {
+                pruebas.add(ot.getPrueba());
+            }
+            delete(pruebas);
+            tblListadoPruebas.getSelectionModel().clearSelection();
+            limpiarCampos();
+        }
+    }
+
+    private void handleGrabar() {
+        removeAllStyles();
+        if (validate()) {
+            if (prueba == null) {
+                prueba = new Prueba();
+            }
+            prueba.setAlternativas(bigDecimaNroAlternativas.getNumber().intValue());
+            prueba.setAsignatura(cmbAsignatura.getValue());
+            prueba.setCurso(cmbCurso.getValue());
+            prueba.setFecha(dpFecha.getValue().toEpochDay());
+            prueba.setNroFormas(bigDecimalForma.getNumber().intValue());
+            prueba.setName(txtName.getText());
+            prueba.setNivelEvaluacion(cmbNivelEvaluacion.getValue());
+            prueba.setProfesor(cmbProfesor.getValue());
+            prueba.setPuntajeBase(bigDecimalPuntajePregunta.getNumber().intValue());
+            prueba.setNroPreguntas(bigDecimalNroPreguntas.getNumber().intValue());
+            prueba.setAlternativas(bigDecimaNroAlternativas.getNumber().intValue());
+            prueba.setTipoPrueba(cmbTipoPrueba.getValue());
+            prueba.setExigencia(bigDecimalExigencia.getNumber().intValue());
+
+            save(prueba);
+        }
+    }
+
+    private void handleModificar() {
+        if (tblListadoPruebas.getSelectionModel().getSelectedItem() != null) {
+            prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
+
+            if (prueba != null) {
+                if (!prueba.getEstado().equals(Estado.EVALUADA)) {
+                    bigDecimaNroAlternativas.setNumber(new BigDecimal(prueba.getAlternativas()));
+                    cmbAsignatura.getSelectionModel().select(prueba.getAsignatura());
+                    cmbCurso.getSelectionModel().select(prueba.getCurso());
+                    dpFecha.setValue(prueba.getFechaLocal());
+                    bigDecimalForma.setNumber(new BigDecimal(prueba.getNroFormas()));
+                    txtName.setText(prueba.getName());
+                    cmbNivelEvaluacion.getSelectionModel().select(prueba.getNivelEvaluacion());
+                    cmbProfesor.getSelectionModel().select(prueba.getProfesor());
+                    bigDecimalPuntajePregunta.setNumber(new BigDecimal(prueba.getPuntajeBase()));
+                    bigDecimalNroPreguntas.setNumber(new BigDecimal(prueba.getNroPreguntas()));
+                    cmbTipoPrueba.getSelectionModel().select(prueba.getTipoPrueba());
+                    prueba.setExigencia(bigDecimalExigencia.getNumber().intValue());
+                } else {
+                    final Alert info = new Alert(AlertType.INFORMATION);
+                    info.setTitle("No se puede modificar.");
+                    info.setHeaderText("La prueba ya se encuentra evaluada.");
+                    info.setContentText("No se podrá modificar.");
+                    info.show();
+                }
+            }
+        }
+    }
+
+    private void handlerAnularPregunta() {
+        if (tblListadoPruebas.getSelectionModel().getSelectedItem() != null) {
+            final Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
+
+            anularPregunta = (AnularPreguntasViewController) show("/cl/eos/view/AnulaPreguntasView.fxml");
+
+            if (prueba != null) {
+                controller.findById(Prueba.class, prueba.getId(), anularPregunta);
+            }
+        }
+    }
+
+    private void handlerComparativoColegioEjeHabilidad() {
+        final ComparativoColegioEjeHabilidadView resumenColegioEjeHabiliadad = (ComparativoColegioEjeHabilidadView) show(
+                "/colegio/fxml/ComparativoColegioEjeHabilidad.fxml");
+        show(resumenColegioEjeHabiliadad);
+        controller.findAll(Colegio.class, resumenColegioEjeHabiliadad);
+        controller.findAll(Asignatura.class, resumenColegioEjeHabiliadad);
+        controller.findAll(EvaluacionEjeTematico.class, resumenColegioEjeHabiliadad);
+        controller.findAll(TipoAlumno.class, resumenColegioEjeHabiliadad);
+    }
+
+    private void handlerComparativoColegioEjeHabilidadXNivel() {
+        final Nivel_ComparativoColegioEjeHabilidadView resumenColegioEjeHabiliadad = (Nivel_ComparativoColegioEjeHabilidadView) show(
+                "/colegio/nivel/fxml/Nivel_ComparativoColegioEjeHabilidad.fxml");
+        show(resumenColegioEjeHabiliadad);
+        controller.findAll(Colegio.class, resumenColegioEjeHabiliadad);
+        controller.findAll(Asignatura.class, resumenColegioEjeHabiliadad);
+        controller.findAll(EvaluacionEjeTematico.class, resumenColegioEjeHabiliadad);
+        controller.findAll(TipoAlumno.class, resumenColegioEjeHabiliadad);
+    }
+
+    private void handlerComparativoComunal() {
+        comparativoComunal = (ComparativoComunalEjeView) show("/comunal/fxml/ComparativoComunalEje.fxml");
+        if (tblListadoPruebas.getSelectionModel().getSelectedItem() != null) {
+            final Prueba pPrueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
+            if (pPrueba != null) {
+                controller.findById(Prueba.class, pPrueba.getId(), comparativoComunal);
+                controller.findAll(EvaluacionEjeTematico.class, comparativoComunal);
+                controller.findAll(TipoAlumno.class, comparativoComunal);
+                controller.findAll(TipoColegio.class, comparativoComunal);
+            }
+        }
+    }
+
+    private void handlerComparativoComunalHab() {
+        comparativoComunalHabilidad = (ComparativoComunalHabilidadView) show(
+                "/comunal/fxml/ComparativoComunalHabilidad.fxml");
+        if (tblListadoPruebas.getSelectionModel().getSelectedItem() != null) {
+            final Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
+            if (prueba != null) {
+                controller.findById(Prueba.class, prueba.getId(), comparativoComunalHabilidad);
+                controller.findAll(EvaluacionEjeTematico.class, comparativoComunalHabilidad);
+                controller.findAll(TipoAlumno.class, comparativoComunalHabilidad);
+                controller.findAll(TipoColegio.class, comparativoComunalHabilidad);
+            }
+        }
+    }
+
+    private void handlerComparativoComunalHabNivel() {
+        final Nivel_ComparativoComunalHabilidadView comparativoComunalHabilidadNivel = (Nivel_ComparativoComunalHabilidadView) show(
+                "/comunal/nivel/fxml/Nivel_ComparativoComunalHabilidad.fxml");
+        if (tblListadoPruebas.getSelectionModel().getSelectedItem() != null) {
+            final Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
+            if (prueba != null) {
+                controller.findById(Prueba.class, prueba.getId(), comparativoComunalHabilidadNivel);
+                controller.findAll(EvaluacionEjeTematico.class, comparativoComunalHabilidadNivel);
+                controller.findAll(TipoAlumno.class, comparativoComunalHabilidadNivel);
+                controller.findAll(TipoColegio.class, comparativoComunalHabilidadNivel);
+            }
+        }
+    }
+
+    private void handlerComparativoComunalNivel() {
+        final Nivel_ComparativoComunalEjeView comparativoComunalNivel = (Nivel_ComparativoComunalEjeView) show(
+                "/comunal/nivel/fxml/Nivel_ComparativoComunalEje.fxml");
+        if (tblListadoPruebas.getSelectionModel().getSelectedItem() != null) {
+            final Prueba pPrueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
+            if (pPrueba != null) {
+                controller.findById(Prueba.class, pPrueba.getId(), comparativoComunalNivel);
+                controller.findAll(EvaluacionEjeTematico.class, comparativoComunalNivel);
+                controller.findAll(TipoAlumno.class, comparativoComunalNivel);
+                controller.findAll(TipoColegio.class, comparativoComunalNivel);
+            }
+        }
+    }
+
+    private void handlerCompColegioEjeHabilXCurso() {
+        final ComparativoColegioEjeHabilidadxCursoView resColegioHabEjeCurso = (ComparativoColegioEjeHabilidadxCursoView) show(
+                "/colegio/fxml/ComparativoColegioEjeHabilidadxCurso.fxml");
+        show(resColegioHabEjeCurso);
+        controller.findAll(Colegio.class, resColegioHabEjeCurso);
+        controller.findAll(Asignatura.class, resColegioHabEjeCurso);
+        controller.findAll(EvaluacionEjeTematico.class, resColegioHabEjeCurso);
+        controller.findAll(TipoAlumno.class, resColegioHabEjeCurso);
+    }
+
+    private void handlerCompEjesHabXNivel() {
+        if (tblListadoPruebas.getSelectionModel().getSelectedItem() != null) {
+            final Nivel_ComparativoColegioEjeHabilidadxCursoView comparativoComunalHabilidad = (Nivel_ComparativoColegioEjeHabilidadxCursoView) show(
+                    "/colegio/nivel/fxml/Nivel_ComparativoColegioEjeHabilidadxCurso.fxml");
+
+            final Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
+            if (prueba != null) {
+                controller.findById(Prueba.class, prueba.getId(), comparativoComunalHabilidad);
+                controller.findAll(Colegio.class, comparativoComunalHabilidad);
+                controller.findAll(Asignatura.class, comparativoComunalHabilidad);
+                controller.findAll(EvaluacionEjeTematico.class, comparativoComunalHabilidad);
+                controller.findAll(TipoAlumno.class, comparativoComunalHabilidad);
+                controller.findAll(TipoColegio.class, comparativoComunalHabilidad);
+            }
+        }
+    }
+
+    private void handlerComunalEje() {
+
+        comunalEje = (ComunalCursoView) show("/comunal/fxml/ComunalEje.fxml");
+
+        final ObservableList<OTPrueba> otPruebas = tblListadoPruebas.getSelectionModel().getSelectedItems();
+        if (otPruebas != null) {
+            final Prueba[] pruebas = new Prueba[otPruebas.size()];
+            int n = 0;
+            for (final OTPrueba ot : otPruebas) {
+                pruebas[n++] = ot.getPrueba();
+            }
+            controller.findByAllId(Prueba.class, pruebas, comunalEje);
+            controller.findAll(EvaluacionEjeTematico.class, comunalEje);
+            controller.findAll(TipoAlumno.class, comunalEje);
+            controller.findAll(TipoColegio.class, comunalEje);
+        }
+    }
+
+    private void handlerDefinirPrueba() {
+        if (tblListadoPruebas.getSelectionModel().getSelectedItem() != null) {
+            final Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
+
+            definePrueba = (DefinePruebaViewController) show("/cl/eos/view/DefinePruebaView.fxml");
+
+            if (prueba != null) {
+                controller.findById(Prueba.class, prueba.getId(), definePrueba);
+                final Map<String, Object> parameters = new HashMap<String, Object>();
+                parameters.put("idAsignatura", prueba.getAsignatura().getId());
+                controller.find("EjeTematico.findByAsigntura", parameters, definePrueba);
+                controller.findAll(Habilidad.class, definePrueba);
+                final Map<String, Object> param = new HashMap<String, Object>();
+                param.put("tipoCursoId", prueba.getCurso().getId());
+                controller.find("Objetivo.findByTipoCurso", param, definePrueba);
+            }
+        }
+    }
+
+    private void handlerEjesEvaluacion() {
+        final ComparativoColegioEjeEvaluacionView resumenEjeEvaluacion = (ComparativoColegioEjeEvaluacionView) show(
+                "/colegio/fxml/ComparativoColegioEjeEvaluacion.fxml");
+        show(resumenEjeEvaluacion);
+        controller.findAll(Colegio.class, resumenEjeEvaluacion);
+        controller.findAll(Asignatura.class, resumenEjeEvaluacion);
+        controller.findAll(TipoAlumno.class, resumenEjeEvaluacion);
+    }
+
+    private void handlerEvaluar() {
+        evaluarPruebaView = (EvaluarPruebaView) show("/cl/eos/view/EvaluarPrueba.fxml");
+        if (tblListadoPruebas.getSelectionModel().getSelectedItem() != null) {
+            final Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
+            if (prueba != null) {
+                controller.findById(Prueba.class, prueba.getId(), evaluarPruebaView);
+                controller.findAll(Colegio.class, evaluarPruebaView);
+                controller.findAll(Profesor.class, evaluarPruebaView);
+            }
+        }
+    }
+
+    private void handlerHabilidadEvaluacion() {
+        final ComparativoColegioHabilidadesView resumenHabilidades = (ComparativoColegioHabilidadesView) show(
+                "/colegio/fxml/ComparativoColegioHabilidades.fxml");
+        show(resumenHabilidades);
+        controller.findAll(Colegio.class, resumenHabilidades);
+        controller.findAll(Asignatura.class, resumenHabilidades);
+        controller.findAll(TipoAlumno.class, resumenHabilidades);
+
+    }
+
+    private void handlerHabilidadEvaluacionXAlumno() {
+        final ResumenColegioXAlumnoEjeHabilidadView resHabEjeAlumno = (ResumenColegioXAlumnoEjeHabilidadView) show(
+                "/colegio/fxml/ResumenColegioXAlumnoEjeHabilidad.fxml");
+        show(resHabEjeAlumno);
+        controller.findAll(Colegio.class, resHabEjeAlumno);
+        controller.findAll(Asignatura.class, resHabEjeAlumno);
+        controller.findAll(TipoAlumno.class, resHabEjeAlumno);
+
+    }
+
+    private void handlerHabilidadEvaluacionXAlumnoXNivel() {
+        final Nivel_ComparativoColegioEjeEvaluacionView resHabEjeAlumno = (Nivel_ComparativoColegioEjeEvaluacionView) show(
+                "/colegio/nivel/fxml/Nivel_ComparativoColegioEjeEvaluacion.fxml");
+        show(resHabEjeAlumno);
+        controller.findAll(Colegio.class, resHabEjeAlumno);
+        controller.findAll(Asignatura.class, resHabEjeAlumno);
+        controller.findAll(TipoAlumno.class, resHabEjeAlumno);
+    }
+
+    private void handlerHabilidadEvaluacionXNivel() {
+        final Nivel_ComparativoColegioHabilidadesView resumenHabilidades = (Nivel_ComparativoColegioHabilidadesView) show(
+                "/colegio/nivel/fxml/Nivel_ComparativoColegioHabilidades.fxml");
+        show(resumenHabilidades);
+        controller.findAll(Colegio.class, resumenHabilidades);
+        controller.findAll(Asignatura.class, resumenHabilidades);
+        controller.findAll(TipoAlumno.class, resumenHabilidades);
+    }
+
+    private void handlerImrpimirPrueba() {
+        imprimirPrueba = (ImprimirPruebaView) show("/cl/eos/view/ImprimirPrueba.fxml");
+        if (tblListadoPruebas.getSelectionModel().getSelectedItem() != null) {
+            final Prueba pPrueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
+            if (pPrueba != null) {
+                controller.findById(Prueba.class, pPrueba.getId(), imprimirPrueba);
+                final Map<String, Object> parameters = new HashMap<>();
+                parameters.put("idAsignatura", pPrueba.getAsignatura().getId());
+                controller.find("EjeTematico.findByAsigntura", parameters, imprimirPrueba);
+                controller.findAll(Habilidad.class, imprimirPrueba);
+                controller.findAll(Profesor.class, imprimirPrueba);
+                controller.findAll(Colegio.class, imprimirPrueba);
+            }
+        }
+    }
+
+    private void handlerInforme() {
+        final InformeView informe = (InformeView) showOver("/informe/informeView.fxml");
+        show(informe);
+        controller.findAll(Colegio.class, informe);
+        controller.findAll(Asignatura.class, informe);
+        controller.findAll(TipoAlumno.class, informe);
+    }
+
+    private void handlerListaEvaluaciones() {
+        evaluacionPrueba = (EvaluacionPruebaView) show("/cl/eos/view/EvaluacionPrueba.fxml");
+        if (tblListadoPruebas.getSelectionModel().getSelectedItem() != null) {
+            final Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
+            final Map<String, Object> parameters = new HashMap<String, Object>();
+            parameters.put("idPrueba", prueba.getId());
+            controller.find("EvaluacionPrueba.findByPrueba", parameters, evaluacionPrueba);
+        }
+    }
+
+    private void handlerNuevaPrueba() {
+        removeAllStyles();
+        limpiarCampos();
+        Platform.runLater(() -> txtName.requestFocus());
+    }
+
+    private void handlerResumenColegios() {
+        resumenColegio = (ResumenColegioView) show("/colegio/fxml/ResumenColegio.fxml");
+        show(resumenColegio);
+        controller.findAll(Colegio.class, resumenColegio);
+        controller.findAll(Asignatura.class, resumenColegio);
+        controller.findAll(RangoEvaluacion.class, resumenColegio);
+        controller.findAll(EvaluacionEjeTematico.class, resumenColegio);
+        controller.findAll(TipoAlumno.class, resumenColegio);
+    }
+
+    private void handlerResumenColegiosXNivel() {
+        final Nivel_ResumenColegioView resumenColegio = (Nivel_ResumenColegioView) show(
+                "/colegio/nivel/fxml/Nivel_ResumenColegio.fxml");
+        show(resumenColegio);
+        controller.findAll(Colegio.class, resumenColegio);
+        controller.findAll(Asignatura.class, resumenColegio);
+        controller.findAll(RangoEvaluacion.class, resumenColegio);
+        controller.findAll(EvaluacionEjeTematico.class, resumenColegio);
+        controller.findAll(TipoAlumno.class, resumenColegio);
+    }
+
     @FXML
     public void initialize() {
         lblError.setText(" ");
@@ -266,49 +723,63 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
         accionClicTabla();
     }
 
+    private void limpiarCampos() {
+        cmbTipoPrueba.getSelectionModel().clearSelection();
+        cmbProfesor.getSelectionModel().clearSelection();
+        cmbCurso.getSelectionModel().clearSelection();
+        cmbAsignatura.getSelectionModel().clearSelection();
+        cmbNivelEvaluacion.getSelectionModel().clearSelection();
+        bigDecimalForma.setNumber(new BigDecimal(1));
+        bigDecimaNroAlternativas.setNumber(new BigDecimal(3));
+        bigDecimalNroPreguntas.setNumber(new BigDecimal(5));
+        bigDecimalPuntajePregunta.setNumber(new BigDecimal(1));
+        dpFecha.setValue(LocalDate.now());
+        txtName.setText(null);
+    }
+
     @Override
     public void onDataArrived(List<Object> list) {
 
         if (list != null && !list.isEmpty()) {
-            Object entity = list.get(0);
+            final Object entity = list.get(0);
             if (entity instanceof Prueba) {
-                ObservableList<OTPrueba> pruebas = FXCollections.observableArrayList();
-                for (Object lEntity : list) {
+                final ObservableList<OTPrueba> pruebas = FXCollections.observableArrayList();
+                for (final Object lEntity : list) {
                     pruebas.add(new OTPrueba((Prueba) lEntity));
                 }
                 tblListadoPruebas.setItems(pruebas);
             }
             if (entity instanceof TipoPrueba) {
-                ObservableList<TipoPrueba> tipoPruebas = FXCollections.observableArrayList();
-                for (Object lEntity : list) {
+                final ObservableList<TipoPrueba> tipoPruebas = FXCollections.observableArrayList();
+                for (final Object lEntity : list) {
                     tipoPruebas.add((TipoPrueba) lEntity);
                 }
                 cmbTipoPrueba.setItems(tipoPruebas);
             }
             if (entity instanceof Profesor) {
-                ObservableList<Profesor> profesores = FXCollections.observableArrayList();
-                for (Object lEntity : list) {
+                final ObservableList<Profesor> profesores = FXCollections.observableArrayList();
+                for (final Object lEntity : list) {
                     profesores.add((Profesor) lEntity);
                 }
                 cmbProfesor.setItems(profesores);
             }
             if (entity instanceof TipoCurso) {
-                ObservableList<TipoCurso> cursos = FXCollections.observableArrayList();
-                for (Object lEntity : list) {
+                final ObservableList<TipoCurso> cursos = FXCollections.observableArrayList();
+                for (final Object lEntity : list) {
                     cursos.add((TipoCurso) lEntity);
                 }
                 cmbCurso.setItems(cursos);
             }
             if (entity instanceof Asignatura) {
-                ObservableList<Asignatura> asignaturas = FXCollections.observableArrayList();
-                for (Object lEntity : list) {
+                final ObservableList<Asignatura> asignaturas = FXCollections.observableArrayList();
+                for (final Object lEntity : list) {
                     asignaturas.add((Asignatura) lEntity);
                 }
                 cmbAsignatura.setItems(asignaturas);
             }
             if (entity instanceof NivelEvaluacion) {
-                ObservableList<NivelEvaluacion> nivelEvaluacion = FXCollections.observableArrayList();
-                for (Object lEntity : list) {
+                final ObservableList<NivelEvaluacion> nivelEvaluacion = FXCollections.observableArrayList();
+                for (final Object lEntity : list) {
                     nivelEvaluacion.add((NivelEvaluacion) lEntity);
                 }
                 cmbNivelEvaluacion.setItems(nivelEvaluacion);
@@ -317,28 +788,32 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
     }
 
     @Override
+    public void onDeleted(IEntity entity) {
+        if (entity instanceof Prueba) {
+            final OTPrueba pEliminar = new OTPrueba((Prueba) entity);
+            tblListadoPruebas.getItems().remove(pEliminar);
+        }
+
+    }
+
+    @Override
     public void onSaved(IEntity otObject) {
         Prueba prueba = null;
         if (otObject instanceof Prueba) {
-            prueba = (Prueba)otObject;
-        }
-        else if(otObject instanceof RespuestasEsperadasPrueba)
-        {
-            RespuestasEsperadasPrueba r = (RespuestasEsperadasPrueba)otObject;
+            prueba = (Prueba) otObject;
+        } else if (otObject instanceof RespuestasEsperadasPrueba) {
+            final RespuestasEsperadasPrueba r = (RespuestasEsperadasPrueba) otObject;
             prueba = r.getPrueba();
-        }
-        else if(otObject instanceof EvaluacionPrueba)
-        {
-            EvaluacionPrueba e = (EvaluacionPrueba)otObject;
-            prueba =  e.getPrueba();
+        } else if (otObject instanceof EvaluacionPrueba) {
+            final EvaluacionPrueba e = (EvaluacionPrueba) otObject;
+            prueba = e.getPrueba();
 
         }
-        
-        if(prueba !=  null)
-        {
-            prueba =  (Prueba) findSynchroById(Prueba.class, prueba.getId());
-            OTPrueba ot = new OTPrueba(prueba);
-            int indice = tblListadoPruebas.getItems().lastIndexOf(ot);
+
+        if (prueba != null) {
+            prueba = (Prueba) findSynchroById(Prueba.class, prueba.getId());
+            final OTPrueba ot = new OTPrueba(prueba);
+            final int indice = tblListadoPruebas.getItems().lastIndexOf(ot);
             if (indice != -1) {
                 tblListadoPruebas.getItems().set(indice, ot);
             } else {
@@ -349,6 +824,22 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 
         }
 
+    }
+
+    private void removeAllStyles() {
+        removeAllStyle(lblError);
+        removeAllStyle(cmbTipoPrueba);
+        removeAllStyle(cmbProfesor);
+        removeAllStyle(cmbCurso);
+        removeAllStyle(cmbAsignatura);
+        removeAllStyle(cmbNivelEvaluacion);
+        removeAllStyle(txtName);
+        removeAllStyle(bigDecimalForma);
+        removeAllStyle(bigDecimaNroAlternativas);
+        removeAllStyle(bigDecimalNroPreguntas);
+        removeAllStyle(bigDecimalPuntajePregunta);
+        removeAllStyle(dpFecha);
+        removeAllStyle(bigDecimalExigencia);
     }
 
     @Override
@@ -409,510 +900,5 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
             lblError.setText("Corregir campos destacados en color rojo");
         }
         return valid;
-    }
-
-    private void removeAllStyles() {
-        removeAllStyle(lblError);
-        removeAllStyle(cmbTipoPrueba);
-        removeAllStyle(cmbProfesor);
-        removeAllStyle(cmbCurso);
-        removeAllStyle(cmbAsignatura);
-        removeAllStyle(cmbNivelEvaluacion);
-        removeAllStyle(txtName);
-        removeAllStyle(bigDecimalForma);
-        removeAllStyle(bigDecimaNroAlternativas);
-        removeAllStyle(bigDecimalNroPreguntas);
-        removeAllStyle(bigDecimalPuntajePregunta);
-        removeAllStyle(dpFecha);
-        removeAllStyle(bigDecimalExigencia);
-    }
-
-    @Override
-    public void handle(ActionEvent event) {
-        Object source = event.getSource();
-        if (source == mnuModificar || source == mnuPopupModificar) {
-            handleModificar();
-        } else if (source == mnuGrabar) {
-            handleGrabar();
-        } else if (source == mnuEliminar || source == mnuPopupEliminar) {
-            handleEliminar();
-        } else if (source == mnuEvaluarPrueba) {
-            handlerEvaluar();
-        } else if (source == mnuAnularPregunta) {
-            handlerAnularPregunta();
-        } else if (source == mnuDefinirPrueba) {
-            handlerDefinirPrueba();
-        } else if (source == mnuListaEvaluaciones) {
-            handlerListaEvaluaciones();
-        } else if (source == mnuComparativoComunal) {
-            handlerComparativoComunal();
-        } else if (source == mnuComparativoComunalNivel) {
-            handlerComparativoComunalNivel();
-        } else if (source == mnuComparativoComunalHab) {
-            handlerComparativoComunalHab();
-        } else if (source == mnuComparativoComunalHabNivel) {
-            handlerComparativoComunalHabNivel();
-        } else if (source == mnuComunalEje) {
-            handlerComunalEje();
-        } else if (source == mnuColegio) {
-            handlerResumenColegios();
-        } else if (source == mnuImprimirPrueba) {
-            handlerImrpimirPrueba();
-        } else if (source == mnuNueva) {
-            handlerNuevaPrueba();
-        } else if (source == mnuComparativoColegioEjeHabil) {
-            handlerComparativoColegioEjeHabilidad();
-        } else if (source == mnuComparativoColegioEjeHabilXNivel) {
-            handlerComparativoColegioEjeHabilidadXNivel();
-        } else if (source == mnuEjesEvaluacion) {
-            handlerEjesEvaluacion();
-        } else if (source == mnuHabilidadEvaluacion) {
-            handlerHabilidadEvaluacion();
-        } else if (source == mnuHabilidadEvaluacionXNivel) {
-            handlerHabilidadEvaluacionXNivel();
-        } else if (source == mnuHabilidadEvaluacionXAlumno) {
-            handlerHabilidadEvaluacionXAlumno();
-        } else if (source == mnuCompColegioEjeHabilXCurso) {
-            handlerCompColegioEjeHabilXCurso();
-        } else if (source == mnuCompEjesHabXNivel) {
-            handlerCompEjesHabXNivel();
-        } else if (source == mnuHabilidadEvaluacionXAlumnoXNivel) {
-            handlerHabilidadEvaluacionXAlumnoXNivel();
-        } else if (source == mnuColegioXNivel) {
-            handlerResumenColegiosXNivel();
-        } else if (source == mnuInforme) {
-            handlerInforme();
-        }
-
-    }
-
-    private void handlerInforme() {
-        InformeView informe = (InformeView) showOver("/informe/informeView.fxml");
-        show(informe);
-        controller.findAll(Colegio.class, informe);
-        controller.findAll(Asignatura.class, informe);
-        controller.findAll(TipoAlumno.class, informe);
-    }
-    
-    private void handlerHabilidadEvaluacionXAlumnoXNivel() {
-        Nivel_ComparativoColegioEjeEvaluacionView resHabEjeAlumno = (Nivel_ComparativoColegioEjeEvaluacionView) show(
-                "/colegio/nivel/fxml/Nivel_ComparativoColegioEjeEvaluacion.fxml");
-        show(resHabEjeAlumno);
-        controller.findAll(Colegio.class, resHabEjeAlumno);
-        controller.findAll(Asignatura.class, resHabEjeAlumno);
-        controller.findAll(TipoAlumno.class, resHabEjeAlumno);
-    }
-
-    private void handlerCompEjesHabXNivel() {
-        if (tblListadoPruebas.getSelectionModel().getSelectedItem() != null) {
-            Nivel_ComparativoColegioEjeHabilidadxCursoView comparativoComunalHabilidad = (Nivel_ComparativoColegioEjeHabilidadxCursoView) show(
-                    "/colegio/nivel/fxml/Nivel_ComparativoColegioEjeHabilidadxCurso.fxml");
-
-            Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
-            if (prueba != null) {
-                controller.findById(Prueba.class, prueba.getId(), comparativoComunalHabilidad);
-                controller.findAll(Colegio.class, comparativoComunalHabilidad);
-                controller.findAll(Asignatura.class, comparativoComunalHabilidad);
-                controller.findAll(EvaluacionEjeTematico.class, comparativoComunalHabilidad);
-                controller.findAll(TipoAlumno.class, comparativoComunalHabilidad);
-                controller.findAll(TipoColegio.class, comparativoComunalHabilidad);
-            }
-        }
-    }
-
-    private void handlerResumenColegiosXNivel() {
-        Nivel_ResumenColegioView resumenColegio = (Nivel_ResumenColegioView) show(
-                "/colegio/nivel/fxml/Nivel_ResumenColegio.fxml");
-        show(resumenColegio);
-        controller.findAll(Colegio.class, resumenColegio);
-        controller.findAll(Asignatura.class, resumenColegio);
-        controller.findAll(RangoEvaluacion.class, resumenColegio);
-        controller.findAll(EvaluacionEjeTematico.class, resumenColegio);
-        controller.findAll(TipoAlumno.class, resumenColegio);
-    }
-
-    private void handlerCompColegioEjeHabilXCurso() {
-        ComparativoColegioEjeHabilidadxCursoView resColegioHabEjeCurso = (ComparativoColegioEjeHabilidadxCursoView) show(
-                "/colegio/fxml/ComparativoColegioEjeHabilidadxCurso.fxml");
-        show(resColegioHabEjeCurso);
-        controller.findAll(Colegio.class, resColegioHabEjeCurso);
-        controller.findAll(Asignatura.class, resColegioHabEjeCurso);
-        controller.findAll(EvaluacionEjeTematico.class, resColegioHabEjeCurso);
-        controller.findAll(TipoAlumno.class, resColegioHabEjeCurso);
-    }
-
-    private void handlerHabilidadEvaluacionXAlumno() {
-        ResumenColegioXAlumnoEjeHabilidadView resHabEjeAlumno = (ResumenColegioXAlumnoEjeHabilidadView) show(
-                "/colegio/fxml/ResumenColegioXAlumnoEjeHabilidad.fxml");
-        show(resHabEjeAlumno);
-        controller.findAll(Colegio.class, resHabEjeAlumno);
-        controller.findAll(Asignatura.class, resHabEjeAlumno);
-        controller.findAll(TipoAlumno.class, resHabEjeAlumno);
-
-    }
-
-    private void handlerHabilidadEvaluacion() {
-        ComparativoColegioHabilidadesView resumenHabilidades = (ComparativoColegioHabilidadesView) show(
-                "/colegio/fxml/ComparativoColegioHabilidades.fxml");
-        show(resumenHabilidades);
-        controller.findAll(Colegio.class, resumenHabilidades);
-        controller.findAll(Asignatura.class, resumenHabilidades);
-        controller.findAll(TipoAlumno.class, resumenHabilidades);
-
-    }
-
-    private void handlerHabilidadEvaluacionXNivel() {
-        Nivel_ComparativoColegioHabilidadesView resumenHabilidades = (Nivel_ComparativoColegioHabilidadesView) show(
-                "/colegio/nivel/fxml/Nivel_ComparativoColegioHabilidades.fxml");
-        show(resumenHabilidades);
-        controller.findAll(Colegio.class, resumenHabilidades);
-        controller.findAll(Asignatura.class, resumenHabilidades);
-        controller.findAll(TipoAlumno.class, resumenHabilidades);
-    }
-
-    private void handlerEjesEvaluacion() {
-        ComparativoColegioEjeEvaluacionView resumenEjeEvaluacion = (ComparativoColegioEjeEvaluacionView) show(
-                "/colegio/fxml/ComparativoColegioEjeEvaluacion.fxml");
-        show(resumenEjeEvaluacion);
-        controller.findAll(Colegio.class, resumenEjeEvaluacion);
-        controller.findAll(Asignatura.class, resumenEjeEvaluacion);
-        controller.findAll(TipoAlumno.class, resumenEjeEvaluacion);
-    }
-
-    private void handlerComparativoColegioEjeHabilidad() {
-        ComparativoColegioEjeHabilidadView resumenColegioEjeHabiliadad = (ComparativoColegioEjeHabilidadView) show(
-                "/colegio/fxml/ComparativoColegioEjeHabilidad.fxml");
-        show(resumenColegioEjeHabiliadad);
-        controller.findAll(Colegio.class, resumenColegioEjeHabiliadad);
-        controller.findAll(Asignatura.class, resumenColegioEjeHabiliadad);
-        controller.findAll(EvaluacionEjeTematico.class, resumenColegioEjeHabiliadad);
-        controller.findAll(TipoAlumno.class, resumenColegioEjeHabiliadad);
-    }
-
-    private void handlerComparativoColegioEjeHabilidadXNivel() {
-        Nivel_ComparativoColegioEjeHabilidadView resumenColegioEjeHabiliadad = (Nivel_ComparativoColegioEjeHabilidadView) show(
-                "/colegio/nivel/fxml/Nivel_ComparativoColegioEjeHabilidad.fxml");
-        show(resumenColegioEjeHabiliadad);
-        controller.findAll(Colegio.class, resumenColegioEjeHabiliadad);
-        controller.findAll(Asignatura.class, resumenColegioEjeHabiliadad);
-        controller.findAll(EvaluacionEjeTematico.class, resumenColegioEjeHabiliadad);
-        controller.findAll(TipoAlumno.class, resumenColegioEjeHabiliadad);
-    }
-
-    private void handlerResumenColegios() {
-        resumenColegio = (ResumenColegioView) show("/colegio/fxml/ResumenColegio.fxml");
-        show(resumenColegio);
-        controller.findAll(Colegio.class, resumenColegio);
-        controller.findAll(Asignatura.class, resumenColegio);
-        controller.findAll(RangoEvaluacion.class, resumenColegio);
-        controller.findAll(EvaluacionEjeTematico.class, resumenColegio);
-        controller.findAll(TipoAlumno.class, resumenColegio);
-    }
-
-    private void handlerComunalEje() {
-
-        comunalEje = (ComunalCursoView) show("/comunal/fxml/ComunalEje.fxml");
-
-        ObservableList<OTPrueba> otPruebas = tblListadoPruebas.getSelectionModel().getSelectedItems();
-        if (otPruebas != null) {
-            Prueba[] pruebas = new Prueba[otPruebas.size()];
-            int n = 0;
-            for (OTPrueba ot : otPruebas) {
-                pruebas[n++] = ot.getPrueba();
-            }
-            controller.findByAllId(Prueba.class, pruebas, comunalEje);
-            controller.findAll(EvaluacionEjeTematico.class, comunalEje);
-            controller.findAll(TipoAlumno.class, comunalEje);
-            controller.findAll(TipoColegio.class, comunalEje);
-        }
-    }
-
-    private void handlerComparativoComunal() {
-        comparativoComunal = (ComparativoComunalEjeView) show("/comunal/fxml/ComparativoComunalEje.fxml");
-        if (tblListadoPruebas.getSelectionModel().getSelectedItem() != null) {
-            Prueba pPrueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
-            if (pPrueba != null) {
-                controller.findById(Prueba.class, pPrueba.getId(), comparativoComunal);
-                controller.findAll(EvaluacionEjeTematico.class, comparativoComunal);
-                controller.findAll(TipoAlumno.class, comparativoComunal);
-                controller.findAll(TipoColegio.class, comparativoComunal);
-            }
-        }
-    }
-
-    private void handlerComparativoComunalNivel() {
-        Nivel_ComparativoComunalEjeView comparativoComunalNivel = (Nivel_ComparativoComunalEjeView) show(
-                "/comunal/nivel/fxml/Nivel_ComparativoComunalEje.fxml");
-        if (tblListadoPruebas.getSelectionModel().getSelectedItem() != null) {
-            Prueba pPrueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
-            if (pPrueba != null) {
-                controller.findById(Prueba.class, pPrueba.getId(), comparativoComunalNivel);
-                controller.findAll(EvaluacionEjeTematico.class, comparativoComunalNivel);
-                controller.findAll(TipoAlumno.class, comparativoComunalNivel);
-                controller.findAll(TipoColegio.class, comparativoComunalNivel);
-            }
-        }
-    }
-
-    private void handlerNuevaPrueba() {
-        removeAllStyles();
-        limpiarCampos();
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                txtName.requestFocus();
-            }
-        });
-    }
-
-    private void handlerImrpimirPrueba() {
-        imprimirPrueba = (ImprimirPruebaView) show("/cl/eos/view/ImprimirPrueba.fxml");
-        if (tblListadoPruebas.getSelectionModel().getSelectedItem() != null) {
-            Prueba pPrueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
-            if (pPrueba != null) {
-                controller.findById(Prueba.class, pPrueba.getId(), imprimirPrueba);
-                Map<String, Object> parameters = new HashMap<>();
-                parameters.put("idAsignatura", pPrueba.getAsignatura().getId());
-                controller.find("EjeTematico.findByAsigntura", parameters, imprimirPrueba);
-                controller.findAll(Habilidad.class, imprimirPrueba);
-                controller.findAll(Profesor.class, imprimirPrueba);
-                controller.findAll(Colegio.class, imprimirPrueba);
-            }
-        }
-    }
-
-    private void handlerComparativoComunalHab() {
-        comparativoComunalHabilidad = (ComparativoComunalHabilidadView) show(
-                "/comunal/fxml/ComparativoComunalHabilidad.fxml");
-        if (tblListadoPruebas.getSelectionModel().getSelectedItem() != null) {
-            Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
-            if (prueba != null) {
-                controller.findById(Prueba.class, prueba.getId(), comparativoComunalHabilidad);
-                controller.findAll(EvaluacionEjeTematico.class, comparativoComunalHabilidad);
-                controller.findAll(TipoAlumno.class, comparativoComunalHabilidad);
-                controller.findAll(TipoColegio.class, comparativoComunalHabilidad);
-            }
-        }
-    }
-
-    private void handlerComparativoComunalHabNivel() {
-        Nivel_ComparativoComunalHabilidadView comparativoComunalHabilidadNivel = (Nivel_ComparativoComunalHabilidadView) show(
-                "/comunal/nivel/fxml/Nivel_ComparativoComunalHabilidad.fxml");
-        if (tblListadoPruebas.getSelectionModel().getSelectedItem() != null) {
-            Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
-            if (prueba != null) {
-                controller.findById(Prueba.class, prueba.getId(), comparativoComunalHabilidadNivel);
-                controller.findAll(EvaluacionEjeTematico.class, comparativoComunalHabilidadNivel);
-                controller.findAll(TipoAlumno.class, comparativoComunalHabilidadNivel);
-                controller.findAll(TipoColegio.class, comparativoComunalHabilidadNivel);
-            }
-        }
-    }
-
-    private void handlerEvaluar() {
-        evaluarPruebaView = (EvaluarPruebaView) show("/cl/eos/view/EvaluarPrueba.fxml");
-        if (tblListadoPruebas.getSelectionModel().getSelectedItem() != null) {
-            Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
-            if (prueba != null) {
-                controller.findById(Prueba.class, prueba.getId(), evaluarPruebaView);
-                controller.findAll(Colegio.class, evaluarPruebaView);
-                controller.findAll(Profesor.class, evaluarPruebaView);
-            }
-        }
-    }
-
-    private void handlerDefinirPrueba() {
-        if (tblListadoPruebas.getSelectionModel().getSelectedItem() != null) {
-            Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
-
-            definePrueba = (DefinePruebaViewController) show("/cl/eos/view/DefinePruebaView.fxml");
-
-            if (prueba != null) {
-                controller.findById(Prueba.class, prueba.getId(), definePrueba);
-                Map<String, Object> parameters = new HashMap<String, Object>();
-                parameters.put("idAsignatura", prueba.getAsignatura().getId());
-                controller.find("EjeTematico.findByAsigntura", parameters, definePrueba);
-                controller.findAll(Habilidad.class, definePrueba);
-                Map<String, Object> param = new HashMap<String, Object>();
-                param.put("tipoCursoId", prueba.getCurso().getId());
-                controller.find("Objetivo.findByTipoCurso", param, definePrueba);
-            }
-        }
-    }
-
-    private void handlerAnularPregunta() {
-        if (tblListadoPruebas.getSelectionModel().getSelectedItem() != null) {
-            Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
-
-            anularPregunta = (AnularPreguntasViewController) show("/cl/eos/view/AnulaPreguntasView.fxml");
-
-            if (prueba != null) {
-                controller.findById(Prueba.class, prueba.getId(), anularPregunta);
-            }
-        }
-    }
-
-    private void handlerListaEvaluaciones() {
-        evaluacionPrueba = (EvaluacionPruebaView) show("/cl/eos/view/EvaluacionPrueba.fxml");
-        if (tblListadoPruebas.getSelectionModel().getSelectedItem() != null) {
-            Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
-            Map<String, Object> parameters = new HashMap<String, Object>();
-            parameters.put("idPrueba", prueba.getId());
-            controller.find("EvaluacionPrueba.findByPrueba", parameters, evaluacionPrueba);
-        }
-    }
-
-    private void handleEliminar() {
-
-        ObservableList<OTPrueba> otSeleccionados = tblListadoPruebas.getSelectionModel().getSelectedItems();
-        if (otSeleccionados != null && !otSeleccionados.isEmpty()) {
-            List<Prueba> pruebas = new ArrayList<Prueba>(otSeleccionados.size());
-            for (OTPrueba ot : otSeleccionados) {
-                pruebas.add(ot.getPrueba());
-            }
-            delete(pruebas);
-            tblListadoPruebas.getSelectionModel().clearSelection();
-            limpiarCampos();
-        }
-    }
-
-    private void handleGrabar() {
-        removeAllStyles();
-        if (validate()) {
-            if (prueba == null) {
-                prueba = new Prueba();
-            }
-            prueba.setAlternativas(bigDecimaNroAlternativas.getNumber().intValue());
-            prueba.setAsignatura(cmbAsignatura.getValue());
-            prueba.setCurso(cmbCurso.getValue());
-            prueba.setFecha(dpFecha.getValue().toEpochDay());
-            prueba.setNroFormas(bigDecimalForma.getNumber().intValue());
-            prueba.setName(txtName.getText());
-            prueba.setNivelEvaluacion(cmbNivelEvaluacion.getValue());
-            prueba.setProfesor(cmbProfesor.getValue());
-            prueba.setPuntajeBase(bigDecimalPuntajePregunta.getNumber().intValue());
-            prueba.setNroPreguntas(bigDecimalNroPreguntas.getNumber().intValue());
-            prueba.setAlternativas(bigDecimaNroAlternativas.getNumber().intValue());
-            prueba.setTipoPrueba(cmbTipoPrueba.getValue());
-            prueba.setExigencia(bigDecimalExigencia.getNumber().intValue());
-
-            save(prueba);
-        }
-    }
-
-    private void handleModificar() {
-        if (tblListadoPruebas.getSelectionModel().getSelectedItem() != null) {
-            prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
-
-            if (prueba != null) {
-                if (!prueba.getEstado().equals(Estado.EVALUADA)) {
-                    bigDecimaNroAlternativas.setNumber(new BigDecimal(prueba.getAlternativas()));
-                    cmbAsignatura.getSelectionModel().select(prueba.getAsignatura());
-                    cmbCurso.getSelectionModel().select(prueba.getCurso());
-                    dpFecha.setValue(prueba.getFechaLocal());
-                    bigDecimalForma.setNumber(new BigDecimal(prueba.getNroFormas()));
-                    txtName.setText(prueba.getName());
-                    cmbNivelEvaluacion.getSelectionModel().select(prueba.getNivelEvaluacion());
-                    cmbProfesor.getSelectionModel().select(prueba.getProfesor());
-                    bigDecimalPuntajePregunta.setNumber(new BigDecimal(prueba.getPuntajeBase()));
-                    bigDecimalNroPreguntas.setNumber(new BigDecimal(prueba.getNroPreguntas()));
-                    cmbTipoPrueba.getSelectionModel().select(prueba.getTipoPrueba());
-                    prueba.setExigencia(bigDecimalExigencia.getNumber().intValue());
-                } else {
-                    Alert info = new Alert(AlertType.INFORMATION);
-                    info.setTitle("No se puede modificar.");
-                    info.setHeaderText("La prueba ya se encuentra evaluada.");
-                    info.setContentText("No se podrá modificar.");
-                    info.show();
-                }
-            }
-        }
-    }
-
-    @Override
-    public void onDeleted(IEntity entity) {
-        if (entity instanceof Prueba) {
-            OTPrueba pEliminar = new OTPrueba((Prueba) entity);
-            tblListadoPruebas.getItems().remove(pEliminar);
-        }
-
-    }
-
-    private void limpiarCampos() {
-        cmbTipoPrueba.getSelectionModel().clearSelection();
-        cmbProfesor.getSelectionModel().clearSelection();
-        cmbCurso.getSelectionModel().clearSelection();
-        cmbAsignatura.getSelectionModel().clearSelection();
-        cmbNivelEvaluacion.getSelectionModel().clearSelection();
-        bigDecimalForma.setNumber(new BigDecimal(1));
-        bigDecimaNroAlternativas.setNumber(new BigDecimal(3));
-        bigDecimalNroPreguntas.setNumber(new BigDecimal(5));
-        bigDecimalPuntajePregunta.setNumber(new BigDecimal(1));
-        dpFecha.setValue(LocalDate.now());
-        txtName.setText(null);
-    }
-
-    private void accionClicTabla() {
-        tblListadoPruebas.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                ObservableList<OTPrueba> itemsSelec = tblListadoPruebas.getSelectionModel().getSelectedItems();
-
-                if (itemsSelec.size() > 1) {
-                    mnuPopupEliminar.setDisable(false);
-                    mnuEliminar.setDisable(false);
-                    mnuComunalEje.setDisable(false);
-
-                    mnuPopupModificar.setDisable(true);
-                    mnuModificar.setDisable(true);
-                    mnuImprimirPrueba.setDisable(true);
-                    mnuListaEvaluaciones.setDisable(true);
-                    mnuDefinirPrueba.setDisable(true);
-                    mnuEvaluarPrueba.setDisable(true);
-                    mnuAnularPregunta.setDisable(true);
-                    mnuComparativoComunal.setDisable(true);
-                    mnuComparativoComunalHab.setDisable(true);
-
-                } else if (itemsSelec.size() == 1) {
-
-                    OTPrueba prueba = itemsSelec.get(0);
-                    mnuModificar.setDisable(false);
-                    mnuEliminar.setDisable(false);
-                    mnuPopupModificar.setDisable(false);
-                    mnuPopupEliminar.setDisable(false);
-                    mnuImprimirPrueba.setDisable(false);
-                    mnuAnularPregunta.setDisable(false);
-                    boolean estadoDefinida = prueba.getEstado().equals(Estado.DEFINIDA);
-                    boolean estadoEvaluada = prueba.getEstado().equals(Estado.EVALUADA);
-                    boolean estadoCreada = prueba.getEstado().equals(Estado.CREADA);
-
-                    if (estadoDefinida) {
-                        mnuEvaluarPrueba.setDisable(!estadoDefinida);
-                        mnuListaEvaluaciones.setDisable(estadoDefinida);
-                        mnuComunalEje.setDisable(estadoDefinida);
-                        mnuComparativoComunal.setDisable(estadoDefinida);
-                        mnuComparativoComunalHab.setDisable(estadoDefinida);
-                    } else if (estadoEvaluada) {
-
-                        mnuEvaluarPrueba.setDisable(!estadoEvaluada);
-                        mnuDefinirPrueba.setDisable(!estadoEvaluada);
-                        mnuListaEvaluaciones.setDisable(!estadoEvaluada);
-                        mnuComunalEje.setDisable(!estadoEvaluada);
-                        mnuComparativoComunal.setDisable(!estadoEvaluada);
-                        mnuComparativoComunalHab.setDisable(!estadoEvaluada);
-                    } else if (estadoCreada) {
-                        mnuEvaluarPrueba.setDisable(estadoCreada);
-                        mnuDefinirPrueba.setDisable(!estadoCreada);
-                        mnuListaEvaluaciones.setDisable(estadoCreada);
-                        mnuComunalEje.setDisable(estadoCreada);
-                        mnuComparativoComunal.setDisable(estadoCreada);
-                        mnuComparativoComunalHab.setDisable(estadoCreada);
-                        mnuAnularPregunta.setDisable(true);
-                    }
-                    mnuModificar.setDisable(!estadoCreada);
-                    mnuPopupModificar.setDisable(!estadoCreada);
-                }
-            }
-        });
     }
 }

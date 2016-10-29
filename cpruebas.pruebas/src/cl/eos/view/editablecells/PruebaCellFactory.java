@@ -1,69 +1,68 @@
 package cl.eos.view.editablecells;
 
+import cl.eos.persistence.models.Prueba.Estado;
+import cl.eos.view.ots.OTPrueba;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.util.Callback;
-import cl.eos.persistence.models.Prueba.Estado;
-import cl.eos.view.ots.OTPrueba;
 
-public class PruebaCellFactory implements
-    Callback<TableColumn<OTPrueba, Estado>, TableCell<OTPrueba, Estado>> {
+public class PruebaCellFactory implements Callback<TableColumn<OTPrueba, Estado>, TableCell<OTPrueba, Estado>> {
 
-  @Override
-  public TableCell<OTPrueba, Estado> call(TableColumn<OTPrueba, Estado> p) {
+    @Override
+    public TableCell<OTPrueba, Estado> call(TableColumn<OTPrueba, Estado> p) {
 
-    TableCell<OTPrueba, Estado> cell = new TableCell<OTPrueba, Estado>() {
-      @SuppressWarnings("unchecked")
-      @Override
-      public void updateItem(Estado item, boolean empty) {
-        super.updateItem(item, empty);
-        setText(empty ? null : getString());
-        setGraphic(null);
-        TableRow<OTPrueba> currentRow = getTableRow();
-        OTPrueba currentPrueba = currentRow == null ? null : (OTPrueba) currentRow.getItem();
-        if (currentPrueba != null) {
-          Estado estado = currentPrueba.getEstado();
-          clearPriorityStyle();
-          if (!isHover() && !isSelected() && !isFocused()) {
-            setEstadoStyle(estado);
-          }
-        }
-      }
+        final TableCell<OTPrueba, Estado> cell = new TableCell<OTPrueba, Estado>() {
+            private void clearPriorityStyle() {
+                final ObservableList<String> styleClasses = getStyleClass();
+                styleClasses.remove("priorityLow");
+                styleClasses.remove("priorityMedium");
+                styleClasses.remove("priorityHigh");
+            }
 
-      @Override
-      public void updateSelected(boolean upd) {
-        super.updateSelected(upd);
-      }
+            private String getString() {
+                return getItem() == null ? "" : getItem().toString();
+            }
 
-      private void clearPriorityStyle() {
-        ObservableList<String> styleClasses = getStyleClass();
-        styleClasses.remove("priorityLow");
-        styleClasses.remove("priorityMedium");
-        styleClasses.remove("priorityHigh");
-      }
+            private void setEstadoStyle(Estado estado) {
+                if (estado != null) {
+                    switch (estado) {
+                    case CREADA:
+                        getStyleClass().add("priorityLow");
+                        break;
+                    case DEFINIDA:
+                        getStyleClass().add("priorityMedium");
+                        break;
+                    case EVALUADA:
+                        getStyleClass().add("priorityHigh");
+                        break;
+                    }
+                }
+            }
 
-      private void setEstadoStyle(Estado estado) {
-        if (estado != null) {
-          switch (estado) {
-            case CREADA:
-              getStyleClass().add("priorityLow");
-              break;
-            case DEFINIDA:
-              getStyleClass().add("priorityMedium");
-              break;
-            case EVALUADA:
-              getStyleClass().add("priorityHigh");
-              break;
-          }
-        }
-      }
+            @SuppressWarnings("unchecked")
+            @Override
+            public void updateItem(Estado item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty ? null : getString());
+                setGraphic(null);
+                final TableRow<OTPrueba> currentRow = getTableRow();
+                final OTPrueba currentPrueba = currentRow == null ? null : (OTPrueba) currentRow.getItem();
+                if (currentPrueba != null) {
+                    final Estado estado = currentPrueba.getEstado();
+                    clearPriorityStyle();
+                    if (!isHover() && !isSelected() && !isFocused()) {
+                        setEstadoStyle(estado);
+                    }
+                }
+            }
 
-      private String getString() {
-        return getItem() == null ? "" : getItem().toString();
-      }
-    };
-    return cell;
-  }
+            @Override
+            public void updateSelected(boolean upd) {
+                super.updateSelected(upd);
+            }
+        };
+        return cell;
+    }
 }

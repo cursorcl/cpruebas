@@ -26,7 +26,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 
 public class ColegiosView extends AFormView implements EventHandler<ActionEvent> {
 
@@ -91,25 +90,23 @@ public class ColegiosView extends AFormView implements EventHandler<ActionEvent>
         setTitle("Colegios");
     }
 
-    @FXML
-    public void initialize() {
-        inicializaTabla();
-        accionClicTabla();
-        mnuAgregar.setOnAction(this);
-        mnuGrabar.setOnAction(this);
-        mnuModificar.setOnAction(this);
-        mnuEliminar.setOnAction(this);
-        mnItemEliminar.setOnAction(this);
-        mnItemModificar.setOnAction(this);
-        mnuExportar.setOnAction(this);
-        menuExportar.setOnAction(this);
+    private void accionClicTabla() {
+        tblColegio.setOnMouseClicked(event -> {
+            final ObservableList<OTColegio> itemsSelec = tblColegio.getSelectionModel().getSelectedItems();
+            if (itemsSelec.size() > 1) {
+                mnItemModificar.setDisable(true);
+                mnItemEliminar.setDisable(false);
 
-        mnuModificar.setDisable(true);
-        mnuEliminar.setDisable(true);
-        mnItemEliminar.setDisable(true);
-        mnItemModificar.setDisable(true);
+                mnuModificar.setDisable(true);
+                mnuEliminar.setDisable(false);
+            } else if (itemsSelec.size() == 1) {
+                mnItemModificar.setDisable(false);
+                mnItemEliminar.setDisable(false);
 
-        // btnImagen.setOnAction(this);
+                mnuModificar.setDisable(false);
+                mnuEliminar.setDisable(false);
+            }
+        });
     }
 
     // private void accionButtonImagen() {
@@ -128,59 +125,18 @@ public class ColegiosView extends AFormView implements EventHandler<ActionEvent>
     // }
     // }
 
-    private void accionClicTabla() {
-        tblColegio.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                ObservableList<OTColegio> itemsSelec = tblColegio.getSelectionModel().getSelectedItems();
-                if (itemsSelec.size() > 1) {
-                    mnItemModificar.setDisable(true);
-                    mnItemEliminar.setDisable(false);
-
-                    mnuModificar.setDisable(true);
-                    mnuEliminar.setDisable(false);
-                } else if (itemsSelec.size() == 1) {
-                    mnItemModificar.setDisable(false);
-                    mnItemEliminar.setDisable(false);
-
-                    mnuModificar.setDisable(false);
-                    mnuEliminar.setDisable(false);
-                }
-            }
-        });
-    }
-
-    private void inicializaTabla() {
-        tblColegio.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        colId.setCellValueFactory(new PropertyValueFactory<OTColegio, Long>("id"));
-        colNombre.setCellValueFactory(new PropertyValueFactory<OTColegio, String>("name"));
-        colDireccion.setCellValueFactory(new PropertyValueFactory<OTColegio, String>("direccion"));
-
-        colTipoColegio.setCellValueFactory(new PropertyValueFactory<OTColegio, String>("tipo"));
-    }
-
-    private void accionModificar() {
-        OTColegio colegio = tblColegio.getSelectionModel().getSelectedItem();
-        if (colegio != null) {
-            txtNombre.setText(colegio.getName());
-            txtDireccion.setText(colegio.getDireccion());
-            cmbTipoColegio.setValue(colegio.getTipo());
-            select((IEntity) colegio.getColegio());
-        }
-    }
-
     private void accionEliminar() {
-        ObservableList<OTColegio> otSeleccionados = tblColegio.getSelectionModel().getSelectedItems();
+        final ObservableList<OTColegio> otSeleccionados = tblColegio.getSelectionModel().getSelectedItems();
         if (otSeleccionados.size() == 0) {
-            Alert alert = new Alert(AlertType.INFORMATION);
+            final Alert alert = new Alert(AlertType.INFORMATION);
             alert.setTitle("Selección registro");
-            alert.setHeaderText(this.getName());
+            alert.setHeaderText(getName());
             alert.setContentText("Debe seleccionar registro a procesar");
             alert.showAndWait();
         } else {
             if (otSeleccionados != null && !otSeleccionados.isEmpty()) {
-                List<Colegio> colegio = new ArrayList<Colegio>(otSeleccionados.size());
-                for (OTColegio ot : otSeleccionados) {
+                final List<Colegio> colegio = new ArrayList<Colegio>(otSeleccionados.size());
+                for (final OTColegio ot : otSeleccionados) {
                     colegio.add(ot.getColegio());
                 }
                 delete(colegio);
@@ -191,7 +147,7 @@ public class ColegiosView extends AFormView implements EventHandler<ActionEvent>
     }
 
     private void accionGrabar() {
-        IEntity entitySelected = getSelectedEntity();
+        final IEntity entitySelected = getSelectedEntity();
         removeAllStyles();
         if (validate()) {
             if (lblError != null) {
@@ -215,81 +171,19 @@ public class ColegiosView extends AFormView implements EventHandler<ActionEvent>
 
     }
 
-    private void limpiarControles() {
-        txtNombre.clear();
-        txtDireccion.clear();
-        cmbTipoColegio.setValue(null);
-        tblColegio.getSelectionModel().clearSelection();
-    }
-
-    @Override
-    public void onSaved(IEntity otObject) {
-        OTColegio otColegio = new OTColegio((Colegio) otObject);
-        int indice = tblColegio.getItems().lastIndexOf(otColegio);
-        if (indice != -1) {
-            tblColegio.getItems().set(indice, otColegio);
-        } else {
-            tblColegio.getItems().add(otColegio);
+    private void accionModificar() {
+        final OTColegio colegio = tblColegio.getSelectionModel().getSelectedItem();
+        if (colegio != null) {
+            txtNombre.setText(colegio.getName());
+            txtDireccion.setText(colegio.getDireccion());
+            cmbTipoColegio.setValue(colegio.getTipo());
+            select(colegio.getColegio());
         }
-    }
-
-    @Override
-    public void onDeleted(IEntity entity) {
-        tblColegio.getItems().remove(new OTColegio((Colegio) entity));
-    }
-
-    public boolean validate() {
-        boolean valida = true;
-        if (txtNombre.getText() == null || txtNombre.getText().equals("")) {
-            txtNombre.getStyleClass().add("bad");
-            valida = false;
-        }
-        if (txtNombre.getText() != null && txtNombre.getText().length() > LARGO_CAMPO_TEXT) {
-            txtNombre.getStyleClass().add("bad");
-            valida = false;
-        }
-        if (cmbTipoColegio.getValue() == null) {
-            cmbTipoColegio.getStyleClass().add("bad");
-            valida = false;
-        }
-
-        if (Objects.isNull(txtCiudad.getText()) || txtCiudad.getText().isEmpty()) {
-            txtCiudad.getStyleClass().add("bad");
-            valida = false;
-        }
-        return valida;
-    }
-
-    @Override
-    public void onDataArrived(List<Object> list) {
-        if (list != null && !list.isEmpty()) {
-            Object entity = list.get(0);
-            if (entity instanceof Colegio) {
-                ObservableList<OTColegio> oList = FXCollections.observableArrayList();
-                for (Object iEntity : list) {
-                    oList.add(new OTColegio((Colegio) iEntity));
-                }
-                tblColegio.setItems(oList);
-            } else if (entity instanceof TipoColegio) {
-                ObservableList<TipoColegio> value = FXCollections.observableArrayList();
-                for (Object iEntity : list) {
-                    value.add((TipoColegio) iEntity);
-                }
-                cmbTipoColegio.setItems(value);
-            }
-        }
-    }
-
-    private void removeAllStyles() {
-        removeAllStyle(lblError);
-        removeAllStyle(txtNombre);
-        removeAllStyle(txtDireccion);
-        removeAllStyle(cmbTipoColegio);
     }
 
     @Override
     public void handle(ActionEvent event) {
-        Object source = event.getSource();
+        final Object source = event.getSource();
         if (source == mnuAgregar) {
             limpiarControles();
         } else if (source == mnuModificar || source == mnItemModificar) {
@@ -304,6 +198,109 @@ public class ColegiosView extends AFormView implements EventHandler<ActionEvent>
             tblColegio.setId("Colegio");
             ExcelSheetWriterObj.convertirDatosALibroDeExcel(tblColegio);
         }
+    }
+
+    private void inicializaTabla() {
+        tblColegio.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        colId.setCellValueFactory(new PropertyValueFactory<OTColegio, Long>("id"));
+        colNombre.setCellValueFactory(new PropertyValueFactory<OTColegio, String>("name"));
+        colDireccion.setCellValueFactory(new PropertyValueFactory<OTColegio, String>("direccion"));
+
+        colTipoColegio.setCellValueFactory(new PropertyValueFactory<OTColegio, String>("tipo"));
+    }
+
+    @FXML
+    public void initialize() {
+        inicializaTabla();
+        accionClicTabla();
+        mnuAgregar.setOnAction(this);
+        mnuGrabar.setOnAction(this);
+        mnuModificar.setOnAction(this);
+        mnuEliminar.setOnAction(this);
+        mnItemEliminar.setOnAction(this);
+        mnItemModificar.setOnAction(this);
+        mnuExportar.setOnAction(this);
+        menuExportar.setOnAction(this);
+
+        mnuModificar.setDisable(true);
+        mnuEliminar.setDisable(true);
+        mnItemEliminar.setDisable(true);
+        mnItemModificar.setDisable(true);
+
+        // btnImagen.setOnAction(this);
+    }
+
+    private void limpiarControles() {
+        txtNombre.clear();
+        txtDireccion.clear();
+        cmbTipoColegio.setValue(null);
+        tblColegio.getSelectionModel().clearSelection();
+    }
+
+    @Override
+    public void onDataArrived(List<Object> list) {
+        if (list != null && !list.isEmpty()) {
+            final Object entity = list.get(0);
+            if (entity instanceof Colegio) {
+                final ObservableList<OTColegio> oList = FXCollections.observableArrayList();
+                for (final Object iEntity : list) {
+                    oList.add(new OTColegio((Colegio) iEntity));
+                }
+                tblColegio.setItems(oList);
+            } else if (entity instanceof TipoColegio) {
+                final ObservableList<TipoColegio> value = FXCollections.observableArrayList();
+                for (final Object iEntity : list) {
+                    value.add((TipoColegio) iEntity);
+                }
+                cmbTipoColegio.setItems(value);
+            }
+        }
+    }
+
+    @Override
+    public void onDeleted(IEntity entity) {
+        tblColegio.getItems().remove(new OTColegio((Colegio) entity));
+    }
+
+    @Override
+    public void onSaved(IEntity otObject) {
+        final OTColegio otColegio = new OTColegio((Colegio) otObject);
+        final int indice = tblColegio.getItems().lastIndexOf(otColegio);
+        if (indice != -1) {
+            tblColegio.getItems().set(indice, otColegio);
+        } else {
+            tblColegio.getItems().add(otColegio);
+        }
+    }
+
+    private void removeAllStyles() {
+        removeAllStyle(lblError);
+        removeAllStyle(txtNombre);
+        removeAllStyle(txtDireccion);
+        removeAllStyle(cmbTipoColegio);
+    }
+
+    @Override
+    public boolean validate() {
+        boolean valida = true;
+        if (txtNombre.getText() == null || txtNombre.getText().equals("")) {
+            txtNombre.getStyleClass().add("bad");
+            valida = false;
+        }
+        if (txtNombre.getText() != null && txtNombre.getText().length() > ColegiosView.LARGO_CAMPO_TEXT) {
+            txtNombre.getStyleClass().add("bad");
+            valida = false;
+        }
+        if (cmbTipoColegio.getValue() == null) {
+            cmbTipoColegio.getStyleClass().add("bad");
+            valida = false;
+        }
+
+        if (Objects.isNull(txtCiudad.getText()) || txtCiudad.getText().isEmpty()) {
+            txtCiudad.getStyleClass().add("bad");
+            valida = false;
+        }
+        return valida;
     }
 
 }

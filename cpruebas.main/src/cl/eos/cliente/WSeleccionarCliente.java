@@ -22,43 +22,44 @@ public class WSeleccionarCliente extends Application {
     static final String PRODUCT_KEYSTORE = "keystore";
     private static final int PRODUCT_ID = 71;
 
-    @Override
-    public void start(Stage primaryStage) {
-        try {
-            processProductAuthentication(PRODUCT_ID);
-            setUserAgentStylesheet(STYLESHEET_MODENA);
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ClientSelection.fxml"));
-            BorderPane root = (BorderPane) fxmlLoader.load();
-            SeleccionCliente controller = (SeleccionCliente) fxmlLoader.getController();
-            controller.setStage(primaryStage);
-            Scene scene = new Scene(root);
-            primaryStage.setScene(scene);
-            primaryStage.initStyle(StageStyle.UNDECORATED);
-            primaryStage.show();
-        } catch (CPruebasException e) {
-            Alert alert = new Alert(AlertType.ERROR);
-            alert.setTitle("Producto no validado.");
-            alert.setHeaderText("Debe solicitar código de activación.");
-            alert.setContentText("Solicitar código de activación al correo curso.cl@gmail.com.");
-            alert.showAndWait();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
-
     public static void main(String[] args) {
 
-        launch(args);
+        Application.launch(args);
 
     }
 
     static public void processProductAuthentication(int productId) throws CPruebasException {
-        ProductKeyValidation pkv = UtilProductKey.validateProductKey(
-                new PropertyFileProductKeyStorage(new File(Utils.getDefaultDirectory() + "/" + PRODUCT_KEYSTORE), null),
+        final ProductKeyValidation pkv = UtilProductKey.validateProductKey(
+                new PropertyFileProductKeyStorage(
+                        new File(Utils.getDefaultDirectory() + "/" + WSeleccionarCliente.PRODUCT_KEYSTORE), null),
                 productId, new WMICSerialProvider(), true);
         if (pkv == null || pkv.isUsable() == false) {
             throw new CPruebasException("Producto no validado.");
         }
+    }
+
+    @Override
+    public void start(Stage primaryStage) {
+        try {
+            WSeleccionarCliente.processProductAuthentication(WSeleccionarCliente.PRODUCT_ID);
+            Application.setUserAgentStylesheet(Application.STYLESHEET_MODENA);
+            final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ClientSelection.fxml"));
+            final BorderPane root = (BorderPane) fxmlLoader.load();
+            final SeleccionCliente controller = (SeleccionCliente) fxmlLoader.getController();
+            controller.setStage(primaryStage);
+            final Scene scene = new Scene(root);
+            primaryStage.setScene(scene);
+            primaryStage.initStyle(StageStyle.UNDECORATED);
+            primaryStage.show();
+        } catch (final CPruebasException e) {
+            final Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Producto no validado.");
+            alert.setHeaderText("Debe solicitar código de activación.");
+            alert.setContentText("Solicitar código de activación al correo curso.cl@gmail.com.");
+            alert.showAndWait();
+        } catch (final IOException e) {
+            e.printStackTrace();
+        }
+
     }
 }

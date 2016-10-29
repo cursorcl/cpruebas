@@ -11,75 +11,74 @@ import java.awt.print.PrinterJob;
 
 import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
+import javax.print.attribute.ResolutionSyntax;
 import javax.print.attribute.standard.MediaPrintableArea;
 import javax.print.attribute.standard.PrintQuality;
 import javax.print.attribute.standard.PrinterResolution;
 
 public class PrintActionListener implements Runnable {
 
-	private final BufferedImage image;
+    private class ImagePrintable implements Printable {
 
-	public PrintActionListener(BufferedImage image) {
-		this.image = image;
-	}
+        private final double x, y, width;
+        private final int orientation;
+        private final BufferedImage image;
 
-	@Override
-	public void run() {
-		PrintRequestAttributeSet printAttributes = new HashPrintRequestAttributeSet();
-	    printAttributes.add(PrintQuality.HIGH);
-	    printAttributes.add(new MediaPrintableArea(0f, 0f, 241.3f, 279.4f, MediaPrintableArea.MM));
-	    printAttributes.add(new PrinterResolution(600, 600, PrinterResolution.DPI)); 
-		PrinterJob printJob = PrinterJob.getPrinterJob();
-		
-		printJob.setPrintable(new ImagePrintable(printJob, image), printJob.getPageFormat(printAttributes));
-		if (printJob.printDialog(printAttributes)) {
-			try {
-				printJob.print(printAttributes);
-			} catch (PrinterException prt) {
-			}
-		}
-	}
+        ImagePrintable(PrinterJob printJob, BufferedImage image) {
 
-	private class ImagePrintable implements Printable {
+            final PageFormat pageFormat = printJob.defaultPage();
+            x = pageFormat.getImageableX();
+            y = pageFormat.getImageableY();
+            width = pageFormat.getImageableWidth();
+            orientation = pageFormat.getOrientation();
+            this.image = image;
+        }
 
-		private final double x, y, width;
-		private final int orientation;
-		private final BufferedImage image;
+        @Override
+        public int print(Graphics g, PageFormat pageFormat, int pageIndex) throws PrinterException {
 
-		ImagePrintable(PrinterJob printJob, BufferedImage image) {
-			
-			PageFormat pageFormat = printJob.defaultPage();
-			this.x = pageFormat.getImageableX();
-			this.y = pageFormat.getImageableY();
-			this.width = pageFormat.getImageableWidth();
-			this.orientation = pageFormat.getOrientation();
-			this.image = image;
-		}
+            final Graphics2D g2d = (Graphics2D) g;
+            g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+            if (pageIndex == 0) {
+                int pWidth;
+                int pHeight;
+                if (orientation == PageFormat.PORTRAIT) {
+                    pWidth = (int) Math.min(width, image.getWidth());
+                    pHeight = pWidth * image.getHeight() / image.getWidth();
+                } else {
+                    pHeight = (int) Math.min(width, image.getHeight());
+                    pWidth = pHeight * image.getWidth() / image.getHeight();
+                }
+                g.drawImage(image, (int) x, (int) y, pWidth, pHeight, null);
+                return Printable.PAGE_EXISTS;
+            } else {
+                return Printable.NO_SUCH_PAGE;
+            }
+        }
 
-		@Override
-		public int print(Graphics g, PageFormat pageFormat, int pageIndex)
-				throws PrinterException {
-				
-			Graphics2D g2d = (Graphics2D) g; 
-			g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-			                     RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-			if (pageIndex == 0) {
-				int pWidth;
-				int pHeight;
-				if (orientation == PageFormat.PORTRAIT) {
-					pWidth = (int) Math.min(width, image.getWidth());
-					pHeight = pWidth * image.getHeight() / image.getWidth();
-				} else {
-					pHeight = (int) Math.min(width, image.getHeight());
-					pWidth = pHeight * image.getWidth() / image.getHeight();
-				}
-				g.drawImage(image, (int) x, (int) y, pWidth, pHeight, null);
-				return PAGE_EXISTS;
-			} else {
-				return NO_SUCH_PAGE;
-			}
-		}
+    }
 
-	}
-	
+    private final BufferedImage image;
+
+    public PrintActionListener(BufferedImage image) {
+        this.image = image;
+    }
+
+    @Override
+    public void run() {
+        final PrintRequestAttributeSet printAttributes = new HashPrintRequestAttributeSet();
+        printAttributes.add(PrintQuality.HIGH);
+        printAttributes.add(new MediaPrintableArea(0f, 0f, 241.3f, 279.4f, MediaPrintableArea.MM));
+        printAttributes.add(new PrinterResolution(600, 600, ResolutionSyntax.DPI));
+        final PrinterJob printJob = PrinterJob.getPrinterJob();
+
+        printJob.setPrintable(new ImagePrintable(printJob, image), printJob.getPageFormat(printAttributes));
+        if (printJob.printDialog(printAttributes)) {
+            try {
+                printJob.print(printAttributes);
+            } catch (final PrinterException prt) {
+            }
+        }
+    }
+
 }

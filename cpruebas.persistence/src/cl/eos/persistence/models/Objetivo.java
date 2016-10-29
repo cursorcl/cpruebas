@@ -35,13 +35,33 @@ public class Objetivo extends AEntity {
     protected int version;
 
     @Override
-    public Long getId() {
-        return id;
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        final Objetivo other = (Objetivo) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        return true;
+    }
+
+    public Asignatura getAsignatura() {
+        return asignatura;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
     }
 
     @Override
-    public void setId(Long id) {
-        this.id = id;
+    public Long getId() {
+        return id;
     }
 
     @Override
@@ -49,22 +69,8 @@ public class Objetivo extends AEntity {
         return name;
     }
 
-    @Override
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
-
-    @Override
-    public boolean validate() {
-        return true;
+    public TipoCurso getTipoCurso() {
+        return tipoCurso;
     }
 
     @Override
@@ -73,24 +79,38 @@ public class Objetivo extends AEntity {
     }
 
     @Override
-    public void setVersion(int version) {
-        this.version = version;
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + (id == null ? 0 : id.hashCode());
+        return result;
     }
 
-    public TipoCurso getTipoCurso() {
-        return tipoCurso;
+    public void setAsignatura(Asignatura asignatura) {
+        this.asignatura = asignatura;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    @Override
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    @Override
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void setTipoCurso(TipoCurso tipoCurso) {
         this.tipoCurso = tipoCurso;
     }
 
-    public Asignatura getAsignatura() {
-        return asignatura;
-    }
-
-    public void setAsignatura(Asignatura asignatura) {
-        this.asignatura = asignatura;
+    @Override
+    public void setVersion(int version) {
+        this.version = version;
     }
 
     @Override
@@ -99,27 +119,7 @@ public class Objetivo extends AEntity {
     }
 
     @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((id == null) ? 0 : id.hashCode());
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        Objetivo other = (Objetivo) obj;
-        if (id == null) {
-            if (other.id != null)
-                return false;
-        } else if (!id.equals(other.id))
-            return false;
+    public boolean validate() {
         return true;
     }
 

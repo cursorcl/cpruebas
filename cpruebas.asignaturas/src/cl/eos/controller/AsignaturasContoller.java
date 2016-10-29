@@ -6,13 +6,13 @@ import cl.eos.persistence.models.Asignatura;
 
 public class AsignaturasContoller extends AController {
 
-	public AsignaturasContoller() {
+    public AsignaturasContoller() {
 
-	}
+    }
 
-	@Override
-	public void initialize() {
-		model = new AsignaturasModel();
-		model.findAll(Asignatura.class, this);
-	}
+    @Override
+    public void initialize() {
+        model = new AsignaturasModel();
+        model.findAll(Asignatura.class, this);
+    }
 }

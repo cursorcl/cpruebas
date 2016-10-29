@@ -16,83 +16,76 @@ import javax.swing.table.TableCellRenderer;
 
 import cl.sisdef.model.Register;
 
-public class DateCellRenderer extends JPanel implements TableCellRenderer
-{
+public class DateCellRenderer extends JPanel implements TableCellRenderer {
     /**
      * String con un guion.
      */
-    private static final String    GUION            = "-";
+    private static final String GUION = "-";
     /**
      * Serial de la clase.
      */
-    private static final long      serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
     /**
      * Fuente de los textos en el panel.
      */
-    private static final Font      FUENTE           = new Font( "SansSerif", Font.PLAIN, 10 );
+    private static final Font FUENTE = new Font("SansSerif", Font.PLAIN, 10);
     /**
      * Dimensiones de las etiquetas del panel.
      */
-    private static final Dimension DIMENSION_LABEL  = new Dimension( 20, 90 );
+    private static final Dimension DIMENSION_LABEL = new Dimension(20, 90);
     /**
      * Dimensiones del panel.
      */
-    private static final Dimension DIMENSION_PANEL  = new Dimension( 20, 100 );
+    private static final Dimension DIMENSION_PANEL = new Dimension(20, 100);
     /**
      * Label que despliega la fecha.
      */
-    private final JLabel           inicio           = new JLabel();
+    private final JLabel inicio = new JLabel();
 
     /**
      * Constructor de la clase.
      */
-    public DateCellRenderer()
-    {
+    public DateCellRenderer() {
         super();
-        setLayout( new GridLayout( 1, 1 ) );
-        setSize( DateCellRenderer.DIMENSION_PANEL );
+        setLayout(new GridLayout(1, 1));
+        setSize(DateCellRenderer.DIMENSION_PANEL);
 
-        this.inicio.setOpaque( true );
-        this.inicio.setPreferredSize( DateCellRenderer.DIMENSION_LABEL );
-        this.inicio.setHorizontalAlignment( SwingConstants.CENTER );
-        this.inicio.setHorizontalTextPosition( SwingConstants.CENTER );
-        this.inicio.setMinimumSize( DateCellRenderer.DIMENSION_LABEL );
-        this.inicio.setMaximumSize( DateCellRenderer.DIMENSION_LABEL );
-        this.inicio.setForeground( Color.BLACK );
-        this.inicio.setFont( DateCellRenderer.FUENTE );
-        add( this.inicio );
+        inicio.setOpaque(true);
+        inicio.setPreferredSize(DateCellRenderer.DIMENSION_LABEL);
+        inicio.setHorizontalAlignment(SwingConstants.CENTER);
+        inicio.setHorizontalTextPosition(SwingConstants.CENTER);
+        inicio.setMinimumSize(DateCellRenderer.DIMENSION_LABEL);
+        inicio.setMaximumSize(DateCellRenderer.DIMENSION_LABEL);
+        inicio.setForeground(Color.BLACK);
+        inicio.setFont(DateCellRenderer.FUENTE);
+        add(inicio);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Component getTableCellRendererComponent( final JTable table, final Object value, final boolean isSelected,
-            final boolean hasFocus, final int rowValue, final int colValue )
-    {
-        final SimpleDateFormat sdf = new SimpleDateFormat( "yyyy-MM-dd" );
+    public Component getTableCellRendererComponent(final JTable table, final Object value, final boolean isSelected,
+            final boolean hasFocus, final int rowValue, final int colValue) {
+        final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-        this.inicio.setBackground( table.getBackground() );
-        this.inicio.setForeground( table.getForeground() );
+        inicio.setBackground(table.getBackground());
+        inicio.setForeground(table.getForeground());
 
-        if ( isSelected )
-        {
-            this.inicio.setBackground( table.getSelectionBackground() );
-            this.inicio.setForeground( table.getSelectionForeground() );
+        if (isSelected) {
+            inicio.setBackground(table.getSelectionBackground());
+            inicio.setForeground(table.getSelectionForeground());
 
         }
-        final Register modelo = (Register) table.getModel().getValueAt( rowValue, 1 );
+        final Register modelo = (Register) table.getModel().getValueAt(rowValue, 1);
         final Date fecha = new Date(modelo.getDate());
 
-        final String strFfecha = sdf.format( fecha );
+        final String strFfecha = sdf.format(fecha);
 
-        if ( fecha == null )
-        {
-            this.inicio.setText( GUION );
-        }
-        else
-        {
-            this.inicio.setText( strFfecha );
+        if (fecha == null) {
+            inicio.setText(DateCellRenderer.GUION);
+        } else {
+            inicio.setText(strFfecha);
         }
         return this;
     }

@@ -24,64 +24,60 @@ public class ExtractorResultadosPrueba extends AExtractorResultados {
 
     static final Logger log = Logger.getLogger(ExtractorResultadosPrueba.class);
     private static ExtractorResultadosPrueba instance;
-    private SimpleBooleanProperty valid;
+
+    public static ExtractorResultadosPrueba getInstance() {
+        if (ExtractorResultadosPrueba.instance == null) {
+            ExtractorResultadosPrueba.instance = new ExtractorResultadosPrueba();
+        }
+        return ExtractorResultadosPrueba.instance;
+    }
+
+    private final SimpleBooleanProperty valid;
 
     /**
      * Constructor de la clase de extracción de información de una imagen
      * prueba.
-     * 
+     *
      * @throws CPruebasException
-     * 
+     *
      * @throws IOException
      *             Error al leer las redes.
      */
     private ExtractorResultadosPrueba() {
         valid = new SimpleBooleanProperty(true);
-        File fRedPrueba = new File("res/red_2");
-        
-        File fRedRut = new File("res/red_rut");
-        
+        final File fRedPrueba = new File("res/red_2");
+
+        final File fRedRut = new File("res/red_rut");
+
         if (fRedPrueba.exists() && fRedRut.exists()) {
             try {
                 recognizerRespustas = RecognizerFactory.create(fRedPrueba);
                 recognizerRut = RecognizerFactory.create(fRedRut);
-                
-            } catch (IOException e) {
-                log.error("Error al leer los archivos de redes neuronales:" + e.getLocalizedMessage());
+
+            } catch (final IOException e) {
+                ExtractorResultadosPrueba.log
+                        .error("Error al leer los archivos de redes neuronales:" + e.getLocalizedMessage());
                 valid.set(false);
             }
 
         } else {
-            log.error("red_rut existe = " + fRedRut.getAbsolutePath() + " " + fRedRut.exists());
-            log.error("red_2 existe = " + fRedPrueba.getAbsolutePath() + " " + fRedPrueba.exists());
+            ExtractorResultadosPrueba.log
+                    .error("red_rut existe = " + fRedRut.getAbsolutePath() + " " + fRedRut.exists());
+            ExtractorResultadosPrueba.log
+                    .error("red_2 existe = " + fRedPrueba.getAbsolutePath() + " " + fRedPrueba.exists());
             valid.set(false);
         }
 
     }
 
-    public static ExtractorResultadosPrueba getInstance() {
-        if (instance == null) {
-            instance = new ExtractorResultadosPrueba();
-        }
-        return instance;
-    }
-
-    public OTResultadoScanner process(File archivo, int nroPreguntas) throws IOException, CPruebasException {
-        BufferedImage bImg = ImageIO.read(archivo);
-        int h = bImg.getHeight();
-        int w = bImg.getWidth();
-        if (h < 3200 || w < 2480) {
-            log.error(String.format("Dimensiones de la prueba son muy pequeñas %dx%d", w, h));
-            throw new CPruebasException(String.format("Dimensiones de la prueba son muy pequeñas %dx%d", w, h));
-        }
-        writeIMG(bImg, "original");
-        return process(bImg, nroPreguntas);
+    public final boolean isValid() {
+        return validProperty().get();
     }
 
     /**
      * Metodo que realiza el procesamiento de una prueba, obtiene el rut y las
      * respuestas. Por ahora la forma ratorn 1.
-     * 
+     *
      * @param image
      *            Imagen que contiene la prueba.
      * @param nroPreguntas
@@ -89,21 +85,22 @@ public class ExtractorResultadosPrueba extends AExtractorResultados {
      * @return {@link OTResultadoScanner} que contiene RUT, RESPUESTAS y FORMA
      *         de la prueba.
      */
+    @Override
     public OTResultadoScanner process(BufferedImage image, int nroPreguntas) {
         OTResultadoScanner resultado = null;
         BufferedImage recImage = rectificarImagen(image);
-        writeIMG(recImage, "rectificar");
-        Point[] pointsReference = obtenerPuntosReferencia(recImage);
+        AExtractorResultados.writeIMG(recImage, "rectificar");
+        final Point[] pointsReference = obtenerPuntosReferencia(recImage);
         if (pointsReference != null) {
-            resultado =  new OTResultadoScanner();
-            Point pRefRut = pointsReference[0];
+            resultado = new OTResultadoScanner();
+            final Point pRefRut = pointsReference[0];
             nRut = 0;
-            String rut = getRut(pRefRut, recImage);
-            Point[] pRefRespuestas = Arrays.copyOfRange(pointsReference, 1, pointsReference.length);
+            final String rut = getRut(pRefRut, recImage);
+            final Point[] pRefRespuestas = Arrays.copyOfRange(pointsReference, 1, pointsReference.length);
             recImage = preprocesarImagen(recImage);
-            String respuestas = getRespuestas(pRefRespuestas, recImage, nroPreguntas);
+            final String respuestas = getRespuestas(pRefRespuestas, recImage, nroPreguntas);
 
-            log.info(String.format("%s,%s", rut, respuestas));
+            ExtractorResultadosPrueba.log.info(String.format("%s,%s", rut, respuestas));
 
             resultado.setForma(1);
             resultado.setRespuestas(respuestas);
@@ -112,16 +109,25 @@ public class ExtractorResultadosPrueba extends AExtractorResultados {
         return resultado;
     }
 
-    public final SimpleBooleanProperty validProperty() {
-        return this.valid;
-    }
-
-    public final boolean isValid() {
-        return this.validProperty().get();
+    @Override
+    public OTResultadoScanner process(File archivo, int nroPreguntas) throws IOException, CPruebasException {
+        final BufferedImage bImg = ImageIO.read(archivo);
+        final int h = bImg.getHeight();
+        final int w = bImg.getWidth();
+        if (h < 3200 || w < 2480) {
+            ExtractorResultadosPrueba.log.error(String.format("Dimensiones de la prueba son muy pequeñas %dx%d", w, h));
+            throw new CPruebasException(String.format("Dimensiones de la prueba son muy pequeñas %dx%d", w, h));
+        }
+        AExtractorResultados.writeIMG(bImg, "original");
+        return process(bImg, nroPreguntas);
     }
 
     public final void setValid(final boolean valid) {
-        this.validProperty().set(valid);
+        validProperty().set(valid);
+    }
+
+    public final SimpleBooleanProperty validProperty() {
+        return valid;
     }
 
 }

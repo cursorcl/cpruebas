@@ -9,28 +9,29 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 public class Migrator extends Application {
-	protected double xOffset;
-	protected double yOffset;
+    public static void main(String[] args) {
+        Application.launch(args);
+    }
 
-	@Override
-	public void start(Stage primaryStage) {
-		try {
-			 primaryStage.setTitle("Migrar");
-			setUserAgentStylesheet(STYLESHEET_MODENA);
-			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("migrator.fxml"));
-			StackPane root = (StackPane) fxmlLoader.load();
-			Scene scene = new Scene(root);
-			scene.getStylesheets().add(this.getClass().getResource("list.css").toExternalForm());
-			primaryStage.setScene(scene);
-			primaryStage.setResizable(false);
-			primaryStage.show();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+    protected double xOffset;
 
-	}
+    protected double yOffset;
 
-	public static void main(String[] args) {
-		launch(args);
-	}
+    @Override
+    public void start(Stage primaryStage) {
+        try {
+            primaryStage.setTitle("Migrar");
+            Application.setUserAgentStylesheet(Application.STYLESHEET_MODENA);
+            final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("migrator.fxml"));
+            final StackPane root = (StackPane) fxmlLoader.load();
+            final Scene scene = new Scene(root);
+            scene.getStylesheets().add(this.getClass().getResource("list.css").toExternalForm());
+            primaryStage.setScene(scene);
+            primaryStage.setResizable(false);
+            primaryStage.show();
+        } catch (final IOException e) {
+            e.printStackTrace();
+        }
+
+    }
 }

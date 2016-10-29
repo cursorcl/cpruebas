@@ -6,13 +6,13 @@ import cl.eos.persistence.models.Habilidad;
 
 public class HabilidadesContoller extends AController {
 
-	public HabilidadesContoller() {
-		
-	}
+    public HabilidadesContoller() {
 
-	@Override
-	public void initialize() {
-		model = new HabilidadesModel();
-		model.findAll(Habilidad.class, this);
-	}
+    }
+
+    @Override
+    public void initialize() {
+        model = new HabilidadesModel();
+        model.findAll(Habilidad.class, this);
+    }
 }

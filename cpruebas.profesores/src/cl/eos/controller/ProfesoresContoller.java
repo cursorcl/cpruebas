@@ -6,13 +6,13 @@ import cl.eos.persistence.models.Profesor;
 
 public class ProfesoresContoller extends AController {
 
-	public ProfesoresContoller() {
-	
-	}
+    public ProfesoresContoller() {
 
-	@Override
-	public void initialize() {
-		model = new ProfesoresModel();
-		model.findAll(Profesor.class, this);		
-	}
+    }
+
+    @Override
+    public void initialize() {
+        model = new ProfesoresModel();
+        model.findAll(Profesor.class, this);
+    }
 }

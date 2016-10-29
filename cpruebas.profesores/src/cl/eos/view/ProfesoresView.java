@@ -23,312 +23,290 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
 
-public class ProfesoresView extends AFormView implements
-		EventHandler<ActionEvent> {
+public class ProfesoresView extends AFormView implements EventHandler<ActionEvent> {
 
-	private static final int LARGO_CAMPO_TEXT = 100;
+    private static final int LARGO_CAMPO_TEXT = 100;
 
-	@FXML
-	private MenuItem mnItemEliminar;
+    @FXML
+    private MenuItem mnItemEliminar;
 
-	@FXML
-	private MenuItem mnItemModificar;
+    @FXML
+    private MenuItem mnItemModificar;
 
-	@FXML
-	private MenuItem mnuAgregar;
+    @FXML
+    private MenuItem mnuAgregar;
 
-	@FXML
-	private MenuItem mnuGrabar;
+    @FXML
+    private MenuItem mnuGrabar;
 
-	@FXML
-	private MenuItem mnuEliminar;
+    @FXML
+    private MenuItem mnuEliminar;
 
-	@FXML
-	private MenuItem mnuModificar;
+    @FXML
+    private MenuItem mnuModificar;
 
-	@FXML
-	private MenuItem menuExportar;
+    @FXML
+    private MenuItem menuExportar;
 
-	@FXML
-	private MenuItem mnuExportar;
+    @FXML
+    private MenuItem mnuExportar;
 
-	@FXML
-	private TextField txtRut;
+    @FXML
+    private TextField txtRut;
 
-	@FXML
-	private TextField txtNombres;
+    @FXML
+    private TextField txtNombres;
 
-	@FXML
-	private TextField txtAPaterno;
+    @FXML
+    private TextField txtAPaterno;
 
-	@FXML
-	private TextField txtAMaterno;
+    @FXML
+    private TextField txtAMaterno;
 
-	@FXML
-	private Label lblError;
+    @FXML
+    private Label lblError;
 
-	@FXML
-	private TableView<OTProfesor> tblProfesores;
+    @FXML
+    private TableView<OTProfesor> tblProfesores;
 
-	@FXML
-	private TableColumn<OTProfesor, Long> colId;
+    @FXML
+    private TableColumn<OTProfesor, Long> colId;
 
-	@FXML
-	private TableColumn<OTProfesor, String> colRut;
+    @FXML
+    private TableColumn<OTProfesor, String> colRut;
 
-	@FXML
-	private TableColumn<OTProfesor, String> colPaterno;
+    @FXML
+    private TableColumn<OTProfesor, String> colPaterno;
 
-	@FXML
-	private TableColumn<OTProfesor, String> colMaterno;
+    @FXML
+    private TableColumn<OTProfesor, String> colMaterno;
 
-	@FXML
-	private TableColumn<OTProfesor, String> ColNombres;
+    @FXML
+    private TableColumn<OTProfesor, String> ColNombres;
 
-	public ProfesoresView() {
-		setTitle("Profesores");
-	}
+    public ProfesoresView() {
+        setTitle("Profesores");
+    }
 
-	@FXML
-	public void initialize() {
-		inicializaTabla();
-		accionClicTabla();
-		mnuAgregar.setOnAction(this);
-		mnuGrabar.setOnAction(this);
-		mnuModificar.setOnAction(this);
-		mnuEliminar.setOnAction(this);
-		mnItemEliminar.setOnAction(this);
-		mnItemModificar.setOnAction(this);
-		mnuExportar.setOnAction(this);
-		menuExportar.setOnAction(this);
+    private void accionClicTabla() {
+        tblProfesores.setOnMouseClicked(event -> {
+            final ObservableList<OTProfesor> itemsSelec = tblProfesores.getSelectionModel().getSelectedItems();
+            if (itemsSelec.size() > 1) {
+                mnItemModificar.setDisable(true);
+                mnItemEliminar.setDisable(false);
 
-		mnuModificar.setDisable(true);
-		mnuEliminar.setDisable(true);
-		mnItemEliminar.setDisable(true);
-		mnItemModificar.setDisable(true);
-	}
+                mnuModificar.setDisable(true);
+                mnuEliminar.setDisable(false);
 
-	private void accionClicTabla() {
-		tblProfesores.setOnMouseClicked(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent event) {
-				ObservableList<OTProfesor> itemsSelec = tblProfesores
-						.getSelectionModel().getSelectedItems();
-				if (itemsSelec.size() > 1) {
-					mnItemModificar.setDisable(true);
-					mnItemEliminar.setDisable(false);
+            } else if (itemsSelec.size() == 1) {
 
-					mnuModificar.setDisable(true);
-					mnuEliminar.setDisable(false);
+                mnItemModificar.setDisable(false);
+                mnItemEliminar.setDisable(false);
 
-				} else if (itemsSelec.size() == 1) {
-					
-					mnItemModificar.setDisable(false);
-					mnItemEliminar.setDisable(false);
+                mnuModificar.setDisable(false);
+                mnuEliminar.setDisable(false);
+            }
+        });
+    }
 
-					mnuModificar.setDisable(false);
-					mnuEliminar.setDisable(false);
-				}
-			}
-		});
-	}
+    private void accionEliminar() {
+        final ObservableList<OTProfesor> otSeleccionados = tblProfesores.getSelectionModel().getSelectedItems();
+        if (otSeleccionados.size() == 0) {
 
-	private void accionModificar() {
-		OTProfesor profesor = tblProfesores.getSelectionModel()
-				.getSelectedItem();
-		if (profesor != null) {
-			txtRut.setText(profesor.getRut());
-			txtNombres.setText(profesor.getName());
-			txtAPaterno.setText(profesor.getPaterno());
-			txtAMaterno.setText(profesor.getMaterno());
-			select((IEntity) profesor.getProfesor());
-		}
-	}
+            final Alert alert = new Alert(AlertType.INFORMATION);
+            alert.setTitle("Selección registro");
+            alert.setHeaderText(getName());
+            alert.setContentText("Debe seleccionar registro a procesar");
+            alert.showAndWait();
+        } else {
 
-	private void accionEliminar() {
-		ObservableList<OTProfesor> otSeleccionados = tblProfesores
-				.getSelectionModel().getSelectedItems();
-		if (otSeleccionados.size() == 0) {
-			
-			Alert alert = new Alert(AlertType.INFORMATION);
-			alert.setTitle("Selección registro");
-			alert.setHeaderText(this.getName());
-			alert.setContentText("Debe seleccionar registro a procesar");
-			alert.showAndWait();
-		} else {
+            if (otSeleccionados != null && !otSeleccionados.isEmpty()) {
+                final List<Profesor> profesor = new ArrayList<Profesor>(otSeleccionados.size());
+                for (final OTProfesor ot : otSeleccionados) {
+                    profesor.add(ot.getProfesor());
+                }
+                delete(profesor);
+                tblProfesores.getSelectionModel().clearSelection();
+                limpiarControles();
+            }
+        }
+    }
 
-			if (otSeleccionados != null && !otSeleccionados.isEmpty()) {
-				List<Profesor> profesor = new ArrayList<Profesor>(
-						otSeleccionados.size());
-				for (OTProfesor ot : otSeleccionados) {
-					profesor.add(ot.getProfesor());
-				}
-				delete(profesor);
-				tblProfesores.getSelectionModel().clearSelection();
-				limpiarControles();
-			}
-		}
-	}
+    private void accionGrabar() {
+        final IEntity entitySelected = getSelectedEntity();
+        removeAllStyles();
+        if (validate()) {
+            if (lblError != null) {
+                lblError.setText(" ");
+            }
+            Profesor Profesor = null;
+            if (entitySelected != null && entitySelected instanceof Profesor) {
+                Profesor = (Profesor) entitySelected;
+            } else {
+                Profesor = new Profesor();
+            }
+            Profesor.setRut(txtRut.getText());
+            Profesor.setName(txtNombres.getText());
+            Profesor.setPaterno(txtAPaterno.getText());
+            Profesor.setMaterno(txtAMaterno.getText());
+            save(Profesor);
+            limpiarControles();
+        } else {
+            lblError.getStyleClass().add("bad");
+            lblError.setText("Corregir campos destacados en color rojo");
+        }
 
-	private void accionGrabar() {
-		IEntity entitySelected = getSelectedEntity();
-		removeAllStyles();
-		if (validate()) {
-			if (lblError != null) {
-				lblError.setText(" ");
-			}
-			Profesor Profesor = null;
-			if (entitySelected != null && entitySelected instanceof Profesor) {
-				Profesor = (Profesor) entitySelected;
-			} else {
-				Profesor = new Profesor();
-			}
-			Profesor.setRut(txtRut.getText());
-			Profesor.setName(txtNombres.getText());
-			Profesor.setPaterno(txtAPaterno.getText());
-			Profesor.setMaterno(txtAMaterno.getText());
-			save(Profesor);
-			limpiarControles();
-		} else {
-			lblError.getStyleClass().add("bad");
-			lblError.setText("Corregir campos destacados en color rojo");
-		}
-		
-	}
+    }
 
-	private void limpiarControles() {
-		txtRut.clear();
-		txtNombres.clear();
-		txtAPaterno.clear();
-		txtAMaterno.clear();
-		select(null);
-	}
+    private void accionModificar() {
+        final OTProfesor profesor = tblProfesores.getSelectionModel().getSelectedItem();
+        if (profesor != null) {
+            txtRut.setText(profesor.getRut());
+            txtNombres.setText(profesor.getName());
+            txtAPaterno.setText(profesor.getPaterno());
+            txtAMaterno.setText(profesor.getMaterno());
+            select(profesor.getProfesor());
+        }
+    }
 
-	private void inicializaTabla() {
-		tblProfesores.getSelectionModel().setSelectionMode(
-				SelectionMode.MULTIPLE);
-		colId.setCellValueFactory(new PropertyValueFactory<OTProfesor, Long>(
-				"id"));
-		colRut.setCellValueFactory(new PropertyValueFactory<OTProfesor, String>(
-				"rut"));
-		colPaterno
-				.setCellValueFactory(new PropertyValueFactory<OTProfesor, String>(
-						"paterno"));
-		colMaterno
-				.setCellValueFactory(new PropertyValueFactory<OTProfesor, String>(
-						"materno"));
-		ColNombres
-				.setCellValueFactory(new PropertyValueFactory<OTProfesor, String>(
-						"name"));
-	}
+    @Override
+    public void handle(ActionEvent event) {
+        final Object source = event.getSource();
+        if (source == mnuAgregar) {
+            limpiarControles();
+        } else if (source == mnuModificar || source == mnItemModificar) {
+            accionModificar();
+        } else if (source == mnuGrabar) {
+            accionGrabar();
+        } else if (source == mnuEliminar || source == mnItemEliminar) {
+            accionEliminar();
+        } else if (source == mnuExportar || source == menuExportar) {
+            tblProfesores.setId("Profesores");
+            ExcelSheetWriterObj.convertirDatosALibroDeExcel(tblProfesores);
+        }
+    }
 
-	private void removeAllStyles() {
-		removeAllStyle(lblError);
-		removeAllStyle(txtRut);
-		removeAllStyle(txtNombres);
-		removeAllStyle(txtAPaterno);
-		removeAllStyle(txtAMaterno);
-	}
+    private void inicializaTabla() {
+        tblProfesores.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        colId.setCellValueFactory(new PropertyValueFactory<OTProfesor, Long>("id"));
+        colRut.setCellValueFactory(new PropertyValueFactory<OTProfesor, String>("rut"));
+        colPaterno.setCellValueFactory(new PropertyValueFactory<OTProfesor, String>("paterno"));
+        colMaterno.setCellValueFactory(new PropertyValueFactory<OTProfesor, String>("materno"));
+        ColNombres.setCellValueFactory(new PropertyValueFactory<OTProfesor, String>("name"));
+    }
 
-	@Override
-	public void onSaved(IEntity otObject) {
-		OTProfesor profesor = new OTProfesor((Profesor) otObject);
-		int indice = tblProfesores.getItems().lastIndexOf(profesor);
-		if (indice != -1) {
-			tblProfesores.getItems().set(indice, profesor);
-		} else {
-			tblProfesores.getItems().add(profesor);
-		}
-	}
+    @FXML
+    public void initialize() {
+        inicializaTabla();
+        accionClicTabla();
+        mnuAgregar.setOnAction(this);
+        mnuGrabar.setOnAction(this);
+        mnuModificar.setOnAction(this);
+        mnuEliminar.setOnAction(this);
+        mnItemEliminar.setOnAction(this);
+        mnItemModificar.setOnAction(this);
+        mnuExportar.setOnAction(this);
+        menuExportar.setOnAction(this);
 
-	@Override
-	public void onDeleted(IEntity entity) {
-		tblProfesores.getItems().remove(new OTProfesor((Profesor) entity));
-	}
+        mnuModificar.setDisable(true);
+        mnuEliminar.setDisable(true);
+        mnItemEliminar.setDisable(true);
+        mnItemModificar.setDisable(true);
+    }
 
-	@Override
-	public boolean validate() {
-		boolean valida = true;
-		valida = validaRut();
-		if (txtNombres.getText() == null || txtNombres.getText().equals("")) {
-			txtNombres.getStyleClass().add("bad");
-			valida = false;
-		}
-		if (txtNombres.getText() != null
-				&& txtNombres.getText().length() > LARGO_CAMPO_TEXT) {
-			txtNombres.getStyleClass().add("bad");
-			valida = false;
-		}
+    private void limpiarControles() {
+        txtRut.clear();
+        txtNombres.clear();
+        txtAPaterno.clear();
+        txtAMaterno.clear();
+        select(null);
+    }
 
-		if (txtAPaterno.getText() == null || txtAPaterno.getText().equals("")) {
-			txtAPaterno.getStyleClass().add("bad");
-			valida = false;
-		}
-		if (txtAPaterno.getText() != null
-				&& txtAPaterno.getText().length() > LARGO_CAMPO_TEXT) {
-			txtAPaterno.getStyleClass().add("bad");
-			valida = false;
-		}
-		if (txtAMaterno.getText() == null || txtAMaterno.getText().equals("")) {
-			txtAMaterno.getStyleClass().add("bad");
-			valida = false;
-		}
-		if (txtAMaterno.getText() != null
-				&& txtAMaterno.getText().length() > LARGO_CAMPO_TEXT) {
-			txtAMaterno.getStyleClass().add("bad");
-			valida = false;
-		}
-		return valida;
-	}
+    @Override
+    public void onDataArrived(List<Object> list) {
+        if (list != null && !list.isEmpty()) {
+            final Object entity = list.get(0);
+            if (entity instanceof Profesor) {
+                final ObservableList<OTProfesor> oList = FXCollections.observableArrayList();
+                for (final Object iEntity : list) {
+                    oList.add(new OTProfesor((Profesor) iEntity));
+                }
+                tblProfesores.setItems(oList);
+            }
+        }
+    }
 
-	private boolean validaRut() {
-		boolean valida;
-		String strRut = txtRut.getText();
-		if (strRut.length() > 0) {
-			if (Utils.validarRut(strRut)) {
-				valida = true;
-			} else {
-				txtRut.getStyleClass().add("bad");
-				valida = false;
-			}
-		} else {
-			txtRut.getStyleClass().add("bad");
-			valida = false;
-		}
-		return valida;
-	}
+    @Override
+    public void onDeleted(IEntity entity) {
+        tblProfesores.getItems().remove(new OTProfesor((Profesor) entity));
+    }
 
-	@Override
-	public void onDataArrived(List<Object> list) {
-		if (list != null && !list.isEmpty()) {
-			Object entity = list.get(0);
-			if (entity instanceof Profesor) {
-				ObservableList<OTProfesor> oList = FXCollections
-						.observableArrayList();
-				for (Object iEntity : list) {
-					oList.add(new OTProfesor((Profesor) iEntity));
-				}
-				tblProfesores.setItems(oList);
-			}
-		}
-	}
+    @Override
+    public void onSaved(IEntity otObject) {
+        final OTProfesor profesor = new OTProfesor((Profesor) otObject);
+        final int indice = tblProfesores.getItems().lastIndexOf(profesor);
+        if (indice != -1) {
+            tblProfesores.getItems().set(indice, profesor);
+        } else {
+            tblProfesores.getItems().add(profesor);
+        }
+    }
 
-	@Override
-	public void handle(ActionEvent event) {
-		Object source = event.getSource();
-		if (source == mnuAgregar) {
-			limpiarControles();
-		} else if (source == mnuModificar || source == mnItemModificar) {
-			accionModificar();
-		} else if (source == mnuGrabar) {
-			accionGrabar();
-		} else if (source == mnuEliminar || source == mnItemEliminar) {
-			accionEliminar();
-		} else if (source == mnuExportar || source == menuExportar) {
-			tblProfesores.setId("Profesores");
-			ExcelSheetWriterObj.convertirDatosALibroDeExcel(tblProfesores);
-		}
-	}
+    private void removeAllStyles() {
+        removeAllStyle(lblError);
+        removeAllStyle(txtRut);
+        removeAllStyle(txtNombres);
+        removeAllStyle(txtAPaterno);
+        removeAllStyle(txtAMaterno);
+    }
+
+    private boolean validaRut() {
+        boolean valida;
+        final String strRut = txtRut.getText();
+        if (strRut.length() > 0) {
+            if (Utils.validarRut(strRut)) {
+                valida = true;
+            } else {
+                txtRut.getStyleClass().add("bad");
+                valida = false;
+            }
+        } else {
+            txtRut.getStyleClass().add("bad");
+            valida = false;
+        }
+        return valida;
+    }
+
+    @Override
+    public boolean validate() {
+        boolean valida = true;
+        valida = validaRut();
+        if (txtNombres.getText() == null || txtNombres.getText().equals("")) {
+            txtNombres.getStyleClass().add("bad");
+            valida = false;
+        }
+        if (txtNombres.getText() != null && txtNombres.getText().length() > ProfesoresView.LARGO_CAMPO_TEXT) {
+            txtNombres.getStyleClass().add("bad");
+            valida = false;
+        }
+
+        if (txtAPaterno.getText() == null || txtAPaterno.getText().equals("")) {
+            txtAPaterno.getStyleClass().add("bad");
+            valida = false;
+        }
+        if (txtAPaterno.getText() != null && txtAPaterno.getText().length() > ProfesoresView.LARGO_CAMPO_TEXT) {
+            txtAPaterno.getStyleClass().add("bad");
+            valida = false;
+        }
+        if (txtAMaterno.getText() == null || txtAMaterno.getText().equals("")) {
+            txtAMaterno.getStyleClass().add("bad");
+            valida = false;
+        }
+        if (txtAMaterno.getText() != null && txtAMaterno.getText().length() > ProfesoresView.LARGO_CAMPO_TEXT) {
+            txtAMaterno.getStyleClass().add("bad");
+            valida = false;
+        }
+        return valida;
+    }
 }

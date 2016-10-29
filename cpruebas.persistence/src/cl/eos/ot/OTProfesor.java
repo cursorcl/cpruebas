@@ -6,118 +6,118 @@ import javafx.beans.property.SimpleStringProperty;
 
 public class OTProfesor {
 
-	private SimpleLongProperty id  = new SimpleLongProperty();
-	private SimpleStringProperty rut = new SimpleStringProperty();
-	private SimpleStringProperty name = new SimpleStringProperty();
-	private SimpleStringProperty paterno = new SimpleStringProperty();
-	private SimpleStringProperty materno = new SimpleStringProperty();
-	
-	private Profesor profesor;
-	
-	public OTProfesor(Profesor profesor) {
-		this.profesor = profesor;
-		this.id.set(profesor.getId());
-		this.rut.set(profesor.getRut());
-		this.name.set(profesor.getName());
-		this.paterno.set(profesor.getPaterno());
-		this.materno.set(profesor.getMaterno());
-	}
-	
-	public OTProfesor() {
-		// TODO Auto-generated constructor stub
-	}
+    private final SimpleLongProperty id = new SimpleLongProperty();
+    private final SimpleStringProperty rut = new SimpleStringProperty();
+    private final SimpleStringProperty name = new SimpleStringProperty();
+    private final SimpleStringProperty paterno = new SimpleStringProperty();
+    private final SimpleStringProperty materno = new SimpleStringProperty();
 
-	public final SimpleLongProperty idProperty() {
-		return this.id;
-	}
+    private Profesor profesor;
 
-	public final long getId() {
-		return this.idProperty().get();
-	}
+    public OTProfesor() {
+        // TODO Auto-generated constructor stub
+    }
 
-	public final void setId(final long id) {
-		this.idProperty().set(id);
-	}
+    public OTProfesor(Profesor profesor) {
+        this.profesor = profesor;
+        id.set(profesor.getId());
+        rut.set(profesor.getRut());
+        name.set(profesor.getName());
+        paterno.set(profesor.getPaterno());
+        materno.set(profesor.getMaterno());
+    }
 
-	public final SimpleStringProperty rutProperty() {
-		return this.rut;
-	}
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        final OTProfesor other = (OTProfesor) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (id.get() != other.id.get())
+            return false;
+        return true;
+    }
 
-	public final java.lang.String getRut() {
-		return this.rutProperty().get();
-	}
+    public final long getId() {
+        return idProperty().get();
+    }
 
-	public final void setRut(final java.lang.String rut) {
-		this.rutProperty().set(rut);
-	}
+    public final java.lang.String getMaterno() {
+        return maternoProperty().get();
+    }
 
-	public final SimpleStringProperty nameProperty() {
-		return this.name;
-	}
+    public final java.lang.String getName() {
+        return nameProperty().get();
+    }
 
-	public final java.lang.String getName() {
-		return this.nameProperty().get();
-	}
+    public final java.lang.String getPaterno() {
+        return paternoProperty().get();
+    }
 
-	public final void setName(final java.lang.String name) {
-		this.nameProperty().set(name);
-	}
+    public Profesor getProfesor() {
+        return profesor;
+    }
 
-	public final SimpleStringProperty paternoProperty() {
-		return this.paterno;
-	}
+    public final java.lang.String getRut() {
+        return rutProperty().get();
+    }
 
-	public final java.lang.String getPaterno() {
-		return this.paternoProperty().get();
-	}
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + (id == null ? 0 : id.hashCode());
+        return result;
+    }
 
-	public final void setPaterno(final java.lang.String paterno) {
-		this.paternoProperty().set(paterno);
-	}
+    public final SimpleLongProperty idProperty() {
+        return id;
+    }
 
-	public final SimpleStringProperty maternoProperty() {
-		return this.materno;
-	}
+    public final SimpleStringProperty maternoProperty() {
+        return materno;
+    }
 
-	public final java.lang.String getMaterno() {
-		return this.maternoProperty().get();
-	}
+    public final SimpleStringProperty nameProperty() {
+        return name;
+    }
 
-	public final void setMaterno(final java.lang.String materno) {
-		this.maternoProperty().set(materno);
-	}
+    public final SimpleStringProperty paternoProperty() {
+        return paterno;
+    }
 
-	public Profesor getProfesor() {
-		return profesor;
-	}
+    public final SimpleStringProperty rutProperty() {
+        return rut;
+    }
 
-	public void setProfesor(Profesor profesor) {
-		this.profesor = profesor;
-	}
+    public final void setId(final long id) {
+        idProperty().set(id);
+    }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		return result;
-	}
+    public final void setMaterno(final java.lang.String materno) {
+        maternoProperty().set(materno);
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		OTProfesor other = (OTProfesor) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		}  else if (id.get() != other.id.get())
-			return false;
-		return true;
-	}
-	
+    public final void setName(final java.lang.String name) {
+        nameProperty().set(name);
+    }
+
+    public final void setPaterno(final java.lang.String paterno) {
+        paternoProperty().set(paterno);
+    }
+
+    public void setProfesor(Profesor profesor) {
+        this.profesor = profesor;
+    }
+
+    public final void setRut(final java.lang.String rut) {
+        rutProperty().set(rut);
+    }
+
 }

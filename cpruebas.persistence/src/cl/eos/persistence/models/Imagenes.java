@@ -19,73 +19,6 @@ import cl.eos.persistence.AEntity;
         @NamedQuery(name = "Imagenes.findByPrueba", query = "SELECT i FROM imagenes i where i.respuesta.prueba.id = :idPrueba") })
 public class Imagenes extends AEntity {
 
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String name;
-    private int numero;
-
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    private RespuestasEsperadasPrueba respuesta;
-
-    @javax.persistence.Transient
-    public boolean eliminada;
-
-    @Version
-    private int version;
-
-    @Override
-    public Long getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getNumero() {
-        return numero;
-    }
-
-    public void setNumero(int numero) {
-        this.numero = numero;
-    }
-
-    @Override
-    public boolean validate() {
-        return true;
-    }
-
-    @Override
-    public int getVersion() {
-        return version;
-    }
-
-    @Override
-    public void setVersion(int version) {
-        this.version = version;
-    }
-
-    public RespuestasEsperadasPrueba getRespuesta() {
-        return respuesta;
-    }
-
-    public void setRespuesta(RespuestasEsperadasPrueba respuesta) {
-        this.respuesta = respuesta;
-    }
-
     public static class Builder {
         private Long id;
         private String name;
@@ -93,6 +26,22 @@ public class Imagenes extends AEntity {
         private RespuestasEsperadasPrueba respuesta;
         private boolean eliminada;
         private int version;
+
+        public Imagenes build() {
+            final Imagenes imagenes = new Imagenes();
+            imagenes.id = id;
+            imagenes.name = name;
+            imagenes.numero = numero;
+            imagenes.respuesta = respuesta;
+            imagenes.eliminada = eliminada;
+            imagenes.version = version;
+            return imagenes;
+        }
+
+        public Builder eliminada(boolean eliminada) {
+            this.eliminada = eliminada;
+            return this;
+        }
 
         public Builder id(Long id) {
             this.id = id;
@@ -114,25 +63,77 @@ public class Imagenes extends AEntity {
             return this;
         }
 
-        public Builder eliminada(boolean eliminada) {
-            this.eliminada = eliminada;
-            return this;
-        }
-
         public Builder version(int version) {
             this.version = version;
             return this;
         }
+    }
 
-        public Imagenes build() {
-            Imagenes imagenes = new Imagenes();
-            imagenes.id = id;
-            imagenes.name = name;
-            imagenes.numero = numero;
-            imagenes.respuesta = respuesta;
-            imagenes.eliminada = eliminada;
-            imagenes.version = version;
-            return imagenes;
-        }
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name;
+
+    private int numero;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private RespuestasEsperadasPrueba respuesta;
+
+    @javax.persistence.Transient
+    public boolean eliminada;
+
+    @Version
+    private int version;
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    public int getNumero() {
+        return numero;
+    }
+
+    public RespuestasEsperadasPrueba getRespuesta() {
+        return respuesta;
+    }
+
+    @Override
+    public int getVersion() {
+        return version;
+    }
+
+    @Override
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    @Override
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setNumero(int numero) {
+        this.numero = numero;
+    }
+
+    public void setRespuesta(RespuestasEsperadasPrueba respuesta) {
+        this.respuesta = respuesta;
+    }
+
+    @Override
+    public void setVersion(int version) {
+        this.version = version;
+    }
+
+    @Override
+    public boolean validate() {
+        return true;
     }
 }

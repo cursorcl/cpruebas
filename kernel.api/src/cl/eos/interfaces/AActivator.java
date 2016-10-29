@@ -5,23 +5,23 @@ import cl.eos.interfaces.view.IView;
 
 public class AActivator implements IActivator {
 
-	protected IController controller;
-	protected IView view;
-	protected Object pane;
-	
-	@Override
-	public IController getController() {
-		return controller;
-	}
+    protected IController controller;
+    protected IView view;
+    protected Object pane;
 
-	@Override
-	public IView getView() {
-		return view;
-	}
+    @Override
+    public IController getController() {
+        return controller;
+    }
 
-	@Override
-	public Object getPane() {
-		return pane;
-	}
-	
+    @Override
+    public Object getPane() {
+        return pane;
+    }
+
+    @Override
+    public IView getView() {
+        return view;
+    }
+
 }

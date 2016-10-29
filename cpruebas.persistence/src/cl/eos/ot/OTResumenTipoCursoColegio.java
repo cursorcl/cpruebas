@@ -4,118 +4,26 @@ import cl.eos.persistence.models.Colegio;
 import cl.eos.persistence.models.TipoCurso;
 import cl.eos.util.Utils;
 
-
 public class OTResumenTipoCursoColegio {
-	private Colegio colegio;
-	private TipoCurso tipoCurso;
-	private String name;
-	private int totalAlumnos;
-	private int totalEvaluados;
-	private int totalAprobados;
-	private int totalReprobados;
-	private float alumnosEvaluados;
-	private float alumnosAprobados;
-	private float alumnosReprobados;
-	
-	public String getName() {
-		return name;
-	}
+    private Colegio colegio;
+    private TipoCurso tipoCurso;
+    private String name;
+    private int totalAlumnos;
+    private int totalEvaluados;
+    private int totalAprobados;
+    private int totalReprobados;
+    private float alumnosEvaluados;
+    private float alumnosAprobados;
+    private float alumnosReprobados;
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public Colegio getColegio() {
-		return colegio;
-	}
-
-	public void setColegio(Colegio colegio) {
-		this.colegio = colegio;
-	}
-
-	public TipoCurso getTipoCurso() {
-		return tipoCurso;
-	}
-
-	public void setTipoCurso(TipoCurso curso) {
-		this.tipoCurso = curso;
-	}
-
-	public int getTotalAlumnos() {
-		return totalAlumnos;
-	}
-
-	public void setTotalAlumnos(int totalAlumnos) {
-		this.totalAlumnos = totalAlumnos;
-	}
-
-	public int getTotalEvaluados() {
-		return totalEvaluados;
-	}
-
-	public void setTotalEvaluados(int totalEvaluados) {
-		this.totalEvaluados = totalEvaluados;
-	}
-
-	public int getTotalAprobados() {
-		return totalAprobados;
-	}
-
-	public void setTotalAprobados(int totalAprobados) {
-		this.totalAprobados = totalAprobados;
-	}
-
-	public int getTotalReprobados() {
-		return totalReprobados;
-	}
-
-	public void setTotalReprobados(int totalReprobados) {
-		this.totalReprobados = totalReprobados;
-	}
-
-	public float getAlumnosEvaluados() {
-		return alumnosEvaluados;
-	}
-
-	public void setAlumnosEvaluados(float alumnosEvaluados) {
-		this.alumnosEvaluados = alumnosEvaluados;
-	}
-
-	public float getAlumnosAprobados() {
-		return alumnosAprobados;
-	}
-
-	public void setAlumnosAprobados(float alumnosAprobados) {
-		this.alumnosAprobados = alumnosAprobados;
-	}
-
-	public float getAlumnosReprobados() {
-		return alumnosReprobados;
-	}
-
-	public void setAlumnosReprobados(float alumnosReprobados) {
-		this.alumnosReprobados = alumnosReprobados;
-	}
-	
-	
-	public void add(OTResumenTipoCursoColegio ot)
-	{
-	    totalAlumnos += ot.getTotalAlumnos();
-	    totalEvaluados += ot.getTotalEvaluados();
-	    totalAprobados += ot.getTotalAprobados();
-	    totalReprobados += ot.getTotalReprobados();
-	    alumnosEvaluados =  Utils.redondeo2Decimales(100f * ((float)totalEvaluados /  (float)totalAlumnos));
-	    alumnosAprobados = Utils.redondeo2Decimales(100f * ((float)totalAprobados / (float)totalEvaluados));
-	    alumnosReprobados = Utils.redondeo2Decimales(100f * ((float)totalReprobados / (float)totalEvaluados)); 
-	}
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((colegio == null) ? 0 : colegio.hashCode());
-        result = prime * result + ((tipoCurso == null) ? 0 : tipoCurso.hashCode());
-        return result;
+    public void add(OTResumenTipoCursoColegio ot) {
+        totalAlumnos += ot.getTotalAlumnos();
+        totalEvaluados += ot.getTotalEvaluados();
+        totalAprobados += ot.getTotalAprobados();
+        totalReprobados += ot.getTotalReprobados();
+        alumnosEvaluados = Utils.redondeo2Decimales(100f * ((float) totalEvaluados / (float) totalAlumnos));
+        alumnosAprobados = Utils.redondeo2Decimales(100f * ((float) totalAprobados / (float) totalEvaluados));
+        alumnosReprobados = Utils.redondeo2Decimales(100f * ((float) totalReprobados / (float) totalEvaluados));
     }
 
     @Override
@@ -126,7 +34,7 @@ public class OTResumenTipoCursoColegio {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        OTResumenTipoCursoColegio other = (OTResumenTipoCursoColegio) obj;
+        final OTResumenTipoCursoColegio other = (OTResumenTipoCursoColegio) obj;
         if (colegio == null) {
             if (other.colegio != null)
                 return false;
@@ -140,5 +48,93 @@ public class OTResumenTipoCursoColegio {
         return true;
     }
 
-	
+    public float getAlumnosAprobados() {
+        return alumnosAprobados;
+    }
+
+    public float getAlumnosEvaluados() {
+        return alumnosEvaluados;
+    }
+
+    public float getAlumnosReprobados() {
+        return alumnosReprobados;
+    }
+
+    public Colegio getColegio() {
+        return colegio;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public TipoCurso getTipoCurso() {
+        return tipoCurso;
+    }
+
+    public int getTotalAlumnos() {
+        return totalAlumnos;
+    }
+
+    public int getTotalAprobados() {
+        return totalAprobados;
+    }
+
+    public int getTotalEvaluados() {
+        return totalEvaluados;
+    }
+
+    public int getTotalReprobados() {
+        return totalReprobados;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + (colegio == null ? 0 : colegio.hashCode());
+        result = prime * result + (tipoCurso == null ? 0 : tipoCurso.hashCode());
+        return result;
+    }
+
+    public void setAlumnosAprobados(float alumnosAprobados) {
+        this.alumnosAprobados = alumnosAprobados;
+    }
+
+    public void setAlumnosEvaluados(float alumnosEvaluados) {
+        this.alumnosEvaluados = alumnosEvaluados;
+    }
+
+    public void setAlumnosReprobados(float alumnosReprobados) {
+        this.alumnosReprobados = alumnosReprobados;
+    }
+
+    public void setColegio(Colegio colegio) {
+        this.colegio = colegio;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setTipoCurso(TipoCurso curso) {
+        tipoCurso = curso;
+    }
+
+    public void setTotalAlumnos(int totalAlumnos) {
+        this.totalAlumnos = totalAlumnos;
+    }
+
+    public void setTotalAprobados(int totalAprobados) {
+        this.totalAprobados = totalAprobados;
+    }
+
+    public void setTotalEvaluados(int totalEvaluados) {
+        this.totalEvaluados = totalEvaluados;
+    }
+
+    public void setTotalReprobados(int totalReprobados) {
+        this.totalReprobados = totalReprobados;
+    }
+
 }

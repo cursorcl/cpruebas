@@ -5,13 +5,13 @@ import cl.eos.persistence.models.RangosLectura;
 
 public class Contoller extends AController {
 
-	public Contoller() {
-		
-	}
+    public Contoller() {
 
-	@Override
-	public void initialize() {
-		model = new Model();
-		model.findAll(RangosLectura.class, this);
-	}
+    }
+
+    @Override
+    public void initialize() {
+        model = new Model();
+        model.findAll(RangosLectura.class, this);
+    }
 }

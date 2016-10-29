@@ -29,7 +29,7 @@ import javafx.scene.layout.VBox;
 import jfxtras.labs.scene.control.BigDecimalField;
 
 public class DefinirPrueba extends AFormView {
-    
+
     @FXML
     VBox dataContainer;
     @FXML
@@ -119,16 +119,15 @@ public class DefinirPrueba extends AFormView {
     ImageView img5;
 
     ToggleGroup group;
-    
+
     Prueba prueba;
 
     public DefinirPrueba() {
-        this.prueba = null;
+        prueba = null;
     }
-    
-    public DefinirPrueba(Prueba prueba)
-    {
-        this.prueba =  prueba;
+
+    public DefinirPrueba(Prueba prueba) {
+        this.prueba = prueba;
     }
 
     @FXML

@@ -5,68 +5,68 @@ import cl.eos.util.Utils;
 
 public class OTPreguntasEjes {
 
-	private EjeTematico ejeTematico;
-	private Integer buenas = 0;
-	private Integer total = 0;
-	
-	public OTPreguntasEjes() {
-        
+    private EjeTematico ejeTematico;
+    private Integer buenas = 0;
+    private Integer total = 0;
+
+    public OTPreguntasEjes() {
+
     }
-	public OTPreguntasEjes(EjeTematico ejeTematico) {
-	    this.ejeTematico = ejeTematico;
-	}
-	
-	public EjeTematico getEjeTematico() {
-		return ejeTematico;
-	}
 
-	public void setEjeTematico(EjeTematico ejeTematico) {
-		this.ejeTematico = ejeTematico;
-	}
+    public OTPreguntasEjes(EjeTematico ejeTematico) {
+        this.ejeTematico = ejeTematico;
+    }
 
-	public Integer getBuenas() {
-		return buenas;
-	}
+    public Integer getBuenas() {
+        return buenas;
+    }
 
-	public void setBuenas(Integer buenas) {
-		this.buenas = buenas;
-	}
+    public String getDescripcion() {
+        return "Respuestas correctas: " + buenas.toString() + " de " + total.toString();
+    }
 
-	public Integer getTotal() {
-		return total;
-	}
+    public EjeTematico getEjeTematico() {
+        return ejeTematico;
+    }
 
-	public void setTotal(Integer total) {
-		this.total = total;
-	}
-	
-	public String getName(){
-		return ejeTematico.getName();
-	}
-	
-	public String getDescripcion(){
-		return "Respuestas correctas: " + buenas.toString() +" de " + total.toString();
-	}
+    public Float getLogrado() {
+        return (float) buenas / (float) total * 100f;
+    }
 
-	public Float getLogrado(){
-		return ((float )buenas/(float )total)*100f;
-	}
-	
-	public Float getNologrado(){
-		Float valor = (float) total-(float) buenas;
-		return (float) ((valor/(float )total)*100f);
-	}
-	
-	public Float getSlogrado(){
-		float valor = ((float )buenas/(float )total)*100f;
-		return Utils.redondeo2Decimales(valor);
-	}
-	
-	public Float getSnlogrado(){
-		Float valor = (float) total-(float) buenas;
-		float pvalor =  (float) ((valor/(float )total)*100f);
-		return  Utils.redondeo2Decimales(pvalor);
-	}
-	
-	
+    public String getName() {
+        return ejeTematico.getName();
+    }
+
+    public Float getNologrado() {
+        final Float valor = (float) total - (float) buenas;
+        return (float) (valor / (float) total * 100f);
+    }
+
+    public Float getSlogrado() {
+        final float valor = (float) buenas / (float) total * 100f;
+        return Utils.redondeo2Decimales(valor);
+    }
+
+    public Float getSnlogrado() {
+        final Float valor = (float) total - (float) buenas;
+        final float pvalor = valor / (float) total * 100f;
+        return Utils.redondeo2Decimales(pvalor);
+    }
+
+    public Integer getTotal() {
+        return total;
+    }
+
+    public void setBuenas(Integer buenas) {
+        this.buenas = buenas;
+    }
+
+    public void setEjeTematico(EjeTematico ejeTematico) {
+        this.ejeTematico = ejeTematico;
+    }
+
+    public void setTotal(Integer total) {
+        this.total = total;
+    }
+
 }

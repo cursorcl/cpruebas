@@ -13,7 +13,7 @@ import cl.eos.persistence.models.Habilidad;
  * el número de preguntas en una prueba junto a la cantidad de alumnos que
  * rindieron la prueba y las buenas por alumno para dicho {@link EjeTematico} o
  * {@link Habilidad}.
- * 
+ *
  * @author curso
  */
 public class OTUnCursoUnEjeHabilidad {
@@ -32,46 +32,25 @@ public class OTUnCursoUnEjeHabilidad {
         Arrays.fill(buenasPorAlumno, 0);
     }
 
-    public IEntity getEjeHabilidad() {
-        return ejeHabilidad;
-    }
-
-    public void setEjeHabilidad(IEntity ejeHabilidad) {
-        this.ejeHabilidad = ejeHabilidad;
-    }
-
-    public float getNroPreguntas() {
-        return nroPreguntas;
-    }
-
-    public void setNroPreguntas(float nroPreguntas) {
-        this.nroPreguntas = nroPreguntas;
-    }
-
-    public int getNroAlumnos() {
-        return nroAlumnos;
-    }
-
-    public void setNroAlumnos(int nroAlumnos) {
-        this.nroAlumnos = nroAlumnos;
-        buenasPorAlumno = new float[this.nroAlumnos];
-        Arrays.fill(buenasPorAlumno, 0);
-    }
-
-    public float[] getBuenasPorAlumno() {
-        return buenasPorAlumno;
-    }
-
-    public void setBuenasPorAlumno(float[] buenasPorAlumno) {
-        this.buenasPorAlumno = buenasPorAlumno;
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((ejeHabilidad == null) ? 0 : ejeHabilidad.hashCode());
-        return result;
+    /**
+     * Realiza el calculo de cuantos alumnos hay por rango en un curso.
+     *
+     * @param evalEjeHab
+     *            Los porcentajes de rangos para poder realizar el analisis
+     */
+    public int[] calculateAlumnosXRango(List<EvaluacionEjeTematico> evalEjeHab) {
+        alumnosPorRango = new int[evalEjeHab.size()];
+        Arrays.fill(alumnosPorRango, 0);
+        for (int n = 0; n < nroAlumnos; n++) {
+            final float porcentaje = 100f * buenasPorAlumno[n] / nroPreguntas;
+            for (int idx = 0; idx < evalEjeHab.size(); idx++) {
+                final EvaluacionEjeTematico eval = evalEjeHab.get(idx);
+                if (eval.isInside(porcentaje)) {
+                    alumnosPorRango[idx] = alumnosPorRango[idx] + 1;
+                }
+            }
+        }
+        return alumnosPorRango;
     }
 
     @Override
@@ -82,7 +61,7 @@ public class OTUnCursoUnEjeHabilidad {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        OTUnCursoUnEjeHabilidad other = (OTUnCursoUnEjeHabilidad) obj;
+        final OTUnCursoUnEjeHabilidad other = (OTUnCursoUnEjeHabilidad) obj;
         if (ejeHabilidad == null) {
             if (other.ejeHabilidad != null)
                 return false;
@@ -91,25 +70,46 @@ public class OTUnCursoUnEjeHabilidad {
         return true;
     }
 
-    /**
-     * Realiza el calculo de cuantos alumnos hay por rango en un curso.
-     * 
-     * @param evalEjeHab
-     *            Los porcentajes de rangos para poder realizar el analisis
-     */
-    public int[] calculateAlumnosXRango(List<EvaluacionEjeTematico> evalEjeHab) {
-        alumnosPorRango = new int[evalEjeHab.size()];
-        Arrays.fill(alumnosPorRango, 0);
-        for (int n = 0; n < nroAlumnos; n++) {
-            float porcentaje = 100f * buenasPorAlumno[n] / nroPreguntas;
-            for (int idx = 0; idx < evalEjeHab.size(); idx++) {
-                EvaluacionEjeTematico eval = evalEjeHab.get(idx);
-                if (eval.isInside(porcentaje)) {
-                    alumnosPorRango[idx] = alumnosPorRango[idx] + 1;
-                }
-            }
-        }
-        return alumnosPorRango;
+    public float[] getBuenasPorAlumno() {
+        return buenasPorAlumno;
+    }
+
+    public IEntity getEjeHabilidad() {
+        return ejeHabilidad;
+    }
+
+    public int getNroAlumnos() {
+        return nroAlumnos;
+    }
+
+    public float getNroPreguntas() {
+        return nroPreguntas;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + (ejeHabilidad == null ? 0 : ejeHabilidad.hashCode());
+        return result;
+    }
+
+    public void setBuenasPorAlumno(float[] buenasPorAlumno) {
+        this.buenasPorAlumno = buenasPorAlumno;
+    }
+
+    public void setEjeHabilidad(IEntity ejeHabilidad) {
+        this.ejeHabilidad = ejeHabilidad;
+    }
+
+    public void setNroAlumnos(int nroAlumnos) {
+        this.nroAlumnos = nroAlumnos;
+        buenasPorAlumno = new float[this.nroAlumnos];
+        Arrays.fill(buenasPorAlumno, 0);
+    }
+
+    public void setNroPreguntas(float nroPreguntas) {
+        this.nroPreguntas = nroPreguntas;
     }
 
 }

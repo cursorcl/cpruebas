@@ -1,57 +1,55 @@
 package cl.eos.view;
 
+import cl.eos.persistence.models.PruebaRendida;
 import javafx.geometry.Pos;
 import javafx.scene.control.TableCell;
-import cl.eos.persistence.models.PruebaRendida;
 
 public class LetraRespuesta extends TableCell<PruebaRendida, String> {
 
-	private String responses;
+    private String responses;
 
-	public LetraRespuesta() {
-		setAlignment(Pos.CENTER);
-	}
+    public LetraRespuesta() {
+        setAlignment(Pos.CENTER);
+    }
 
-	@Override
-	protected void updateItem(String respuesta, boolean empty) {
-		super.updateItem(respuesta, empty);
-		if (respuesta == null) {
-			setText(null);
-		} else {
-			int index = getTableView().getColumns().indexOf(getTableColumn()) - 4;
-			if (index < respuesta.length()) {
-				String caracter = respuesta.toUpperCase().substring(index, index + 1);
-				char[] ccar = caracter.toCharArray();
-				String cResp = comparaRespuestas(ccar, index);
-				setText(cResp);
-			}
-			else
-			{
-				setText("O");
-			}
-		}
-	}
+    private String comparaRespuestas(char[] ccar, int index) {
+        String cResultado = null;
+        final char[] cResponses = responses.toUpperCase().toCharArray();
 
-	public String getResponses() {
-		return responses;
-	}
+        if (ccar[0] == 'O') {
+            cResultado = "O";
+        } else if (ccar[0] == cResponses[index] || ccar[0] == '+') {
+            cResultado = "B";
+        } else if (ccar[0] != cResponses[index] || ccar[0] == '-') {
+            cResultado = "M";
+        }
+        return cResultado;
+    }
 
-	public void setResponses(String responses) {
-		this.responses = responses;
-	}
+    public String getResponses() {
+        return responses;
+    }
 
-	private String comparaRespuestas(char[] ccar, int index) {
-		String cResultado = null;
-		char[] cResponses = responses.toUpperCase().toCharArray();
-		
-		if (ccar[0] == 'O') {
-			cResultado = "O";
-		} else if (ccar[0] == (cResponses[index]) || ccar[0] == '+') {
-			cResultado = "B";
-		} else if (ccar[0] != (cResponses[index]) || ccar[0] == '-') {
-			cResultado = "M";
-		}
-		return cResultado;
-	}
+    public void setResponses(String responses) {
+        this.responses = responses;
+    }
+
+    @Override
+    protected void updateItem(String respuesta, boolean empty) {
+        super.updateItem(respuesta, empty);
+        if (respuesta == null) {
+            setText(null);
+        } else {
+            final int index = getTableView().getColumns().indexOf(getTableColumn()) - 4;
+            if (index < respuesta.length()) {
+                final String caracter = respuesta.toUpperCase().substring(index, index + 1);
+                final char[] ccar = caracter.toCharArray();
+                final String cResp = comparaRespuestas(ccar, index);
+                setText(cResp);
+            } else {
+                setText("O");
+            }
+        }
+    }
 
 }

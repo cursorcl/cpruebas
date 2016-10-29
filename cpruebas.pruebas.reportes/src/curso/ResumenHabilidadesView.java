@@ -18,7 +18,6 @@ import cl.eos.persistence.models.TipoAlumno;
 import cl.eos.util.ExcelSheetWriterObj;
 import cl.eos.util.Pair;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -42,233 +41,221 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 public class ResumenHabilidadesView extends AFormView implements EventHandler<ActionEvent> {
 
-	@FXML
-	private TableView<OTPreguntasHabilidad> tblHabilidades;
-	@FXML
-	private TableColumn<OTPreguntasHabilidad, String> colNombre;
-	@FXML
-	private TableColumn<OTPreguntasHabilidad, String> colDescripcion;
-	@FXML
-	private TableColumn<OTPreguntasHabilidad, String> colLogrado;
-	@FXML
-	private TableColumn<OTPreguntasHabilidad, String> colNoLogrado;
+    @FXML
+    private TableView<OTPreguntasHabilidad> tblHabilidades;
+    @FXML
+    private TableColumn<OTPreguntasHabilidad, String> colNombre;
+    @FXML
+    private TableColumn<OTPreguntasHabilidad, String> colDescripcion;
+    @FXML
+    private TableColumn<OTPreguntasHabilidad, String> colLogrado;
+    @FXML
+    private TableColumn<OTPreguntasHabilidad, String> colNoLogrado;
 
-	@FXML
-	private TextField txtPrueba;
-	@FXML
-	private TextField txtCurso;
-	@FXML
-	private TextField txtAsignatura;
-	@FXML
-	private TextField txtHabilidad;
+    @FXML
+    private TextField txtPrueba;
+    @FXML
+    private TextField txtCurso;
+    @FXML
+    private TextField txtAsignatura;
+    @FXML
+    private TextField txtHabilidad;
 
-	final NumberAxis xAxis = new NumberAxis();
-	final CategoryAxis yAxis = new CategoryAxis();
-	@FXML
-	private BarChart<String, Number> graficoBarra = new BarChart<String, Number>(yAxis, xAxis);
+    final NumberAxis xAxis = new NumberAxis();
+    final CategoryAxis yAxis = new CategoryAxis();
+    @FXML
+    private final BarChart<String, Number> graficoBarra = new BarChart<String, Number>(yAxis, xAxis);
 
-	private HashMap<Habilidad, OTPreguntasHabilidad> mapaHabilidades;
-	@FXML
-	private MenuItem mnuExportarHabilidad;
+    private HashMap<Habilidad, OTPreguntasHabilidad> mapaHabilidades;
+    @FXML
+    private MenuItem mnuExportarHabilidad;
 
-	@FXML
-	private ComboBox<TipoAlumno> cmbTipoAlumno;
-	@FXML
-	private Button btnGenerar;
-	long tipoAlumno = Constants.PIE_ALL;
-	
-	private EvaluacionPrueba evaluacionPrueba;
+    @FXML
+    private ComboBox<TipoAlumno> cmbTipoAlumno;
+    @FXML
+    private Button btnGenerar;
+    long tipoAlumno = Constants.PIE_ALL;
 
-	public ResumenHabilidadesView() {
+    private EvaluacionPrueba evaluacionPrueba;
 
-	}
+    public ResumenHabilidadesView() {
 
-	@FXML
-	public void initialize() {
-		inicializarTablaHabilidades();
-		accionClicTabla();
-		this.setTitle("Resumen Respuestas por Habilidades");
-		graficoBarra.setTitle("Gráfico Respuestas por habilidad");
-		xAxis.setLabel("Country");
-		yAxis.setLabel("Value");
-		mnuExportarHabilidad.setOnAction(this);
-		btnGenerar.setOnAction(this);
-		cmbTipoAlumno.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				tipoAlumno = cmbTipoAlumno.getSelectionModel().getSelectedIndex();
-			}
-		});
-	}
+    }
 
-	private void inicializarTablaHabilidades() {
-		tblHabilidades.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-		colNombre.setCellValueFactory(new PropertyValueFactory<OTPreguntasHabilidad, String>("name"));
-		colDescripcion.setCellValueFactory(new PropertyValueFactory<OTPreguntasHabilidad, String>("descripcion"));
-		colLogrado.setCellValueFactory(new PropertyValueFactory<OTPreguntasHabilidad, String>("slogrado"));
-		colNoLogrado.setCellValueFactory(new PropertyValueFactory<OTPreguntasHabilidad, String>("snlogrado"));
-	}
+    private void accionClicTabla() {
+        tblHabilidades.getSelectionModel().selectedItemProperty()
+                .addListener((ChangeListener<OTPreguntasHabilidad>) (observable, oldValue, newValue) -> {
+                    final ObservableList<OTPreguntasHabilidad> itemsSelec = tblHabilidades.getSelectionModel()
+                            .getSelectedItems();
 
-	private void accionClicTabla() {
-		tblHabilidades.getSelectionModel().selectedItemProperty()
-				.addListener(new ChangeListener<OTPreguntasHabilidad>() {
+                    if (itemsSelec.size() == 1) {
+                        final OTPreguntasHabilidad habilidad = itemsSelec.get(0);
+                        txtHabilidad.setText(habilidad.getName());
 
-					@Override
-					public void changed(ObservableValue<? extends OTPreguntasHabilidad> observable,
-							OTPreguntasHabilidad oldValue, OTPreguntasHabilidad newValue) {
-						ObservableList<OTPreguntasHabilidad> itemsSelec = tblHabilidades.getSelectionModel()
-								.getSelectedItems();
+                        final Float porcentajeLogrado = habilidad.getLogrado();
+                        final Float porcentajeNologrado = habilidad.getNologrado();
 
-						if (itemsSelec.size() == 1) {
-							OTPreguntasHabilidad habilidad = itemsSelec.get(0);
-							txtHabilidad.setText(habilidad.getName());
+                        final XYChart.Series series1 = new XYChart.Series();
+                        series1.setName("%");
+                        series1.getData().add(new XYChart.Data<String, Float>("Logrado", porcentajeLogrado));
+                        series1.getData().add(new XYChart.Data<String, Float>("No Logrado", porcentajeNologrado));
+                        graficoBarra.getData().clear();
+                        graficoBarra.getData().add(series1);
 
-							Float porcentajeLogrado = habilidad.getLogrado();
-							Float porcentajeNologrado = habilidad.getNologrado();
+                        for (final Series<String, Number> s : graficoBarra.getData()) {
+                            for (final Data<String, Number> d : s.getData()) {
+                                Tooltip.install(d.getNode(), new Tooltip(String.format("%s = %2.1f",
+                                        d.getXValue().toString(), d.getYValue().doubleValue())));
+                            }
+                        }
+                    }
+                });
+    }
 
-							XYChart.Series series1 = new XYChart.Series();
-							series1.setName("%");
-							series1.getData().add(new XYChart.Data<String, Float>("Logrado", porcentajeLogrado));
-							series1.getData().add(new XYChart.Data<String, Float>("No Logrado", porcentajeNologrado));
-							graficoBarra.getData().clear();
-							graficoBarra.getData().add(series1);
+    private void generateReport() {
+        if (evaluacionPrueba != null && cmbTipoAlumno.getItems() != null && !cmbTipoAlumno.getItems().isEmpty()) {
+            txtAsignatura.setText(evaluacionPrueba.getAsignatura());
+            txtCurso.setText(evaluacionPrueba.getCurso().getName());
+            txtPrueba.setText(evaluacionPrueba.getPrueba().getName());
+            obtenerResultados(evaluacionPrueba);
 
-							for (Series<String, Number> s : graficoBarra.getData()) {
-								for (Data<String, Number> d : s.getData()) {
-									Tooltip.install(d.getNode(), new Tooltip(String.format("%s = %2.1f",
-											d.getXValue().toString(), d.getYValue().doubleValue())));
-								}
-							}
-						}
-					}
-				});
-	}
+            if (mapaHabilidades != null && !mapaHabilidades.isEmpty()) {
 
-	@Override
-	public void onFound(IEntity entity) {
-		if (entity instanceof EvaluacionPrueba) {
-			evaluacionPrueba = (EvaluacionPrueba) entity;
-			generateReport();
-		}
-	}
+                final ArrayList<OTPreguntasHabilidad> listado = new ArrayList<>(mapaHabilidades.values());
+                final ObservableList<OTPreguntasHabilidad> oList = FXCollections.observableList(listado);
+                tblHabilidades.setItems(oList);
+            }
+        }
 
-	private void generateReport() {
-		if (evaluacionPrueba != null && cmbTipoAlumno.getItems() != null && !cmbTipoAlumno.getItems().isEmpty()) {
-			txtAsignatura.setText(evaluacionPrueba.getAsignatura());
-			txtCurso.setText(evaluacionPrueba.getCurso().getName());
-			txtPrueba.setText(evaluacionPrueba.getPrueba().getName());
-			obtenerResultados(evaluacionPrueba);
+    }
 
-			if (mapaHabilidades != null && !mapaHabilidades.isEmpty()) {
+    @Override
+    public void handle(ActionEvent event) {
+        final Object source = event.getSource();
+        if (source == mnuExportarHabilidad) {
 
-				ArrayList<OTPreguntasHabilidad> listado = new ArrayList<>(mapaHabilidades.values());
-				ObservableList<OTPreguntasHabilidad> oList = FXCollections.observableList(listado);
-				tblHabilidades.setItems(oList);
-			}
-		}
+            tblHabilidades.setId("Habilidades");
 
-	}
+            final List<TableView<? extends Object>> listaTablas = new LinkedList<>();
+            listaTablas.add(tblHabilidades);
 
-	@Override
-	public void onDataArrived(List<Object> list) {
-		if (list != null && !list.isEmpty()) {
-			Object entity = list.get(0);
-			if (entity instanceof TipoAlumno) {
-				ObservableList<TipoAlumno> tAlumnoList = FXCollections.observableArrayList();
-				for (Object iEntity : list) {
-					tAlumnoList.add((TipoAlumno) iEntity);
-				}
-				cmbTipoAlumno.setItems(tAlumnoList);
-				cmbTipoAlumno.getSelectionModel().select((int) Constants.PIE_ALL);
-				generateReport();
-			}
-		}
-	}
+            ExcelSheetWriterObj.convertirDatosALibroDeExcel(listaTablas);
+        } else if (source == btnGenerar) {
+            generateReport();
+        }
+    }
 
-	private void obtenerResultados(EvaluacionPrueba entity) {
-		List<PruebaRendida> pruebasRendidas = entity.getPruebasRendidas();
+    private void inicializarTablaHabilidades() {
+        tblHabilidades.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        colNombre.setCellValueFactory(new PropertyValueFactory<OTPreguntasHabilidad, String>("name"));
+        colDescripcion.setCellValueFactory(new PropertyValueFactory<OTPreguntasHabilidad, String>("descripcion"));
+        colLogrado.setCellValueFactory(new PropertyValueFactory<OTPreguntasHabilidad, String>("slogrado"));
+        colNoLogrado.setCellValueFactory(new PropertyValueFactory<OTPreguntasHabilidad, String>("snlogrado"));
+    }
 
-		mapaHabilidades = new HashMap<Habilidad, OTPreguntasHabilidad>();
+    @FXML
+    public void initialize() {
+        inicializarTablaHabilidades();
+        accionClicTabla();
+        setTitle("Resumen Respuestas por Habilidades");
+        graficoBarra.setTitle("Gráfico Respuestas por habilidad");
+        xAxis.setLabel("Country");
+        yAxis.setLabel("Value");
+        mnuExportarHabilidad.setOnAction(this);
+        btnGenerar.setOnAction(this);
+        cmbTipoAlumno.setOnAction(event -> tipoAlumno = cmbTipoAlumno.getSelectionModel().getSelectedIndex());
+    }
 
-		Prueba prueba = entity.getPrueba();
-		List<RespuestasEsperadasPrueba> respuestasEsperadas = prueba.getRespuestas();
+    /**
+     * Este metodo evalua la cantidad de buenas de un String de respuesta
+     * contrastado contra las respuestas esperadas.
+     * 
+     * @param respuestas
+     *            Las respuestas del alumno.
+     * @param respEsperadas
+     *            Las respuestas correctas definidas en la prueba.
+     * @param ahb
+     *            La Habilidad en base al que se realiza el calculo.
+     * @return Par <Preguntas buenas, Total de Preguntas> del eje.
+     */
+    private Pair<Integer, Integer> obtenerBuenasTotales(String respuestas,
+            List<RespuestasEsperadasPrueba> respEsperadas, Habilidad hab) {
+        int nroBuenas = 0;
+        int nroPreguntas = 0;
+        for (int n = 0; n < respEsperadas.size(); n++) {
+            final RespuestasEsperadasPrueba resp = respEsperadas.get(n);
+            if (!resp.isAnulada()) {
+                if (resp.getHabilidad().equals(hab)) {
+                    if (respuestas.length() > n) {
+                        final String sResp = respuestas.substring(n, n + 1);
+                        if ("+".equals(sResp) || resp.getRespuesta().equalsIgnoreCase(sResp)) {
+                            nroBuenas++;
+                        }
+                    }
+                    nroPreguntas++;
+                }
+            }
+        }
+        return new Pair<Integer, Integer>(nroBuenas, nroPreguntas);
+    }
 
-		for (RespuestasEsperadasPrueba resp : respuestasEsperadas) {
-			if(mapaHabilidades.containsKey(resp.getHabilidad()))
-				continue;
-			OTPreguntasHabilidad otPreguntas = new OTPreguntasHabilidad();
-			otPreguntas.setHabilidad(resp.getHabilidad());
-			otPreguntas.setBuenas(0);
-			otPreguntas.setTotal(0);
-			mapaHabilidades.put(resp.getHabilidad(), otPreguntas);
-		}
-		
-		
+    private void obtenerResultados(EvaluacionPrueba entity) {
+        final List<PruebaRendida> pruebasRendidas = entity.getPruebasRendidas();
 
-		for (PruebaRendida pruebaRendida : pruebasRendidas) {
-			if (tipoAlumno != Constants.PIE_ALL
-					&& !pruebaRendida.getAlumno().getTipoAlumno().getId().equals(tipoAlumno)) {
-				continue;
-			}
-			String respuesta = pruebaRendida.getRespuestas();
+        mapaHabilidades = new HashMap<Habilidad, OTPreguntasHabilidad>();
 
-			for (Habilidad hab : mapaHabilidades.keySet()) {
-				OTPreguntasHabilidad otPreguntas = mapaHabilidades.get(hab);
-				Pair<Integer, Integer> result = obtenerBuenasTotales(respuesta, respuestasEsperadas, hab);
-				otPreguntas.setHabilidad(hab);
-				otPreguntas.setBuenas(otPreguntas.getBuenas() + result.getFirst());
-				otPreguntas.setTotal(otPreguntas.getTotal() + result.getSecond());
+        final Prueba prueba = entity.getPrueba();
+        final List<RespuestasEsperadasPrueba> respuestasEsperadas = prueba.getRespuestas();
 
-			}
-		}
-	}
+        for (final RespuestasEsperadasPrueba resp : respuestasEsperadas) {
+            if (mapaHabilidades.containsKey(resp.getHabilidad()))
+                continue;
+            final OTPreguntasHabilidad otPreguntas = new OTPreguntasHabilidad();
+            otPreguntas.setHabilidad(resp.getHabilidad());
+            otPreguntas.setBuenas(0);
+            otPreguntas.setTotal(0);
+            mapaHabilidades.put(resp.getHabilidad(), otPreguntas);
+        }
 
-	/**
-	 * Este metodo evalua la cantidad de buenas de un String de respuesta
-	 * contrastado contra las respuestas esperadas.
-	 * 
-	 * @param respuestas
-	 *            Las respuestas del alumno.
-	 * @param respEsperadas
-	 *            Las respuestas correctas definidas en la prueba.
-	 * @param ahb
-	 *            La Habilidad en base al que se realiza el calculo.
-	 * @return Par <Preguntas buenas, Total de Preguntas> del eje.
-	 */
-	private Pair<Integer, Integer> obtenerBuenasTotales(String respuestas,
-			List<RespuestasEsperadasPrueba> respEsperadas, Habilidad hab) {
-		int nroBuenas = 0;
-		int nroPreguntas = 0;
-		for (int n = 0; n < respEsperadas.size(); n++) {
-			RespuestasEsperadasPrueba resp = respEsperadas.get(n);
-			if (!resp.isAnulada()) {
-				if (resp.getHabilidad().equals(hab)) {
-					if (respuestas.length() > n) {
-						String sResp = respuestas.substring(n, n + 1);
-						if ("+".equals(sResp) || resp.getRespuesta().equalsIgnoreCase(sResp)) {
-							nroBuenas++;
-						}
-					}
-					nroPreguntas++;
-				}
-			}
-		}
-		return new Pair<Integer, Integer>(nroBuenas, nroPreguntas);
-	}
+        for (final PruebaRendida pruebaRendida : pruebasRendidas) {
+            if (tipoAlumno != Constants.PIE_ALL
+                    && !pruebaRendida.getAlumno().getTipoAlumno().getId().equals(tipoAlumno)) {
+                continue;
+            }
+            final String respuesta = pruebaRendida.getRespuestas();
 
-	@Override
-	public void handle(ActionEvent event) {
-		Object source = event.getSource();
-		if (source == mnuExportarHabilidad) {
+            for (final Habilidad hab : mapaHabilidades.keySet()) {
+                final OTPreguntasHabilidad otPreguntas = mapaHabilidades.get(hab);
+                final Pair<Integer, Integer> result = obtenerBuenasTotales(respuesta, respuestasEsperadas, hab);
+                otPreguntas.setHabilidad(hab);
+                otPreguntas.setBuenas(otPreguntas.getBuenas() + result.getFirst());
+                otPreguntas.setTotal(otPreguntas.getTotal() + result.getSecond());
 
-			tblHabilidades.setId("Habilidades");
+            }
+        }
+    }
 
-			List<TableView<? extends Object>> listaTablas = new LinkedList<>();
-			listaTablas.add((TableView<? extends Object>) tblHabilidades);
+    @Override
+    public void onDataArrived(List<Object> list) {
+        if (list != null && !list.isEmpty()) {
+            final Object entity = list.get(0);
+            if (entity instanceof TipoAlumno) {
+                final ObservableList<TipoAlumno> tAlumnoList = FXCollections.observableArrayList();
+                for (final Object iEntity : list) {
+                    tAlumnoList.add((TipoAlumno) iEntity);
+                }
+                cmbTipoAlumno.setItems(tAlumnoList);
+                cmbTipoAlumno.getSelectionModel().select((int) Constants.PIE_ALL);
+                generateReport();
+            }
+        }
+    }
 
-			ExcelSheetWriterObj.convertirDatosALibroDeExcel(listaTablas);
-		} else if (source == btnGenerar) {
-			generateReport();
-		}
-	}
+    @Override
+    public void onFound(IEntity entity) {
+        if (entity instanceof EvaluacionPrueba) {
+            evaluacionPrueba = (EvaluacionPrueba) entity;
+            generateReport();
+        }
+    }
 }

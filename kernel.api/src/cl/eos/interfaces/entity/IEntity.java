@@ -2,20 +2,19 @@ package cl.eos.interfaces.entity;
 
 import java.io.Serializable;
 
+public interface IEntity extends Serializable {
 
-public interface IEntity extends Serializable{
+    Long getId();
 
-	Long getId();
+    String getName();
 
-	void setId(Long id);
+    int getVersion();
 
-	String getName();
+    void setId(Long id);
 
-	void setName(String name);
+    void setName(String name);
 
-	boolean validate();
-	
-	
-	int getVersion();
-	void setVersion(int version);
+    void setVersion(int version);
+
+    boolean validate();
 }

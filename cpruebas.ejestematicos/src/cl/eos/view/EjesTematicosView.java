@@ -25,262 +25,242 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
 
-public class EjesTematicosView extends AFormView implements
-		EventHandler<ActionEvent> {
+public class EjesTematicosView extends AFormView implements EventHandler<ActionEvent> {
 
-	@FXML
-	private MenuItem mnuAgregar;
+    @FXML
+    private MenuItem mnuAgregar;
 
-	@FXML
-	private MenuItem mnuGrabar;
+    @FXML
+    private MenuItem mnuGrabar;
 
-	@FXML
-	private MenuItem mnuEliminar;
+    @FXML
+    private MenuItem mnuEliminar;
 
-	@FXML
-	private MenuItem mnuModificar;
+    @FXML
+    private MenuItem mnuModificar;
 
-	@FXML
-	private MenuItem menuEliminar;
+    @FXML
+    private MenuItem menuEliminar;
 
-	@FXML
-	private MenuItem menuModificar;
+    @FXML
+    private MenuItem menuModificar;
 
-	@FXML
-	private MenuItem menuExportar;
+    @FXML
+    private MenuItem menuExportar;
 
-	@FXML
-	private MenuItem mnuExportar;
+    @FXML
+    private MenuItem mnuExportar;
 
-	@FXML
-	private TextField txtNombre;
+    @FXML
+    private TextField txtNombre;
 
-	@FXML
-	private ComboBox<TipoPrueba> cmbTipoPrueba;
+    @FXML
+    private ComboBox<TipoPrueba> cmbTipoPrueba;
 
-	@FXML
-	private ComboBox<Asignatura> cmbAsignatura;
-	@FXML
-	private Label lblError;
+    @FXML
+    private ComboBox<Asignatura> cmbAsignatura;
+    @FXML
+    private Label lblError;
 
-	@FXML
-	private TableView<OTEjeTematico> tblEjesTematicos;
+    @FXML
+    private TableView<OTEjeTematico> tblEjesTematicos;
 
-	@FXML
-	private TableColumn<OTEjeTematico, Float> colId;
-	@FXML
-	private TableColumn<OTEjeTematico, String> colNombre;
+    @FXML
+    private TableColumn<OTEjeTematico, Float> colId;
+    @FXML
+    private TableColumn<OTEjeTematico, String> colNombre;
 
-	@FXML
-	private TableColumn<OTEjeTematico, String> colTipoPrueba;
+    @FXML
+    private TableColumn<OTEjeTematico, String> colTipoPrueba;
 
-	@FXML
-	private TableColumn<OTEjeTematico, String> colEnsayo;
+    @FXML
+    private TableColumn<OTEjeTematico, String> colEnsayo;
 
-	public EjesTematicosView() {
-		setTitle("Ejes Temáticos");
-	}
+    public EjesTematicosView() {
+        setTitle("Ejes Temáticos");
+    }
 
-	@FXML
-	public void initialize() {
-		inicializaTabla();
-		accionClicTabla();
+    private void accionClicTabla() {
+        tblEjesTematicos.setOnMouseClicked(event -> {
+            final ObservableList<OTEjeTematico> itemsSelec = tblEjesTematicos.getSelectionModel().getSelectedItems();
 
-		mnuAgregar.setOnAction(this);
-		mnuGrabar.setOnAction(this);
-		mnuModificar.setOnAction(this);
-		mnuEliminar.setOnAction(this);
-		menuModificar.setOnAction(this);
-		menuEliminar.setOnAction(this);
-		menuExportar.setOnAction(this);
-		mnuExportar.setOnAction(this);
+            if (itemsSelec.size() > 1) {
+                mnuModificar.setDisable(true);
+                mnuEliminar.setDisable(false);
 
-		mnuModificar.setDisable(true);
-		mnuEliminar.setDisable(true);
-		menuEliminar.setDisable(true);
-		menuModificar.setDisable(true);
+                menuModificar.setDisable(true);
+                menuEliminar.setDisable(false);
+            } else if (itemsSelec.size() == 1) {
 
-	}
+                mnuModificar.setDisable(false);
+                mnuEliminar.setDisable(false);
 
-	private void accionGrabar() {
-		IEntity entitySelected = getSelectedEntity();
-		removeAllStyles();
-		if (validate()) {
-			if (lblError != null) {
-				lblError.setText(" ");
-			}
-			EjeTematico ejeTematico = null;
-			if (entitySelected != null && entitySelected instanceof EjeTematico) {
-				ejeTematico = (EjeTematico) entitySelected;
-			} else {
-				ejeTematico = new EjeTematico();
-			}
-			ejeTematico.setName(txtNombre.getText());
-			ejeTematico.setTipoprueba(cmbTipoPrueba.getValue());
-			ejeTematico.setAsignatura(cmbAsignatura.getValue());
-			save(ejeTematico);
-			limpiarControles();
-		} else {
-			lblError.getStyleClass().add("bad");
-			lblError.setText("Corregir campos destacados en color rojo");
-		}
-		
-	}
+                menuModificar.setDisable(false);
+                menuEliminar.setDisable(false);
+            }
+        });
+    }
 
-	private void accionModificar() {
-		OTEjeTematico ejeTematico = tblEjesTematicos.getSelectionModel()
-				.getSelectedItem();
-		if (ejeTematico != null) {
-			txtNombre.setText(ejeTematico.getName());
-			cmbAsignatura.setValue(ejeTematico.getAsignatura());
-			cmbTipoPrueba.setValue(ejeTematico.getTipoprueba());
-			select((IEntity) ejeTematico.getEjeTematico());
-		}
-	}
+    private void accionEliminar() {
+        final ObservableList<OTEjeTematico> otSeleccionados = tblEjesTematicos.getSelectionModel().getSelectedItems();
+        if (otSeleccionados.size() == 0) {
+            final Alert alert = new Alert(AlertType.INFORMATION);
+            alert.setTitle("Selección registro");
+            alert.setHeaderText(getName());
+            alert.setContentText("Debe seleccionar registro a procesar");
+            alert.showAndWait();
+        } else {
 
-	private void accionClicTabla() {
-		tblEjesTematicos.setOnMouseClicked(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent event) {
-				ObservableList<OTEjeTematico> itemsSelec = tblEjesTematicos
-						.getSelectionModel().getSelectedItems();
+            if (otSeleccionados != null && !otSeleccionados.isEmpty()) {
+                final List<EjeTematico> ejeTematico = new ArrayList<EjeTematico>(otSeleccionados.size());
+                for (final OTEjeTematico ot : otSeleccionados) {
+                    ejeTematico.add(ot.getEjeTematico());
+                }
+                delete(ejeTematico);
+                tblEjesTematicos.getSelectionModel().clearSelection();
+                limpiarControles();
+            }
+        }
+    }
 
-				if (itemsSelec.size() > 1) {
-					mnuModificar.setDisable(true);
-					mnuEliminar.setDisable(false);
+    private void accionGrabar() {
+        final IEntity entitySelected = getSelectedEntity();
+        removeAllStyles();
+        if (validate()) {
+            if (lblError != null) {
+                lblError.setText(" ");
+            }
+            EjeTematico ejeTematico = null;
+            if (entitySelected != null && entitySelected instanceof EjeTematico) {
+                ejeTematico = (EjeTematico) entitySelected;
+            } else {
+                ejeTematico = new EjeTematico();
+            }
+            ejeTematico.setName(txtNombre.getText());
+            ejeTematico.setTipoprueba(cmbTipoPrueba.getValue());
+            ejeTematico.setAsignatura(cmbAsignatura.getValue());
+            save(ejeTematico);
+            limpiarControles();
+        } else {
+            lblError.getStyleClass().add("bad");
+            lblError.setText("Corregir campos destacados en color rojo");
+        }
 
-					menuModificar.setDisable(true);
-					menuEliminar.setDisable(false);
-				} else if (itemsSelec.size() == 1) {
-				
-					mnuModificar.setDisable(false);
-					mnuEliminar.setDisable(false);
+    }
 
-					menuModificar.setDisable(false);
-					menuEliminar.setDisable(false);
-				}
-			}
-		});
-	}
+    private void accionModificar() {
+        final OTEjeTematico ejeTematico = tblEjesTematicos.getSelectionModel().getSelectedItem();
+        if (ejeTematico != null) {
+            txtNombre.setText(ejeTematico.getName());
+            cmbAsignatura.setValue(ejeTematico.getAsignatura());
+            cmbTipoPrueba.setValue(ejeTematico.getTipoprueba());
+            select(ejeTematico.getEjeTematico());
+        }
+    }
 
-	private void removeAllStyles() {
-		removeAllStyle(lblError);
-		removeAllStyle(txtNombre);
-		removeAllStyle(cmbAsignatura);
-		removeAllStyle(cmbTipoPrueba);
-	}
+    @Override
+    public void handle(ActionEvent event) {
+        final Object source = event.getSource();
+        if (source == mnuAgregar) {
+            limpiarControles();
+        } else if (source == mnuModificar || source == menuModificar) {
+            accionModificar();
+        } else if (source == mnuGrabar) {
+            accionGrabar();
+        } else if (source == mnuEliminar || source == menuEliminar) {
+            accionEliminar();
+        } else if (source == mnuExportar || source == menuExportar) {
+            tblEjesTematicos.setId("Ejes temáticos");
+            ExcelSheetWriterObj.convertirDatosALibroDeExcel(tblEjesTematicos);
+        }
 
-	@Override
-	public void onSaved(IEntity otObject) {
-		OTEjeTematico ejeTematico = new OTEjeTematico((EjeTematico) otObject);
-		int indice = tblEjesTematicos.getItems().lastIndexOf(ejeTematico);
-		if (indice != -1) {
-			tblEjesTematicos.getItems().set(indice, ejeTematico);
-		} else {
-			tblEjesTematicos.getItems().add(ejeTematico);
-		}
-	}
+    }
 
-	private void limpiarControles() {
-		txtNombre.clear();
-		cmbAsignatura.getSelectionModel().clearSelection();
-		cmbTipoPrueba.getSelectionModel().clearSelection();
-		select(null);
-	}
+    private void inicializaTabla() {
+        tblEjesTematicos.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        colId.setCellValueFactory(new PropertyValueFactory<OTEjeTematico, Float>("id"));
+        colNombre.setCellValueFactory(new PropertyValueFactory<OTEjeTematico, String>("name"));
+        colEnsayo.setCellValueFactory(new PropertyValueFactory<OTEjeTematico, String>("asignatura"));
+        colTipoPrueba.setCellValueFactory(new PropertyValueFactory<OTEjeTematico, String>("tipoprueba"));
+    }
 
-	private void inicializaTabla() {
-		tblEjesTematicos.getSelectionModel().setSelectionMode(
-				SelectionMode.MULTIPLE);
-		colId.setCellValueFactory(new PropertyValueFactory<OTEjeTematico, Float>(
-				"id"));
-		colNombre
-				.setCellValueFactory(new PropertyValueFactory<OTEjeTematico, String>(
-						"name"));
-		colEnsayo
-				.setCellValueFactory(new PropertyValueFactory<OTEjeTematico, String>(
-						"asignatura"));
-		colTipoPrueba
-				.setCellValueFactory(new PropertyValueFactory<OTEjeTematico, String>(
-						"tipoprueba"));
-	}
+    @FXML
+    public void initialize() {
+        inicializaTabla();
+        accionClicTabla();
 
-	private void accionEliminar() {
-		ObservableList<OTEjeTematico> otSeleccionados = tblEjesTematicos
-				.getSelectionModel().getSelectedItems();
-		if (otSeleccionados.size() == 0) {
-			Alert alert = new Alert(AlertType.INFORMATION);
-			alert.setTitle("Selección registro");
-			alert.setHeaderText(this.getName());
-			alert.setContentText("Debe seleccionar registro a procesar");
-			alert.showAndWait();
-		} else {
+        mnuAgregar.setOnAction(this);
+        mnuGrabar.setOnAction(this);
+        mnuModificar.setOnAction(this);
+        mnuEliminar.setOnAction(this);
+        menuModificar.setOnAction(this);
+        menuEliminar.setOnAction(this);
+        menuExportar.setOnAction(this);
+        mnuExportar.setOnAction(this);
 
-			if (otSeleccionados != null && !otSeleccionados.isEmpty()) {
-				List<EjeTematico> ejeTematico = new ArrayList<EjeTematico>(
-						otSeleccionados.size());
-				for (OTEjeTematico ot : otSeleccionados) {
-					ejeTematico.add(ot.getEjeTematico());
-				}
-				delete(ejeTematico);
-				tblEjesTematicos.getSelectionModel().clearSelection();
-				limpiarControles();
-			}
-		}
-	}
+        mnuModificar.setDisable(true);
+        mnuEliminar.setDisable(true);
+        menuEliminar.setDisable(true);
+        menuModificar.setDisable(true);
 
-	@Override
-	public void onDataArrived(List<Object> list) {
-		if (list != null && !list.isEmpty()) {
-			Object entity = list.get(0);
-			if (entity instanceof EjeTematico) {
-				ObservableList<OTEjeTematico> value = FXCollections
-						.observableArrayList();
-				for (Object iEntity : list) {
-					value.add(new OTEjeTematico((EjeTematico) iEntity));
-				}
-				tblEjesTematicos.setItems(value);
-				
-			} else if (entity instanceof TipoPrueba) {
-				ObservableList<TipoPrueba> oList = FXCollections
-						.observableArrayList();
-				for (Object iEntity : list) {
-					oList.add((TipoPrueba) iEntity);
-				}
-				cmbTipoPrueba.setItems(oList);
-			} else if (entity instanceof Asignatura) {
-				ObservableList<Asignatura> oList = FXCollections
-						.observableArrayList();
-				for (Object iEntity : list) {
-					oList.add((Asignatura) iEntity);
-				}
-				cmbAsignatura.setItems(oList);
+    }
 
-			}
-		}
-	}
+    private void limpiarControles() {
+        txtNombre.clear();
+        cmbAsignatura.getSelectionModel().clearSelection();
+        cmbTipoPrueba.getSelectionModel().clearSelection();
+        select(null);
+    }
 
-	@Override
-	public void handle(ActionEvent event) {
-		Object source = event.getSource();
-		if (source == mnuAgregar) {
-			limpiarControles();
-		} else if (source == mnuModificar || source == menuModificar) {
-			accionModificar();
-		} else if (source == mnuGrabar) {
-			accionGrabar();
-		} else if (source == mnuEliminar || source == menuEliminar) {
-			accionEliminar();
-		} else if (source == mnuExportar || source == menuExportar) {
-			tblEjesTematicos.setId("Ejes temáticos");
-			ExcelSheetWriterObj.convertirDatosALibroDeExcel(tblEjesTematicos);
-		}
+    @Override
+    public void onDataArrived(List<Object> list) {
+        if (list != null && !list.isEmpty()) {
+            final Object entity = list.get(0);
+            if (entity instanceof EjeTematico) {
+                final ObservableList<OTEjeTematico> value = FXCollections.observableArrayList();
+                for (final Object iEntity : list) {
+                    value.add(new OTEjeTematico((EjeTematico) iEntity));
+                }
+                tblEjesTematicos.setItems(value);
 
-	}
-	
-	@Override
-	public void onDeleted(IEntity entity) {
-		tblEjesTematicos.getItems().remove(new OTEjeTematico((EjeTematico) entity));
-	}
+            } else if (entity instanceof TipoPrueba) {
+                final ObservableList<TipoPrueba> oList = FXCollections.observableArrayList();
+                for (final Object iEntity : list) {
+                    oList.add((TipoPrueba) iEntity);
+                }
+                cmbTipoPrueba.setItems(oList);
+            } else if (entity instanceof Asignatura) {
+                final ObservableList<Asignatura> oList = FXCollections.observableArrayList();
+                for (final Object iEntity : list) {
+                    oList.add((Asignatura) iEntity);
+                }
+                cmbAsignatura.setItems(oList);
+
+            }
+        }
+    }
+
+    @Override
+    public void onDeleted(IEntity entity) {
+        tblEjesTematicos.getItems().remove(new OTEjeTematico((EjeTematico) entity));
+    }
+
+    @Override
+    public void onSaved(IEntity otObject) {
+        final OTEjeTematico ejeTematico = new OTEjeTematico((EjeTematico) otObject);
+        final int indice = tblEjesTematicos.getItems().lastIndexOf(ejeTematico);
+        if (indice != -1) {
+            tblEjesTematicos.getItems().set(indice, ejeTematico);
+        } else {
+            tblEjesTematicos.getItems().add(ejeTematico);
+        }
+    }
+
+    private void removeAllStyles() {
+        removeAllStyle(lblError);
+        removeAllStyle(txtNombre);
+        removeAllStyle(cmbAsignatura);
+        removeAllStyle(cmbTipoPrueba);
+    }
 }

@@ -12,18 +12,15 @@ import cl.eos.cliente.Clientes.Cliente;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -48,80 +45,31 @@ public class SeleccionCliente {
 
     @FXML
     void initialize() {
-        File file = new File("res/Clientes.xml");
+        final File file = new File("res/Clientes.xml");
         JAXBContext jaxbContext;
         try {
             jaxbContext = JAXBContext.newInstance(Clientes.class);
-            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-            Clientes clientes = (Clientes) jaxbUnmarshaller.unmarshal(file);
-            ObservableList<Clientes.Cliente> lst = FXCollections.observableArrayList(clientes.cliente);
+            final Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+            final Clientes clientes = (Clientes) jaxbUnmarshaller.unmarshal(file);
+            final ObservableList<Clientes.Cliente> lst = FXCollections.observableArrayList(clientes.cliente);
             cmbClientes.setItems(lst);
-            btnAccept.setOnAction(new EventHandler<ActionEvent>() {
+            btnAccept.setOnAction(event -> {
+                final Cliente cliente = cmbClientes.getSelectionModel().getSelectedItem();
 
-                @Override
-                public void handle(ActionEvent event) {
-                    Cliente cliente = cmbClientes.getSelectionModel().getSelectedItem();
-
-                    if (cliente != null) {
-                        Environment.database = cliente.alias;
-                        showApplication();
-                    }
-                    else
-                    {
-                        Alert alert = new Alert(AlertType.ERROR);
-                        alert.setTitle("Error selección de Cliente.");
-                        alert.setHeaderText("Debe seleccionar un cliente. ");
-                        alert.setContentText("No ha seleccionado un cliente para iniciar la aplicación.");
-                        alert.showAndWait();
-                    }
-
+                if (cliente != null) {
+                    Environment.database = cliente.alias;
+                    showApplication();
+                } else {
+                    final Alert alert = new Alert(AlertType.ERROR);
+                    alert.setTitle("Error selección de Cliente.");
+                    alert.setHeaderText("Debe seleccionar un cliente. ");
+                    alert.setContentText("No ha seleccionado un cliente para iniciar la aplicación.");
+                    alert.showAndWait();
                 }
-            });
-            btnCancel.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    Platform.exit();
-                    
-                }
-            });
-        } catch (JAXBException e) {
-            e.printStackTrace();
-        }
-    }
 
-    private void showApplication() {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Main.fxml"));
-            StackPane root = (StackPane) fxmlLoader.load();
-            MainController controller = (MainController) fxmlLoader.getController();
-            controller.setStage(primaryStage);
-
-            root.setOnMousePressed(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event) {
-                    xOffset = event.getSceneX();
-                    yOffset = event.getSceneY();
-                }
             });
-            root.setOnMouseDragged(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event) {
-                    primaryStage.setX(event.getScreenX() - xOffset);
-                    primaryStage.setY(event.getScreenY() - yOffset);
-                }
-            });
-
-            Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
-            primaryStage.setX((primScreenBounds.getWidth() - WIDTH) / 2);
-            primaryStage.setY((primScreenBounds.getHeight() - HEIGHT) / 2);
-            Scene scene = new Scene(root, WIDTH, HEIGHT);
-
-            scene.getStylesheets().add(getClass().getResource("ensemble2.css").toExternalForm());
-            primaryStage.setScene(scene);
-            primaryStage.getIcons()
-                    .add(new Image(SeleccionCliente.class.getResourceAsStream("/cl/eos/cliente/images/logo32.png")));
-            primaryStage.show();
-        } catch (IOException e) {
+            btnCancel.setOnAction(event -> Platform.exit());
+        } catch (final JAXBException e) {
             e.printStackTrace();
         }
     }
@@ -129,6 +77,37 @@ public class SeleccionCliente {
     public void setStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
 
+    }
+
+    private void showApplication() {
+        try {
+            final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Main.fxml"));
+            final StackPane root = (StackPane) fxmlLoader.load();
+            final MainController controller = (MainController) fxmlLoader.getController();
+            controller.setStage(primaryStage);
+
+            root.setOnMousePressed(event -> {
+                xOffset = event.getSceneX();
+                yOffset = event.getSceneY();
+            });
+            root.setOnMouseDragged(event -> {
+                primaryStage.setX(event.getScreenX() - xOffset);
+                primaryStage.setY(event.getScreenY() - yOffset);
+            });
+
+            final Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
+            primaryStage.setX((primScreenBounds.getWidth() - SeleccionCliente.WIDTH) / 2);
+            primaryStage.setY((primScreenBounds.getHeight() - SeleccionCliente.HEIGHT) / 2);
+            final Scene scene = new Scene(root, SeleccionCliente.WIDTH, SeleccionCliente.HEIGHT);
+
+            scene.getStylesheets().add(getClass().getResource("ensemble2.css").toExternalForm());
+            primaryStage.setScene(scene);
+            primaryStage.getIcons()
+                    .add(new Image(SeleccionCliente.class.getResourceAsStream("/cl/eos/cliente/images/logo32.png")));
+            primaryStage.show();
+        } catch (final IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

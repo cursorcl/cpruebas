@@ -12,21 +12,20 @@ import cl.eos.persistence.models.TipoAlumno;
 
 public class AlumnosContoller extends AController {
 
-	@Override
-	public void initialize() {
-		model = new AlumnosModel();
-		model.findAll(Alumno.class, this);
-		model.findAll(Colegio.class, this);
-		model.findAll(Curso.class, this);
-		model.findAll(Curso.class, this);
-		model.findAll(TipoAlumno.class, this);
-	}
+    public void buscarPorDireccion(String direccion) {
+        final Map<String, Object> param = new HashMap<String, Object>();
+        param.put("dato", direccion);
+        model.find("Alumno.preguntita", param);
+    }
 
-	public void buscarPorDireccion(String direccion)
-	{
-		Map<String, Object> param = new HashMap<String, Object>();
-		param.put("dato", direccion);
-		model.find("Alumno.preguntita", param);
-	}
-	
+    @Override
+    public void initialize() {
+        model = new AlumnosModel();
+        model.findAll(Alumno.class, this);
+        model.findAll(Colegio.class, this);
+        model.findAll(Curso.class, this);
+        model.findAll(Curso.class, this);
+        model.findAll(TipoAlumno.class, this);
+    }
+
 }
