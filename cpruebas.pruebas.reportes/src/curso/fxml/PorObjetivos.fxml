@@ -5,16 +5,15 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="512.0" prefWidth="1136.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="curso.PorObjetivosView">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="525.0" prefWidth="1136.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="curso.PorObjetivosView">
    <top>
-      <AnchorPane prefHeight="38.0" prefWidth="1081.0" styleClass="sample-page" BorderPane.alignment="CENTER">
+      <HBox alignment="CENTER" prefHeight="63.0" prefWidth="1136.0" styleClass="sample-page" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Label alignment="CENTER" layoutX="481.0" layoutY="24.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
-               <font>
-                  <Font name="System Bold" size="20.0" />
-               </font>
-            </Label>
-         </children></AnchorPane>
+            <Label prefHeight="17.0" prefWidth="104.0" text="Incluye Alumnos" />
+            <ComboBox fx:id="cmbTipoAlumno" prefHeight="25.0" prefWidth="258.0" promptText="Tipo de Alumno" />
+            <Button fx:id="btnGenerarReporte" mnemonicParsing="false" text="Generar Reporte" />
+         </children>
+      </HBox>
    </top>
    <center>
       <AnchorPane styleClass="sample-page">
@@ -22,30 +21,9 @@
             <TableView fx:id="tblObjetivos" prefHeight="472.0" prefWidth="853.0" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="3.0" AnchorPane.topAnchor="0.0" BorderPane.alignment="CENTER">
               <columns>
                 <TableColumn fx:id="colObjetivos" prefWidth="130.0" style="-fx-alignment: CENTER-LEFT; -fx-font-size: 10;" text="Objetivo" />
-                  <TableColumn prefWidth="515.0" text="Asociaciones">
-                     <columns>
-                        <TableColumn fx:id="colEjes" prefWidth="250.0" style="-fx-alignment: CENTER-LEFT; -fx-font-size: 10;" text="Ejes" />
-                        <TableColumn fx:id="colHabilidades" prefWidth="250.0" style="-fx-alignment: CENTER-LEFT; -fx-font-size: 10;" text="Habilidades" />
-                     </columns>
-                  </TableColumn>
-                  <TableColumn fx:id="colPreguntas" prefWidth="135.0" style="-fx-alignment: CENTER; -fx-font-size: 10;" text="Preguntas Asociadas" />
               </columns>
             </TableView>
          </children>
       </AnchorPane>
    </center>
-   <left>
-      <AnchorPane prefHeight="379.0" prefWidth="228.0" styleClass="sample-page" BorderPane.alignment="CENTER">
-         <children>
-            <ComboBox fx:id="cmbColegio" layoutX="14.0" layoutY="50.0" prefHeight="25.0" prefWidth="206.0" promptText="Colegio" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
-            <ComboBox fx:id="cmbCursos" layoutX="14.0" layoutY="103.0" prefWidth="150.0" promptText="Curso" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
-            <ComboBox fx:id="cmbAsignaturas" layoutX="14.0" layoutY="159.0" prefHeight="25.0" prefWidth="199.0" promptText="Asignatura" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
-            <ComboBox fx:id="cmbTipoAlumno" layoutX="14.0" layoutY="211.0" prefHeight="25.0" prefWidth="200.0" promptText="Tipo de Alumno" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
-            <Label layoutX="14.0" layoutY="33.0" prefHeight="17.0" prefWidth="198.0" text="Seleccione colegio a procesar" AnchorPane.leftAnchor="14.0" />
-            <Label layoutX="14.0" layoutY="142.0" text="Seleccione asignatura" AnchorPane.leftAnchor="14.0" />
-            <Label layoutX="14.0" layoutY="194.0" prefHeight="17.0" prefWidth="184.0" text="Incluye Alumnos" AnchorPane.leftAnchor="14.0" />
-            <Button fx:id="btnGenerarReporte" layoutX="148.0" layoutY="365.0" mnemonicParsing="false" text="Generar Reporte" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="14.0" />
-            <Label layoutX="14.0" layoutY="86.0" text="Curso" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
-         </children></AnchorPane>
-   </left>
 </BorderPane>

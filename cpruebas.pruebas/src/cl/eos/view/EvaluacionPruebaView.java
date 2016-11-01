@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Optional;
 
 import cl.eos.imp.view.AFormView;
-import cl.eos.persistence.models.Asignatura;
-import cl.eos.persistence.models.Colegio;
 import cl.eos.persistence.models.Curso;
 import cl.eos.persistence.models.EvaluacionPrueba;
 import cl.eos.persistence.models.RangoEvaluacion;
@@ -287,10 +285,8 @@ public class EvaluacionPruebaView extends AFormView implements EventHandler<Acti
         if (evaluacionPrueba != null) {
 
             final PorObjetivosView porObjetivosView = (PorObjetivosView) show("/curso/fxml/PorObjetivos.fxml");
-            controller.findById(EvaluacionPrueba.class, evaluacionPrueba.getId(), porObjetivosView);
-            controller.findAll(Colegio.class, porObjetivosView);
             controller.findAll(TipoAlumno.class, porObjetivosView);
-            controller.findAll(Asignatura.class, porObjetivosView);
+            controller.findById(EvaluacionPrueba.class, evaluacionPrueba.getId(), porObjetivosView);
         } else {
             final Alert alert = new Alert(AlertType.INFORMATION);
             alert.setTitle("Selección registro");

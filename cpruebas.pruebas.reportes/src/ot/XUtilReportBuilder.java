@@ -14,30 +14,32 @@ import cl.eos.persistence.models.TipoCurso;
 import cl.eos.persistence.util.Comparadores;
 import cl.eos.util.Pair;
 
-public class UtilReportBuilder {
+public class XUtilReportBuilder {
 
     
 
-    public static Pair<List<TipoCurso>, List<ItemTablaObjetivo>> reporteColegioxNivel(List<PruebaRendida> pruebas) {
+    public static Pair<List<TipoCurso>, List<XItemTablaObjetivo>> reporteColegioxNivel(List<PruebaRendida> pruebas, long tipoAlumno) {
 
-        final List<ItemTablaObjetivo> objetivos = UtilReportBuilder.buildFixedColumnsReport(pruebas);
+        final List<XItemTablaObjetivo> objetivos = XUtilReportBuilder.buildFixedColumnsReport(pruebas);
 
-        final Map<TipoCurso, List<ItemObjetivo>> eval = UtilEvaluations.evaluarColegioxNivel(pruebas);
+        final Map<TipoCurso, List<XItemObjetivo>> eval = XUtilEvaluations.evaluarColegioxNivel(pruebas, tipoAlumno);
 
         // Obtengo los tipos de curso ordenados
         final List<TipoCurso> tipoCursosOrdenados = eval.keySet().stream().sorted(Comparadores.comparaTipoCurso())
                 .collect(Collectors.toList());
 
         final int size = tipoCursosOrdenados.size();
-        objetivos.forEach(o -> o.setItems(Stream.generate(ItemObjetivo::new).limit(size).collect(Collectors.toList())));
-        final int n = 0;
+        objetivos.forEach(o -> o.setItems(Stream.generate(XItemObjetivo::new).limit(size).collect(Collectors.toList())));
+        int n = 0;
         for (final TipoCurso key : tipoCursosOrdenados) {
-            final List<ItemObjetivo> values = eval.get(key);
-            objetivos.forEach(o -> o.getItems().set(n,
+            final int idx = n;
+            final List<XItemObjetivo> values = eval.get(key);
+            objetivos.forEach(o -> o.getItems().set(idx,
                     values.stream().filter(e -> e.objetivo.equals(o.getObjetivo())).findFirst().orElse(null)));
+            n++;
         }
 
-        return new Pair<List<TipoCurso>, List<ItemTablaObjetivo>>(tipoCursosOrdenados, objetivos);
+        return new Pair<List<TipoCurso>, List<XItemTablaObjetivo>>(tipoCursosOrdenados, objetivos);
     }
 
     
@@ -50,8 +52,8 @@ public class UtilReportBuilder {
      *            objetivos, preguntas asociadas, ejes y habilidades.
      * @return Lista con los items de tabla asociados.
      */
-    static List<ItemTablaObjetivo> buildFixedColumnsReport(List<PruebaRendida> pRendidas) {
-        final List<ItemTablaObjetivo> objetivos = new ArrayList<>();
+    static List<XItemTablaObjetivo> buildFixedColumnsReport(List<PruebaRendida> pRendidas) {
+        final List<XItemTablaObjetivo> objetivos = new ArrayList<>();
 
         final Map<Curso, List<PruebaRendida>> mapCursos = pRendidas.stream()
                 .collect(Collectors.groupingBy(PruebaRendida::getObjCurso));
@@ -61,29 +63,13 @@ public class UtilReportBuilder {
             PruebaRendida p = pR.get(0);
             List<RespuestasEsperadasPrueba> respuestasEsperadas = p.getEvaluacionPrueba().getPrueba().getRespuestas();
             for (final RespuestasEsperadasPrueba re : respuestasEsperadas) {
-                ItemTablaObjetivo ot = new ItemTablaObjetivo.Builder().objetivo(re.getObjetivo()).build();
+                XItemTablaObjetivo ot = new XItemTablaObjetivo.Builder().objetivo(re.getObjetivo()).build();
                 final int index = objetivos.indexOf(ot);
                 if (index != -1) {
                     ot = objetivos.get(index);
                 } else {
                     objetivos.add(ot);
                 }
-                String value;
-                if (!ot.getEjesAsociados().contains(re.getEjeTematico().getName())) {
-                    value = ot.getEjesAsociados() + (ot.getEjesAsociados().isEmpty() ? "" : "\n")
-                            + re.getEjeTematico().getName().toUpperCase();
-                    ot.setEjesAsociados(value);
-                }
-                if (!ot.getHabilidades().contains(re.getHabilidad().getName())) {
-                    value = ot.getHabilidades() + (ot.getHabilidades().isEmpty() ? "" : "\n")
-                            + re.getHabilidad().getName().toUpperCase();
-                    ot.setHabilidades(value);
-                }
-                if (!ot.getPreguntas().contains("" + re.getNumero())) {
-                    value = ot.getPreguntas() + (ot.getPreguntas().isEmpty() ? "" : "-") + re.getNumero();
-                    ot.setPreguntas(value);
-                }
-
             }
         }
         return objetivos;
@@ -102,12 +88,12 @@ public class UtilReportBuilder {
      *            Lista de pruebas rendidas.
      * @return Calculo de las buenas de cada objetivo y curso.
      */
-    public static List<ItemTablaObjetivo> reporteCurso(List<PruebaRendida> pruebas) {
-        final List<ItemTablaObjetivo> objetivos = UtilReportBuilder.buildFixedColumnsReport(pruebas);
-        final List<ItemObjetivo> eval = UtilEvaluations.evaluarCurso(pruebas);
+    public static List<XItemTablaObjetivo> reporteCurso(List<PruebaRendida> pruebas, long tipoAlumno) {
+        final List<XItemTablaObjetivo> objetivos = XUtilReportBuilder.buildFixedColumnsReport(pruebas);
+        final List<XItemObjetivo> eval = XUtilEvaluations.evaluarCurso(pruebas, tipoAlumno);
 
-        for (final ItemObjetivo item : eval) {
-            Optional<ItemTablaObjetivo> obj = objetivos.stream().filter(o -> o.getObjetivo().equals(item.getObjetivo()))
+        for (final XItemObjetivo item : eval) {
+            Optional<XItemTablaObjetivo> obj = objetivos.stream().filter(o -> o.getObjetivo().equals(item.getObjetivo()))
                     .findFirst();
             if (obj.isPresent()) {
                 obj.get().getItems().add(item);
@@ -132,29 +118,29 @@ public class UtilReportBuilder {
      *            Lista de pruebas rendidas.
      * @return Calculo de las buenas de cada objetivo y lista de cursos.
      */
-    public static Pair<List<Curso>, List<ItemTablaObjetivo>> reporteColegio(List<PruebaRendida> pruebas) {
+    public static Pair<List<Curso>, List<XItemTablaObjetivo>> reporteColegio(List<PruebaRendida> pruebas, long tipoAlumno) {
 
-        final List<ItemTablaObjetivo> objetivos = UtilReportBuilder.buildFixedColumnsReport(pruebas);
+        final List<XItemTablaObjetivo> objetivos = XUtilReportBuilder.buildFixedColumnsReport(pruebas);
 
-        final Map<Curso, List<ItemObjetivo>> eval = UtilEvaluations.evaluarColegio(pruebas);
+        final Map<Curso, List<XItemObjetivo>> eval = XUtilEvaluations.evaluarColegio(pruebas, tipoAlumno);
 
         final List<Curso> cursosOrdenados = eval.keySet().stream().sorted(Comparadores.odenarCurso())
                 .collect(Collectors.toList());
 
         final int size = cursosOrdenados.size();
 
-        objetivos.forEach(o -> o.setItems(Stream.generate(ItemObjetivo::new).limit(size).collect(Collectors.toList())));
+        objetivos.forEach(o -> o.setItems(Stream.generate(XItemObjetivo::new).limit(size).collect(Collectors.toList())));
 
         int n = 0;
         for (final Curso key : cursosOrdenados) {
             final int idx = n;
-            final List<ItemObjetivo> values = eval.get(key);
+            final List<XItemObjetivo> values = eval.get(key);
             objetivos.forEach(o -> o.getItems().set(idx,
                     values.stream().filter(e -> e.objetivo.equals(o.getObjetivo())).findFirst().orElse(null)));
             n++;
         }
 
-        return new Pair<List<Curso>, List<ItemTablaObjetivo>>(cursosOrdenados, objetivos);
+        return new Pair<List<Curso>, List<XItemTablaObjetivo>>(cursosOrdenados, objetivos);
     }
 
 }

@@ -87,7 +87,8 @@ public class ResumenGeneralPMEView extends AFormView implements EventHandler<Act
 	private TableColumn<OTRangoEvaluacion, Integer> colRangoCantidad;
 	@FXML
 	private TableColumn<OTRangoEvaluacion, Float> colRangolLogro;
-	@FXML
+	@SuppressWarnings("rawtypes")
+    @FXML
 	private TableView tblReportePME;
 	@FXML
 	private TextField txtPromedio;
@@ -515,7 +516,8 @@ public class ResumenGeneralPMEView extends AFormView implements EventHandler<Act
 		if(mapReporte == null || mapReporte.isEmpty())
 			return;
 		
-		ObservableList<ObservableList> registroseReporte = FXCollections.observableArrayList();
+		@SuppressWarnings("rawtypes")
+        ObservableList<ObservableList> registroseReporte = FXCollections.observableArrayList();
 
 		ObservableList<String> row = null;
 		for (RangoEvaluacion rango : listaRangos) {
@@ -567,7 +569,8 @@ public class ResumenGeneralPMEView extends AFormView implements EventHandler<Act
 		txtNivel.setText(rango.getAbreviacion());
 	}
 
-	@Override
+	@SuppressWarnings("unchecked")
+    @Override
 	public void handle(ActionEvent event) {
 		Object source = event.getSource();
 		if (source == mnuExportarEjesTematicos || source == mnuExportarHabilidades || source == mnuExportarRangos

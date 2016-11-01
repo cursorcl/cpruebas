@@ -62,6 +62,7 @@ public class ChartsUtil {
         return f;
     }
 
+    
     public static File createBarChartSeries(String title, List<String> xValues, Map<String, List<Double>> yValues)
             throws IOException {
         final DefaultCategoryDataset dataset = new DefaultCategoryDataset();

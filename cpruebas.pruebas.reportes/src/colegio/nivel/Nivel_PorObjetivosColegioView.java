@@ -9,16 +9,16 @@ import java.util.stream.Collectors;
 
 import cl.eos.common.Constants;
 import cl.eos.imp.view.AFormView;
-import cl.eos.imp.view.WindowManager;
 import cl.eos.persistence.models.Asignatura;
 import cl.eos.persistence.models.Colegio;
-import cl.eos.persistence.models.Curso;
 import cl.eos.persistence.models.EvaluacionPrueba;
 import cl.eos.persistence.models.Objetivo;
 import cl.eos.persistence.models.PruebaRendida;
 import cl.eos.persistence.models.TipoAlumno;
+import cl.eos.persistence.models.TipoCurso;
 import cl.eos.util.Pair;
 import javafx.beans.property.ReadOnlyFloatWrapper;
+import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -32,9 +32,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
-import ot.ItemObjetivo;
-import ot.ItemTablaObjetivo;
-import ot.UtilReportBuilder;
+import ot.XItemObjetivo;
+import ot.XItemTablaObjetivo;
+import ot.XUtilReportBuilder;
 
 /**
  * Obtiene los objetivos de un curso
@@ -49,15 +49,9 @@ public class Nivel_PorObjetivosColegioView extends AFormView {
     private static final String ASIGNATURA_ID = "idAsignatura";
     private static final String COLEGIO_ID = "idColegio";
     @FXML
-    private TableView<ItemTablaObjetivo> tblObjetivos;
+    private TableView<XItemTablaObjetivo> tblObjetivos;
     @FXML
-    private TableColumn<ItemTablaObjetivo, Objetivo> colObjetivos;
-    @FXML
-    private TableColumn<ItemTablaObjetivo, String> colPreguntas;
-    @FXML
-    private TableColumn<ItemTablaObjetivo, String> colEjes;
-    @FXML
-    private TableColumn<ItemTablaObjetivo, String> colHabilidades;
+    private TableColumn<XItemTablaObjetivo, Objetivo> colObjetivos;
 
     @FXML
     private Button btnGenerarReporte;
@@ -88,8 +82,8 @@ public class Nivel_PorObjetivosColegioView extends AFormView {
      */
     private void generateReport() {
         
-        if (cmbAsignaturas.getItems() != null && cmbTipoAlumno.getItems() != null ) {
-            
+        if (cmbAsignaturas.getItems() != null && cmbTipoAlumno.getItems() != null && cmbTipoAlumno.getSelectionModel().getSelectedItem() != null) {
+            long tipoAlumno = cmbTipoAlumno.getSelectionModel().getSelectedItem().getId();
             final List<PruebaRendida> pRendidas = new ArrayList<>();
             for(EvaluacionPrueba evaluacionPrueba : evaluacionesPrueba)
             {
@@ -97,12 +91,12 @@ public class Nivel_PorObjetivosColegioView extends AFormView {
             }
 
             if (pRendidas != null && !pRendidas.isEmpty()) {
-                final Pair<List<Curso>, List<ItemTablaObjetivo>> reporte = UtilReportBuilder.reporteColegio(pRendidas);
+                final Pair<List<TipoCurso>, List<XItemTablaObjetivo>> reporte = XUtilReportBuilder.reporteColegioxNivel(pRendidas, tipoAlumno);
 
-                List<Curso> cursos = reporte.getFirst();
+                List<TipoCurso> cursos = reporte.getFirst();
                 
-                final ObservableList<ItemTablaObjetivo> itemsTable = FXCollections.observableList(reporte.getSecond());
-                final Optional<ItemTablaObjetivo> opFirst = itemsTable.stream().findFirst();
+                final ObservableList<XItemTablaObjetivo> itemsTable = FXCollections.observableList(reporte.getSecond());
+                final Optional<XItemTablaObjetivo> opFirst = itemsTable.stream().findFirst();
                 if (!opFirst.isPresent())
                     return;
 
@@ -112,15 +106,96 @@ public class Nivel_PorObjetivosColegioView extends AFormView {
                 
                 for (int n = 0; n < cursos.size(); n++) {
                     final int idx = n;
-                    final TableColumn<ItemTablaObjetivo, Number> column = new TableColumn<>(cursos.get(n).getName());
-                    column.setStyle("-fx-font-size:10;-fx-alignment: CENTER;");
-                    column.setCellValueFactory(c -> {
-                        final List<ItemObjetivo> lItems = c.getValue().getItems();
+                    TableColumn<XItemTablaObjetivo, String> headerColumn = new TableColumn<>(cursos.get(n).getName());
+                    headerColumn.setStyle("-fx-font-size:10;-fx-alignment: CENTER;");
+
+                    final TableColumn<XItemTablaObjetivo, String> columnEjes = new TableColumn<>("Ejes Asociados");
+                    columnEjes.setStyle("-fx-font-size:10;-fx-alignment: CENTER-LEFT;");
+                    columnEjes.setCellValueFactory(c -> {
+                        if(c == null || c.getValue() == null || c.getValue().getItems() == null || c.getValue().getItems().get(idx) == null)
+                            return new ReadOnlyStringWrapper("");
+                        final List<XItemObjetivo> lItems = c.getValue().getItems();
+                        return new ReadOnlyStringWrapper(lItems.get(idx).getEjesAsociados());
+                    });
+                    columnEjes.setCellFactory(
+                            new Callback<TableColumn<XItemTablaObjetivo, String>, TableCell<XItemTablaObjetivo, String>>() {
+
+                                @Override
+                                public TableCell<XItemTablaObjetivo, String> call(
+                                        TableColumn<XItemTablaObjetivo, String> param) {
+                                    TableCell<XItemTablaObjetivo, String> cell = new TableCell<>();
+                                    Text text = new Text();
+                                    cell.setGraphic(text);
+                                    cell.setPrefHeight(Control.USE_COMPUTED_SIZE);
+                                    text.wrappingWidthProperty().bind(cell.widthProperty());
+                                    text.textProperty().bind(cell.itemProperty());
+                                    return cell;
+                                }
+                            });
+
+                    final TableColumn<XItemTablaObjetivo, String> columnHabilidades = new TableColumn<>(
+                            "Habilidades Asociados");
+                    columnHabilidades.setStyle("-fx-font-size:10;-fx-alignment: CENTER-LEFT;");
+                    columnHabilidades.setCellValueFactory(c -> {
+                        if(c == null || c.getValue() == null || c.getValue().getItems() == null || c.getValue().getItems().get(idx) == null)
+                            return new ReadOnlyStringWrapper("");
+                        final List<XItemObjetivo> lItems = c.getValue().getItems();
+                        return new ReadOnlyStringWrapper(lItems.get(idx).getHabilidades());
+                    });
+                    columnHabilidades.setCellFactory(
+                            new Callback<TableColumn<XItemTablaObjetivo, String>, TableCell<XItemTablaObjetivo, String>>() {
+
+                                @Override
+                                public TableCell<XItemTablaObjetivo, String> call(
+                                        TableColumn<XItemTablaObjetivo, String> param) {
+                                    TableCell<XItemTablaObjetivo, String> cell = new TableCell<>();
+                                    Text text = new Text();
+                                    cell.setGraphic(text);
+                                    cell.setPrefHeight(Control.USE_COMPUTED_SIZE);
+                                    text.wrappingWidthProperty().bind(cell.widthProperty());
+                                    text.textProperty().bind(cell.itemProperty());
+                                    return cell;
+                                }
+                            });
+
+                    final TableColumn<XItemTablaObjetivo, String> columnPreguntas = new TableColumn<>(
+                            "Preguntas");
+                    columnPreguntas.setCellFactory(
+                            new Callback<TableColumn<XItemTablaObjetivo, String>, TableCell<XItemTablaObjetivo, String>>() {
+
+                                @Override
+                                public TableCell<XItemTablaObjetivo, String> call(
+                                        TableColumn<XItemTablaObjetivo, String> param) {
+                                    TableCell<XItemTablaObjetivo, String> cell = new TableCell<>();
+                                    Text text = new Text();
+                                    cell.setGraphic(text);
+                                    cell.setPrefHeight(Control.USE_COMPUTED_SIZE);
+                                    text.wrappingWidthProperty().bind(cell.widthProperty());
+                                    text.textProperty().bind(cell.itemProperty());
+                                    return cell;
+                                }
+                            });
+                    columnPreguntas.setStyle("-fx-font-size:10;-fx-alignment: CENTER-LEFT;");
+                    columnPreguntas.setPrefWidth(100);
+                    columnPreguntas.setMaxWidth(100);
+                    columnPreguntas.setCellValueFactory(c -> {
+                        if(c == null || c.getValue() == null || c.getValue().getItems() == null || c.getValue().getItems().get(idx) == null)
+                            return new ReadOnlyStringWrapper("");
+                        final List<XItemObjetivo> lItems = c.getValue().getItems();
+                        return new ReadOnlyStringWrapper(lItems.get(idx).getPreguntas());
+                    });
+
+                    final TableColumn<XItemTablaObjetivo, Number> columnPercent = new TableColumn<>("% aprobación");
+                    columnPercent.setStyle("-fx-font-size:10;-fx-alignment: CENTER;");
+                    columnPercent.setCellValueFactory(c -> {
+                        if(c == null || c.getValue() == null || c.getValue().getItems() == null || c.getValue().getItems().get(idx) == null)
+                            return new ReadOnlyFloatWrapper(0f);
+                        final List<XItemObjetivo> lItems = c.getValue().getItems();
                         return new ReadOnlyFloatWrapper(lItems.get(idx).getPorcentajeAprobacion());
                     });
 
-                    column.setCellFactory(c -> {
-                        return new TableCell<ItemTablaObjetivo, Number>() {
+                    columnPercent.setCellFactory(c -> {
+                        return new TableCell<XItemTablaObjetivo, Number>() {
 
                             @Override
                             protected void updateItem(Number value, boolean empty) {
@@ -128,18 +203,20 @@ public class Nivel_PorObjetivosColegioView extends AFormView {
                                 if (value != null) {
                                     setText(String.format("%5.2f%%", value.doubleValue()));
                                     if (value.doubleValue() < 60) {
-                                        setTextFill(Color.WHITE);
-                                        setStyle("-fx-font-size:10;-fx-alignment: CENTER;-fx-background-color: red");
-                                    } else {
-                                        setTextFill(Color.BLACK);
-                                        setStyle("-fx-font-size:10;-fx-alignment: CENTER;-fx-background-color: white");
+                                        setTextFill(Color.RED);
+                                    }  else {
+                                        setTextFill(Color.BLUE);
                                     }
                                 }
                             }
 
                         };
                     });
-                    tblObjetivos.getColumns().add(column);
+                    headerColumn.getColumns().add(columnEjes);
+                    headerColumn.getColumns().add(columnHabilidades);
+                    headerColumn.getColumns().add(columnPreguntas);
+                    headerColumn.getColumns().add(columnPercent);
+                    tblObjetivos.getColumns().add(headerColumn);
                 }
                 tblObjetivos.setItems(itemsTable);
             }
@@ -147,26 +224,7 @@ public class Nivel_PorObjetivosColegioView extends AFormView {
     }
 
     private void inicializeTable() {
-        colObjetivos.setCellValueFactory(new PropertyValueFactory<ItemTablaObjetivo, Objetivo>("objetivo"));
-        colPreguntas.setCellValueFactory(new PropertyValueFactory<ItemTablaObjetivo, String>("preguntas"));
-        colPreguntas.setCellFactory(
-                new Callback<TableColumn<ItemTablaObjetivo, String>, TableCell<ItemTablaObjetivo, String>>() {
-
-                    @Override
-                    public TableCell<ItemTablaObjetivo, String> call(TableColumn<ItemTablaObjetivo, String> param) {
-                        TableCell<ItemTablaObjetivo, String> cell = new TableCell<>();
-                        Text text = new Text();
-                        cell.setGraphic(text);
-                        cell.setPrefHeight(Control.USE_COMPUTED_SIZE);
-                        text.wrappingWidthProperty().bind(cell.widthProperty());
-                        text.textProperty().bind(cell.itemProperty());
-                        return cell;
-                    }
-
-                });
-
-        colEjes.setCellValueFactory(new PropertyValueFactory<ItemTablaObjetivo, String>("ejesAsociados"));
-        colHabilidades.setCellValueFactory(new PropertyValueFactory<ItemTablaObjetivo, String>("habilidades"));
+        colObjetivos.setCellValueFactory(new PropertyValueFactory<XItemTablaObjetivo, Objetivo>("objetivo"));
     }
 
     @FXML

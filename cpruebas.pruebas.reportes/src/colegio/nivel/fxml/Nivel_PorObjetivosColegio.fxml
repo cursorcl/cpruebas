@@ -5,7 +5,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="512.0" prefWidth="1136.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="colegio.PorObjetivosColegioView">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="512.0" prefWidth="1136.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="colegio.nivel.Nivel_PorObjetivosColegioView">
    <top>
       <AnchorPane prefHeight="38.0" prefWidth="1081.0" styleClass="sample-page" BorderPane.alignment="CENTER">
          <children>
@@ -22,14 +22,6 @@
             <TableView fx:id="tblObjetivos" prefHeight="472.0" prefWidth="853.0" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="3.0" AnchorPane.topAnchor="0.0" BorderPane.alignment="CENTER">
               <columns>
                 <TableColumn fx:id="colObjetivos" prefWidth="223.0" style="-fx-alignment: CENTER-LEFT; -fx-font-size: 10;" text="Objetivo" />
-                  <TableColumn prefWidth="600.0" text="Asociaciones">
-                     <columns>
-                        <TableColumn fx:id="colEjes" prefWidth="220.0" style="-fx-alignment: CENTER-LEFT; -fx-font-size: 10;" text="Ejes" />
-                        <TableColumn fx:id="colHabilidades" prefWidth="220.0" style="-fx-alignment: CENTER-LEFT; -fx-font-size: 10;" text="Habilidades" />
-                     </columns>
-                  </TableColumn>
-                  <TableColumn fx:id="colPreguntas" prefWidth="142.0" style="-fx-alignment: CENTER-LEFT; -fx-font-size: 10;" text="Preguntas Asociadas" />
-                  <TableColumn fx:id="colLogro" prefWidth="85.0" text="\% LOGRO" />
               </columns>
             </TableView>
          </children>

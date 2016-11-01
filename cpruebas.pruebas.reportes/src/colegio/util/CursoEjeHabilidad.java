@@ -27,10 +27,12 @@ import cl.eos.util.Pair;
 import cl.eos.util.Utils;
 import cl.eos.view.ots.resumenxalumno.eje.habilidad.OTAlumnoResumen;
 
+@SuppressWarnings("rawtypes")
 public class CursoEjeHabilidad {
 
 	private final int FIXED_COLUMNS = 4;
-	private TableView tblAlumnos;
+	
+    private TableView tblAlumnos;
 
 	private EvaluacionPrueba evaluacionPrueba;
 	private List<EjeTematico> lstEjes;
@@ -224,7 +226,7 @@ public class CursoEjeHabilidad {
 
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({ "unchecked" })
 	private TableColumn getFixedColumns(String name, final int index, int width) {
 		TableColumn tc = new TableColumn(name);
 		tc.setSortable(false);
@@ -240,7 +242,7 @@ public class CursoEjeHabilidad {
 		return tc;
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({ "unchecked" })
 	private TableColumn getPercentColumns(String name, final int index) {
 		int idx = index - FIXED_COLUMNS + 1;
 		TableColumn tc = new TableColumn("(" + idx + ") " + name);
@@ -258,7 +260,6 @@ public class CursoEjeHabilidad {
 		return tc;
 	}
 
-	@SuppressWarnings("rawtypes")
 	private void makeHeaderWrappable(TableColumn col) {
 		Label label = new Label(col.getText());
 		label.setStyle("-fx-padding: 8px;-fx-font-size: 7pt;");

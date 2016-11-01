@@ -82,6 +82,7 @@ public class ResumenHabilidadesView extends AFormView implements EventHandler<Ac
 
     }
 
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     private void accionClicTabla() {
         tblHabilidades.getSelectionModel().selectedItemProperty()
                 .addListener((ChangeListener<OTPreguntasHabilidad>) (observable, oldValue, newValue) -> {

@@ -102,7 +102,8 @@ public class ResumenXAlumnoEjeHabilidadView extends AFormView implements EventHa
 		});
 	}
 
-	@Override
+	@SuppressWarnings("unchecked")
+    @Override
 	public void handle(ActionEvent event) {
 		if (event.getSource() == mnuExportarAlumnos) {
 			tblAlumnos.setId("ResumenEjeHabilidadesxAlumno");

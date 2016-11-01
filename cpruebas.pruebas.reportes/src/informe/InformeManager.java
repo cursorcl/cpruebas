@@ -34,6 +34,7 @@ import informe.informes.imp.InformeHabilidades;
 import informe.informes.imp.InformeResumenPME;
 import informe.informes.imp.InformeResumenTotalAlumnos;
 import informe.informes.imp.InformeResumenTotalGeneral;
+import informe.informes.imp.InformeXObjetivos_Nivel;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 
@@ -83,6 +84,7 @@ public class InformeManager {
         add(new InformeHabilidades());
         add(new InformeEjesXCurso());
         add(new InformeHabilidadXCurso());
+        add(new InformeXObjetivos_Nivel());
 
     }
 

@@ -143,7 +143,6 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
     private MenuItem mnuXObjetivos;
     @FXML
     private MenuItem mnuXNivelObjetivos;
-    
 
     private EvaluacionPruebaView evaluacionPrueba;
     private AnularPreguntasViewController anularPregunta;
@@ -277,27 +276,26 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
             handlerInforme();
         } else if (source == mnuXObjetivos) {
             handlerXObjetivos();
-        }
-        else if( source == mnuXNivelObjetivos)
-        {
+        } else if (source == mnuXNivelObjetivos) {
             handlerXNivelObjetivos();
         }
 
     }
 
     private void handlerXNivelObjetivos() {
-        final Nivel_PorObjetivosColegioView view =  (Nivel_PorObjetivosColegioView)show("/colegio/nivel/fxml/Nivel_PorObjetivosColegio.fxml");
+        final Nivel_PorObjetivosColegioView view = (Nivel_PorObjetivosColegioView) show(
+                "/colegio/nivel/fxml/Nivel_PorObjetivosColegio.fxml");
         controller.findAll(Asignatura.class, view);
         controller.findAll(TipoAlumno.class, view);
         controller.findAll(Colegio.class, view);
-        
+
     }
 
     private void handlerXObjetivos() {
-       final PorObjetivosColegioView view =  (PorObjetivosColegioView)show("/colegio/fxml/PorObjetivosColegio.fxml");
-       controller.findAll(Asignatura.class, view);
-       controller.findAll(TipoAlumno.class, view);
-       controller.findAll(Colegio.class, view);
+        final PorObjetivosColegioView view = (PorObjetivosColegioView) show("/colegio/fxml/PorObjetivosColegio.fxml");
+        controller.findAll(Asignatura.class, view);
+        controller.findAll(TipoAlumno.class, view);
+        controller.findAll(Colegio.class, view);
     }
 
     private void handleCrear() {
@@ -632,6 +630,7 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
         mnuColegioXNivel.setOnAction(this);
         mnuComparativoColegioEjeHabilXNivel.setOnAction(this);
         mnuXObjetivos.setOnAction(this);
+        mnuXNivelObjetivos.setOnAction(this);
         accionClicTabla();
     }
 

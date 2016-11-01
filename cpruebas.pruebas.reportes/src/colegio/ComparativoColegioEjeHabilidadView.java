@@ -46,12 +46,14 @@ import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.util.Callback;
 
+@SuppressWarnings("rawtypes")
 public class ComparativoColegioEjeHabilidadView extends AFormView implements EventHandler<ActionEvent> {
 
 	private Logger log = Logger.getLogger(ComparativoColegioEjeHabilidadView.class.getName());
 	private static final String ASIGNATURA_ID = "idAsignatura";
 	private static final String COLEGIO_ID = "idColegio";
-	@FXML
+	
+    @FXML
 	private TableView tblEjeshabilidades;
 	@FXML
 	private TableView tblEvaluacion;
@@ -213,7 +215,7 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements Eve
 	 * 
 	 * @param pCursoList
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings({ "unchecked" })
 	private void llenarColumnas(ObservableList<Curso> pCursoList) {
 		TableColumn tc = new TableColumn("EJE / HABILIDAD");
 		tc.setSortable(false);
@@ -418,7 +420,8 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements Eve
 
 	}
 
-	private void generarTablaEvaluaciones(Map<EvaluacionEjeTematico, List<OTPreguntasEvaluacion>> mapEvaluaciones,
+	@SuppressWarnings("unchecked")
+    private void generarTablaEvaluaciones(Map<EvaluacionEjeTematico, List<OTPreguntasEvaluacion>> mapEvaluaciones,
 			int[] totalAlumnos, int[] alumnosEvaluados) {
 		ObservableList<String> row = null;
 		ObservableList<ObservableList<String>> items = FXCollections.observableArrayList();
@@ -470,7 +473,8 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements Eve
 	 *            Mapa que contiene los valores para cada colegio de las
 	 *            habilidades.
 	 */
-	private void generarTablaEjesHabilidades(Map<EjeTematico, List<OTPreguntasEjes>> mapEjes,
+	@SuppressWarnings("unchecked")
+    private void generarTablaEjesHabilidades(Map<EjeTematico, List<OTPreguntasEjes>> mapEjes,
 			Map<Habilidad, List<OTPreguntasHabilidad>> mapHabilidades) {
 		ObservableList<String> row = null;
 		ObservableList<ObservableList<String>> items = FXCollections.observableArrayList();

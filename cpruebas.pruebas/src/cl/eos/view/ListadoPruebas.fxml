@@ -99,7 +99,7 @@
                                                 <MenuItem fx:id="mnuHabilidadEvaluacionXNivel" mnemonicParsing="false" text="Evaluación-Habilidad" />
                                               <MenuItem fx:id="mnuCompEjesHabXNivel" mnemonicParsing="false" text="Comparativo Ejes Temáticos/Habilidades (Cantidad)" />
                                                 <MenuItem fx:id="mnuComparativoColegioEjeHabilXNivel" mnemonicParsing="false" text="Comparativo Ejes Temáticos/Habilidades (Porcentajes)" />
-                                                <MenuItem fx:id="mnuXObjetivos" mnemonicParsing="false" text="x Objetivos" />
+                                                <MenuItem fx:id="mnuXNivelObjetivos" mnemonicParsing="false" text="x Objetivos" />
                                             </items>
                                           </Menu>
                                       </items>
