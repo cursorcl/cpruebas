@@ -9,8 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import org.apache.log4j.Logger;
+import java.util.logging.Logger;
 
 import cl.eos.common.Constants;
 import cl.eos.imp.view.AFormView;
@@ -47,7 +46,7 @@ import javafx.scene.control.TableView;
 
 public class Nivel_ComparativoComunalEjeView extends AFormView implements EventHandler<ActionEvent> {
 
-    private static Logger log = Logger.getLogger(Nivel_ComparativoComunalEjeView.class);
+    private static Logger log = Logger.getLogger(Nivel_ComparativoComunalEjeView.class.getName());
     private final NumberFormat formatter = new DecimalFormat("#0.00");
     @FXML
     private Label lblTitulo;
@@ -337,7 +336,7 @@ public class Nivel_ComparativoComunalEjeView extends AFormView implements EventH
 
                 if (alumno == null) {
                     Nivel_ComparativoComunalEjeView.log
-                            .error(String.format("NO EXISTE ALUMNO: %s %s", colegioTipoCurso, respuesta));
+                            .severe(String.format("NO EXISTE ALUMNO: %s %s", colegioTipoCurso, respuesta));
                     continue; // Caso que el alumno sea nulo.
                 }
                 Nivel_ComparativoComunalEjeView.log.info(String.format("%s %s %s %s %s %s", colegioTipoCurso,

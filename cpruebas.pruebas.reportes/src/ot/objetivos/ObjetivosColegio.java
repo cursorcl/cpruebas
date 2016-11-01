@@ -1,9 +1,11 @@
-package ot;
+package ot.objetivos;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import cl.eos.persistence.models.Colegio;
+import ot.IResultado;
+import ot.TitledItemObjetivo;
 
 /**
  * Contiene el resultado de cada uno de los items que conforman el colegio.

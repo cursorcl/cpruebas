@@ -117,6 +117,7 @@ public abstract class AView implements IView {
     @Override
     public void setTitle(String title) {
         this.title = title;
+        WindowManager.getInstance().repaint();
     }
 
     public void show(IView pane) {

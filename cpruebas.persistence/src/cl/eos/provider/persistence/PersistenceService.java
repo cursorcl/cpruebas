@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.concurrent.Executors;
+import java.util.logging.Logger;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -17,7 +18,6 @@ import javax.persistence.Persistence;
 import javax.persistence.Query;
 import javax.persistence.RollbackException;
 
-import org.apache.log4j.Logger;
 import org.eclipse.persistence.config.HintValues;
 import org.eclipse.persistence.config.QueryHints;
 
@@ -43,7 +43,7 @@ import javafx.stage.FileChooser;
  */
 public class PersistenceService implements IPersistenceService {
 
-    static final Logger LOG = Logger.getLogger(PersistenceService.class);
+    static final Logger LOG = Logger.getLogger(PersistenceService.class.getName());
     private final static String NAME = "multi_cpruebas";
     private final EntityManagerFactory eFactory;
 
@@ -94,7 +94,7 @@ public class PersistenceService implements IPersistenceService {
             eManager.close();
         } catch (final RollbackException exception) {
             mEntity = null;
-            PersistenceService.LOG.error(exception);
+            PersistenceService.LOG.severe(exception.getMessage());
         }
         return mEntity;
     }
@@ -120,7 +120,7 @@ public class PersistenceService implements IPersistenceService {
             res = query.executeUpdate();
             eManager.getTransaction().commit();
         } catch (final Exception e) {
-            PersistenceService.LOG.error("Error en el executeUpdate de:" + namedQuery + " / " + e.getMessage());
+            PersistenceService.LOG.severe("Error en el executeUpdate de:" + namedQuery + " / " + e.getMessage());
             eManager.getTransaction().rollback();
 
         }
@@ -154,8 +154,7 @@ public class PersistenceService implements IPersistenceService {
                     } catch (final Exception e) {
                         eManager.getTransaction().rollback();
                         PersistenceService.LOG
-                                .error("Error en el find del namedQuery:" + namedQuery + " / " + e.getMessage());
-                        PersistenceService.LOG.error(e);
+                                .severe("Error en el find del namedQuery:" + namedQuery + " / " + e.getMessage());
                     }
 
                 }
@@ -191,9 +190,8 @@ public class PersistenceService implements IPersistenceService {
                         eManager.getTransaction().commit();
                     } catch (final Exception e) {
                         eManager.getTransaction().rollback();
-                        PersistenceService.LOG.error(
+                        PersistenceService.LOG.severe(
                                 "Error en el findAll de la entidad:" + entityClazz.getName() + " / " + e.getMessage());
-                        PersistenceService.LOG.error(e);
                     }
                 }
 
@@ -253,9 +251,8 @@ public class PersistenceService implements IPersistenceService {
                         lresult = query.setLockMode(LockModeType.PESSIMISTIC_WRITE).getResultList();
                     } catch (final Exception e) {
                         eManager.getTransaction().rollback();
-                        PersistenceService.LOG.error("Error en el findByAllId de la entidad:" + entityClazz.getName()
+                        PersistenceService.LOG.severe("Error en el findByAllId de la entidad:" + entityClazz.getName()
                                 + " / " + e.getMessage());
-                        PersistenceService.LOG.error(e);
                     }
                 }
                 eManager.close();
@@ -289,9 +286,8 @@ public class PersistenceService implements IPersistenceService {
                         eManager.getTransaction().commit();
                     } catch (final Exception e) {
                         eManager.getTransaction().rollback();
-                        PersistenceService.LOG.error(
+                        PersistenceService.LOG.severe(
                                 "Error en el findById de la entidad:" + entityClazz.getName() + " / " + e.getMessage());
-                        PersistenceService.LOG.error(e);
                     }
 
                 }
@@ -325,9 +321,8 @@ public class PersistenceService implements IPersistenceService {
                         eManager.getTransaction().commit();
                     } catch (final Exception e) {
                         eManager.getTransaction().rollback();
-                        PersistenceService.LOG.error("Error en el findByName de la entidad:" + entityClazz.getName()
+                        PersistenceService.LOG.severe("Error en el findByName de la entidad:" + entityClazz.getName()
                                 + " / " + e.getMessage());
-                        PersistenceService.LOG.error(e);
                     }
 
                 }
@@ -364,8 +359,7 @@ public class PersistenceService implements IPersistenceService {
                 eManager.getTransaction().commit();
             } catch (final Exception e) {
                 eManager.getTransaction().rollback();
-                PersistenceService.LOG.error("Error en el find del namedQuery:" + namedQuery + " / " + e.getMessage());
-                PersistenceService.LOG.error(e);
+                PersistenceService.LOG.severe("Error en el find del namedQuery:" + namedQuery + " / " + e.getMessage());
             }
 
         }
@@ -393,8 +387,7 @@ public class PersistenceService implements IPersistenceService {
             } catch (final Exception e) {
                 eManager.getTransaction().rollback();
                 PersistenceService.LOG
-                        .error("Error en el findById de la entidad:" + entityClazz.getName() + " / " + e.getMessage());
-                PersistenceService.LOG.error(e);
+                        .severe("Error en el findById de la entidad:" + entityClazz.getName() + " / " + e.getMessage());
             }
 
         }

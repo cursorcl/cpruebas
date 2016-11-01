@@ -9,8 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import org.apache.log4j.Logger;
+import java.util.logging.Logger;
 
 import cl.eos.common.Constants;
 import cl.eos.imp.view.AFormView;
@@ -49,7 +48,7 @@ import javafx.util.Callback;
 
 public class ComparativoComunalHabilidadView extends AFormView implements EventHandler<ActionEvent> {
 
-	private static Logger log = Logger.getLogger(ComparativoComunalHabilidadView.class);
+	private static Logger log = Logger.getLogger(ComparativoComunalHabilidadView.class.getName());
 	private NumberFormat formatter = new DecimalFormat("#0.00");
 	@FXML
 	private Label lblTitulo;
@@ -219,7 +218,7 @@ public class ComparativoComunalHabilidadView extends AFormView implements EventH
 					String respuesta = pruebaRendida.getRespuestas().toUpperCase();
 					Alumno al = pruebaRendida.getAlumno();
 					if (al == null) {
-						log.error(String.format("NO EXISTE ALUMNO: %s %s", colegioCurso, respuesta));
+						log.severe(String.format("NO EXISTE ALUMNO: %s %s", colegioCurso, respuesta));
 						continue; // Caso que el alumno sea nulo.
 					}
 					log.info(String.format("%s %s %s %s %s %s", colegioCurso, al.getRut(), al.getName(),

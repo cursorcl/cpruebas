@@ -12,8 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.Executors;
-
-import org.apache.log4j.Logger;
+import java.util.logging.Logger;
 
 import cl.eos.PruebasActivator;
 import cl.eos.detection.ExtractorResultadosPrueba;
@@ -117,7 +116,7 @@ public class EvaluarPruebaView extends AFormView {
         }
     }
 
-    private static Logger log = Logger.getLogger(EvaluarPruebaView.class);
+    private static Logger log = Logger.getLogger(EvaluarPruebaView.class.getName());
 
     public static Comparator<? super OTPruebaRendida> comparaPruebaRendida() {
         return (o1, o2) -> {
@@ -359,11 +358,11 @@ public class EvaluarPruebaView extends AFormView {
                                 } else {
                                     updateMessage("No se obtivieron resultados para el archivo:" + archivo.getName());
                                     updateProgress(n++, files.size());
-                                    EvaluarPruebaView.log.error("No se obtivieron resultados");
+                                    EvaluarPruebaView.log.severe("No se obtuvieron resultados");
                                 }
 
                             } catch (final CPruebasException e) {
-                                EvaluarPruebaView.log.error("Archivo:" + archivo.getName() + " " + e.getMessage());
+                                EvaluarPruebaView.log.severe("Archivo:" + archivo.getName() + " " + e.getMessage());
                                 results.getFirst().add(e.getMessage());
                                 updateMessage(e.getMessage());
                                 updateProgress(n++, files.size());

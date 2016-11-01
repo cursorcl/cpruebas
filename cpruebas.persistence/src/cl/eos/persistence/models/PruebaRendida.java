@@ -153,6 +153,11 @@ public class PruebaRendida extends AEntity {
         return alumno.getCurso();
     }
 
+    public TipoCurso getTipoCurso()
+    {
+        return alumno.getCurso().getTipoCurso();
+    }
+    
     public Integer getOmitidas() {
         return omitidas;
     }

@@ -91,6 +91,7 @@
 														<MenuItem fx:id="mnuHabilidadEvaluacionXAlumno" mnemonicParsing="false" text="Habilidades y Evaluación x Alumno" />
 														<MenuItem fx:id="mnuCompColegioEjeHabilXCurso" mnemonicParsing="false" text="Comparativo  Ejes Temáticos/Habilidades (Cantidad)" />
 														<MenuItem fx:id="mnuComparativoColegioEjeHabil" mnemonicParsing="false" text="Comparativo Ejes Temáticos/Habilidades (Porcentaje)" />
+                                          <MenuItem fx:id="mnuXObjetivos" mnemonicParsing="false" text="x Objetivos" />
                                           <Menu mnemonicParsing="false" text="x Nivel">
                                             <items>
                                                 <MenuItem fx:id="mnuColegioXNivel" mnemonicParsing="false" text="Resumen" />
@@ -98,6 +99,7 @@
                                                 <MenuItem fx:id="mnuHabilidadEvaluacionXNivel" mnemonicParsing="false" text="Evaluación-Habilidad" />
                                               <MenuItem fx:id="mnuCompEjesHabXNivel" mnemonicParsing="false" text="Comparativo Ejes Temáticos/Habilidades (Cantidad)" />
                                                 <MenuItem fx:id="mnuComparativoColegioEjeHabilXNivel" mnemonicParsing="false" text="Comparativo Ejes Temáticos/Habilidades (Porcentajes)" />
+                                                <MenuItem fx:id="mnuXObjetivos" mnemonicParsing="false" text="x Objetivos" />
                                             </items>
                                           </Menu>
                                       </items>

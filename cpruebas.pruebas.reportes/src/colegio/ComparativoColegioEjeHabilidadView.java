@@ -6,8 +6,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.log4j.Logger;
+import java.util.logging.Logger;
 
 import cl.eos.common.Constants;
 import cl.eos.imp.view.AFormView;
@@ -49,7 +48,7 @@ import javafx.util.Callback;
 
 public class ComparativoColegioEjeHabilidadView extends AFormView implements EventHandler<ActionEvent> {
 
-	private Logger log = Logger.getLogger("ComparativoColegioEjeHabilidadView");
+	private Logger log = Logger.getLogger(ComparativoColegioEjeHabilidadView.class.getName());
 	private static final String ASIGNATURA_ID = "idAsignatura";
 	private static final String COLEGIO_ID = "idColegio";
 	@FXML
@@ -397,7 +396,7 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements Eve
 					Pair<Integer, Integer> buenasTotal = obtenerBuenasTotales(respuestas, respEsperadas, hab);
 					otHabilidad.setBuenas(otHabilidad.getBuenas() + buenasTotal.getFirst());
 					otHabilidad.setTotal(otHabilidad.getTotal() + buenasTotal.getSecond());
-					log.debug(String.format("HAB: %s %d/%d  ACUM: %d/%d", hab.getName(), buenasTotal.getFirst(),
+					log.fine(String.format("HAB: %s %d/%d  ACUM: %d/%d", hab.getName(), buenasTotal.getFirst(),
 							buenasTotal.getSecond(), otHabilidad.getBuenas(), otHabilidad.getTotal()));
 					lstHabs.set(index, otHabilidad);
 				}

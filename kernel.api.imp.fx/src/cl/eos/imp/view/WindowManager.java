@@ -149,4 +149,14 @@ public class WindowManager implements IWindowManager {
         }
     }
 
+    @Override
+    public void repaint() {
+        if(group ==  null)
+            return;
+        group.requestLayout();
+        
+    }
+    
+    
+
 }

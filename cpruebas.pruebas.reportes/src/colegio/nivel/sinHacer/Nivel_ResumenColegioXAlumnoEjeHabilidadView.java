@@ -5,8 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executors;
-
-import org.apache.log4j.Logger;
+import java.util.logging.Logger;
 
 import cl.eos.imp.view.AFormView;
 import cl.eos.imp.view.ProgressForm;
@@ -37,7 +36,7 @@ import javafx.scene.control.TableView;
 
 public class Nivel_ResumenColegioXAlumnoEjeHabilidadView extends AFormView implements EventHandler<ActionEvent> {
 
-    private static Logger log = Logger.getLogger(Nivel_ResumenColegioXAlumnoEjeHabilidadView.class);
+    private static Logger log = Logger.getLogger(Nivel_ResumenColegioXAlumnoEjeHabilidadView.class.getName());
     private static final String ASIGNATURA_ID = "idAsignatura";
     private static final String COLEGIO_ID = "idColegio";
     @FXML
@@ -116,7 +115,7 @@ public class Nivel_ResumenColegioXAlumnoEjeHabilidadView extends AFormView imple
 
                         lst.add(curso);
                     } else {
-                        Nivel_ResumenColegioXAlumnoEjeHabilidadView.log.error(eval.getName() + " Sin colegio");
+                        Nivel_ResumenColegioXAlumnoEjeHabilidadView.log.severe(eval.getName() + " Sin colegio");
                     }
                 }
                 return lst;
@@ -127,7 +126,7 @@ public class Nivel_ResumenColegioXAlumnoEjeHabilidadView extends AFormView imple
             pForm.getDialogStage().hide();
         });
         task.setOnFailed(event -> {
-            Nivel_ResumenColegioXAlumnoEjeHabilidadView.log.error(event.getEventType().toString());
+            Nivel_ResumenColegioXAlumnoEjeHabilidadView.log.severe(event.getEventType().toString());
             pForm.getDialogStage().hide();
         });
 

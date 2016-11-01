@@ -13,10 +13,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
-
-import org.apache.log4j.Logger;
 
 import boofcv.alg.filter.binary.BinaryImageOps;
 import boofcv.alg.filter.binary.Contour;
@@ -50,7 +49,7 @@ import georegression.struct.point.Point2D_I32;
  */
 public abstract class AExtractorResultados implements IExtractorResultados {
 
-    private static final Logger log = Logger.getLogger(AExtractorResultados.class);
+    private static final Logger log = Logger.getLogger(AExtractorResultados.class.getName());
 
     /**
      * Delta x entre las primeras columnas de circulos.
@@ -391,7 +390,7 @@ public abstract class AExtractorResultados implements IExtractorResultados {
                 pregunta++;
             }
         }
-        AExtractorResultados.log.info("Respuesras obtenidas:" + resp != null ? resp.toString() : "--");
+        log.fine("Respuesras obtenidas:" + resp != null ? resp.toString() : "--");
         return resp.toString();
     }
 
@@ -427,7 +426,7 @@ public abstract class AExtractorResultados implements IExtractorResultados {
         final int dx = x[contours.size() - 1] - x[0];
         final int dy = y[contours.size() - 1] - y[0];
         final double angle = Math.PI / 2f - Math.atan2(dy, dx);
-        AExtractorResultados.log.info(String.format("Angulo: %f[rad] %f[°]", angle, angle / Math.PI * 180.0));
+        log.fine(String.format("Angulo: %f[rad] %f[°]", angle, angle / Math.PI * 180.0));
         return angle;
     }
 
@@ -473,7 +472,7 @@ public abstract class AExtractorResultados implements IExtractorResultados {
                 strRut.append(AExtractorResultados.RUT[idx]);
             }
         }
-        AExtractorResultados.log.info("Rut obtenido:" + strRut != null ? strRut.toString() : "--");
+        log.fine("Rut obtenido:" + strRut != null ? strRut.toString() : "--");
         return strRut.toString();
     }
 
@@ -521,8 +520,7 @@ public abstract class AExtractorResultados implements IExtractorResultados {
                     points[n] = result.get(n);
                 }
             } catch (final IndexOutOfBoundsException e) {
-                AExtractorResultados.log
-                        .error("Problemas al obtnener puntos de referencia: " + e.getLocalizedMessage());
+                log.severe("Problemas al obtnener puntos de referencia: " + e.getLocalizedMessage());
                 points = null;
             }
         }

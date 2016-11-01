@@ -13,63 +13,29 @@ import cl.eos.persistence.models.Objetivo;
  * Contiene columnas (cursos, colegios, etc.) de acuerdo a lo que corresponde al
  * reporte.
  *
- * @author colegio
+ * @author eosorio
  */
 public class ItemTablaObjetivo {
-
-    public static class Builder {
-        private Objetivo objetivo;
-        private String preguntas = "";
-        private String ejesAsociados = "";
-        private String habilidades = "";
-        private List<ItemObjetivo> items = new ArrayList<>();
-
-        public ItemTablaObjetivo build() {
-            return new ItemTablaObjetivo(this);
-        }
-
-        public Builder ejesAsociados(String ejesAsociados) {
-            this.ejesAsociados = ejesAsociados;
-            return this;
-        }
-
-        public Builder habilidades(String habilidades) {
-            this.habilidades = habilidades;
-            return this;
-        }
-
-        public Builder items(List<ItemObjetivo> items) {
-            this.items = items;
-            return this;
-        }
-
-        public Builder objetivo(Objetivo objetivo) {
-            this.objetivo = objetivo;
-            return this;
-        }
-
-        public Builder preguntas(String preguntas) {
-            this.preguntas = preguntas;
-            return this;
-        }
-    }
 
     private Objetivo objetivo;
     private String preguntas = "";
     private String ejesAsociados = "";
     private String habilidades = "";
+    private Float porcentaje = 0F;
 
     /**
      * Contiene los valores de todos los cursos.
      */
     List<ItemObjetivo> items = new ArrayList<>();
 
+
     private ItemTablaObjetivo(Builder builder) {
-        objetivo = builder.objetivo;
-        preguntas = builder.preguntas;
-        ejesAsociados = builder.ejesAsociados;
-        habilidades = builder.habilidades;
-        items = builder.items;
+        this.objetivo = builder.objetivo;
+        this.preguntas = builder.preguntas;
+        this.ejesAsociados = builder.ejesAsociados;
+        this.habilidades = builder.habilidades;
+        this.porcentaje = builder.porcentaje;
+        this.items = builder.items;
     }
 
     @Override
@@ -136,4 +102,56 @@ public class ItemTablaObjetivo {
     public void setPreguntas(String preguntas) {
         this.preguntas = preguntas;
     }
+
+    public Float getPorcentaje() {
+        return porcentaje;
+    }
+
+    public void setPorcentaje(Float porcentaje) {
+        this.porcentaje = porcentaje;
+    }
+
+    public static class Builder {
+        private Objetivo objetivo;
+        private String preguntas = "";
+        private String ejesAsociados ="";
+        private String habilidades = "";
+        private Float porcentaje = 0f;
+        private List<ItemObjetivo> items = new ArrayList<>();
+
+        public Builder objetivo(Objetivo objetivo) {
+            this.objetivo = objetivo;
+            return this;
+        }
+
+        public Builder preguntas(String preguntas) {
+            this.preguntas = preguntas;
+            return this;
+        }
+
+        public Builder ejesAsociados(String ejesAsociados) {
+            this.ejesAsociados = ejesAsociados;
+            return this;
+        }
+
+        public Builder habilidades(String habilidades) {
+            this.habilidades = habilidades;
+            return this;
+        }
+
+        public Builder porcentaje(Float porcentaje) {
+            this.porcentaje = porcentaje;
+            return this;
+        }
+
+        public Builder items(List<ItemObjetivo> items) {
+            this.items = items;
+            return this;
+        }
+
+        public ItemTablaObjetivo build() {
+            return new ItemTablaObjetivo(this);
+        }
+    }
+
 }

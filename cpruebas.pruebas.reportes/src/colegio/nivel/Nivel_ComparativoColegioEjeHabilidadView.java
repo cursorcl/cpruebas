@@ -6,10 +6,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import org.apache.log4j.Logger;
+import java.util.logging.Logger;
 
 import cl.eos.common.Constants;
 import cl.eos.imp.view.AFormView;
@@ -53,7 +50,7 @@ import javafx.util.Callback;
 
 public class Nivel_ComparativoColegioEjeHabilidadView extends AFormView implements EventHandler<ActionEvent> {
 
-    private Logger log = Logger.getLogger("ComparativoColegioEjeHabilidadView");
+    private Logger log = Logger.getLogger(Nivel_ComparativoColegioEjeHabilidadView.class.getName());
     private static final String ASIGNATURA_ID = "idAsignatura";
     private static final String COLEGIO_ID = "idColegio";
     @FXML
@@ -413,7 +410,7 @@ public class Nivel_ComparativoColegioEjeHabilidadView extends AFormView implemen
                     Pair<Integer, Integer> buenasTotal = obtenerBuenasTotales(respuestas, respEsperadas, hab);
                     otHabilidad.setBuenas(otHabilidad.getBuenas() + buenasTotal.getFirst());
                     otHabilidad.setTotal(otHabilidad.getTotal() + buenasTotal.getSecond());
-                    log.debug(String.format("HAB: %s %d/%d  ACUM: %d/%d", hab.getName(), buenasTotal.getFirst(),
+                    log.fine(String.format("HAB: %s %d/%d  ACUM: %d/%d", hab.getName(), buenasTotal.getFirst(),
                             buenasTotal.getSecond(), otHabilidad.getBuenas(), otHabilidad.getTotal()));
                     lstHabs.set(index, otHabilidad);
                 }

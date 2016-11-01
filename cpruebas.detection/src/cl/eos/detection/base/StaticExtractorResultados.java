@@ -11,10 +11,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 
-import org.apache.log4j.Logger;
 
 import boofcv.alg.filter.binary.BinaryImageOps;
 import boofcv.alg.filter.binary.Contour;
@@ -42,7 +42,7 @@ import georegression.struct.point.Point2D_I32;
  */
 public class StaticExtractorResultados {
 
-    private static final Logger log = Logger.getLogger(StaticExtractorResultados.class);
+    private static final Logger log = Logger.getLogger(StaticExtractorResultados.class.getName());
     /**
      * Delta x entre las primeras columnas de circulos.
      */
@@ -241,7 +241,7 @@ public class StaticExtractorResultados {
         final int dx = x[n - 1] - x[0];
         final int dy = y[n - 1] - y[0];
         final double angle = Math.PI / 2f - Math.atan2(dy, dx);
-        StaticExtractorResultados.log.info(String.format("Angulo: %f[rad] %f[°]", angle, angle / Math.PI * 180.0));
+        log.fine(String.format("Angulo: %f[rad] %f[°]", angle, angle / Math.PI * 180.0));
         return angle;
     }
 

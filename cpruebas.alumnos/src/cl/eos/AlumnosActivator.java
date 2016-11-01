@@ -2,8 +2,7 @@ package cl.eos;
 
 import java.io.IOException;
 import java.net.URL;
-
-import org.apache.log4j.Logger;
+import java.util.logging.Logger;
 
 import cl.eos.controller.AlumnosContoller;
 import cl.eos.interfaces.AActivator;
@@ -11,7 +10,7 @@ import javafx.fxml.FXMLLoader;
 
 public class AlumnosActivator extends AActivator {
 
-    static final Logger LOG = Logger.getLogger(AlumnosActivator.class);
+    static final Logger LOG = Logger.getLogger(AlumnosActivator.class.getName());
 
     public AlumnosActivator() {
 
@@ -25,7 +24,7 @@ public class AlumnosActivator extends AActivator {
             view.setPanel(pane);
             controller.addView(view);
         } catch (final IOException e) {
-            AlumnosActivator.LOG.error(e);
+            LOG.severe(e.getMessage());
         }
 
     }

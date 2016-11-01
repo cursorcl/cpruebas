@@ -4,8 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.log4j.Logger;
+import java.util.logging.Logger;
 
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
@@ -38,7 +37,7 @@ import javafx.scene.image.ImageView;
 public class AlumnosTableTreeView extends AFormView implements EventHandler<ActionEvent> {
 
     private static final int LARGO_CAMPO_TEXT = 100;
-    static final Logger LOG = Logger.getLogger(AlumnosTableTreeView.class);
+    static final Logger LOG = Logger.getLogger(AlumnosTableTreeView.class.getName());
 
     @FXML
     private MenuItem mnuAgregar;
@@ -282,7 +281,7 @@ public class AlumnosTableTreeView extends AFormView implements EventHandler<Acti
             final File img = new File("res/school-icon1_16.png");
             return new ImageView(img.toURI().toURL().toString());
         } catch (final IOException e) {
-            AlumnosTableTreeView.LOG.error(e);
+            AlumnosTableTreeView.LOG.severe(e.getMessage());
             return null;
         }
 

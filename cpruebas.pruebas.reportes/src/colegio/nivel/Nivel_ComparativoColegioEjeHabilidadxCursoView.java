@@ -5,10 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executors;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.apache.log4j.Logger;
 
 import cl.eos.common.Constants;
 import cl.eos.imp.view.AFormView;
@@ -17,7 +17,6 @@ import cl.eos.interfaces.entity.IEntity;
 import cl.eos.persistence.models.Alumno;
 import cl.eos.persistence.models.Asignatura;
 import cl.eos.persistence.models.Colegio;
-import cl.eos.persistence.models.Curso;
 import cl.eos.persistence.models.EjeTematico;
 import cl.eos.persistence.models.EvaluacionEjeTematico;
 import cl.eos.persistence.models.EvaluacionPrueba;
@@ -56,6 +55,7 @@ public class Nivel_ComparativoColegioEjeHabilidadxCursoView extends AFormView im
 
     private static final String ASIGNATURA_ID = "idAsignatura";
     private static final String COLEGIO_ID = "idColegio";
+    private static final Logger log = Logger.getLogger(Nivel_ComparativoColegioEjeHabilidadxCursoView.class.getName());
     @SuppressWarnings("rawtypes")
     @FXML
     private TableView tblEjeshabilidades;
@@ -502,7 +502,7 @@ public class Nivel_ComparativoColegioEjeHabilidadxCursoView extends AFormView im
                 int[] alumXRango = ot.calculateAlumnosXRango(rangosEvaluacionPorcentaje);
                 OTTipoCursoRangos cursoRango = new OTTipoCursoRangos(evaluacion.getCurso().getTipoCurso(), alumXRango);
                 List<OTTipoCursoRangos> listCursos = reporte.get(ot.getEjeHabilidad());
-                Logger.getLogger(this.getClass()).info(listCursos);
+                log.fine("Se han obtenido:"  +  (listCursos != null ? listCursos.size(): 0) + " OTTipoCursoRangos");
                 int idx = -1;
                 if ((idx = listCursos.indexOf(cursoRango)) != -1) {
                     OTTipoCursoRangos oListCursos = listCursos.get(idx);

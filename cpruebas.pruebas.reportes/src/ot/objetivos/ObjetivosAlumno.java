@@ -1,10 +1,13 @@
-package ot;
+package ot.objetivos;
 
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import cl.eos.persistence.models.Alumno;
+import ot.IResultado;
+import ot.ItemObjetivo;
+import ot.TitledItemObjetivo;
 
 /**
  * Contiene el resultado de cada uno de los items que conforman el alumno.

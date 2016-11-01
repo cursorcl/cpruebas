@@ -5,10 +5,10 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 
-import org.apache.log4j.Logger;
 
 import cl.cursor.card.RecognizerFactory;
 import cl.eos.detection.base.AExtractorResultados;
@@ -22,7 +22,7 @@ import javafx.beans.property.SimpleBooleanProperty;
  */
 public class ExtractorResultadosPrueba extends AExtractorResultados {
 
-    static final Logger log = Logger.getLogger(ExtractorResultadosPrueba.class);
+    static final Logger log = Logger.getLogger(ExtractorResultadosPrueba.class.getName());
     private static ExtractorResultadosPrueba instance;
 
     public static ExtractorResultadosPrueba getInstance() {
@@ -56,15 +56,15 @@ public class ExtractorResultadosPrueba extends AExtractorResultados {
 
             } catch (final IOException e) {
                 ExtractorResultadosPrueba.log
-                        .error("Error al leer los archivos de redes neuronales:" + e.getLocalizedMessage());
+                        .severe("Error al leer los archivos de redes neuronales:" + e.getLocalizedMessage());
                 valid.set(false);
             }
 
         } else {
             ExtractorResultadosPrueba.log
-                    .error("red_rut existe = " + fRedRut.getAbsolutePath() + " " + fRedRut.exists());
+                    .severe("red_rut existe = " + fRedRut.getAbsolutePath() + " " + fRedRut.exists());
             ExtractorResultadosPrueba.log
-                    .error("red_2 existe = " + fRedPrueba.getAbsolutePath() + " " + fRedPrueba.exists());
+                    .severe("red_2 existe = " + fRedPrueba.getAbsolutePath() + " " + fRedPrueba.exists());
             valid.set(false);
         }
 
@@ -115,7 +115,7 @@ public class ExtractorResultadosPrueba extends AExtractorResultados {
         final int h = bImg.getHeight();
         final int w = bImg.getWidth();
         if (h < 3200 || w < 2480) {
-            ExtractorResultadosPrueba.log.error(String.format("Dimensiones de la prueba son muy pequeñas %dx%d", w, h));
+            ExtractorResultadosPrueba.log.severe(String.format("Dimensiones de la prueba son muy pequeñas %dx%d", w, h));
             throw new CPruebasException(String.format("Dimensiones de la prueba son muy pequeñas %dx%d", w, h));
         }
         AExtractorResultados.writeIMG(bImg, "original");

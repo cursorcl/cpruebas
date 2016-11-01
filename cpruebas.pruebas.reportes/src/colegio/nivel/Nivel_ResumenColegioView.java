@@ -1,6 +1,5 @@
 package colegio.nivel;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -9,8 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-
-import org.apache.log4j.Logger;
+import java.util.logging.Logger;
 
 import cl.eos.common.Constants;
 import cl.eos.imp.view.AFormView;
@@ -31,7 +29,6 @@ import cl.eos.persistence.models.TipoCurso;
 import cl.eos.persistence.util.Comparadores;
 import cl.eos.util.ExcelSheetWriterObj;
 import cl.eos.util.Utils;
-import javafx.beans.property.SimpleFloatProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -474,7 +471,7 @@ public class Nivel_ResumenColegioView extends AFormView implements EventHandler<
 				/ (float) rendida.getEvaluacionPrueba().getPrueba().getNroPreguntas() * 100f;
 		RangoEvaluacion rango = nivelEvaluacion.getRango(porcentaje);
 
-		log.info(String.format(";\"%s\";%f;%5.2f%%;\"%s\"", rendida.getCurso(), rendida.getNota(), porcentaje,
+		log.fine(String.format(";\"%s\";%f;%5.2f%%;\"%s\"", rendida.getCurso(), rendida.getNota(), porcentaje,
 				rango.getName()));
 
 		TipoCurso curso = rendida.getEvaluacionPrueba().getCurso().getTipoCurso();

@@ -1,5 +1,6 @@
-package curso;
+package colegio.nivel;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,7 +9,7 @@ import java.util.stream.Collectors;
 
 import cl.eos.common.Constants;
 import cl.eos.imp.view.AFormView;
-import cl.eos.interfaces.entity.IEntity;
+import cl.eos.imp.view.WindowManager;
 import cl.eos.persistence.models.Asignatura;
 import cl.eos.persistence.models.Colegio;
 import cl.eos.persistence.models.Curso;
@@ -16,6 +17,7 @@ import cl.eos.persistence.models.EvaluacionPrueba;
 import cl.eos.persistence.models.Objetivo;
 import cl.eos.persistence.models.PruebaRendida;
 import cl.eos.persistence.models.TipoAlumno;
+import cl.eos.util.Pair;
 import javafx.beans.property.ReadOnlyFloatWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -40,10 +42,12 @@ import ot.UtilReportBuilder;
  * @author curso
  *
  */
-public class PorObjetivosView extends AFormView {
+public class Nivel_PorObjetivosColegioView extends AFormView {
 
-    private static final String COLEGIO_ID = "colegioId";
-
+    private static final String TITLE_FORMAT = "Porcentaje de logro por objetivo colegio %s / asignatura %s";
+    private static final String TITLE = "Porcentaje de logro por objetivo";
+    private static final String ASIGNATURA_ID = "idAsignatura";
+    private static final String COLEGIO_ID = "idColegio";
     @FXML
     private TableView<ItemTablaObjetivo> tblObjetivos;
     @FXML
@@ -62,13 +66,13 @@ public class PorObjetivosView extends AFormView {
     @FXML
     private ComboBox<Colegio> cmbColegio;
     @FXML
-    private ComboBox<Curso> cmbCursos;
-    @FXML
     private ComboBox<Asignatura> cmbAsignaturas;
 
-    private EvaluacionPrueba evaluacionPrueba;
+    
+    private Map<String, Object> parameters = new HashMap<String, Object>();
 
     long tipoAlumno = Constants.PIE_ALL;
+    private ObservableList<EvaluacionPrueba> evaluacionesPrueba;
 
     protected void clearContent() {
         if (tblObjetivos.getItems() != null)
@@ -83,25 +87,32 @@ public class PorObjetivosView extends AFormView {
      * Generar el reporte.
      */
     private void generateReport() {
-        if (evaluacionPrueba != null && cmbTipoAlumno.getItems() != null && !cmbTipoAlumno.getItems().isEmpty()) {
-            // Curso curso = cmbCursos.getValue();
-            final Curso curso = evaluacionPrueba.getCurso();
-            final List<PruebaRendida> pRendidas = evaluacionPrueba.getPruebasRendidas();
+        
+        if (cmbAsignaturas.getItems() != null && cmbTipoAlumno.getItems() != null ) {
+            
+            final List<PruebaRendida> pRendidas = new ArrayList<>();
+            for(EvaluacionPrueba evaluacionPrueba : evaluacionesPrueba)
+            {
+                pRendidas.addAll(evaluacionPrueba.getPruebasRendidas());
+            }
 
             if (pRendidas != null && !pRendidas.isEmpty()) {
-                final List<ItemTablaObjetivo> reporte = UtilReportBuilder.reporteCurso(pRendidas);
+                final Pair<List<Curso>, List<ItemTablaObjetivo>> reporte = UtilReportBuilder.reporteColegio(pRendidas);
 
-                final ObservableList<ItemTablaObjetivo> itemsTable = FXCollections.observableList(reporte);
+                List<Curso> cursos = reporte.getFirst();
+                
+                final ObservableList<ItemTablaObjetivo> itemsTable = FXCollections.observableList(reporte.getSecond());
                 final Optional<ItemTablaObjetivo> opFirst = itemsTable.stream().findFirst();
                 if (!opFirst.isPresent())
                     return;
 
                 while (tblObjetivos.getColumns().size() > 3)
                     tblObjetivos.getColumns().remove(tblObjetivos.getColumns().size() - 1);
-                final List<ItemObjetivo> items = opFirst.get().getItems();
-                for (int n = 0; n < items.size(); n++) {
+                
+                
+                for (int n = 0; n < cursos.size(); n++) {
                     final int idx = n;
-                    final TableColumn<ItemTablaObjetivo, Number> column = new TableColumn<>(curso.getName());
+                    final TableColumn<ItemTablaObjetivo, Number> column = new TableColumn<>(cursos.get(n).getName());
                     column.setStyle("-fx-font-size:10;-fx-alignment: CENTER;");
                     column.setCellValueFactory(c -> {
                         final List<ItemObjetivo> lItems = c.getValue().getItems();
@@ -160,24 +171,44 @@ public class PorObjetivosView extends AFormView {
 
     @FXML
     public void initialize() {
-        setTitle("Resumen de respuestas por objetivo");
+        setTitle(TITLE);
         inicializeTable();
+
         cmbColegio.setOnAction(event -> {
-            final Colegio colegio = cmbColegio.getSelectionModel().getSelectedItem();
+            Colegio colegio = cmbColegio.getSelectionModel().getSelectedItem();
             if (colegio != null) {
-                clearContent();
-                final Map<String, Object> parameters = new HashMap<>();
-                parameters.put(PorObjetivosView.COLEGIO_ID, colegio.getId());
-                controller.find("Curso.findByColegio", parameters);
+                parameters.put(COLEGIO_ID, colegio.getId());
+                Asignatura asig = cmbAsignaturas.getSelectionModel().getSelectedItem();
+                String asignatura  = asig != null ? asig.getName() : "-"; 
+                setTitle(String.format(TITLE_FORMAT, colegio.getName(),  asignatura ));
+            }
+        });
+
+        cmbAsignaturas.setOnAction(event -> {
+            Asignatura asignatura = cmbAsignaturas.getSelectionModel().getSelectedItem();
+            if (asignatura != null) {
+                parameters.put(ASIGNATURA_ID, asignatura.getId());
+                
+                Colegio colegio = cmbColegio.getSelectionModel().getSelectedItem();
+                String strColegio = colegio != null ? colegio.getName() : "-"; 
+                
+                setTitle(String.format(TITLE_FORMAT, strColegio,  cmbAsignaturas.getSelectionModel().getSelectedItem() ));
 
             }
         });
+        
         cmbTipoAlumno.setOnAction(event -> {
             if (cmbTipoAlumno.getSelectionModel() == null)
                 return;
             tipoAlumno = cmbTipoAlumno.getSelectionModel().getSelectedItem().getId();
         });
-        btnGenerarReporte.setOnAction(event -> generateReport());
+        btnGenerarReporte.setOnAction(event -> handlerReporte());
+    }
+
+    private void handlerReporte() {
+        if (!parameters.isEmpty() && parameters.containsKey(COLEGIO_ID) && parameters.containsKey(ASIGNATURA_ID)) {
+            controller.find("EvaluacionPrueba.findEvaluacionByColegioAsig", parameters, this);
+        }
     }
 
     @Override
@@ -188,11 +219,6 @@ public class PorObjetivosView extends AFormView {
                 final List<TipoAlumno> values = list.stream().map(t -> (TipoAlumno) t).collect(Collectors.toList());
                 final ObservableList<TipoAlumno> tAlumnoList = FXCollections.observableArrayList(values);
                 cmbTipoAlumno.setItems(tAlumnoList);
-            }
-            if (entity instanceof Curso) {
-                final List<Curso> values = list.stream().map(t -> (Curso) t).collect(Collectors.toList());
-                final ObservableList<Curso> curso = FXCollections.observableArrayList(values);
-                cmbCursos.setItems(curso);
             }
 
             if (entity instanceof Colegio) {
@@ -206,16 +232,17 @@ public class PorObjetivosView extends AFormView {
                 final ObservableList<Asignatura> asginaturas = FXCollections.observableArrayList(values);
                 cmbAsignaturas.setItems(asginaturas);
             }
+            
+            if (entity instanceof EvaluacionPrueba) {
+                evaluacionesPrueba = FXCollections.observableArrayList();
+                for (Object object : list) {
+                    EvaluacionPrueba evaluacion = (EvaluacionPrueba) object;
+                    evaluacionesPrueba.add(evaluacion);
+                }
+                generateReport();
+            }
         }
 
-    }
-
-    @Override
-    public void onFound(IEntity entity) {
-        if (entity instanceof EvaluacionPrueba) {
-            evaluacionPrueba = (EvaluacionPrueba) entity;
-            generateReport();
-        }
     }
 
 }

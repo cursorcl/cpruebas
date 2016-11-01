@@ -7,8 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-
-import org.apache.log4j.Logger;
+import java.util.logging.Logger;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
@@ -291,7 +290,7 @@ public class ResumenColegioView extends AFormView implements EventHandler<Action
 				Alumno alumno = pruebaRendida.getAlumno();
 				if(alumno == null  || alumno.getTipoAlumno() == null)
 				{
-				    log.error("Alumno NULO");
+				    log.severe("Alumno NULO en generarReporteCursos asociado a la prueba rendidad número:" + pruebaRendida.getId());
                     totalAlumnos--;
                     continue;
 				}

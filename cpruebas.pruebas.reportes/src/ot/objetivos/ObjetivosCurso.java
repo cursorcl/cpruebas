@@ -1,4 +1,4 @@
-package ot;
+package ot.objetivos;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,6 +6,9 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import cl.eos.persistence.models.Curso;
+import ot.IResultado;
+import ot.ItemObjetivo;
+import ot.TitledItemObjetivo;
 
 /**
  * Contiene una lista de todos los resultados de los objetivosCurso de un curso.

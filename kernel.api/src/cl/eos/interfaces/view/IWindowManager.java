@@ -39,5 +39,7 @@ public interface IWindowManager {
     void show(final IView window);
 
     void showOver(IView window);
+    
+    void repaint();
 
 }

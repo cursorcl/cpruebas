@@ -5,8 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executors;
-
-import org.apache.log4j.Logger;
+import java.util.logging.Logger;
 
 import cl.eos.imp.view.AFormView;
 import cl.eos.imp.view.ProgressForm;
@@ -38,7 +37,7 @@ import javafx.scene.control.TableView;
 
 public class ResumenColegioXAlumnoEjeHabilidadView extends AFormView implements EventHandler<ActionEvent> {
 
-	private static Logger log = Logger.getLogger(ResumenColegioXAlumnoEjeHabilidadView.class);
+	private static Logger log = Logger.getLogger(ResumenColegioXAlumnoEjeHabilidadView.class.getName());
 	private static final String ASIGNATURA_ID = "idAsignatura";
 	private static final String COLEGIO_ID = "idColegio";
 	@FXML
@@ -220,7 +219,7 @@ public class ResumenColegioXAlumnoEjeHabilidadView extends AFormView implements 
 
 						lst.add(curso);
 					} else {
-						log.error(eval.getName() + " Sin colegio");
+						log.severe(eval.getName() + " Sin colegio");
 					}
 				}
 				return lst;
@@ -237,7 +236,7 @@ public class ResumenColegioXAlumnoEjeHabilidadView extends AFormView implements 
 
 			@Override
 			public void handle(WorkerStateEvent event) {
-				log.error(event.getEventType().toString());
+				log.severe("Al generar la prueba se ha producido el siguiente error:" + event.getEventType().toString());
 				pForm.getDialogStage().hide();
 			}
 		});
