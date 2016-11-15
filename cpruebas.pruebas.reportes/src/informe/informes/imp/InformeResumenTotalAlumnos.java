@@ -111,6 +111,8 @@ public class InformeResumenTotalAlumnos implements IInforme {
     @Override
     public void page(XWPFDocument document) {
 
+        if (resultado == null || resultado.isEmpty())
+            return;
         resultado = resultado.stream().sorted(Comparadores.comparaResumeColegio()).collect(Collectors.toList());
 
         XWPFParagraph paragraph = document.createParagraph();

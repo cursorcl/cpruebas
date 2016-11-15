@@ -87,6 +87,9 @@ public class InformeResumenPME implements IInforme {
     @Override
     public void page(XWPFDocument document) {
 
+        if (resultado == null || resultado.isEmpty())
+            return;
+        
         XWPFParagraph paragraph = document.createParagraph();
         XWPFRun run = paragraph.createRun();
         run.addCarriageReturn();

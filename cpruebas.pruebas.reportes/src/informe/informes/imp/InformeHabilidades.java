@@ -137,6 +137,9 @@ public class InformeHabilidades implements IInforme {
     @Override
     public void page(XWPFDocument document) {
 
+        if (resultado == null || resultado.isEmpty())
+            return;
+        
         final int nroRangos = rangos.size();
 
         XWPFParagraph paragraph = document.createParagraph();
