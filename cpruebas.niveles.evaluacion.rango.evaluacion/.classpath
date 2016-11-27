@@ -11,5 +11,7 @@
 	<classpathentry kind="lib" path="O:/cpruebas_multiuser/cpruebas/jars/jfxtras-fxml-8.0.jar"/>
 	<classpathentry kind="lib" path="O:/cpruebas_multiuser/cpruebas/jars/jfxtras-labs-8.0.jar"/>
 	<classpathentry kind="lib" path="O:/cpruebas_multiuser/cpruebas/jars/jfxtras-window.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.persistence.api"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.persistence.model"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

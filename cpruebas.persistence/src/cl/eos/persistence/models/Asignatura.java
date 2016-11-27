@@ -6,7 +6,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.Version;
 
 import org.eclipse.persistence.annotations.Cache;
 import org.eclipse.persistence.annotations.CacheCoordinationType;
@@ -38,12 +37,6 @@ public class Asignatura extends AEntity {
 
     private String name;
 
-    /**
-     * Se crea para el manejo de multiusuarios
-     */
-    @Version
-    protected int version;
-
     @Override
     public Long getId() {
         return id;
@@ -54,10 +47,6 @@ public class Asignatura extends AEntity {
         return name;
     }
 
-    @Override
-    public final int getVersion() {
-        return version;
-    }
 
     @Override
     public void setId(Long id) {
@@ -67,11 +56,6 @@ public class Asignatura extends AEntity {
     @Override
     public void setName(String name) {
         this.name = name;
-    }
-
-    @Override
-    public final void setVersion(int version) {
-        this.version = version;
     }
 
     @Override

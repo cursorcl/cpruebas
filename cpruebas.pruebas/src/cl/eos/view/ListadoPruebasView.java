@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.gson.Gson;
+
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.persistence.models.Asignatura;
@@ -278,7 +280,7 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
             handlerXObjetivos();
         } else if (source == mnuXNivelObjetivos) {
             handlerXNivelObjetivos();
-        }
+        } 
 
     }
 
@@ -676,4 +678,5 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
     public boolean validate() {
         return true;
     }
+
 }

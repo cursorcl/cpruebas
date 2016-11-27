@@ -5,5 +5,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.persistence"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/kernel.api"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/kernel.api.imp.fx"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.persistence.api"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="O:/cpruebas_multiuser/cpruebas/jars/gson-2.8.0.jar" sourcepath="O:/cpruebas_multiuser/cpruebas/jars/gson-2.8.0-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/O:/cpruebas_multiuser/cpruebas/jars/gson-2.8.0-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="O:/cpruebas_multiuser/cpruebas/jars/lib/httpclient-4.5.2.jar"/>
+	<classpathentry kind="lib" path="O:/cpruebas_multiuser/cpruebas/jars/lib/httpclient-win-4.5.2.jar"/>
+	<classpathentry kind="lib" path="O:/cpruebas_multiuser/cpruebas/jars/lib/httpcore-4.4.4.jar"/>
+	<classpathentry kind="lib" path="O:/cpruebas_multiuser/cpruebas/jars/lib/commons-codec-1.9.jar"/>
+	<classpathentry kind="lib" path="O:/cpruebas_multiuser/cpruebas/jars/lib/commons-logging-1.2.jar"/>
+	<classpathentry kind="lib" path="O:/cpruebas_multiuser/cpruebas/jars/lib/fluent-hc-4.5.2.jar"/>
+	<classpathentry kind="lib" path="O:/cpruebas_multiuser/cpruebas/jars/lib/httpclient-cache-4.5.2.jar"/>
+	<classpathentry kind="lib" path="O:/cpruebas_multiuser/cpruebas/jars/lib/httpmime-4.5.2.jar"/>
+	<classpathentry kind="lib" path="O:/cpruebas_multiuser/cpruebas/jars/lib/jna-4.1.0.jar"/>
+	<classpathentry kind="lib" path="O:/cpruebas_multiuser/cpruebas/jars/lib/jna-platform-4.1.0.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/kernel.api"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.persistence.api"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/kernel.api.imp.fx"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

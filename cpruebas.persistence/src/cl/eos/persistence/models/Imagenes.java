@@ -9,7 +9,6 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.Version;
 
 import cl.eos.persistence.AEntity;
 
@@ -83,9 +82,6 @@ public class Imagenes extends AEntity {
     @javax.persistence.Transient
     public boolean eliminada;
 
-    @Version
-    private int version;
-
     @Override
     public Long getId() {
         return id;
@@ -105,11 +101,6 @@ public class Imagenes extends AEntity {
     }
 
     @Override
-    public int getVersion() {
-        return version;
-    }
-
-    @Override
     public void setId(Long id) {
         this.id = id;
     }
@@ -125,11 +116,6 @@ public class Imagenes extends AEntity {
 
     public void setRespuesta(RespuestasEsperadasPrueba respuesta) {
         this.respuesta = respuesta;
-    }
-
-    @Override
-    public void setVersion(int version) {
-        this.version = version;
     }
 
     @Override

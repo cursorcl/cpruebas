@@ -10,7 +10,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.PreUpdate;
-import javax.persistence.Version;
 
 import org.eclipse.persistence.annotations.Cache;
 import org.eclipse.persistence.annotations.CacheCoordinationType;
@@ -32,8 +31,8 @@ public class Alternativas extends AEntity {
         private int numero;
         private String texto;
         private RespuestasEsperadasPrueba respuesta;
-        private int version;
         private boolean eliminada;
+        private Integer version;
 
         public Alternativas build() {
             final Alternativas alternativas = new Alternativas();
@@ -77,7 +76,7 @@ public class Alternativas extends AEntity {
             return this;
         }
 
-        public Builder version(int version) {
+        public Builder version(Integer version) {
             this.version = version;
             return this;
         }
@@ -94,9 +93,6 @@ public class Alternativas extends AEntity {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private RespuestasEsperadasPrueba respuesta;
-
-    @Version
-    private int version;
 
     @javax.persistence.Transient
     public boolean eliminada;
@@ -132,11 +128,6 @@ public class Alternativas extends AEntity {
     }
 
     @Override
-    public int getVersion() {
-        return version;
-    }
-
-    @Override
     public void setId(Long id) {
         this.id = id;
     }
@@ -159,10 +150,6 @@ public class Alternativas extends AEntity {
         this.texto = texto;
     }
 
-    @Override
-    public void setVersion(int version) {
-        this.version = version;
-    }
 
     @Override
     public boolean validate() {

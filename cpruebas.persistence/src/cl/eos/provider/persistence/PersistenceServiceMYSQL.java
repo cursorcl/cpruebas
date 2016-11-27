@@ -1,13 +1,8 @@
 package cl.eos.provider.persistence;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -46,50 +41,16 @@ import javafx.stage.FileChooser;
  *
  * @author cursor
  */
-public class RestPersistenceService implements IPersistenceService {
+public class PersistenceServiceMYSQL implements IPersistenceService {
 
-    static final Logger LOG = Logger.getLogger(RestPersistenceService.class.getName());
+    static final Logger LOG = Logger.getLogger(PersistenceServiceMYSQL.class.getName());
     private final static String NAME = "multi_cpruebas";
-
-    public static void main(String[] args) {
-        try {
-            final URL url = new URL("http://localhost/tpruebas/tipoalumno");
-            final HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-            conn.setRequestProperty("Accept", "application/json");
-
-            if (conn.getResponseCode() != 200) {
-                throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
-            }
-
-            final BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-
-            String output;
-            System.out.println("Output from Server .... \n");
-            while ((output = br.readLine()) != null) {
-                System.out.println(output);
-            }
-
-            conn.disconnect();
-
-        } catch (final MalformedURLException e) {
-
-            e.printStackTrace();
-
-        } catch (final IOException e) {
-
-            e.printStackTrace();
-
-        }
-
-    }
-
     private final EntityManagerFactory eFactory;
 
     /**
      * Constructor de la clase.
      */
-    public RestPersistenceService() {
+    public PersistenceServiceMYSQL() {
 
         final Properties props = new Properties();
 
@@ -107,7 +68,7 @@ public class RestPersistenceService implements IPersistenceService {
         // "create.sql");
         // props.put("eclipselink.ddl-generation.output-mode", "sql-script");
 
-        eFactory = Persistence.createEntityManagerFactory(RestPersistenceService.NAME, props);
+        eFactory = Persistence.createEntityManagerFactory(PersistenceServiceMYSQL.NAME, props);
         eFactory.getCache().evictAll();
     }
 
@@ -126,14 +87,14 @@ public class RestPersistenceService implements IPersistenceService {
 
             eManager.getTransaction().begin();
             mEntity = eManager.merge(entity);
-            eManager.lock(mEntity, LockModeType.WRITE);
+            eManager.lock(mEntity, LockModeType.PESSIMISTIC_WRITE);
             eManager.remove(mEntity);
             eManager.getTransaction().commit();
 
             eManager.close();
         } catch (final RollbackException exception) {
             mEntity = null;
-            RestPersistenceService.LOG.severe(exception.getMessage());
+            PersistenceServiceMYSQL.LOG.severe(exception.getMessage());
         }
         return mEntity;
     }
@@ -159,7 +120,7 @@ public class RestPersistenceService implements IPersistenceService {
             res = query.executeUpdate();
             eManager.getTransaction().commit();
         } catch (final Exception e) {
-            RestPersistenceService.LOG.severe("Error en el executeUpdate de:" + namedQuery + " / " + e.getMessage());
+            PersistenceServiceMYSQL.LOG.severe("Error en el executeUpdate de:" + namedQuery + " / " + e.getMessage());
             eManager.getTransaction().rollback();
 
         }
@@ -192,7 +153,7 @@ public class RestPersistenceService implements IPersistenceService {
                         eManager.getTransaction().commit();
                     } catch (final Exception e) {
                         eManager.getTransaction().rollback();
-                        RestPersistenceService.LOG
+                        PersistenceServiceMYSQL.LOG
                                 .severe("Error en el find del namedQuery:" + namedQuery + " / " + e.getMessage());
                     }
 
@@ -229,7 +190,7 @@ public class RestPersistenceService implements IPersistenceService {
                         eManager.getTransaction().commit();
                     } catch (final Exception e) {
                         eManager.getTransaction().rollback();
-                        RestPersistenceService.LOG.severe(
+                        PersistenceServiceMYSQL.LOG.severe(
                                 "Error en el findAll de la entidad:" + entityClazz.getName() + " / " + e.getMessage());
                     }
                 }
@@ -290,8 +251,8 @@ public class RestPersistenceService implements IPersistenceService {
                         lresult = query.setLockMode(LockModeType.PESSIMISTIC_WRITE).getResultList();
                     } catch (final Exception e) {
                         eManager.getTransaction().rollback();
-                        RestPersistenceService.LOG.severe("Error en el findByAllId de la entidad:"
-                                + entityClazz.getName() + " / " + e.getMessage());
+                        PersistenceServiceMYSQL.LOG.severe("Error en el findByAllId de la entidad:" + entityClazz.getName()
+                                + " / " + e.getMessage());
                     }
                 }
                 eManager.close();
@@ -325,7 +286,7 @@ public class RestPersistenceService implements IPersistenceService {
                         eManager.getTransaction().commit();
                     } catch (final Exception e) {
                         eManager.getTransaction().rollback();
-                        RestPersistenceService.LOG.severe(
+                        PersistenceServiceMYSQL.LOG.severe(
                                 "Error en el findById de la entidad:" + entityClazz.getName() + " / " + e.getMessage());
                     }
 
@@ -360,7 +321,7 @@ public class RestPersistenceService implements IPersistenceService {
                         eManager.getTransaction().commit();
                     } catch (final Exception e) {
                         eManager.getTransaction().rollback();
-                        RestPersistenceService.LOG.severe("Error en el findByName de la entidad:" + entityClazz.getName()
+                        PersistenceServiceMYSQL.LOG.severe("Error en el findByName de la entidad:" + entityClazz.getName()
                                 + " / " + e.getMessage());
                     }
 
@@ -398,8 +359,7 @@ public class RestPersistenceService implements IPersistenceService {
                 eManager.getTransaction().commit();
             } catch (final Exception e) {
                 eManager.getTransaction().rollback();
-                RestPersistenceService.LOG
-                        .severe("Error en el find del namedQuery:" + namedQuery + " / " + e.getMessage());
+                PersistenceServiceMYSQL.LOG.severe("Error en el find del namedQuery:" + namedQuery + " / " + e.getMessage());
             }
 
         }
@@ -426,7 +386,7 @@ public class RestPersistenceService implements IPersistenceService {
                 eManager.getTransaction().commit();
             } catch (final Exception e) {
                 eManager.getTransaction().rollback();
-                RestPersistenceService.LOG
+                PersistenceServiceMYSQL.LOG
                         .severe("Error en el findById de la entidad:" + entityClazz.getName() + " / " + e.getMessage());
             }
 

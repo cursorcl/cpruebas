@@ -31,5 +31,8 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.objetivos"/>
 	<classpathentry kind="lib" path="O:/cpruebas_multiuser/cpruebas/jars/swingx-all-1.6.4.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.dominio.lector"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.persistence.api"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.persistence.model"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.persistence.factory"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

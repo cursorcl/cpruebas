@@ -17,7 +17,7 @@
 					<menus>
 						<Menu mnemonicParsing="false" text="Archivo">
 							<items>
-                        <MenuItem fx:id="mnuCrear" mnemonicParsing="false" text="Crear Prueba" />
+								<MenuItem fx:id="mnuCrear" mnemonicParsing="false" text="Crear Prueba" />
 								<MenuItem fx:id="mnuModificar" mnemonicParsing="false" text="Modificar Prueba">
 									<accelerator>
 										<KeyCodeCombination alt="UP" code="M" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
@@ -51,83 +51,83 @@
 		</VBox>
 	</top>
 	<center>
-				<StackPane fx:id="pnlRoot">
-					<children>
-						<BorderPane prefHeight="459.0" prefWidth="370.0">
-							<center>
-								<AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-									<children>
-										<TableView id="tblListadoPruebas" fx:id="tblListadoPruebas" layoutX="-10.0" layoutY="-31.0" prefHeight="400.0" prefWidth="696.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="0.0">
-											<columns>
-												<TableColumn fx:id="asignaturaCol" prefWidth="287.0" text="Asignatura" />
-												<TableColumn fx:id="cursoCol" prefWidth="106.0" text="Curso" />
-												<TableColumn fx:id="nameCol" prefWidth="198.0" text="Nombre" />
-												<TableColumn fx:id="fechaCol" prefWidth="78.0" text="Fecha" />
-												<TableColumn fx:id="nroPreguntasCol" prefWidth="57.0" style="-fx-alignment: CENTER-RIGHT;" text="Preg." />
-												<TableColumn fx:id="estadoCol" prefWidth="88.0" text="Estado" />
-												<TableColumn fx:id="profesorCol" prefWidth="127.0" text="Profesor" />
-											</columns>
-											<contextMenu>
-												<ContextMenu>
+		<StackPane fx:id="pnlRoot">
+			<children>
+				<BorderPane prefHeight="459.0" prefWidth="370.0">
+					<center>
+						<AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+							<children>
+								<TableView id="tblListadoPruebas" fx:id="tblListadoPruebas" layoutX="-10.0" layoutY="-31.0" prefHeight="400.0" prefWidth="696.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="0.0">
+									<columns>
+										<TableColumn fx:id="asignaturaCol" prefWidth="287.0" text="Asignatura" />
+										<TableColumn fx:id="cursoCol" prefWidth="106.0" text="Curso" />
+										<TableColumn fx:id="nameCol" prefWidth="198.0" text="Nombre" />
+										<TableColumn fx:id="fechaCol" prefWidth="78.0" text="Fecha" />
+										<TableColumn fx:id="nroPreguntasCol" prefWidth="57.0" style="-fx-alignment: CENTER-RIGHT;" text="Preg." />
+										<TableColumn fx:id="estadoCol" prefWidth="88.0" text="Estado" />
+										<TableColumn fx:id="profesorCol" prefWidth="127.0" text="Profesor" />
+									</columns>
+									<contextMenu>
+										<ContextMenu>
+											<items>
+												<MenuItem fx:id="mnuImprimirPrueba" mnemonicParsing="false" text="Imprimir Prueba" />
+												<MenuItem fx:id="mnuListaEvaluaciones" mnemonicParsing="false" text="Ver Evaluaciones" />
+												<Menu mnemonicParsing="false" text="Edición">
 													<items>
-														<MenuItem fx:id="mnuImprimirPrueba" mnemonicParsing="false" text="Imprimir Prueba" />
-														<MenuItem fx:id="mnuListaEvaluaciones" mnemonicParsing="false" text="Ver Evaluaciones" />
-                                    <Menu mnemonicParsing="false" text="Edición">
-                                      <items>
-                                          <MenuItem fx:id="mnuPopupCrear" mnemonicParsing="false" text="Crear Prueba" />
+														<MenuItem fx:id="mnuPopupCrear" mnemonicParsing="false" text="Crear Prueba" />
 														<MenuItem fx:id="mnuPopupModificar" mnemonicParsing="false" text="Modificar Prueba" />
 														<MenuItem fx:id="mnuPopupEliminar" mnemonicParsing="false" text="Eliminar Prueba" />
 														<SeparatorMenuItem />
 														<MenuItem fx:id="mnuEvaluarPrueba" mnemonicParsing="false" text="Evaluar Prueba" />
 														<MenuItem fx:id="mnuAnularPregunta" mnemonicParsing="false" text="Anular Pregunta" />
-                                      </items>
-                                    </Menu>
-                                    <Menu mnemonicParsing="false" text="Reportes Colegio">
-                                      <items>
-                                          <MenuItem fx:id="mnuInforme" mnemonicParsing="false" text="Informe Completo" />
+													</items>
+												</Menu>
+												<Menu mnemonicParsing="false" text="Reportes Colegio">
+													<items>
+														<MenuItem fx:id="mnuInforme" mnemonicParsing="false" text="Informe Completo" />
 														<MenuItem fx:id="mnuColegio" mnemonicParsing="false" text="Resumen" />
 														<MenuItem fx:id="mnuEjesEvaluacion" mnemonicParsing="false" text="Evaluación Ejes Temáticos" />
 														<MenuItem fx:id="mnuHabilidadEvaluacion" mnemonicParsing="false" text="Evaluación-Habilidad" />
 														<MenuItem fx:id="mnuHabilidadEvaluacionXAlumno" mnemonicParsing="false" text="Habilidades y Evaluación x Alumno" />
 														<MenuItem fx:id="mnuCompColegioEjeHabilXCurso" mnemonicParsing="false" text="Comparativo  Ejes Temáticos/Habilidades (Cantidad)" />
 														<MenuItem fx:id="mnuComparativoColegioEjeHabil" mnemonicParsing="false" text="Comparativo Ejes Temáticos/Habilidades (Porcentaje)" />
-                                          <MenuItem fx:id="mnuXObjetivos" mnemonicParsing="false" text="x Objetivos" />
-                                          <Menu mnemonicParsing="false" text="x Nivel">
-                                            <items>
-                                                <MenuItem fx:id="mnuColegioXNivel" mnemonicParsing="false" text="Resumen" />
-                                                <MenuItem fx:id="mnuHabilidadEvaluacionXAlumnoXNivel" mnemonicParsing="false" text="Evaluación-Ejes  Temáticos" />
-                                                <MenuItem fx:id="mnuHabilidadEvaluacionXNivel" mnemonicParsing="false" text="Evaluación-Habilidad" />
-                                              <MenuItem fx:id="mnuCompEjesHabXNivel" mnemonicParsing="false" text="Comparativo Ejes Temáticos/Habilidades (Cantidad)" />
-                                                <MenuItem fx:id="mnuComparativoColegioEjeHabilXNivel" mnemonicParsing="false" text="Comparativo Ejes Temáticos/Habilidades (Porcentajes)" />
-                                                <MenuItem fx:id="mnuXNivelObjetivos" mnemonicParsing="false" text="x Objetivos" />
-                                            </items>
-                                          </Menu>
-                                      </items>
-                                    </Menu>
-                                    <Menu mnemonicParsing="false" text="Reportes Comunales">
-                                      <items>
+														<MenuItem fx:id="mnuXObjetivos" mnemonicParsing="false" text="x Objetivos" />
+														<Menu mnemonicParsing="false" text="x Nivel">
+															<items>
+																<MenuItem fx:id="mnuColegioXNivel" mnemonicParsing="false" text="Resumen" />
+																<MenuItem fx:id="mnuHabilidadEvaluacionXAlumnoXNivel" mnemonicParsing="false" text="Evaluación-Ejes  Temáticos" />
+																<MenuItem fx:id="mnuHabilidadEvaluacionXNivel" mnemonicParsing="false" text="Evaluación-Habilidad" />
+																<MenuItem fx:id="mnuCompEjesHabXNivel" mnemonicParsing="false" text="Comparativo Ejes Temáticos/Habilidades (Cantidad)" />
+																<MenuItem fx:id="mnuComparativoColegioEjeHabilXNivel" mnemonicParsing="false" text="Comparativo Ejes Temáticos/Habilidades (Porcentajes)" />
+																<MenuItem fx:id="mnuXNivelObjetivos" mnemonicParsing="false" text="x Objetivos" />
+															</items>
+														</Menu>
+													</items>
+												</Menu>
+												<Menu mnemonicParsing="false" text="Reportes Comunales">
+													<items>
 														<MenuItem fx:id="mnuComunalEje" mnemonicParsing="false" text="Resumen Comunal" />
 														<MenuItem fx:id="mnuComparativoComunalHab" mnemonicParsing="false" text="Comparativo Habilidades" />
 														<MenuItem fx:id="mnuComparativoComunal" mnemonicParsing="false" text="Comparativo Ejes Temáticos" />
-                                          <Menu mnemonicParsing="false" text="x  Nivel">
-                                            <items>
-                                              <MenuItem fx:id="mnuComparativoComunalHabNivel" mnemonicParsing="false" text="Comparativo Habilidades" />
-                                                <MenuItem fx:id="mnuComparativoComunalNivel" mnemonicParsing="false" text="Comparativo Ejes Temáticos" />
-                                            </items>
-                                          </Menu>
-                                      </items>
-                                    </Menu>
-
-
+														<Menu mnemonicParsing="false" text="x  Nivel">
+															<items>
+																<MenuItem fx:id="mnuComparativoComunalHabNivel" mnemonicParsing="false" text="Comparativo Habilidades" />
+																<MenuItem fx:id="mnuComparativoComunalNivel" mnemonicParsing="false" text="Comparativo Ejes Temáticos" />
+															</items>
+														</Menu>
 													</items>
-												</ContextMenu>
-											</contextMenu>
-										</TableView>
-									</children>
-								</AnchorPane>
-							</center>
-						</BorderPane>
-					</children>
-				</StackPane>
+												</Menu>
+
+
+											</items>
+										</ContextMenu>
+									</contextMenu>
+								</TableView>
+							</children>
+						</AnchorPane>
+					</center>
+				</BorderPane>
+			</children>
+		</StackPane>
 	</center>
 </BorderPane>

@@ -7,7 +7,6 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.Version;
 
 import org.eclipse.persistence.annotations.Cache;
 import org.eclipse.persistence.annotations.CacheCoordinationType;
@@ -50,11 +49,6 @@ public class Alumno extends AEntity {
     @ManyToOne
     private Curso curso;
 
-    /**
-     * Se crea para el manejo de multiusuarios
-     */
-    @Version
-    protected int version;
 
     @Override
     public boolean equals(Object obj) {
@@ -111,10 +105,6 @@ public class Alumno extends AEntity {
         return tipoAlumno;
     }
 
-    @Override
-    public final int getVersion() {
-        return version;
-    }
 
     @Override
     public int hashCode() {
@@ -160,11 +150,6 @@ public class Alumno extends AEntity {
 
     public final void setTipoAlumno(TipoAlumno tipoAlumno) {
         this.tipoAlumno = tipoAlumno;
-    }
-
-    @Override
-    public final void setVersion(int version) {
-        this.version = version;
     }
 
     @Override

@@ -39,5 +39,13 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.data"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.definicion"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.make.prueba"/>
+	<classpathentry kind="lib" path="O:/cpruebas_multiuser/cpruebas/jars/gson-2.8.0.jar" sourcepath="O:/cpruebas_multiuser/cpruebas/jars/gson-2.8.0-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/O:/cpruebas_multiuser/cpruebas/jars/gson-2.8.0-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.restful"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.persistence.api"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.persistence.model"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

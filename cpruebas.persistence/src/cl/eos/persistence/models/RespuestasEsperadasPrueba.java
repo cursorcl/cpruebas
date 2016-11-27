@@ -12,11 +12,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.Version;
-
-import org.eclipse.persistence.annotations.Cache;
-import org.eclipse.persistence.annotations.CacheCoordinationType;
-import org.eclipse.persistence.annotations.CacheType;
 
 import cl.eos.persistence.AEntity;
 
@@ -26,19 +21,6 @@ import cl.eos.persistence.AEntity;
  * @author curso_000
  */
 @Entity(name = "respuestasesperadasprueba")
-@Cache(type = CacheType.NONE, size = 64000, // Use 64,000 as the initial cache
-                                            // size.
-        expiry = 360000, // 6 minutes
-        coordinationType = CacheCoordinationType.INVALIDATE_CHANGED_OBJECTS // if
-                                                                            // cache
-                                                                            // coordination
-                                                                            // is
-                                                                            // used,
-                                                                            // only
-                                                                            // send
-                                                                            // invalidation
-                                                                            // messages.
-)
 @NamedQueries({
         @NamedQuery(name = "RespuestasEsperadasPrueba.findAll", query = "SELECT e FROM respuestasesperadasprueba e"),
         @NamedQuery(name = "RespuestasEsperadasPrueba.findByPrueba", query = "SELECT e FROM respuestasesperadasprueba e WHERE e.prueba.id = :pruebaId order by e.numero"),
@@ -176,12 +158,6 @@ public class RespuestasEsperadasPrueba extends AEntity {
 
     private String name;
 
-    /**
-     * Se crea para el manejo de multiusuarios
-     */
-    @Version
-    protected int version;
-
     public List<Alternativas> getAlternativas() {
         return alternativas;
     }
@@ -234,11 +210,6 @@ public class RespuestasEsperadasPrueba extends AEntity {
 
     public Boolean getVerdaderoFalso() {
         return verdaderoFalso;
-    }
-
-    @Override
-    public final int getVersion() {
-        return version;
     }
 
     public Boolean isAnulada() {
@@ -297,11 +268,6 @@ public class RespuestasEsperadasPrueba extends AEntity {
 
     public void setVerdaderoFalso(Boolean verdaderoFalso) {
         this.verdaderoFalso = verdaderoFalso;
-    }
-
-    @Override
-    public final void setVersion(int version) {
-        this.version = version;
     }
 
     @Override

@@ -15,7 +15,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.Version;
 
 import cl.eos.persistence.AEntity;
 
@@ -49,12 +48,6 @@ public class EvaluacionPrueba extends AEntity {
     private Long fecha;
     private Profesor profesor;
     private Colegio colegio;
-
-    /**
-     * Se crea para el manejo de multiusuarios
-     */
-    @Version
-    protected int version;
 
     public EvaluacionPrueba() {
         pruebasRendidas = new ArrayList<>();
@@ -162,11 +155,6 @@ public class EvaluacionPrueba extends AEntity {
     }
 
     @Override
-    public final int getVersion() {
-        return version;
-    }
-
-    @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
@@ -207,11 +195,6 @@ public class EvaluacionPrueba extends AEntity {
     //
     public void setPruebasRendidas(List<PruebaRendida> pruebasRendidas) {
         this.pruebasRendidas = pruebasRendidas;
-    }
-
-    @Override
-    public final void setVersion(int version) {
-        this.version = version;
     }
 
     @Override

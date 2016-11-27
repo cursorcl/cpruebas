@@ -10,7 +10,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.PreUpdate;
-import javax.persistence.Version;
 
 import cl.eos.persistence.AEntity;
 import cl.eos.util.Utils;
@@ -47,12 +46,6 @@ public class PruebaRendida extends AEntity {
     private EvaluacionPrueba evaluacionPrueba;
 
     private RangoEvaluacion rango;
-
-    /**
-     * Se crea para el manejo de multiusuarios
-     */
-    @Version
-    protected int version;
 
     /**
      * Corresponde a la forma asociada a la prueba del alumno.
@@ -200,11 +193,6 @@ public class PruebaRendida extends AEntity {
     }
 
     @Override
-    public final int getVersion() {
-        return version;
-    }
-
-    @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
@@ -340,11 +328,6 @@ public class PruebaRendida extends AEntity {
 
     public void setRespuestas(String respuestas) {
         this.respuestas = respuestas;
-    }
-
-    @Override
-    public final void setVersion(int version) {
-        this.version = version;
     }
 
     @Override

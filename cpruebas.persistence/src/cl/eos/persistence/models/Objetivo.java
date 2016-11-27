@@ -8,7 +8,6 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.Version;
 
 import cl.eos.persistence.AEntity;
 
@@ -30,9 +29,6 @@ public class Objetivo extends AEntity {
 
     @ManyToOne
     private Asignatura asignatura;
-
-    @Version
-    protected int version;
 
     @Override
     public boolean equals(Object obj) {
@@ -73,10 +69,6 @@ public class Objetivo extends AEntity {
         return tipoCurso;
     }
 
-    @Override
-    public int getVersion() {
-        return version;
-    }
 
     @Override
     public int hashCode() {
@@ -106,11 +98,6 @@ public class Objetivo extends AEntity {
 
     public void setTipoCurso(TipoCurso tipoCurso) {
         this.tipoCurso = tipoCurso;
-    }
-
-    @Override
-    public void setVersion(int version) {
-        this.version = version;
     }
 
     @Override
