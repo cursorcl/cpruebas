@@ -2,7 +2,10 @@ package cl.eos.restful;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.client.ClientProtocolException;
@@ -11,6 +14,7 @@ import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
+import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
@@ -78,6 +82,41 @@ public class RestfulClient {
                 }.getType());
             }
         } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return result;
+    }
+    
+    public static <T> List<T> getByParameters(Class<T> clazz, Map<String, Object> map) {
+        List<T> result = null;
+        String url = URL;
+
+        try {
+            HttpGet httpget = new HttpGet(url);
+            httpget.addHeader("accept", "application/json");
+            URIBuilder uriBuilder = new URIBuilder(url);
+            
+            for(Entry<String, Object> entry: map.entrySet())
+            {
+                uriBuilder.addParameter(entry.getKey(), entry.getValue().toString());
+            }
+            httpget.setURI(uriBuilder.build());
+            CloseableHttpResponse response = null;
+            response = httpclient.execute(httpget);
+            if (response.getStatusLine().getStatusCode() != 200)
+                return null;
+
+            HttpEntity entity = response.getEntity();
+            if (entity != null) {
+                String apiOutput = EntityUtils.toString(entity);
+                result = gson.fromJson(apiOutput, new TypeToken<List<T>>() {
+                }.getType());
+            }
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (URISyntaxException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }

@@ -12,6 +12,7 @@ import cl.eos.imp.view.ProgressForm;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.interfaces.entity.IPersistenceListener;
 import cl.eos.persistence.IPersistenceService;
+import cl.eos.restful.RestfulClient;
 import cl.eos.util.Pair;
 import cl.eos.util.Utils;
 import javafx.application.Platform;
@@ -29,7 +30,6 @@ import javafx.stage.FileChooser;
 public class RestPersistenceServiceRESTFUL implements IPersistenceService {
 
     static final Logger LOG = Logger.getLogger(RestPersistenceServiceRESTFUL.class.getName());
-    private final static String NAME = "multi_cpruebas";
 
     /**
      * Constructor de la clase.
@@ -38,18 +38,10 @@ public class RestPersistenceServiceRESTFUL implements IPersistenceService {
 
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * cpruebas.osgi.persistence.IPersistenceService#delete(cl.eos.interfaces
-     * .entity.IEntity)
-     */
     @Override
     public IEntity delete(IEntity entity) {
-        IEntity mEntity = null;
-        
-        return mEntity;
+        RestfulClient.delete(entity.getClass(), entity.getId());
+        return entity;
     }
 
     @Override
@@ -57,7 +49,7 @@ public class RestPersistenceServiceRESTFUL implements IPersistenceService {
     }
 
     @Override
-    public int executeUpdate(final String namedQuery, Map<String, Object> parameters) {
+    public int executeUpdate(final String namedQuery, Map<String, Object> parameters)  {
 
         int res = 0;
         return res;
@@ -84,10 +76,11 @@ public class RestPersistenceServiceRESTFUL implements IPersistenceService {
     public void findAll(final Class<? extends IEntity> entityClazz, final IPersistenceListener listener) {
 
         final Task<List<Object>> task = new Task<List<Object>>() {
+            @SuppressWarnings("unchecked")
             @Override
             protected List<Object> call() throws Exception {
-                List<Object> lresults = null;
-                return lresults;
+                List<? extends IEntity> result = RestfulClient.get(entityClazz);
+                return (List<Object>) result;
             }
         };
         task.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED, t -> listener.onFindAllFinished(task.getValue()));
@@ -97,8 +90,8 @@ public class RestPersistenceServiceRESTFUL implements IPersistenceService {
 
     @Override
     public <T extends IEntity> List<T> findAllSynchro(Class<T> entityClazz) {
-        List<T> lresults = null;
-        return lresults;
+        List<T> result = RestfulClient.get(entityClazz);
+        return result;
     }
 
     @Override
@@ -107,6 +100,7 @@ public class RestPersistenceServiceRESTFUL implements IPersistenceService {
         final Task<List<Object>> task = new Task<List<Object>>() {
             @Override
             protected List<Object> call() throws Exception {
+
                 List<Object> lresult = null;
                 return lresult;
             }
@@ -122,8 +116,11 @@ public class RestPersistenceServiceRESTFUL implements IPersistenceService {
         final Task<IEntity> task = new Task<IEntity>() {
             @Override
             protected IEntity call() throws Exception {
-                IEntity lresult = null;
-                return lresult;
+                List<? extends IEntity> result = RestfulClient.get(entityClazz, id);
+                if (result != null && !result.isEmpty()) {
+                    return result.get(0);
+                }
+                return null;
             }
         };
         task.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED, t -> listener.onFound(task.getValue()));
@@ -159,8 +156,11 @@ public class RestPersistenceServiceRESTFUL implements IPersistenceService {
 
     @Override
     public IEntity findSynchroById(Class<? extends IEntity> entityClazz, Long id) {
-        IEntity lresult = null;
-        return lresult;
+        List<? extends IEntity> result = RestfulClient.get(entityClazz, id);
+        if (result != null && !result.isEmpty()) {
+            return result.get(0);
+        }
+        return null;
     }
 
     @Override
@@ -233,24 +233,16 @@ public class RestPersistenceServiceRESTFUL implements IPersistenceService {
         Executors.newSingleThreadExecutor().execute(task);
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * cpruebas.osgi.persistence.IPersistenceService#save(cl.eos.interfaces.
-     * entity.IEntity)
-     */
     @Override
     public IEntity save(IEntity entity) {
-        final IEntity eMerged = null;
-        return eMerged;
+        RestfulClient.post(entity);
+        return entity;
     }
 
     @Override
     public IEntity update(IEntity entity) {
-
-        final IEntity mEntity = null;
-        return mEntity;
+        RestfulClient.put(entity, entity.getId());
+        return entity;
     }
 
 }

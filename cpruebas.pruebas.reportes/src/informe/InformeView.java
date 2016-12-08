@@ -104,6 +104,8 @@ public class InformeView extends AFormView {
             });
             task.setOnFailed((WorkerStateEvent t2) -> {
                 dlg.getDialogStage().hide();
+                
+                
                 throw new RuntimeException(task.getException());
             });
 

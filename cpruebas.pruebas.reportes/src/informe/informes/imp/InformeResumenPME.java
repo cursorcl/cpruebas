@@ -56,7 +56,9 @@ public class InformeResumenPME implements IInforme {
     @SuppressWarnings("unchecked")
     @Override
     public void execute(TipoAlumno tipoAlumno, Colegio colegio, Asignatura asignatura) {
+        
         rangos = PersistenceServiceFactory.getPersistenceService().findAllSynchro(RangoEvaluacion.class);
+        
 
         if (Objects.isNull(rangos) || rangos.isEmpty())
             return;

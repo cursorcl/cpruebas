@@ -9,6 +9,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.concurrent.Executors;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Logger;
 
 import javax.persistence.EntityManager;
@@ -46,6 +48,7 @@ public class PersistenceServiceMYSQL implements IPersistenceService {
     static final Logger LOG = Logger.getLogger(PersistenceServiceMYSQL.class.getName());
     private final static String NAME = "multi_cpruebas";
     private final EntityManagerFactory eFactory;
+    private final Lock _mutex = new ReentrantLock(true);
 
     /**
      * Constructor de la clase.
@@ -207,17 +210,20 @@ public class PersistenceServiceMYSQL implements IPersistenceService {
     @SuppressWarnings("unchecked")
     @Override
     public <T extends IEntity> List<T> findAllSynchro(Class<T> entityClazz) {
+        
+        _mutex.lock();
         List<T> lresults = null;
         final String findAll = entityClazz.getSimpleName() + ".findAll";
         final EntityManager eManager = eFactory.createEntityManager();
-        eManager.getTransaction().begin();
+//        eManager.getTransaction().begin();
         final Query query = eManager.createNamedQuery(findAll);
-
         if (query != null) {
             query.setHint(QueryHints.CACHE_STORE_MODE, HintValues.TRUE);
-            lresults = query.setLockMode(LockModeType.PESSIMISTIC_WRITE).getResultList();
+//            lresults = query.setLockMode(LockModeType.PESSIMISTIC_WRITE).getResultList();
+            lresults = query.getResultList();
         }
         eManager.close();
+        _mutex.unlock();
         return lresults;
     }
 

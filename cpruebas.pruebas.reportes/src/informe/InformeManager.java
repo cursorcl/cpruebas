@@ -7,12 +7,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.apache.poi.POIXMLProperties;
 import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
+import org.jfree.util.Log;
 import org.openxmlformats.schemas.officeDocument.x2006.customProperties.CTProperty;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTBody;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTDocument1;
@@ -49,6 +51,8 @@ import javafx.scene.control.Alert;
  */
 public class InformeManager {
 
+    
+    static Logger log =  Logger.getLogger(InformeManager.class.getName());
     static String FIELD_TIPOPRUEBA = "TipoPrueba";
     static String FIELD_ESTABLECIMIENTO = "Establecimiento";
     static String FIELD_CIUDAD = "Ciudad";
@@ -169,6 +173,8 @@ public class InformeManager {
 
         generarPaginaAsignatura(doc, asignatura);
         for (final IInforme informe : informes) {
+            
+            log.info(informe.getClass().getName()); 
             informe.execute(tipoAlumno, colegio, asignatura);
             informe.page(doc);
             informe.graph(doc);

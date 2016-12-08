@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -39,6 +40,7 @@ public class InformeXObjetivos_Nivel implements IInforme {
     private Colegio colegio;
     private Asignatura asignatura;
     Pair<List<TipoCurso>, List<XItemTablaObjetivo>> reporte;
+    private Logger log = Logger.getLogger(InformeXObjetivos_Nivel.class.getName());
 
     @SuppressWarnings("unchecked")
     @Override
@@ -48,8 +50,10 @@ public class InformeXObjetivos_Nivel implements IInforme {
         final Map<String, Object> params = new HashMap<>();
         params.put(InformeXObjetivos_Nivel.COLEGIO_ID, colegio.getId());
         params.put(InformeXObjetivos_Nivel.ASIGNATURA_ID, asignatura.getId());
+        
         final List<EvaluacionPrueba> evaluaciones = (List<EvaluacionPrueba>) (Object) PersistenceServiceFactory
                 .getPersistenceService().findSynchro("EvaluacionPrueba.findEvaluacionByColegioAsig", params);
+        
         if (evaluaciones == null || evaluaciones.isEmpty()) {
             return;
         }

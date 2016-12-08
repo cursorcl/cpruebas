@@ -8,10 +8,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.apache.log4j.Logger;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
@@ -51,7 +51,7 @@ public class InformeHabilidadXCurso implements IInforme {
     private static final String ASIGNATURA_ID = "idAsignatura";
     private static final String COLEGIO_ID = "idColegio";
 
-    static Logger log = Logger.getLogger(InformeHabilidadXCurso.class);
+    static Logger log = Logger.getLogger(InformeHabilidadXCurso.class.getName());
     private TipoAlumno tipoAlumno;
     private Colegio colegio;
     private Asignatura asignatura;
@@ -67,8 +67,9 @@ public class InformeHabilidadXCurso implements IInforme {
     @SuppressWarnings("unchecked")
     @Override
     public void execute(TipoAlumno tipoAlumno, Colegio colegio, Asignatura asignatura) {
+        
         rangos = PersistenceServiceFactory.getPersistenceService().findAllSynchro(RangoEvaluacion.class);
-
+        
         if (Objects.isNull(rangos) || rangos.isEmpty())
             return;
 

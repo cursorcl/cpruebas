@@ -11,7 +11,7 @@
 	<classpathentry kind="lib" path="/cpruebas.persistence.provider/lib/org.eclipse.persistence.jpars_2.6.2.v20151217-774c696.jar"/>
 	<classpathentry kind="lib" path="O:/cpruebas_multiuser/cpruebas/jars/log4j.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/kernel.api.imp.fx"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.restful"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.persistence.api"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.restful"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

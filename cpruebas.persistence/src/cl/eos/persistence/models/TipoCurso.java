@@ -54,7 +54,7 @@ public class TipoCurso extends AEntity {
         final int prime = 31;
         int result = 1;
         result = prime * result + (id == null ? 0 : id.hashCode());
-        result = prime * result + version;
+        result = prime * result + (version == null ? 0 : version.intValue());
         return result;
     }
 
