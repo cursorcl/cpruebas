@@ -5,7 +5,7 @@ import java.util.List;
 
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
-import cl.eos.persistence.models.CalidadLectora;
+import cl.eos.persistence.models.SCalidadLectora;
 import cl.eos.util.ExcelSheetWriterObj;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -32,11 +32,11 @@ public class ViewCalidadLectora extends AFormView implements EventHandler<Action
     @FXML
     private TextField txtNombre;
     @FXML
-    private TableView<CalidadLectora> tblTable;
+    private TableView<SCalidadLectora> tblTable;
     @FXML
-    private TableColumn<CalidadLectora, Long> colId;
+    private TableColumn<SCalidadLectora, Long> colId;
     @FXML
-    private TableColumn<CalidadLectora, String> colNombre;
+    private TableColumn<SCalidadLectora, String> colNombre;
     @FXML
     private MenuItem mnuAgregar;
     @FXML
@@ -59,7 +59,7 @@ public class ViewCalidadLectora extends AFormView implements EventHandler<Action
     }
 
     private void accionEliminar() {
-        final ObservableList<CalidadLectora> otSeleccionados = tblTable.getSelectionModel().getSelectedItems();
+        final ObservableList<SCalidadLectora> otSeleccionados = tblTable.getSelectionModel().getSelectedItems();
         if (otSeleccionados.size() == 0) {
             final Alert alert = new Alert(AlertType.INFORMATION);
             alert.setTitle("Selección registro");
@@ -68,8 +68,8 @@ public class ViewCalidadLectora extends AFormView implements EventHandler<Action
             alert.showAndWait();
         } else {
             if (otSeleccionados != null && !otSeleccionados.isEmpty()) {
-                final List<CalidadLectora> colegio = new ArrayList<CalidadLectora>(otSeleccionados.size());
-                for (final CalidadLectora seleccionado : otSeleccionados) {
+                final List<SCalidadLectora> colegio = new ArrayList<SCalidadLectora>(otSeleccionados.size());
+                for (final SCalidadLectora seleccionado : otSeleccionados) {
                     colegio.add(seleccionado);
                 }
                 delete(colegio);
@@ -86,11 +86,11 @@ public class ViewCalidadLectora extends AFormView implements EventHandler<Action
             if (lblError != null) {
                 lblError.setText(" ");
             }
-            CalidadLectora calidadLectora = null;
-            if (entitySelected != null && entitySelected instanceof CalidadLectora) {
-                calidadLectora = (CalidadLectora) entitySelected;
+            SCalidadLectora calidadLectora = null;
+            if (entitySelected != null && entitySelected instanceof SCalidadLectora) {
+                calidadLectora = (SCalidadLectora) entitySelected;
             } else {
-                calidadLectora = new CalidadLectora();
+                calidadLectora = new SCalidadLectora();
             }
             calidadLectora.setName(txtNombre.getText());
             save(calidadLectora);
@@ -103,7 +103,7 @@ public class ViewCalidadLectora extends AFormView implements EventHandler<Action
     }
 
     private void accionModificar() {
-        final CalidadLectora calidadLectora = tblTable.getSelectionModel().getSelectedItem();
+        final SCalidadLectora calidadLectora = tblTable.getSelectionModel().getSelectedItem();
         if (calidadLectora != null) {
             txtId.setText(String.format("%d", calidadLectora.getId()));
             txtNombre.setText(calidadLectora.getName());
@@ -129,11 +129,11 @@ public class ViewCalidadLectora extends AFormView implements EventHandler<Action
 
     private void inicializaTabla() {
         tblTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        colId.setCellValueFactory(new PropertyValueFactory<CalidadLectora, Long>("id"));
-        colNombre.setCellValueFactory(new PropertyValueFactory<CalidadLectora, String>("name"));
+        colId.setCellValueFactory(new PropertyValueFactory<SCalidadLectora, Long>("id"));
+        colNombre.setCellValueFactory(new PropertyValueFactory<SCalidadLectora, String>("name"));
 
         tblTable.setOnMouseClicked(event -> {
-            final ObservableList<CalidadLectora> itemsSelec = tblTable.getSelectionModel().getSelectedItems();
+            final ObservableList<SCalidadLectora> itemsSelec = tblTable.getSelectionModel().getSelectedItems();
             if (itemsSelec.size() > 1) {
                 mnItemModificar.setDisable(true);
                 mnItemEliminar.setDisable(false);
@@ -179,10 +179,10 @@ public class ViewCalidadLectora extends AFormView implements EventHandler<Action
     public void onDataArrived(List<Object> list) {
         if (list != null && !list.isEmpty()) {
             final Object entity = list.get(0);
-            if (entity instanceof CalidadLectora) {
-                final ObservableList<CalidadLectora> value = FXCollections.observableArrayList();
+            if (entity instanceof SCalidadLectora) {
+                final ObservableList<SCalidadLectora> value = FXCollections.observableArrayList();
                 for (final Object iEntity : list) {
-                    value.add((CalidadLectora) iEntity);
+                    value.add((SCalidadLectora) iEntity);
                 }
                 tblTable.setItems(value.sorted());
             }
@@ -196,7 +196,7 @@ public class ViewCalidadLectora extends AFormView implements EventHandler<Action
 
     @Override
     public void onSaved(IEntity entity) {
-        final CalidadLectora calidadLectora = (CalidadLectora) entity;
+        final SCalidadLectora calidadLectora = (SCalidadLectora) entity;
         final int indice = tblTable.getItems().lastIndexOf(calidadLectora);
         if (indice != -1) {
             tblTable.getItems().set(indice, calidadLectora);

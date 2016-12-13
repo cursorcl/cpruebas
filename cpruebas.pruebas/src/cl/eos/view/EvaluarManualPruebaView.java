@@ -2,11 +2,11 @@ package cl.eos.view;
 
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
-import cl.eos.persistence.models.Alumno;
-import cl.eos.persistence.models.Colegio;
-import cl.eos.persistence.models.Curso;
-import cl.eos.persistence.models.Prueba;
-import cl.eos.persistence.models.RespuestasEsperadasPrueba;
+import cl.eos.persistence.models.SAlumno;
+import cl.eos.persistence.models.SColegio;
+import cl.eos.persistence.models.SCurso;
+import cl.eos.persistence.models.SPrueba;
+import cl.eos.persistence.models.SRespuestasEsperadasPrueba;
 import cl.eos.view.ots.OTAlumnosEvaluarManual;
 import cl.eos.view.ots.OTRespuestasPrueba;
 import javafx.beans.value.ChangeListener;
@@ -59,9 +59,9 @@ public class EvaluarManualPruebaView extends AFormView {
     private TableColumn<OTAlumnosEvaluarManual, String> maternoCol;
     @FXML
     private TableColumn<OTAlumnosEvaluarManual, String> respuestasCol;
-    private Prueba prueba;
-    private Curso curso;
-    private Colegio colegio;
+    private SPrueba prueba;
+    private SCurso curso;
+    private SColegio colegio;
 
     @FXML
     public void initialize() {
@@ -76,7 +76,7 @@ public class EvaluarManualPruebaView extends AFormView {
                     txtRespuestas.setText(newValue.getRespuestas());
                     final ObservableList<OTRespuestasPrueba> lstRespuestas = FXCollections.observableArrayList();
                     int n = 0;
-                    for (final RespuestasEsperadasPrueba resp : prueba.getRespuestas()) {
+                    for (final SRespuestasEsperadasPrueba resp : prueba.getRespuestas()) {
                         final OTRespuestasPrueba ot = new OTRespuestasPrueba();
                         ot.setCalculo(resp.getMental());
                         ot.setNroPregunta(resp.getNumero());
@@ -106,19 +106,19 @@ public class EvaluarManualPruebaView extends AFormView {
 
     @Override
     public void onFound(IEntity entity) {
-        if (entity instanceof Prueba) {
-            prueba = (Prueba) entity;
+        if (entity instanceof SPrueba) {
+            prueba = (SPrueba) entity;
             txtName.setText(prueba.getName());
             txtAsignatura.setText(prueba.getAsignatura().getName());
-        } else if (entity instanceof Colegio) {
-            colegio = (Colegio) entity;
+        } else if (entity instanceof SColegio) {
+            colegio = (SColegio) entity;
             txtColegio.setText(colegio.getName());
-        } else if (entity instanceof Curso) {
-            curso = (Curso) entity;
+        } else if (entity instanceof SCurso) {
+            curso = (SCurso) entity;
             txtCurso.setText(curso.getName());
 
             final ObservableList<OTAlumnosEvaluarManual> lstAlumnos = FXCollections.observableArrayList();
-            for (final Alumno alumno : curso.getAlumnos()) {
+            for (final SAlumno alumno : curso.getAlumnos()) {
                 lstAlumnos.add(new OTAlumnosEvaluarManual(alumno, ""));
             }
             tblListadoAlumnos.setItems(lstAlumnos);

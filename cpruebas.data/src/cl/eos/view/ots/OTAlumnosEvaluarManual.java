@@ -1,13 +1,13 @@
 package cl.eos.view.ots;
 
-import cl.eos.persistence.models.Alumno;
+import cl.eos.persistence.models.SAlumno;
 
 public class OTAlumnosEvaluarManual {
 
     private final String respuestas;
-    private final Alumno alumno;
+    private final SAlumno alumno;
 
-    public OTAlumnosEvaluarManual(Alumno alumno, String respuestas) {
+    public OTAlumnosEvaluarManual(SAlumno alumno, String respuestas) {
         this.alumno = alumno;
         this.respuestas = respuestas;
     }

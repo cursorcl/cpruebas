@@ -1,19 +1,19 @@
 package cl.eos.ot;
 
-import cl.eos.persistence.models.EjeTematico;
-import cl.eos.persistence.models.RangoEvaluacion;
+import cl.eos.persistence.models.SEjeTematico;
+import cl.eos.persistence.models.SRangoEvaluacion;
 
 public class OTReporte {
 
-    private RangoEvaluacion rango;
+    private SRangoEvaluacion rango;
     private int total;
-    private EjeTematico eje;
+    private SEjeTematico eje;
 
-    public EjeTematico getEje() {
+    public SEjeTematico getEje() {
         return eje;
     }
 
-    public RangoEvaluacion getRango() {
+    public SRangoEvaluacion getRango() {
         return rango;
     }
 
@@ -21,11 +21,11 @@ public class OTReporte {
         return total;
     }
 
-    public void setEje(EjeTematico eje) {
+    public void setEje(SEjeTematico eje) {
         this.eje = eje;
     }
 
-    public void setRango(RangoEvaluacion rango) {
+    public void setRango(SRangoEvaluacion rango) {
         this.rango = rango;
     }
 

@@ -10,8 +10,8 @@ import cl.eos.controller.NivelEvaluacionControllerEdicion;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.interfaces.view.IView;
-import cl.eos.persistence.models.NivelEvaluacion;
-import cl.eos.persistence.models.RangoEvaluacion;
+import cl.eos.persistence.models.SNivelEvaluacion;
+import cl.eos.persistence.models.SRangoEvaluacion;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -31,19 +31,19 @@ import javafx.stage.StageStyle;
 
 public class NivelEvaluacionRangoEvaluacionController extends AFormView implements EventHandler<ActionEvent> {
     @FXML
-    private TableView<RangoEvaluacion> tblRangos;
+    private TableView<SRangoEvaluacion> tblRangos;
     @FXML
-    private TableColumn<RangoEvaluacion, String> colRangosNombre;
+    private TableColumn<SRangoEvaluacion, String> colRangosNombre;
     @FXML
-    private TableColumn<RangoEvaluacion, String> colRangosAbrev;
+    private TableColumn<SRangoEvaluacion, String> colRangosAbrev;
     @FXML
-    private TableColumn<RangoEvaluacion, Float> colRangoMinimo;
+    private TableColumn<SRangoEvaluacion, Float> colRangoMinimo;
     @FXML
-    private TableColumn<RangoEvaluacion, Float> colRangoMaximo;
+    private TableColumn<SRangoEvaluacion, Float> colRangoMaximo;
     @FXML
-    private TableView<NivelEvaluacion> tblNiveles;
+    private TableView<SNivelEvaluacion> tblNiveles;
     @FXML
-    private TableColumn<NivelEvaluacion, String> colNivelNombre;
+    private TableColumn<SNivelEvaluacion, String> colNivelNombre;
     @FXML
     private MenuItem mnuModificar;
     @FXML
@@ -71,7 +71,7 @@ public class NivelEvaluacionRangoEvaluacionController extends AFormView implemen
         } else if (event.getSource() == mnuAgregar || event.getSource() == mnuItemAgregar) {
             mostrarVentanaAgregar();
         } else if (event.getSource() == mnuEliminar || event.getSource() == mnuItemEliminar) {
-            final NivelEvaluacion nivel = (NivelEvaluacion) getSelectedEntity();
+            final SNivelEvaluacion nivel = (SNivelEvaluacion) getSelectedEntity();
             while (nivel.getRangos().size() > 0) {
                 delete(nivel.getRangos());
             }
@@ -81,18 +81,18 @@ public class NivelEvaluacionRangoEvaluacionController extends AFormView implemen
 
     private void inicializaTabla() {
         tblNiveles.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-        colNivelNombre.setCellValueFactory(new PropertyValueFactory<NivelEvaluacion, String>("name"));
+        colNivelNombre.setCellValueFactory(new PropertyValueFactory<SNivelEvaluacion, String>("name"));
         tblRangos.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-        colRangosNombre.setCellValueFactory(new PropertyValueFactory<RangoEvaluacion, String>("name"));
-        colRangosAbrev.setCellValueFactory(new PropertyValueFactory<RangoEvaluacion, String>("abreviacion"));
-        colRangoMinimo.setCellValueFactory(new PropertyValueFactory<RangoEvaluacion, Float>("minimo"));
-        colRangoMaximo.setCellValueFactory(new PropertyValueFactory<RangoEvaluacion, Float>("maximo"));
+        colRangosNombre.setCellValueFactory(new PropertyValueFactory<SRangoEvaluacion, String>("name"));
+        colRangosAbrev.setCellValueFactory(new PropertyValueFactory<SRangoEvaluacion, String>("abreviacion"));
+        colRangoMinimo.setCellValueFactory(new PropertyValueFactory<SRangoEvaluacion, Float>("minimo"));
+        colRangoMaximo.setCellValueFactory(new PropertyValueFactory<SRangoEvaluacion, Float>("maximo"));
 
         tblNiveles.setOnMouseClicked(arg0 -> {
-            final NivelEvaluacion nivel = tblNiveles.getSelectionModel().getSelectedItem();
+            final SNivelEvaluacion nivel = tblNiveles.getSelectionModel().getSelectedItem();
             if (nivel != null) {
                 select(nivel);
-                final Collection<RangoEvaluacion> lstRangos = nivel.getRangos();
+                final Collection<SRangoEvaluacion> lstRangos = nivel.getRangos();
                 tblRangos.getItems().clear();
                 tblRangos.getItems().setAll(lstRangos);
             }
@@ -151,7 +151,7 @@ public class NivelEvaluacionRangoEvaluacionController extends AFormView implemen
 
             final IEntity nivel = getSelectedEntity();
 
-            lController.findById(NivelEvaluacion.class, nivel.getId());
+            lController.findById(SNivelEvaluacion.class, nivel.getId());
 
         } catch (final IOException e) {
             e.printStackTrace();
@@ -162,10 +162,10 @@ public class NivelEvaluacionRangoEvaluacionController extends AFormView implemen
     public void onDataArrived(List<Object> list) {
         if (list != null && !list.isEmpty()) {
             final Object entity = list.get(0);
-            if (entity instanceof NivelEvaluacion) {
-                final ObservableList<NivelEvaluacion> oList = FXCollections.observableArrayList();
+            if (entity instanceof SNivelEvaluacion) {
+                final ObservableList<SNivelEvaluacion> oList = FXCollections.observableArrayList();
                 for (final Object iEntity : list) {
-                    oList.add((NivelEvaluacion) iEntity);
+                    oList.add((SNivelEvaluacion) iEntity);
                 }
                 tblNiveles.getItems().setAll(oList);
             }

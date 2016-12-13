@@ -5,15 +5,15 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import cl.eos.imp.view.AFormView;
-import cl.eos.persistence.models.Asignatura;
-import cl.eos.persistence.models.EjeTematico;
-import cl.eos.persistence.models.Habilidad;
-import cl.eos.persistence.models.NivelEvaluacion;
-import cl.eos.persistence.models.Objetivo;
-import cl.eos.persistence.models.Profesor;
-import cl.eos.persistence.models.Prueba;
-import cl.eos.persistence.models.TipoCurso;
-import cl.eos.persistence.models.TipoPrueba;
+import cl.eos.persistence.models.SAsignatura;
+import cl.eos.persistence.models.SEjeTematico;
+import cl.eos.persistence.models.SHabilidad;
+import cl.eos.persistence.models.SNivelEvaluacion;
+import cl.eos.persistence.models.SObjetivo;
+import cl.eos.persistence.models.SProfesor;
+import cl.eos.persistence.models.SPrueba;
+import cl.eos.persistence.models.STipoCurso;
+import cl.eos.persistence.models.STipoPrueba;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -37,11 +37,11 @@ public class DefinirPrueba extends AFormView {
     @FXML
     URL location;
     @FXML
-    ComboBox<Habilidad> cmbHabilidades;
+    ComboBox<SHabilidad> cmbHabilidades;
     @FXML
-    ComboBox<Asignatura> cmbAsignatura;
+    ComboBox<SAsignatura> cmbAsignatura;
     @FXML
-    ComboBox<Profesor> cmbProfesor;
+    ComboBox<SProfesor> cmbProfesor;
     @FXML
     TextArea txtPregunta;
     @FXML
@@ -49,14 +49,14 @@ public class DefinirPrueba extends AFormView {
     @FXML
     BigDecimalField spnPjeBase;
     @FXML
-    ComboBox<NivelEvaluacion> cmbNivelEvaluacion;
+    ComboBox<SNivelEvaluacion> cmbNivelEvaluacion;
     @FXML
-    ComboBox<Objetivo> cmbObjetivos;
+    ComboBox<SObjetivo> cmbObjetivos;
 
     @FXML
-    ComboBox<EjeTematico> cmbEjesTematicos;
+    ComboBox<SEjeTematico> cmbEjesTematicos;
     @FXML
-    ComboBox<TipoPrueba> cmbTipoPrueba;
+    ComboBox<STipoPrueba> cmbTipoPrueba;
     @FXML
     TextField txtNombre;
     @FXML
@@ -95,7 +95,7 @@ public class DefinirPrueba extends AFormView {
     RadioButton chkOpcionD;
 
     @FXML
-    ComboBox<TipoCurso> cmbCurso;
+    ComboBox<STipoCurso> cmbCurso;
     @FXML
     RadioButton chkOpcionV;
     @FXML
@@ -120,13 +120,13 @@ public class DefinirPrueba extends AFormView {
 
     ToggleGroup group;
 
-    Prueba prueba;
+    SPrueba prueba;
 
     public DefinirPrueba() {
         prueba = null;
     }
 
-    public DefinirPrueba(Prueba prueba) {
+    public DefinirPrueba(SPrueba prueba) {
         this.prueba = prueba;
     }
 

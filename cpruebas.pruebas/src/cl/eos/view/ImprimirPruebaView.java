@@ -24,13 +24,13 @@ import cl.eos.detection.ImpresionPrueba;
 import cl.eos.detection.ImpresionPruebaVacia;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
-import cl.eos.persistence.models.Colegio;
-import cl.eos.persistence.models.Curso;
-import cl.eos.persistence.models.EjeTematico;
-import cl.eos.persistence.models.Habilidad;
-import cl.eos.persistence.models.Profesor;
-import cl.eos.persistence.models.Prueba;
-import cl.eos.persistence.models.RespuestasEsperadasPrueba;
+import cl.eos.persistence.models.SColegio;
+import cl.eos.persistence.models.SCurso;
+import cl.eos.persistence.models.SEjeTematico;
+import cl.eos.persistence.models.SHabilidad;
+import cl.eos.persistence.models.SProfesor;
+import cl.eos.persistence.models.SPrueba;
+import cl.eos.persistence.models.SRespuestasEsperadasPrueba;
 import cl.eos.util.Utils;
 import cl.eos.view.ots.OTImprimirPrueba;
 import javafx.collections.FXCollections;
@@ -114,9 +114,9 @@ public class ImprimirPruebaView extends AFormView {
                         n = Integer.parseInt(value);
                         if (Utils.isInteger(value)) {
                             final ImpresionPruebaVacia impresion = new ImpresionPruebaVacia();
-                            final Curso curso = cmbCursos.getValue();
-                            final Profesor profesor = cmbProfesor.getValue();
-                            final Colegio colegio = cmbColegios.getValue();
+                            final SCurso curso = cmbCursos.getValue();
+                            final SProfesor profesor = cmbProfesor.getValue();
+                            final SColegio colegio = cmbColegios.getValue();
 
                             final PDDocument doc = impresion.imprimir(prueba, curso, profesor, colegio,
                                     dtpFecha.getValue(), n);
@@ -206,7 +206,7 @@ public class ImprimirPruebaView extends AFormView {
         }
     }
 
-    private Prueba prueba;
+    private SPrueba prueba;
     @FXML
     private TableView<OTImprimirPrueba> tblListadoPruebas;
     @FXML
@@ -220,11 +220,11 @@ public class ImprimirPruebaView extends AFormView {
     @FXML
     private TableColumn<OTImprimirPrueba, Integer> nroAlumnosCol;
     @FXML
-    private ComboBox<Colegio> cmbColegios;
+    private ComboBox<SColegio> cmbColegios;
     @FXML
-    private ComboBox<Curso> cmbCursos;
+    private ComboBox<SCurso> cmbCursos;
     @FXML
-    private ComboBox<Profesor> cmbProfesor;
+    private ComboBox<SProfesor> cmbProfesor;
     @FXML
     private TextField txtName;
     @FXML
@@ -232,9 +232,9 @@ public class ImprimirPruebaView extends AFormView {
     @FXML
     private DatePicker dtpFecha;
     @FXML
-    private ListView<EjeTematico> lstEjes;
+    private ListView<SEjeTematico> lstEjes;
     @FXML
-    private ListView<Habilidad> lstHabilidad;
+    private ListView<SHabilidad> lstHabilidad;
     @FXML
     private MenuItem mnuAgregar;
     @FXML
@@ -263,13 +263,13 @@ public class ImprimirPruebaView extends AFormView {
         cmbCursos.setDisable(true);
         dtpFecha.setValue(LocalDate.now());
         cmbColegios.setOnAction(event -> {
-            final Colegio colegio = cmbColegios.getSelectionModel().getSelectedItem();
+            final SColegio colegio = cmbColegios.getSelectionModel().getSelectedItem();
 
             cmbCursos.getItems().clear();
             final Map<String, Object> parameters = new HashMap<String, Object>();
             parameters.put("tcursoId", prueba.getCurso().getId());
             parameters.put("colegioId", colegio.getId());
-            controller.find("Curso.findByTipoColegio", parameters);
+            controller.find("R_Curso.findByTipoColegio", parameters);
             final boolean disable = cmbColegios.getSelectionModel().getSelectedItem() == null
                     || cmbCursos.getSelectionModel().getSelectedItem() == null
                     || cmbProfesor.getSelectionModel().getSelectedItem() == null;
@@ -317,23 +317,23 @@ public class ImprimirPruebaView extends AFormView {
     public void onDataArrived(List<Object> list) {
         if (list != null && !list.isEmpty()) {
             final Object entity = list.get(0);
-            if (entity instanceof Colegio) {
-                final ObservableList<Colegio> oList = FXCollections.observableArrayList();
+            if (entity instanceof SColegio) {
+                final ObservableList<SColegio> oList = FXCollections.observableArrayList();
                 for (final Object iEntity : list) {
-                    oList.add((Colegio) iEntity);
+                    oList.add((SColegio) iEntity);
                 }
                 cmbColegios.setItems(oList);
-            } else if (entity instanceof Curso) {
-                final ObservableList<Curso> oList = FXCollections.observableArrayList();
+            } else if (entity instanceof SCurso) {
+                final ObservableList<SCurso> oList = FXCollections.observableArrayList();
                 for (final Object iEntity : list) {
-                    oList.add((Curso) iEntity);
+                    oList.add((SCurso) iEntity);
                 }
                 cmbCursos.setItems(oList);
                 cmbCursos.setDisable(false);
-            } else if (entity instanceof Profesor) {
-                final ObservableList<Profesor> oList = FXCollections.observableArrayList();
+            } else if (entity instanceof SProfesor) {
+                final ObservableList<SProfesor> oList = FXCollections.observableArrayList();
                 for (final Object iEntity : list) {
-                    oList.add((Profesor) iEntity);
+                    oList.add((SProfesor) iEntity);
                 }
                 cmbProfesor.setItems(oList);
                 cmbCursos.setDisable(false);
@@ -344,15 +344,15 @@ public class ImprimirPruebaView extends AFormView {
 
     @Override
     public void onFound(IEntity entity) {
-        if (entity instanceof Prueba) {
-            prueba = (Prueba) entity;
+        if (entity instanceof SPrueba) {
+            prueba = (SPrueba) entity;
             txtName.setText(prueba.getName());
             txtAsignatura.setText(prueba.getAsignatura().getName());
-            final List<RespuestasEsperadasPrueba> respuestas = prueba.getRespuestas();
-            final ObservableList<EjeTematico> lEjes = FXCollections.observableArrayList();
-            final ObservableList<Habilidad> lHabilidad = FXCollections.observableArrayList();
+            final List<SRespuestasEsperadasPrueba> respuestas = prueba.getRespuestas();
+            final ObservableList<SEjeTematico> lEjes = FXCollections.observableArrayList();
+            final ObservableList<SHabilidad> lHabilidad = FXCollections.observableArrayList();
 
-            for (final RespuestasEsperadasPrueba respuesta : respuestas) {
+            for (final SRespuestasEsperadasPrueba respuesta : respuestas) {
                 if (!lEjes.contains(respuesta.getEjeTematico())) {
                     lEjes.add(respuesta.getEjeTematico());
                 }

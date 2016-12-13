@@ -9,11 +9,11 @@ import java.util.logging.Logger;
 
 import cl.eos.imp.view.AFormView;
 import cl.eos.imp.view.ProgressForm;
-import cl.eos.persistence.models.Asignatura;
-import cl.eos.persistence.models.Colegio;
-import cl.eos.persistence.models.Curso;
-import cl.eos.persistence.models.EvaluacionPrueba;
-import cl.eos.persistence.models.TipoAlumno;
+import cl.eos.persistence.models.SAsignatura;
+import cl.eos.persistence.models.SColegio;
+import cl.eos.persistence.models.SCurso;
+import cl.eos.persistence.models.SEvaluacionPrueba;
+import cl.eos.persistence.models.STipoAlumno;
 import cl.eos.persistence.util.Comparadores;
 import cl.eos.util.ExcelSheetWriterObj;
 import colegio.nivel.util.Nivel_CursoEjeHabilidad;
@@ -42,11 +42,11 @@ public class Nivel_ResumenColegioXAlumnoEjeHabilidadView extends AFormView imple
     @FXML
     private TabPane tabPane;
     @FXML
-    private ComboBox<Colegio> cmbColegios;
+    private ComboBox<SColegio> cmbColegios;
     @FXML
-    private ComboBox<Asignatura> cmbAsignatura;
+    private ComboBox<SAsignatura> cmbAsignatura;
     @FXML
-    private ComboBox<TipoAlumno> cmbTipoAlumno;
+    private ComboBox<STipoAlumno> cmbTipoAlumno;
     @FXML
     private Button btnReportes;
     @FXML
@@ -57,12 +57,12 @@ public class Nivel_ResumenColegioXAlumnoEjeHabilidadView extends AFormView imple
     private MenuItem mnuExportarGeneral;
 
     private final Map<String, Object> parameters = new HashMap<String, Object>();
-    private ObservableList<Curso> cursoList;
-    private ObservableList<EvaluacionPrueba> evaluacionesPrueba;
+    private ObservableList<SCurso> cursoList;
+    private ObservableList<SEvaluacionPrueba> evaluacionesPrueba;
     private ArrayList<Nivel_CursoEjeHabilidad> lstCursoEjeHabilidad;
 
     public Nivel_ResumenColegioXAlumnoEjeHabilidadView() {
-        setTitle("Resumen Colegio/Ejes Temáticos/Habilidades x Alumno");
+        setTitle("Resumen SColegio/Ejes Temáticos/Habilidades x SAlumno");
     }
 
     private void clearContent() {
@@ -100,7 +100,7 @@ public class Nivel_ResumenColegioXAlumnoEjeHabilidadView extends AFormView imple
                 final ArrayList<Nivel_CursoEjeHabilidad> lst = new ArrayList<>();
                 int n = 1;
                 final int total = evaluacionesPrueba.size();
-                for (final EvaluacionPrueba eval : evaluacionesPrueba) {
+                for (final SEvaluacionPrueba eval : evaluacionesPrueba) {
                     if (eval.getCurso() != null) {
                         updateMessage(String.format("Prcesando %s", eval.getCurso().getName()));
                         updateProgress(n++, total);
@@ -164,7 +164,7 @@ public class Nivel_ResumenColegioXAlumnoEjeHabilidadView extends AFormView imple
     }
 
     private void handleAsignatura() {
-        final Asignatura asignatura = cmbAsignatura.getSelectionModel().getSelectedItem();
+        final SAsignatura asignatura = cmbAsignatura.getSelectionModel().getSelectedItem();
         if (asignatura != null) {
             parameters.put(Nivel_ResumenColegioXAlumnoEjeHabilidadView.ASIGNATURA_ID, asignatura.getId());
             clearContent();
@@ -172,13 +172,13 @@ public class Nivel_ResumenColegioXAlumnoEjeHabilidadView extends AFormView imple
     }
 
     private void handleColegios() {
-        final Colegio colegio = cmbColegios.getSelectionModel().getSelectedItem();
+        final SColegio colegio = cmbColegios.getSelectionModel().getSelectedItem();
         if (colegio != null) {
             parameters.put(Nivel_ResumenColegioXAlumnoEjeHabilidadView.COLEGIO_ID, colegio.getId());
             final Map<String, Object> param = new HashMap<String, Object>();
             param.put("colegioId", colegio.getId());
             lblTitulo.setText(colegio.getName());
-            controller.find("Curso.findByColegio", param);
+            controller.find("SCurso.findByColegio", param);
             clearContent();
         }
     }
@@ -187,7 +187,7 @@ public class Nivel_ResumenColegioXAlumnoEjeHabilidadView extends AFormView imple
         if (!parameters.isEmpty() && parameters.containsKey(Nivel_ResumenColegioXAlumnoEjeHabilidadView.COLEGIO_ID)
                 && parameters.containsKey(Nivel_ResumenColegioXAlumnoEjeHabilidadView.ASIGNATURA_ID)) {
 
-            controller.find("EvaluacionPrueba.findEvaluacionByColegioAsig", parameters, this);
+            controller.find("SEvaluacionPrueba.findEvaluacionByColegioAsig", parameters, this);
         }
     }
 
@@ -207,38 +207,38 @@ public class Nivel_ResumenColegioXAlumnoEjeHabilidadView extends AFormView imple
     public void onDataArrived(List<Object> list) {
         if (list != null && !list.isEmpty()) {
             final Object entity = list.get(0);
-            if (entity instanceof Colegio) {
-                final ObservableList<Colegio> oList = FXCollections.observableArrayList();
+            if (entity instanceof SColegio) {
+                final ObservableList<SColegio> oList = FXCollections.observableArrayList();
                 for (final Object iEntity : list) {
-                    oList.add((Colegio) iEntity);
+                    oList.add((SColegio) iEntity);
                 }
                 cmbColegios.setItems(oList);
             }
-            if (entity instanceof Asignatura) {
-                final ObservableList<Asignatura> oList = FXCollections.observableArrayList();
+            if (entity instanceof SAsignatura) {
+                final ObservableList<SAsignatura> oList = FXCollections.observableArrayList();
                 for (final Object iEntity : list) {
-                    oList.add((Asignatura) iEntity);
+                    oList.add((SAsignatura) iEntity);
                 }
                 cmbAsignatura.setItems(oList);
             }
-            if (entity instanceof Curso) {
+            if (entity instanceof SCurso) {
                 cursoList = FXCollections.observableArrayList();
                 for (final Object iEntity : list) {
-                    cursoList.add((Curso) iEntity);
+                    cursoList.add((SCurso) iEntity);
                 }
                 FXCollections.sort(cursoList, Comparadores.comparaResumeCurso());
             }
-            if (entity instanceof TipoAlumno) {
-                final ObservableList<TipoAlumno> tAlumnoList = FXCollections.observableArrayList();
+            if (entity instanceof STipoAlumno) {
+                final ObservableList<STipoAlumno> tAlumnoList = FXCollections.observableArrayList();
                 for (final Object iEntity : list) {
-                    tAlumnoList.add((TipoAlumno) iEntity);
+                    tAlumnoList.add((STipoAlumno) iEntity);
                 }
                 cmbTipoAlumno.setItems(tAlumnoList);
             }
-            if (entity instanceof EvaluacionPrueba) {
+            if (entity instanceof SEvaluacionPrueba) {
                 evaluacionesPrueba = FXCollections.observableArrayList();
                 for (final Object object : list) {
-                    final EvaluacionPrueba evaluacion = (EvaluacionPrueba) object;
+                    final SEvaluacionPrueba evaluacion = (SEvaluacionPrueba) object;
                     evaluacionesPrueba.add(evaluacion);
                 }
                 generarReporte();

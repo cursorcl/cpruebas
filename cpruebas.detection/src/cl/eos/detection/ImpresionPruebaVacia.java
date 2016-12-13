@@ -23,12 +23,12 @@ import org.apache.pdfbox.pdmodel.graphics.xobject.PDJpeg;
 import org.apache.pdfbox.pdmodel.graphics.xobject.PDXObjectImage;
 
 import cl.eos.imp.view.UtilsAlert;
-import cl.eos.persistence.models.Colegio;
-import cl.eos.persistence.models.Curso;
-import cl.eos.persistence.models.Formas;
-import cl.eos.persistence.models.Profesor;
-import cl.eos.persistence.models.Prueba;
-import cl.eos.persistence.models.RespuestasEsperadasPrueba;
+import cl.eos.persistence.models.SColegio;
+import cl.eos.persistence.models.SCurso;
+import cl.eos.persistence.models.SFormas;
+import cl.eos.persistence.models.SProfesor;
+import cl.eos.persistence.models.SPrueba;
+import cl.eos.persistence.models.SRespuestasEsperadasPrueba;
 import cl.eos.util.Utils;
 import javafx.scene.control.Alert;
 import javafx.stage.FileChooser;
@@ -56,7 +56,7 @@ public class ImpresionPruebaVacia {
     private int nroAlternativas;
     private int HEIGHT_FONT;
 
-    private List<RespuestasEsperadasPrueba> respEsperadas = new ArrayList<RespuestasEsperadasPrueba>();
+    private List<SRespuestasEsperadasPrueba> respEsperadas = new ArrayList<SRespuestasEsperadasPrueba>();
 
     private int row = FIRST_ROW;
     private int col = FIRST_COL;
@@ -90,7 +90,7 @@ public class ImpresionPruebaVacia {
     public BufferedImage drawAlternativas() throws IOException {
         int n = 1;
 
-        for (final RespuestasEsperadasPrueba resp : respEsperadas) {
+        for (final SRespuestasEsperadasPrueba resp : respEsperadas) {
             if (n % GROUP_SIZE == 1) {
                 if (n % 25 == 1) {
                     row = FIRST_ROW;
@@ -126,7 +126,7 @@ public class ImpresionPruebaVacia {
         return image;
     }
 
-    private BufferedImage drawAlternativas(Formas forma) throws IOException {
+    private BufferedImage drawAlternativas(SFormas forma) throws IOException {
         final String orden = forma.getOrden();
         final String[] nOrden = orden.split(",");
 
@@ -146,7 +146,7 @@ public class ImpresionPruebaVacia {
 
         int n = 1;
         for (final String sIdx : nOrden) {
-            final RespuestasEsperadasPrueba resp = respEsperadas.get(Integer.parseInt(sIdx) - 1);
+            final SRespuestasEsperadasPrueba resp = respEsperadas.get(Integer.parseInt(sIdx) - 1);
             if (n % GROUP_SIZE == 1) {
                 if (n % 25 == 1) {
                     row = FIRST_ROW;
@@ -274,7 +274,7 @@ public class ImpresionPruebaVacia {
         g2.setFont(LETTERS_FONT);
     }
 
-    public PDDocument imprimir(Prueba prueba, Curso curso, Profesor profesor, Colegio colegio, LocalDate fecha,
+    public PDDocument imprimir(SPrueba prueba, SCurso curso, SProfesor profesor, SColegio colegio, LocalDate fecha,
             int nPruebas) {
         PDDocument doc = null;
         respEsperadas = prueba.getRespuestas();
@@ -298,7 +298,7 @@ public class ImpresionPruebaVacia {
             doc = new PDDocument();
 
             /* Por ahora solo la forma 1 */
-            final Formas forma = prueba.getFormas().get(0);
+            final SFormas forma = prueba.getFormas().get(0);
 
             for (int n = 0; n < nPruebas; n++) {
                 g2.setColor(Color.WHITE);

@@ -15,17 +15,17 @@ import cl.eos.imp.view.AFormView;
 import cl.eos.ot.OTRangoTipoCurso;
 import cl.eos.ot.OTResumenColegio;
 import cl.eos.ot.OTResumenTipoCursoColegio;
-import cl.eos.persistence.models.Alumno;
-import cl.eos.persistence.models.Asignatura;
-import cl.eos.persistence.models.Colegio;
-import cl.eos.persistence.models.Curso;
-import cl.eos.persistence.models.EvaluacionEjeTematico;
-import cl.eos.persistence.models.EvaluacionPrueba;
-import cl.eos.persistence.models.NivelEvaluacion;
-import cl.eos.persistence.models.PruebaRendida;
-import cl.eos.persistence.models.RangoEvaluacion;
-import cl.eos.persistence.models.TipoAlumno;
-import cl.eos.persistence.models.TipoCurso;
+import cl.eos.persistence.models.SAlumno;
+import cl.eos.persistence.models.SAsignatura;
+import cl.eos.persistence.models.SColegio;
+import cl.eos.persistence.models.SCurso;
+import cl.eos.persistence.models.SEvaluacionEjeTematico;
+import cl.eos.persistence.models.SEvaluacionPrueba;
+import cl.eos.persistence.models.SNivelEvaluacion;
+import cl.eos.persistence.models.SPruebaRendida;
+import cl.eos.persistence.models.SRangoEvaluacion;
+import cl.eos.persistence.models.STipoAlumno;
+import cl.eos.persistence.models.STipoCurso;
 import cl.eos.persistence.util.Comparadores;
 import cl.eos.util.ExcelSheetWriterObj;
 import cl.eos.util.Utils;
@@ -83,11 +83,11 @@ public class Nivel_ResumenColegioView extends AFormView implements EventHandler<
 	@FXML
 	private TableView tblResumenTotal;
 	@FXML
-	private ComboBox<Colegio> cmbColegios;
+	private ComboBox<SColegio> cmbColegios;
 	@FXML
-	private ComboBox<Asignatura> cmbAsignatura;
+	private ComboBox<SAsignatura> cmbAsignatura;
 	@FXML
-	private ComboBox<TipoAlumno> cmbTipoAlumno;
+	private ComboBox<STipoAlumno> cmbTipoAlumno;
 	@FXML
 	private Button btnReportes;
 	@FXML
@@ -104,24 +104,24 @@ public class Nivel_ResumenColegioView extends AFormView implements EventHandler<
 
 	private List<OTResumenTipoCursoColegio> lstCursos = new ArrayList<>();
 
-	private ObservableList<RangoEvaluacion> oList;
+	private ObservableList<SRangoEvaluacion> oList;
 
-	private Map<Integer, EvaluacionEjeTematico> tituloEvaluacion = new HashMap<>();
+	private Map<Integer, SEvaluacionEjeTematico> tituloEvaluacion = new HashMap<>();
 
-	private Map<Long, EvaluacionEjeTematico> mEvaluaciones = new HashMap<>();
+	private Map<Long, SEvaluacionEjeTematico> mEvaluaciones = new HashMap<>();
 
-	private Map<TipoCurso, Map<RangoEvaluacion, OTRangoTipoCurso>> pmeCursos = new HashMap<>();
+	private Map<STipoCurso, Map<SRangoEvaluacion, OTRangoTipoCurso>> pmeCursos = new HashMap<>();
 
-	private Map<EvaluacionEjeTematico, Integer> mResumen = new HashMap<>();
+	private Map<SEvaluacionEjeTematico, Integer> mResumen = new HashMap<>();
 
 	private OTResumenTipoCursoColegio resumenTotal;
 
-	private Map<Integer, RangoEvaluacion> mapaRangos = new HashMap<>();
+	private Map<Integer, SRangoEvaluacion> mapaRangos = new HashMap<>();
 	
 	private static final int ANCHO_COL = 83;
 
 	public Nivel_ResumenColegioView() {
-		setTitle("Resumen Colegio por Nivel");
+		setTitle("Resumen SColegio por Nivel");
 	}
 
 	@SuppressWarnings("unchecked")
@@ -153,14 +153,14 @@ public class Nivel_ResumenColegioView extends AFormView implements EventHandler<
 	}
 
 	private void handleColegios() {
-		Colegio colegio = cmbColegios.getSelectionModel().getSelectedItem();
+		SColegio colegio = cmbColegios.getSelectionModel().getSelectedItem();
 		if (colegio != null) {
 			parameters.put(COLEGIO_ID, colegio.getId());
 		}
 	}
 
 	private void handleAsignatura() {
-		Asignatura asignatura = cmbAsignatura.getSelectionModel().getSelectedItem();
+		SAsignatura asignatura = cmbAsignatura.getSelectionModel().getSelectedItem();
 		if (asignatura != null) {
 			parameters.put(ASIGNATURA_ID, asignatura.getId());
 		}
@@ -175,7 +175,7 @@ public class Nivel_ResumenColegioView extends AFormView implements EventHandler<
 		tblPME.getItems().clear();
 		tblResumenTotal.getItems().clear();
 		if (!parameters.isEmpty() && parameters.containsKey(COLEGIO_ID) && parameters.containsKey(ASIGNATURA_ID)) {
-			controller.find("EvaluacionPrueba.findEvaluacionByColegioAsig", parameters, this);
+			controller.find("SEvaluacionPrueba.findEvaluacionByColegioAsig", parameters, this);
 		}
 	}
 
@@ -216,42 +216,42 @@ public class Nivel_ResumenColegioView extends AFormView implements EventHandler<
 	public void onDataArrived(List<Object> list) {
 		if (list != null && !list.isEmpty()) {
 			Object entity = list.get(0);
-			if (entity instanceof Colegio) {
-				ObservableList<Colegio> oList = FXCollections.observableArrayList();
+			if (entity instanceof SColegio) {
+				ObservableList<SColegio> oList = FXCollections.observableArrayList();
 				for (Object iEntity : list) {
-					oList.add((Colegio) iEntity);
+					oList.add((SColegio) iEntity);
 				}
 				cmbColegios.setItems(oList);
 			}
-			if (entity instanceof Asignatura) {
-				ObservableList<Asignatura> oList = FXCollections.observableArrayList();
+			if (entity instanceof SAsignatura) {
+				ObservableList<SAsignatura> oList = FXCollections.observableArrayList();
 				for (Object iEntity : list) {
-					oList.add((Asignatura) iEntity);
+					oList.add((SAsignatura) iEntity);
 				}
 				cmbAsignatura.setItems(oList);
 			}
-			if (entity instanceof TipoAlumno) {
-				ObservableList<TipoAlumno> tAlumnoList = FXCollections.observableArrayList();
+			if (entity instanceof STipoAlumno) {
+				ObservableList<STipoAlumno> tAlumnoList = FXCollections.observableArrayList();
 				for (Object iEntity : list) {
-					tAlumnoList.add((TipoAlumno) iEntity);
+					tAlumnoList.add((STipoAlumno) iEntity);
 				}
 				cmbTipoAlumno.setItems(tAlumnoList);
 			}
-			if (entity instanceof RangoEvaluacion) {
+			if (entity instanceof SRangoEvaluacion) {
 				oList = FXCollections.observableArrayList();
 				for (Object iEntity : list) {
-					oList.add((RangoEvaluacion) iEntity);
+					oList.add((SRangoEvaluacion) iEntity);
 				}
 				if (!oList.isEmpty()) {
 					generarColumnasPME();
 				}
 			}
-			if (entity instanceof EvaluacionPrueba) {
+			if (entity instanceof SEvaluacionPrueba) {
 				generarReporteCursos(list);
 			}
-			if (entity instanceof EvaluacionEjeTematico) {
+			if (entity instanceof SEvaluacionEjeTematico) {
 				for (Object object : list) {
-					EvaluacionEjeTematico evaluacion = (EvaluacionEjeTematico) object;
+					SEvaluacionEjeTematico evaluacion = (SEvaluacionEjeTematico) object;
 					mEvaluaciones.put(evaluacion.getId(), evaluacion);
 
 				}
@@ -267,12 +267,12 @@ public class Nivel_ResumenColegioView extends AFormView implements EventHandler<
 	    if(list == null || list.isEmpty())
 	        return;
 	    
-		EvaluacionPrueba firstEvaluacion = (EvaluacionPrueba) list.get(0);
+		SEvaluacionPrueba firstEvaluacion = (SEvaluacionPrueba) list.get(0);
 		StringBuilder string = new StringBuilder();
 		string.append(firstEvaluacion.getColegio());
 		lblColegio.setText(string.toString());
 
-		NivelEvaluacion nivel = firstEvaluacion.getPrueba().getNivelEvaluacion();
+		SNivelEvaluacion nivel = firstEvaluacion.getPrueba().getNivelEvaluacion();
 		int totalColAlumnos = 0;
 		int totalColEvaluados = 0;
 		int totalColAprobados = 0;
@@ -280,7 +280,7 @@ public class Nivel_ResumenColegioView extends AFormView implements EventHandler<
 		long tipoAlumno = cmbTipoAlumno.getSelectionModel().getSelectedItem().getId();
 		// Todas las evaluaciones asociadas (Todos los cursos)
 		for (Object evaluacionPrueba : list) {
-			EvaluacionPrueba evaluacion = (EvaluacionPrueba) evaluacionPrueba;
+			SEvaluacionPrueba evaluacion = (SEvaluacionPrueba) evaluacionPrueba;
 			OTResumenTipoCursoColegio resumenCurso = new OTResumenTipoCursoColegio();
 			resumenCurso.setColegio(evaluacion.getColegio());
 			resumenCurso.setTipoCurso(evaluacion.getCurso().getTipoCurso());
@@ -291,10 +291,10 @@ public class Nivel_ResumenColegioView extends AFormView implements EventHandler<
 			int totalAprobados = 0;
 			int totalReprobados = 0;
 
-			List<PruebaRendida> rendidas = evaluacion.getPruebasRendidas();
+			List<SPruebaRendida> rendidas = evaluacion.getPruebasRendidas();
 			// Estamos procesando un colegio/una prueba
-			for (PruebaRendida pruebaRendida : rendidas) {
-				Alumno alumno = pruebaRendida.getAlumno();
+			for (SPruebaRendida pruebaRendida : rendidas) {
+				SAlumno alumno = pruebaRendida.getAlumno();
 				if (tipoAlumno != Constants.PIE_ALL && tipoAlumno != alumno.getTipoAlumno().getId()) {
 				    totalAlumnos--;
 					continue;
@@ -342,7 +342,7 @@ public class Nivel_ResumenColegioView extends AFormView implements EventHandler<
 
 		Collections.sort(lstCursos, Comparadores.comparaResumeTipoCursoColegio());
 		resumenTotal = new OTResumenTipoCursoColegio();
-		Curso curso = new Curso();
+		SCurso curso = new SCurso();
 		curso.setId(Long.MAX_VALUE);
 		curso.setName("Total");
 		resumenTotal.setTipoCurso(curso.getTipoCurso());
@@ -391,7 +391,7 @@ public class Nivel_ResumenColegioView extends AFormView implements EventHandler<
 				+ "%");
 
 		float total = 0;
-		for (Entry<Integer, EvaluacionEjeTematico> ttEvaluacion : tituloEvaluacion.entrySet()) {
+		for (Entry<Integer, SEvaluacionEjeTematico> ttEvaluacion : tituloEvaluacion.entrySet()) {
 			Integer evaluacion = mResumen.get(ttEvaluacion.getValue());
 			if (evaluacion != null) {
 				row.add(Utils.redondeo2Decimales(evaluacion));
@@ -415,11 +415,11 @@ public class Nivel_ResumenColegioView extends AFormView implements EventHandler<
 
 	}
 
-	private void generaDatosGeneral(PruebaRendida pruebaRendida) {
+	private void generaDatosGeneral(SPruebaRendida pruebaRendida) {
 		Float pBuenas = pruebaRendida.getPbuenas();
-		for (Entry<Long, EvaluacionEjeTematico> otResumenColegio : mEvaluaciones.entrySet()) {
+		for (Entry<Long, SEvaluacionEjeTematico> otResumenColegio : mEvaluaciones.entrySet()) {
 
-			EvaluacionEjeTematico otEvaluacion = otResumenColegio.getValue();
+			SEvaluacionEjeTematico otEvaluacion = otResumenColegio.getValue();
 			if (otEvaluacion.isInside(pBuenas)) {
 				if (mResumen.containsKey(otEvaluacion)) {
 					Integer valor = mResumen.get(otEvaluacion);
@@ -438,20 +438,20 @@ public class Nivel_ResumenColegioView extends AFormView implements EventHandler<
 	private void generarDatosResumenPME() {
 		ObservableList<ObservableList<Object>> resumenPME = FXCollections.observableArrayList();
 
-		Set<TipoCurso> listaCursos = pmeCursos.keySet();
-		List<TipoCurso> cursos = new LinkedList<>();
-		for (TipoCurso curso : listaCursos) {
+		Set<STipoCurso> listaCursos = pmeCursos.keySet();
+		List<STipoCurso> cursos = new LinkedList<>();
+		for (STipoCurso curso : listaCursos) {
 			cursos.add(curso);
 		}
 		Collections.sort(cursos, Comparadores.comparaTipoCurso());
 
-		for (TipoCurso lEntity : cursos) {
+		for (STipoCurso lEntity : cursos) {
 			ObservableList<Object> row = FXCollections.observableArrayList();
 
 			row.add(lEntity.getName());
 
-			Map<RangoEvaluacion, OTRangoTipoCurso> lista = pmeCursos.get(lEntity);
-			for (Entry<Integer, RangoEvaluacion> otMapaRangos : mapaRangos.entrySet()) {
+			Map<SRangoEvaluacion, OTRangoTipoCurso> lista = pmeCursos.get(lEntity);
+			for (Entry<Integer, SRangoEvaluacion> otMapaRangos : mapaRangos.entrySet()) {
 			    OTRangoTipoCurso otRegistro = lista.get(otMapaRangos.getValue());
 				if (otRegistro != null) {
 					row.add(otRegistro.getTotal());
@@ -465,18 +465,18 @@ public class Nivel_ResumenColegioView extends AFormView implements EventHandler<
 		tblPME.setItems(resumenPME);
 	}
 
-	private void generaDatosRangos(PruebaRendida rendida, NivelEvaluacion nivelEvaluacion) {
+	private void generaDatosRangos(SPruebaRendida rendida, SNivelEvaluacion nivelEvaluacion) {
 
 		float porcentaje = (float) rendida.getBuenas()
 				/ (float) rendida.getEvaluacionPrueba().getPrueba().getNroPreguntas() * 100f;
-		RangoEvaluacion rango = nivelEvaluacion.getRango(porcentaje);
+		SRangoEvaluacion rango = nivelEvaluacion.getRango(porcentaje);
 
 		log.fine(String.format(";\"%s\";%f;%5.2f%%;\"%s\"", rendida.getCurso(), rendida.getNota(), porcentaje,
 				rango.getName()));
 
-		TipoCurso curso = rendida.getEvaluacionPrueba().getCurso().getTipoCurso();
+		STipoCurso curso = rendida.getEvaluacionPrueba().getCurso().getTipoCurso();
 		if (pmeCursos.containsKey(curso)) {
-			Map<RangoEvaluacion, OTRangoTipoCurso> prangos = pmeCursos.get(curso);
+			Map<SRangoEvaluacion, OTRangoTipoCurso> prangos = pmeCursos.get(curso);
 			if (prangos.containsKey(rango)) {
 			    OTRangoTipoCurso uRango = prangos.get(rango);
 				uRango.setTotal(uRango.getTotal() + 1);
@@ -496,7 +496,7 @@ public class Nivel_ResumenColegioView extends AFormView implements EventHandler<
 			rangoCurso.setRango(rango);
 			rangoCurso.setTotal(rangoCurso.getTotal() + 1);
 
-			Map<RangoEvaluacion, OTRangoTipoCurso> pmeRangos = new HashMap<>();
+			Map<SRangoEvaluacion, OTRangoTipoCurso> pmeRangos = new HashMap<>();
 			pmeRangos.put(rango, rangoCurso);
 			pmeCursos.put(curso, pmeRangos);
 		}
@@ -505,7 +505,7 @@ public class Nivel_ResumenColegioView extends AFormView implements EventHandler<
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void generarColumnasPME() {
 
-		TableColumn columna0 = new TableColumn("Curso");
+		TableColumn columna0 = new TableColumn("SCurso");
 		columna0.setStyle("-fx-alignment: CENTER-LEFT;");
 		columna0.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
 			public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
@@ -527,7 +527,7 @@ public class Nivel_ResumenColegioView extends AFormView implements EventHandler<
 		int indice = 1;
 		for (Object rango : oList) {
 
-			RangoEvaluacion titulo = (RangoEvaluacion) rango;
+			SRangoEvaluacion titulo = (SRangoEvaluacion) rango;
 			// Columnas
 			final int col = indice;
 			TableColumn columna = new TableColumn(titulo.getName());
@@ -683,7 +683,7 @@ public class Nivel_ResumenColegioView extends AFormView implements EventHandler<
 		int indice = 5;
 		for (Object rango : mEvaluaciones.values()) {
 
-			EvaluacionEjeTematico titulo = (EvaluacionEjeTematico) rango;
+			SEvaluacionEjeTematico titulo = (SEvaluacionEjeTematico) rango;
 			// Columnas
 			final int column = indice;
 			TableColumn columna = new TableColumn(titulo.getName());

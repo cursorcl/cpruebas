@@ -1,17 +1,17 @@
 package cl.eos.ot;
 
-import cl.eos.persistence.models.EvaluacionEjeTematico;
+import cl.eos.persistence.models.SEvaluacionEjeTematico;
 
 public class OTPreguntasEvaluacion {
 
-    private EvaluacionEjeTematico evaluacion;
+    private SEvaluacionEjeTematico evaluacion;
     private Integer alumnos = 0;
 
     public Integer getAlumnos() {
         return alumnos;
     }
 
-    public EvaluacionEjeTematico getEvaluacion() {
+    public SEvaluacionEjeTematico getEvaluacion() {
         return evaluacion;
     }
 
@@ -19,7 +19,7 @@ public class OTPreguntasEvaluacion {
         this.alumnos = alumnos;
     }
 
-    public void setEvaluacion(EvaluacionEjeTematico evaluacion) {
+    public void setEvaluacion(SEvaluacionEjeTematico evaluacion) {
         this.evaluacion = evaluacion;
     }
 

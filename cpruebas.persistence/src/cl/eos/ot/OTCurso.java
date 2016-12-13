@@ -2,11 +2,11 @@ package cl.eos.ot;
 
 import java.util.Collection;
 
-import cl.eos.persistence.models.Alumno;
-import cl.eos.persistence.models.Ciclo;
-import cl.eos.persistence.models.Colegio;
-import cl.eos.persistence.models.Curso;
-import cl.eos.persistence.models.TipoCurso;
+import cl.eos.persistence.models.SAlumno;
+import cl.eos.persistence.models.SCiclo;
+import cl.eos.persistence.models.SColegio;
+import cl.eos.persistence.models.SCurso;
+import cl.eos.persistence.models.STipoCurso;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -15,19 +15,19 @@ public class OTCurso {
 
     private final SimpleLongProperty id = new SimpleLongProperty();
     private final SimpleStringProperty name = new SimpleStringProperty();
-    private final SimpleObjectProperty<Ciclo> ciclo = new SimpleObjectProperty<Ciclo>();
-    private final SimpleObjectProperty<Colegio> colegio = new SimpleObjectProperty<Colegio>();
+    private final SimpleObjectProperty<SCiclo> ciclo = new SimpleObjectProperty<SCiclo>();
+    private final SimpleObjectProperty<SColegio> colegio = new SimpleObjectProperty<SColegio>();
 
-    private final SimpleObjectProperty<Collection<Alumno>> alumnos = new SimpleObjectProperty<Collection<Alumno>>();
-    private final SimpleObjectProperty<TipoCurso> tipoCurso = new SimpleObjectProperty<TipoCurso>();
+    private final SimpleObjectProperty<Collection<SAlumno>> alumnos = new SimpleObjectProperty<Collection<SAlumno>>();
+    private final SimpleObjectProperty<STipoCurso> tipoCurso = new SimpleObjectProperty<STipoCurso>();
 
-    private Curso curso;
+    private SCurso curso;
 
     public OTCurso() {
         // TODO Auto-generated constructor stub
     }
 
-    public OTCurso(Curso curso) {
+    public OTCurso(SCurso curso) {
         this.curso = curso;
         id.set(curso.getId());
         name.set(curso.getName());
@@ -37,15 +37,15 @@ public class OTCurso {
         tipoCurso.set(curso.getTipoCurso());
     }
 
-    public final SimpleObjectProperty<Collection<Alumno>> alumnosProperty() {
+    public final SimpleObjectProperty<Collection<SAlumno>> alumnosProperty() {
         return alumnos;
     }
 
-    public final SimpleObjectProperty<Ciclo> cicloProperty() {
+    public final SimpleObjectProperty<SCiclo> cicloProperty() {
         return ciclo;
     }
 
-    public final SimpleObjectProperty<Colegio> colegioProperty() {
+    public final SimpleObjectProperty<SColegio> colegioProperty() {
         return colegio;
     }
 
@@ -66,19 +66,19 @@ public class OTCurso {
         return true;
     }
 
-    public final java.util.Collection<cl.eos.persistence.models.Alumno> getAlumnos() {
+    public final java.util.Collection<cl.eos.persistence.models.SAlumno> getAlumnos() {
         return alumnosProperty().get();
     }
 
-    public final cl.eos.persistence.models.Ciclo getCiclo() {
+    public final cl.eos.persistence.models.SCiclo getCiclo() {
         return cicloProperty().get();
     }
 
-    public final cl.eos.persistence.models.Colegio getColegio() {
+    public final cl.eos.persistence.models.SColegio getColegio() {
         return colegioProperty().get();
     }
 
-    public Curso getCurso() {
+    public SCurso getCurso() {
         return curso;
     }
 
@@ -90,7 +90,7 @@ public class OTCurso {
         return nameProperty().get();
     }
 
-    public final cl.eos.persistence.models.TipoCurso getTipoCurso() {
+    public final cl.eos.persistence.models.STipoCurso getTipoCurso() {
         return tipoCursoProperty().get();
     }
 
@@ -110,19 +110,19 @@ public class OTCurso {
         return name;
     }
 
-    public final void setAlumnos(final java.util.Collection<cl.eos.persistence.models.Alumno> alumnos) {
+    public final void setAlumnos(final java.util.Collection<cl.eos.persistence.models.SAlumno> alumnos) {
         alumnosProperty().set(alumnos);
     }
 
-    public final void setCiclo(final cl.eos.persistence.models.Ciclo ciclo) {
+    public final void setCiclo(final cl.eos.persistence.models.SCiclo ciclo) {
         cicloProperty().set(ciclo);
     }
 
-    public final void setColegio(final cl.eos.persistence.models.Colegio colegio) {
+    public final void setColegio(final cl.eos.persistence.models.SColegio colegio) {
         colegioProperty().set(colegio);
     }
 
-    public void setCurso(Curso curso) {
+    public void setCurso(SCurso curso) {
         this.curso = curso;
     }
 
@@ -134,11 +134,11 @@ public class OTCurso {
         nameProperty().set(name);
     }
 
-    public final void setTipoCurso(final cl.eos.persistence.models.TipoCurso tipoCurso) {
+    public final void setTipoCurso(final cl.eos.persistence.models.STipoCurso tipoCurso) {
         tipoCursoProperty().set(tipoCurso);
     }
 
-    public final SimpleObjectProperty<TipoCurso> tipoCursoProperty() {
+    public final SimpleObjectProperty<STipoCurso> tipoCursoProperty() {
         return tipoCurso;
     }
 

@@ -1,7 +1,7 @@
 package cl.eos.comprensionlectora;
 
 import cl.eos.imp.controller.AController;
-import cl.eos.persistence.models.ComprensionLectora;
+import cl.eos.persistence.models.SComprensionLectora;
 
 public class Contoller extends AController {
 
@@ -12,6 +12,6 @@ public class Contoller extends AController {
     @Override
     public void initialize() {
         model = new Model();
-        model.findAll(ComprensionLectora.class, this);
+        model.findAll(SComprensionLectora.class, this);
     }
 }

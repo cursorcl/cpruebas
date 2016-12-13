@@ -1,6 +1,6 @@
 package cl.eos.ot;
 
-import cl.eos.persistence.models.Ciclo;
+import cl.eos.persistence.models.SCiclo;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 
@@ -9,13 +9,13 @@ public class OTCiclo {
     private final SimpleLongProperty id = new SimpleLongProperty();
     private final SimpleStringProperty name = new SimpleStringProperty();
 
-    private Ciclo ciclo;
+    private SCiclo ciclo;
 
     public OTCiclo() {
         // TODO Auto-generated constructor stub
     }
 
-    public OTCiclo(Ciclo ciclo) {
+    public OTCiclo(SCiclo ciclo) {
         this.ciclo = ciclo;
         id.set(ciclo.getId());
         name.set(ciclo.getName());
@@ -39,7 +39,7 @@ public class OTCiclo {
         return true;
     }
 
-    public Ciclo getCiclo() {
+    public SCiclo getCiclo() {
         return ciclo;
     }
 
@@ -67,7 +67,7 @@ public class OTCiclo {
         return name;
     }
 
-    public void setCiclo(Ciclo ciclo) {
+    public void setCiclo(SCiclo ciclo) {
         this.ciclo = ciclo;
     }
 

@@ -16,15 +16,15 @@ import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.ot.OTPreguntasEjes;
 import cl.eos.ot.OTPreguntasEvaluacion;
-import cl.eos.persistence.models.Alumno;
-import cl.eos.persistence.models.EjeTematico;
-import cl.eos.persistence.models.EvaluacionEjeTematico;
-import cl.eos.persistence.models.EvaluacionPrueba;
-import cl.eos.persistence.models.Prueba;
-import cl.eos.persistence.models.PruebaRendida;
-import cl.eos.persistence.models.RespuestasEsperadasPrueba;
-import cl.eos.persistence.models.TipoAlumno;
-import cl.eos.persistence.models.TipoColegio;
+import cl.eos.persistence.models.SAlumno;
+import cl.eos.persistence.models.SEjeTematico;
+import cl.eos.persistence.models.SEvaluacionEjeTematico;
+import cl.eos.persistence.models.SEvaluacionPrueba;
+import cl.eos.persistence.models.SPrueba;
+import cl.eos.persistence.models.SPruebaRendida;
+import cl.eos.persistence.models.SRespuestasEsperadasPrueba;
+import cl.eos.persistence.models.STipoAlumno;
+import cl.eos.persistence.models.STipoColegio;
 import cl.eos.persistence.util.Comparadores;
 import cl.eos.util.ExcelSheetWriterObj;
 import javafx.beans.property.SimpleStringProperty;
@@ -59,31 +59,31 @@ public class ComparativoComunalEjeView extends AFormView implements EventHandler
     @FXML
     private TableView<ObservableList<String>> tblEvaluacionEjesTematicos;
 
-    private HashMap<EjeTematico, HashMap<String, OTPreguntasEjes>> mapaEjesTematicos;
+    private HashMap<SEjeTematico, HashMap<String, OTPreguntasEjes>> mapaEjesTematicos;
 
-    private Map<Long, EvaluacionEjeTematico> mEvaluaciones;
+    private Map<Long, SEvaluacionEjeTematico> mEvaluaciones;
 
-    private Map<EvaluacionEjeTematico, HashMap<String, OTPreguntasEvaluacion>> mapEvaAlumnos = null;
+    private Map<SEvaluacionEjeTematico, HashMap<String, OTPreguntasEvaluacion>> mapEvaAlumnos = null;
 
     @FXML
-    private ComboBox<TipoAlumno> cmbTipoAlumno;
+    private ComboBox<STipoAlumno> cmbTipoAlumno;
     @FXML
     private Button btnGenerar;
     @FXML
-    private ComboBox<TipoColegio> cmbTipoColegio;
+    private ComboBox<STipoColegio> cmbTipoColegio;
 
     long tipoAlumno = Constants.PIE_ALL;
     long tipoColegio = Constants.TIPO_COLEGIO_ALL;
 
     private ArrayList<String> titulosColumnas;
-    private Prueba prueba;
+    private SPrueba prueba;
     private boolean llegaOnFound = false;
     private boolean llegaTipoAlumno = false;
     private boolean llegaEvaluacionEjeTematico = false;
     private boolean llegaTipoColegio;
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    private void creacionColumnasEjesTematicos(List<EvaluacionPrueba> pListaEvaluaciones) {
+    private void creacionColumnasEjesTematicos(List<SEvaluacionPrueba> pListaEvaluaciones) {
 
         tblEjesTematicos.getColumns().clear();
 
@@ -95,8 +95,8 @@ public class ComparativoComunalEjeView extends AFormView implements EventHandler
 
         titulosColumnas = new ArrayList<>();
         int indice = 1;
-        final List<EvaluacionPrueba> listaEvaluaciones = pListaEvaluaciones;
-        for (final EvaluacionPrueba evaluacion : listaEvaluaciones) {
+        final List<SEvaluacionPrueba> listaEvaluaciones = pListaEvaluaciones;
+        for (final SEvaluacionPrueba evaluacion : listaEvaluaciones) {
             // Columnas
             final int col = indice;
             final String colegioCurso = evaluacion.getColegiocurso();
@@ -111,7 +111,7 @@ public class ComparativoComunalEjeView extends AFormView implements EventHandler
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    private void creacionColumnasEvaluaciones(List<EvaluacionPrueba> pListaEvaluaciones) {
+    private void creacionColumnasEvaluaciones(List<SEvaluacionPrueba> pListaEvaluaciones) {
         tblEvaluacionEjesTematicos.getColumns().clear();
         final TableColumn columna0 = new TableColumn("");
         columna0.setCellValueFactory(param -> new SimpleStringProperty(
@@ -138,7 +138,7 @@ public class ComparativoComunalEjeView extends AFormView implements EventHandler
 
         final ObservableList<ObservableList<String>> registros = FXCollections.observableArrayList();
 
-        for (final Entry<EjeTematico, HashMap<String, OTPreguntasEjes>> mapa : mapaEjesTematicos.entrySet()) {
+        for (final Entry<SEjeTematico, HashMap<String, OTPreguntasEjes>> mapa : mapaEjesTematicos.entrySet()) {
 
             final ObservableList<String> row = FXCollections.observableArrayList();
 
@@ -168,9 +168,9 @@ public class ComparativoComunalEjeView extends AFormView implements EventHandler
         ObservableList<String> row = null;
         int total = 0;
 
-        final List<EvaluacionEjeTematico> ejes = new ArrayList<>(mapEvaAlumnos.keySet());
+        final List<SEvaluacionEjeTematico> ejes = new ArrayList<>(mapEvaAlumnos.keySet());
         Collections.sort(ejes, Comparadores.comparaEvaluacionEjeTematico());
-        for (final EvaluacionEjeTematico eje : ejes) {
+        for (final SEvaluacionEjeTematico eje : ejes) {
             final HashMap<String, OTPreguntasEvaluacion> resultados = mapEvaAlumnos.get(eje);
             row = FXCollections.observableArrayList();
             row.add(eje.getName());
@@ -205,14 +205,14 @@ public class ComparativoComunalEjeView extends AFormView implements EventHandler
         tblEvaluacionEjesTematicos.setItems(registroseEva);
     }
 
-    private void generaDatosEvaluacion(PruebaRendida pruebaRendida, String colegioCurso) {
+    private void generaDatosEvaluacion(SPruebaRendida pruebaRendida, String colegioCurso) {
 
         HashMap<String, OTPreguntasEvaluacion> mapaOT;
 
         final Float pBuenas = pruebaRendida.getPbuenas();
-        for (final Entry<Long, EvaluacionEjeTematico> mEvaluacion : mEvaluaciones.entrySet()) {
+        for (final Entry<Long, SEvaluacionEjeTematico> mEvaluacion : mEvaluaciones.entrySet()) {
 
-            final EvaluacionEjeTematico evaluacionAl = mEvaluacion.getValue();
+            final SEvaluacionEjeTematico evaluacionAl = mEvaluacion.getValue();
             if (mapEvaAlumnos.containsKey(evaluacionAl)) {
                 final HashMap<String, OTPreguntasEvaluacion> evaluacion = mapEvaAlumnos.get(evaluacionAl);
                 if (evaluacion.containsKey(colegioCurso)) {
@@ -268,9 +268,9 @@ public class ComparativoComunalEjeView extends AFormView implements EventHandler
         }
     }
 
-    private void informarProblemas(String colegioCurso, Alumno al, String respuesta) {
+    private void informarProblemas(String colegioCurso, SAlumno al, String respuesta) {
         final Alert alert = new Alert(AlertType.ERROR);
-        alert.setTitle("Alumno con respuestas incompletas.");
+        alert.setTitle("SAlumno con respuestas incompletas.");
         alert.setHeaderText(String.format("%s/%s", colegioCurso, al.toString()));
         alert.setContentText(String.format("La respuesta [%s] es incompleta", respuesta));
         alert.showAndWait();
@@ -311,19 +311,19 @@ public class ComparativoComunalEjeView extends AFormView implements EventHandler
         mapEvaAlumnos = new HashMap<>();
         HashMap<String, OTPreguntasEjes> mapaColegios;
 
-        final List<EvaluacionPrueba> listaEvaluaciones = prueba.getEvaluaciones();
+        final List<SEvaluacionPrueba> listaEvaluaciones = prueba.getEvaluaciones();
 
         creacionColumnasEjesTematicos(listaEvaluaciones);
         creacionColumnasEvaluaciones(listaEvaluaciones);
 
-        for (final EvaluacionPrueba evaluacionPrueba : listaEvaluaciones) {
+        for (final SEvaluacionPrueba evaluacionPrueba : listaEvaluaciones) {
             final String colegioCurso = evaluacionPrueba.getColegiocurso();
 
-            final List<PruebaRendida> pruebasRendidas = evaluacionPrueba.getPruebasRendidas();
-            final List<RespuestasEsperadasPrueba> respuestasEsperadas = prueba.getRespuestas();
+            final List<SPruebaRendida> pruebasRendidas = evaluacionPrueba.getPruebasRendidas();
+            final List<SRespuestasEsperadasPrueba> respuestasEsperadas = prueba.getRespuestas();
 
-            for (final PruebaRendida pruebaRendida : pruebasRendidas) {
-                final Alumno alumno = pruebaRendida.getAlumno();
+            for (final SPruebaRendida pruebaRendida : pruebasRendidas) {
+                final SAlumno alumno = pruebaRendida.getAlumno();
                 if (tipoAlumno != Constants.PIE_ALL && tipoAlumno != alumno.getTipoAlumno().getId())
                     continue;
                 if (tipoColegio != Constants.TIPO_COLEGIO_ALL
@@ -348,11 +348,11 @@ public class ComparativoComunalEjeView extends AFormView implements EventHandler
                 }
                 final char[] cRespuesta = respuesta.toUpperCase().toCharArray();
 
-                for (final RespuestasEsperadasPrueba respuestasEsperadasPrueba : respuestasEsperadas) {
+                for (final SRespuestasEsperadasPrueba respuestasEsperadasPrueba : respuestasEsperadas) {
                     if (respuestasEsperadasPrueba.isAnulada()) {
                         continue;
                     }
-                    final EjeTematico ejeTematico = respuestasEsperadasPrueba.getEjeTematico();
+                    final SEjeTematico ejeTematico = respuestasEsperadasPrueba.getEjeTematico();
                     final Integer numeroPreg = respuestasEsperadasPrueba.getNumero();
                     if (mapaEjesTematicos.containsKey(ejeTematico)) {
                         final HashMap<String, OTPreguntasEjes> mapa = mapaEjesTematicos.get(ejeTematico);
@@ -402,31 +402,31 @@ public class ComparativoComunalEjeView extends AFormView implements EventHandler
     public void onDataArrived(List<Object> list) {
         if (list != null && !list.isEmpty()) {
             final Object entity = list.get(0);
-            if (entity instanceof EvaluacionEjeTematico) {
+            if (entity instanceof SEvaluacionEjeTematico) {
                 llegaEvaluacionEjeTematico = true;
                 mEvaluaciones = new HashMap<>();
                 for (final Object object : list) {
-                    final EvaluacionEjeTematico eje = (EvaluacionEjeTematico) object;
+                    final SEvaluacionEjeTematico eje = (SEvaluacionEjeTematico) object;
                     mEvaluaciones.put(eje.getId(), eje);
                 }
             }
-            if (entity instanceof TipoAlumno) {
-                final ObservableList<TipoAlumno> tAlumnoList = FXCollections.observableArrayList();
+            if (entity instanceof STipoAlumno) {
+                final ObservableList<STipoAlumno> tAlumnoList = FXCollections.observableArrayList();
                 llegaTipoAlumno = true;
                 for (final Object iEntity : list) {
-                    tAlumnoList.add((TipoAlumno) iEntity);
+                    tAlumnoList.add((STipoAlumno) iEntity);
                 }
                 cmbTipoAlumno.setItems(tAlumnoList);
                 cmbTipoAlumno.getSelectionModel().select((int) Constants.PIE_ALL);
             }
-            if (entity instanceof TipoColegio) {
-                final ObservableList<TipoColegio> tColegioList = FXCollections.observableArrayList();
+            if (entity instanceof STipoColegio) {
+                final ObservableList<STipoColegio> tColegioList = FXCollections.observableArrayList();
                 llegaTipoColegio = true;
                 for (final Object iEntity : list) {
-                    tColegioList.add((TipoColegio) iEntity);
+                    tColegioList.add((STipoColegio) iEntity);
                 }
                 cmbTipoColegio.setItems(tColegioList);
-                final TipoColegio tColegio = new TipoColegio();
+                final STipoColegio tColegio = new STipoColegio();
                 tColegio.setId(Constants.TIPO_COLEGIO_ALL);
                 cmbTipoColegio.getSelectionModel().select(tColegio);
             }
@@ -436,8 +436,8 @@ public class ComparativoComunalEjeView extends AFormView implements EventHandler
 
     @Override
     public void onFound(IEntity entity) {
-        if (entity instanceof Prueba) {
-            prueba = (Prueba) entity;
+        if (entity instanceof SPrueba) {
+            prueba = (SPrueba) entity;
             llegaOnFound = true;
         }
         procesaDatosReporte();

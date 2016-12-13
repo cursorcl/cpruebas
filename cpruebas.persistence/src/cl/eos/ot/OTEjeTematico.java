@@ -1,8 +1,8 @@
 package cl.eos.ot;
 
-import cl.eos.persistence.models.Asignatura;
-import cl.eos.persistence.models.EjeTematico;
-import cl.eos.persistence.models.TipoPrueba;
+import cl.eos.persistence.models.SAsignatura;
+import cl.eos.persistence.models.SEjeTematico;
+import cl.eos.persistence.models.STipoPrueba;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -11,15 +11,15 @@ public class OTEjeTematico {
 
     private final SimpleLongProperty id = new SimpleLongProperty();
     private final SimpleStringProperty name = new SimpleStringProperty();
-    private final SimpleObjectProperty<TipoPrueba> tipoprueba = new SimpleObjectProperty<TipoPrueba>();
-    private final SimpleObjectProperty<Asignatura> asignatura = new SimpleObjectProperty<Asignatura>();
-    private EjeTematico ejeTematico;
+    private final SimpleObjectProperty<STipoPrueba> tipoprueba = new SimpleObjectProperty<STipoPrueba>();
+    private final SimpleObjectProperty<SAsignatura> asignatura = new SimpleObjectProperty<SAsignatura>();
+    private SEjeTematico ejeTematico;
 
     public OTEjeTematico() {
         // TODO Auto-generated constructor stub
     }
 
-    public OTEjeTematico(EjeTematico ejeTematico) {
+    public OTEjeTematico(SEjeTematico ejeTematico) {
         this.ejeTematico = ejeTematico;
         id.set(ejeTematico.getId());
         name.set(ejeTematico.getName());
@@ -27,7 +27,7 @@ public class OTEjeTematico {
         asignatura.set(ejeTematico.getAsignatura());
     }
 
-    public final SimpleObjectProperty<Asignatura> asignaturaProperty() {
+    public final SimpleObjectProperty<SAsignatura> asignaturaProperty() {
         return asignatura;
     }
 
@@ -48,11 +48,11 @@ public class OTEjeTematico {
         return true;
     }
 
-    public final cl.eos.persistence.models.Asignatura getAsignatura() {
+    public final cl.eos.persistence.models.SAsignatura getAsignatura() {
         return asignaturaProperty().get();
     }
 
-    public EjeTematico getEjeTematico() {
+    public SEjeTematico getEjeTematico() {
         return ejeTematico;
     }
 
@@ -64,7 +64,7 @@ public class OTEjeTematico {
         return nameProperty().get();
     }
 
-    public final cl.eos.persistence.models.TipoPrueba getTipoprueba() {
+    public final cl.eos.persistence.models.STipoPrueba getTipoprueba() {
         return tipopruebaProperty().get();
     }
 
@@ -84,11 +84,11 @@ public class OTEjeTematico {
         return name;
     }
 
-    public final void setAsignatura(final cl.eos.persistence.models.Asignatura asignatura) {
+    public final void setAsignatura(final cl.eos.persistence.models.SAsignatura asignatura) {
         asignaturaProperty().set(asignatura);
     }
 
-    public void setEjeTematico(EjeTematico ejeTematico) {
+    public void setEjeTematico(SEjeTematico ejeTematico) {
         this.ejeTematico = ejeTematico;
     }
 
@@ -100,11 +100,11 @@ public class OTEjeTematico {
         nameProperty().set(name);
     }
 
-    public final void setTipoprueba(final cl.eos.persistence.models.TipoPrueba tipoprueba) {
+    public final void setTipoprueba(final cl.eos.persistence.models.STipoPrueba tipoprueba) {
         tipopruebaProperty().set(tipoprueba);
     }
 
-    public final SimpleObjectProperty<TipoPrueba> tipopruebaProperty() {
+    public final SimpleObjectProperty<STipoPrueba> tipopruebaProperty() {
         return tipoprueba;
     }
 

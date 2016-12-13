@@ -2,8 +2,8 @@ package cl.eos.controller;
 
 import cl.eos.imp.controller.AController;
 import cl.eos.model.ColegiosModel;
-import cl.eos.persistence.models.Colegio;
-import cl.eos.persistence.models.TipoColegio;
+import cl.eos.persistence.models.SColegio;
+import cl.eos.persistence.models.STipoColegio;
 
 public class ColegiosContoller extends AController {
 
@@ -14,7 +14,7 @@ public class ColegiosContoller extends AController {
     @Override
     public void initialize() {
         model = new ColegiosModel();
-        model.findAll(Colegio.class, this);
-        model.findAll(TipoColegio.class, this);
+        model.findAll(SColegio.class, this);
+        model.findAll(STipoColegio.class, this);
     }
 }

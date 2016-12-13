@@ -11,7 +11,7 @@ public class NivelEvaluacionActivator extends AActivator {
     public NivelEvaluacionActivator() {
         controller = new NivelEvaluacionController();
 
-        final URL url = NivelEvaluacionActivator.class.getResource("/cl/eos/view/NivelEvaluacion.fxml");
+        final URL url = NivelEvaluacionActivator.class.getResource("/cl/eos/view/SNivelEvaluacion.fxml");
         final FXMLLoader fxmlLoader = new FXMLLoader();
         try {
             pane = fxmlLoader.load(url.openStream());

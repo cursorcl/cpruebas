@@ -1,9 +1,9 @@
 package cl.eos.ot;
 
-import cl.eos.persistence.models.Alumno;
-import cl.eos.persistence.models.Colegio;
-import cl.eos.persistence.models.Curso;
-import cl.eos.persistence.models.TipoAlumno;
+import cl.eos.persistence.models.SAlumno;
+import cl.eos.persistence.models.SColegio;
+import cl.eos.persistence.models.SCurso;
+import cl.eos.persistence.models.STipoAlumno;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -16,16 +16,16 @@ public class OTAlumno {
     private final SimpleStringProperty paterno = new SimpleStringProperty();
     private final SimpleStringProperty materno = new SimpleStringProperty();
     private final SimpleStringProperty direccion = new SimpleStringProperty();
-    private final SimpleObjectProperty<Colegio> colegio = new SimpleObjectProperty<Colegio>();
-    private final SimpleObjectProperty<Curso> curso = new SimpleObjectProperty<Curso>();
-    private final SimpleObjectProperty<TipoAlumno> tipoAlumno = new SimpleObjectProperty<TipoAlumno>();
-    private Alumno alumno;
+    private final SimpleObjectProperty<SColegio> colegio = new SimpleObjectProperty<SColegio>();
+    private final SimpleObjectProperty<SCurso> curso = new SimpleObjectProperty<SCurso>();
+    private final SimpleObjectProperty<STipoAlumno> tipoAlumno = new SimpleObjectProperty<STipoAlumno>();
+    private SAlumno alumno;
 
     public OTAlumno() {
         id.setValue(null);
     }
 
-    public OTAlumno(Alumno alumno) {
+    public OTAlumno(SAlumno alumno) {
         this.alumno = alumno;
         id.set(alumno.getId());
         rut.set(alumno.getRut());
@@ -39,11 +39,11 @@ public class OTAlumno {
 
     }
 
-    public final SimpleObjectProperty<Colegio> colegioProperty() {
+    public final SimpleObjectProperty<SColegio> colegioProperty() {
         return colegio;
     }
 
-    public final SimpleObjectProperty<Curso> cursoProperty() {
+    public final SimpleObjectProperty<SCurso> cursoProperty() {
         return curso;
     }
 
@@ -68,15 +68,15 @@ public class OTAlumno {
         return true;
     }
 
-    public Alumno getAlumno() {
+    public SAlumno getAlumno() {
         return alumno;
     }
 
-    public final cl.eos.persistence.models.Colegio getColegio() {
+    public final cl.eos.persistence.models.SColegio getColegio() {
         return colegioProperty().get();
     }
 
-    public final cl.eos.persistence.models.Curso getCurso() {
+    public final cl.eos.persistence.models.SCurso getCurso() {
         return cursoProperty().get();
     }
 
@@ -104,7 +104,7 @@ public class OTAlumno {
         return rutProperty().get();
     }
 
-    public final cl.eos.persistence.models.TipoAlumno getTipoAlumno() {
+    public final cl.eos.persistence.models.STipoAlumno getTipoAlumno() {
         return tipoAlumnoProperty().get();
     }
 
@@ -136,15 +136,15 @@ public class OTAlumno {
         return rut;
     }
 
-    public void setAlumno(Alumno alumno) {
+    public void setAlumno(SAlumno alumno) {
         this.alumno = alumno;
     }
 
-    public final void setColegio(final cl.eos.persistence.models.Colegio colegio) {
+    public final void setColegio(final cl.eos.persistence.models.SColegio colegio) {
         colegioProperty().set(colegio);
     }
 
-    public final void setCurso(final cl.eos.persistence.models.Curso curso) {
+    public final void setCurso(final cl.eos.persistence.models.SCurso curso) {
         cursoProperty().set(curso);
     }
 
@@ -172,11 +172,11 @@ public class OTAlumno {
         rutProperty().set(rut);
     }
 
-    public final void setTipoAlumno(final cl.eos.persistence.models.TipoAlumno tipoAlumno) {
+    public final void setTipoAlumno(final cl.eos.persistence.models.STipoAlumno tipoAlumno) {
         tipoAlumnoProperty().set(tipoAlumno);
     }
 
-    public final SimpleObjectProperty<TipoAlumno> tipoAlumnoProperty() {
+    public final SimpleObjectProperty<STipoAlumno> tipoAlumnoProperty() {
         return tipoAlumno;
     }
 

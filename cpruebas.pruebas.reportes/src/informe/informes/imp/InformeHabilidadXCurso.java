@@ -22,16 +22,16 @@ import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 
 import cl.eos.common.Constants;
 import cl.eos.ot.OTPreguntasHabilidad;
-import cl.eos.persistence.models.Alumno;
-import cl.eos.persistence.models.Asignatura;
-import cl.eos.persistence.models.Colegio;
-import cl.eos.persistence.models.Curso;
-import cl.eos.persistence.models.EvaluacionPrueba;
-import cl.eos.persistence.models.Habilidad;
-import cl.eos.persistence.models.PruebaRendida;
-import cl.eos.persistence.models.RangoEvaluacion;
-import cl.eos.persistence.models.RespuestasEsperadasPrueba;
-import cl.eos.persistence.models.TipoAlumno;
+import cl.eos.persistence.models.SAlumno;
+import cl.eos.persistence.models.SAsignatura;
+import cl.eos.persistence.models.SColegio;
+import cl.eos.persistence.models.SCurso;
+import cl.eos.persistence.models.SEvaluacionPrueba;
+import cl.eos.persistence.models.SHabilidad;
+import cl.eos.persistence.models.SPruebaRendida;
+import cl.eos.persistence.models.SRangoEvaluacion;
+import cl.eos.persistence.models.SRespuestasEsperadasPrueba;
+import cl.eos.persistence.models.STipoAlumno;
 import cl.eos.persistence.util.Comparadores;
 import cl.eos.provider.persistence.PersistenceServiceFactory;
 import cl.eos.util.Pair;
@@ -52,12 +52,12 @@ public class InformeHabilidadXCurso implements IInforme {
     private static final String COLEGIO_ID = "idColegio";
 
     static Logger log = Logger.getLogger(InformeHabilidadXCurso.class.getName());
-    private TipoAlumno tipoAlumno;
-    private Colegio colegio;
-    private Asignatura asignatura;
-    private Map<Habilidad, List<OTPreguntasHabilidad>> resultado;
-    private List<RangoEvaluacion> rangos;
-    private List<Curso> cursoList;
+    private STipoAlumno tipoAlumno;
+    private SColegio colegio;
+    private SAsignatura asignatura;
+    private Map<SHabilidad, List<OTPreguntasHabilidad>> resultado;
+    private List<SRangoEvaluacion> rangos;
+    private List<SCurso> cursoList;
     private int nroCursos;
 
     public InformeHabilidadXCurso() {
@@ -66,9 +66,9 @@ public class InformeHabilidadXCurso implements IInforme {
 
     @SuppressWarnings("unchecked")
     @Override
-    public void execute(TipoAlumno tipoAlumno, Colegio colegio, Asignatura asignatura) {
+    public void execute(STipoAlumno tipoAlumno, SColegio colegio, SAsignatura asignatura) {
         
-        rangos = PersistenceServiceFactory.getPersistenceService().findAllSynchro(RangoEvaluacion.class);
+        rangos = PersistenceServiceFactory.getPersistenceService().findAllSynchro(SRangoEvaluacion.class);
         
         if (Objects.isNull(rangos) || rangos.isEmpty())
             return;
@@ -80,8 +80,8 @@ public class InformeHabilidadXCurso implements IInforme {
         final Map<String, Object> params = new HashMap<>();
         params.put(InformeHabilidadXCurso.COLEGIO_ID, colegio.getId());
         params.put(InformeHabilidadXCurso.ASIGNATURA_ID, asignatura.getId());
-        final List<EvaluacionPrueba> evaluaciones = (List<EvaluacionPrueba>) (Object) PersistenceServiceFactory
-                .getPersistenceService().findSynchro("EvaluacionPrueba.findEvaluacionByColegioAsig", params);
+        final List<SEvaluacionPrueba> evaluaciones = (List<SEvaluacionPrueba>) (Object) PersistenceServiceFactory
+                .getPersistenceService().findSynchro("SEvaluacionPrueba.findEvaluacionByColegioAsig", params);
         if (evaluaciones == null || evaluaciones.isEmpty())
             return;
         if (Objects.isNull(evaluaciones) || evaluaciones.isEmpty())
@@ -101,7 +101,7 @@ public class InformeHabilidadXCurso implements IInforme {
         final List<String> titles = new ArrayList<>();
         final List<Double> values = new ArrayList<>();
 
-        for (final Habilidad hab : resultado.keySet()) {
+        for (final SHabilidad hab : resultado.keySet()) {
 
             final List<OTPreguntasHabilidad> percents = resultado.get(hab);
             double cantidad = 0;
@@ -143,11 +143,11 @@ public class InformeHabilidadXCurso implements IInforme {
      * @return Par <Preguntas buenas, Total de Preguntas> del eje.
      */
     private Pair<Integer, Integer> obtenerBuenasTotales(String respuestas,
-            List<RespuestasEsperadasPrueba> respEsperadas, Habilidad eje) {
+            List<SRespuestasEsperadasPrueba> respEsperadas, SHabilidad eje) {
         int nroBuenas = 0;
         int nroPreguntas = 0;
         for (int n = 0; n < respEsperadas.size(); n++) {
-            final RespuestasEsperadasPrueba resp = respEsperadas.get(n);
+            final SRespuestasEsperadasPrueba resp = respEsperadas.get(n);
             if (!resp.isAnulada()) {
                 if (resp.getHabilidad().equals(eje)) {
                     if (respuestas.length() > n) {
@@ -193,7 +193,7 @@ public class InformeHabilidadXCurso implements IInforme {
                 tableRow.getCell(col++).getParagraphs().get(0).getRuns().get(0).setText(title);
             }
             int row = 1;
-            for (final Habilidad eje : resultado.keySet()) {
+            for (final SHabilidad eje : resultado.keySet()) {
                 tableRow = table.getRow(row++);
                 tableRow.getCell(0).getParagraphs().get(0).getRuns().get(0).setText(eje.getName().toUpperCase());
                 final List<OTPreguntasHabilidad> notas = resultado.get(eje);
@@ -227,11 +227,11 @@ public class InformeHabilidadXCurso implements IInforme {
         run.addCarriageReturn();
     }
 
-    protected Map<Habilidad, List<OTPreguntasHabilidad>> procesar(List<EvaluacionPrueba> evaluacionesPrueba) {
+    protected Map<SHabilidad, List<OTPreguntasHabilidad>> procesar(List<SEvaluacionPrueba> evaluacionesPrueba) {
 
-        final Map<Habilidad, List<OTPreguntasHabilidad>> mapEjes = new HashMap<>();
+        final Map<SHabilidad, List<OTPreguntasHabilidad>> mapEjes = new HashMap<>();
 
-        cursoList = evaluacionesPrueba.stream().map(EvaluacionPrueba::getCurso).distinct()
+        cursoList = evaluacionesPrueba.stream().map(SEvaluacionPrueba::getCurso).distinct()
                 .sorted(Comparadores.comparaResumeCurso()).collect(Collectors.toList());
         nroCursos = cursoList.size();
 
@@ -240,11 +240,11 @@ public class InformeHabilidadXCurso implements IInforme {
         final int[] alumnosEvaluados = new int[nroCursos];
         Arrays.fill(alumnosEvaluados, 0);
 
-        for (final EvaluacionPrueba eval : evaluacionesPrueba) {
+        for (final SEvaluacionPrueba eval : evaluacionesPrueba) {
             eval.getPruebasRendidas().size();
-            final List<PruebaRendida> pruebasRendidas = eval.getPruebasRendidas();
+            final List<SPruebaRendida> pruebasRendidas = eval.getPruebasRendidas();
             eval.getPrueba().getRespuestas().size();
-            final List<RespuestasEsperadasPrueba> respEsperadas = eval.getPrueba().getRespuestas();
+            final List<SRespuestasEsperadasPrueba> respEsperadas = eval.getPrueba().getRespuestas();
             final int index = cursoList.indexOf(eval.getCurso());
 
             if (index == -1) {
@@ -252,11 +252,11 @@ public class InformeHabilidadXCurso implements IInforme {
             }
             totalAlumnos[index] = 0;
 
-            for (final Alumno alumno : eval.getCurso().getAlumnos())
+            for (final SAlumno alumno : eval.getCurso().getAlumnos())
                 if (tipoAlumno.getId() == Constants.PIE_ALL || alumno.getTipoAlumno().getId().equals(tipoAlumno))
                     totalAlumnos[index] = totalAlumnos[index] + 1;
 
-            for (final PruebaRendida pruebaRendida : pruebasRendidas) {
+            for (final SPruebaRendida pruebaRendida : pruebasRendidas) {
                 if (tipoAlumno.getId() != Constants.PIE_ALL
                         && !pruebaRendida.getAlumno().getTipoAlumno().getId().equals(tipoAlumno))
                     continue;
@@ -268,13 +268,13 @@ public class InformeHabilidadXCurso implements IInforme {
                     continue;
 
                 for (int n = 0; n < respEsperadas.size(); n++) {
-                    final Habilidad eje = respEsperadas.get(n).getHabilidad();
+                    final SHabilidad eje = respEsperadas.get(n).getHabilidad();
                     if (!mapEjes.containsKey(eje)) {
                         mapEjes.put(eje, Stream.generate(OTPreguntasHabilidad::new).limit(nroCursos)
                                 .collect(Collectors.toList()));
                     }
                 }
-                for (final Habilidad eje : mapEjes.keySet()) {
+                for (final SHabilidad eje : mapEjes.keySet()) {
                     final List<OTPreguntasHabilidad> lstEjes = mapEjes.get(eje);
                     OTPreguntasHabilidad otEje = lstEjes.get(index);
                     if (otEje == null || otEje.getHabilidad() == null) {

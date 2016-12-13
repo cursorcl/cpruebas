@@ -121,10 +121,10 @@ public class MainController {
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
     protected void importarExcel() {
-        final ButtonType bTypeAlumno = new ButtonType("Alumno");
-        final ButtonType bTypeColegio = new ButtonType("Colegio");
-        final ButtonType bTypeCurso = new ButtonType("Curso");
-        final ButtonType bTypeProfesor = new ButtonType("Profesor");
+        final ButtonType bTypeAlumno = new ButtonType("SAlumno");
+        final ButtonType bTypeColegio = new ButtonType("SColegio");
+        final ButtonType bTypeCurso = new ButtonType("SCurso");
+        final ButtonType bTypeProfesor = new ButtonType("SProfesor");
         final ButtonType bTypeCancel = new ButtonType("Cancelar", ButtonData.CANCEL_CLOSE);
 
         Alert alert = new Alert(AlertType.INFORMATION);

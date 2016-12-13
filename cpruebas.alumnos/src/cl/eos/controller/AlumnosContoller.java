@@ -5,27 +5,27 @@ import java.util.Map;
 
 import cl.eos.imp.controller.AController;
 import cl.eos.model.AlumnosModel;
-import cl.eos.persistence.models.Alumno;
-import cl.eos.persistence.models.Colegio;
-import cl.eos.persistence.models.Curso;
-import cl.eos.persistence.models.TipoAlumno;
+import cl.eos.persistence.models.SAlumno;
+import cl.eos.persistence.models.SColegio;
+import cl.eos.persistence.models.SCurso;
+import cl.eos.persistence.models.STipoAlumno;
 
 public class AlumnosContoller extends AController {
 
     public void buscarPorDireccion(String direccion) {
         final Map<String, Object> param = new HashMap<String, Object>();
         param.put("dato", direccion);
-        model.find("Alumno.preguntita", param);
+        model.find("SAlumno.preguntita", param);
     }
 
     @Override
     public void initialize() {
         model = new AlumnosModel();
-        model.findAll(Alumno.class, this);
-        model.findAll(Colegio.class, this);
-        model.findAll(Curso.class, this);
-        model.findAll(Curso.class, this);
-        model.findAll(TipoAlumno.class, this);
+        model.findAll(SAlumno.class, this);
+        model.findAll(SColegio.class, this);
+        model.findAll(SCurso.class, this);
+        model.findAll(SCurso.class, this);
+        model.findAll(STipoAlumno.class, this);
     }
 
 }

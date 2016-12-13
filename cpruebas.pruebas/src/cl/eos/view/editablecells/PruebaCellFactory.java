@@ -1,6 +1,6 @@
 package cl.eos.view.editablecells;
 
-import cl.eos.persistence.models.Prueba.Estado;
+import cl.eos.persistence.models.SPrueba.Estado;
 import cl.eos.view.ots.OTPrueba;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableCell;

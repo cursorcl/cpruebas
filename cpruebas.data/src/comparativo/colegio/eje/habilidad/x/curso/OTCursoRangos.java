@@ -1,6 +1,6 @@
 package comparativo.colegio.eje.habilidad.x.curso;
 
-import cl.eos.persistence.models.Curso;
+import cl.eos.persistence.models.SCurso;
 
 /**
  * Contiene la cantidad de alumnos de un curso en cada rango de evaluacion para
@@ -10,19 +10,19 @@ import cl.eos.persistence.models.Curso;
  *
  */
 public class OTCursoRangos {
-    private Curso curso;
+    private SCurso curso;
     private int[] nroAlumnosXEjeHab;
 
     public OTCursoRangos() {
     }
 
-    public OTCursoRangos(Curso curso, int[] nroAlumnosXEjeHab) {
+    public OTCursoRangos(SCurso curso, int[] nroAlumnosXEjeHab) {
         super();
         this.curso = curso;
         this.nroAlumnosXEjeHab = nroAlumnosXEjeHab;
     }
 
-    public Curso getCurso() {
+    public SCurso getCurso() {
         return curso;
     }
 
@@ -30,7 +30,7 @@ public class OTCursoRangos {
         return nroAlumnosXEjeHab;
     }
 
-    public void setCurso(Curso curso) {
+    public void setCurso(SCurso curso) {
         this.curso = curso;
     }
 

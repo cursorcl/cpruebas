@@ -1,7 +1,7 @@
 package cl.eos.view.ots;
 
-import cl.eos.persistence.models.PruebaRendida;
-import cl.eos.persistence.models.RangoEvaluacion;
+import cl.eos.persistence.models.SPruebaRendida;
+import cl.eos.persistence.models.SRangoEvaluacion;
 import cl.eos.util.Utils;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleFloatProperty;
@@ -11,7 +11,7 @@ import javafx.beans.property.SimpleStringProperty;
 
 public class OTPruebaRendida {
 
-    private PruebaRendida pruebaRendida;
+    private SPruebaRendida pruebaRendida;
     private final SimpleIntegerProperty buenas = new SimpleIntegerProperty();
     private final SimpleIntegerProperty omitidas = new SimpleIntegerProperty();
     private final SimpleIntegerProperty malas = new SimpleIntegerProperty();
@@ -19,9 +19,9 @@ public class OTPruebaRendida {
     private final SimpleFloatProperty nota = new SimpleFloatProperty();
     private final SimpleIntegerProperty puntaje = new SimpleIntegerProperty();
     private final SimpleBooleanProperty rindioPrueba = new SimpleBooleanProperty();
-    private final SimpleObjectProperty<RangoEvaluacion> nivel = new SimpleObjectProperty<RangoEvaluacion>();
+    private final SimpleObjectProperty<SRangoEvaluacion> nivel = new SimpleObjectProperty<SRangoEvaluacion>();
 
-    public OTPruebaRendida(PruebaRendida pruebaRendida) {
+    public OTPruebaRendida(SPruebaRendida pruebaRendida) {
         this.pruebaRendida = pruebaRendida;
         buenas.set(pruebaRendida.getBuenas());
         omitidas.set(pruebaRendida.getOmitidas());
@@ -66,7 +66,7 @@ public class OTPruebaRendida {
         return pruebaRendida.getAlumno().getMaterno();
     }
 
-    public RangoEvaluacion getNivel() {
+    public SRangoEvaluacion getNivel() {
         return nivel.get();
     }
 
@@ -86,7 +86,7 @@ public class OTPruebaRendida {
         return pruebaRendida.getAlumno().getPaterno();
     }
 
-    public PruebaRendida getPruebaRendida() {
+    public SPruebaRendida getPruebaRendida() {
         return pruebaRendida;
     }
 
@@ -114,7 +114,7 @@ public class OTPruebaRendida {
         return malas;
     }
 
-    public SimpleObjectProperty<RangoEvaluacion> nivelProperty() {
+    public SimpleObjectProperty<SRangoEvaluacion> nivelProperty() {
         return nivel;
     }
 
@@ -148,7 +148,7 @@ public class OTPruebaRendida {
         pruebaRendida.setMalas(malas);
     }
 
-    public void setNivel(RangoEvaluacion nivel) {
+    public void setNivel(SRangoEvaluacion nivel) {
         this.nivel.set(nivel);
         pruebaRendida.setRango(nivel);
     }
@@ -164,7 +164,7 @@ public class OTPruebaRendida {
         pruebaRendida.setOmitidas(omitidas);
     }
 
-    public void setPruebaRendida(PruebaRendida pruebaRendida) {
+    public void setPruebaRendida(SPruebaRendida pruebaRendida) {
         this.pruebaRendida = pruebaRendida;
     }
 

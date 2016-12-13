@@ -1,11 +1,11 @@
 package cl.eos.ot;
 
-import cl.eos.persistence.models.EjeTematico;
+import cl.eos.persistence.models.SEjeTematico;
 import cl.eos.util.Utils;
 
 public class OTPreguntasEjes {
 
-    private EjeTematico ejeTematico;
+    private SEjeTematico ejeTematico;
     private Integer buenas = 0;
     private Integer total = 0;
 
@@ -13,7 +13,7 @@ public class OTPreguntasEjes {
 
     }
 
-    public OTPreguntasEjes(EjeTematico ejeTematico) {
+    public OTPreguntasEjes(SEjeTematico ejeTematico) {
         this.ejeTematico = ejeTematico;
     }
 
@@ -25,7 +25,7 @@ public class OTPreguntasEjes {
         return "Respuestas correctas: " + buenas.toString() + " de " + total.toString();
     }
 
-    public EjeTematico getEjeTematico() {
+    public SEjeTematico getEjeTematico() {
         return ejeTematico;
     }
 
@@ -61,7 +61,7 @@ public class OTPreguntasEjes {
         this.buenas = buenas;
     }
 
-    public void setEjeTematico(EjeTematico ejeTematico) {
+    public void setEjeTematico(SEjeTematico ejeTematico) {
         this.ejeTematico = ejeTematico;
     }
 

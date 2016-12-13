@@ -23,17 +23,17 @@ import cl.eos.imp.view.ProgressForm;
 import cl.eos.imp.view.WindowManager;
 import cl.eos.interfaces.IActivator;
 import cl.eos.interfaces.entity.IEntity;
-import cl.eos.persistence.models.Alumno;
-import cl.eos.persistence.models.Colegio;
-import cl.eos.persistence.models.Curso;
-import cl.eos.persistence.models.EjeTematico;
-import cl.eos.persistence.models.EvaluacionPrueba;
-import cl.eos.persistence.models.Habilidad;
-import cl.eos.persistence.models.Profesor;
-import cl.eos.persistence.models.Prueba;
-import cl.eos.persistence.models.PruebaRendida;
-import cl.eos.persistence.models.RangoEvaluacion;
-import cl.eos.persistence.models.RespuestasEsperadasPrueba;
+import cl.eos.persistence.models.SAlumno;
+import cl.eos.persistence.models.SColegio;
+import cl.eos.persistence.models.SCurso;
+import cl.eos.persistence.models.SEjeTematico;
+import cl.eos.persistence.models.SEvaluacionPrueba;
+import cl.eos.persistence.models.SHabilidad;
+import cl.eos.persistence.models.SProfesor;
+import cl.eos.persistence.models.SPrueba;
+import cl.eos.persistence.models.SPruebaRendida;
+import cl.eos.persistence.models.SRangoEvaluacion;
+import cl.eos.persistence.models.SRespuestasEsperadasPrueba;
 import cl.eos.persistence.util.Comparadores;
 import cl.eos.util.ExcelSheetWriterObj;
 import cl.eos.util.Pair;
@@ -69,13 +69,13 @@ public class EvaluarPruebaView extends AFormView {
         @Override
         public void handle(ActionEvent event) {
             evalPrueba = null;
-            final Curso curso = cmbCursos.getSelectionModel().getSelectedItem();
+            final SCurso curso = cmbCursos.getSelectionModel().getSelectedItem();
             if (curso != null) {
-                final Colegio colegio = cmbColegios.getSelectionModel().getSelectedItem();
-                final Profesor profesor = cmbProfesor.getSelectionModel().getSelectedItem();
-                final List<EvaluacionPrueba> listEvaluaciones = prueba.getEvaluaciones();
+                final SColegio colegio = cmbColegios.getSelectionModel().getSelectedItem();
+                final SProfesor profesor = cmbProfesor.getSelectionModel().getSelectedItem();
+                final List<SEvaluacionPrueba> listEvaluaciones = prueba.getEvaluaciones();
                 if (listEvaluaciones != null && !listEvaluaciones.isEmpty()) {
-                    for (final EvaluacionPrueba evaluacion : listEvaluaciones) {
+                    for (final SEvaluacionPrueba evaluacion : listEvaluaciones) {
                         if (evaluacion.getColegio().equals(colegio) && evaluacion.getCurso().equals(curso)) {
                             evalPrueba = evaluacion;
                             evalPrueba.getPruebasRendidas().isEmpty();
@@ -85,8 +85,8 @@ public class EvaluarPruebaView extends AFormView {
                 }
                 final ObservableList<OTPruebaRendida> oList = FXCollections.observableArrayList();
                 if (evalPrueba == null) {
-                    // Tengo que crear la evaluacion Prueba.
-                    evalPrueba = new EvaluacionPrueba();
+                    // Tengo que crear la evaluacion R_Prueba.
+                    evalPrueba = new SEvaluacionPrueba();
                     evalPrueba.setColegio(colegio);
                     evalPrueba.setCurso(curso);
                     evalPrueba.setPrueba(prueba);
@@ -95,8 +95,8 @@ public class EvaluarPruebaView extends AFormView {
                 }
 
                 if (curso.getAlumnos() != null && !curso.getAlumnos().isEmpty()) {
-                    for (final Alumno alumno : curso.getAlumnos()) {
-                        PruebaRendida pRendida = new PruebaRendida();
+                    for (final SAlumno alumno : curso.getAlumnos()) {
+                        SPruebaRendida pRendida = new SPruebaRendida();
                         pRendida.setAlumno(alumno);
                         pRendida.setEvaluacionPrueba(evalPrueba);
                         if (evalPrueba.getPruebasRendidas().contains(pRendida)) {
@@ -132,8 +132,8 @@ public class EvaluarPruebaView extends AFormView {
         };
     }
 
-    private Prueba prueba;
-    private EvaluacionPrueba evalPrueba = null;
+    private SPrueba prueba;
+    private SEvaluacionPrueba evalPrueba = null;
     @FXML
     private Label lblError;
     @FXML
@@ -161,13 +161,13 @@ public class EvaluarPruebaView extends AFormView {
     @FXML
     private TableColumn<OTPruebaRendida, Boolean> rindeCol;
     @FXML
-    private TableColumn<OTPruebaRendida, RangoEvaluacion> nivelCol;
+    private TableColumn<OTPruebaRendida, SRangoEvaluacion> nivelCol;
     @FXML
-    private ComboBox<Colegio> cmbColegios;
+    private ComboBox<SColegio> cmbColegios;
     @FXML
-    private ComboBox<Curso> cmbCursos;
+    private ComboBox<SCurso> cmbCursos;
     @FXML
-    private ComboBox<Profesor> cmbProfesor;
+    private ComboBox<SProfesor> cmbProfesor;
     @FXML
     private TextField txtName;
     @FXML
@@ -179,9 +179,9 @@ public class EvaluarPruebaView extends AFormView {
     @FXML
     private DatePicker dtpFecha;
     @FXML
-    private ListView<EjeTematico> lstEjes;
+    private ListView<SEjeTematico> lstEjes;
     @FXML
-    private ListView<Habilidad> lstHabilidad;
+    private ListView<SHabilidad> lstHabilidad;
     @FXML
     private MenuItem mnuScanner;
     @FXML
@@ -199,7 +199,7 @@ public class EvaluarPruebaView extends AFormView {
     @FXML
     private BorderPane mainPane;
 
-    private ArrayList<RespuestasEsperadasPrueba> respuestas;
+    private ArrayList<SRespuestasEsperadasPrueba> respuestas;
 
     public EvaluarPruebaView() {
         setTitle("Evaluar");
@@ -214,7 +214,7 @@ public class EvaluarPruebaView extends AFormView {
         omitidasCol.setCellValueFactory(new PropertyValueFactory<OTPruebaRendida, Integer>("omitidas"));
         notaCol.setCellValueFactory(new PropertyValueFactory<OTPruebaRendida, Float>("nota"));
         puntajeCol.setCellValueFactory(new PropertyValueFactory<OTPruebaRendida, Integer>("puntaje"));
-        nivelCol.setCellValueFactory(new PropertyValueFactory<OTPruebaRendida, RangoEvaluacion>("nivel"));
+        nivelCol.setCellValueFactory(new PropertyValueFactory<OTPruebaRendida, SRangoEvaluacion>("nivel"));
         rindeCol.setCellValueFactory(new PropertyValueFactory<OTPruebaRendida, Boolean>("rindioPrueba"));
         rindeCol.setCellFactory(CheckBoxTableCell.forTableColumn(rindeCol));
         tblListadoPruebas.setEditable(true);
@@ -251,7 +251,7 @@ public class EvaluarPruebaView extends AFormView {
         otRendida.setBuenas(0);
         otRendida.setMalas(0);
         for (int n = 0; n < nMax; n++) {
-            final RespuestasEsperadasPrueba resp = respuestas.get(n);
+            final SRespuestasEsperadasPrueba resp = respuestas.get(n);
             final String userResp = respsAlumno.substring(n, n + 1);
             String validResp = resp.getRespuesta();
             if (resp.getMental()) {
@@ -273,7 +273,7 @@ public class EvaluarPruebaView extends AFormView {
         // float porcentaje = Utils.getPorcenta(otRendida.getNota());
         final float porcentaje = (float) otRendida.getBuenas() / total * 100f;
 
-        final RangoEvaluacion rango = prueba.getNivelEvaluacion().getRango(porcentaje);
+        final SRangoEvaluacion rango = prueba.getNivelEvaluacion().getRango(porcentaje);
         otRendida.setNivel(rango);
     }
 
@@ -291,14 +291,14 @@ public class EvaluarPruebaView extends AFormView {
                 evalPrueba.setPrueba(prueba);
                 evalPrueba.setName(s);
             }
-            final List<PruebaRendida> lstPruebasRendidas = new ArrayList<>();
+            final List<SPruebaRendida> lstPruebasRendidas = new ArrayList<>();
             for (final OTPruebaRendida otPRendida : tblListadoPruebas.getItems()) {
                 if (otPRendida.isRindioPrueba() && otPRendida.getRespuestas() != null
                         && !otPRendida.getRespuestas().trim().isEmpty()) {
-                    PruebaRendida pRendida = otPRendida.getPruebaRendida();
+                    SPruebaRendida pRendida = otPRendida.getPruebaRendida();
                     pRendida.setEvaluacionPrueba(evalPrueba);
                     if (pRendida.getId() != null) {
-                        pRendida = (PruebaRendida) save(pRendida);
+                        pRendida = (SPruebaRendida) save(pRendida);
                     }
                     lstPruebasRendidas.add(pRendida);
                 } else {
@@ -308,7 +308,7 @@ public class EvaluarPruebaView extends AFormView {
                 }
             }
             evalPrueba.setPruebasRendidas(lstPruebasRendidas);
-            evalPrueba = (EvaluacionPrueba) save(evalPrueba);
+            evalPrueba = (SEvaluacionPrueba) save(evalPrueba);
             mnuGrabar.setDisable(true);
             mnuScanner.setDisable(true);
             cmbProfesor.getSelectionModel().clearSelection();
@@ -316,7 +316,7 @@ public class EvaluarPruebaView extends AFormView {
             cmbCursos.getItems().clear();
             cmbProfesor.requestFocus();
 
-            controller.findById(Prueba.class, prueba.getId(), this);
+            controller.findById(SPrueba.class, prueba.getId(), this);
         }
     }
 
@@ -334,12 +334,12 @@ public class EvaluarPruebaView extends AFormView {
             dlg.title("Procesando pruebas");
             dlg.message("Esto tomará algunos minutos.");
 
-            final Task<Pair<ObservableList<String>, ObservableList<PruebaRendida>>> task = new Task<Pair<ObservableList<String>, ObservableList<PruebaRendida>>>() {
+            final Task<Pair<ObservableList<String>, ObservableList<SPruebaRendida>>> task = new Task<Pair<ObservableList<String>, ObservableList<SPruebaRendida>>>() {
                 @Override
-                protected Pair<ObservableList<String>, ObservableList<PruebaRendida>> call() throws Exception {
+                protected Pair<ObservableList<String>, ObservableList<SPruebaRendida>> call() throws Exception {
                     final int max = prueba.getNroPreguntas();
                     int n = 1;
-                    final Pair<ObservableList<String>, ObservableList<PruebaRendida>> results = new Pair<ObservableList<String>, ObservableList<PruebaRendida>>();
+                    final Pair<ObservableList<String>, ObservableList<SPruebaRendida>> results = new Pair<ObservableList<String>, ObservableList<SPruebaRendida>>();
                     results.setFirst(FXCollections.observableArrayList());
                     results.setSecond(FXCollections.observableArrayList());
                     final ExtractorResultadosPrueba procesador = ExtractorResultadosPrueba.getInstance();
@@ -349,7 +349,7 @@ public class EvaluarPruebaView extends AFormView {
                             try {
                                 final OTResultadoScanner resultado = procesador.process(archivo, max);
                                 if (resultado != null) {
-                                    PruebaRendida pRendida;
+                                    SPruebaRendida pRendida;
                                     pRendida = obtenerPruebaRendida(resultado);
                                     pRendida.setEvaluacionPrueba(evalPrueba);
                                     results.getSecond().add(pRendida);
@@ -390,12 +390,12 @@ public class EvaluarPruebaView extends AFormView {
                 Platform.runLater(r);
             });
             task.setOnSucceeded(event -> {
-                final Pair<ObservableList<String>, ObservableList<PruebaRendida>> res = task.getValue();
-                final ObservableList<PruebaRendida> pruebas = res.getSecond();
+                final Pair<ObservableList<String>, ObservableList<SPruebaRendida>> res = task.getValue();
+                final ObservableList<SPruebaRendida> pruebas = res.getSecond();
                 final ObservableList<String> malas = res.getFirst();
                 if (pruebas != null && !pruebas.isEmpty()) {
 
-                    for (final PruebaRendida pr : pruebas) {
+                    for (final SPruebaRendida pr : pruebas) {
                         final OTPruebaRendida ot = new OTPruebaRendida(pr);
                         final int idx = tblListadoPruebas.getItems().indexOf(ot);
                         if (idx == -1) {
@@ -440,12 +440,12 @@ public class EvaluarPruebaView extends AFormView {
         dtpFecha.setValue(LocalDate.now());
         cmbColegios.setOnAction(event -> {
             cmbCursos.getItems().clear();
-            final Colegio colegio = cmbColegios.getSelectionModel().getSelectedItem();
+            final SColegio colegio = cmbColegios.getSelectionModel().getSelectedItem();
             if (colegio != null) {
                 final Map<String, Object> parameters = new HashMap<String, Object>();
                 parameters.put("tcursoId", prueba.getCurso().getId());
                 parameters.put("colegioId", colegio.getId());
-                controller.find("Curso.findByTipoColegio", parameters);
+                controller.find("R_Curso.findByTipoColegio", parameters);
             }
         });
         cmbCursos.setOnAction(new EHandlerCmbCurso());
@@ -488,9 +488,9 @@ public class EvaluarPruebaView extends AFormView {
 
     }
 
-    private Alumno obtenerAlumno(String rut, Curso curso) {
-        Alumno respuesta = null;
-        for (final Alumno alumno : curso.getAlumnos()) {
+    private SAlumno obtenerAlumno(String rut, SCurso curso) {
+        SAlumno respuesta = null;
+        for (final SAlumno alumno : curso.getAlumnos()) {
             if (alumno.getRut().equalsIgnoreCase(rut)) {
                 respuesta = alumno;
                 break;
@@ -499,10 +499,10 @@ public class EvaluarPruebaView extends AFormView {
         return respuesta;
     }
 
-    private PruebaRendida obtenerPruebaRendida(OTResultadoScanner resultado) throws CPruebasException {
+    private SPruebaRendida obtenerPruebaRendida(OTResultadoScanner resultado) throws CPruebasException {
 
-        final Curso curso = cmbCursos.getValue();
-        PruebaRendida pRendida = null;
+        final SCurso curso = cmbCursos.getValue();
+        SPruebaRendida pRendida = null;
 
         String rut = resultado.getRut();
         if (rut != null && !rut.isEmpty()) {
@@ -510,7 +510,7 @@ public class EvaluarPruebaView extends AFormView {
             final StringBuilder sbRut = new StringBuilder(rut).insert(rut.length() - 1, '-');
             rut = sbRut.toString();
 
-            final Alumno alumno = obtenerAlumno(rut, curso);
+            final SAlumno alumno = obtenerAlumno(rut, curso);
             if (alumno == null) {
                 throw new CPruebasException(String.format("El rut: %s no pertenece al colegio", rut));
             } else {
@@ -523,7 +523,7 @@ public class EvaluarPruebaView extends AFormView {
 
                 for (int n = 0; n < prueba.getNroPreguntas(); n++) {
                     String letter = strResps.substring(n, n + 1);
-                    final RespuestasEsperadasPrueba rEsperada = respuestas.get(n);
+                    final SRespuestasEsperadasPrueba rEsperada = respuestas.get(n);
 
                     if (rEsperada.isAnulada()) {
                         rEsperada.setRespuesta("*");
@@ -573,7 +573,7 @@ public class EvaluarPruebaView extends AFormView {
 
                 final int nroPreguntas = prueba.getNroPreguntas() - anuladas;
                 final float nota = Utils.getNota(nroPreguntas, prueba.getExigencia(), buenas, prueba.getPuntajeBase());
-                pRendida = new PruebaRendida();
+                pRendida = new SPruebaRendida();
                 pRendida.setAlumno(alumno);
                 pRendida.setBuenas(buenas);
                 pRendida.setMalas(malas);
@@ -581,7 +581,7 @@ public class EvaluarPruebaView extends AFormView {
                 pRendida.setNota(nota);
                 pRendida.setRespuestas(strResps.toString());
                 final float porcentaje = (float) pRendida.getBuenas() / nroPreguntas * 100f;
-                final RangoEvaluacion rango = prueba.getNivelEvaluacion().getRango(porcentaje);
+                final SRangoEvaluacion rango = prueba.getNivelEvaluacion().getRango(porcentaje);
                 pRendida.setRango(rango);
 
                 pRendida.setRespuestas(strResps.toString());
@@ -596,23 +596,23 @@ public class EvaluarPruebaView extends AFormView {
     public void onDataArrived(List<Object> list) {
         if (list != null && !list.isEmpty()) {
             final Object entity = list.get(0);
-            if (entity instanceof Colegio) {
-                final ObservableList<Colegio> oList = FXCollections.observableArrayList();
+            if (entity instanceof SColegio) {
+                final ObservableList<SColegio> oList = FXCollections.observableArrayList();
                 for (final Object iEntity : list) {
-                    oList.add((Colegio) iEntity);
+                    oList.add((SColegio) iEntity);
                 }
                 cmbColegios.setItems(oList);
-            } else if (entity instanceof Curso) {
-                final ObservableList<Curso> oList = FXCollections.observableArrayList();
+            } else if (entity instanceof SCurso) {
+                final ObservableList<SCurso> oList = FXCollections.observableArrayList();
                 for (final Object iEntity : list) {
-                    oList.add((Curso) iEntity);
+                    oList.add((SCurso) iEntity);
                 }
                 cmbCursos.setItems(oList);
                 cmbCursos.setDisable(false);
-            } else if (entity instanceof Profesor) {
-                final ObservableList<Profesor> oList = FXCollections.observableArrayList();
+            } else if (entity instanceof SProfesor) {
+                final ObservableList<SProfesor> oList = FXCollections.observableArrayList();
                 for (final Object iEntity : list) {
-                    oList.add((Profesor) iEntity);
+                    oList.add((SProfesor) iEntity);
                 }
                 cmbProfesor.setItems(oList);
             }
@@ -623,24 +623,24 @@ public class EvaluarPruebaView extends AFormView {
     public void onFound(IEntity entity) {
         txtNroAlternativas.setText("");
         txtNroPreguntas.setText("");
-        if (entity instanceof Prueba) {
+        if (entity instanceof SPrueba) {
 
             tblListadoPruebas.getItems().clear();
             cmbColegios.getSelectionModel().clearSelection();
             cmbProfesor.getSelectionModel().clearSelection();
             cmbCursos.getSelectionModel().clearSelection();
-            prueba = (Prueba) entity;
-            respuestas = new ArrayList<RespuestasEsperadasPrueba>(prueba.getRespuestas());
+            prueba = (SPrueba) entity;
+            respuestas = new ArrayList<SRespuestasEsperadasPrueba>(prueba.getRespuestas());
             Collections.sort(respuestas, Comparadores.compararRespuestasEsperadas());
 
             txtName.setText(prueba.getName());
             txtNroAlternativas.setText(prueba.getAlternativas().toString());
             txtNroPreguntas.setText(prueba.getNroPreguntas().toString());
             txtAsignatura.setText(prueba.getAsignatura().getName());
-            final ObservableList<EjeTematico> lEjes = FXCollections.observableArrayList();
-            final ObservableList<Habilidad> lHabilidad = FXCollections.observableArrayList();
+            final ObservableList<SEjeTematico> lEjes = FXCollections.observableArrayList();
+            final ObservableList<SHabilidad> lHabilidad = FXCollections.observableArrayList();
 
-            for (final RespuestasEsperadasPrueba respuesta : respuestas) {
+            for (final SRespuestasEsperadasPrueba respuesta : respuestas) {
                 if (!lEjes.contains(respuesta.getEjeTematico())) {
                     lEjes.add(respuesta.getEjeTematico());
                 }

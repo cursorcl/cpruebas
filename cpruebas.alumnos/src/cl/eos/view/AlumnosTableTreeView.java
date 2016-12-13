@@ -9,10 +9,10 @@ import java.util.logging.Logger;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.ot.OTAlumno;
-import cl.eos.persistence.models.Alumno;
-import cl.eos.persistence.models.Colegio;
-import cl.eos.persistence.models.Curso;
-import cl.eos.persistence.models.TipoAlumno;
+import cl.eos.persistence.models.SAlumno;
+import cl.eos.persistence.models.SColegio;
+import cl.eos.persistence.models.SCurso;
+import cl.eos.persistence.models.STipoAlumno;
 import cl.eos.util.ExcelSheetWriterObj;
 import cl.eos.util.Utils;
 import javafx.collections.FXCollections;
@@ -82,10 +82,10 @@ public class AlumnosTableTreeView extends AFormView implements EventHandler<Acti
     private TextField txtDireccion;
 
     @FXML
-    private ComboBox<Colegio> cmbColegio;
+    private ComboBox<SColegio> cmbColegio;
 
     @FXML
-    private ComboBox<Curso> cmbCurso;
+    private ComboBox<SCurso> cmbCurso;
 
     @FXML
     private Label lblError;
@@ -117,9 +117,9 @@ public class AlumnosTableTreeView extends AFormView implements EventHandler<Acti
     private TreeTableColumn<OTAlumno, String> colTipoAlumno;
 
     @FXML
-    private ComboBox<TipoAlumno> cmbTipoAlumno;
+    private ComboBox<STipoAlumno> cmbTipoAlumno;
 
-    private ObservableList<Curso> oListCursos;
+    private ObservableList<SCurso> oListCursos;
 
     private void accionClicTabla() {
         tblAlumnos.setOnMouseClicked(event -> {
@@ -152,10 +152,10 @@ public class AlumnosTableTreeView extends AFormView implements EventHandler<Acti
             return;
         }
 
-        final List<Alumno> alumno = new ArrayList<>(otSeleccionados.size());
+        final List<SAlumno> alumno = new ArrayList<>(otSeleccionados.size());
         for (final TreeItem<OTAlumno> ot : otSeleccionados) {
             if (ot.getValue().getAlumno() != null) {
-                final Alumno item = ot.getValue().getAlumno();
+                final SAlumno item = ot.getValue().getAlumno();
                 alumno.add(item);
             }
         }
@@ -171,11 +171,11 @@ public class AlumnosTableTreeView extends AFormView implements EventHandler<Acti
             if (lblError != null) {
                 lblError.setText(" ");
             }
-            Alumno alumno;
-            if (entitySelected != null && entitySelected instanceof Alumno) {
-                alumno = (Alumno) entitySelected;
+            SAlumno alumno;
+            if (entitySelected != null && entitySelected instanceof SAlumno) {
+                alumno = (SAlumno) entitySelected;
             } else {
-                alumno = new Alumno();
+                alumno = new SAlumno();
             }
             alumno.setRut(txtRut.getText());
             alumno.setName(txtNombres.getText());
@@ -264,10 +264,10 @@ public class AlumnosTableTreeView extends AFormView implements EventHandler<Acti
     }
 
     private void asignaCursos() {
-        final Colegio colegioSeleccionado = cmbColegio.getValue();
+        final SColegio colegioSeleccionado = cmbColegio.getValue();
         if (colegioSeleccionado != null) {
-            final ObservableList<Curso> oList = FXCollections.observableArrayList();
-            for (final Curso object : oListCursos) {
+            final ObservableList<SCurso> oList = FXCollections.observableArrayList();
+            for (final SCurso object : oListCursos) {
                 if (object.getColegio().equals(colegioSeleccionado)) {
                     oList.add(object);
                 }
@@ -372,7 +372,7 @@ public class AlumnosTableTreeView extends AFormView implements EventHandler<Acti
 
         if (list != null && !list.isEmpty()) {
             final Object entity = list.get(0);
-            if (entity instanceof Alumno) {
+            if (entity instanceof SAlumno) {
                 final TreeItem<OTAlumno> root = new TreeItem<>(new OTAlumno());
                 root.setExpanded(true);
 
@@ -380,7 +380,7 @@ public class AlumnosTableTreeView extends AFormView implements EventHandler<Acti
                 TreeItem<OTAlumno> itemCurso = null;
 
                 for (final Object iEntity : list) {
-                    final OTAlumno ot = new OTAlumno((Alumno) iEntity);
+                    final OTAlumno ot = new OTAlumno((SAlumno) iEntity);
                     if (itemColegio == null || !ot.getColegio().equals(itemColegio.getValue().getColegio())) {
                         final OTAlumno otColegio = new OTAlumno();
                         otColegio.setColegio(ot.getColegio());
@@ -398,22 +398,22 @@ public class AlumnosTableTreeView extends AFormView implements EventHandler<Acti
 
                 }
                 tblAlumnos.setRoot(root);
-            } else if (entity instanceof Curso) {
+            } else if (entity instanceof SCurso) {
                 oListCursos = FXCollections.observableArrayList();
                 for (final Object iEntity : list) {
-                    oListCursos.add((Curso) iEntity);
+                    oListCursos.add((SCurso) iEntity);
                 }
                 asignaCursos();
-            } else if (entity instanceof Colegio) {
-                final ObservableList<Colegio> oList = FXCollections.observableArrayList();
+            } else if (entity instanceof SColegio) {
+                final ObservableList<SColegio> oList = FXCollections.observableArrayList();
                 for (final Object iEntity : list) {
-                    oList.add((Colegio) iEntity);
+                    oList.add((SColegio) iEntity);
                 }
                 cmbColegio.setItems(oList);
-            } else if (entity instanceof TipoAlumno) {
-                final ObservableList<TipoAlumno> oList = FXCollections.observableArrayList();
+            } else if (entity instanceof STipoAlumno) {
+                final ObservableList<STipoAlumno> oList = FXCollections.observableArrayList();
                 for (final Object iEntity : list) {
-                    oList.add((TipoAlumno) iEntity);
+                    oList.add((STipoAlumno) iEntity);
                 }
                 cmbTipoAlumno.setItems(oList);
             }
@@ -423,7 +423,7 @@ public class AlumnosTableTreeView extends AFormView implements EventHandler<Acti
 
     @Override
     public void onDeleted(IEntity entity) {
-        final OTAlumno otAlumno = new OTAlumno((Alumno) entity);
+        final OTAlumno otAlumno = new OTAlumno((SAlumno) entity);
         final TreeItem<OTAlumno> root = tblAlumnos.getRoot();
         for (final TreeItem<OTAlumno> item : root.getChildren()) {
             final OTAlumno ot = item.getValue();
@@ -446,7 +446,7 @@ public class AlumnosTableTreeView extends AFormView implements EventHandler<Acti
 
     @Override
     public void onSaved(IEntity otObject) {
-        final OTAlumno otAlumno = new OTAlumno((Alumno) otObject);
+        final OTAlumno otAlumno = new OTAlumno((SAlumno) otObject);
 
         final TreeItem<OTAlumno> root = tblAlumnos.getRoot();
         addItem(root, otAlumno);

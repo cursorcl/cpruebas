@@ -26,9 +26,9 @@ import javafx.util.Callback;
 import cl.eos.common.Constants;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
-import cl.eos.persistence.models.EvaluacionPrueba;
-import cl.eos.persistence.models.PruebaRendida;
-import cl.eos.persistence.models.TipoAlumno;
+import cl.eos.persistence.models.SEvaluacionPrueba;
+import cl.eos.persistence.models.SPruebaRendida;
+import cl.eos.persistence.models.STipoAlumno;
 import cl.eos.util.ExcelSheetWriterObj;
 
 public class ResumenAlumnoView extends AFormView implements EventHandler<ActionEvent> {
@@ -49,33 +49,33 @@ public class ResumenAlumnoView extends AFormView implements EventHandler<ActionE
 	private MenuItem mnuExportarAlumnos;
 
 	@FXML
-	private TableView<PruebaRendida> tblAlumnos;
+	private TableView<SPruebaRendida> tblAlumnos;
 	@FXML
-	private TableColumn<PruebaRendida, String> colARut;
+	private TableColumn<SPruebaRendida, String> colARut;
 	@FXML
-	private TableColumn<PruebaRendida, String> colAPaterno;
+	private TableColumn<SPruebaRendida, String> colAPaterno;
 	@FXML
-	private TableColumn<PruebaRendida, String> colAMaterno;
+	private TableColumn<SPruebaRendida, String> colAMaterno;
 	@FXML
-	private TableColumn<PruebaRendida, String> colAName;
+	private TableColumn<SPruebaRendida, String> colAName;
 	@FXML
-	private TableColumn<PruebaRendida, Integer> colABuenas;
+	private TableColumn<SPruebaRendida, Integer> colABuenas;
 	@FXML
-	private TableColumn<PruebaRendida, Integer> colAMalas;
+	private TableColumn<SPruebaRendida, Integer> colAMalas;
 	@FXML
-	private TableColumn<PruebaRendida, Integer> colAOmitidas;
+	private TableColumn<SPruebaRendida, Integer> colAOmitidas;
 
 	@FXML
 	private TableView<ObservableList<String>> tblRespuestas;
 
 	@FXML
-	private ComboBox<TipoAlumno> cmbTipoAlumno;
+	private ComboBox<STipoAlumno> cmbTipoAlumno;
 
 	long tipoAlumno = Constants.PIE_ALL;
 
 	@FXML
 	private Button btnGenerar;
-	private EvaluacionPrueba evaluacionPrueba;
+	private SEvaluacionPrueba evaluacionPrueba;
 
 	public ResumenAlumnoView() {
 	}
@@ -119,19 +119,19 @@ public class ResumenAlumnoView extends AFormView implements EventHandler<ActionE
 
 	private void inicializarTablaAlumnos() {
 		tblAlumnos.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-		colARut.setCellValueFactory(new PropertyValueFactory<PruebaRendida, String>("rut"));
-		colAName.setCellValueFactory(new PropertyValueFactory<PruebaRendida, String>("nombre"));
-		colAPaterno.setCellValueFactory(new PropertyValueFactory<PruebaRendida, String>("paterno"));
-		colAMaterno.setCellValueFactory(new PropertyValueFactory<PruebaRendida, String>("materno"));
-		colABuenas.setCellValueFactory(new PropertyValueFactory<PruebaRendida, Integer>("buenas"));
-		colAMalas.setCellValueFactory(new PropertyValueFactory<PruebaRendida, Integer>("malas"));
-		colAOmitidas.setCellValueFactory(new PropertyValueFactory<PruebaRendida, Integer>("omitidas"));
+		colARut.setCellValueFactory(new PropertyValueFactory<SPruebaRendida, String>("rut"));
+		colAName.setCellValueFactory(new PropertyValueFactory<SPruebaRendida, String>("nombre"));
+		colAPaterno.setCellValueFactory(new PropertyValueFactory<SPruebaRendida, String>("paterno"));
+		colAMaterno.setCellValueFactory(new PropertyValueFactory<SPruebaRendida, String>("materno"));
+		colABuenas.setCellValueFactory(new PropertyValueFactory<SPruebaRendida, Integer>("buenas"));
+		colAMalas.setCellValueFactory(new PropertyValueFactory<SPruebaRendida, Integer>("malas"));
+		colAOmitidas.setCellValueFactory(new PropertyValueFactory<SPruebaRendida, Integer>("omitidas"));
 	}
 
 	@Override
 	public void onFound(IEntity entity) {
-		if (entity instanceof EvaluacionPrueba) {
-			evaluacionPrueba = (EvaluacionPrueba) entity;
+		if (entity instanceof SEvaluacionPrueba) {
+			evaluacionPrueba = (SEvaluacionPrueba) entity;
 			generateReport();
 		}
 	}
@@ -140,10 +140,10 @@ public class ResumenAlumnoView extends AFormView implements EventHandler<ActionE
 	public void onDataArrived(List<Object> list) {
 		if (list != null && !list.isEmpty()) {
 			Object entity = list.get(0);
-			if (entity instanceof TipoAlumno) {
-				ObservableList<TipoAlumno> tAlumnoList = FXCollections.observableArrayList();
+			if (entity instanceof STipoAlumno) {
+				ObservableList<STipoAlumno> tAlumnoList = FXCollections.observableArrayList();
 				for (Object iEntity : list) {
-					tAlumnoList.add((TipoAlumno) iEntity);
+					tAlumnoList.add((STipoAlumno) iEntity);
 				}
 				cmbTipoAlumno.setItems(tAlumnoList);
 				cmbTipoAlumno.getSelectionModel().select(0);
@@ -174,11 +174,11 @@ public class ResumenAlumnoView extends AFormView implements EventHandler<ActionE
 		if (evaluacionPrueba != null && cmbTipoAlumno.getItems() != null && !cmbTipoAlumno.getItems().isEmpty()) {
 			tblRespuestas.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
-			List<PruebaRendida> list = evaluacionPrueba.getPruebasRendidas();
+			List<SPruebaRendida> list = evaluacionPrueba.getPruebasRendidas();
 
-			ObservableList<PruebaRendida> oList = FXCollections.observableArrayList();
+			ObservableList<SPruebaRendida> oList = FXCollections.observableArrayList();
 			if (list != null && !list.isEmpty()) {
-				for (PruebaRendida pr : list) {
+				for (SPruebaRendida pr : list) {
 					if (tipoAlumno == Constants.PIE_ALL || pr.getAlumno().getTipoAlumno().getId().equals(tipoAlumno)) {
 						oList.add(pr);
 					}
@@ -201,7 +201,7 @@ public class ResumenAlumnoView extends AFormView implements EventHandler<ActionE
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private void crearTabla(EvaluacionPrueba eval) {
+	private void crearTabla(SEvaluacionPrueba eval) {
 
 		List<String> columns = new ArrayList<String>();
 
@@ -256,7 +256,7 @@ public class ResumenAlumnoView extends AFormView implements EventHandler<ActionE
 
 		ObservableList<ObservableList<String>> csvData = FXCollections.observableArrayList();
 
-		for (PruebaRendida pr : eval.getPruebasRendidas()) {
+		for (SPruebaRendida pr : eval.getPruebasRendidas()) {
 			if (tipoAlumno != Constants.PIE_ALL && !pr.getAlumno().getTipoAlumno().getId().equals(tipoAlumno)) {
 				continue;
 			}

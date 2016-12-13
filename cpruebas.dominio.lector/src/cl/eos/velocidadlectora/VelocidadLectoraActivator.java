@@ -11,7 +11,7 @@ public class VelocidadLectoraActivator extends AActivator {
 
         controller = new Contoller();
 
-        final URL url = VelocidadLectoraActivator.class.getResource("/cl/eos/velocidadlectora/VelocidadLectora.fxml");
+        final URL url = VelocidadLectoraActivator.class.getResource("/cl/eos/velocidadlectora/SVelocidadLectora.fxml");
         final FXMLLoader fxmlLoader = new FXMLLoader();
         try {
             pane = fxmlLoader.load(url.openStream());

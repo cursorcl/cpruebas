@@ -6,7 +6,7 @@ import java.util.List;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.ot.OTAsignatura;
-import cl.eos.persistence.models.Asignatura;
+import cl.eos.persistence.models.SAsignatura;
 import cl.eos.util.ExcelSheetWriterObj;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -90,7 +90,7 @@ public class AsignaturasView extends AFormView implements EventHandler<ActionEve
         final ObservableList<OTAsignatura> otSeleccionados = tblAsignatura.getSelectionModel().getSelectedItems();
 
         if (otSeleccionados != null && !otSeleccionados.isEmpty()) {
-            final List<Asignatura> asignatura = new ArrayList<Asignatura>(otSeleccionados.size());
+            final List<SAsignatura> asignatura = new ArrayList<SAsignatura>(otSeleccionados.size());
             for (final OTAsignatura ot : otSeleccionados) {
                 asignatura.add(ot.getAsignatura());
             }
@@ -107,18 +107,18 @@ public class AsignaturasView extends AFormView implements EventHandler<ActionEve
             if (validaNombreAsignatura(txtNombre.getText())) {
                 final Alert alert = new Alert(AlertType.INFORMATION);
                 alert.setTitle("Información");
-                alert.setHeaderText("Asignatura repetida");
+                alert.setHeaderText("SAsignatura repetida");
                 alert.setContentText("El nombre de la asignatura se encuentra repetida");
                 alert.showAndWait();
             } else {
                 if (lblError != null) {
                     lblError.setText(" ");
                 }
-                Asignatura asignatura = null;
-                if (entitySelected != null && entitySelected instanceof Asignatura) {
-                    asignatura = (Asignatura) entitySelected;
+                SAsignatura asignatura = null;
+                if (entitySelected != null && entitySelected instanceof SAsignatura) {
+                    asignatura = (SAsignatura) entitySelected;
                 } else {
-                    asignatura = new Asignatura();
+                    asignatura = new SAsignatura();
                 }
                 asignatura.setName(txtNombre.getText());
                 save(asignatura);
@@ -190,10 +190,10 @@ public class AsignaturasView extends AFormView implements EventHandler<ActionEve
     public void onDataArrived(List<Object> list) {
         if (list != null && !list.isEmpty()) {
             final Object entity = list.get(0);
-            if (entity instanceof Asignatura) {
+            if (entity instanceof SAsignatura) {
                 final ObservableList<OTAsignatura> oList = FXCollections.observableArrayList();
                 for (final Object iEntity : list) {
-                    oList.add(new OTAsignatura((Asignatura) iEntity));
+                    oList.add(new OTAsignatura((SAsignatura) iEntity));
                 }
                 tblAsignatura.setItems(oList);
             }
@@ -202,12 +202,12 @@ public class AsignaturasView extends AFormView implements EventHandler<ActionEve
 
     @Override
     public void onDeleted(IEntity entity) {
-        tblAsignatura.getItems().remove(new OTAsignatura((Asignatura) entity));
+        tblAsignatura.getItems().remove(new OTAsignatura((SAsignatura) entity));
     }
 
     @Override
     public void onSaved(IEntity otObject) {
-        final OTAsignatura otAsignatura = new OTAsignatura((Asignatura) otObject);
+        final OTAsignatura otAsignatura = new OTAsignatura((SAsignatura) otObject);
         final int indice = tblAsignatura.getItems().lastIndexOf(otAsignatura);
         if (indice != -1) {
             tblAsignatura.getItems().set(indice, otAsignatura);

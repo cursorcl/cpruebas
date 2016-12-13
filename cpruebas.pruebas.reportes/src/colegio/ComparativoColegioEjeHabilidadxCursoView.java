@@ -12,17 +12,17 @@ import cl.eos.common.Constants;
 import cl.eos.imp.view.AFormView;
 import cl.eos.imp.view.ProgressForm;
 import cl.eos.interfaces.entity.IEntity;
-import cl.eos.persistence.models.Alumno;
-import cl.eos.persistence.models.Asignatura;
-import cl.eos.persistence.models.Colegio;
-import cl.eos.persistence.models.Curso;
-import cl.eos.persistence.models.EjeTematico;
-import cl.eos.persistence.models.EvaluacionEjeTematico;
-import cl.eos.persistence.models.EvaluacionPrueba;
-import cl.eos.persistence.models.Habilidad;
-import cl.eos.persistence.models.PruebaRendida;
-import cl.eos.persistence.models.RespuestasEsperadasPrueba;
-import cl.eos.persistence.models.TipoAlumno;
+import cl.eos.persistence.models.SAlumno;
+import cl.eos.persistence.models.SAsignatura;
+import cl.eos.persistence.models.SColegio;
+import cl.eos.persistence.models.SCurso;
+import cl.eos.persistence.models.SEjeTematico;
+import cl.eos.persistence.models.SEvaluacionEjeTematico;
+import cl.eos.persistence.models.SEvaluacionPrueba;
+import cl.eos.persistence.models.SHabilidad;
+import cl.eos.persistence.models.SPruebaRendida;
+import cl.eos.persistence.models.SRespuestasEsperadasPrueba;
+import cl.eos.persistence.models.STipoAlumno;
 import cl.eos.persistence.util.Comparadores;
 import cl.eos.util.ExcelSheetWriterObj;
 import cl.eos.util.Pair;
@@ -57,12 +57,12 @@ public class ComparativoColegioEjeHabilidadxCursoView extends AFormView implemen
 	@FXML
 	private TableView tblEjeshabilidades;
 	@FXML
-	private ComboBox<Colegio> cmbColegios;
+	private ComboBox<SColegio> cmbColegios;
 	@FXML
-	private ComboBox<Asignatura> cmbAsignatura;
+	private ComboBox<SAsignatura> cmbAsignatura;
 
 	@FXML
-	private ComboBox<TipoAlumno> cmbTipoAlumno;
+	private ComboBox<STipoAlumno> cmbTipoAlumno;
 	@FXML
 	private Button btnReportes;
 	@FXML
@@ -72,15 +72,15 @@ public class ComparativoColegioEjeHabilidadxCursoView extends AFormView implemen
 	@FXML
 	private MenuItem mnuExportarAlumnos;
 
-	private Colegio colegioActivo;
+	private SColegio colegioActivo;
 
 	private Map<String, Object> parameters = new HashMap<String, Object>();
-	private ObservableList<Curso> listaCursos;
-	private ObservableList<EvaluacionEjeTematico> rangosEvaluacionPorcentaje;
-	private ObservableList<EvaluacionPrueba> listaEvaluacionesPrueba;
+	private ObservableList<SCurso> listaCursos;
+	private ObservableList<SEvaluacionEjeTematico> rangosEvaluacionPorcentaje;
+	private ObservableList<SEvaluacionPrueba> listaEvaluacionesPrueba;
 
 	public ComparativoColegioEjeHabilidadxCursoView() {
-		setTitle("Comparativo Colegio Ejes Temáticos y Habilidades");
+		setTitle("Comparativo SColegio Ejes Temáticos y Habilidades");
 	}
 
 	@SuppressWarnings("unchecked")
@@ -105,20 +105,20 @@ public class ComparativoColegioEjeHabilidadxCursoView extends AFormView implemen
 	}
 
 	private void handleColegios() {
-		Colegio colegio = cmbColegios.getSelectionModel().getSelectedItem();
+		SColegio colegio = cmbColegios.getSelectionModel().getSelectedItem();
 		if (colegio != null) {
 			parameters.put(COLEGIO_ID, colegio.getId());
 			Map<String, Object> param = new HashMap<String, Object>();
 			param.put("colegioId", colegio.getId());
 			lblTitulo.setText(colegio.getName());
-			controller.find("Curso.findByColegio", param);
+			controller.find("SCurso.findByColegio", param);
 			colegioActivo = colegio;
 			clearContent();
 		}
 	}
 
 	private void handleAsignatura() {
-		Asignatura asignatura = cmbAsignatura.getSelectionModel().getSelectedItem();
+		SAsignatura asignatura = cmbAsignatura.getSelectionModel().getSelectedItem();
 		if (asignatura != null) {
 			parameters.put(ASIGNATURA_ID, asignatura.getId());
 			clearContent();
@@ -128,7 +128,7 @@ public class ComparativoColegioEjeHabilidadxCursoView extends AFormView implemen
 	private void handleReportes() {
 		if (!parameters.isEmpty() && parameters.containsKey(COLEGIO_ID) && parameters.containsKey(ASIGNATURA_ID)) {
 
-			controller.find("EvaluacionPrueba.findEvaluacionByColegioAsig", parameters, this);
+			controller.find("SEvaluacionPrueba.findEvaluacionByColegioAsig", parameters, this);
 		}
 	}
 
@@ -148,48 +148,48 @@ public class ComparativoColegioEjeHabilidadxCursoView extends AFormView implemen
 	public void onDataArrived(List<Object> list) {
 		if (list != null && !list.isEmpty()) {
 			Object entity = list.get(0);
-			if (entity instanceof Colegio) {
-				ObservableList<Colegio> oList = FXCollections.observableArrayList();
+			if (entity instanceof SColegio) {
+				ObservableList<SColegio> oList = FXCollections.observableArrayList();
 				for (Object iEntity : list) {
-					oList.add((Colegio) iEntity);
+					oList.add((SColegio) iEntity);
 				}
 				cmbColegios.setItems(oList);
 			}
-			if (entity instanceof Asignatura) {
-				ObservableList<Asignatura> oList = FXCollections.observableArrayList();
+			if (entity instanceof SAsignatura) {
+				ObservableList<SAsignatura> oList = FXCollections.observableArrayList();
 				for (Object iEntity : list) {
-					oList.add((Asignatura) iEntity);
+					oList.add((SAsignatura) iEntity);
 				}
 				cmbAsignatura.setItems(oList);
 			}
-			if (entity instanceof Curso) {
+			if (entity instanceof SCurso) {
 				listaCursos = FXCollections.observableArrayList();
 				for (Object iEntity : list) {
-					listaCursos.add((Curso) iEntity);
+					listaCursos.add((SCurso) iEntity);
 				}
 				FXCollections.sort(listaCursos, Comparadores.comparaResumeCurso());
 			}
 
-			if (entity instanceof TipoAlumno) {
-				ObservableList<TipoAlumno> tAlumnoList = FXCollections.observableArrayList();
+			if (entity instanceof STipoAlumno) {
+				ObservableList<STipoAlumno> tAlumnoList = FXCollections.observableArrayList();
 				for (Object iEntity : list) {
-					tAlumnoList.add((TipoAlumno) iEntity);
+					tAlumnoList.add((STipoAlumno) iEntity);
 				}
 				cmbTipoAlumno.setItems(tAlumnoList);
 
 			}
-			if (entity instanceof EvaluacionEjeTematico) {
+			if (entity instanceof SEvaluacionEjeTematico) {
 				rangosEvaluacionPorcentaje = FXCollections.observableArrayList();
 				for (Object object : list) {
-					EvaluacionEjeTematico evaluacion = (EvaluacionEjeTematico) object;
+					SEvaluacionEjeTematico evaluacion = (SEvaluacionEjeTematico) object;
 					rangosEvaluacionPorcentaje.add(evaluacion);
 				}
 				tareaGenerarReporte();
 			}
-			if (entity instanceof EvaluacionPrueba) {
+			if (entity instanceof SEvaluacionPrueba) {
 				listaEvaluacionesPrueba = FXCollections.observableArrayList();
 				for (Object object : list) {
-					EvaluacionPrueba evaluacion = (EvaluacionPrueba) object;
+					SEvaluacionPrueba evaluacion = (SEvaluacionPrueba) object;
 					listaEvaluacionesPrueba.add(evaluacion);
 				}
 				tareaGenerarReporte();
@@ -221,16 +221,16 @@ public class ComparativoColegioEjeHabilidadxCursoView extends AFormView implemen
 		};
 		Platform.runLater(r);
 
-		List<Curso> mCursos = new ArrayList<Curso>();
-		for (EvaluacionPrueba evPrueba : listaEvaluacionesPrueba) {
+		List<SCurso> mCursos = new ArrayList<SCurso>();
+		for (SEvaluacionPrueba evPrueba : listaEvaluacionesPrueba) {
 			mCursos.add(evPrueba.getCurso());
 		}
 		// Ordenar los cursos
 		int nCol = 1;
-		for (Curso curso : mCursos) {
+		for (SCurso curso : mCursos) {
 
 			TableColumn colCurso = new TableColumn(curso.getName());
-			for (EvaluacionEjeTematico evEjeHab : rangosEvaluacionPorcentaje) {
+			for (SEvaluacionEjeTematico evEjeHab : rangosEvaluacionPorcentaje) {
 				final int idx = nCol;
 				TableColumn colEjeHab = new TableColumn(evEjeHab.getName());
 				colEjeHab.setSortable(false);
@@ -258,7 +258,7 @@ public class ComparativoColegioEjeHabilidadxCursoView extends AFormView implemen
 		}
 	}
 
-	private void fillColumnEjeHabilidad(List<EjeTematico> listaEjesTematicos, List<Habilidad> listaHablidades,
+	private void fillColumnEjeHabilidad(List<SEjeTematico> listaEjesTematicos, List<SHabilidad> listaHablidades,
 			Map<IEntity, List<OTCursoRangos>> reporte) {
 		List<IEntity> entidades = new ArrayList<IEntity>();
 		entidades.addAll(listaEjesTematicos);
@@ -298,14 +298,14 @@ public class ComparativoColegioEjeHabilidadxCursoView extends AFormView implemen
 		Platform.runLater(r);
 	}
 
-	private List<OTUnCursoUnEjeHabilidad> evaluarUnCurso(List<RespuestasEsperadasPrueba> respEsperadas,
-			EvaluacionPrueba evaluacion) {
+	private List<OTUnCursoUnEjeHabilidad> evaluarUnCurso(List<SRespuestasEsperadasPrueba> respEsperadas,
+			SEvaluacionPrueba evaluacion) {
 		List<OTUnCursoUnEjeHabilidad> listaOTUnCurso = new ArrayList<OTUnCursoUnEjeHabilidad>();
 		// Cada prueba rendida equivale a un ALUMNO DEL CURSO
 		int nAlumno = 0;
 		long tipoAlumno = cmbTipoAlumno.getSelectionModel().getSelectedItem().getId();
-		for (PruebaRendida pRendida : evaluacion.getPruebasRendidas()) {
-			Alumno alumno = pRendida.getAlumno();
+		for (SPruebaRendida pRendida : evaluacion.getPruebasRendidas()) {
+			SAlumno alumno = pRendida.getAlumno();
 			if (tipoAlumno != Constants.PIE_ALL && tipoAlumno != alumno.getTipoAlumno().getId()) {
 				// En este caso, no se considera este alumno para el
 				// cálculo.
@@ -317,13 +317,13 @@ public class ComparativoColegioEjeHabilidadxCursoView extends AFormView implemen
 		return listaOTUnCurso;
 	}
 
-	private List<OTUnCursoUnEjeHabilidad> evaluarUnAlumno(PruebaRendida pRendida,
-			List<RespuestasEsperadasPrueba> respEsperadas, int nAlumno, List<OTUnCursoUnEjeHabilidad> listaOTUnCurso) {
+	private List<OTUnCursoUnEjeHabilidad> evaluarUnAlumno(SPruebaRendida pRendida,
+			List<SRespuestasEsperadasPrueba> respEsperadas, int nAlumno, List<OTUnCursoUnEjeHabilidad> listaOTUnCurso) {
 		String respuestas = pRendida.getRespuestas();
 		int nResp = 0;
 		int nroAlumnos = pRendida.getEvaluacionPrueba().getPruebasRendidas().size();
 
-		for (RespuestasEsperadasPrueba resp : respEsperadas) {
+		for (SRespuestasEsperadasPrueba resp : respEsperadas) {
 
 			OTUnCursoUnEjeHabilidad otEje = new OTUnCursoUnEjeHabilidad(resp.getEjeTematico(), nroAlumnos);
 			OTUnCursoUnEjeHabilidad otHab = new OTUnCursoUnEjeHabilidad(resp.getHabilidad(), nroAlumnos);
@@ -378,12 +378,12 @@ public class ComparativoColegioEjeHabilidadxCursoView extends AFormView implemen
 	private Map<IEntity, List<OTCursoRangos>> makeMapReporte(int nroCursos) {
 		Map<IEntity, List<OTCursoRangos>> reporte = new HashMap<IEntity, List<OTCursoRangos>>();
 
-		for (EvaluacionPrueba evaluacion : listaEvaluacionesPrueba) {
+		for (SEvaluacionPrueba evaluacion : listaEvaluacionesPrueba) {
 
-			List<RespuestasEsperadasPrueba> rEsperadas = evaluacion.getPrueba().getRespuestas();
+			List<SRespuestasEsperadasPrueba> rEsperadas = evaluacion.getPrueba().getRespuestas();
 
 			// Obtengo lista de habilidades de la PRUEBA base de la EVALUACION.
-			for (RespuestasEsperadasPrueba rEsperada : rEsperadas) {
+			for (SRespuestasEsperadasPrueba rEsperada : rEsperadas) {
 				if (!reporte.containsKey(rEsperada.getHabilidad())) {
 					List<OTCursoRangos> list = Stream.generate(OTCursoRangos::new).limit(nroCursos)
 							.collect(Collectors.toList());
@@ -401,17 +401,17 @@ public class ComparativoColegioEjeHabilidadxCursoView extends AFormView implemen
 		return reporte;
 	}
 
-	private List<Habilidad> makeListHabilidades() {
+	private List<SHabilidad> makeListHabilidades() {
 
-		List<Habilidad> listaHablidades = new ArrayList<Habilidad>();
+		List<SHabilidad> listaHablidades = new ArrayList<SHabilidad>();
 		// Una evaluacion corresponde al conjunto de pruebas de un CURSO de un
 		// COLEGIO de una ASIGNATURA.
-		for (EvaluacionPrueba evaluacion : listaEvaluacionesPrueba) {
+		for (SEvaluacionPrueba evaluacion : listaEvaluacionesPrueba) {
 
-			List<RespuestasEsperadasPrueba> rEsperadas = evaluacion.getPrueba().getRespuestas();
+			List<SRespuestasEsperadasPrueba> rEsperadas = evaluacion.getPrueba().getRespuestas();
 
 			// Obtengo lista de habilidades de la PRUEBA base de la EVALUACION.
-			for (RespuestasEsperadasPrueba rEsperada : rEsperadas) {
+			for (SRespuestasEsperadasPrueba rEsperada : rEsperadas) {
 
 				if (!listaHablidades.contains(rEsperada.getHabilidad())) {
 					listaHablidades.add(rEsperada.getHabilidad());
@@ -421,16 +421,16 @@ public class ComparativoColegioEjeHabilidadxCursoView extends AFormView implemen
 		return listaHablidades;
 	}
 
-	private List<EjeTematico> makeListEjesTematicos() {
-		List<EjeTematico> listaEjesTematicos = new ArrayList<EjeTematico>();
+	private List<SEjeTematico> makeListEjesTematicos() {
+		List<SEjeTematico> listaEjesTematicos = new ArrayList<SEjeTematico>();
 		// Una evaluacion corresponde al conjunto de pruebas de un CURSO de un
 		// COLEGIO de una ASIGNATURA.
-		for (EvaluacionPrueba evaluacion : listaEvaluacionesPrueba) {
+		for (SEvaluacionPrueba evaluacion : listaEvaluacionesPrueba) {
 
-			List<RespuestasEsperadasPrueba> rEsperadas = evaluacion.getPrueba().getRespuestas();
+			List<SRespuestasEsperadasPrueba> rEsperadas = evaluacion.getPrueba().getRespuestas();
 
 			// Obtengo lista de ejes de la PRUEBA base de la EVALUACION.
-			for (RespuestasEsperadasPrueba rEsperada : rEsperadas) {
+			for (SRespuestasEsperadasPrueba rEsperada : rEsperadas) {
 
 				if (!listaEjesTematicos.contains(rEsperada.getEjeTematico())) {
 					listaEjesTematicos.add(rEsperada.getEjeTematico());
@@ -457,10 +457,10 @@ public class ComparativoColegioEjeHabilidadxCursoView extends AFormView implemen
 			@Override
 			protected Boolean call() throws Exception {
 				updateMessage("Generando reporte");
-				Pair<Map<IEntity, List<OTCursoRangos>>, Pair<List<EjeTematico>, List<Habilidad>>> resultado = generarReporte();
+				Pair<Map<IEntity, List<OTCursoRangos>>, Pair<List<SEjeTematico>, List<SHabilidad>>> resultado = generarReporte();
 				Map<IEntity, List<OTCursoRangos>> reporte = resultado.getFirst();
-				List<EjeTematico> listaEjesTematicos = resultado.getSecond().getFirst();
-				List<Habilidad> listaHablidades = resultado.getSecond().getSecond();
+				List<SEjeTematico> listaEjesTematicos = resultado.getSecond().getFirst();
+				List<SHabilidad> listaHablidades = resultado.getSecond().getSecond();
 				updateMessage("Construyendo tabla");
 				makeTable();
 				updateMessage("Llenando valores en tabla");
@@ -489,23 +489,23 @@ public class ComparativoColegioEjeHabilidadxCursoView extends AFormView implemen
 
 	/**
 	 * Para ontener el resultado final se siguen los sieguientes pasos: <lu>
-	 * <li>Obtener resumen de preguntas buenas de cada Eje/Hab x Alumno. </lu>
+	 * <li>Obtener resumen de preguntas buenas de cada Eje/Hab x SAlumno. </lu>
 	 */
-	private Pair<Map<IEntity, List<OTCursoRangos>>, Pair<List<EjeTematico>, List<Habilidad>>> generarReporte() {
+	private Pair<Map<IEntity, List<OTCursoRangos>>, Pair<List<SEjeTematico>, List<SHabilidad>>> generarReporte() {
 
 		
 		// Una iteracion por cada colegio asociado al colegio con una evaluacion
 		int nroCursos = listaEvaluacionesPrueba.size();
 
-		List<EjeTematico> listaEjesTematicos = makeListEjesTematicos();
-		List<Habilidad> listaHablidades = makeListHabilidades();
+		List<SEjeTematico> listaEjesTematicos = makeListEjesTematicos();
+		List<SHabilidad> listaHablidades = makeListHabilidades();
 		Map<IEntity, List<OTCursoRangos>> reporte = makeMapReporte(nroCursos);
 
 		// Va a tener los resulados finales
 		int nroCurso = 0;
-		for (EvaluacionPrueba evaluacion : listaEvaluacionesPrueba) {
+		for (SEvaluacionPrueba evaluacion : listaEvaluacionesPrueba) {
 
-			List<RespuestasEsperadasPrueba> respEsperadas = evaluacion.getPrueba().getRespuestas();
+			List<SRespuestasEsperadasPrueba> respEsperadas = evaluacion.getPrueba().getRespuestas();
 
 			List<OTUnCursoUnEjeHabilidad> listaOTUnCurso = evaluarUnCurso(respEsperadas, evaluacion);
 
@@ -528,9 +528,9 @@ public class ComparativoColegioEjeHabilidadxCursoView extends AFormView implemen
 		}
 		// Tengo todos los resultados en el map (reporte)
 		// Ahora debo generar la tabla.
-		Pair<List<EjeTematico>, List<Habilidad>> listas = new Pair<List<EjeTematico>, List<Habilidad>>(
+		Pair<List<SEjeTematico>, List<SHabilidad>> listas = new Pair<List<SEjeTematico>, List<SHabilidad>>(
 				listaEjesTematicos, listaHablidades);
-		return new Pair<Map<IEntity, List<OTCursoRangos>>, Pair<List<EjeTematico>, List<Habilidad>>>(reporte, listas);
+		return new Pair<Map<IEntity, List<OTCursoRangos>>, Pair<List<SEjeTematico>, List<SHabilidad>>>(reporte, listas);
 	}
 
 	private void clearContent() {

@@ -10,11 +10,11 @@ import cl.eos.imp.view.AFormView;
 import cl.eos.imp.view.WindowManager;
 import cl.eos.interfaces.IActivator;
 import cl.eos.interfaces.entity.IEntity;
-import cl.eos.persistence.models.EvaluacionPrueba;
-import cl.eos.persistence.models.Prueba;
-import cl.eos.persistence.models.Prueba.Estado;
-import cl.eos.persistence.models.PruebaRendida;
-import cl.eos.persistence.models.RespuestasEsperadasPrueba;
+import cl.eos.persistence.models.SEvaluacionPrueba;
+import cl.eos.persistence.models.SPrueba;
+import cl.eos.persistence.models.SPrueba.Estado;
+import cl.eos.persistence.models.SPruebaRendida;
+import cl.eos.persistence.models.SRespuestasEsperadasPrueba;
 import cl.eos.persistence.util.Comparadores;
 import cl.eos.util.ExcelSheetWriterObj;
 import javafx.collections.FXCollections;
@@ -49,7 +49,7 @@ public class AnularPreguntasViewController extends AFormView {
     @FXML
     private MenuItem mnuExportar;
 
-    private Prueba prueba;
+    private SPrueba prueba;
 
     private ObservableList<RegistroAnularPreguntas> registros;
 
@@ -68,8 +68,8 @@ public class AnularPreguntasViewController extends AFormView {
              * notas.
              */
 
-            for (final EvaluacionPrueba evaluacion : prueba.getEvaluaciones()) {
-                for (final PruebaRendida pruebaRendida : evaluacion.getPruebasRendidas()) {
+            for (final SEvaluacionPrueba evaluacion : prueba.getEvaluaciones()) {
+                for (final SPruebaRendida pruebaRendida : evaluacion.getPruebasRendidas()) {
                     pruebaRendida.reEvaluate();
                 }
             }
@@ -124,23 +124,23 @@ public class AnularPreguntasViewController extends AFormView {
 
     @Override
     public void onFound(IEntity entity) {
-        if (entity instanceof Prueba) {
+        if (entity instanceof SPrueba) {
             registros = FXCollections.observableArrayList();
-            prueba = (Prueba) entity;
+            prueba = (SPrueba) entity;
             setTitle("Anular Pregunta: " + prueba.getName());
             if (prueba.getRespuestas() != null && !prueba.getRespuestas().isEmpty()) {
 
                 final StringBuffer resps = new StringBuffer();
-                final List<RespuestasEsperadasPrueba> respuestas = new ArrayList<RespuestasEsperadasPrueba>();
+                final List<SRespuestasEsperadasPrueba> respuestas = new ArrayList<SRespuestasEsperadasPrueba>();
 
                 final int nroPreguntas = prueba.getNroPreguntas();
                 final int oldNroPreguntas = prueba.getRespuestas().size();
-                for (final RespuestasEsperadasPrueba respuesta : prueba.getRespuestas()) {
+                for (final SRespuestasEsperadasPrueba respuesta : prueba.getRespuestas()) {
                     respuestas.add(respuesta);
                 }
                 if (nroPreguntas > oldNroPreguntas) {
                     for (int n = oldNroPreguntas + 1; n < nroPreguntas; n++) {
-                        final RespuestasEsperadasPrueba resp = new RespuestasEsperadasPrueba();
+                        final SRespuestasEsperadasPrueba resp = new SRespuestasEsperadasPrueba();
                         resp.setNumero(n);
                         respuestas.add(resp);
                     }
@@ -151,7 +151,7 @@ public class AnularPreguntasViewController extends AFormView {
                 }
 
                 Collections.sort(respuestas, Comparadores.compararRespuestasEsperadas());
-                for (final RespuestasEsperadasPrueba respuesta : respuestas) {
+                for (final SRespuestasEsperadasPrueba respuesta : respuestas) {
                     final RegistroAnularPreguntas registro = new RegistroAnularPreguntas();
                     registro.setNumero(respuesta.getNumero());
                     registro.setRespuesta(respuesta.getRespuesta());
@@ -181,15 +181,15 @@ public class AnularPreguntasViewController extends AFormView {
     }
 
     private void updateRespuestasEsperadas() {
-        List<RespuestasEsperadasPrueba> fromPrueba = prueba.getRespuestas();
+        List<SRespuestasEsperadasPrueba> fromPrueba = prueba.getRespuestas();
         if (fromPrueba == null) {
-            fromPrueba = new ArrayList<RespuestasEsperadasPrueba>();
+            fromPrueba = new ArrayList<SRespuestasEsperadasPrueba>();
         }
 
         int n = 0;
         while (n < fromPrueba.size() && n < registros.size()) {
             final RegistroAnularPreguntas registro = registros.get(n);
-            final RespuestasEsperadasPrueba respuesta = fromPrueba.get(n);
+            final SRespuestasEsperadasPrueba respuesta = fromPrueba.get(n);
             respuesta.setMental(registro.getMental());
             respuesta.setName(registro.getNumero().toString());
             respuesta.setNumero(registro.getNumero());
@@ -202,7 +202,7 @@ public class AnularPreguntasViewController extends AFormView {
 
             while (n < registros.size()) {
                 final RegistroAnularPreguntas registro = registros.get(n);
-                final RespuestasEsperadasPrueba respuesta = new RespuestasEsperadasPrueba();
+                final SRespuestasEsperadasPrueba respuesta = new SRespuestasEsperadasPrueba();
                 respuesta.setMental(registro.getMental());
                 respuesta.setName(registro.getNumero().toString());
                 respuesta.setNumero(new Integer(n + 1));

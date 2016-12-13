@@ -13,9 +13,9 @@ import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import cl.eos.imp.view.AFormView;
 import cl.eos.imp.view.ProgressForm;
 import cl.eos.imp.view.WindowManager;
-import cl.eos.persistence.models.Asignatura;
-import cl.eos.persistence.models.Colegio;
-import cl.eos.persistence.models.TipoAlumno;
+import cl.eos.persistence.models.SAsignatura;
+import cl.eos.persistence.models.SColegio;
+import cl.eos.persistence.models.STipoAlumno;
 import cl.eos.util.Utils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -43,15 +43,15 @@ public class InformeView extends AFormView {
     @FXML
     private TextField txtTipoPrueba;
     @FXML
-    private ComboBox<Colegio> cmbColegio;
+    private ComboBox<SColegio> cmbColegio;
     @FXML
-    private ComboBox<TipoAlumno> cmbTipoAlumno;
+    private ComboBox<STipoAlumno> cmbTipoAlumno;
     @FXML
     private BigDecimalField bdAnoEscolar;
 
-    ObservableList<Asignatura> lstAsignaturas;
-    protected Colegio colegio;
-    protected TipoAlumno tipoAlumno;
+    ObservableList<SAsignatura> lstAsignaturas;
+    protected SColegio colegio;
+    protected STipoAlumno tipoAlumno;
     protected XWPFDocument doc;
     Map<String, Object> parameters = new HashMap<>();
 
@@ -89,7 +89,7 @@ public class InformeView extends AFormView {
                     manager.updateFields(txtTipoPrueba.getText(), bdAnoEscolar.getNumber().toString());
                     final int nroAsignaturas = lstAsignaturas.size();
                     int n = 1;
-                    for (final Asignatura asignatura : lstAsignaturas) {
+                    for (final SAsignatura asignatura : lstAsignaturas) {
                         updateMessage(String.format("Procesado asignatura:" + asignatura.getName()));
                         manager.processAsignatura(tipoAlumno, colegio, asignatura);
                         updateProgress(n++, nroAsignaturas);
@@ -124,21 +124,21 @@ public class InformeView extends AFormView {
     public void onDataArrived(List<Object> list) {
         if (list != null && !list.isEmpty()) {
             final Object entity = list.get(0);
-            if (entity instanceof Colegio) {
-                final ObservableList<Colegio> pruebas = FXCollections.observableArrayList();
+            if (entity instanceof SColegio) {
+                final ObservableList<SColegio> pruebas = FXCollections.observableArrayList();
                 for (final Object lEntity : list) {
-                    pruebas.add((Colegio) lEntity);
+                    pruebas.add((SColegio) lEntity);
                 }
                 cmbColegio.setItems(pruebas);
-            } else if (entity instanceof Asignatura) {
+            } else if (entity instanceof SAsignatura) {
                 lstAsignaturas = FXCollections.observableArrayList();
                 for (final Object lEntity : list) {
-                    lstAsignaturas.add((Asignatura) lEntity);
+                    lstAsignaturas.add((SAsignatura) lEntity);
                 }
-            } else if (entity instanceof TipoAlumno) {
-                final ObservableList<TipoAlumno> lstTipoAlumno = FXCollections.observableArrayList();
+            } else if (entity instanceof STipoAlumno) {
+                final ObservableList<STipoAlumno> lstTipoAlumno = FXCollections.observableArrayList();
                 for (final Object lEntity : list) {
-                    lstTipoAlumno.add((TipoAlumno) lEntity);
+                    lstTipoAlumno.add((STipoAlumno) lEntity);
                 }
                 cmbTipoAlumno.setItems(lstTipoAlumno);
             }

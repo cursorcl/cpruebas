@@ -45,7 +45,7 @@ public class Initializer {
             defPrueba.spnExigencia.setNumber(new BigDecimal(60));
             defPrueba.fecFeha.setValue(LocalDate.now());
         } else {
-            // Prueba prueba = defPrueba.prueba;
+            // SPrueba prueba = defPrueba.prueba;
             // defPrueba.cmbAsignatura.;
             // defPrueba.cmbProfesor;
             // defPrueba.spnExigencia;
@@ -152,7 +152,7 @@ public class Initializer {
         defPrueba.cmbAsignatura.setOnAction(event -> {
             Map<String, Object> parameters = new HashMap<>();
             parameters.put("idAsignatura", defPrueba.cmbAsignatura.getSelectionModel().getSelectedItem().getId());
-            defPrueba.getController().find("EjeTematico.findByAsigntura", parameters, defPrueba);
+            defPrueba.getController().find("SEjeTematico.findByAsigntura", parameters, defPrueba);
 
             parameters = new HashMap<>();
             if (defPrueba.cmbCurso.getSelectionModel().getSelectedItem() != null) {
@@ -161,7 +161,7 @@ public class Initializer {
                 defPrueba.cmbObjetivos.getItems().clear();
                 parameters.put("asignaturaId", defPrueba.cmbAsignatura.getSelectionModel().getSelectedItem().getId());
                 parameters.put("tipoCursoId", defPrueba.cmbCurso.getSelectionModel().getSelectedItem().getId());
-                defPrueba.getController().find("Objetivo.findByTipoCursoAsignatura", parameters, defPrueba);
+                defPrueba.getController().find("SObjetivo.findByTipoCursoAsignatura", parameters, defPrueba);
             }
         });
 
@@ -172,7 +172,7 @@ public class Initializer {
                 defPrueba.cmbObjetivos.getItems().clear();
                 parameters.put("asignaturaId", defPrueba.cmbAsignatura.getSelectionModel().getSelectedItem().getId());
                 parameters.put("tipoCursoId", defPrueba.cmbCurso.getSelectionModel().getSelectedItem().getId());
-                defPrueba.getController().find("Objetivo.findByTipoCursoAsignatura", parameters, defPrueba);
+                defPrueba.getController().find("SObjetivo.findByTipoCursoAsignatura", parameters, defPrueba);
             }
 
         });

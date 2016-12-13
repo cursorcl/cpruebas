@@ -26,5 +26,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.persistence.api"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.persistence.model"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.persistence.factory"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.sytem.model"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

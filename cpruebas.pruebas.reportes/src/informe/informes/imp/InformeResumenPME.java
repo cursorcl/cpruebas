@@ -16,15 +16,15 @@ import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 
 import cl.eos.common.Constants;
 import cl.eos.ot.OTRangoCurso;
-import cl.eos.persistence.models.Alumno;
-import cl.eos.persistence.models.Asignatura;
-import cl.eos.persistence.models.Colegio;
-import cl.eos.persistence.models.Curso;
-import cl.eos.persistence.models.EvaluacionPrueba;
-import cl.eos.persistence.models.NivelEvaluacion;
-import cl.eos.persistence.models.PruebaRendida;
-import cl.eos.persistence.models.RangoEvaluacion;
-import cl.eos.persistence.models.TipoAlumno;
+import cl.eos.persistence.models.SAlumno;
+import cl.eos.persistence.models.SAsignatura;
+import cl.eos.persistence.models.SColegio;
+import cl.eos.persistence.models.SCurso;
+import cl.eos.persistence.models.SEvaluacionPrueba;
+import cl.eos.persistence.models.SNivelEvaluacion;
+import cl.eos.persistence.models.SPruebaRendida;
+import cl.eos.persistence.models.SRangoEvaluacion;
+import cl.eos.persistence.models.STipoAlumno;
 import cl.eos.persistence.util.Comparadores;
 import cl.eos.provider.persistence.PersistenceServiceFactory;
 import informe.InformeManager;
@@ -43,11 +43,11 @@ public class InformeResumenPME implements IInforme {
     private static final String COLEGIO_ID = "idColegio";
 
     static Logger log = Logger.getLogger(InformeResumenPME.class);
-    private TipoAlumno tipoAlumno;
-    private Colegio colegio;
-    private Asignatura asignatura;
-    private Map<Curso, Map<RangoEvaluacion, OTRangoCurso>> resultado;
-    private List<RangoEvaluacion> rangos;
+    private STipoAlumno tipoAlumno;
+    private SColegio colegio;
+    private SAsignatura asignatura;
+    private Map<SCurso, Map<SRangoEvaluacion, OTRangoCurso>> resultado;
+    private List<SRangoEvaluacion> rangos;
 
     public InformeResumenPME() {
         super();
@@ -55,9 +55,9 @@ public class InformeResumenPME implements IInforme {
 
     @SuppressWarnings("unchecked")
     @Override
-    public void execute(TipoAlumno tipoAlumno, Colegio colegio, Asignatura asignatura) {
+    public void execute(STipoAlumno tipoAlumno, SColegio colegio, SAsignatura asignatura) {
         
-        rangos = PersistenceServiceFactory.getPersistenceService().findAllSynchro(RangoEvaluacion.class);
+        rangos = PersistenceServiceFactory.getPersistenceService().findAllSynchro(SRangoEvaluacion.class);
         
 
         if (Objects.isNull(rangos) || rangos.isEmpty())
@@ -70,8 +70,8 @@ public class InformeResumenPME implements IInforme {
         final Map<String, Object> params = new HashMap<>();
         params.put(InformeResumenPME.COLEGIO_ID, colegio.getId());
         params.put(InformeResumenPME.ASIGNATURA_ID, asignatura.getId());
-        final List<EvaluacionPrueba> evaluaciones = (List<EvaluacionPrueba>) (Object) PersistenceServiceFactory
-                .getPersistenceService().findSynchro("EvaluacionPrueba.findEvaluacionByColegioAsig", params);
+        final List<SEvaluacionPrueba> evaluaciones = (List<SEvaluacionPrueba>) (Object) PersistenceServiceFactory
+                .getPersistenceService().findSynchro("SEvaluacionPrueba.findEvaluacionByColegioAsig", params);
         if (evaluaciones == null || evaluaciones.isEmpty())
             return;
         if (Objects.isNull(evaluaciones) || evaluaciones.isEmpty())
@@ -106,12 +106,12 @@ public class InformeResumenPME implements IInforme {
         }
 
         int row = 1;
-        for (final Curso curso : resultado.keySet()) {
+        for (final SCurso curso : resultado.keySet()) {
             tableRow = table.getRow(row++);
             tableRow.getCell(0).setText(curso.getName().toUpperCase());
-            final Map<RangoEvaluacion, OTRangoCurso> item = resultado.get(curso);
+            final Map<SRangoEvaluacion, OTRangoCurso> item = resultado.get(curso);
             int col = 1;
-            for (final RangoEvaluacion rango : rangos) {
+            for (final SRangoEvaluacion rango : rangos) {
                 final OTRangoCurso rngCurso = item.get(rango);
                 if (rngCurso != null)
                     tableRow.getCell(col++).setText(String.format("%d", rngCurso.getTotal()));
@@ -133,15 +133,15 @@ public class InformeResumenPME implements IInforme {
 
     }
 
-    protected Map<Curso, Map<RangoEvaluacion, OTRangoCurso>> procesar(List<EvaluacionPrueba> list) {
+    protected Map<SCurso, Map<SRangoEvaluacion, OTRangoCurso>> procesar(List<SEvaluacionPrueba> list) {
 
-        final Map<Curso, Map<RangoEvaluacion, OTRangoCurso>> pmeCursos = new HashMap<>();
+        final Map<SCurso, Map<SRangoEvaluacion, OTRangoCurso>> pmeCursos = new HashMap<>();
 
-        final NivelEvaluacion nivel = list.get(0).getPrueba().getNivelEvaluacion();
-        for (final EvaluacionPrueba evaluacion : list) {
-            final List<PruebaRendida> rendidas = evaluacion.getPruebasRendidas();
-            for (final PruebaRendida pruebaRendida : rendidas) {
-                final Alumno alumno = pruebaRendida.getAlumno();
+        final SNivelEvaluacion nivel = list.get(0).getPrueba().getNivelEvaluacion();
+        for (final SEvaluacionPrueba evaluacion : list) {
+            final List<SPruebaRendida> rendidas = evaluacion.getPruebasRendidas();
+            for (final SPruebaRendida pruebaRendida : rendidas) {
+                final SAlumno alumno = pruebaRendida.getAlumno();
                 if (alumno == null || alumno.getTipoAlumno() == null) {
                     continue;
                 }
@@ -150,11 +150,11 @@ public class InformeResumenPME implements IInforme {
                 }
                 final float porcentaje = (float) pruebaRendida.getBuenas()
                         / (float) pruebaRendida.getEvaluacionPrueba().getPrueba().getNroPreguntas() * 100f;
-                final RangoEvaluacion rango = nivel.getRango(porcentaje);
-                final Curso curso = pruebaRendida.getEvaluacionPrueba().getCurso();
+                final SRangoEvaluacion rango = nivel.getRango(porcentaje);
+                final SCurso curso = pruebaRendida.getEvaluacionPrueba().getCurso();
 
                 if (pmeCursos.containsKey(curso)) {
-                    final Map<RangoEvaluacion, OTRangoCurso> prangos = pmeCursos.get(curso);
+                    final Map<SRangoEvaluacion, OTRangoCurso> prangos = pmeCursos.get(curso);
                     if (prangos.containsKey(rango)) {
                         final OTRangoCurso uRango = prangos.get(rango);
                         uRango.setTotal(uRango.getTotal() + 1);
@@ -171,7 +171,7 @@ public class InformeResumenPME implements IInforme {
                     rangoCurso.setRango(rango);
                     rangoCurso.setTotal(rangoCurso.getTotal() + 1);
 
-                    final Map<RangoEvaluacion, OTRangoCurso> pmeRangos = new HashMap<>();
+                    final Map<SRangoEvaluacion, OTRangoCurso> pmeRangos = new HashMap<>();
                     pmeRangos.put(rango, rangoCurso);
                     pmeCursos.put(curso, pmeRangos);
                 }

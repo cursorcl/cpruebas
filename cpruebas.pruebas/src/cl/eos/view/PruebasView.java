@@ -9,22 +9,22 @@ import java.util.Map;
 
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
-import cl.eos.persistence.models.Asignatura;
+import cl.eos.persistence.models.SAsignatura;
 // github.com/cursorcl/cpruebas
-import cl.eos.persistence.models.Colegio;
-import cl.eos.persistence.models.EvaluacionEjeTematico;
-import cl.eos.persistence.models.EvaluacionPrueba;
-import cl.eos.persistence.models.Habilidad;
-import cl.eos.persistence.models.NivelEvaluacion;
-import cl.eos.persistence.models.Profesor;
-import cl.eos.persistence.models.Prueba;
-import cl.eos.persistence.models.Prueba.Estado;
-import cl.eos.persistence.models.RangoEvaluacion;
-import cl.eos.persistence.models.RespuestasEsperadasPrueba;
-import cl.eos.persistence.models.TipoAlumno;
-import cl.eos.persistence.models.TipoColegio;
-import cl.eos.persistence.models.TipoCurso;
-import cl.eos.persistence.models.TipoPrueba;
+import cl.eos.persistence.models.SColegio;
+import cl.eos.persistence.models.SEvaluacionEjeTematico;
+import cl.eos.persistence.models.SEvaluacionPrueba;
+import cl.eos.persistence.models.SHabilidad;
+import cl.eos.persistence.models.SNivelEvaluacion;
+import cl.eos.persistence.models.SProfesor;
+import cl.eos.persistence.models.SPrueba;
+import cl.eos.persistence.models.SPrueba.Estado;
+import cl.eos.persistence.models.SRangoEvaluacion;
+import cl.eos.persistence.models.SRespuestasEsperadasPrueba;
+import cl.eos.persistence.models.STipoAlumno;
+import cl.eos.persistence.models.STipoColegio;
+import cl.eos.persistence.models.STipoCurso;
+import cl.eos.persistence.models.STipoPrueba;
 import cl.eos.view.editablecells.PruebaCellFactory;
 import cl.eos.view.ots.OTPrueba;
 import colegio.ComparativoColegioEjeEvaluacionView;
@@ -92,13 +92,13 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
     @FXML
     private TableColumn<OTPrueba, Estado> estadoCol;
     @FXML
-    private ComboBox<TipoPrueba> cmbTipoPrueba;
+    private ComboBox<STipoPrueba> cmbTipoPrueba;
     @FXML
-    private ComboBox<Profesor> cmbProfesor;
+    private ComboBox<SProfesor> cmbProfesor;
     @FXML
-    private ComboBox<TipoCurso> cmbCurso;
+    private ComboBox<STipoCurso> cmbCurso;
     @FXML
-    private ComboBox<Asignatura> cmbAsignatura;
+    private ComboBox<SAsignatura> cmbAsignatura;
     @FXML
     private BigDecimalField bigDecimalForma;
     @FXML
@@ -110,7 +110,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
     @FXML
     private BigDecimalField bigDecimalExigencia;
     @FXML
-    private ComboBox<NivelEvaluacion> cmbNivelEvaluacion;
+    private ComboBox<SNivelEvaluacion> cmbNivelEvaluacion;
     @FXML
     private Label lblError;
     @FXML
@@ -179,7 +179,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
     private EvaluacionPruebaView evaluacionPrueba;
     private DefinePruebaViewController definePrueba;
     private AnularPreguntasViewController anularPregunta;
-    private Prueba prueba;
+    private SPrueba prueba;
     private ComparativoComunalEjeView comparativoComunal;
     private ComparativoComunalHabilidadView comparativoComunalHabilidad;
     private ComunalCursoView comunalEje;
@@ -316,7 +316,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 
         final ObservableList<OTPrueba> otSeleccionados = tblListadoPruebas.getSelectionModel().getSelectedItems();
         if (otSeleccionados != null && !otSeleccionados.isEmpty()) {
-            final List<Prueba> pruebas = new ArrayList<Prueba>(otSeleccionados.size());
+            final List<SPrueba> pruebas = new ArrayList<SPrueba>(otSeleccionados.size());
             for (final OTPrueba ot : otSeleccionados) {
                 pruebas.add(ot.getPrueba());
             }
@@ -330,7 +330,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
         removeAllStyles();
         if (validate()) {
             if (prueba == null) {
-                prueba = new Prueba();
+                prueba = new SPrueba();
             }
             prueba.setAlternativas(bigDecimaNroAlternativas.getNumber().intValue());
             prueba.setAsignatura(cmbAsignatura.getValue());
@@ -381,12 +381,12 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 
     private void handlerAnularPregunta() {
         if (tblListadoPruebas.getSelectionModel().getSelectedItem() != null) {
-            final Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
+            final SPrueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
 
             anularPregunta = (AnularPreguntasViewController) show("/cl/eos/view/AnulaPreguntasView.fxml");
 
             if (prueba != null) {
-                controller.findById(Prueba.class, prueba.getId(), anularPregunta);
+                controller.findById(SPrueba.class, prueba.getId(), anularPregunta);
             }
         }
     }
@@ -395,31 +395,31 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
         final ComparativoColegioEjeHabilidadView resumenColegioEjeHabiliadad = (ComparativoColegioEjeHabilidadView) show(
                 "/colegio/fxml/ComparativoColegioEjeHabilidad.fxml");
         show(resumenColegioEjeHabiliadad);
-        controller.findAll(Colegio.class, resumenColegioEjeHabiliadad);
-        controller.findAll(Asignatura.class, resumenColegioEjeHabiliadad);
-        controller.findAll(EvaluacionEjeTematico.class, resumenColegioEjeHabiliadad);
-        controller.findAll(TipoAlumno.class, resumenColegioEjeHabiliadad);
+        controller.findAll(SColegio.class, resumenColegioEjeHabiliadad);
+        controller.findAll(SAsignatura.class, resumenColegioEjeHabiliadad);
+        controller.findAll(SEvaluacionEjeTematico.class, resumenColegioEjeHabiliadad);
+        controller.findAll(STipoAlumno.class, resumenColegioEjeHabiliadad);
     }
 
     private void handlerComparativoColegioEjeHabilidadXNivel() {
         final Nivel_ComparativoColegioEjeHabilidadView resumenColegioEjeHabiliadad = (Nivel_ComparativoColegioEjeHabilidadView) show(
                 "/colegio/nivel/fxml/Nivel_ComparativoColegioEjeHabilidad.fxml");
         show(resumenColegioEjeHabiliadad);
-        controller.findAll(Colegio.class, resumenColegioEjeHabiliadad);
-        controller.findAll(Asignatura.class, resumenColegioEjeHabiliadad);
-        controller.findAll(EvaluacionEjeTematico.class, resumenColegioEjeHabiliadad);
-        controller.findAll(TipoAlumno.class, resumenColegioEjeHabiliadad);
+        controller.findAll(SColegio.class, resumenColegioEjeHabiliadad);
+        controller.findAll(SAsignatura.class, resumenColegioEjeHabiliadad);
+        controller.findAll(SEvaluacionEjeTematico.class, resumenColegioEjeHabiliadad);
+        controller.findAll(STipoAlumno.class, resumenColegioEjeHabiliadad);
     }
 
     private void handlerComparativoComunal() {
         comparativoComunal = (ComparativoComunalEjeView) show("/comunal/fxml/ComparativoComunalEje.fxml");
         if (tblListadoPruebas.getSelectionModel().getSelectedItem() != null) {
-            final Prueba pPrueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
+            final SPrueba pPrueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
             if (pPrueba != null) {
-                controller.findById(Prueba.class, pPrueba.getId(), comparativoComunal);
-                controller.findAll(EvaluacionEjeTematico.class, comparativoComunal);
-                controller.findAll(TipoAlumno.class, comparativoComunal);
-                controller.findAll(TipoColegio.class, comparativoComunal);
+                controller.findById(SPrueba.class, pPrueba.getId(), comparativoComunal);
+                controller.findAll(SEvaluacionEjeTematico.class, comparativoComunal);
+                controller.findAll(STipoAlumno.class, comparativoComunal);
+                controller.findAll(STipoColegio.class, comparativoComunal);
             }
         }
     }
@@ -428,12 +428,12 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
         comparativoComunalHabilidad = (ComparativoComunalHabilidadView) show(
                 "/comunal/fxml/ComparativoComunalHabilidad.fxml");
         if (tblListadoPruebas.getSelectionModel().getSelectedItem() != null) {
-            final Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
+            final SPrueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
             if (prueba != null) {
-                controller.findById(Prueba.class, prueba.getId(), comparativoComunalHabilidad);
-                controller.findAll(EvaluacionEjeTematico.class, comparativoComunalHabilidad);
-                controller.findAll(TipoAlumno.class, comparativoComunalHabilidad);
-                controller.findAll(TipoColegio.class, comparativoComunalHabilidad);
+                controller.findById(SPrueba.class, prueba.getId(), comparativoComunalHabilidad);
+                controller.findAll(SEvaluacionEjeTematico.class, comparativoComunalHabilidad);
+                controller.findAll(STipoAlumno.class, comparativoComunalHabilidad);
+                controller.findAll(STipoColegio.class, comparativoComunalHabilidad);
             }
         }
     }
@@ -442,12 +442,12 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
         final Nivel_ComparativoComunalHabilidadView comparativoComunalHabilidadNivel = (Nivel_ComparativoComunalHabilidadView) show(
                 "/comunal/nivel/fxml/Nivel_ComparativoComunalHabilidad.fxml");
         if (tblListadoPruebas.getSelectionModel().getSelectedItem() != null) {
-            final Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
+            final SPrueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
             if (prueba != null) {
-                controller.findById(Prueba.class, prueba.getId(), comparativoComunalHabilidadNivel);
-                controller.findAll(EvaluacionEjeTematico.class, comparativoComunalHabilidadNivel);
-                controller.findAll(TipoAlumno.class, comparativoComunalHabilidadNivel);
-                controller.findAll(TipoColegio.class, comparativoComunalHabilidadNivel);
+                controller.findById(SPrueba.class, prueba.getId(), comparativoComunalHabilidadNivel);
+                controller.findAll(SEvaluacionEjeTematico.class, comparativoComunalHabilidadNivel);
+                controller.findAll(STipoAlumno.class, comparativoComunalHabilidadNivel);
+                controller.findAll(STipoColegio.class, comparativoComunalHabilidadNivel);
             }
         }
     }
@@ -456,12 +456,12 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
         final Nivel_ComparativoComunalEjeView comparativoComunalNivel = (Nivel_ComparativoComunalEjeView) show(
                 "/comunal/nivel/fxml/Nivel_ComparativoComunalEje.fxml");
         if (tblListadoPruebas.getSelectionModel().getSelectedItem() != null) {
-            final Prueba pPrueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
+            final SPrueba pPrueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
             if (pPrueba != null) {
-                controller.findById(Prueba.class, pPrueba.getId(), comparativoComunalNivel);
-                controller.findAll(EvaluacionEjeTematico.class, comparativoComunalNivel);
-                controller.findAll(TipoAlumno.class, comparativoComunalNivel);
-                controller.findAll(TipoColegio.class, comparativoComunalNivel);
+                controller.findById(SPrueba.class, pPrueba.getId(), comparativoComunalNivel);
+                controller.findAll(SEvaluacionEjeTematico.class, comparativoComunalNivel);
+                controller.findAll(STipoAlumno.class, comparativoComunalNivel);
+                controller.findAll(STipoColegio.class, comparativoComunalNivel);
             }
         }
     }
@@ -470,10 +470,10 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
         final ComparativoColegioEjeHabilidadxCursoView resColegioHabEjeCurso = (ComparativoColegioEjeHabilidadxCursoView) show(
                 "/colegio/fxml/ComparativoColegioEjeHabilidadxCurso.fxml");
         show(resColegioHabEjeCurso);
-        controller.findAll(Colegio.class, resColegioHabEjeCurso);
-        controller.findAll(Asignatura.class, resColegioHabEjeCurso);
-        controller.findAll(EvaluacionEjeTematico.class, resColegioHabEjeCurso);
-        controller.findAll(TipoAlumno.class, resColegioHabEjeCurso);
+        controller.findAll(SColegio.class, resColegioHabEjeCurso);
+        controller.findAll(SAsignatura.class, resColegioHabEjeCurso);
+        controller.findAll(SEvaluacionEjeTematico.class, resColegioHabEjeCurso);
+        controller.findAll(STipoAlumno.class, resColegioHabEjeCurso);
     }
 
     private void handlerCompEjesHabXNivel() {
@@ -481,14 +481,14 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
             final Nivel_ComparativoColegioEjeHabilidadxCursoView comparativoComunalHabilidad = (Nivel_ComparativoColegioEjeHabilidadxCursoView) show(
                     "/colegio/nivel/fxml/Nivel_ComparativoColegioEjeHabilidadxCurso.fxml");
 
-            final Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
+            final SPrueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
             if (prueba != null) {
-                controller.findById(Prueba.class, prueba.getId(), comparativoComunalHabilidad);
-                controller.findAll(Colegio.class, comparativoComunalHabilidad);
-                controller.findAll(Asignatura.class, comparativoComunalHabilidad);
-                controller.findAll(EvaluacionEjeTematico.class, comparativoComunalHabilidad);
-                controller.findAll(TipoAlumno.class, comparativoComunalHabilidad);
-                controller.findAll(TipoColegio.class, comparativoComunalHabilidad);
+                controller.findById(SPrueba.class, prueba.getId(), comparativoComunalHabilidad);
+                controller.findAll(SColegio.class, comparativoComunalHabilidad);
+                controller.findAll(SAsignatura.class, comparativoComunalHabilidad);
+                controller.findAll(SEvaluacionEjeTematico.class, comparativoComunalHabilidad);
+                controller.findAll(STipoAlumno.class, comparativoComunalHabilidad);
+                controller.findAll(STipoColegio.class, comparativoComunalHabilidad);
             }
         }
     }
@@ -499,33 +499,33 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 
         final ObservableList<OTPrueba> otPruebas = tblListadoPruebas.getSelectionModel().getSelectedItems();
         if (otPruebas != null) {
-            final Prueba[] pruebas = new Prueba[otPruebas.size()];
+            final SPrueba[] pruebas = new SPrueba[otPruebas.size()];
             int n = 0;
             for (final OTPrueba ot : otPruebas) {
                 pruebas[n++] = ot.getPrueba();
             }
-            controller.findByAllId(Prueba.class, pruebas, comunalEje);
-            controller.findAll(EvaluacionEjeTematico.class, comunalEje);
-            controller.findAll(TipoAlumno.class, comunalEje);
-            controller.findAll(TipoColegio.class, comunalEje);
+            controller.findByAllId(SPrueba.class, pruebas, comunalEje);
+            controller.findAll(SEvaluacionEjeTematico.class, comunalEje);
+            controller.findAll(STipoAlumno.class, comunalEje);
+            controller.findAll(STipoColegio.class, comunalEje);
         }
     }
 
     private void handlerDefinirPrueba() {
         if (tblListadoPruebas.getSelectionModel().getSelectedItem() != null) {
-            final Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
+            final SPrueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
 
             definePrueba = (DefinePruebaViewController) show("/cl/eos/view/DefinePruebaView.fxml");
 
             if (prueba != null) {
-                controller.findById(Prueba.class, prueba.getId(), definePrueba);
+                controller.findById(SPrueba.class, prueba.getId(), definePrueba);
                 final Map<String, Object> parameters = new HashMap<String, Object>();
                 parameters.put("idAsignatura", prueba.getAsignatura().getId());
-                controller.find("EjeTematico.findByAsigntura", parameters, definePrueba);
-                controller.findAll(Habilidad.class, definePrueba);
+                controller.find("SEjeTematico.findByAsigntura", parameters, definePrueba);
+                controller.findAll(SHabilidad.class, definePrueba);
                 final Map<String, Object> param = new HashMap<String, Object>();
                 param.put("tipoCursoId", prueba.getCurso().getId());
-                controller.find("Objetivo.findByTipoCurso", param, definePrueba);
+                controller.find("R_Objetivo.findByTipoCurso", param, definePrueba);
             }
         }
     }
@@ -534,19 +534,19 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
         final ComparativoColegioEjeEvaluacionView resumenEjeEvaluacion = (ComparativoColegioEjeEvaluacionView) show(
                 "/colegio/fxml/ComparativoColegioEjeEvaluacion.fxml");
         show(resumenEjeEvaluacion);
-        controller.findAll(Colegio.class, resumenEjeEvaluacion);
-        controller.findAll(Asignatura.class, resumenEjeEvaluacion);
-        controller.findAll(TipoAlumno.class, resumenEjeEvaluacion);
+        controller.findAll(SColegio.class, resumenEjeEvaluacion);
+        controller.findAll(SAsignatura.class, resumenEjeEvaluacion);
+        controller.findAll(STipoAlumno.class, resumenEjeEvaluacion);
     }
 
     private void handlerEvaluar() {
         evaluarPruebaView = (EvaluarPruebaView) show("/cl/eos/view/EvaluarPrueba.fxml");
         if (tblListadoPruebas.getSelectionModel().getSelectedItem() != null) {
-            final Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
+            final SPrueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
             if (prueba != null) {
-                controller.findById(Prueba.class, prueba.getId(), evaluarPruebaView);
-                controller.findAll(Colegio.class, evaluarPruebaView);
-                controller.findAll(Profesor.class, evaluarPruebaView);
+                controller.findById(SPrueba.class, prueba.getId(), evaluarPruebaView);
+                controller.findAll(SColegio.class, evaluarPruebaView);
+                controller.findAll(SProfesor.class, evaluarPruebaView);
             }
         }
     }
@@ -555,9 +555,9 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
         final ComparativoColegioHabilidadesView resumenHabilidades = (ComparativoColegioHabilidadesView) show(
                 "/colegio/fxml/ComparativoColegioHabilidades.fxml");
         show(resumenHabilidades);
-        controller.findAll(Colegio.class, resumenHabilidades);
-        controller.findAll(Asignatura.class, resumenHabilidades);
-        controller.findAll(TipoAlumno.class, resumenHabilidades);
+        controller.findAll(SColegio.class, resumenHabilidades);
+        controller.findAll(SAsignatura.class, resumenHabilidades);
+        controller.findAll(STipoAlumno.class, resumenHabilidades);
 
     }
 
@@ -565,9 +565,9 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
         final ResumenColegioXAlumnoEjeHabilidadView resHabEjeAlumno = (ResumenColegioXAlumnoEjeHabilidadView) show(
                 "/colegio/fxml/ResumenColegioXAlumnoEjeHabilidad.fxml");
         show(resHabEjeAlumno);
-        controller.findAll(Colegio.class, resHabEjeAlumno);
-        controller.findAll(Asignatura.class, resHabEjeAlumno);
-        controller.findAll(TipoAlumno.class, resHabEjeAlumno);
+        controller.findAll(SColegio.class, resHabEjeAlumno);
+        controller.findAll(SAsignatura.class, resHabEjeAlumno);
+        controller.findAll(STipoAlumno.class, resHabEjeAlumno);
 
     }
 
@@ -575,32 +575,32 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
         final Nivel_ComparativoColegioEjeEvaluacionView resHabEjeAlumno = (Nivel_ComparativoColegioEjeEvaluacionView) show(
                 "/colegio/nivel/fxml/Nivel_ComparativoColegioEjeEvaluacion.fxml");
         show(resHabEjeAlumno);
-        controller.findAll(Colegio.class, resHabEjeAlumno);
-        controller.findAll(Asignatura.class, resHabEjeAlumno);
-        controller.findAll(TipoAlumno.class, resHabEjeAlumno);
+        controller.findAll(SColegio.class, resHabEjeAlumno);
+        controller.findAll(SAsignatura.class, resHabEjeAlumno);
+        controller.findAll(STipoAlumno.class, resHabEjeAlumno);
     }
 
     private void handlerHabilidadEvaluacionXNivel() {
         final Nivel_ComparativoColegioHabilidadesView resumenHabilidades = (Nivel_ComparativoColegioHabilidadesView) show(
                 "/colegio/nivel/fxml/Nivel_ComparativoColegioHabilidades.fxml");
         show(resumenHabilidades);
-        controller.findAll(Colegio.class, resumenHabilidades);
-        controller.findAll(Asignatura.class, resumenHabilidades);
-        controller.findAll(TipoAlumno.class, resumenHabilidades);
+        controller.findAll(SColegio.class, resumenHabilidades);
+        controller.findAll(SAsignatura.class, resumenHabilidades);
+        controller.findAll(STipoAlumno.class, resumenHabilidades);
     }
 
     private void handlerImrpimirPrueba() {
         imprimirPrueba = (ImprimirPruebaView) show("/cl/eos/view/ImprimirPrueba.fxml");
         if (tblListadoPruebas.getSelectionModel().getSelectedItem() != null) {
-            final Prueba pPrueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
+            final SPrueba pPrueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
             if (pPrueba != null) {
-                controller.findById(Prueba.class, pPrueba.getId(), imprimirPrueba);
+                controller.findById(SPrueba.class, pPrueba.getId(), imprimirPrueba);
                 final Map<String, Object> parameters = new HashMap<>();
                 parameters.put("idAsignatura", pPrueba.getAsignatura().getId());
-                controller.find("EjeTematico.findByAsigntura", parameters, imprimirPrueba);
-                controller.findAll(Habilidad.class, imprimirPrueba);
-                controller.findAll(Profesor.class, imprimirPrueba);
-                controller.findAll(Colegio.class, imprimirPrueba);
+                controller.find("SEjeTematico.findByAsigntura", parameters, imprimirPrueba);
+                controller.findAll(SHabilidad.class, imprimirPrueba);
+                controller.findAll(SProfesor.class, imprimirPrueba);
+                controller.findAll(SColegio.class, imprimirPrueba);
             }
         }
     }
@@ -608,18 +608,18 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
     private void handlerInforme() {
         final InformeView informe = (InformeView) showOver("/informe/informeView.fxml");
         show(informe);
-        controller.findAll(Colegio.class, informe);
-        controller.findAll(Asignatura.class, informe);
-        controller.findAll(TipoAlumno.class, informe);
+        controller.findAll(SColegio.class, informe);
+        controller.findAll(SAsignatura.class, informe);
+        controller.findAll(STipoAlumno.class, informe);
     }
 
     private void handlerListaEvaluaciones() {
-        evaluacionPrueba = (EvaluacionPruebaView) show("/cl/eos/view/EvaluacionPrueba.fxml");
+        evaluacionPrueba = (EvaluacionPruebaView) show("/cl/eos/view/R_EvaluacionPrueba.fxml");
         if (tblListadoPruebas.getSelectionModel().getSelectedItem() != null) {
-            final Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
+            final SPrueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
             final Map<String, Object> parameters = new HashMap<String, Object>();
             parameters.put("idPrueba", prueba.getId());
-            controller.find("EvaluacionPrueba.findByPrueba", parameters, evaluacionPrueba);
+            controller.find("R_EvaluacionPrueba.findByPrueba", parameters, evaluacionPrueba);
         }
     }
 
@@ -632,22 +632,22 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
     private void handlerResumenColegios() {
         resumenColegio = (ResumenColegioView) show("/colegio/fxml/ResumenColegio.fxml");
         show(resumenColegio);
-        controller.findAll(Colegio.class, resumenColegio);
-        controller.findAll(Asignatura.class, resumenColegio);
-        controller.findAll(RangoEvaluacion.class, resumenColegio);
-        controller.findAll(EvaluacionEjeTematico.class, resumenColegio);
-        controller.findAll(TipoAlumno.class, resumenColegio);
+        controller.findAll(SColegio.class, resumenColegio);
+        controller.findAll(SAsignatura.class, resumenColegio);
+        controller.findAll(SRangoEvaluacion.class, resumenColegio);
+        controller.findAll(SEvaluacionEjeTematico.class, resumenColegio);
+        controller.findAll(STipoAlumno.class, resumenColegio);
     }
 
     private void handlerResumenColegiosXNivel() {
         final Nivel_ResumenColegioView resumenColegio = (Nivel_ResumenColegioView) show(
                 "/colegio/nivel/fxml/Nivel_ResumenColegio.fxml");
         show(resumenColegio);
-        controller.findAll(Colegio.class, resumenColegio);
-        controller.findAll(Asignatura.class, resumenColegio);
-        controller.findAll(RangoEvaluacion.class, resumenColegio);
-        controller.findAll(EvaluacionEjeTematico.class, resumenColegio);
-        controller.findAll(TipoAlumno.class, resumenColegio);
+        controller.findAll(SColegio.class, resumenColegio);
+        controller.findAll(SAsignatura.class, resumenColegio);
+        controller.findAll(SRangoEvaluacion.class, resumenColegio);
+        controller.findAll(SEvaluacionEjeTematico.class, resumenColegio);
+        controller.findAll(STipoAlumno.class, resumenColegio);
     }
 
     @FXML
@@ -742,45 +742,45 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 
         if (list != null && !list.isEmpty()) {
             final Object entity = list.get(0);
-            if (entity instanceof Prueba) {
+            if (entity instanceof SPrueba) {
                 final ObservableList<OTPrueba> pruebas = FXCollections.observableArrayList();
                 for (final Object lEntity : list) {
-                    pruebas.add(new OTPrueba((Prueba) lEntity));
+                    pruebas.add(new OTPrueba((SPrueba) lEntity));
                 }
                 tblListadoPruebas.setItems(pruebas);
             }
-            if (entity instanceof TipoPrueba) {
-                final ObservableList<TipoPrueba> tipoPruebas = FXCollections.observableArrayList();
+            if (entity instanceof STipoPrueba) {
+                final ObservableList<STipoPrueba> tipoPruebas = FXCollections.observableArrayList();
                 for (final Object lEntity : list) {
-                    tipoPruebas.add((TipoPrueba) lEntity);
+                    tipoPruebas.add((STipoPrueba) lEntity);
                 }
                 cmbTipoPrueba.setItems(tipoPruebas);
             }
-            if (entity instanceof Profesor) {
-                final ObservableList<Profesor> profesores = FXCollections.observableArrayList();
+            if (entity instanceof SProfesor) {
+                final ObservableList<SProfesor> profesores = FXCollections.observableArrayList();
                 for (final Object lEntity : list) {
-                    profesores.add((Profesor) lEntity);
+                    profesores.add((SProfesor) lEntity);
                 }
                 cmbProfesor.setItems(profesores);
             }
-            if (entity instanceof TipoCurso) {
-                final ObservableList<TipoCurso> cursos = FXCollections.observableArrayList();
+            if (entity instanceof STipoCurso) {
+                final ObservableList<STipoCurso> cursos = FXCollections.observableArrayList();
                 for (final Object lEntity : list) {
-                    cursos.add((TipoCurso) lEntity);
+                    cursos.add((STipoCurso) lEntity);
                 }
                 cmbCurso.setItems(cursos);
             }
-            if (entity instanceof Asignatura) {
-                final ObservableList<Asignatura> asignaturas = FXCollections.observableArrayList();
+            if (entity instanceof SAsignatura) {
+                final ObservableList<SAsignatura> asignaturas = FXCollections.observableArrayList();
                 for (final Object lEntity : list) {
-                    asignaturas.add((Asignatura) lEntity);
+                    asignaturas.add((SAsignatura) lEntity);
                 }
                 cmbAsignatura.setItems(asignaturas);
             }
-            if (entity instanceof NivelEvaluacion) {
-                final ObservableList<NivelEvaluacion> nivelEvaluacion = FXCollections.observableArrayList();
+            if (entity instanceof SNivelEvaluacion) {
+                final ObservableList<SNivelEvaluacion> nivelEvaluacion = FXCollections.observableArrayList();
                 for (final Object lEntity : list) {
-                    nivelEvaluacion.add((NivelEvaluacion) lEntity);
+                    nivelEvaluacion.add((SNivelEvaluacion) lEntity);
                 }
                 cmbNivelEvaluacion.setItems(nivelEvaluacion);
             }
@@ -789,8 +789,8 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 
     @Override
     public void onDeleted(IEntity entity) {
-        if (entity instanceof Prueba) {
-            final OTPrueba pEliminar = new OTPrueba((Prueba) entity);
+        if (entity instanceof SPrueba) {
+            final OTPrueba pEliminar = new OTPrueba((SPrueba) entity);
             tblListadoPruebas.getItems().remove(pEliminar);
         }
 
@@ -798,20 +798,20 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 
     @Override
     public void onSaved(IEntity otObject) {
-        Prueba prueba = null;
-        if (otObject instanceof Prueba) {
-            prueba = (Prueba) otObject;
-        } else if (otObject instanceof RespuestasEsperadasPrueba) {
-            final RespuestasEsperadasPrueba r = (RespuestasEsperadasPrueba) otObject;
+        SPrueba prueba = null;
+        if (otObject instanceof SPrueba) {
+            prueba = (SPrueba) otObject;
+        } else if (otObject instanceof SRespuestasEsperadasPrueba) {
+            final SRespuestasEsperadasPrueba r = (SRespuestasEsperadasPrueba) otObject;
             prueba = r.getPrueba();
-        } else if (otObject instanceof EvaluacionPrueba) {
-            final EvaluacionPrueba e = (EvaluacionPrueba) otObject;
+        } else if (otObject instanceof SEvaluacionPrueba) {
+            final SEvaluacionPrueba e = (SEvaluacionPrueba) otObject;
             prueba = e.getPrueba();
 
         }
 
         if (prueba != null) {
-            prueba = (Prueba) findSynchroById(Prueba.class, prueba.getId());
+            prueba = (SPrueba) findSynchroById(SPrueba.class, prueba.getId());
             final OTPrueba ot = new OTPrueba(prueba);
             final int indice = tblListadoPruebas.getItems().lastIndexOf(ot);
             if (indice != -1) {

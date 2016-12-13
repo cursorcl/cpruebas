@@ -17,15 +17,15 @@ import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 
 import cl.eos.common.Constants;
-import cl.eos.persistence.models.Asignatura;
-import cl.eos.persistence.models.Colegio;
-import cl.eos.persistence.models.Curso;
-import cl.eos.persistence.models.EvaluacionPrueba;
-import cl.eos.persistence.models.Habilidad;
-import cl.eos.persistence.models.PruebaRendida;
-import cl.eos.persistence.models.RangoEvaluacion;
-import cl.eos.persistence.models.RespuestasEsperadasPrueba;
-import cl.eos.persistence.models.TipoAlumno;
+import cl.eos.persistence.models.SAsignatura;
+import cl.eos.persistence.models.SColegio;
+import cl.eos.persistence.models.SCurso;
+import cl.eos.persistence.models.SEvaluacionPrueba;
+import cl.eos.persistence.models.SHabilidad;
+import cl.eos.persistence.models.SPruebaRendida;
+import cl.eos.persistence.models.SRangoEvaluacion;
+import cl.eos.persistence.models.SRespuestasEsperadasPrueba;
+import cl.eos.persistence.models.STipoAlumno;
 import cl.eos.persistence.util.Comparadores;
 import cl.eos.provider.persistence.PersistenceServiceFactory;
 import cl.eos.view.ots.ejeevaluacion.OTAcumulador;
@@ -45,10 +45,10 @@ public class InformeHabilidades implements IInforme {
     private static final String COLEGIO_ID = "idColegio";
 
     static Logger log = Logger.getLogger(InformeHabilidades.class);
-    private TipoAlumno tipoAlumno;
-    private Map<Habilidad, List<OTAcumulador>> resultado;
-    private List<RangoEvaluacion> rangos;
-    private List<Curso> lstCursos;
+    private STipoAlumno tipoAlumno;
+    private Map<SHabilidad, List<OTAcumulador>> resultado;
+    private List<SRangoEvaluacion> rangos;
+    private List<SCurso> lstCursos;
     private boolean kinder_ciclo;
     private boolean media_ciclo;
     private boolean basica_ciclo;
@@ -59,8 +59,8 @@ public class InformeHabilidades implements IInforme {
 
     @SuppressWarnings("unchecked")
     @Override
-    public void execute(TipoAlumno tipoAlumno, Colegio colegio, Asignatura asignatura) {
-        rangos = PersistenceServiceFactory.getPersistenceService().findAllSynchro(RangoEvaluacion.class);
+    public void execute(STipoAlumno tipoAlumno, SColegio colegio, SAsignatura asignatura) {
+        rangos = PersistenceServiceFactory.getPersistenceService().findAllSynchro(SRangoEvaluacion.class);
 
         if (Objects.isNull(rangos) || rangos.isEmpty())
             return;
@@ -72,14 +72,14 @@ public class InformeHabilidades implements IInforme {
         final Map<String, Object> params = new HashMap<>();
         params.put(InformeHabilidades.COLEGIO_ID, colegio.getId());
         params.put(InformeHabilidades.ASIGNATURA_ID, asignatura.getId());
-        final List<EvaluacionPrueba> evaluaciones = (List<EvaluacionPrueba>) (Object) PersistenceServiceFactory
-                .getPersistenceService().findSynchro("EvaluacionPrueba.findEvaluacionByColegioAsig", params);
+        final List<SEvaluacionPrueba> evaluaciones = (List<SEvaluacionPrueba>) (Object) PersistenceServiceFactory
+                .getPersistenceService().findSynchro("SEvaluacionPrueba.findEvaluacionByColegioAsig", params);
         if (evaluaciones == null || evaluaciones.isEmpty())
             return;
         params.clear();
         params.put("colegioId", colegio.getId());
-        lstCursos = (List<Curso>) (Object) PersistenceServiceFactory.getPersistenceService()
-                .findSynchro("Curso.findByColegio", params);
+        lstCursos = (List<SCurso>) (Object) PersistenceServiceFactory.getPersistenceService()
+                .findSynchro("SCurso.findByColegio", params);
 
         if (Objects.isNull(evaluaciones) || Objects.isNull(lstCursos) || lstCursos.isEmpty() || evaluaciones.isEmpty())
             return;
@@ -87,7 +87,7 @@ public class InformeHabilidades implements IInforme {
         resultado = procesar(evaluaciones);
     }
 
-    private String getTiteTables(Curso curso) {
+    private String getTiteTables(SCurso curso) {
         String tableTitle = null;
         if (curso.getCiclo().getId() < InformeManager.CICLO_7 && !basica_ciclo) {
             tableTitle = String.format("Tabla  %d: RESULTADOS ENSEÑANZA BÁSICA", InformeManager.TABLA++);
@@ -110,11 +110,11 @@ public class InformeHabilidades implements IInforme {
 
     }
 
-    private float obtenerPorcentaje(String respuestas, List<RespuestasEsperadasPrueba> respEsperadas, Habilidad eje) {
+    private float obtenerPorcentaje(String respuestas, List<SRespuestasEsperadasPrueba> respEsperadas, SHabilidad eje) {
         float nroBuenas = 0;
         float nroPreguntas = 0;
         for (int n = 0; n < respEsperadas.size(); n++) {
-            final RespuestasEsperadasPrueba resp = respEsperadas.get(n);
+            final SRespuestasEsperadasPrueba resp = respEsperadas.get(n);
             if (!resp.isAnulada()) {
 
                 if (resp.getHabilidad().equals(eje)) {
@@ -147,7 +147,7 @@ public class InformeHabilidades implements IInforme {
         run.addCarriageReturn();
 
         int idxCurso = 0;
-        for (final Curso curso : lstCursos) {
+        for (final SCurso curso : lstCursos) {
 
             final String title = getTiteTables(curso);
             if (title != null) {
@@ -163,7 +163,7 @@ public class InformeHabilidades implements IInforme {
             run.addCarriageReturn();
 
             int nRow = 0;
-            for (final Habilidad eje : resultado.keySet()) {
+            for (final SHabilidad eje : resultado.keySet()) {
                 final List<OTAcumulador> lstValues = resultado.get(eje);
                 final OTAcumulador ot = lstValues.get(idxCurso);
                 if (ot == null || ot.getNroPersonas() == null || ot.getNroPersonas().length == 0)
@@ -176,7 +176,7 @@ public class InformeHabilidades implements IInforme {
 
             XWPFTableRow tableRow = table.getRow(0);
             tableRow.getCell(0).setText("HABILIDADES");
-            tableRow.getCell(1).setText("Curso: " + curso.getName());
+            tableRow.getCell(1).setText("SCurso: " + curso.getName());
 
             WordUtil.mergeCellHorizontally(table, 0, 1, nroRangos);
             WordUtil.mergeCellVertically(table, 0, 0, 2);
@@ -205,7 +205,7 @@ public class InformeHabilidades implements IInforme {
             }
             boolean isTitleSetted = false;
             nRow = 3;
-            for (final Habilidad eje : resultado.keySet()) {
+            for (final SHabilidad eje : resultado.keySet()) {
                 final List<OTAcumulador> lstValues = resultado.get(eje);
                 final OTAcumulador ot = lstValues.get(idxCurso);
                 if (ot == null || ot.getNroPersonas() == null || ot.getNroPersonas().length == 0)
@@ -231,18 +231,18 @@ public class InformeHabilidades implements IInforme {
         }
     }
 
-    protected Map<Habilidad, List<OTAcumulador>> procesar(List<EvaluacionPrueba> evaluacionesPrueba) {
+    protected Map<SHabilidad, List<OTAcumulador>> procesar(List<SEvaluacionPrueba> evaluacionesPrueba) {
 
         final int nroCursos = lstCursos.size();
         final int nroRangos = rangos.size();
-        final Map<Habilidad, List<OTAcumulador>> cursosXeje = new HashMap<>();
+        final Map<SHabilidad, List<OTAcumulador>> cursosXeje = new HashMap<>();
 
-        for (final EvaluacionPrueba eval : evaluacionesPrueba) {
+        for (final SEvaluacionPrueba eval : evaluacionesPrueba) {
             eval.getPruebasRendidas().size();
-            final List<PruebaRendida> pruebasRendidas = eval.getPruebasRendidas();
+            final List<SPruebaRendida> pruebasRendidas = eval.getPruebasRendidas();
             eval.getPrueba().getRespuestas().size();
-            final List<RespuestasEsperadasPrueba> respEsperadas = eval.getPrueba().getRespuestas();
-            for (final PruebaRendida pruebaRendida : pruebasRendidas) {
+            final List<SRespuestasEsperadasPrueba> respEsperadas = eval.getPrueba().getRespuestas();
+            for (final SPruebaRendida pruebaRendida : pruebasRendidas) {
                 if (pruebaRendida.getAlumno() == null) {
                     continue;
                 }
@@ -263,7 +263,7 @@ public class InformeHabilidades implements IInforme {
 
                 for (int n = 0; n < respEsperadas.size(); n++) {
                     // Sumando a ejes tematicos
-                    final Habilidad eje = respEsperadas.get(n).getHabilidad();
+                    final SHabilidad eje = respEsperadas.get(n).getHabilidad();
                     if (!cursosXeje.containsKey(eje)) {
                         final List<OTAcumulador> lista = new ArrayList<OTAcumulador>(nroCursos);
                         for (int idx = 0; idx < nroCursos; idx++) {
@@ -281,13 +281,13 @@ public class InformeHabilidades implements IInforme {
                         lstEjes.set(index, otEjeEval);
                     }
                 }
-                for (final Habilidad eje : cursosXeje.keySet()) {
+                for (final SHabilidad eje : cursosXeje.keySet()) {
                     final List<OTAcumulador> lstEjes = cursosXeje.get(eje);
                     final OTAcumulador otEjeEval = lstEjes.get(index);
                     final float porcentaje = obtenerPorcentaje(respuestas, respEsperadas, eje);
 
                     for (int idx = 0; idx < nroRangos; idx++) {
-                        final RangoEvaluacion rango = rangos.get(idx);
+                        final SRangoEvaluacion rango = rangos.get(idx);
                         if (rango.isInside(porcentaje)) {
                             otEjeEval.getNroPersonas()[idx] = otEjeEval.getNroPersonas()[idx] + 1;
                             break;

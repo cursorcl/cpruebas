@@ -9,13 +9,13 @@ import java.util.stream.Collectors;
 
 import cl.eos.common.Constants;
 import cl.eos.imp.view.AFormView;
-import cl.eos.persistence.models.Asignatura;
-import cl.eos.persistence.models.Colegio;
-import cl.eos.persistence.models.EvaluacionPrueba;
-import cl.eos.persistence.models.Objetivo;
-import cl.eos.persistence.models.PruebaRendida;
-import cl.eos.persistence.models.TipoAlumno;
-import cl.eos.persistence.models.TipoCurso;
+import cl.eos.persistence.models.SAsignatura;
+import cl.eos.persistence.models.SColegio;
+import cl.eos.persistence.models.SEvaluacionPrueba;
+import cl.eos.persistence.models.SObjetivo;
+import cl.eos.persistence.models.SPruebaRendida;
+import cl.eos.persistence.models.STipoAlumno;
+import cl.eos.persistence.models.STipoCurso;
 import cl.eos.util.Pair;
 import javafx.beans.property.ReadOnlyFloatWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
@@ -51,22 +51,22 @@ public class Nivel_PorObjetivosColegioView extends AFormView {
     @FXML
     private TableView<XItemTablaObjetivo> tblObjetivos;
     @FXML
-    private TableColumn<XItemTablaObjetivo, Objetivo> colObjetivos;
+    private TableColumn<XItemTablaObjetivo, SObjetivo> colObjetivos;
 
     @FXML
     private Button btnGenerarReporte;
     @FXML
-    private ComboBox<TipoAlumno> cmbTipoAlumno;
+    private ComboBox<STipoAlumno> cmbTipoAlumno;
     @FXML
-    private ComboBox<Colegio> cmbColegio;
+    private ComboBox<SColegio> cmbColegio;
     @FXML
-    private ComboBox<Asignatura> cmbAsignaturas;
+    private ComboBox<SAsignatura> cmbAsignaturas;
 
     
     private Map<String, Object> parameters = new HashMap<String, Object>();
 
     long tipoAlumno = Constants.PIE_ALL;
-    private ObservableList<EvaluacionPrueba> evaluacionesPrueba;
+    private ObservableList<SEvaluacionPrueba> evaluacionesPrueba;
 
     protected void clearContent() {
         if (tblObjetivos.getItems() != null)
@@ -84,16 +84,16 @@ public class Nivel_PorObjetivosColegioView extends AFormView {
         
         if (cmbAsignaturas.getItems() != null && cmbTipoAlumno.getItems() != null && cmbTipoAlumno.getSelectionModel().getSelectedItem() != null) {
             long tipoAlumno = cmbTipoAlumno.getSelectionModel().getSelectedItem().getId();
-            final List<PruebaRendida> pRendidas = new ArrayList<>();
-            for(EvaluacionPrueba evaluacionPrueba : evaluacionesPrueba)
+            final List<SPruebaRendida> pRendidas = new ArrayList<>();
+            for(SEvaluacionPrueba evaluacionPrueba : evaluacionesPrueba)
             {
                 pRendidas.addAll(evaluacionPrueba.getPruebasRendidas());
             }
 
             if (pRendidas != null && !pRendidas.isEmpty()) {
-                final Pair<List<TipoCurso>, List<XItemTablaObjetivo>> reporte = XUtilReportBuilder.reporteColegioxNivel(pRendidas, tipoAlumno);
+                final Pair<List<STipoCurso>, List<XItemTablaObjetivo>> reporte = XUtilReportBuilder.reporteColegioxNivel(pRendidas, tipoAlumno);
 
-                List<TipoCurso> cursos = reporte.getFirst();
+                List<STipoCurso> cursos = reporte.getFirst();
                 
                 final ObservableList<XItemTablaObjetivo> itemsTable = FXCollections.observableList(reporte.getSecond());
                 final Optional<XItemTablaObjetivo> opFirst = itemsTable.stream().findFirst();
@@ -224,7 +224,7 @@ public class Nivel_PorObjetivosColegioView extends AFormView {
     }
 
     private void inicializeTable() {
-        colObjetivos.setCellValueFactory(new PropertyValueFactory<XItemTablaObjetivo, Objetivo>("objetivo"));
+        colObjetivos.setCellValueFactory(new PropertyValueFactory<XItemTablaObjetivo, SObjetivo>("objetivo"));
     }
 
     @FXML
@@ -233,21 +233,21 @@ public class Nivel_PorObjetivosColegioView extends AFormView {
         inicializeTable();
 
         cmbColegio.setOnAction(event -> {
-            Colegio colegio = cmbColegio.getSelectionModel().getSelectedItem();
+            SColegio colegio = cmbColegio.getSelectionModel().getSelectedItem();
             if (colegio != null) {
                 parameters.put(COLEGIO_ID, colegio.getId());
-                Asignatura asig = cmbAsignaturas.getSelectionModel().getSelectedItem();
+                SAsignatura asig = cmbAsignaturas.getSelectionModel().getSelectedItem();
                 String asignatura  = asig != null ? asig.getName() : "-"; 
                 setTitle(String.format(TITLE_FORMAT, colegio.getName(),  asignatura ));
             }
         });
 
         cmbAsignaturas.setOnAction(event -> {
-            Asignatura asignatura = cmbAsignaturas.getSelectionModel().getSelectedItem();
+            SAsignatura asignatura = cmbAsignaturas.getSelectionModel().getSelectedItem();
             if (asignatura != null) {
                 parameters.put(ASIGNATURA_ID, asignatura.getId());
                 
-                Colegio colegio = cmbColegio.getSelectionModel().getSelectedItem();
+                SColegio colegio = cmbColegio.getSelectionModel().getSelectedItem();
                 String strColegio = colegio != null ? colegio.getName() : "-"; 
                 
                 setTitle(String.format(TITLE_FORMAT, strColegio,  cmbAsignaturas.getSelectionModel().getSelectedItem() ));
@@ -265,7 +265,7 @@ public class Nivel_PorObjetivosColegioView extends AFormView {
 
     private void handlerReporte() {
         if (!parameters.isEmpty() && parameters.containsKey(COLEGIO_ID) && parameters.containsKey(ASIGNATURA_ID)) {
-            controller.find("EvaluacionPrueba.findEvaluacionByColegioAsig", parameters, this);
+            controller.find("SEvaluacionPrueba.findEvaluacionByColegioAsig", parameters, this);
         }
     }
 
@@ -273,28 +273,28 @@ public class Nivel_PorObjetivosColegioView extends AFormView {
     public void onDataArrived(List<Object> list) {
         if (list != null && !list.isEmpty()) {
             final Object entity = list.get(0);
-            if (entity instanceof TipoAlumno) {
-                final List<TipoAlumno> values = list.stream().map(t -> (TipoAlumno) t).collect(Collectors.toList());
-                final ObservableList<TipoAlumno> tAlumnoList = FXCollections.observableArrayList(values);
+            if (entity instanceof STipoAlumno) {
+                final List<STipoAlumno> values = list.stream().map(t -> (STipoAlumno) t).collect(Collectors.toList());
+                final ObservableList<STipoAlumno> tAlumnoList = FXCollections.observableArrayList(values);
                 cmbTipoAlumno.setItems(tAlumnoList);
             }
 
-            if (entity instanceof Colegio) {
-                final List<Colegio> values = list.stream().map(t -> (Colegio) t).collect(Collectors.toList());
-                final ObservableList<Colegio> colegios = FXCollections.observableArrayList(values);
+            if (entity instanceof SColegio) {
+                final List<SColegio> values = list.stream().map(t -> (SColegio) t).collect(Collectors.toList());
+                final ObservableList<SColegio> colegios = FXCollections.observableArrayList(values);
                 cmbColegio.setItems(colegios);
             }
 
-            if (entity instanceof Asignatura) {
-                final List<Asignatura> values = list.stream().map(t -> (Asignatura) t).collect(Collectors.toList());
-                final ObservableList<Asignatura> asginaturas = FXCollections.observableArrayList(values);
+            if (entity instanceof SAsignatura) {
+                final List<SAsignatura> values = list.stream().map(t -> (SAsignatura) t).collect(Collectors.toList());
+                final ObservableList<SAsignatura> asginaturas = FXCollections.observableArrayList(values);
                 cmbAsignaturas.setItems(asginaturas);
             }
             
-            if (entity instanceof EvaluacionPrueba) {
+            if (entity instanceof SEvaluacionPrueba) {
                 evaluacionesPrueba = FXCollections.observableArrayList();
                 for (Object object : list) {
-                    EvaluacionPrueba evaluacion = (EvaluacionPrueba) object;
+                    SEvaluacionPrueba evaluacion = (SEvaluacionPrueba) object;
                     evaluacionesPrueba.add(evaluacion);
                 }
                 generateReport();

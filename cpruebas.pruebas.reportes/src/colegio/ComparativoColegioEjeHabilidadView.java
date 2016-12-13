@@ -13,17 +13,17 @@ import cl.eos.imp.view.AFormView;
 import cl.eos.ot.OTPreguntasEjes;
 import cl.eos.ot.OTPreguntasEvaluacion;
 import cl.eos.ot.OTPreguntasHabilidad;
-import cl.eos.persistence.models.Alumno;
-import cl.eos.persistence.models.Asignatura;
-import cl.eos.persistence.models.Colegio;
-import cl.eos.persistence.models.Curso;
-import cl.eos.persistence.models.EjeTematico;
-import cl.eos.persistence.models.EvaluacionEjeTematico;
-import cl.eos.persistence.models.EvaluacionPrueba;
-import cl.eos.persistence.models.Habilidad;
-import cl.eos.persistence.models.PruebaRendida;
-import cl.eos.persistence.models.RespuestasEsperadasPrueba;
-import cl.eos.persistence.models.TipoAlumno;
+import cl.eos.persistence.models.SAlumno;
+import cl.eos.persistence.models.SAsignatura;
+import cl.eos.persistence.models.SColegio;
+import cl.eos.persistence.models.SCurso;
+import cl.eos.persistence.models.SEjeTematico;
+import cl.eos.persistence.models.SEvaluacionEjeTematico;
+import cl.eos.persistence.models.SEvaluacionPrueba;
+import cl.eos.persistence.models.SHabilidad;
+import cl.eos.persistence.models.SPruebaRendida;
+import cl.eos.persistence.models.SRespuestasEsperadasPrueba;
+import cl.eos.persistence.models.STipoAlumno;
 import cl.eos.persistence.util.Comparadores;
 import cl.eos.util.ExcelSheetWriterObj;
 import cl.eos.util.Pair;
@@ -58,11 +58,11 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements Eve
 	@FXML
 	private TableView tblEvaluacion;
 	@FXML
-	private ComboBox<Colegio> cmbColegios;
+	private ComboBox<SColegio> cmbColegios;
 	@FXML
-	private ComboBox<Asignatura> cmbAsignatura;
+	private ComboBox<SAsignatura> cmbAsignatura;
 	@FXML
-	private ComboBox<TipoAlumno> cmbTipoAlumno;
+	private ComboBox<STipoAlumno> cmbTipoAlumno;
 
 	@FXML
 	private Button btnReportes;
@@ -76,13 +76,13 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements Eve
 	private MenuItem mnuExportarAlumnos;
 
 	private Map<String, Object> parameters = new HashMap<String, Object>();
-	private ObservableList<Curso> cursoList;
-	private ObservableList<EvaluacionEjeTematico> evalEjeTematicoList;
-	private ObservableList<EvaluacionPrueba> evaluacionesPrueba;
+	private ObservableList<SCurso> cursoList;
+	private ObservableList<SEvaluacionEjeTematico> evalEjeTematicoList;
+	private ObservableList<SEvaluacionPrueba> evaluacionesPrueba;
 	private ArrayList<OTPreguntasEvaluacion> lst;
 
 	public ComparativoColegioEjeHabilidadView() {
-		setTitle("Comparativo Colegio Ejes Temáticos y Habilidades");
+		setTitle("Comparativo SColegio Ejes Temáticos y Habilidades");
 	}
 
 	@SuppressWarnings("unchecked")
@@ -112,19 +112,19 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements Eve
 	}
 
 	private void handleColegios() {
-		Colegio colegio = cmbColegios.getSelectionModel().getSelectedItem();
+		SColegio colegio = cmbColegios.getSelectionModel().getSelectedItem();
 		if (colegio != null) {
 			parameters.put(COLEGIO_ID, colegio.getId());
 			Map<String, Object> param = new HashMap<String, Object>();
 			param.put("colegioId", colegio.getId());
 			lblTitulo.setText(colegio.getName());
-			controller.find("Curso.findByColegio", param);
+			controller.find("SCurso.findByColegio", param);
 			clearContent();
 		}
 	}
 
 	private void handleAsignatura() {
-		Asignatura asignatura = cmbAsignatura.getSelectionModel().getSelectedItem();
+		SAsignatura asignatura = cmbAsignatura.getSelectionModel().getSelectedItem();
 		if (asignatura != null) {
 			parameters.put(ASIGNATURA_ID, asignatura.getId());
 			clearContent();
@@ -134,7 +134,7 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements Eve
 	private void handleReportes() {
 		if (!parameters.isEmpty() && parameters.containsKey(COLEGIO_ID) && parameters.containsKey(ASIGNATURA_ID)) {
 
-			controller.find("EvaluacionPrueba.findEvaluacionByColegioAsig", parameters, this);
+			controller.find("SEvaluacionPrueba.findEvaluacionByColegioAsig", parameters, this);
 		}
 	}
 
@@ -155,46 +155,46 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements Eve
 	public void onDataArrived(List<Object> list) {
 		if (list != null && !list.isEmpty()) {
 			Object entity = list.get(0);
-			if (entity instanceof Colegio) {
-				ObservableList<Colegio> oList = FXCollections.observableArrayList();
+			if (entity instanceof SColegio) {
+				ObservableList<SColegio> oList = FXCollections.observableArrayList();
 				for (Object iEntity : list) {
-					oList.add((Colegio) iEntity);
+					oList.add((SColegio) iEntity);
 				}
 				cmbColegios.setItems(oList);
 			}
-			if (entity instanceof Asignatura) {
-				ObservableList<Asignatura> oList = FXCollections.observableArrayList();
+			if (entity instanceof SAsignatura) {
+				ObservableList<SAsignatura> oList = FXCollections.observableArrayList();
 				for (Object iEntity : list) {
-					oList.add((Asignatura) iEntity);
+					oList.add((SAsignatura) iEntity);
 				}
 				cmbAsignatura.setItems(oList);
 			}
-			if (entity instanceof Curso) {
+			if (entity instanceof SCurso) {
 				cursoList = FXCollections.observableArrayList();
 				for (Object iEntity : list) {
-					cursoList.add((Curso) iEntity);
+					cursoList.add((SCurso) iEntity);
 				}
 				FXCollections.sort(cursoList, Comparadores.comparaResumeCurso());
 			}
-			if (entity instanceof EvaluacionEjeTematico) {
+			if (entity instanceof SEvaluacionEjeTematico) {
 				evalEjeTematicoList = FXCollections.observableArrayList();
 				for (Object object : list) {
-					EvaluacionEjeTematico evaluacion = (EvaluacionEjeTematico) object;
+					SEvaluacionEjeTematico evaluacion = (SEvaluacionEjeTematico) object;
 					evalEjeTematicoList.add(evaluacion);
 				}
 				generarReporte();
 			}
-			if (entity instanceof TipoAlumno) {
-				ObservableList<TipoAlumno> tAlumnoList = FXCollections.observableArrayList();
+			if (entity instanceof STipoAlumno) {
+				ObservableList<STipoAlumno> tAlumnoList = FXCollections.observableArrayList();
 				for (Object iEntity : list) {
-					tAlumnoList.add((TipoAlumno) iEntity);
+					tAlumnoList.add((STipoAlumno) iEntity);
 				}
 				cmbTipoAlumno.setItems(tAlumnoList);
 			}
-			if (entity instanceof EvaluacionPrueba) {
+			if (entity instanceof SEvaluacionPrueba) {
 				evaluacionesPrueba = FXCollections.observableArrayList();
 				for (Object object : list) {
-					EvaluacionPrueba evaluacion = (EvaluacionPrueba) object;
+					SEvaluacionPrueba evaluacion = (SEvaluacionPrueba) object;
 					evaluacionesPrueba.add(evaluacion);
 				}
 				generarReporte();
@@ -216,7 +216,7 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements Eve
 	 * @param pCursoList
 	 */
 	@SuppressWarnings({ "unchecked" })
-	private void llenarColumnas(ObservableList<Curso> pCursoList) {
+	private void llenarColumnas(ObservableList<SCurso> pCursoList) {
 		TableColumn tc = new TableColumn("EJE / HABILIDAD");
 		tc.setSortable(false);
 		tc.setStyle("-fx-alignment: CENTER-LEFT;");
@@ -240,7 +240,7 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements Eve
 		tblEvaluacion.getColumns().add(tc);
 
 		int indice = 1;
-		for (Curso curso : pCursoList) {
+		for (SCurso curso : pCursoList) {
 			final int idx = indice;
 			tc = new TableColumn(curso.getName());
 			tc.prefWidthProperty().set(50f);
@@ -284,11 +284,11 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements Eve
 
 		llenarColumnas(cursoList);
 		int nroCursos = cursoList.size();
-		Map<EjeTematico, List<OTPreguntasEjes>> mapEjes = new HashMap<>();
-		Map<Habilidad, List<OTPreguntasHabilidad>> mapHabilidades = new HashMap<>();
-		Map<EvaluacionEjeTematico, List<OTPreguntasEvaluacion>> mapEvaluaciones = new HashMap<>();
+		Map<SEjeTematico, List<OTPreguntasEjes>> mapEjes = new HashMap<>();
+		Map<SHabilidad, List<OTPreguntasHabilidad>> mapHabilidades = new HashMap<>();
+		Map<SEvaluacionEjeTematico, List<OTPreguntasEvaluacion>> mapEvaluaciones = new HashMap<>();
 
-		for (EvaluacionEjeTematico ejetem : evalEjeTematicoList) {
+		for (SEvaluacionEjeTematico ejetem : evalEjeTematicoList) {
 			lst = new ArrayList<>(nroCursos);
 			for (int idx = 0; idx < nroCursos; idx++) {
 				OTPreguntasEvaluacion otEval = new OTPreguntasEvaluacion();
@@ -304,13 +304,13 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements Eve
 		Arrays.fill(alumnosEvaluados, 0);
 
 		// Todas las evaluaciones asociadas (Todos los cursos)
-		for (EvaluacionPrueba eval : evaluacionesPrueba) {
+		for (SEvaluacionPrueba eval : evaluacionesPrueba) {
 
 			// Se esta revisando un colegio.
 			eval.getPruebasRendidas().size();
-			List<PruebaRendida> pruebasRendidas = eval.getPruebasRendidas();
+			List<SPruebaRendida> pruebasRendidas = eval.getPruebasRendidas();
 			eval.getPrueba().getRespuestas().size();
-			List<RespuestasEsperadasPrueba> respEsperadas = eval.getPrueba().getRespuestas();
+			List<SRespuestasEsperadasPrueba> respEsperadas = eval.getPrueba().getRespuestas();
 			// Estamos procesando un colegio/una prueba
 
 			// Obtengo el index de la columna que tengo que llenar (mas 1
@@ -325,7 +325,7 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements Eve
 
 			// Obtengo los items a considerar en el caso que hayan items
 			// PIE.
-			for (Alumno alumno : eval.getCurso().getAlumnos()) {
+			for (SAlumno alumno : eval.getCurso().getAlumnos()) {
 				if (tipoAlumno == Constants.PIE_ALL || alumno.getTipoAlumno().getId().equals(tipoAlumno)) {
 					// le quito 1 al total de items, ya que este alumno no es
 					// del grupo que sequiere representar en el reporte.
@@ -333,7 +333,7 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements Eve
 				}
 			}
 
-			for (PruebaRendida pruebaRendida : pruebasRendidas) {
+			for (SPruebaRendida pruebaRendida : pruebasRendidas) {
 				// Se procesa un alumno.
 				if (tipoAlumno != Constants.PIE_ALL
 						&& !pruebaRendida.getAlumno().getTipoAlumno().getId().equals(tipoAlumno)) {
@@ -349,7 +349,7 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements Eve
 
 				// Obtener ejes y habilidades de esta prueba
 				for (int n = 0; n < respEsperadas.size(); n++) {
-					EjeTematico eje = respEsperadas.get(n).getEjeTematico();
+					SEjeTematico eje = respEsperadas.get(n).getEjeTematico();
 					if (!mapEjes.containsKey(eje)) {
 						List<OTPreguntasEjes> lista = new ArrayList<>();
 						for (int idx = 0; idx < nroCursos; idx++) {
@@ -357,7 +357,7 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements Eve
 						}
 						mapEjes.put(eje, lista);
 					}
-					Habilidad hab = respEsperadas.get(n).getHabilidad();
+					SHabilidad hab = respEsperadas.get(n).getHabilidad();
 					if (!mapHabilidades.containsKey(hab)) {
 
 						List<OTPreguntasHabilidad> lista = new ArrayList<>();
@@ -368,7 +368,7 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements Eve
 					}
 				}
 
-				for (EjeTematico eje : mapEjes.keySet()) {
+				for (SEjeTematico eje : mapEjes.keySet()) {
 					List<OTPreguntasEjes> lstEjes = mapEjes.get(eje);
 					OTPreguntasEjes otEje = lstEjes.get(index); // Se obtiene el
 																// asociado a la
@@ -385,7 +385,7 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements Eve
 					lstEjes.set(index, otEje);
 				}
 
-				for (Habilidad hab : mapHabilidades.keySet()) {
+				for (SHabilidad hab : mapHabilidades.keySet()) {
 					List<OTPreguntasHabilidad> lstHabs = mapHabilidades.get(hab);
 
 					// Se obtiene el asociado a la columna.
@@ -403,7 +403,7 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements Eve
 					lstHabs.set(index, otHabilidad);
 				}
 
-				for (EvaluacionEjeTematico ejetem : evalEjeTematicoList) {
+				for (SEvaluacionEjeTematico ejetem : evalEjeTematicoList) {
 					if (ejetem.isInside(pruebaRendida.getPbuenas())) {
 						List<OTPreguntasEvaluacion> lstOt = mapEvaluaciones.get(ejetem);
 						OTPreguntasEvaluacion ot = lstOt.get(index);
@@ -421,13 +421,13 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements Eve
 	}
 
 	@SuppressWarnings("unchecked")
-    private void generarTablaEvaluaciones(Map<EvaluacionEjeTematico, List<OTPreguntasEvaluacion>> mapEvaluaciones,
+    private void generarTablaEvaluaciones(Map<SEvaluacionEjeTematico, List<OTPreguntasEvaluacion>> mapEvaluaciones,
 			int[] totalAlumnos, int[] alumnosEvaluados) {
 		ObservableList<String> row = null;
 		ObservableList<ObservableList<String>> items = FXCollections.observableArrayList();
 		Collections.sort(evalEjeTematicoList, Comparadores.comparaEvaluacionEjeTematico());
 
-		for (EvaluacionEjeTematico eval : evalEjeTematicoList) {
+		for (SEvaluacionEjeTematico eval : evalEjeTematicoList) {
 			row = FXCollections.observableArrayList();
 			List<OTPreguntasEvaluacion> lst = mapEvaluaciones.get(eval);
 			row.add(eval.getName());
@@ -474,12 +474,12 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements Eve
 	 *            habilidades.
 	 */
 	@SuppressWarnings("unchecked")
-    private void generarTablaEjesHabilidades(Map<EjeTematico, List<OTPreguntasEjes>> mapEjes,
-			Map<Habilidad, List<OTPreguntasHabilidad>> mapHabilidades) {
+    private void generarTablaEjesHabilidades(Map<SEjeTematico, List<OTPreguntasEjes>> mapEjes,
+			Map<SHabilidad, List<OTPreguntasHabilidad>> mapHabilidades) {
 		ObservableList<String> row = null;
 		ObservableList<ObservableList<String>> items = FXCollections.observableArrayList();
 		int nroCols = 0;
-		for (EjeTematico eje : mapEjes.keySet()) {
+		for (SEjeTematico eje : mapEjes.keySet()) {
 			row = FXCollections.observableArrayList();
 			List<OTPreguntasEjes> lst = mapEjes.get(eje);
 			nroCols = lst.size();
@@ -500,7 +500,7 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements Eve
 		}
 		items.add(row);
 
-		for (Habilidad hab : mapHabilidades.keySet()) {
+		for (SHabilidad hab : mapHabilidades.keySet()) {
 			row = FXCollections.observableArrayList();
 			List<OTPreguntasHabilidad> lst = mapHabilidades.get(hab);
 			row.add(hab.getName());
@@ -528,15 +528,15 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements Eve
 	 * @param respEsperadas
 	 *            Las respuestas correctas definidas en la prueba.
 	 * @param ahb
-	 *            La Habilidad en base al que se realiza el calculo.
+	 *            La SHabilidad en base al que se realiza el calculo.
 	 * @return Par <Preguntas buenas, Total de Preguntas> del eje.
 	 */
 	private Pair<Integer, Integer> obtenerBuenasTotales(String respuestas,
-			List<RespuestasEsperadasPrueba> respEsperadas, Habilidad hab) {
+			List<SRespuestasEsperadasPrueba> respEsperadas, SHabilidad hab) {
 		int nroBuenas = 0;
 		int nroPreguntas = 0;
 		for (int n = 0; n < respEsperadas.size(); n++) {
-			RespuestasEsperadasPrueba resp = respEsperadas.get(n);
+			SRespuestasEsperadasPrueba resp = respEsperadas.get(n);
 			if (!resp.isAnulada()) {
 				if (resp.getHabilidad().equals(hab)) {
 					if (respuestas.length() > n) {
@@ -565,11 +565,11 @@ public class ComparativoColegioEjeHabilidadView extends AFormView implements Eve
 	 * @return Par <Preguntas buenas, Total de Preguntas> del eje.
 	 */
 	private Pair<Integer, Integer> obtenerBuenasTotales(String respuestas,
-			List<RespuestasEsperadasPrueba> respEsperadas, EjeTematico eje) {
+			List<SRespuestasEsperadasPrueba> respEsperadas, SEjeTematico eje) {
 		int nroBuenas = 0;
 		int nroPreguntas = 0;
 		for (int n = 0; n < respEsperadas.size(); n++) {
-			RespuestasEsperadasPrueba resp = respEsperadas.get(n);
+			SRespuestasEsperadasPrueba resp = respEsperadas.get(n);
 			if (!resp.isAnulada()) {
 				if (resp.getEjeTematico().equals(eje)) {
 					if (respuestas.length() > n) {

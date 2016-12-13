@@ -3,17 +3,17 @@ package cl.eos.view.ots.resumenxalumno.eje.habilidad;
 import java.util.ArrayList;
 import java.util.List;
 
-import cl.eos.persistence.models.Alumno;
+import cl.eos.persistence.models.SAlumno;
 
 public class OTAlumnoResumen {
-    private Alumno alumno;
+    private SAlumno alumno;
     private List<Float> porcentajes = new ArrayList<Float>();
 
-    public OTAlumnoResumen(Alumno alumno) {
+    public OTAlumnoResumen(SAlumno alumno) {
         this.alumno = alumno;
     }
 
-    public Alumno getAlumno() {
+    public SAlumno getAlumno() {
         return alumno;
     }
 
@@ -21,7 +21,7 @@ public class OTAlumnoResumen {
         return porcentajes;
     }
 
-    public void setAlumno(Alumno alumno) {
+    public void setAlumno(SAlumno alumno) {
         this.alumno = alumno;
     }
 

@@ -5,11 +5,11 @@ import java.util.List;
 import java.util.Optional;
 
 import cl.eos.imp.view.AFormView;
-import cl.eos.persistence.models.Curso;
-import cl.eos.persistence.models.EvaluacionPrueba;
-import cl.eos.persistence.models.RangoEvaluacion;
-import cl.eos.persistence.models.TipoAlumno;
-import cl.eos.persistence.models.TipoPrueba;
+import cl.eos.persistence.models.SCurso;
+import cl.eos.persistence.models.SEvaluacionPrueba;
+import cl.eos.persistence.models.SRangoEvaluacion;
+import cl.eos.persistence.models.STipoAlumno;
+import cl.eos.persistence.models.STipoPrueba;
 import cl.eos.util.ExcelSheetWriterObj;
 import curso.PorObjetivosView;
 import curso.ResumenAlumnoView;
@@ -36,25 +36,25 @@ import javafx.scene.control.cell.PropertyValueFactory;
 public class EvaluacionPruebaView extends AFormView implements EventHandler<ActionEvent> {
 
     @FXML
-    private TableView<EvaluacionPrueba> tblListadoPruebas;
+    private TableView<SEvaluacionPrueba> tblListadoPruebas;
     @FXML
-    private TableColumn<EvaluacionPrueba, LocalDate> fechaCol;
+    private TableColumn<SEvaluacionPrueba, LocalDate> fechaCol;
     @FXML
-    private TableColumn<EvaluacionPrueba, Curso> cursoCol;
+    private TableColumn<SEvaluacionPrueba, SCurso> cursoCol;
     @FXML
-    private TableColumn<EvaluacionPrueba, String> nameCol;
+    private TableColumn<SEvaluacionPrueba, String> nameCol;
     @FXML
-    private TableColumn<EvaluacionPrueba, TipoPrueba> colTipo;
+    private TableColumn<SEvaluacionPrueba, STipoPrueba> colTipo;
     @FXML
-    private TableColumn<EvaluacionPrueba, String> asignaturaCol;
+    private TableColumn<SEvaluacionPrueba, String> asignaturaCol;
     @FXML
-    private TableColumn<EvaluacionPrueba, String> profesorCol;
+    private TableColumn<SEvaluacionPrueba, String> profesorCol;
     @FXML
-    private TableColumn<EvaluacionPrueba, Integer> nroPreguntasCol;
+    private TableColumn<SEvaluacionPrueba, Integer> nroPreguntasCol;
     @FXML
-    private TableColumn<EvaluacionPrueba, Integer> formasCol;
+    private TableColumn<SEvaluacionPrueba, Integer> formasCol;
     @FXML
-    private TableColumn<EvaluacionPrueba, Integer> colExigencia;
+    private TableColumn<SEvaluacionPrueba, Integer> colExigencia;
     @FXML
     private MenuItem mnuResumenGeneral;
     @FXML
@@ -94,7 +94,7 @@ public class EvaluacionPruebaView extends AFormView implements EventHandler<Acti
     @FXML
     private MenuItem mnuEliminarEvaluacion;
 
-    private EvaluacionPrueba evaluacionPrueba;
+    private SEvaluacionPrueba evaluacionPrueba;
     private ResumenGeneralView resumenGeneral;
     private ResumenAlumnoView resumenAlumno;
     private ResumenRespuestaView resumenRespuestas;
@@ -142,8 +142,8 @@ public class EvaluacionPruebaView extends AFormView implements EventHandler<Acti
         final Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
             final int index = tblListadoPruebas.getSelectionModel().getSelectedIndex();
-            final EvaluacionPrueba ot = tblListadoPruebas.getSelectionModel().getSelectedItem();
-            // List<PruebaRendida> pRendidas = ot.getPruebasRendidas();
+            final SEvaluacionPrueba ot = tblListadoPruebas.getSelectionModel().getSelectedItem();
+            // List<R_PruebaRendida> pRendidas = ot.getPruebasRendidas();
             // while(pRendidas.size() > 0)
             // {
             // delete(pRendidas.get(0), false);
@@ -159,8 +159,8 @@ public class EvaluacionPruebaView extends AFormView implements EventHandler<Acti
         if (evaluacionPrueba != null) {
             resumenAlumno = (ResumenAlumnoView) show("/curso/fxml/ResumenAlumno.fxml");
 
-            controller.findById(EvaluacionPrueba.class, evaluacionPrueba.getId(), resumenAlumno);
-            controller.findAll(TipoAlumno.class, resumenAlumno);
+            controller.findById(SEvaluacionPrueba.class, evaluacionPrueba.getId(), resumenAlumno);
+            controller.findAll(STipoAlumno.class, resumenAlumno);
         } else {
             final Alert alert = new Alert(AlertType.INFORMATION);
             alert.setTitle("Selección registro");
@@ -174,8 +174,8 @@ public class EvaluacionPruebaView extends AFormView implements EventHandler<Acti
         evaluacionPrueba = tblListadoPruebas.getSelectionModel().getSelectedItem();
         if (evaluacionPrueba != null) {
             resumeEjeTematico = (ResumenEjesTematicosView) show("/curso/fxml/ResumenEjesTematicos.fxml");
-            controller.findById(EvaluacionPrueba.class, evaluacionPrueba.getId(), resumeEjeTematico);
-            controller.findAll(TipoAlumno.class, resumeEjeTematico);
+            controller.findById(SEvaluacionPrueba.class, evaluacionPrueba.getId(), resumeEjeTematico);
+            controller.findAll(STipoAlumno.class, resumeEjeTematico);
         } else {
             final Alert alert = new Alert(AlertType.INFORMATION);
             alert.setTitle("Selección registro");
@@ -190,8 +190,8 @@ public class EvaluacionPruebaView extends AFormView implements EventHandler<Acti
         evaluacionPrueba = tblListadoPruebas.getSelectionModel().getSelectedItem();
         if (evaluacionPrueba != null) {
             resumenGeneral = (ResumenGeneralView) show("/curso/fxml/ResumenGeneral.fxml");
-            controller.findById(EvaluacionPrueba.class, evaluacionPrueba.getId(), resumenGeneral);
-            controller.findAll(TipoAlumno.class, resumenGeneral);
+            controller.findById(SEvaluacionPrueba.class, evaluacionPrueba.getId(), resumenGeneral);
+            controller.findAll(STipoAlumno.class, resumenGeneral);
         } else {
 
             final Alert alert = new Alert(AlertType.INFORMATION);
@@ -206,8 +206,8 @@ public class EvaluacionPruebaView extends AFormView implements EventHandler<Acti
         evaluacionPrueba = tblListadoPruebas.getSelectionModel().getSelectedItem();
         if (evaluacionPrueba != null) {
             resumeHabilidad = (ResumenHabilidadesView) show("/curso/fxml/ResumenHabilidades.fxml");
-            controller.findById(EvaluacionPrueba.class, evaluacionPrueba.getId(), resumeHabilidad);
-            controller.findAll(TipoAlumno.class, resumeHabilidad);
+            controller.findById(SEvaluacionPrueba.class, evaluacionPrueba.getId(), resumeHabilidad);
+            controller.findAll(STipoAlumno.class, resumeHabilidad);
         } else {
             final Alert alert = new Alert(AlertType.INFORMATION);
             alert.setTitle("Selección registro");
@@ -225,8 +225,8 @@ public class EvaluacionPruebaView extends AFormView implements EventHandler<Acti
             } else {
                 show(resumenRespuestas);
             }
-            controller.findById(EvaluacionPrueba.class, evaluacionPrueba.getId(), resumenRespuestas);
-            controller.findAll(TipoAlumno.class, resumenRespuestas);
+            controller.findById(SEvaluacionPrueba.class, evaluacionPrueba.getId(), resumenRespuestas);
+            controller.findAll(STipoAlumno.class, resumenRespuestas);
         } else {
             final Alert alert = new Alert(AlertType.INFORMATION);
             alert.setTitle("Selección registro");
@@ -244,12 +244,12 @@ public class EvaluacionPruebaView extends AFormView implements EventHandler<Acti
         if (evaluacionPrueba != null) {
             final ResumenXAlumnoEjeHabilidadView resXAlumnoEjeHab = (ResumenXAlumnoEjeHabilidadView) show(
                     "/curso/fxml/ResumenXAlumnoEjeHabilidad.fxml");
-            controller.findById(EvaluacionPrueba.class, evaluacionPrueba.getId(), resXAlumnoEjeHab);
-            controller.findAll(TipoAlumno.class, resXAlumnoEjeHab);
+            controller.findById(SEvaluacionPrueba.class, evaluacionPrueba.getId(), resXAlumnoEjeHab);
+            controller.findAll(STipoAlumno.class, resXAlumnoEjeHab);
         } else {
             final Alert alert = new Alert(AlertType.INFORMATION);
             alert.setTitle("Selección registro");
-            alert.setHeaderText("Resumen Eje/Habilidad por alumno.");
+            alert.setHeaderText("Resumen Eje/R_Habilidad por alumno.");
             alert.setContentText("Debe seleccionar registro a procesar");
             alert.show();
         }
@@ -261,16 +261,16 @@ public class EvaluacionPruebaView extends AFormView implements EventHandler<Acti
     }
 
     private void handlerResumenPME() {
-        final EvaluacionPrueba evaluacion = tblListadoPruebas.getSelectionModel().getSelectedItem();
+        final SEvaluacionPrueba evaluacion = tblListadoPruebas.getSelectionModel().getSelectedItem();
         if (evaluacion != null) {
             if (resumenGeneralPME == null) {
                 resumenGeneralPME = (ResumenGeneralPMEView) show("/curso/fxml/ResumenGeneralPME.fxml");
             } else {
                 show(resumenGeneralPME);
             }
-            controller.findById(EvaluacionPrueba.class, evaluacion.getId(), resumenGeneralPME);
-            controller.findAll(RangoEvaluacion.class);
-            controller.findAll(TipoAlumno.class);
+            controller.findById(SEvaluacionPrueba.class, evaluacion.getId(), resumenGeneralPME);
+            controller.findAll(SRangoEvaluacion.class);
+            controller.findAll(STipoAlumno.class);
         } else {
             final Alert alert = new Alert(AlertType.INFORMATION);
             alert.setTitle("Selección registro");
@@ -285,12 +285,12 @@ public class EvaluacionPruebaView extends AFormView implements EventHandler<Acti
         if (evaluacionPrueba != null) {
 
             final PorObjetivosView porObjetivosView = (PorObjetivosView) show("/curso/fxml/PorObjetivos.fxml");
-            controller.findAll(TipoAlumno.class, porObjetivosView);
-            controller.findById(EvaluacionPrueba.class, evaluacionPrueba.getId(), porObjetivosView);
+            controller.findAll(STipoAlumno.class, porObjetivosView);
+            controller.findById(SEvaluacionPrueba.class, evaluacionPrueba.getId(), porObjetivosView);
         } else {
             final Alert alert = new Alert(AlertType.INFORMATION);
             alert.setTitle("Selección registro");
-            alert.setHeaderText("Resumen Eje/Habilidad por alumno.");
+            alert.setHeaderText("Resumen Eje/R_Habilidad por alumno.");
             alert.setContentText("Debe seleccionar registro a procesar");
             alert.show();
         }
@@ -321,15 +321,15 @@ public class EvaluacionPruebaView extends AFormView implements EventHandler<Acti
         mnuItemPorObjetivos.setOnAction(this);
 
         tblListadoPruebas.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        nameCol.setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba, String>("name"));
-        fechaCol.setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba, LocalDate>("fechaLocal"));
-        colTipo.setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba, TipoPrueba>("tipo"));
-        cursoCol.setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba, Curso>("curso"));
-        asignaturaCol.setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba, String>("asignatura"));
-        formasCol.setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba, Integer>("formas"));
-        profesorCol.setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba, String>("profesor"));
-        nroPreguntasCol.setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba, Integer>("nroPreguntas"));
-        colExigencia.setCellValueFactory(new PropertyValueFactory<EvaluacionPrueba, Integer>("exigencia"));
+        nameCol.setCellValueFactory(new PropertyValueFactory<SEvaluacionPrueba, String>("name"));
+        fechaCol.setCellValueFactory(new PropertyValueFactory<SEvaluacionPrueba, LocalDate>("fechaLocal"));
+        colTipo.setCellValueFactory(new PropertyValueFactory<SEvaluacionPrueba, STipoPrueba>("tipo"));
+        cursoCol.setCellValueFactory(new PropertyValueFactory<SEvaluacionPrueba, SCurso>("curso"));
+        asignaturaCol.setCellValueFactory(new PropertyValueFactory<SEvaluacionPrueba, String>("asignatura"));
+        formasCol.setCellValueFactory(new PropertyValueFactory<SEvaluacionPrueba, Integer>("formas"));
+        profesorCol.setCellValueFactory(new PropertyValueFactory<SEvaluacionPrueba, String>("profesor"));
+        nroPreguntasCol.setCellValueFactory(new PropertyValueFactory<SEvaluacionPrueba, Integer>("nroPreguntas"));
+        colExigencia.setCellValueFactory(new PropertyValueFactory<SEvaluacionPrueba, Integer>("exigencia"));
 
         mnuEliminarEvaluacion.setOnAction(this);
     }
@@ -339,11 +339,11 @@ public class EvaluacionPruebaView extends AFormView implements EventHandler<Acti
         if (list != null && !list.isEmpty()) {
             tblListadoPruebas.getSelectionModel().clearSelection();
             final Object entity = list.get(0);
-            if (entity instanceof EvaluacionPrueba) {
-                final ObservableList<EvaluacionPrueba> evaluaciones = FXCollections.observableArrayList();
+            if (entity instanceof SEvaluacionPrueba) {
+                final ObservableList<SEvaluacionPrueba> evaluaciones = FXCollections.observableArrayList();
                 for (final Object lEntity : list) {
-                    if (((EvaluacionPrueba) lEntity).getPruebasRendidas().size() > 0) {
-                        evaluaciones.add((EvaluacionPrueba) lEntity);
+                    if (((SEvaluacionPrueba) lEntity).getPruebasRendidas().size() > 0) {
+                        evaluaciones.add((SEvaluacionPrueba) lEntity);
                     }
                 }
                 tblListadoPruebas.setItems(evaluaciones);

@@ -6,10 +6,10 @@ import java.util.List;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.ot.OTCurso;
-import cl.eos.persistence.models.Ciclo;
-import cl.eos.persistence.models.Colegio;
-import cl.eos.persistence.models.Curso;
-import cl.eos.persistence.models.TipoCurso;
+import cl.eos.persistence.models.SCiclo;
+import cl.eos.persistence.models.SColegio;
+import cl.eos.persistence.models.SCurso;
+import cl.eos.persistence.models.STipoCurso;
 import cl.eos.util.ExcelSheetWriterObj;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -59,13 +59,13 @@ public class CursosView extends AFormView implements EventHandler<ActionEvent> {
     private TextField txtNombre;
 
     @FXML
-    private ComboBox<Ciclo> cmbNivel;
+    private ComboBox<SCiclo> cmbNivel;
 
     @FXML
-    private ComboBox<Colegio> cmbColegio;
+    private ComboBox<SColegio> cmbColegio;
 
     @FXML
-    private ComboBox<TipoCurso> cmbTipoCurso;
+    private ComboBox<STipoCurso> cmbTipoCurso;
 
     @FXML
     private Label lblError;
@@ -123,7 +123,7 @@ public class CursosView extends AFormView implements EventHandler<ActionEvent> {
         } else {
 
             if (otSeleccionados != null && !otSeleccionados.isEmpty()) {
-                final List<Curso> curso = new ArrayList<Curso>(otSeleccionados.size());
+                final List<SCurso> curso = new ArrayList<SCurso>(otSeleccionados.size());
                 for (final OTCurso ot : otSeleccionados) {
                     curso.add(ot.getCurso());
                 }
@@ -141,11 +141,11 @@ public class CursosView extends AFormView implements EventHandler<ActionEvent> {
             if (lblError != null) {
                 lblError.setText(" ");
             }
-            Curso curso = null;
-            if (entitySelected != null && entitySelected instanceof Curso) {
-                curso = (Curso) entitySelected;
+            SCurso curso = null;
+            if (entitySelected != null && entitySelected instanceof SCurso) {
+                curso = (SCurso) entitySelected;
             } else {
-                curso = new Curso();
+                curso = new SCurso();
             }
             curso.setName(txtNombre.getText());
             curso.setCiclo(cmbNivel.getValue());
@@ -231,28 +231,28 @@ public class CursosView extends AFormView implements EventHandler<ActionEvent> {
     public void onDataArrived(List<Object> list) {
         if (list != null && !list.isEmpty()) {
             final Object entity = list.get(0);
-            if (entity instanceof Curso) {
+            if (entity instanceof SCurso) {
                 final ObservableList<OTCurso> value = FXCollections.observableArrayList();
                 for (final Object iEntity : list) {
-                    value.add(new OTCurso((Curso) iEntity));
+                    value.add(new OTCurso((SCurso) iEntity));
                 }
                 tblCurso.setItems(value);
-            } else if (entity instanceof Colegio) {
-                final ObservableList<Colegio> value = FXCollections.observableArrayList();
+            } else if (entity instanceof SColegio) {
+                final ObservableList<SColegio> value = FXCollections.observableArrayList();
                 for (final Object iEntity : list) {
-                    value.add((Colegio) iEntity);
+                    value.add((SColegio) iEntity);
                 }
                 cmbColegio.setItems(value);
-            } else if (entity instanceof Ciclo) {
-                final ObservableList<Ciclo> oList = FXCollections.observableArrayList();
+            } else if (entity instanceof SCiclo) {
+                final ObservableList<SCiclo> oList = FXCollections.observableArrayList();
                 for (final Object iEntity : list) {
-                    oList.add((Ciclo) iEntity);
+                    oList.add((SCiclo) iEntity);
                 }
                 cmbNivel.setItems(oList);
-            } else if (entity instanceof TipoCurso) {
-                final ObservableList<TipoCurso> oList = FXCollections.observableArrayList();
+            } else if (entity instanceof STipoCurso) {
+                final ObservableList<STipoCurso> oList = FXCollections.observableArrayList();
                 for (final Object iEntity : list) {
-                    oList.add((TipoCurso) iEntity);
+                    oList.add((STipoCurso) iEntity);
                 }
                 cmbTipoCurso.setItems(oList);
             }
@@ -261,12 +261,12 @@ public class CursosView extends AFormView implements EventHandler<ActionEvent> {
 
     @Override
     public void onDeleted(IEntity entity) {
-        tblCurso.getItems().remove(new OTCurso((Curso) entity));
+        tblCurso.getItems().remove(new OTCurso((SCurso) entity));
     }
 
     @Override
     public void onSaved(IEntity otObject) {
-        final OTCurso otCurso = new OTCurso((Curso) otObject);
+        final OTCurso otCurso = new OTCurso((SCurso) otObject);
         final int indice = tblCurso.getItems().lastIndexOf(otCurso);
         if (indice != -1) {
             tblCurso.getItems().set(indice, otCurso);

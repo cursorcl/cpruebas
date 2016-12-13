@@ -1,19 +1,19 @@
 package cl.eos.ot;
 
-import cl.eos.persistence.models.Curso;
-import cl.eos.persistence.models.RangoEvaluacion;
+import cl.eos.persistence.models.SCurso;
+import cl.eos.persistence.models.SRangoEvaluacion;
 
 public class OTRangoCurso {
 
-    private RangoEvaluacion rango;
+    private SRangoEvaluacion rango;
     private int total;
-    private Curso curso;
+    private SCurso curso;
 
-    public Curso getCurso() {
+    public SCurso getCurso() {
         return curso;
     }
 
-    public RangoEvaluacion getRango() {
+    public SRangoEvaluacion getRango() {
         return rango;
     }
 
@@ -21,11 +21,11 @@ public class OTRangoCurso {
         return total;
     }
 
-    public void setCurso(Curso curso) {
+    public void setCurso(SCurso curso) {
         this.curso = curso;
     }
 
-    public void setRango(RangoEvaluacion rango) {
+    public void setRango(SRangoEvaluacion rango) {
         this.rango = rango;
     }
 

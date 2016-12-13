@@ -2,7 +2,7 @@ package cl.eos.controller;
 
 import cl.eos.imp.controller.AController;
 import cl.eos.model.AsignaturasModel;
-import cl.eos.persistence.models.Asignatura;
+import cl.eos.persistence.models.SAsignatura;
 
 public class AsignaturasContoller extends AController {
 
@@ -13,6 +13,6 @@ public class AsignaturasContoller extends AController {
     @Override
     public void initialize() {
         model = new AsignaturasModel();
-        model.findAll(Asignatura.class, this);
+        model.findAll(SAsignatura.class, this);
     }
 }

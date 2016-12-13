@@ -6,9 +6,9 @@ import java.util.List;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.ot.OTEjeTematico;
-import cl.eos.persistence.models.Asignatura;
-import cl.eos.persistence.models.EjeTematico;
-import cl.eos.persistence.models.TipoPrueba;
+import cl.eos.persistence.models.SAsignatura;
+import cl.eos.persistence.models.SEjeTematico;
+import cl.eos.persistence.models.STipoPrueba;
 import cl.eos.util.ExcelSheetWriterObj;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -56,10 +56,10 @@ public class EjesTematicosView extends AFormView implements EventHandler<ActionE
     private TextField txtNombre;
 
     @FXML
-    private ComboBox<TipoPrueba> cmbTipoPrueba;
+    private ComboBox<STipoPrueba> cmbTipoPrueba;
 
     @FXML
-    private ComboBox<Asignatura> cmbAsignatura;
+    private ComboBox<SAsignatura> cmbAsignatura;
     @FXML
     private Label lblError;
 
@@ -113,7 +113,7 @@ public class EjesTematicosView extends AFormView implements EventHandler<ActionE
         } else {
 
             if (otSeleccionados != null && !otSeleccionados.isEmpty()) {
-                final List<EjeTematico> ejeTematico = new ArrayList<EjeTematico>(otSeleccionados.size());
+                final List<SEjeTematico> ejeTematico = new ArrayList<SEjeTematico>(otSeleccionados.size());
                 for (final OTEjeTematico ot : otSeleccionados) {
                     ejeTematico.add(ot.getEjeTematico());
                 }
@@ -131,11 +131,11 @@ public class EjesTematicosView extends AFormView implements EventHandler<ActionE
             if (lblError != null) {
                 lblError.setText(" ");
             }
-            EjeTematico ejeTematico = null;
-            if (entitySelected != null && entitySelected instanceof EjeTematico) {
-                ejeTematico = (EjeTematico) entitySelected;
+            SEjeTematico ejeTematico = null;
+            if (entitySelected != null && entitySelected instanceof SEjeTematico) {
+                ejeTematico = (SEjeTematico) entitySelected;
             } else {
-                ejeTematico = new EjeTematico();
+                ejeTematico = new SEjeTematico();
             }
             ejeTematico.setName(txtNombre.getText());
             ejeTematico.setTipoprueba(cmbTipoPrueba.getValue());
@@ -217,23 +217,23 @@ public class EjesTematicosView extends AFormView implements EventHandler<ActionE
     public void onDataArrived(List<Object> list) {
         if (list != null && !list.isEmpty()) {
             final Object entity = list.get(0);
-            if (entity instanceof EjeTematico) {
+            if (entity instanceof SEjeTematico) {
                 final ObservableList<OTEjeTematico> value = FXCollections.observableArrayList();
                 for (final Object iEntity : list) {
-                    value.add(new OTEjeTematico((EjeTematico) iEntity));
+                    value.add(new OTEjeTematico((SEjeTematico) iEntity));
                 }
                 tblEjesTematicos.setItems(value);
 
-            } else if (entity instanceof TipoPrueba) {
-                final ObservableList<TipoPrueba> oList = FXCollections.observableArrayList();
+            } else if (entity instanceof STipoPrueba) {
+                final ObservableList<STipoPrueba> oList = FXCollections.observableArrayList();
                 for (final Object iEntity : list) {
-                    oList.add((TipoPrueba) iEntity);
+                    oList.add((STipoPrueba) iEntity);
                 }
                 cmbTipoPrueba.setItems(oList);
-            } else if (entity instanceof Asignatura) {
-                final ObservableList<Asignatura> oList = FXCollections.observableArrayList();
+            } else if (entity instanceof SAsignatura) {
+                final ObservableList<SAsignatura> oList = FXCollections.observableArrayList();
                 for (final Object iEntity : list) {
-                    oList.add((Asignatura) iEntity);
+                    oList.add((SAsignatura) iEntity);
                 }
                 cmbAsignatura.setItems(oList);
 
@@ -243,12 +243,12 @@ public class EjesTematicosView extends AFormView implements EventHandler<ActionE
 
     @Override
     public void onDeleted(IEntity entity) {
-        tblEjesTematicos.getItems().remove(new OTEjeTematico((EjeTematico) entity));
+        tblEjesTematicos.getItems().remove(new OTEjeTematico((SEjeTematico) entity));
     }
 
     @Override
     public void onSaved(IEntity otObject) {
-        final OTEjeTematico ejeTematico = new OTEjeTematico((EjeTematico) otObject);
+        final OTEjeTematico ejeTematico = new OTEjeTematico((SEjeTematico) otObject);
         final int indice = tblEjesTematicos.getItems().lastIndexOf(ejeTematico);
         if (indice != -1) {
             tblEjesTematicos.getItems().set(indice, ejeTematico);

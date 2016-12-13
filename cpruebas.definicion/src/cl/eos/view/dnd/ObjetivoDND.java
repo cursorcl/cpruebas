@@ -1,20 +1,20 @@
 package cl.eos.view.dnd;
 
-import cl.eos.persistence.models.Objetivo;
+import cl.eos.persistence.models.SObjetivo;
 import cl.eos.view.RegistroDefinePrueba;
 import javafx.scene.control.TableCell;
 import javafx.scene.effect.BlendMode;
 import javafx.scene.input.DataFormat;
 import javafx.scene.input.TransferMode;
 
-public class ObjetivoDND extends TableCell<RegistroDefinePrueba, Objetivo> {
+public class ObjetivoDND extends TableCell<RegistroDefinePrueba, SObjetivo> {
     public static final DataFormat objetivoTrackDataFormat = new DataFormat("cl.eos.persistence.Objetivo");
 
     public ObjetivoDND() {
         setOnDragDropped(dragEvent -> {
             final RegistroDefinePrueba myModel = getTableView().getItems().get(getTableRow().getIndex());
             if (myModel != null) {
-                final Objetivo objetivo = (Objetivo) dragEvent.getDragboard()
+                final SObjetivo objetivo = (SObjetivo) dragEvent.getDragboard()
                         .getContent(ObjetivoDND.objetivoTrackDataFormat);
                 myModel.setObjetivo(objetivo);
             }
@@ -32,7 +32,7 @@ public class ObjetivoDND extends TableCell<RegistroDefinePrueba, Objetivo> {
     }
 
     @Override
-    public void updateItem(Objetivo t, boolean empty) {
+    public void updateItem(SObjetivo t, boolean empty) {
         super.updateItem(t, empty);
         if (t == null) {
             setTooltip(null);

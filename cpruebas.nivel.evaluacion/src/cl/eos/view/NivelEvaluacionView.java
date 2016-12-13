@@ -5,8 +5,8 @@ import java.util.List;
 
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
-import cl.eos.persistence.models.NivelEvaluacion;
-import cl.eos.persistence.models.RangoEvaluacion;
+import cl.eos.persistence.models.SNivelEvaluacion;
+import cl.eos.persistence.models.SRangoEvaluacion;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -18,7 +18,7 @@ import javafx.scene.control.TextField;
 public class NivelEvaluacionView extends AFormView implements EventHandler<ActionEvent> {
 
     @FXML
-    private ComboBox<NivelEvaluacion> cmbNiveles;
+    private ComboBox<SNivelEvaluacion> cmbNiveles;
     @FXML
     private Label label1;
     @FXML
@@ -69,7 +69,7 @@ public class NivelEvaluacionView extends AFormView implements EventHandler<Actio
     }
 
     private void handleGrabar() {
-        final NivelEvaluacion nivel = cmbNiveles.getValue();
+        final SNivelEvaluacion nivel = cmbNiveles.getValue();
         if (nivel != null) {
             removeAllStyles();
             if (validaDatos()) {
@@ -77,13 +77,13 @@ public class NivelEvaluacionView extends AFormView implements EventHandler<Actio
                     lblError.setText(" ");
                 }
                 for (final Object object : listaNiveles) {
-                    if (object instanceof NivelEvaluacion) {
+                    if (object instanceof SNivelEvaluacion) {
                         if (nivel.equals(object)) {
-                            final NivelEvaluacion nivelActualizar = (NivelEvaluacion) object;
-                            final List<RangoEvaluacion> rangos = new ArrayList<>(nivelActualizar.getRangos());
+                            final SNivelEvaluacion nivelActualizar = (SNivelEvaluacion) object;
+                            final List<SRangoEvaluacion> rangos = new ArrayList<>(nivelActualizar.getRangos());
 
                             if (nivelActualizar.getNroRangos() == 2) {
-                                RangoEvaluacion rango = rangos.get(0);
+                                SRangoEvaluacion rango = rangos.get(0);
                                 rango.setMinimo(Float.valueOf(txtDesde1.getText()));
                                 rango.setMaximo(Float.valueOf(txtHasta1.getText()));
 
@@ -92,7 +92,7 @@ public class NivelEvaluacionView extends AFormView implements EventHandler<Actio
                                 rango.setMaximo(Float.valueOf(txtHasta2.getText()));
 
                             } else if (nivelActualizar.getNroRangos() == 3) {
-                                RangoEvaluacion rango = rangos.get(0);
+                                SRangoEvaluacion rango = rangos.get(0);
                                 rango.setMinimo(Float.valueOf(txtDesde1.getText()));
                                 rango.setMaximo(Float.valueOf(txtHasta1.getText()));
 
@@ -105,7 +105,7 @@ public class NivelEvaluacionView extends AFormView implements EventHandler<Actio
                                 rango.setMaximo(Float.valueOf(txtHasta3.getText()));
 
                             } else if (nivelActualizar.getNroRangos() == 4) {
-                                RangoEvaluacion rango = rangos.get(0);
+                                SRangoEvaluacion rango = rangos.get(0);
                                 rango.setMinimo(Float.valueOf(txtDesde1.getText()));
                                 rango.setMaximo(Float.valueOf(txtHasta1.getText()));
 
@@ -142,7 +142,7 @@ public class NivelEvaluacionView extends AFormView implements EventHandler<Actio
     }
 
     private void handleSeleccionar() {
-        final NivelEvaluacion nivel = cmbNiveles.getValue();
+        final SNivelEvaluacion nivel = cmbNiveles.getValue();
         select(nivel);
         setDatosNiveles(nivel);
     }
@@ -158,8 +158,8 @@ public class NivelEvaluacionView extends AFormView implements EventHandler<Actio
     }
 
     private void limpiarControles() {
-        cmbNiveles.setValue((NivelEvaluacion) entityFirstElement);
-        select((NivelEvaluacion) entityFirstElement);
+        cmbNiveles.setValue((SNivelEvaluacion) entityFirstElement);
+        select((SNivelEvaluacion) entityFirstElement);
         txtDesde1.clear();
         txtDesde2.clear();
         txtDesde3.clear();
@@ -175,13 +175,13 @@ public class NivelEvaluacionView extends AFormView implements EventHandler<Actio
         if (list != null && !list.isEmpty()) {
             entityFirstElement = list.get(0);
 
-            if (entityFirstElement instanceof NivelEvaluacion) {
+            if (entityFirstElement instanceof SNivelEvaluacion) {
                 listaNiveles = list;
                 for (final Object otElemento : list) {
-                    cmbNiveles.getItems().addAll((NivelEvaluacion) otElemento);
+                    cmbNiveles.getItems().addAll((SNivelEvaluacion) otElemento);
                 }
-                cmbNiveles.setValue((NivelEvaluacion) entityFirstElement);
-                select((NivelEvaluacion) entityFirstElement);
+                cmbNiveles.setValue((SNivelEvaluacion) entityFirstElement);
+                select((SNivelEvaluacion) entityFirstElement);
             }
 
         }
@@ -204,10 +204,10 @@ public class NivelEvaluacionView extends AFormView implements EventHandler<Actio
         removeAllStyle(txtHasta4);
     }
 
-    private void setDatosNiveles(NivelEvaluacion entity) {
-        final List<RangoEvaluacion> rangos = new ArrayList<>(entity.getRangos());
+    private void setDatosNiveles(SNivelEvaluacion entity) {
+        final List<SRangoEvaluacion> rangos = new ArrayList<>(entity.getRangos());
         if (entity.getNroRangos() == 2) {
-            RangoEvaluacion rango = rangos.get(0);
+            SRangoEvaluacion rango = rangos.get(0);
             label1.setText(rango.getName());
             txtDesde1.setText(String.valueOf(rango.getMinimo()));
             txtHasta1.setText(String.valueOf(rango.getMaximo()));
@@ -231,7 +231,7 @@ public class NivelEvaluacionView extends AFormView implements EventHandler<Actio
             txtDesde4.setVisible(false);
             txtHasta4.setVisible(false);
         } else if (entity.getNroRangos() == 3) {
-            RangoEvaluacion rango = rangos.get(0);
+            SRangoEvaluacion rango = rangos.get(0);
             label1.setText(rango.getName());
             txtDesde1.setText(String.valueOf(rango.getMinimo()));
             txtHasta1.setText(String.valueOf(rango.getMaximo()));
@@ -257,7 +257,7 @@ public class NivelEvaluacionView extends AFormView implements EventHandler<Actio
             txtHasta4.setVisible(false);
 
         } else if (entity.getNroRangos() == 4) {
-            RangoEvaluacion rango = rangos.get(0);
+            SRangoEvaluacion rango = rangos.get(0);
             label1.setText(rango.getName());
             txtDesde1.setText(String.valueOf(rango.getMinimo()));
             txtHasta1.setText(String.valueOf(rango.getMaximo()));
@@ -287,8 +287,8 @@ public class NivelEvaluacionView extends AFormView implements EventHandler<Actio
 
     private boolean validaDatos() {
         final IEntity entitySel = getSelectedEntity();
-        if (entitySel instanceof NivelEvaluacion) {
-            // if (((NivelEvaluacion) entitySel).getNroRangos() == 2) {
+        if (entitySel instanceof SNivelEvaluacion) {
+            // if (((SNivelEvaluacion) entitySel).getNroRangos() == 2) {
             // sumaNivel = sumaNivel + Float.valueOf(txtDesde1.getText());
             // sumaNivel = sumaNivel + Float.valueOf(txtDesde2.getText());
             //
@@ -304,7 +304,7 @@ public class NivelEvaluacionView extends AFormView implements EventHandler<Actio
             // }
             // }
             //
-            // else if (((NivelEvaluacion) entitySel).getNroRangos() == 3) {
+            // else if (((SNivelEvaluacion) entitySel).getNroRangos() == 3) {
             // sumaNivel = sumaNivel + Float.valueOf(txtDesde1.getText());
             // sumaNivel = sumaNivel + Float.valueOf(txtDesde2.getText());
             // sumaNivel = sumaNivel + Float.valueOf(txtDesde3.getText());
@@ -324,7 +324,7 @@ public class NivelEvaluacionView extends AFormView implements EventHandler<Actio
             // }
             // }
             //
-            // else if (((NivelEvaluacion) entitySel).getNroRangos() == 4) {
+            // else if (((SNivelEvaluacion) entitySel).getNroRangos() == 4) {
             // sumaNivel = sumaNivel + Float.valueOf(txtDesde1.getText());
             // sumaNivel = sumaNivel + Float.valueOf(txtDesde2.getText());
             // sumaNivel = sumaNivel + Float.valueOf(txtDesde3.getText());

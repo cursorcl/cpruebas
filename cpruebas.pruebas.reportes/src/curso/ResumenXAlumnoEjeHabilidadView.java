@@ -6,13 +6,13 @@ import java.util.List;
 import cl.eos.common.Constants;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
-import cl.eos.persistence.models.Alumno;
-import cl.eos.persistence.models.EjeTematico;
-import cl.eos.persistence.models.EvaluacionPrueba;
-import cl.eos.persistence.models.Habilidad;
-import cl.eos.persistence.models.PruebaRendida;
-import cl.eos.persistence.models.RespuestasEsperadasPrueba;
-import cl.eos.persistence.models.TipoAlumno;
+import cl.eos.persistence.models.SAlumno;
+import cl.eos.persistence.models.SEjeTematico;
+import cl.eos.persistence.models.SEvaluacionPrueba;
+import cl.eos.persistence.models.SHabilidad;
+import cl.eos.persistence.models.SPruebaRendida;
+import cl.eos.persistence.models.SRespuestasEsperadasPrueba;
+import cl.eos.persistence.models.STipoAlumno;
 import cl.eos.util.ExcelSheetWriterObj;
 import cl.eos.util.Pair;
 import cl.eos.util.Utils;
@@ -63,19 +63,19 @@ public class ResumenXAlumnoEjeHabilidadView extends AFormView implements EventHa
 	private LineChart<String, Number> grfHabilidades = new LineChart<String, Number>(yAxisH, xAxisH);
 
 	@FXML
-	private ComboBox<TipoAlumno> cmbTipoAlumno;
+	private ComboBox<STipoAlumno> cmbTipoAlumno;
 	@FXML
 	private Button btnGenerar;
 
 	long tipoAlumno = Constants.PIE_ALL;
 
 	private List<OTAlumnoResumen> puntos;
-	private List<EjeTematico> lstOtEjes;
-	private List<Habilidad> lstOtHabs;
-	private EvaluacionPrueba evaluacionPrueba;
+	private List<SEjeTematico> lstOtEjes;
+	private List<SHabilidad> lstOtHabs;
+	private SEvaluacionPrueba evaluacionPrueba;
 
 	public ResumenXAlumnoEjeHabilidadView() {
-		setTitle("Resumen Eje/Habilidad x Alumno");
+		setTitle("Resumen Eje/SHabilidad x SAlumno");
 	}
 
 	@SuppressWarnings("unchecked")
@@ -115,10 +115,10 @@ public class ResumenXAlumnoEjeHabilidadView extends AFormView implements EventHa
 
 	private void generateReport() {
 		if (evaluacionPrueba != null && cmbTipoAlumno.getItems() != null && !cmbTipoAlumno.getItems().isEmpty()) {
-			List<PruebaRendida> pRendidas = evaluacionPrueba.getPruebasRendidas();
+			List<SPruebaRendida> pRendidas = evaluacionPrueba.getPruebasRendidas();
 
 			if (pRendidas != null && !pRendidas.isEmpty()) {
-				List<RespuestasEsperadasPrueba> respEsperadas = evaluacionPrueba.getPrueba().getRespuestas();
+				List<SRespuestasEsperadasPrueba> respEsperadas = evaluacionPrueba.getPrueba().getRespuestas();
 
 				// Obteniendo los elementos
 				lstOtEjes = getEjesTematicos(respEsperadas);
@@ -133,8 +133,8 @@ public class ResumenXAlumnoEjeHabilidadView extends AFormView implements EventHa
 
 	@Override
 	public void onFound(IEntity entity) {
-		if (entity instanceof EvaluacionPrueba) {
-			evaluacionPrueba = (EvaluacionPrueba) entity;
+		if (entity instanceof SEvaluacionPrueba) {
+			evaluacionPrueba = (SEvaluacionPrueba) entity;
 			generateReport();
 		}
 	}
@@ -143,10 +143,10 @@ public class ResumenXAlumnoEjeHabilidadView extends AFormView implements EventHa
 	public void onDataArrived(List<Object> list) {
 		if (list != null && !list.isEmpty()) {
 			Object entity = list.get(0);
-			if (entity instanceof TipoAlumno) {
-				ObservableList<TipoAlumno> tAlumnoList = FXCollections.observableArrayList();
+			if (entity instanceof STipoAlumno) {
+				ObservableList<STipoAlumno> tAlumnoList = FXCollections.observableArrayList();
 				for (Object iEntity : list) {
-					tAlumnoList.add((TipoAlumno) iEntity);
+					tAlumnoList.add((STipoAlumno) iEntity);
 				}
 				cmbTipoAlumno.setItems(tAlumnoList);
 				cmbTipoAlumno.getSelectionModel().select((int) Constants.PIE_ALL);
@@ -192,13 +192,13 @@ public class ResumenXAlumnoEjeHabilidadView extends AFormView implements EventHa
 	 *            Las habilidades exitentes en la prueba.
 	 * @return Mapa de alumno con todos los puntos por eje y habilidad.
 	 */
-	private List<OTAlumnoResumen> obtenerPuntos(EvaluacionPrueba evaluacionPrueba, List<EjeTematico> lstEjes,
-			List<Habilidad> lstHabs) {
+	private List<OTAlumnoResumen> obtenerPuntos(SEvaluacionPrueba evaluacionPrueba, List<SEjeTematico> lstEjes,
+			List<SHabilidad> lstHabs) {
 
 		List<OTAlumnoResumen> respuesta = new ArrayList<OTAlumnoResumen>();
 
-		List<PruebaRendida> pRendidas = new ArrayList<>();
-		for (PruebaRendida pruebaRendida : evaluacionPrueba.getPruebasRendidas()) {
+		List<SPruebaRendida> pRendidas = new ArrayList<>();
+		for (SPruebaRendida pruebaRendida : evaluacionPrueba.getPruebasRendidas()) {
 			if (tipoAlumno != Constants.PIE_ALL
 					&& !pruebaRendida.getAlumno().getTipoAlumno().getId().equals(tipoAlumno)) {
 				continue;
@@ -206,20 +206,20 @@ public class ResumenXAlumnoEjeHabilidadView extends AFormView implements EventHa
 			pRendidas.add(pruebaRendida);
 		}
 
-		List<RespuestasEsperadasPrueba> respEsperadas = evaluacionPrueba.getPrueba().getRespuestas();
+		List<SRespuestasEsperadasPrueba> respEsperadas = evaluacionPrueba.getPrueba().getRespuestas();
 
-		for (PruebaRendida pr : pRendidas) {
+		for (SPruebaRendida pr : pRendidas) {
 			String resps = pr.getRespuestas();
-			Alumno alumno = pr.getAlumno();
+			SAlumno alumno = pr.getAlumno();
 			OTAlumnoResumen ot = new OTAlumnoResumen(alumno);
-			for (EjeTematico eje : lstEjes) {
+			for (SEjeTematico eje : lstEjes) {
 				Pair<Integer, Integer> pair = obtenerBuenasTotales(resps, respEsperadas, eje);
 				Integer buenas = pair.getFirst();
 				Integer cantidad = pair.getSecond();
 				float porcentaje = buenas.floatValue() / cantidad.floatValue() * 100f;
 				ot.getPorcentajes().add(porcentaje);
 			}
-			for (Habilidad hab : lstHabs) {
+			for (SHabilidad hab : lstHabs) {
 				Pair<Integer, Integer> pair = obtenerBuenasTotales(resps, respEsperadas, hab);
 				Integer buenas = pair.getFirst();
 				Integer cantidad = pair.getSecond();
@@ -240,15 +240,15 @@ public class ResumenXAlumnoEjeHabilidadView extends AFormView implements EventHa
 	 * @param respEsperadas
 	 *            Las respuestas correctas definidas en la prueba.
 	 * @param ahb
-	 *            La Habilidad en base al que se realiza el calculo.
+	 *            La SHabilidad en base al que se realiza el calculo.
 	 * @return Par <Preguntas buenas, Total de Preguntas> del eje.
 	 */
 	private Pair<Integer, Integer> obtenerBuenasTotales(String respuestas,
-			List<RespuestasEsperadasPrueba> respEsperadas, Habilidad hab) {
+			List<SRespuestasEsperadasPrueba> respEsperadas, SHabilidad hab) {
 		int nroBuenas = 0;
 		int nroPreguntas = 0;
 		for (int n = 0; n < respEsperadas.size(); n++) {
-			RespuestasEsperadasPrueba resp = respEsperadas.get(n);
+			SRespuestasEsperadasPrueba resp = respEsperadas.get(n);
 			if (resp.getHabilidad().equals(hab)) {
 				if (respuestas.length() > n) {
 					String sResp = respuestas.substring(n, n + 1);
@@ -275,11 +275,11 @@ public class ResumenXAlumnoEjeHabilidadView extends AFormView implements EventHa
 	 * @return Par <Preguntas buenas, Total de Preguntas> del eje.
 	 */
 	private Pair<Integer, Integer> obtenerBuenasTotales(String respuestas,
-			List<RespuestasEsperadasPrueba> respEsperadas, EjeTematico eje) {
+			List<SRespuestasEsperadasPrueba> respEsperadas, SEjeTematico eje) {
 		int nroBuenas = 0;
 		int nroPreguntas = 0;
 		for (int n = 0; n < respEsperadas.size(); n++) {
-			RespuestasEsperadasPrueba resp = respEsperadas.get(n);
+			SRespuestasEsperadasPrueba resp = respEsperadas.get(n);
 			if (resp.getEjeTematico().equals(eje)) {
 				if (respuestas.length() > n) {
 					String sResp = respuestas.substring(n, n + 1);
@@ -302,9 +302,9 @@ public class ResumenXAlumnoEjeHabilidadView extends AFormView implements EventHa
 	 * @return Lista con las habilidades y la cantidad de preguntas de cada
 	 *         habilidad en la prueba.
 	 */
-	private List<Habilidad> getHabilidades(List<RespuestasEsperadasPrueba> respEsperadas) {
-		List<Habilidad> lstOtHabs = new ArrayList<Habilidad>();
-		for (RespuestasEsperadasPrueba r : respEsperadas) {
+	private List<SHabilidad> getHabilidades(List<SRespuestasEsperadasPrueba> respEsperadas) {
+		List<SHabilidad> lstOtHabs = new ArrayList<SHabilidad>();
+		for (SRespuestasEsperadasPrueba r : respEsperadas) {
 			if (!lstOtHabs.contains(r.getHabilidad())) {
 				lstOtHabs.add(r.getHabilidad());
 			}
@@ -319,9 +319,9 @@ public class ResumenXAlumnoEjeHabilidadView extends AFormView implements EventHa
 	 *            Lista de preguntas esperadas de una prueba.
 	 * @return Lista con los ejes temáticos en la prueba.
 	 */
-	private List<EjeTematico> getEjesTematicos(List<RespuestasEsperadasPrueba> respEsperadas) {
-		List<EjeTematico> lstOtEjes = new ArrayList<EjeTematico>();
-		for (RespuestasEsperadasPrueba r : respEsperadas) {
+	private List<SEjeTematico> getEjesTematicos(List<SRespuestasEsperadasPrueba> respEsperadas) {
+		List<SEjeTematico> lstOtEjes = new ArrayList<SEjeTematico>();
+		for (SRespuestasEsperadasPrueba r : respEsperadas) {
 			if (!lstOtEjes.contains(r.getEjeTematico())) {
 				lstOtEjes.add(r.getEjeTematico());
 			}
@@ -337,17 +337,17 @@ public class ResumenXAlumnoEjeHabilidadView extends AFormView implements EventHa
 	 * @param pCursoList
 	 */
 	@SuppressWarnings("unchecked")
-	private void construirColumnas(List<EjeTematico> ejes, List<Habilidad> habs) {
+	private void construirColumnas(List<SEjeTematico> ejes, List<SHabilidad> habs) {
 		int index = 0;
 		tblAlumnos.getColumns().clear();
 		tblAlumnos.getColumns().add(getFixedColumns("RUT", index++, 250));
 		tblAlumnos.getColumns().add(getFixedColumns("PATERNO", index++, 250));
 		tblAlumnos.getColumns().add(getFixedColumns("MATERNO", index++, 250));
 		tblAlumnos.getColumns().add(getFixedColumns("NOMBRE", index++, 320));
-		for (EjeTematico eje : ejes) {
+		for (SEjeTematico eje : ejes) {
 			tblAlumnos.getColumns().add(getPercentColumns(eje.getName(), index++));
 		}
-		for (Habilidad hab : habs) {
+		for (SHabilidad hab : habs) {
 			tblAlumnos.getColumns().add(getPercentColumns(hab.getName(), index++));
 		}
 

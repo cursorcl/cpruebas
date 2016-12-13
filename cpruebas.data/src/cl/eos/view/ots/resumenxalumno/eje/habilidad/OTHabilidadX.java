@@ -1,6 +1,6 @@
 package cl.eos.view.ots.resumenxalumno.eje.habilidad;
 
-import cl.eos.persistence.models.Habilidad;
+import cl.eos.persistence.models.SHabilidad;
 
 /**
  * Para una prueba, contiene una habilidad y la cantidad de preguntas que hay de
@@ -10,10 +10,10 @@ import cl.eos.persistence.models.Habilidad;
  *
  */
 public class OTHabilidadX {
-    private Habilidad hab;
+    private SHabilidad hab;
     private int cantidadPreguntas;
 
-    public OTHabilidadX(Habilidad hab) {
+    public OTHabilidadX(SHabilidad hab) {
         super();
         this.hab = hab;
     }
@@ -22,11 +22,11 @@ public class OTHabilidadX {
         return cantidadPreguntas;
     }
 
-    public Habilidad getEje() {
+    public SHabilidad getEje() {
         return hab;
     }
 
-    public boolean itIsTheSame(Habilidad hab) {
+    public boolean itIsTheSame(SHabilidad hab) {
         return this.hab.equals(hab);
     }
 
@@ -34,7 +34,7 @@ public class OTHabilidadX {
         this.cantidadPreguntas = cantidadPreguntas;
     }
 
-    public void setEje(Habilidad hab) {
+    public void setEje(SHabilidad hab) {
         this.hab = hab;
     }
 

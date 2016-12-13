@@ -28,7 +28,7 @@ import cl.eos.imp.view.ProgressForm;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.interfaces.entity.IPersistenceListener;
 import cl.eos.persistence.IPersistenceService;
-import cl.eos.persistence.models.Prueba;
+import cl.eos.persistence.models.SPrueba;
 import cl.eos.util.Pair;
 import cl.eos.util.Utils;
 import javafx.application.Platform;
@@ -237,8 +237,8 @@ public class PersistenceServiceMYSQL implements IPersistenceService {
                 List<Object> lresult = null;
                 final StringBuffer ids = new StringBuffer();
                 for (final Object object : id) {
-                    if (object instanceof Prueba) {
-                        ids.append(((Prueba) object).getId());
+                    if (object instanceof SPrueba) {
+                        ids.append(((SPrueba) object).getId());
                         ids.append(",");
                     }
                 }

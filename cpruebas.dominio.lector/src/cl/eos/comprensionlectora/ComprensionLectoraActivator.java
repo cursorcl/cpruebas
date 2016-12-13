@@ -12,7 +12,7 @@ public class ComprensionLectoraActivator extends AActivator {
         controller = new Contoller();
 
         final URL url = ComprensionLectoraActivator.class
-                .getResource("/cl/eos/comprensionlectora/ComprensionLectora.fxml");
+                .getResource("/cl/eos/comprensionlectora/SComprensionLectora.fxml");
         final FXMLLoader fxmlLoader = new FXMLLoader();
         try {
             pane = fxmlLoader.load(url.openStream());

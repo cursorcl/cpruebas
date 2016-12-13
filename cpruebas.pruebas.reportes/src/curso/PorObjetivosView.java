@@ -7,11 +7,11 @@ import java.util.stream.Collectors;
 import cl.eos.common.Constants;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
-import cl.eos.persistence.models.Curso;
-import cl.eos.persistence.models.EvaluacionPrueba;
-import cl.eos.persistence.models.Objetivo;
-import cl.eos.persistence.models.PruebaRendida;
-import cl.eos.persistence.models.TipoAlumno;
+import cl.eos.persistence.models.SCurso;
+import cl.eos.persistence.models.SEvaluacionPrueba;
+import cl.eos.persistence.models.SObjetivo;
+import cl.eos.persistence.models.SPruebaRendida;
+import cl.eos.persistence.models.STipoAlumno;
 import javafx.beans.property.ReadOnlyFloatWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
@@ -42,14 +42,14 @@ public class PorObjetivosView extends AFormView {
     @FXML
     private TableView<XItemTablaObjetivo> tblObjetivos;
     @FXML
-    private TableColumn<XItemTablaObjetivo, Objetivo> colObjetivos;
+    private TableColumn<XItemTablaObjetivo, SObjetivo> colObjetivos;
 
     @FXML
     private Button btnGenerarReporte;
     @FXML
-    private ComboBox<TipoAlumno> cmbTipoAlumno;
+    private ComboBox<STipoAlumno> cmbTipoAlumno;
 
-    private EvaluacionPrueba evaluacionPrueba;
+    private SEvaluacionPrueba evaluacionPrueba;
 
     long tipoAlumno = Constants.PIE_ALL;
 
@@ -75,8 +75,8 @@ public class PorObjetivosView extends AFormView {
                 tipoAlumno = cmbTipoAlumno.getSelectionModel().getSelectedItem().getId();
             }
             
-            final Curso curso = evaluacionPrueba.getCurso();
-            final List<PruebaRendida> pRendidas = evaluacionPrueba.getPruebasRendidas();
+            final SCurso curso = evaluacionPrueba.getCurso();
+            final List<SPruebaRendida> pRendidas = evaluacionPrueba.getPruebasRendidas();
 
             if (pRendidas != null && !pRendidas.isEmpty()) {
                 final List<XItemTablaObjetivo> reporte = XUtilReportBuilder.reporteCurso(pRendidas, tipoAlumno);
@@ -206,7 +206,7 @@ public class PorObjetivosView extends AFormView {
     @FXML
     public void initialize() {
         setTitle("Resumen de respuestas por objetivo");
-        colObjetivos.setCellValueFactory(new PropertyValueFactory<XItemTablaObjetivo, Objetivo>("objetivo"));
+        colObjetivos.setCellValueFactory(new PropertyValueFactory<XItemTablaObjetivo, SObjetivo>("objetivo"));
         cmbTipoAlumno.setOnAction(event -> {
             if (cmbTipoAlumno.getSelectionModel() == null)
                 return;
@@ -219,9 +219,9 @@ public class PorObjetivosView extends AFormView {
     public void onDataArrived(List<Object> list) {
         if (list != null && !list.isEmpty()) {
             final Object entity = list.get(0);
-            if (entity instanceof TipoAlumno) {
-                final List<TipoAlumno> values = list.stream().map(t -> (TipoAlumno) t).collect(Collectors.toList());
-                final ObservableList<TipoAlumno> tAlumnoList = FXCollections.observableArrayList(values);
+            if (entity instanceof STipoAlumno) {
+                final List<STipoAlumno> values = list.stream().map(t -> (STipoAlumno) t).collect(Collectors.toList());
+                final ObservableList<STipoAlumno> tAlumnoList = FXCollections.observableArrayList(values);
                 cmbTipoAlumno.setItems(tAlumnoList);
             }
         }
@@ -230,8 +230,8 @@ public class PorObjetivosView extends AFormView {
 
     @Override
     public void onFound(IEntity entity) {
-        if (entity instanceof EvaluacionPrueba) {
-            evaluacionPrueba = (EvaluacionPrueba) entity;
+        if (entity instanceof SEvaluacionPrueba) {
+            evaluacionPrueba = (SEvaluacionPrueba) entity;
             generateXReport();
         }
     }

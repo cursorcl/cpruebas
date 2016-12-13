@@ -9,12 +9,12 @@ import cl.eos.common.Constants;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.ot.OTPreguntasEjes;
-import cl.eos.persistence.models.EjeTematico;
-import cl.eos.persistence.models.EvaluacionPrueba;
-import cl.eos.persistence.models.Prueba;
-import cl.eos.persistence.models.PruebaRendida;
-import cl.eos.persistence.models.RespuestasEsperadasPrueba;
-import cl.eos.persistence.models.TipoAlumno;
+import cl.eos.persistence.models.SEjeTematico;
+import cl.eos.persistence.models.SEvaluacionPrueba;
+import cl.eos.persistence.models.SPrueba;
+import cl.eos.persistence.models.SPruebaRendida;
+import cl.eos.persistence.models.SRespuestasEsperadasPrueba;
+import cl.eos.persistence.models.STipoAlumno;
 import cl.eos.util.ExcelSheetWriterObj;
 import cl.eos.util.Pair;
 import javafx.beans.value.ChangeListener;
@@ -70,15 +70,15 @@ public class ResumenEjesTematicosView extends AFormView implements EventHandler<
     @FXML
     private MenuItem mnuExportarEjes;
 
-    private HashMap<EjeTematico, OTPreguntasEjes> mapaEjesTematicos;
+    private HashMap<SEjeTematico, OTPreguntasEjes> mapaEjesTematicos;
 
     @FXML
-    private ComboBox<TipoAlumno> cmbTipoAlumno;
+    private ComboBox<STipoAlumno> cmbTipoAlumno;
     @FXML
     private Button btnGenerar;
 
     long tipoAlumno = Constants.PIE_ALL;
-    private EvaluacionPrueba evaluacionPrueba;
+    private SEvaluacionPrueba evaluacionPrueba;
 
     public ResumenEjesTematicosView() {
 
@@ -188,11 +188,11 @@ public class ResumenEjesTematicosView extends AFormView implements EventHandler<
      * @return Par <Preguntas buenas, Total de Preguntas> del eje.
      */
     private Pair<Integer, Integer> obtenerBuenasTotales(String respuestas,
-            List<RespuestasEsperadasPrueba> respEsperadas, EjeTematico eje) {
+            List<SRespuestasEsperadasPrueba> respEsperadas, SEjeTematico eje) {
         int nroBuenas = 0;
         int nroPreguntas = 0;
         for (int n = 0; n < respEsperadas.size(); n++) {
-            final RespuestasEsperadasPrueba resp = respEsperadas.get(n);
+            final SRespuestasEsperadasPrueba resp = respEsperadas.get(n);
             if (!resp.isAnulada()) {
                 if (resp.getEjeTematico().equals(eje)) {
                     if (respuestas.length() > n) {
@@ -208,15 +208,15 @@ public class ResumenEjesTematicosView extends AFormView implements EventHandler<
         return new Pair<Integer, Integer>(nroBuenas, nroPreguntas);
     }
 
-    private void obtenerResultados(EvaluacionPrueba entity) {
-        final List<PruebaRendida> pruebasRendidas = entity.getPruebasRendidas();
+    private void obtenerResultados(SEvaluacionPrueba entity) {
+        final List<SPruebaRendida> pruebasRendidas = entity.getPruebasRendidas();
 
-        mapaEjesTematicos = new HashMap<EjeTematico, OTPreguntasEjes>();
+        mapaEjesTematicos = new HashMap<SEjeTematico, OTPreguntasEjes>();
 
-        final Prueba prueba = entity.getPrueba();
-        final List<RespuestasEsperadasPrueba> respuestasEsperadas = prueba.getRespuestas();
+        final SPrueba prueba = entity.getPrueba();
+        final List<SRespuestasEsperadasPrueba> respuestasEsperadas = prueba.getRespuestas();
 
-        for (final RespuestasEsperadasPrueba resp : respuestasEsperadas) {
+        for (final SRespuestasEsperadasPrueba resp : respuestasEsperadas) {
             if (mapaEjesTematicos.containsKey(resp.getEjeTematico()))
                 continue;
             final OTPreguntasEjes otPreguntas = new OTPreguntasEjes();
@@ -226,14 +226,14 @@ public class ResumenEjesTematicosView extends AFormView implements EventHandler<
             mapaEjesTematicos.put(resp.getEjeTematico(), otPreguntas);
         }
 
-        for (final PruebaRendida pruebaRendida : pruebasRendidas) {
+        for (final SPruebaRendida pruebaRendida : pruebasRendidas) {
             if (tipoAlumno != Constants.PIE_ALL
                     && !pruebaRendida.getAlumno().getTipoAlumno().getId().equals(tipoAlumno)) {
                 continue;
             }
             final String respuesta = pruebaRendida.getRespuestas();
 
-            for (final EjeTematico hab : mapaEjesTematicos.keySet()) {
+            for (final SEjeTematico hab : mapaEjesTematicos.keySet()) {
                 final OTPreguntasEjes otPreguntas = mapaEjesTematicos.get(hab);
                 final Pair<Integer, Integer> result = obtenerBuenasTotales(respuesta, respuestasEsperadas, hab);
                 otPreguntas.setEjeTematico(hab);
@@ -248,10 +248,10 @@ public class ResumenEjesTematicosView extends AFormView implements EventHandler<
     public void onDataArrived(List<Object> list) {
         if (list != null && !list.isEmpty()) {
             final Object entity = list.get(0);
-            if (entity instanceof TipoAlumno) {
-                final ObservableList<TipoAlumno> tAlumnoList = FXCollections.observableArrayList();
+            if (entity instanceof STipoAlumno) {
+                final ObservableList<STipoAlumno> tAlumnoList = FXCollections.observableArrayList();
                 for (final Object iEntity : list) {
-                    tAlumnoList.add((TipoAlumno) iEntity);
+                    tAlumnoList.add((STipoAlumno) iEntity);
                 }
                 cmbTipoAlumno.setItems(tAlumnoList);
                 cmbTipoAlumno.getSelectionModel().select((int) Constants.PIE_ALL);
@@ -262,8 +262,8 @@ public class ResumenEjesTematicosView extends AFormView implements EventHandler<
 
     @Override
     public void onFound(IEntity entity) {
-        if (entity instanceof EvaluacionPrueba) {
-            evaluacionPrueba = (EvaluacionPrueba) entity;
+        if (entity instanceof SEvaluacionPrueba) {
+            evaluacionPrueba = (SEvaluacionPrueba) entity;
             generateReport();
         }
     }

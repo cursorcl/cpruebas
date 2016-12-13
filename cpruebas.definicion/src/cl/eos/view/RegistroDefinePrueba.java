@@ -1,8 +1,8 @@
 package cl.eos.view;
 
-import cl.eos.persistence.models.EjeTematico;
-import cl.eos.persistence.models.Habilidad;
-import cl.eos.persistence.models.Objetivo;
+import cl.eos.persistence.models.SEjeTematico;
+import cl.eos.persistence.models.SHabilidad;
+import cl.eos.persistence.models.SObjetivo;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -21,9 +21,9 @@ public class RegistroDefinePrueba {
     private final SimpleStringProperty respuesta;
     private final SimpleBooleanProperty verdaderoFalso;
     private final SimpleBooleanProperty mental;
-    private final ObjectProperty<Habilidad> habilidad;
-    private final ObjectProperty<EjeTematico> ejeTematico;
-    private final ObjectProperty<Objetivo> objetivo;
+    private final ObjectProperty<SHabilidad> habilidad;
+    private final ObjectProperty<SEjeTematico> ejeTematico;
+    private final ObjectProperty<SObjetivo> objetivo;
     private SimpleStringProperty bad;
 
     public RegistroDefinePrueba() {
@@ -62,7 +62,7 @@ public class RegistroDefinePrueba {
         return bad;
     }
 
-    public ObjectProperty<EjeTematico> ejeTematicoProperty() {
+    public ObjectProperty<SEjeTematico> ejeTematicoProperty() {
         return ejeTematico;
     }
 
@@ -70,11 +70,11 @@ public class RegistroDefinePrueba {
         return bad.getValue();
     }
 
-    public EjeTematico getEjeTematico() {
+    public SEjeTematico getEjeTematico() {
         return ejeTematico.getValue();
     }
 
-    public Habilidad getHabilidad() {
+    public SHabilidad getHabilidad() {
         return habilidad.getValue();
     }
 
@@ -86,7 +86,7 @@ public class RegistroDefinePrueba {
         return numero.getValue();
     }
 
-    public final cl.eos.persistence.models.Objetivo getObjetivo() {
+    public final cl.eos.persistence.models.SObjetivo getObjetivo() {
         return objetivoProperty().get();
     }
 
@@ -98,7 +98,7 @@ public class RegistroDefinePrueba {
         return verdaderoFalso.getValue();
     }
 
-    public ObjectProperty<Habilidad> habilidadProperty() {
+    public ObjectProperty<SHabilidad> habilidadProperty() {
         return habilidad;
     }
 
@@ -106,7 +106,7 @@ public class RegistroDefinePrueba {
         return mental;
     }
 
-    public final ObjectProperty<Objetivo> objetivoProperty() {
+    public final ObjectProperty<SObjetivo> objetivoProperty() {
         return objetivo;
     }
 
@@ -118,11 +118,11 @@ public class RegistroDefinePrueba {
         this.bad.set(bad);
     }
 
-    public void setEjeTematico(EjeTematico ejeTematico) {
+    public void setEjeTematico(SEjeTematico ejeTematico) {
         this.ejeTematico.set(ejeTematico);
     }
 
-    public void setHabilidad(Habilidad habilidad) {
+    public void setHabilidad(SHabilidad habilidad) {
         this.habilidad.set(habilidad);
     }
 
@@ -137,7 +137,7 @@ public class RegistroDefinePrueba {
         this.numero.set(numero);
     }
 
-    public final void setObjetivo(final cl.eos.persistence.models.Objetivo objetivo) {
+    public final void setObjetivo(final cl.eos.persistence.models.SObjetivo objetivo) {
         objetivoProperty().set(objetivo);
     }
 

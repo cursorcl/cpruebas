@@ -1,7 +1,7 @@
 package cl.eos.ot;
 
-import cl.eos.persistence.models.Colegio;
-import cl.eos.persistence.models.TipoColegio;
+import cl.eos.persistence.models.SColegio;
+import cl.eos.persistence.models.STipoColegio;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -12,15 +12,15 @@ public class OTColegio {
     private final SimpleLongProperty id = new SimpleLongProperty();
     private final SimpleStringProperty name = new SimpleStringProperty();
     private final SimpleStringProperty direccion = new SimpleStringProperty();
-    private final ObjectProperty<TipoColegio> tipo = new SimpleObjectProperty<TipoColegio>();
+    private final ObjectProperty<STipoColegio> tipo = new SimpleObjectProperty<STipoColegio>();
 
-    private Colegio colegio;
+    private SColegio colegio;
 
     public OTColegio() {
         // TODO Auto-generated constructor stub
     }
 
-    public OTColegio(Colegio colegio) {
+    public OTColegio(SColegio colegio) {
         this.colegio = colegio;
         id.set(colegio.getId());
         name.set(colegio.getName());
@@ -50,7 +50,7 @@ public class OTColegio {
         return true;
     }
 
-    public Colegio getColegio() {
+    public SColegio getColegio() {
         return colegio;
     }
 
@@ -66,7 +66,7 @@ public class OTColegio {
         return nameProperty().get();
     }
 
-    public final TipoColegio getTipo() {
+    public final STipoColegio getTipo() {
         return tipoProperty().getValue();
     }
 
@@ -86,7 +86,7 @@ public class OTColegio {
         return name;
     }
 
-    public void setColegio(Colegio colegio) {
+    public void setColegio(SColegio colegio) {
         this.colegio = colegio;
     }
 
@@ -102,11 +102,11 @@ public class OTColegio {
         nameProperty().set(name);
     }
 
-    public final void setTipo(final TipoColegio tipoColegio) {
+    public final void setTipo(final STipoColegio tipoColegio) {
         tipoProperty().set(tipoColegio);
     }
 
-    public final ObjectProperty<TipoColegio> tipoProperty() {
+    public final ObjectProperty<STipoColegio> tipoProperty() {
         return tipo;
     }
 

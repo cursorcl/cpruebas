@@ -8,9 +8,9 @@ import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.ot.OTRespuestaPreguntas;
 import cl.eos.ot.OTRespuestasPorcentaje;
-import cl.eos.persistence.models.EvaluacionPrueba;
-import cl.eos.persistence.models.PruebaRendida;
-import cl.eos.persistence.models.TipoAlumno;
+import cl.eos.persistence.models.SEvaluacionPrueba;
+import cl.eos.persistence.models.SPruebaRendida;
+import cl.eos.persistence.models.STipoAlumno;
 import cl.eos.util.ExcelSheetWriterObj;
 import cl.eos.util.Utils;
 import javafx.collections.FXCollections;
@@ -70,7 +70,7 @@ public class ResumenRespuestaView extends AFormView implements EventHandler<Acti
     private MenuItem mnuExportarRespuestas;
 
     @FXML
-    private ComboBox<TipoAlumno> cmbTipoAlumno;
+    private ComboBox<STipoAlumno> cmbTipoAlumno;
     @FXML
     private Button btnGenerar;
 
@@ -78,7 +78,7 @@ public class ResumenRespuestaView extends AFormView implements EventHandler<Acti
 
     private LinkedList<OTRespuestaPreguntas> listaRespuestas;
     private LinkedList<OTRespuestasPorcentaje> listaPorcentaje;
-    private EvaluacionPrueba evaluacionPrueba;
+    private SEvaluacionPrueba evaluacionPrueba;
 
     public ResumenRespuestaView() {
 
@@ -151,8 +151,8 @@ public class ResumenRespuestaView extends AFormView implements EventHandler<Acti
     }
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
-    private void obtenerResultados(EvaluacionPrueba entity) {
-        final List<PruebaRendida> pruebasRendidas = entity.getPruebasRendidas();
+    private void obtenerResultados(SEvaluacionPrueba entity) {
+        final List<SPruebaRendida> pruebasRendidas = entity.getPruebasRendidas();
         final Integer nroPreguntas = entity.getPrueba().getNroPreguntas();
 
         Integer buenas = 0;
@@ -164,7 +164,7 @@ public class ResumenRespuestaView extends AFormView implements EventHandler<Acti
         final int[] sMalas = new int[nroPreguntas];
         final int[] sOmitidas = new int[nroPreguntas];
 
-        for (final PruebaRendida pruebaRendida : pruebasRendidas) {
+        for (final SPruebaRendida pruebaRendida : pruebasRendidas) {
 
             if (tipoAlumno != Constants.PIE_ALL
                     && !pruebaRendida.getAlumno().getTipoAlumno().getId().equals(tipoAlumno)) {
@@ -244,10 +244,10 @@ public class ResumenRespuestaView extends AFormView implements EventHandler<Acti
     public void onDataArrived(List<Object> list) {
         if (list != null && !list.isEmpty()) {
             final Object entity = list.get(0);
-            if (entity instanceof TipoAlumno) {
-                final ObservableList<TipoAlumno> tAlumnoList = FXCollections.observableArrayList();
+            if (entity instanceof STipoAlumno) {
+                final ObservableList<STipoAlumno> tAlumnoList = FXCollections.observableArrayList();
                 for (final Object iEntity : list) {
-                    tAlumnoList.add((TipoAlumno) iEntity);
+                    tAlumnoList.add((STipoAlumno) iEntity);
                 }
                 cmbTipoAlumno.setItems(tAlumnoList);
                 cmbTipoAlumno.getSelectionModel().select((int) Constants.PIE_ALL);
@@ -259,8 +259,8 @@ public class ResumenRespuestaView extends AFormView implements EventHandler<Acti
     @Override
     public void onFound(IEntity entity) {
 
-        if (entity instanceof EvaluacionPrueba) {
-            evaluacionPrueba = (EvaluacionPrueba) entity;
+        if (entity instanceof SEvaluacionPrueba) {
+            evaluacionPrueba = (SEvaluacionPrueba) entity;
             generateReport();
         }
     }

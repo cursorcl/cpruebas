@@ -5,7 +5,7 @@ import java.util.List;
 
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
-import cl.eos.persistence.models.VelocidadLectora;
+import cl.eos.persistence.models.SVelocidadLectora;
 import cl.eos.util.ExcelSheetWriterObj;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -32,11 +32,11 @@ public class ViewVelocidadLectora extends AFormView implements EventHandler<Acti
     @FXML
     private TextField txtNombre;
     @FXML
-    private TableView<VelocidadLectora> tblTable;
+    private TableView<SVelocidadLectora> tblTable;
     @FXML
-    private TableColumn<VelocidadLectora, Long> colId;
+    private TableColumn<SVelocidadLectora, Long> colId;
     @FXML
-    private TableColumn<VelocidadLectora, String> colNombre;
+    private TableColumn<SVelocidadLectora, String> colNombre;
     @FXML
     private MenuItem mnuAgregar;
     @FXML
@@ -59,7 +59,7 @@ public class ViewVelocidadLectora extends AFormView implements EventHandler<Acti
     }
 
     private void accionEliminar() {
-        final ObservableList<VelocidadLectora> otSeleccionados = tblTable.getSelectionModel().getSelectedItems();
+        final ObservableList<SVelocidadLectora> otSeleccionados = tblTable.getSelectionModel().getSelectedItems();
         if (otSeleccionados.size() == 0) {
             final Alert alert = new Alert(AlertType.INFORMATION);
             alert.setTitle("Selección registro");
@@ -68,8 +68,8 @@ public class ViewVelocidadLectora extends AFormView implements EventHandler<Acti
             alert.showAndWait();
         } else {
             if (otSeleccionados != null && !otSeleccionados.isEmpty()) {
-                final List<VelocidadLectora> colegio = new ArrayList<VelocidadLectora>(otSeleccionados.size());
-                for (final VelocidadLectora seleccionado : otSeleccionados) {
+                final List<SVelocidadLectora> colegio = new ArrayList<SVelocidadLectora>(otSeleccionados.size());
+                for (final SVelocidadLectora seleccionado : otSeleccionados) {
                     colegio.add(seleccionado);
                 }
                 delete(colegio);
@@ -86,11 +86,11 @@ public class ViewVelocidadLectora extends AFormView implements EventHandler<Acti
             if (lblError != null) {
                 lblError.setText(" ");
             }
-            VelocidadLectora calidadLectora = null;
-            if (entitySelected != null && entitySelected instanceof VelocidadLectora) {
-                calidadLectora = (VelocidadLectora) entitySelected;
+            SVelocidadLectora calidadLectora = null;
+            if (entitySelected != null && entitySelected instanceof SVelocidadLectora) {
+                calidadLectora = (SVelocidadLectora) entitySelected;
             } else {
-                calidadLectora = new VelocidadLectora();
+                calidadLectora = new SVelocidadLectora();
             }
             calidadLectora.setName(txtNombre.getText());
             save(calidadLectora);
@@ -103,7 +103,7 @@ public class ViewVelocidadLectora extends AFormView implements EventHandler<Acti
     }
 
     private void accionModificar() {
-        final VelocidadLectora calidadLectora = tblTable.getSelectionModel().getSelectedItem();
+        final SVelocidadLectora calidadLectora = tblTable.getSelectionModel().getSelectedItem();
         if (calidadLectora != null) {
             txtId.setText(String.format("%d", calidadLectora.getId()));
             txtNombre.setText(calidadLectora.getName());
@@ -129,10 +129,10 @@ public class ViewVelocidadLectora extends AFormView implements EventHandler<Acti
 
     private void inicializaTabla() {
         tblTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        colId.setCellValueFactory(new PropertyValueFactory<VelocidadLectora, Long>("id"));
-        colNombre.setCellValueFactory(new PropertyValueFactory<VelocidadLectora, String>("name"));
+        colId.setCellValueFactory(new PropertyValueFactory<SVelocidadLectora, Long>("id"));
+        colNombre.setCellValueFactory(new PropertyValueFactory<SVelocidadLectora, String>("name"));
         tblTable.setOnMouseClicked(event -> {
-            final ObservableList<VelocidadLectora> itemsSelec = tblTable.getSelectionModel().getSelectedItems();
+            final ObservableList<SVelocidadLectora> itemsSelec = tblTable.getSelectionModel().getSelectedItems();
             if (itemsSelec.size() > 1) {
                 mnItemModificar.setDisable(true);
                 mnItemEliminar.setDisable(false);
@@ -177,10 +177,10 @@ public class ViewVelocidadLectora extends AFormView implements EventHandler<Acti
     public void onDataArrived(List<Object> list) {
         if (list != null && !list.isEmpty()) {
             final Object entity = list.get(0);
-            if (entity instanceof VelocidadLectora) {
-                final ObservableList<VelocidadLectora> value = FXCollections.observableArrayList();
+            if (entity instanceof SVelocidadLectora) {
+                final ObservableList<SVelocidadLectora> value = FXCollections.observableArrayList();
                 for (final Object iEntity : list) {
-                    value.add((VelocidadLectora) iEntity);
+                    value.add((SVelocidadLectora) iEntity);
                 }
                 tblTable.setItems(value.sorted());
             }
@@ -194,7 +194,7 @@ public class ViewVelocidadLectora extends AFormView implements EventHandler<Acti
 
     @Override
     public void onSaved(IEntity entity) {
-        final VelocidadLectora calidadLectora = (VelocidadLectora) entity;
+        final SVelocidadLectora calidadLectora = (SVelocidadLectora) entity;
         final int indice = tblTable.getItems().lastIndexOf(calidadLectora);
         if (indice != -1) {
             tblTable.getItems().set(indice, calidadLectora);

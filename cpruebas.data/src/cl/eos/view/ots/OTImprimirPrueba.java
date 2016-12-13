@@ -2,29 +2,29 @@ package cl.eos.view.ots;
 
 import java.time.LocalDate;
 
-import cl.eos.persistence.models.Colegio;
-import cl.eos.persistence.models.Curso;
-import cl.eos.persistence.models.Profesor;
-import cl.eos.persistence.models.Prueba;
+import cl.eos.persistence.models.SColegio;
+import cl.eos.persistence.models.SCurso;
+import cl.eos.persistence.models.SProfesor;
+import cl.eos.persistence.models.SPrueba;
 
 public class OTImprimirPrueba {
 
-    private Prueba prueba;
-    private Colegio colegio;
-    private Curso curso;
-    private Profesor profesor;
+    private SPrueba prueba;
+    private SColegio colegio;
+    private SCurso curso;
+    private SProfesor profesor;
     private Long fecha;
     private Integer nroAlumnos;
 
-    public OTImprimirPrueba(Prueba prueba) {
+    public OTImprimirPrueba(SPrueba prueba) {
         this.prueba = prueba;
     }
 
-    public Colegio getColegio() {
+    public SColegio getColegio() {
         return colegio;
     }
 
-    public Curso getCurso() {
+    public SCurso getCurso() {
         return curso;
     }
 
@@ -41,19 +41,19 @@ public class OTImprimirPrueba {
         return nroAlumnos;
     }
 
-    public Profesor getProfesor() {
+    public SProfesor getProfesor() {
         return profesor;
     }
 
-    public Prueba getPrueba() {
+    public SPrueba getPrueba() {
         return prueba;
     }
 
-    public void setColegio(Colegio colegio) {
+    public void setColegio(SColegio colegio) {
         this.colegio = colegio;
     }
 
-    public void setCurso(Curso curso) {
+    public void setCurso(SCurso curso) {
         this.curso = curso;
         setNroAlumnos(curso.getAlumnos().size());
     }
@@ -66,11 +66,11 @@ public class OTImprimirPrueba {
         this.nroAlumnos = nroAlumnos;
     }
 
-    public void setProfesor(Profesor profesor) {
+    public void setProfesor(SProfesor profesor) {
         this.profesor = profesor;
     }
 
-    public void setPrueba(Prueba prueba) {
+    public void setPrueba(SPrueba prueba) {
         this.prueba = prueba;
     }
 

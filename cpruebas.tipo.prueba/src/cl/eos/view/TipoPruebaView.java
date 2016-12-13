@@ -6,7 +6,7 @@ import java.util.List;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.ot.OTTipoPrueba;
-import cl.eos.persistence.models.TipoPrueba;
+import cl.eos.persistence.models.STipoPrueba;
 import cl.eos.util.ExcelSheetWriterObj;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -66,7 +66,7 @@ public class TipoPruebaView extends AFormView implements EventHandler<ActionEven
     private TableColumn<OTTipoPrueba, String> colNombre;
 
     public TipoPruebaView() {
-        setTitle("Tipo Prueba");
+        setTitle("Tipo SPrueba");
     }
 
     private void accionClicTabla() {
@@ -101,7 +101,7 @@ public class TipoPruebaView extends AFormView implements EventHandler<ActionEven
         } else {
 
             if (otSeleccionados != null && !otSeleccionados.isEmpty()) {
-                final List<TipoPrueba> tipoPrueba = new ArrayList<TipoPrueba>(otSeleccionados.size());
+                final List<STipoPrueba> tipoPrueba = new ArrayList<STipoPrueba>(otSeleccionados.size());
                 for (final OTTipoPrueba ot : otSeleccionados) {
                     tipoPrueba.add(ot.getTipoPrueba());
                 }
@@ -119,11 +119,11 @@ public class TipoPruebaView extends AFormView implements EventHandler<ActionEven
             if (lblError != null) {
                 lblError.setText(" ");
             }
-            TipoPrueba tipoPrueba = null;
-            if (entitySelected != null && entitySelected instanceof TipoPrueba) {
-                tipoPrueba = (TipoPrueba) entitySelected;
+            STipoPrueba tipoPrueba = null;
+            if (entitySelected != null && entitySelected instanceof STipoPrueba) {
+                tipoPrueba = (STipoPrueba) entitySelected;
             } else {
-                tipoPrueba = new TipoPrueba();
+                tipoPrueba = new STipoPrueba();
             }
             tipoPrueba.setName(txtNombre.getText());
             save(tipoPrueba);
@@ -194,10 +194,10 @@ public class TipoPruebaView extends AFormView implements EventHandler<ActionEven
     public void onDataArrived(List<Object> list) {
         if (list != null && !list.isEmpty()) {
             final Object entity = list.get(0);
-            if (entity instanceof TipoPrueba) {
+            if (entity instanceof STipoPrueba) {
                 final ObservableList<OTTipoPrueba> oList = FXCollections.observableArrayList();
                 for (final Object iEntity : list) {
-                    oList.add(new OTTipoPrueba((TipoPrueba) iEntity));
+                    oList.add(new OTTipoPrueba((STipoPrueba) iEntity));
                 }
                 tblTipoPrueba.setItems(oList);
             }
@@ -206,12 +206,12 @@ public class TipoPruebaView extends AFormView implements EventHandler<ActionEven
 
     @Override
     public void onDeleted(IEntity entity) {
-        tblTipoPrueba.getItems().remove(new OTTipoPrueba((TipoPrueba) entity));
+        tblTipoPrueba.getItems().remove(new OTTipoPrueba((STipoPrueba) entity));
     }
 
     @Override
     public void onSaved(IEntity otObject) {
-        final OTTipoPrueba tipoPrueba = new OTTipoPrueba((TipoPrueba) otObject);
+        final OTTipoPrueba tipoPrueba = new OTTipoPrueba((STipoPrueba) otObject);
         final int indice = tblTipoPrueba.getItems().lastIndexOf(tipoPrueba);
         if (indice != -1) {
             tblTipoPrueba.getItems().set(indice, tipoPrueba);

@@ -1,20 +1,20 @@
 package cl.eos.view.dnd;
 
-import cl.eos.persistence.models.Habilidad;
+import cl.eos.persistence.models.SHabilidad;
 import cl.eos.view.RegistroDefinePrueba;
 import javafx.scene.control.TableCell;
 import javafx.scene.effect.BlendMode;
 import javafx.scene.input.DataFormat;
 import javafx.scene.input.TransferMode;
 
-public class HabilidadDND extends TableCell<RegistroDefinePrueba, Habilidad> {
+public class HabilidadDND extends TableCell<RegistroDefinePrueba, SHabilidad> {
     public static final DataFormat habilidadTrackDataFormat = new DataFormat("cl.eos.persistence.Habilidad");
 
     public HabilidadDND() {
         setOnDragDropped(dragEvent -> {
             final RegistroDefinePrueba myModel = getTableView().getItems().get(getTableRow().getIndex());
             if (myModel != null) {
-                final Habilidad habilidad = (Habilidad) dragEvent.getDragboard()
+                final SHabilidad habilidad = (SHabilidad) dragEvent.getDragboard()
                         .getContent(HabilidadDND.habilidadTrackDataFormat);
                 myModel.setHabilidad(habilidad);
             }
@@ -33,7 +33,7 @@ public class HabilidadDND extends TableCell<RegistroDefinePrueba, Habilidad> {
     }
 
     @Override
-    public void updateItem(Habilidad t, boolean empty) {
+    public void updateItem(SHabilidad t, boolean empty) {
         super.updateItem(t, empty);
         if (t == null) {
             setTooltip(null);

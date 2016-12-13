@@ -3,7 +3,7 @@ package ot;
 import java.util.ArrayList;
 import java.util.List;
 
-import cl.eos.persistence.models.Objetivo;
+import cl.eos.persistence.models.SObjetivo;
 
 /**
  * Representa un registro del reporte final.
@@ -20,7 +20,7 @@ public class XItemTablaObjetivo {
     /**
      * El objetivo para el que se asocian los elementos.
      */
-    private Objetivo objetivo;
+    private SObjetivo objetivo;
 
     /**
      * Contiene los valores de todos los cursos.
@@ -54,7 +54,7 @@ public class XItemTablaObjetivo {
         return items;
     }
 
-    public Objetivo getObjetivo() {
+    public SObjetivo getObjetivo() {
         return objetivo;
     }
 
@@ -70,15 +70,15 @@ public class XItemTablaObjetivo {
         this.items = items;
     }
 
-    public void setObjetivo(Objetivo objetivo) {
+    public void setObjetivo(SObjetivo objetivo) {
         this.objetivo = objetivo;
     }
 
     public static class Builder {
-        private Objetivo objetivo;
+        private SObjetivo objetivo;
         private List<XItemObjetivo> items = new ArrayList<>();
 
-        public Builder objetivo(Objetivo objetivo) {
+        public Builder objetivo(SObjetivo objetivo) {
             this.objetivo = objetivo;
             return this;
         }

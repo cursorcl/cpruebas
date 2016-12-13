@@ -2,10 +2,10 @@ package cl.eos.controller;
 
 import cl.eos.imp.controller.AController;
 import cl.eos.model.CursosModel;
-import cl.eos.persistence.models.Ciclo;
-import cl.eos.persistence.models.Colegio;
-import cl.eos.persistence.models.Curso;
-import cl.eos.persistence.models.TipoCurso;
+import cl.eos.persistence.models.SCiclo;
+import cl.eos.persistence.models.SColegio;
+import cl.eos.persistence.models.SCurso;
+import cl.eos.persistence.models.STipoCurso;
 
 public class CursosContoller extends AController {
 
@@ -17,9 +17,9 @@ public class CursosContoller extends AController {
     public void initialize() {
         // TODO Auto-generated method stub
         model = new CursosModel();
-        model.findAll(Curso.class, this);
-        model.findAll(Ciclo.class, this);
-        model.findAll(Colegio.class, this);
-        model.findAll(TipoCurso.class, this);
+        model.findAll(SCurso.class, this);
+        model.findAll(SCiclo.class, this);
+        model.findAll(SColegio.class, this);
+        model.findAll(STipoCurso.class, this);
     }
 }

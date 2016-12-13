@@ -19,13 +19,13 @@ import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 
 import cl.eos.common.Constants;
-import cl.eos.persistence.models.Alumno;
-import cl.eos.persistence.models.Asignatura;
-import cl.eos.persistence.models.Colegio;
-import cl.eos.persistence.models.EvaluacionEjeTematico;
-import cl.eos.persistence.models.EvaluacionPrueba;
-import cl.eos.persistence.models.PruebaRendida;
-import cl.eos.persistence.models.TipoAlumno;
+import cl.eos.persistence.models.SAlumno;
+import cl.eos.persistence.models.SAsignatura;
+import cl.eos.persistence.models.SColegio;
+import cl.eos.persistence.models.SEvaluacionEjeTematico;
+import cl.eos.persistence.models.SEvaluacionPrueba;
+import cl.eos.persistence.models.SPruebaRendida;
+import cl.eos.persistence.models.STipoAlumno;
 import cl.eos.persistence.util.Comparadores;
 import cl.eos.provider.persistence.PersistenceServiceFactory;
 import cl.eos.util.Pair;
@@ -53,11 +53,11 @@ public class InformeResumenTotalGeneral implements IInforme {
             InformeResumenTotalGeneral.EVALUADOS, InformeResumenTotalGeneral.APROBADOS,
             InformeResumenTotalGeneral.REPORBADOS };
     static Logger log = Logger.getLogger(InformeResumenTotalGeneral.class);
-    private TipoAlumno tipoAlumno;
-    private Colegio colegio;
-    private Asignatura asignatura;
+    private STipoAlumno tipoAlumno;
+    private SColegio colegio;
+    private SAsignatura asignatura;
     private Map<String, Pair<Integer, Float>> resultado;
-    private List<EvaluacionEjeTematico> evalEjeTematico;
+    private List<SEvaluacionEjeTematico> evalEjeTematico;
 
     public InformeResumenTotalGeneral() {
         super();
@@ -65,18 +65,18 @@ public class InformeResumenTotalGeneral implements IInforme {
 
     @SuppressWarnings("unchecked")
     @Override
-    public void execute(TipoAlumno tipoAlumno, Colegio colegio, Asignatura asignatura) {
+    public void execute(STipoAlumno tipoAlumno, SColegio colegio, SAsignatura asignatura) {
         this.tipoAlumno = tipoAlumno;
         this.colegio = colegio;
         this.asignatura = asignatura;
         final Map<String, Object> params = new HashMap<>();
         params.put(InformeResumenTotalGeneral.COLEGIO_ID, colegio.getId());
         params.put(InformeResumenTotalGeneral.ASIGNATURA_ID, asignatura.getId());
-        final List<EvaluacionPrueba> evaluaciones = (List<EvaluacionPrueba>) (Object) PersistenceServiceFactory
-                .getPersistenceService().findSynchro("EvaluacionPrueba.findEvaluacionByColegioAsig", params);
+        final List<SEvaluacionPrueba> evaluaciones = (List<SEvaluacionPrueba>) (Object) PersistenceServiceFactory
+                .getPersistenceService().findSynchro("SEvaluacionPrueba.findEvaluacionByColegioAsig", params);
         if (evaluaciones == null || evaluaciones.isEmpty())
             return;
-        evalEjeTematico = PersistenceServiceFactory.getPersistenceService().findAllSynchro(EvaluacionEjeTematico.class);
+        evalEjeTematico = PersistenceServiceFactory.getPersistenceService().findAllSynchro(SEvaluacionEjeTematico.class);
         resultado = procesar(evaluaciones);
     }
 
@@ -94,14 +94,14 @@ public class InformeResumenTotalGeneral implements IInforme {
         mResumen.put(InformeResumenTotalGeneral.APROBADOS, new Pair<Integer, Float>(0, 0f));
         mResumen.put(InformeResumenTotalGeneral.REPORBADOS, new Pair<Integer, Float>(0, 0f));
 
-        List<EvaluacionEjeTematico> ejes = new ArrayList<>();
+        List<SEvaluacionEjeTematico> ejes = new ArrayList<>();
         for (final Object obj : evalEjeTematico) {
-            final EvaluacionEjeTematico eje = (EvaluacionEjeTematico) obj;
+            final SEvaluacionEjeTematico eje = (SEvaluacionEjeTematico) obj;
             ejes.add(eje);
         }
 
         ejes = ejes.stream().sorted(Comparadores.comparaEvaluacionEjeTematico()).collect(Collectors.toList());
-        for (final EvaluacionEjeTematico eje : ejes) {
+        for (final SEvaluacionEjeTematico eje : ejes) {
             mResumen.put(eje.getName(), new Pair<Integer, Float>(0, 0f));
         }
         return mResumen;
@@ -121,7 +121,7 @@ public class InformeResumenTotalGeneral implements IInforme {
         final List<Double> values = new ArrayList<>();
 
         for (final Object obj : evalEjeTematico) {
-            final EvaluacionEjeTematico eET = (EvaluacionEjeTematico) obj;
+            final SEvaluacionEjeTematico eET = (SEvaluacionEjeTematico) obj;
             final Pair<Integer, Float> pair = resultado.get(eET.getName());
 
             titles.add(String.format("%s\n%5.2f%%", eET.getName(), pair.getSecond()));
@@ -229,7 +229,7 @@ public class InformeResumenTotalGeneral implements IInforme {
      *            lista de valores obtenidos desde la base de datos.
      * @return Mapa con valores <Titulo, Cantidad Alumnos>.
      */
-    protected Map<String, Pair<Integer, Float>> procesar(List<EvaluacionPrueba> list) {
+    protected Map<String, Pair<Integer, Float>> procesar(List<SEvaluacionPrueba> list) {
         int totalColAlumnos = 0;
         int totalColEvaluados = 0;
         int totalColAprobados = 0;
@@ -237,17 +237,17 @@ public class InformeResumenTotalGeneral implements IInforme {
 
         final Map<String, Pair<Integer, Float>> mResumen = getMap();
 
-        for (final EvaluacionPrueba evaluacion : list) {
+        for (final SEvaluacionPrueba evaluacion : list) {
             int totalAlumnos = evaluacion.getCurso().getAlumnos().size();
             int totalEvaluados = 0;
             int totalAprobados = 0;
             int totalReprobados = 0;
 
-            final List<PruebaRendida> rendidas = evaluacion.getPruebasRendidas();
-            for (final PruebaRendida pruebaRendida : rendidas) {
-                final Alumno alumno = pruebaRendida.getAlumno();
+            final List<SPruebaRendida> rendidas = evaluacion.getPruebasRendidas();
+            for (final SPruebaRendida pruebaRendida : rendidas) {
+                final SAlumno alumno = pruebaRendida.getAlumno();
                 if (alumno == null || alumno.getTipoAlumno() == null) {
-                    InformeResumenTotalGeneral.log.error("Alumno NULO");
+                    InformeResumenTotalGeneral.log.error("SAlumno NULO");
                     totalAlumnos--;
                     continue;
                 }
@@ -264,7 +264,7 @@ public class InformeResumenTotalGeneral implements IInforme {
 
                 final Float pBuenas = pruebaRendida.getPbuenas();
                 for (final Object obj : evalEjeTematico) {
-                    final EvaluacionEjeTematico eET = (EvaluacionEjeTematico) obj;
+                    final SEvaluacionEjeTematico eET = (SEvaluacionEjeTematico) obj;
                     if (eET.isInside(pBuenas)) {
                         if (mResumen.containsKey(eET.getName())) {
                             final Pair<Integer, Float> pair = mResumen.get(eET.getName());
@@ -291,7 +291,7 @@ public class InformeResumenTotalGeneral implements IInforme {
                 new Pair<Integer, Float>(totalColReprobados, porReporbados));
 
         for (final Object obj : evalEjeTematico) {
-            final EvaluacionEjeTematico eET = (EvaluacionEjeTematico) obj;
+            final SEvaluacionEjeTematico eET = (SEvaluacionEjeTematico) obj;
             final Pair<Integer, Float> pair = mResumen.get(eET.getName());
             pair.setSecond(100f * pair.getFirst().floatValue() / totalColEvaluados);
         }

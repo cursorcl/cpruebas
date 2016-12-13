@@ -9,16 +9,16 @@ import java.util.Map;
 
 import cl.eos.common.Constants;
 import cl.eos.imp.view.AFormView;
-import cl.eos.persistence.models.Asignatura;
-import cl.eos.persistence.models.Colegio;
-import cl.eos.persistence.models.Curso;
-import cl.eos.persistence.models.EjeTematico;
-import cl.eos.persistence.models.EvaluacionPrueba;
-import cl.eos.persistence.models.PruebaRendida;
-import cl.eos.persistence.models.RangoEvaluacion;
-import cl.eos.persistence.models.RespuestasEsperadasPrueba;
-import cl.eos.persistence.models.TipoAlumno;
-import cl.eos.persistence.models.TipoCurso;
+import cl.eos.persistence.models.SAsignatura;
+import cl.eos.persistence.models.SColegio;
+import cl.eos.persistence.models.SCurso;
+import cl.eos.persistence.models.SEjeTematico;
+import cl.eos.persistence.models.SEvaluacionPrueba;
+import cl.eos.persistence.models.SPruebaRendida;
+import cl.eos.persistence.models.SRangoEvaluacion;
+import cl.eos.persistence.models.SRespuestasEsperadasPrueba;
+import cl.eos.persistence.models.STipoAlumno;
+import cl.eos.persistence.models.STipoCurso;
 import cl.eos.persistence.util.Comparadores;
 import cl.eos.util.ExcelSheetWriterObj;
 import cl.eos.view.ots.ejeevaluacion.OTAcumulador;
@@ -47,11 +47,11 @@ public class Nivel_ComparativoColegioEjeEvaluacionView extends AFormView impleme
     @FXML
     private TableView<ObservableList<String>> tblEjesCantidad;
     @FXML
-    private ComboBox<Colegio> cmbColegios;
+    private ComboBox<SColegio> cmbColegios;
     @FXML
-    private ComboBox<Asignatura> cmbAsignatura;
+    private ComboBox<SAsignatura> cmbAsignatura;
     @FXML
-    private ComboBox<TipoAlumno> cmbTipoAlumno;
+    private ComboBox<STipoAlumno> cmbTipoAlumno;
     @FXML
     private Button btnReportes;
     @FXML
@@ -62,9 +62,9 @@ public class Nivel_ComparativoColegioEjeEvaluacionView extends AFormView impleme
     private MenuItem mnuExportarAlumnos;
 
     private Map<String, Object> parameters = new HashMap<String, Object>();
-    private ObservableList<TipoCurso> tipoCursoList;
-    private ObservableList<RangoEvaluacion> rangoEvalList;
-    private ObservableList<EvaluacionPrueba> evaluacionesPrueba;
+    private ObservableList<STipoCurso> tipoCursoList;
+    private ObservableList<SRangoEvaluacion> rangoEvalList;
+    private ObservableList<SEvaluacionPrueba> evaluacionesPrueba;
 
     public Nivel_ComparativoColegioEjeEvaluacionView() {
         setTitle("Comparativo Colegios Ejes x Nivel");
@@ -93,19 +93,19 @@ public class Nivel_ComparativoColegioEjeEvaluacionView extends AFormView impleme
     }
 
     private void handleColegios() {
-        Colegio colegio = cmbColegios.getSelectionModel().getSelectedItem();
+        SColegio colegio = cmbColegios.getSelectionModel().getSelectedItem();
         if (colegio != null) {
             parameters.put(COLEGIO_ID, colegio.getId());
             Map<String, Object> param = new HashMap<String, Object>();
             param.put("colegioId", colegio.getId());
             lblTitulo.setText(colegio.getName());
-            controller.find("Curso.findByColegio", param);
+            controller.find("SCurso.findByColegio", param);
             clearContent();
         }
     }
 
     private void handleAsignatura() {
-        Asignatura asignatura = cmbAsignatura.getSelectionModel().getSelectedItem();
+        SAsignatura asignatura = cmbAsignatura.getSelectionModel().getSelectedItem();
         if (asignatura != null) {
             parameters.put(ASIGNATURA_ID, asignatura.getId());
             clearContent();
@@ -115,7 +115,7 @@ public class Nivel_ComparativoColegioEjeEvaluacionView extends AFormView impleme
     private void handleReportes() {
         if (!parameters.isEmpty() && parameters.containsKey(COLEGIO_ID) && parameters.containsKey(ASIGNATURA_ID)) {
 
-            controller.find("EvaluacionPrueba.findEvaluacionByColegioAsig", parameters, this);
+            controller.find("SEvaluacionPrueba.findEvaluacionByColegioAsig", parameters, this);
         }
     }
 
@@ -142,47 +142,47 @@ public class Nivel_ComparativoColegioEjeEvaluacionView extends AFormView impleme
             return;
         }
         Object entity = list.get(0);
-        if (entity instanceof Colegio) {
-            ObservableList<Colegio> oList = FXCollections.observableArrayList();
+        if (entity instanceof SColegio) {
+            ObservableList<SColegio> oList = FXCollections.observableArrayList();
             for (Object iEntity : list) {
-                oList.add((Colegio) iEntity);
+                oList.add((SColegio) iEntity);
             }
             cmbColegios.setItems(oList);
         }
-        if (entity instanceof Asignatura) {
-            ObservableList<Asignatura> oList = FXCollections.observableArrayList();
+        if (entity instanceof SAsignatura) {
+            ObservableList<SAsignatura> oList = FXCollections.observableArrayList();
             for (Object iEntity : list) {
-                oList.add((Asignatura) iEntity);
+                oList.add((SAsignatura) iEntity);
             }
             cmbAsignatura.setItems(oList);
         }
-        if (entity instanceof Curso) {
+        if (entity instanceof SCurso) {
             tipoCursoList = FXCollections.observableArrayList();
             for (Object iEntity : list) {
-                Curso curso = (Curso) iEntity;
+                SCurso curso = (SCurso) iEntity;
                 if (!tipoCursoList.contains(curso.getTipoCurso())) {
                     tipoCursoList.add(curso.getTipoCurso());
                 }
             }
             FXCollections.sort(tipoCursoList, Comparadores.comparaTipoCurso());
         }
-        if (entity instanceof TipoAlumno) {
-            ObservableList<TipoAlumno> tAlumnoList = FXCollections.observableArrayList();
+        if (entity instanceof STipoAlumno) {
+            ObservableList<STipoAlumno> tAlumnoList = FXCollections.observableArrayList();
             for (Object iEntity : list) {
-                tAlumnoList.add((TipoAlumno) iEntity);
+                tAlumnoList.add((STipoAlumno) iEntity);
             }
             cmbTipoAlumno.setItems(tAlumnoList);
         }
-        if (entity instanceof EvaluacionPrueba) {
+        if (entity instanceof SEvaluacionPrueba) {
             evaluacionesPrueba = FXCollections.observableArrayList();
             for (Object object : list) {
-                EvaluacionPrueba evaluacion = (EvaluacionPrueba) object;
+                SEvaluacionPrueba evaluacion = (SEvaluacionPrueba) object;
                 evaluacionesPrueba.add(evaluacion);
             }
-            EvaluacionPrueba evaluacionPrueba = (EvaluacionPrueba) entity;
+            SEvaluacionPrueba evaluacionPrueba = (SEvaluacionPrueba) entity;
             rangoEvalList = FXCollections.observableArrayList();
-            Collection<RangoEvaluacion> rngs = evaluacionPrueba.getPrueba().getNivelEvaluacion().getRangos();
-            for (RangoEvaluacion rng : rngs) {
+            Collection<SRangoEvaluacion> rngs = evaluacionPrueba.getPrueba().getNivelEvaluacion().getRangos();
+            for (SRangoEvaluacion rng : rngs) {
                 rangoEvalList.add(rng);
             }
             generarReporte();
@@ -197,7 +197,7 @@ public class Nivel_ComparativoColegioEjeEvaluacionView extends AFormView impleme
      * @param pCursoList
      */
     @SuppressWarnings({ "rawtypes", "unchecked" })
-    private void llenarColumnas(ObservableList<TipoCurso> pCursoList, ObservableList<RangoEvaluacion> rangos) {
+    private void llenarColumnas(ObservableList<STipoCurso> pCursoList, ObservableList<SRangoEvaluacion> rangos) {
         TableColumn tc = new TableColumn("EJES");
         tc.setSortable(false);
         tc.setStyle("-fx-alignment: CENTER-LEFT;");
@@ -211,7 +211,7 @@ public class Nivel_ComparativoColegioEjeEvaluacionView extends AFormView impleme
 
         
         int indice = 1;
-        for (TipoCurso curso : pCursoList) {
+        for (STipoCurso curso : pCursoList) {
             tc = new TableColumn(curso.getName());
             tc.prefWidthProperty().set(50f);
             tc.setStyle("-fx-alignment: CENTER;");
@@ -222,7 +222,7 @@ public class Nivel_ComparativoColegioEjeEvaluacionView extends AFormView impleme
                 }
             });
             // Estoy agregando subcolumnas
-            for (RangoEvaluacion rng : rangos) {
+            for (SRangoEvaluacion rng : rangos) {
                 final int lIdx = indice;
                 TableColumn stc = new TableColumn(rng.getAbreviacion());
                 stc.prefWidthProperty().set(50f);
@@ -259,7 +259,7 @@ public class Nivel_ComparativoColegioEjeEvaluacionView extends AFormView impleme
         llenarColumnas(tipoCursoList, rangoEvalList);
         int nroCursos = tipoCursoList.size();
         int nroRangos = rangoEvalList.size();
-        Map<EjeTematico, List<OTAcumulador>> mapEjes = new HashMap<>();
+        Map<SEjeTematico, List<OTAcumulador>> mapEjes = new HashMap<>();
 
         /*
          * Aqui verificamos el TIPO ALUMNO SELECCIONADO PARA EL REPORTE
@@ -267,14 +267,14 @@ public class Nivel_ComparativoColegioEjeEvaluacionView extends AFormView impleme
         long tipoAlumno = cmbTipoAlumno.getSelectionModel().getSelectedItem().getId();
 
         // Todas las evaluaciones asociadas (Todos los cursos)
-        for (EvaluacionPrueba eval : evaluacionesPrueba) {
+        for (SEvaluacionPrueba eval : evaluacionesPrueba) {
             // Se esta revisando un colegio.
             eval.getPruebasRendidas().size();
-            List<PruebaRendida> pruebasRendidas = eval.getPruebasRendidas();
+            List<SPruebaRendida> pruebasRendidas = eval.getPruebasRendidas();
             eval.getPrueba().getRespuestas().size();
-            List<RespuestasEsperadasPrueba> respEsperadas = eval.getPrueba().getRespuestas();
+            List<SRespuestasEsperadasPrueba> respEsperadas = eval.getPrueba().getRespuestas();
             // Estamos procesando un colegio/una prueba
-            for (PruebaRendida pruebaRendida : pruebasRendidas) {
+            for (SPruebaRendida pruebaRendida : pruebasRendidas) {
                 // Se procesa un alumno.
 
                 // Obtengo el index de la columna que tengo que llenar (mas 1
@@ -307,7 +307,7 @@ public class Nivel_ComparativoColegioEjeEvaluacionView extends AFormView impleme
 
                 for (int n = 0; n < respEsperadas.size(); n++) {
                     // Sumando a ejes tematicos
-                    EjeTematico eje = respEsperadas.get(n).getEjeTematico();
+                    SEjeTematico eje = respEsperadas.get(n).getEjeTematico();
                     if (!mapEjes.containsKey(eje)) {
                         List<OTAcumulador> lista = new ArrayList<OTAcumulador>(nroCursos);
                         for (int idx = 0; idx < nroCursos; idx++) {
@@ -327,13 +327,13 @@ public class Nivel_ComparativoColegioEjeEvaluacionView extends AFormView impleme
                         lstEjes.set(index, otEjeEval);
                     }
                 }
-                for (EjeTematico eje : mapEjes.keySet()) {
+                for (SEjeTematico eje : mapEjes.keySet()) {
                     List<OTAcumulador> lstEjes = mapEjes.get(eje);
                     OTAcumulador otEjeEval = lstEjes.get(index);
                     float porcentaje = obtenerPorcentaje(respuestas, respEsperadas, eje);
 
                     for (int idx = 0; idx < nroRangos; idx++) {
-                        RangoEvaluacion rango = rangoEvalList.get(idx);
+                        SRangoEvaluacion rango = rangoEvalList.get(idx);
                         if (rango.isInside(porcentaje)) {
                             otEjeEval.getNroPersonas()[idx] = otEjeEval.getNroPersonas()[idx] + 1;
                             break;
@@ -360,10 +360,10 @@ public class Nivel_ComparativoColegioEjeEvaluacionView extends AFormView impleme
      *            Mapa que contiene los valores para cada colegio de las
      *            habilidades.
      */
-    private void generarTablaEjes(Map<EjeTematico, List<OTAcumulador>> mapEjes) {
+    private void generarTablaEjes(Map<SEjeTematico, List<OTAcumulador>> mapEjes) {
         ObservableList<String> row = null;
         ObservableList<ObservableList<String>> items = FXCollections.observableArrayList();
-        for (EjeTematico eje : mapEjes.keySet()) {
+        for (SEjeTematico eje : mapEjes.keySet()) {
             row = FXCollections.observableArrayList();
             List<OTAcumulador> lst = mapEjes.get(eje);
             row.add(eje.getName());
@@ -385,11 +385,11 @@ public class Nivel_ComparativoColegioEjeEvaluacionView extends AFormView impleme
 
     }
 
-    private float obtenerPorcentaje(String respuestas, List<RespuestasEsperadasPrueba> respEsperadas, EjeTematico eje) {
+    private float obtenerPorcentaje(String respuestas, List<SRespuestasEsperadasPrueba> respEsperadas, SEjeTematico eje) {
         float nroBuenas = 0;
         float nroPreguntas = 0;
         for (int n = 0; n < respEsperadas.size(); n++) {
-            RespuestasEsperadasPrueba resp = respEsperadas.get(n);
+            SRespuestasEsperadasPrueba resp = respEsperadas.get(n);
             if (!resp.isAnulada()) {
 
                 if (resp.getEjeTematico().equals(eje)) {

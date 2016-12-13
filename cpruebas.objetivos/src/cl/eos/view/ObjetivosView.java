@@ -5,9 +5,9 @@ import java.util.List;
 
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
-import cl.eos.persistence.models.Asignatura;
-import cl.eos.persistence.models.Objetivo;
-import cl.eos.persistence.models.TipoCurso;
+import cl.eos.persistence.models.SAsignatura;
+import cl.eos.persistence.models.SObjetivo;
+import cl.eos.persistence.models.STipoCurso;
 import cl.eos.util.ExcelSheetWriterObj;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -62,27 +62,27 @@ public class ObjetivosView extends AFormView implements EventHandler<ActionEvent
     private TextArea txtDescripcion;
 
     @FXML
-    private ComboBox<TipoCurso> cmbTipoCurso;
+    private ComboBox<STipoCurso> cmbTipoCurso;
 
     @FXML
-    private ComboBox<Asignatura> cmbAsignatura;
+    private ComboBox<SAsignatura> cmbAsignatura;
 
     @FXML
     private Label lblError;
 
     @FXML
-    private TableView<Objetivo> tblObjetivos;
+    private TableView<SObjetivo> tblObjetivos;
 
     @FXML
-    private TableColumn<Objetivo, Float> colId;
+    private TableColumn<SObjetivo, Float> colId;
     @FXML
-    private TableColumn<Objetivo, String> colNombre;
+    private TableColumn<SObjetivo, String> colNombre;
     @FXML
-    private TableColumn<Objetivo, String> colDescripcion;
+    private TableColumn<SObjetivo, String> colDescripcion;
     @FXML
-    private TableColumn<Objetivo, TipoCurso> colTipoCurso;
+    private TableColumn<SObjetivo, STipoCurso> colTipoCurso;
     @FXML
-    private TableColumn<Objetivo, Asignatura> colAsignatura;
+    private TableColumn<SObjetivo, SAsignatura> colAsignatura;
 
     public ObjetivosView() {
         setTitle("Objetivos");
@@ -90,7 +90,7 @@ public class ObjetivosView extends AFormView implements EventHandler<ActionEvent
 
     private void accionClicTabla() {
         tblObjetivos.setOnMouseClicked(event -> {
-            final ObservableList<Objetivo> itemsSelec = tblObjetivos.getSelectionModel().getSelectedItems();
+            final ObservableList<SObjetivo> itemsSelec = tblObjetivos.getSelectionModel().getSelectedItems();
 
             if (itemsSelec.size() > 1) {
                 mnuModificar.setDisable(true);
@@ -112,7 +112,7 @@ public class ObjetivosView extends AFormView implements EventHandler<ActionEvent
     }
 
     private void accionEliminar() {
-        final ObservableList<Objetivo> otSeleccionados = tblObjetivos.getSelectionModel().getSelectedItems();
+        final ObservableList<SObjetivo> otSeleccionados = tblObjetivos.getSelectionModel().getSelectedItems();
         if (otSeleccionados.size() == 0) {
             final Alert alert = new Alert(AlertType.INFORMATION);
             alert.setTitle("Selección registro");
@@ -122,8 +122,8 @@ public class ObjetivosView extends AFormView implements EventHandler<ActionEvent
         } else {
 
             if (otSeleccionados != null && !otSeleccionados.isEmpty()) {
-                final List<Objetivo> objAborrar = new ArrayList<Objetivo>(otSeleccionados.size());
-                for (final Objetivo ot : otSeleccionados) {
+                final List<SObjetivo> objAborrar = new ArrayList<SObjetivo>(otSeleccionados.size());
+                for (final SObjetivo ot : otSeleccionados) {
                     objAborrar.add(ot);
                 }
                 delete(objAborrar);
@@ -140,11 +140,11 @@ public class ObjetivosView extends AFormView implements EventHandler<ActionEvent
             if (lblError != null) {
                 lblError.setText(" ");
             }
-            Objetivo objetivo = null;
-            if (entitySelected != null && entitySelected instanceof Objetivo) {
-                objetivo = (Objetivo) entitySelected;
+            SObjetivo objetivo = null;
+            if (entitySelected != null && entitySelected instanceof SObjetivo) {
+                objetivo = (SObjetivo) entitySelected;
             } else {
-                objetivo = new Objetivo();
+                objetivo = new SObjetivo();
             }
             objetivo.setName(txtNombre.getText());
             objetivo.setDescripcion(txtDescripcion.getText());
@@ -159,7 +159,7 @@ public class ObjetivosView extends AFormView implements EventHandler<ActionEvent
     }
 
     private void accionModificar() {
-        final Objetivo objetivo = tblObjetivos.getSelectionModel().getSelectedItem();
+        final SObjetivo objetivo = tblObjetivos.getSelectionModel().getSelectedItem();
         if (objetivo != null) {
             txtNombre.setText(objetivo.getName());
             txtDescripcion.setText(objetivo.getDescripcion());
@@ -189,14 +189,14 @@ public class ObjetivosView extends AFormView implements EventHandler<ActionEvent
 
     private void inicializaTabla() {
         tblObjetivos.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        colId.setCellValueFactory(new PropertyValueFactory<Objetivo, Float>("id"));
-        colNombre.setCellValueFactory(new PropertyValueFactory<Objetivo, String>("name"));
-        colDescripcion.setCellValueFactory(new PropertyValueFactory<Objetivo, String>("descripcion"));
-        colTipoCurso.setCellValueFactory(new PropertyValueFactory<Objetivo, TipoCurso>("tipoCurso"));
-        colAsignatura.setCellValueFactory(new PropertyValueFactory<Objetivo, Asignatura>("asignatura"));
+        colId.setCellValueFactory(new PropertyValueFactory<SObjetivo, Float>("id"));
+        colNombre.setCellValueFactory(new PropertyValueFactory<SObjetivo, String>("name"));
+        colDescripcion.setCellValueFactory(new PropertyValueFactory<SObjetivo, String>("descripcion"));
+        colTipoCurso.setCellValueFactory(new PropertyValueFactory<SObjetivo, STipoCurso>("tipoCurso"));
+        colAsignatura.setCellValueFactory(new PropertyValueFactory<SObjetivo, SAsignatura>("asignatura"));
 
         colDescripcion.setCellFactory(param -> {
-            final TableCell<Objetivo, String> cell = new TableCell<>();
+            final TableCell<SObjetivo, String> cell = new TableCell<>();
             final Text text = new Text();
             cell.setGraphic(text);
             cell.setPrefHeight(Region.USE_COMPUTED_SIZE);
@@ -244,22 +244,22 @@ public class ObjetivosView extends AFormView implements EventHandler<ActionEvent
     public void onDataArrived(List<Object> list) {
         if (list != null && !list.isEmpty()) {
             final Object entity = list.get(0);
-            if (entity instanceof Objetivo) {
-                final ObservableList<Objetivo> value = FXCollections.observableArrayList();
+            if (entity instanceof SObjetivo) {
+                final ObservableList<SObjetivo> value = FXCollections.observableArrayList();
                 for (final Object iEntity : list) {
-                    value.add((Objetivo) iEntity);
+                    value.add((SObjetivo) iEntity);
                 }
                 tblObjetivos.setItems(value);
-            } else if (entity instanceof TipoCurso) {
-                final ObservableList<TipoCurso> value = FXCollections.observableArrayList();
+            } else if (entity instanceof STipoCurso) {
+                final ObservableList<STipoCurso> value = FXCollections.observableArrayList();
                 for (final Object iEntity : list) {
-                    value.add((TipoCurso) iEntity);
+                    value.add((STipoCurso) iEntity);
                 }
                 cmbTipoCurso.setItems(value);
-            } else if (entity instanceof Asignatura) {
-                final ObservableList<Asignatura> value = FXCollections.observableArrayList();
+            } else if (entity instanceof SAsignatura) {
+                final ObservableList<SAsignatura> value = FXCollections.observableArrayList();
                 for (final Object iEntity : list) {
-                    value.add((Asignatura) iEntity);
+                    value.add((SAsignatura) iEntity);
                 }
                 cmbAsignatura.setItems(value);
             }
@@ -273,7 +273,7 @@ public class ObjetivosView extends AFormView implements EventHandler<ActionEvent
 
     @Override
     public void onSaved(IEntity otObject) {
-        final Objetivo objetivo = (Objetivo) otObject;
+        final SObjetivo objetivo = (SObjetivo) otObject;
         final int indice = tblObjetivos.getItems().lastIndexOf(objetivo);
         if (indice != -1) {
             tblObjetivos.getItems().set(indice, objetivo);

@@ -11,19 +11,19 @@ import java.util.stream.Collectors;
 import com.google.common.base.Strings;
 
 import cl.eos.common.Constants;
-import cl.eos.persistence.models.Curso;
-import cl.eos.persistence.models.Objetivo;
-import cl.eos.persistence.models.PruebaRendida;
-import cl.eos.persistence.models.RespuestasEsperadasPrueba;
-import cl.eos.persistence.models.TipoCurso;
+import cl.eos.persistence.models.SCurso;
+import cl.eos.persistence.models.SObjetivo;
+import cl.eos.persistence.models.SPruebaRendida;
+import cl.eos.persistence.models.SRespuestasEsperadasPrueba;
+import cl.eos.persistence.models.STipoCurso;
 
 public class XUtilEvaluations {
 
     private static final Logger log = Logger.getLogger(XUtilEvaluations.class.getName());
 
-    static class GroupByTipoCurso implements Function<PruebaRendida, TipoCurso> {
+    static class GroupByTipoCurso implements Function<SPruebaRendida, STipoCurso> {
         @Override
-        public TipoCurso apply(PruebaRendida t) {
+        public STipoCurso apply(SPruebaRendida t) {
             return t.getAlumno().getCurso().getTipoCurso();
         }
 
@@ -36,9 +36,9 @@ public class XUtilEvaluations {
      * @param pRendida
      *            La prueba del alumno,
      */
-    static List<XItemObjetivo> evaluarAlumno(PruebaRendida pRendida) {
+    static List<XItemObjetivo> evaluarAlumno(SPruebaRendida pRendida) {
 
-        final List<RespuestasEsperadasPrueba> resEsperadas = pRendida.getEvaluacionPrueba().getPrueba().getRespuestas();
+        final List<SRespuestasEsperadasPrueba> resEsperadas = pRendida.getEvaluacionPrueba().getPrueba().getRespuestas();
 
         String respuestas = pRendida.getRespuestas();
         if (respuestas.length() < resEsperadas.size()) {
@@ -46,14 +46,14 @@ public class XUtilEvaluations {
         }
         final String[] reps = respuestas.split("");
 
-        final Map<Objetivo, List<RespuestasEsperadasPrueba>> byObjective = resEsperadas.stream()
-                .collect(Collectors.groupingBy(RespuestasEsperadasPrueba::getObjetivo));
+        final Map<SObjetivo, List<SRespuestasEsperadasPrueba>> byObjective = resEsperadas.stream()
+                .collect(Collectors.groupingBy(SRespuestasEsperadasPrueba::getObjetivo));
 
         final List<XItemObjetivo> result = new ArrayList<>();
-        for (final Objetivo key : byObjective.keySet()) {
-            final List<RespuestasEsperadasPrueba> resps = byObjective.get(key);
+        for (final SObjetivo key : byObjective.keySet()) {
+            final List<SRespuestasEsperadasPrueba> resps = byObjective.get(key);
             final XItemObjetivo objxAlumno = new XItemObjetivo.Builder().objetivo(key).build();
-            for (final RespuestasEsperadasPrueba re : resps) {
+            for (final SRespuestasEsperadasPrueba re : resps) {
                 if (reps[re.getNumero() - 1].equalsIgnoreCase(re.getRespuesta()))
                     objxAlumno.addBuena();
                 objxAlumno.addPregunta();
@@ -80,16 +80,16 @@ public class XUtilEvaluations {
         return result;
     }
 
-    static Map<Curso, List<XItemObjetivo>> evaluarColegio(List<PruebaRendida> pruebas, long tipoAlumno) {
+    static Map<SCurso, List<XItemObjetivo>> evaluarColegio(List<SPruebaRendida> pruebas, long tipoAlumno) {
 
-        final Map<Curso, List<XItemObjetivo>> result = new HashMap<>();
+        final Map<SCurso, List<XItemObjetivo>> result = new HashMap<>();
 
-        final Map<Curso, List<PruebaRendida>> mapCursos = pruebas.stream()
-                .collect(Collectors.groupingBy(PruebaRendida::getObjCurso));
+        final Map<SCurso, List<SPruebaRendida>> mapCursos = pruebas.stream()
+                .collect(Collectors.groupingBy(SPruebaRendida::getObjCurso));
 
-        for (Curso curso : mapCursos.keySet()) {
+        for (SCurso curso : mapCursos.keySet()) {
             log.fine("Evaluando el curso:" + curso.getName());
-            List<PruebaRendida> pRendidas = mapCursos.get(curso);
+            List<SPruebaRendida> pRendidas = mapCursos.get(curso);
             if (pRendidas != null && !pRendidas.isEmpty()) {
                 log.fine("Tiene:" + pRendidas.size() + " pruebas rendidas.");
                 List<XItemObjetivo> r = XUtilEvaluations.evaluarCurso(pRendidas, tipoAlumno);
@@ -100,15 +100,15 @@ public class XUtilEvaluations {
         return result;
     }
 
-    static Map<TipoCurso, List<XItemObjetivo>> evaluarColegioxNivel(List<PruebaRendida> pruebas, long tipoAlumno) {
+    static Map<STipoCurso, List<XItemObjetivo>> evaluarColegioxNivel(List<SPruebaRendida> pruebas, long tipoAlumno) {
 
-        final Map<TipoCurso, List<XItemObjetivo>> result = new HashMap<>();
-        final Map<TipoCurso, List<PruebaRendida>> mapCursos = pruebas.stream()
-                .collect(Collectors.groupingBy(PruebaRendida::getTipoCurso));
+        final Map<STipoCurso, List<XItemObjetivo>> result = new HashMap<>();
+        final Map<STipoCurso, List<SPruebaRendida>> mapCursos = pruebas.stream()
+                .collect(Collectors.groupingBy(SPruebaRendida::getTipoCurso));
 
-        for (TipoCurso tipoCurso : mapCursos.keySet()) {
+        for (STipoCurso tipoCurso : mapCursos.keySet()) {
             log.fine("Evaluando el curso:" + tipoCurso.getName());
-            List<PruebaRendida> pRendidas = mapCursos.get(tipoCurso);
+            List<SPruebaRendida> pRendidas = mapCursos.get(tipoCurso);
             if (pRendidas != null && !pRendidas.isEmpty()) {
                 log.fine("Tiene:" + pRendidas.size() + " pruebas rendidas.");
                 List<XItemObjetivo> r = XUtilEvaluations.evaluarCurso(pRendidas, tipoAlumno);
@@ -134,12 +134,12 @@ public class XUtilEvaluations {
         return result;
     }
 
-    static List<XItemObjetivo> evaluarCurso(List<PruebaRendida> pruebas, long tipoAlumno) {
+    static List<XItemObjetivo> evaluarCurso(List<SPruebaRendida> pruebas, long tipoAlumno) {
         if (pruebas == null || pruebas.isEmpty()) {
             log.severe("En evaluarCuso viene una lista de pruebas vacía");
         }
         final List<XItemObjetivo> result = new ArrayList<>();
-        for (final PruebaRendida p : pruebas) {
+        for (final SPruebaRendida p : pruebas) {
             Long idTipoAlumno = p.getAlumno().getTipoAlumno().getId();
 
             if (tipoAlumno == Constants.PIE_ALL || tipoAlumno == idTipoAlumno) {

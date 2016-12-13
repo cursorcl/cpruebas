@@ -2,9 +2,9 @@ package informe.informes;
 
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 
-import cl.eos.persistence.models.Asignatura;
-import cl.eos.persistence.models.Colegio;
-import cl.eos.persistence.models.TipoAlumno;
+import cl.eos.persistence.models.SAsignatura;
+import cl.eos.persistence.models.SColegio;
+import cl.eos.persistence.models.STipoAlumno;
 
 /**
  * Representa a los informes que se deben generar dentro del documento word. Se
@@ -28,11 +28,11 @@ public interface IInforme {
      * @param colegio
      *            El colegio que se está evaluando.
      * @param asignatura
-     *            Asignatura para la que se procesa este informe.
+     *            SAsignatura para la que se procesa este informe.
      * @param parameters
      *            Otros parámetros que se requieran.
      */
-    void execute(TipoAlumno tipoAlumno, Colegio colegio, Asignatura asignatura);
+    void execute(STipoAlumno tipoAlumno, SColegio colegio, SAsignatura asignatura);
 
     /**
      * Construye la sección de página asociada al gráfico. Se asume que utiliza

@@ -4,15 +4,15 @@ import java.util.Arrays;
 import java.util.List;
 
 import cl.eos.interfaces.entity.IEntity;
-import cl.eos.persistence.models.EjeTematico;
-import cl.eos.persistence.models.EvaluacionEjeTematico;
-import cl.eos.persistence.models.Habilidad;
+import cl.eos.persistence.models.SEjeTematico;
+import cl.eos.persistence.models.SEvaluacionEjeTematico;
+import cl.eos.persistence.models.SHabilidad;
 
 /**
- * Representa una entrade de {@link EjeTematico} o {@link Habilidad} asociado a
+ * Representa una entrade de {@link SEjeTematico} o {@link SHabilidad} asociado a
  * el número de preguntas en una prueba junto a la cantidad de alumnos que
- * rindieron la prueba y las buenas por alumno para dicho {@link EjeTematico} o
- * {@link Habilidad}.
+ * rindieron la prueba y las buenas por alumno para dicho {@link SEjeTematico} o
+ * {@link SHabilidad}.
  *
  * @author curso
  */
@@ -38,13 +38,13 @@ public class OTUnCursoUnEjeHabilidad {
      * @param evalEjeHab
      *            Los porcentajes de rangos para poder realizar el analisis
      */
-    public int[] calculateAlumnosXRango(List<EvaluacionEjeTematico> evalEjeHab) {
+    public int[] calculateAlumnosXRango(List<SEvaluacionEjeTematico> evalEjeHab) {
         alumnosPorRango = new int[evalEjeHab.size()];
         Arrays.fill(alumnosPorRango, 0);
         for (int n = 0; n < nroAlumnos; n++) {
             final float porcentaje = 100f * buenasPorAlumno[n] / nroPreguntas;
             for (int idx = 0; idx < evalEjeHab.size(); idx++) {
-                final EvaluacionEjeTematico eval = evalEjeHab.get(idx);
+                final SEvaluacionEjeTematico eval = evalEjeHab.get(idx);
                 if (eval.isInside(porcentaje)) {
                     alumnosPorRango[idx] = alumnosPorRango[idx] + 1;
                 }

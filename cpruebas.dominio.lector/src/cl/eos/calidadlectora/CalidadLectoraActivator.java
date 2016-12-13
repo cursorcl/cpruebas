@@ -11,7 +11,7 @@ public class CalidadLectoraActivator extends AActivator {
 
         controller = new Contoller();
 
-        final URL url = CalidadLectoraActivator.class.getResource("/cl/eos/calidadlectora/CalidadLectora.fxml");
+        final URL url = CalidadLectoraActivator.class.getResource("/cl/eos/calidadlectora/SCalidadLectora.fxml");
         final FXMLLoader fxmlLoader = new FXMLLoader();
         try {
             pane = fxmlLoader.load(url.openStream());

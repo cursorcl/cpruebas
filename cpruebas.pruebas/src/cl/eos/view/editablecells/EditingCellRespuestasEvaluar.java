@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import cl.eos.persistence.models.Prueba;
-import cl.eos.persistence.models.RespuestasEsperadasPrueba;
+import cl.eos.persistence.models.SPrueba;
+import cl.eos.persistence.models.SRespuestasEsperadasPrueba;
 import cl.eos.persistence.util.Comparadores;
 import cl.eos.view.ots.OTPruebaRendida;
 import javafx.beans.value.ChangeListener;
@@ -18,15 +18,15 @@ import javafx.scene.input.KeyCode;
 public class EditingCellRespuestasEvaluar extends TableCell<OTPruebaRendida, String> {
 
     private TextField textField;
-    private Prueba prueba = null;
+    private SPrueba prueba = null;
     private final int maxLength;
-    private List<RespuestasEsperadasPrueba> listaRespuestas = null;
+    private List<SRespuestasEsperadasPrueba> listaRespuestas = null;
 
-    public EditingCellRespuestasEvaluar(Prueba prueba) {
+    public EditingCellRespuestasEvaluar(SPrueba prueba) {
         super();
         this.prueba = prueba;
 
-        listaRespuestas = new ArrayList<RespuestasEsperadasPrueba>(prueba.getRespuestas());
+        listaRespuestas = new ArrayList<SRespuestasEsperadasPrueba>(prueba.getRespuestas());
         Collections.sort(listaRespuestas, Comparadores.compararRespuestasEsperadas());
 
         maxLength = prueba.getRespuestas().size();
@@ -70,7 +70,7 @@ public class EditingCellRespuestasEvaluar extends TableCell<OTPruebaRendida, Str
                     if (len > 0) {
 
                         final String s = newValue.substring(len - 1, len);
-                        final RespuestasEsperadasPrueba resp = listaRespuestas.get(len - 1);
+                        final SRespuestasEsperadasPrueba resp = listaRespuestas.get(len - 1);
                         if (resp.getVerdaderoFalso()) {
                             validValue = "VFO".contains(s.toUpperCase());
                         } else if (resp.getMental()) {

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/kernel.api"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/kernel.api.imp.fx"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.persistence.api"/>
+	<classpathentry kind="lib" path="O:/cpruebas_multiuser/cpruebas/cpruebas.persistence.provider/lib/eclipselink.jar"/>
+	<classpathentry kind="lib" path="O:/cpruebas_multiuser/cpruebas/cpruebas.persistence.provider/lib/javax.persistence_2.1.1.v201509150925.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

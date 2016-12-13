@@ -5,20 +5,20 @@ import java.util.Comparator;
 import cl.eos.ot.OTRangoEvaluacion;
 import cl.eos.ot.OTResumenColegio;
 import cl.eos.ot.OTResumenTipoCursoColegio;
-import cl.eos.persistence.models.Curso;
-import cl.eos.persistence.models.EvaluacionEjeTematico;
-import cl.eos.persistence.models.EvaluacionPrueba;
-import cl.eos.persistence.models.RangoEvaluacion;
-import cl.eos.persistence.models.RespuestasEsperadasPrueba;
-import cl.eos.persistence.models.TipoCurso;
+import cl.eos.persistence.models.SCurso;
+import cl.eos.persistence.models.SEvaluacionEjeTematico;
+import cl.eos.persistence.models.SEvaluacionPrueba;
+import cl.eos.persistence.models.SRangoEvaluacion;
+import cl.eos.persistence.models.SRespuestasEsperadasPrueba;
+import cl.eos.persistence.models.STipoCurso;
 
 public class Comparadores {
 
-    public static Comparator<? super EvaluacionEjeTematico> comparaEvaluacionEjeTematico() {
+    public static Comparator<? super SEvaluacionEjeTematico> comparaEvaluacionEjeTematico() {
         return (eetSource, eetTarget) -> eetSource.getNroRangoMin().compareTo(eetTarget.getNroRangoMin());
     }
 
-    public static Comparator<? super EvaluacionPrueba> comparaEvaluacionPruebaXCurso() {
+    public static Comparator<? super SEvaluacionPrueba> comparaEvaluacionPruebaXCurso() {
         return (eetSource, eetTarget) -> eetSource.getCurso().getName().compareTo(eetTarget.getCurso().getName());
     }
 
@@ -41,7 +41,7 @@ public class Comparadores {
         };
     }
 
-    public static Comparator<? super Curso> comparaResumeCurso() {
+    public static Comparator<? super SCurso> comparaResumeCurso() {
         return (respSource, respTarget) -> {
 
             String source = "";
@@ -70,11 +70,11 @@ public class Comparadores {
         };
     }
 
-    public static Comparator<? super RespuestasEsperadasPrueba> compararRespuestasEsperadas() {
+    public static Comparator<? super SRespuestasEsperadasPrueba> compararRespuestasEsperadas() {
         return (respSource, respTarget) -> respSource.getNumero().compareTo(respTarget.getNumero());
     }
 
-    public static Comparator<? super TipoCurso> comparaTipoCurso() {
+    public static Comparator<? super STipoCurso> comparaTipoCurso() {
         return (respSource, respTarget) -> {
 
             Long source = 0L;
@@ -89,7 +89,7 @@ public class Comparadores {
         };
     }
 
-    public static Comparator<? super Curso> odenarCurso() {
+    public static Comparator<? super SCurso> odenarCurso() {
         return (cursoSource, cursoTarget) -> {
 
             String source = "";
@@ -105,7 +105,7 @@ public class Comparadores {
         };
     }
 
-    public static Comparator<? super RangoEvaluacion> rangoEvaluacionComparator() {
+    public static Comparator<? super SRangoEvaluacion> rangoEvaluacionComparator() {
         return (respSource, respTarget) -> respSource.getMinimo().compareTo(respTarget.getMinimo());
     }
 }

@@ -7,8 +7,8 @@ import java.util.Objects;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.ot.OTColegio;
-import cl.eos.persistence.models.Colegio;
-import cl.eos.persistence.models.TipoColegio;
+import cl.eos.persistence.models.SColegio;
+import cl.eos.persistence.models.STipoColegio;
 import cl.eos.util.ExcelSheetWriterObj;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -68,7 +68,7 @@ public class ColegiosView extends AFormView implements EventHandler<ActionEvent>
     private ImageView imgColegio;
 
     @FXML
-    private ComboBox<TipoColegio> cmbTipoColegio;
+    private ComboBox<STipoColegio> cmbTipoColegio;
 
     @FXML
     private TableView<OTColegio> tblColegio;
@@ -135,7 +135,7 @@ public class ColegiosView extends AFormView implements EventHandler<ActionEvent>
             alert.showAndWait();
         } else {
             if (otSeleccionados != null && !otSeleccionados.isEmpty()) {
-                final List<Colegio> colegio = new ArrayList<Colegio>(otSeleccionados.size());
+                final List<SColegio> colegio = new ArrayList<SColegio>(otSeleccionados.size());
                 for (final OTColegio ot : otSeleccionados) {
                     colegio.add(ot.getColegio());
                 }
@@ -153,11 +153,11 @@ public class ColegiosView extends AFormView implements EventHandler<ActionEvent>
             if (lblError != null) {
                 lblError.setText(" ");
             }
-            Colegio colegio = null;
-            if (entitySelected != null && entitySelected instanceof Colegio) {
-                colegio = (Colegio) entitySelected;
+            SColegio colegio = null;
+            if (entitySelected != null && entitySelected instanceof SColegio) {
+                colegio = (SColegio) entitySelected;
             } else {
-                colegio = new Colegio();
+                colegio = new SColegio();
             }
             colegio.setName(txtNombre.getText());
             colegio.setDireccion(txtDireccion.getText());
@@ -195,7 +195,7 @@ public class ColegiosView extends AFormView implements EventHandler<ActionEvent>
             // } else if (source == btnImagen) {
             // accionButtonImagen();
         } else if (source == mnuExportar || source == menuExportar) {
-            tblColegio.setId("Colegio");
+            tblColegio.setId("SColegio");
             ExcelSheetWriterObj.convertirDatosALibroDeExcel(tblColegio);
         }
     }
@@ -241,16 +241,16 @@ public class ColegiosView extends AFormView implements EventHandler<ActionEvent>
     public void onDataArrived(List<Object> list) {
         if (list != null && !list.isEmpty()) {
             final Object entity = list.get(0);
-            if (entity instanceof Colegio) {
+            if (entity instanceof SColegio) {
                 final ObservableList<OTColegio> oList = FXCollections.observableArrayList();
                 for (final Object iEntity : list) {
-                    oList.add(new OTColegio((Colegio) iEntity));
+                    oList.add(new OTColegio((SColegio) iEntity));
                 }
                 tblColegio.setItems(oList);
-            } else if (entity instanceof TipoColegio) {
-                final ObservableList<TipoColegio> value = FXCollections.observableArrayList();
+            } else if (entity instanceof STipoColegio) {
+                final ObservableList<STipoColegio> value = FXCollections.observableArrayList();
                 for (final Object iEntity : list) {
-                    value.add((TipoColegio) iEntity);
+                    value.add((STipoColegio) iEntity);
                 }
                 cmbTipoColegio.setItems(value);
             }
@@ -259,12 +259,12 @@ public class ColegiosView extends AFormView implements EventHandler<ActionEvent>
 
     @Override
     public void onDeleted(IEntity entity) {
-        tblColegio.getItems().remove(new OTColegio((Colegio) entity));
+        tblColegio.getItems().remove(new OTColegio((SColegio) entity));
     }
 
     @Override
     public void onSaved(IEntity otObject) {
-        final OTColegio otColegio = new OTColegio((Colegio) otObject);
+        final OTColegio otColegio = new OTColegio((SColegio) otObject);
         final int indice = tblColegio.getItems().lastIndexOf(otColegio);
         if (indice != -1) {
             tblColegio.getItems().set(indice, otColegio);
