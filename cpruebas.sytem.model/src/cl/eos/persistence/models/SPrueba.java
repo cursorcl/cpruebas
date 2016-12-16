@@ -194,4 +194,130 @@ public class SPrueba extends AEntity {
         return true;
     }
 
+    public static class Builder {
+        private Long id;
+        private String name;
+        private STipoPrueba tipoPrueba;
+        private STipoCurso curso;
+        private SAsignatura asignatura;
+        private SNivelEvaluacion nivelEvaluacion;
+        private Long fecha;
+        private Integer nroPreguntas;
+        private Integer nroFormas;
+        private Integer alternativas;
+        private SProfesor profesor;
+        private Integer puntajeBase;
+        private String responses;
+        private Integer exigencia;
+        private List<SFormas> formas;
+        private List<SRespuestasEsperadasPrueba> respuestas;
+        private List<SEvaluacionPrueba> evaluaciones;
+
+        public Builder id(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder tipoPrueba(STipoPrueba tipoPrueba) {
+            this.tipoPrueba = tipoPrueba;
+            return this;
+        }
+
+        public Builder curso(STipoCurso curso) {
+            this.curso = curso;
+            return this;
+        }
+
+        public Builder asignatura(SAsignatura asignatura) {
+            this.asignatura = asignatura;
+            return this;
+        }
+
+        public Builder nivelEvaluacion(SNivelEvaluacion nivelEvaluacion) {
+            this.nivelEvaluacion = nivelEvaluacion;
+            return this;
+        }
+
+        public Builder fecha(Long fecha) {
+            this.fecha = fecha;
+            return this;
+        }
+
+        public Builder nroPreguntas(Integer nroPreguntas) {
+            this.nroPreguntas = nroPreguntas;
+            return this;
+        }
+
+        public Builder nroFormas(Integer nroFormas) {
+            this.nroFormas = nroFormas;
+            return this;
+        }
+
+        public Builder alternativas(Integer alternativas) {
+            this.alternativas = alternativas;
+            return this;
+        }
+
+        public Builder profesor(SProfesor profesor) {
+            this.profesor = profesor;
+            return this;
+        }
+
+        public Builder puntajeBase(Integer puntajeBase) {
+            this.puntajeBase = puntajeBase;
+            return this;
+        }
+
+        public Builder responses(String responses) {
+            this.responses = responses;
+            return this;
+        }
+
+        public Builder exigencia(Integer exigencia) {
+            this.exigencia = exigencia;
+            return this;
+        }
+
+        public Builder formas(List<SFormas> formas) {
+            this.formas = formas;
+            return this;
+        }
+
+        public Builder respuestas(List<SRespuestasEsperadasPrueba> respuestas) {
+            this.respuestas = respuestas;
+            return this;
+        }
+
+        public Builder evaluaciones(List<SEvaluacionPrueba> evaluaciones) {
+            this.evaluaciones = evaluaciones;
+            return this;
+        }
+
+        public SPrueba build() {
+            SPrueba sPrueba = new SPrueba();
+            sPrueba.id = id;
+            sPrueba.name = name;
+            sPrueba.tipoPrueba = tipoPrueba;
+            sPrueba.curso = curso;
+            sPrueba.asignatura = asignatura;
+            sPrueba.nivelEvaluacion = nivelEvaluacion;
+            sPrueba.fecha = fecha;
+            sPrueba.nroPreguntas = nroPreguntas;
+            sPrueba.nroFormas = nroFormas;
+            sPrueba.alternativas = alternativas;
+            sPrueba.profesor = profesor;
+            sPrueba.puntajeBase = puntajeBase;
+            sPrueba.responses = responses;
+            sPrueba.exigencia = exigencia;
+            sPrueba.formas = formas;
+            sPrueba.respuestas = respuestas;
+            sPrueba.evaluaciones = evaluaciones;
+            return sPrueba;
+        }
+    }
 }

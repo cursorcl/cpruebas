@@ -23,6 +23,9 @@ import org.apache.http.util.EntityUtils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import cl.eos.persistence.AEntity;
+import cl.eos.restful.tables.R_Formas;
+
 /**
  * Clase que realiza todas las operaciones tipo RESTFUL en el sistema.
  * 
@@ -91,7 +94,6 @@ public class RestfulClient {
     public static <T> List<T> getByParameters(Class<T> clazz, Map<String, Object> map) {
         List<T> result = null;
         String url = URL;
-
         try {
             HttpGet httpget = new HttpGet(url);
             httpget.addHeader("accept", "application/json");
@@ -114,10 +116,8 @@ public class RestfulClient {
                 }.getType());
             }
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (URISyntaxException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return result;
