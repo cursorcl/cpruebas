@@ -14,18 +14,6 @@ public interface IPersistenceService {
     void disconnect();
 
     /**
-     * Se utiliza principalmente para ejecutar operaciones de actualizacion en
-     * la base de datos (DELETE, UPDATE MASIVO etc.)
-     *
-     * @param namedQuery
-     *            Query nombrado asociado a una entidad.
-     * @param parameters
-     *            Los parametros que requiere el query.
-     * @return Numero de filas afectadas.
-     */
-    int executeUpdate(final String namedQuery, Map<String, Object> parameters);
-
-    /**
      * Ejecuta una consulta en base a una consulta nombrada.
      *
      * @param namedQuery
@@ -66,7 +54,7 @@ public interface IPersistenceService {
      * @param listener
      *            A quien se notifica del resultado.
      */
-    void findByAllId(Class<? extends IEntity> entityClazz, Object[] id, final IPersistenceListener listener);
+    void findByAllId(Class<? extends IEntity> entityClazz, Long[] id, final IPersistenceListener listener);
 
     /**
      * Busca la entidad asociada con el identificador.

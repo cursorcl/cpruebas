@@ -42,11 +42,11 @@ public interface IController {
 
     void findAll(Class<? extends IEntity> entityClazz, IView... view);
 
-    void findByAllId(Class<? extends IEntity> entityClazz, Object[] objects);
+    void findByAllId(Class<? extends IEntity> entityClazz, Long[] objects);
 
-    void findByAllId(Class<? extends IEntity> entityClazz, Object[] objects, IPersistenceListener listener);
+    void findByAllId(Class<? extends IEntity> entityClazz, Long[] objects, IPersistenceListener listener);
 
-    void findByAllId(Class<? extends IEntity> entityClazz, Object[] objects, IView... view);
+    void findByAllId(Class<? extends IEntity> entityClazz, Long[] objects, IView... view);
 
     void findById(Class<? extends IEntity> entityClazz, Long id);
 

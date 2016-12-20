@@ -11,7 +11,7 @@ import cl.eos.persistence.AEntity;
 
 @Entity(name = "dl_comprensionlectora")
 @NamedQueries({
-        @NamedQuery(name = "SComprensionLectora.findAll", query = "SELECT c FROM dl_comprensionlectora c order by c.name") })
+        @NamedQuery(name = "ComprensionLectora.findAll", query = "SELECT c FROM dl_comprensionlectora c order by c.name") })
 public class ComprensionLectora extends AEntity {
     private static final long serialVersionUID = 1L;
     @Id

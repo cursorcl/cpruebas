@@ -13,9 +13,9 @@ import javax.persistence.NamedQuery;
 import cl.eos.persistence.AEntity;
 
 @Entity(name = "formas")
-@NamedQueries({ @NamedQuery(name = "R_Formas.findAll", query = "SELECT e FROM formas e"),
-        @NamedQuery(name = "R_Formas.findByPrueba", query = "SELECT e FROM formas e WHERE e.prueba.id = :pruebaId"),
-        @NamedQuery(name = "R_Formas.deleteByPrueba", query = "DELETE FROM formas e WHERE e.prueba.id = :pruebaId") })
+@NamedQueries({ @NamedQuery(name = "Formas.findAll", query = "SELECT e FROM formas e"),
+        @NamedQuery(name = "Formas.findByPrueba", query = "SELECT e FROM formas e WHERE e.prueba.id = :pruebaId"),
+        @NamedQuery(name = "Formas.deleteByPrueba", query = "DELETE FROM formas e WHERE e.prueba.id = :pruebaId") })
 
 public class Formas extends AEntity {
 

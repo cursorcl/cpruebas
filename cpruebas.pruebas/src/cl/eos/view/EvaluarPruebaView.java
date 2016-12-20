@@ -445,7 +445,7 @@ public class EvaluarPruebaView extends AFormView {
                 final Map<String, Object> parameters = new HashMap<String, Object>();
                 parameters.put("tcursoId", prueba.getCurso().getId());
                 parameters.put("colegioId", colegio.getId());
-                controller.find("R_Curso.findByTipoColegio", parameters);
+                controller.find("Curso.findByTipoColegio", parameters);
             }
         });
         cmbCursos.setOnAction(new EHandlerCmbCurso());

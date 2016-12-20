@@ -113,17 +113,17 @@ public abstract class AController implements IController, IPersistenceListener {
     }
 
     @Override
-    public void findByAllId(Class<? extends IEntity> entityClazz, Object[] id) {
+    public void findByAllId(Class<? extends IEntity> entityClazz, Long[] id) {
         model.findByAllId(entityClazz, id);
     }
 
     @Override
-    public void findByAllId(Class<? extends IEntity> entityClazz, Object[] objects, IPersistenceListener listener) {
+    public void findByAllId(Class<? extends IEntity> entityClazz, Long[] objects, IPersistenceListener listener) {
         model.findByAllId(entityClazz, objects, listener);
     }
 
     @Override
-    public void findByAllId(Class<? extends IEntity> entityClazz, Object[] objects, final IView... pView) {
+    public void findByAllId(Class<? extends IEntity> entityClazz, Long[] objects, final IView... pView) {
         model.findByAllId(entityClazz, objects, new PersistenceListenerAdapter() {
             @Override
             public void onFindAllFinished(List<Object> list) {

@@ -26,9 +26,9 @@ import cl.eos.persistence.AEntity;
  *
  */
 @Entity(name = "evaluacionprueba")
-@NamedQueries({ @NamedQuery(name = "R_EvaluacionPrueba.findAll", query = "SELECT e FROM evaluacionprueba e"),
-        @NamedQuery(name = "R_EvaluacionPrueba.findEvaluacionByColegioAsig", query = "SELECT e FROM evaluacionprueba e where e.colegio.id = :idColegio and e.prueba.asignatura.id = :idAsignatura"),
-        @NamedQuery(name = "R_EvaluacionPrueba.findByPrueba", query = "SELECT e FROM evaluacionprueba e where e.prueba.id = :idPrueba") })
+@NamedQueries({ @NamedQuery(name = "EvaluacionPrueba.findAll", query = "SELECT e FROM evaluacionprueba e"),
+        @NamedQuery(name = "EvaluacionPrueba.findEvaluacionByColegioAsig", query = "SELECT e FROM evaluacionprueba e where e.colegio.id = :idColegio and e.prueba.asignatura.id = :idAsignatura"),
+        @NamedQuery(name = "EvaluacionPrueba.findByPrueba", query = "SELECT e FROM evaluacionprueba e where e.prueba.id = :idPrueba") })
 public class EvaluacionPrueba extends AEntity {
 
     private static final long serialVersionUID = 1L;

@@ -18,7 +18,7 @@ import javax.persistence.OrderBy;
 import cl.eos.persistence.AEntity;
 
 @Entity(name = "prueba")
-@NamedQueries({ @NamedQuery(name = "R_Prueba.findAll", query = "SELECT e FROM prueba e") })
+@NamedQueries({ @NamedQuery(name = "Prueba.findAll", query = "SELECT e FROM prueba e") })
 public class Prueba extends AEntity {
 
     public enum Estado {

@@ -20,8 +20,8 @@ import cl.eos.persistence.AEntity;
 @Cache(type = CacheType.NONE, size = 64000, expiry = 360000, coordinationType = CacheCoordinationType.INVALIDATE_CHANGED_OBJECTS // messages.
 )
 @NamedQueries({
-        @NamedQuery(name = "R_Alternativas.findAll", query = "SELECT a FROM alternativas a order by a.respuesta.prueba.id, a.numero"),
-        @NamedQuery(name = "R_Alternativas.findByPrueba", query = "SELECT a FROM alternativas a where a.respuesta.prueba.id = :idPrueba") })
+        @NamedQuery(name = "Alternativas.findAll", query = "SELECT a FROM alternativas a order by a.respuesta.prueba.id, a.numero"),
+        @NamedQuery(name = "Alternativas.findByPrueba", query = "SELECT a FROM alternativas a where a.respuesta.prueba.id = :idPrueba") })
 public class Alternativas extends AEntity {
 
 

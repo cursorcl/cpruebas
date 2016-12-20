@@ -11,7 +11,7 @@ public class PersistenceServiceFactory {
     public static IPersistenceService getPersistenceService() {
         if (PersistenceServiceFactory.persistenceService == null) {
 
-            PersistenceServiceFactory.persistenceService = new PersistenceServiceMYSQL();
+            PersistenceServiceFactory.persistenceService = new RestPersistenceServiceRESTFUL();
         }
         return PersistenceServiceFactory.persistenceService;
     }

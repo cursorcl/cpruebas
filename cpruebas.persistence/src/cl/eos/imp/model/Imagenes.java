@@ -14,8 +14,8 @@ import cl.eos.persistence.AEntity;
 
 @Entity(name = "imagenes")
 @NamedQueries({
-        @NamedQuery(name = "R_Imagenes.findAll", query = "SELECT i FROM imagenes i order by i.respuesta.prueba.id, i.numero "),
-        @NamedQuery(name = "R_Imagenes.findByPrueba", query = "SELECT i FROM imagenes i where i.respuesta.prueba.id = :idPrueba") })
+        @NamedQuery(name = "Imagenes.findAll", query = "SELECT i FROM imagenes i order by i.respuesta.prueba.id, i.numero "),
+        @NamedQuery(name = "Imagenes.findByPrueba", query = "SELECT i FROM imagenes i where i.respuesta.prueba.id = :idPrueba") })
 public class Imagenes extends AEntity {
 
     public static class Builder {

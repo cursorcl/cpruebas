@@ -55,9 +55,9 @@ public interface IModel {
      */
     void findAll(Class<? extends IEntity> entityClazz, IPersistenceListener listener);
 
-    void findByAllId(Class<? extends IEntity> entityClazz, Object[] id);
+    void findByAllId(Class<? extends IEntity> entityClazz, Long[] id);
 
-    void findByAllId(Class<? extends IEntity> entityClazz, Object[] id, IPersistenceListener listener);
+    void findByAllId(Class<? extends IEntity> entityClazz, Long[] id, IPersistenceListener listener);
 
     void findById(Class<? extends IEntity> entityClazz, Long id);
 

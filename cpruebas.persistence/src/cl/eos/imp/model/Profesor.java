@@ -10,7 +10,7 @@ import javax.persistence.NamedQuery;
 import cl.eos.persistence.AEntity;
 
 @Entity(name = "profesor")
-@NamedQueries({ @NamedQuery(name = "R_Profesor.findAll", query = "SELECT e FROM profesor e order by e.name") })
+@NamedQueries({ @NamedQuery(name = "Profesor.findAll", query = "SELECT e FROM profesor e order by e.name") })
 public class Profesor extends AEntity {
 
     private static final long serialVersionUID = 1L;

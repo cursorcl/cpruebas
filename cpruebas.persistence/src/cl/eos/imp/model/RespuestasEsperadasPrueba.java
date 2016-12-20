@@ -22,9 +22,9 @@ import cl.eos.persistence.AEntity;
  */
 @Entity(name = "respuestasesperadasprueba")
 @NamedQueries({
-        @NamedQuery(name = "SRespuestasEsperadasPrueba.findAll", query = "SELECT e FROM respuestasesperadasprueba e"),
-        @NamedQuery(name = "SRespuestasEsperadasPrueba.findByPrueba", query = "SELECT e FROM respuestasesperadasprueba e WHERE e.prueba.id = :pruebaId order by e.numero"),
-        @NamedQuery(name = "SRespuestasEsperadasPrueba.deleteByPrueba", query = "DELETE FROM respuestasesperadasprueba e WHERE e.prueba.id = :pruebaId") })
+        @NamedQuery(name = "RespuestasEsperadasPrueba.findAll", query = "SELECT e FROM respuestasesperadasprueba e"),
+        @NamedQuery(name = "RespuestasEsperadasPrueba.findByPrueba", query = "SELECT e FROM respuestasesperadasprueba e WHERE e.prueba.id = :pruebaId order by e.numero"),
+        @NamedQuery(name = "RespuestasEsperadasPrueba.deleteByPrueba", query = "DELETE FROM respuestasesperadasprueba e WHERE e.prueba.id = :pruebaId") })
 public class RespuestasEsperadasPrueba extends AEntity {
 
     public static class Builder {

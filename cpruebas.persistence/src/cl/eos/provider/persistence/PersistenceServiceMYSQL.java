@@ -110,28 +110,6 @@ public class PersistenceServiceMYSQL implements IPersistenceService {
     }
 
     @Override
-    public int executeUpdate(final String namedQuery, Map<String, Object> parameters) {
-
-        final EntityManager eManager = eFactory.createEntityManager();
-        eManager.getTransaction().begin();
-        final Query query = eManager.createNamedQuery(namedQuery);
-        for (final Entry<String, Object> entry : parameters.entrySet()) {
-            query.setParameter(entry.getKey(), entry.getValue());
-        }
-        int res = 0;
-        try {
-            res = query.executeUpdate();
-            eManager.getTransaction().commit();
-        } catch (final Exception e) {
-            PersistenceServiceMYSQL.LOG.severe("Error en el executeUpdate de:" + namedQuery + " / " + e.getMessage());
-            eManager.getTransaction().rollback();
-
-        }
-        eManager.close();
-        return res;
-    }
-
-    @Override
     public void find(final String namedQuery, final Map<String, Object> parameters,
             final IPersistenceListener listener) {
 
@@ -229,18 +207,16 @@ public class PersistenceServiceMYSQL implements IPersistenceService {
 
     @SuppressWarnings("unchecked")
     @Override
-    public void findByAllId(final Class<? extends IEntity> entityClazz, final Object[] id,
+    public void findByAllId(final Class<? extends IEntity> entityClazz, final Long[] id,
             final IPersistenceListener listener) {
         final Task<List<Object>> task = new Task<List<Object>>() {
             @Override
             protected List<Object> call() throws Exception {
                 List<Object> lresult = null;
                 final StringBuffer ids = new StringBuffer();
-                for (final Object object : id) {
-                    if (object instanceof SPrueba) {
-                        ids.append(((SPrueba) object).getId());
+                for (final Long lId : id) {
+                        ids.append(lId.longValue());
                         ids.append(",");
-                    }
                 }
                 final int idLast = ids.lastIndexOf(",");
                 final String listaIds = ids.substring(0, idLast);

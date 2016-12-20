@@ -1,12 +1,16 @@
 package cl.eos.restful.tables;
 
+import com.google.gson.annotations.SerializedName;
+
 import cl.eos.persistence.AEntity;
 
 public class R_TipoPrueba  extends AEntity{
     
     private static final long serialVersionUID = 1L;
     
+    @SerializedName(value = "id", alternate = {"ID", "Id"})
     Long id;
+    @SerializedName(value = "name", alternate = {"NAME", "Name"})
     String name;
 
     /**

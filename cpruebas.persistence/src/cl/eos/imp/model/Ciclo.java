@@ -10,7 +10,7 @@ import javax.persistence.NamedQuery;
 import cl.eos.persistence.AEntity;
 
 @Entity(name = "ciclo")
-@NamedQueries({ @NamedQuery(name = "R_Ciclo.findAll", query = "SELECT e FROM ciclo e order by e.name") })
+@NamedQueries({ @NamedQuery(name = "Ciclo.findAll", query = "SELECT e FROM ciclo e order by e.name") })
 public class Ciclo extends AEntity {
 
     private static final long serialVersionUID = 1L;

@@ -15,7 +15,7 @@ import javax.persistence.OneToMany;
 import cl.eos.persistence.AEntity;
 
 @Entity(name = "tipocolegio")
-@NamedQueries({ @NamedQuery(name = "STipoColegio.findAll", query = "SELECT e FROM tipocolegio e order by e.name") })
+@NamedQueries({ @NamedQuery(name = "TipoColegio.findAll", query = "SELECT e FROM tipocolegio e order by e.name") })
 
 public class TipoColegio extends AEntity {
 

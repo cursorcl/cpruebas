@@ -438,7 +438,7 @@ public class RestFul2Entity {
     }
 
     /**
-     * Utilitario que permite construir un mapa indexado por el ID de un
+     * Utilitario que permite construir un mapa indexado por el id de un
      * AEntity, a contar de una lista.
      * 
      * @param list

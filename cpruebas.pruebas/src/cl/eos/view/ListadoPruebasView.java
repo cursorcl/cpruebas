@@ -462,10 +462,10 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
 
         final ObservableList<OTPrueba> otPruebas = tblListadoPruebas.getSelectionModel().getSelectedItems();
         if (otPruebas != null) {
-            final SPrueba[] pruebas = new SPrueba[otPruebas.size()];
+            final Long[] pruebas = new Long[otPruebas.size()];
             int n = 0;
             for (final OTPrueba ot : otPruebas) {
-                pruebas[n++] = ot.getPrueba();
+                pruebas[n++] = ot.getPrueba().getId();
             }
             controller.findByAllId(SPrueba.class, pruebas, comunalEje);
             controller.findAll(SEvaluacionEjeTematico.class, comunalEje);
@@ -541,7 +541,7 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
                 controller.findById(SPrueba.class, pPrueba.getId(), imprimirPrueba);
                 final Map<String, Object> parameters = new HashMap<>();
                 parameters.put("idAsignatura", pPrueba.getAsignatura().getId());
-                controller.find("SEjeTematico.findByAsigntura", parameters, imprimirPrueba);
+                controller.find("EjeTematico.findByAsigntura", parameters, imprimirPrueba);
                 controller.findAll(SHabilidad.class, imprimirPrueba);
                 controller.findAll(SProfesor.class, imprimirPrueba);
                 controller.findAll(SColegio.class, imprimirPrueba);
@@ -563,7 +563,7 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
             final SPrueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
             final Map<String, Object> parameters = new HashMap<String, Object>();
             parameters.put("idPrueba", prueba.getId());
-            controller.find("R_EvaluacionPrueba.findByPrueba", parameters, evaluacionPrueba);
+            controller.find("EvaluacionPrueba.findByPrueba", parameters, evaluacionPrueba);
         }
     }
 

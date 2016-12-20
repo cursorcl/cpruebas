@@ -10,8 +10,8 @@ import javax.persistence.NamedQuery;
 import cl.eos.persistence.AEntity;
 
 @Entity(name = "ejetematico")
-@NamedQueries({ @NamedQuery(name = "SEjeTematico.findAll", query = "SELECT e FROM ejetematico e order by e.name"),
-        @NamedQuery(name = "SEjeTematico.findByAsigntura", query = "Select e FROM ejetematico e WHERE e.asignatura.id = :idAsignatura") })
+@NamedQueries({ @NamedQuery(name = "EjeTematico.findAll", query = "SELECT e FROM ejetematico e order by e.name"),
+        @NamedQuery(name = "EjeTematico.findByAsigntura", query = "Select e FROM ejetematico e WHERE e.asignatura.id = :idAsignatura") })
 public class EjeTematico extends AEntity {
 
     private static final long serialVersionUID = 1L;

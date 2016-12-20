@@ -15,10 +15,10 @@ import javax.persistence.OneToMany;
 import cl.eos.persistence.AEntity;
 
 @Entity(name = "curso")
-@NamedQueries({ @NamedQuery(name = "R_Curso.findAll", query = "SELECT e FROM curso e order by e.name"),
-        @NamedQuery(name = "R_Curso.findByTipo", query = "SELECT e FROM curso e where e.tipoCurso.id = :tcursoId"),
-        @NamedQuery(name = "R_Curso.findByColegio", query = "SELECT e FROM curso e where e.colegio.id = :colegioId"),
-        @NamedQuery(name = "R_Curso.findByTipoColegio", query = "SELECT e FROM curso e where e.colegio.id = :colegioId and e.tipoCurso.id = :tcursoId") })
+@NamedQueries({ @NamedQuery(name = "Curso.findAll", query = "SELECT e FROM curso e order by e.name"),
+        @NamedQuery(name = "Curso.findByTipo", query = "SELECT e FROM curso e where e.tipoCurso.id = :tcursoId"),
+        @NamedQuery(name = "Curso.findByColegio", query = "SELECT e FROM curso e where e.colegio.id = :colegioId"),
+        @NamedQuery(name = "Curso.findByTipoColegio", query = "SELECT e FROM curso e where e.colegio.id = :colegioId and e.tipoCurso.id = :tcursoId") })
 public class Curso extends AEntity {
 
     private static final long serialVersionUID = 1L;

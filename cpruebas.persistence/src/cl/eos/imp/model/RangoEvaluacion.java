@@ -12,7 +12,7 @@ import javax.persistence.Version;
 import cl.eos.persistence.AEntity;
 
 @Entity(name = "rangoevaluacion")
-@NamedQueries({ @NamedQuery(name = "SRangoEvaluacion.findAll", query = "SELECT e FROM rangoevaluacion e") })
+@NamedQueries({ @NamedQuery(name = "RangoEvaluacion.findAll", query = "SELECT e FROM rangoevaluacion e") })
 public class RangoEvaluacion extends AEntity {
 
     private static final long serialVersionUID = 1L;

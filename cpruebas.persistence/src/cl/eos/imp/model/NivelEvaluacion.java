@@ -15,7 +15,7 @@ import javax.persistence.OneToMany;
 import cl.eos.persistence.AEntity;
 
 @Entity(name = "nivelevaluacion")
-@NamedQueries({ @NamedQuery(name = "R_NivelEvaluacion.findAll", query = "SELECT e FROM nivelevaluacion e") })
+@NamedQueries({ @NamedQuery(name = "NivelEvaluacion.findAll", query = "SELECT e FROM nivelevaluacion e") })
 public class NivelEvaluacion extends AEntity {
 
     private static final long serialVersionUID = 1L;

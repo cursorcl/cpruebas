@@ -21,7 +21,7 @@ import cl.eos.util.Utils;
  *
  */
 @Entity(name = "pruebarendida")
-@NamedQueries({ @NamedQuery(name = "R_PruebaRendida.findAll", query = "SELECT e FROM pruebarendida e") })
+@NamedQueries({ @NamedQuery(name = "PruebaRendida.findAll", query = "SELECT e FROM pruebarendida e") })
 public class PruebaRendida extends AEntity {
 
     private static final long serialVersionUID = 1L;

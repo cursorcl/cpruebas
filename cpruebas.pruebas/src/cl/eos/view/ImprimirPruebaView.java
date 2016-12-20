@@ -269,7 +269,7 @@ public class ImprimirPruebaView extends AFormView {
             final Map<String, Object> parameters = new HashMap<String, Object>();
             parameters.put("tcursoId", prueba.getCurso().getId());
             parameters.put("colegioId", colegio.getId());
-            controller.find("R_Curso.findByTipoColegio", parameters);
+            controller.find("Curso.findByTipoColegio", parameters);
             final boolean disable = cmbColegios.getSelectionModel().getSelectedItem() == null
                     || cmbCursos.getSelectionModel().getSelectedItem() == null
                     || cmbProfesor.getSelectionModel().getSelectedItem() == null;

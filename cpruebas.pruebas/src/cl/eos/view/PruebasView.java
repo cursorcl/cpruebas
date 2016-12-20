@@ -525,7 +525,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
                 controller.findAll(SHabilidad.class, definePrueba);
                 final Map<String, Object> param = new HashMap<String, Object>();
                 param.put("tipoCursoId", prueba.getCurso().getId());
-                controller.find("R_Objetivo.findByTipoCurso", param, definePrueba);
+                controller.find("Objetivo.findByTipoCurso", param, definePrueba);
             }
         }
     }
@@ -619,7 +619,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
             final SPrueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
             final Map<String, Object> parameters = new HashMap<String, Object>();
             parameters.put("idPrueba", prueba.getId());
-            controller.find("R_EvaluacionPrueba.findByPrueba", parameters, evaluacionPrueba);
+            controller.find("EvaluacionPrueba.findByPrueba", parameters, evaluacionPrueba);
         }
     }
 

@@ -3,6 +3,8 @@ package cl.eos.provider.persistence;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executors;
@@ -12,6 +14,8 @@ import cl.eos.imp.view.ProgressForm;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.interfaces.entity.IPersistenceListener;
 import cl.eos.persistence.IPersistenceService;
+import cl.eos.persistence.models.STipoPrueba;
+import cl.eos.restful.RestFul2Entity;
 import cl.eos.restful.RestfulClient;
 import cl.eos.util.Pair;
 import cl.eos.util.Utils;
@@ -49,20 +53,19 @@ public class RestPersistenceServiceRESTFUL implements IPersistenceService {
     }
 
     @Override
-    public int executeUpdate(final String namedQuery, Map<String, Object> parameters)  {
-
-        int res = 0;
-        return res;
-    }
-
-    @Override
     public void find(final String namedQuery, final Map<String, Object> parameters,
             final IPersistenceListener listener) {
 
         final Task<List<Object>> task = new Task<List<Object>>() {
+            @SuppressWarnings("unchecked")
             @Override
             protected List<Object> call() throws Exception {
                 List<Object> lresults = null;
+                if (namedQuery.contains("findAll")) {
+                    lresults = (List<Object>) RestFul2Entity.getAll(getClazz(namedQuery));
+                } else {
+                    lresults = (List<Object>) RestfulClient.getByParameters(getClazz(namedQuery), parameters);
+                }
 
                 return lresults;
             }
@@ -79,7 +82,7 @@ public class RestPersistenceServiceRESTFUL implements IPersistenceService {
             @SuppressWarnings("unchecked")
             @Override
             protected List<Object> call() throws Exception {
-                List<? extends IEntity> result = RestfulClient.get(entityClazz);
+                List<? extends IEntity> result = RestFul2Entity.getAll(entityClazz);
                 return (List<Object>) result;
             }
         };
@@ -89,19 +92,19 @@ public class RestPersistenceServiceRESTFUL implements IPersistenceService {
     }
 
     @Override
-    public <T extends IEntity> List<T> findAllSynchro(Class<T> entityClazz) {
-        List<T> result = RestfulClient.get(entityClazz);
-        return result;
-    }
-
-    @Override
-    public void findByAllId(final Class<? extends IEntity> entityClazz, final Object[] id,
+    public void findByAllId(final Class<? extends IEntity> entityClazz, final Long[] id,
             final IPersistenceListener listener) {
         final Task<List<Object>> task = new Task<List<Object>>() {
             @Override
             protected List<Object> call() throws Exception {
+                List<Object> lresult = new ArrayList<>();
+                for (Long lId : id) {
+                    List<? extends IEntity> lList = RestfulClient.get(entityClazz, lId);
+                    for (Object o : lList) {
+                        lresult.add(o);
+                    }
+                }
 
-                List<Object> lresult = null;
                 return lresult;
             }
         };
@@ -134,8 +137,13 @@ public class RestPersistenceServiceRESTFUL implements IPersistenceService {
         final Task<IEntity> task = new Task<IEntity>() {
             @Override
             protected IEntity call() throws Exception {
-                IEntity lresult = null;
-                return lresult;
+                Map<String, Object> params = new HashMap<>();
+                params.put("name", name);
+                List<? extends IEntity> result = RestfulClient.getByParameters(entityClazz, params);
+                if (result != null && !result.isEmpty()) {
+                    return result.get(0);
+                }
+                return null;
             }
         };
         task.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED, t -> listener.onFound(task.getValue()));
@@ -146,10 +154,22 @@ public class RestPersistenceServiceRESTFUL implements IPersistenceService {
 
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public List<Object> findSynchro(final String namedQuery, final Map<String, Object> parameters) {
 
         List<Object> lresults = null;
+        try {
+            if (namedQuery.contains("findAll")) {
+
+                lresults = (List<Object>) RestFul2Entity.getAll(getClazz(namedQuery));
+            } else {
+                lresults = (List<Object>) RestfulClient.getByParameters(getClazz(namedQuery), parameters);
+            }
+        } catch (ClassNotFoundException e) {
+            lresults = null;
+        }
+
         return lresults;
 
     }
@@ -161,6 +181,12 @@ public class RestPersistenceServiceRESTFUL implements IPersistenceService {
             return result.get(0);
         }
         return null;
+    }
+
+    @Override
+    public <T extends IEntity> List<T> findAllSynchro(Class<T> entityClazz) {
+        List<T> result = RestFul2Entity.getAll(entityClazz);
+        return result;
     }
 
     @Override
@@ -245,4 +271,13 @@ public class RestPersistenceServiceRESTFUL implements IPersistenceService {
         return entity;
     }
 
+    private static Class<? extends IEntity> getClazz(String namedQuery) throws ClassNotFoundException {
+        String[] parts = namedQuery.split(".");
+        Class<?> clazz = Class.forName("cl.eos.persistence.models." + parts[0]);
+        return (Class<? extends IEntity>) clazz;
+    }
+
+    public static void main(String[] args) {
+        List<STipoPrueba> result = RestFul2Entity.getAll(STipoPrueba.class);
+    }
 }

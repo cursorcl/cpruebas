@@ -3,6 +3,7 @@ package cl.eos.restful;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -21,6 +22,9 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 
 import cl.eos.persistence.AEntity;
@@ -38,8 +42,14 @@ public class RestfulClient {
     private static final Gson gson = new Gson();
     private static final CloseableHttpClient httpclient = HttpClients.createDefault();
 
+    /**
+     * Obtiene una lista de elementos de la clase T que tengan el ID indicado.
+     * @param clazz Clase que se quiere buscar.
+     * @param id Identificador de la clase.
+     * @return Lista con elementos que coinciden.
+     */
     public static <T> List<T> get(Class<T> clazz, Long id) {
-        List<T> result = null;
+        List<T> result = new ArrayList<>();
         String url = String.format(BY_ID, clazz.getSimpleName().toLowerCase(), id);
 
         HttpGet httpget = new HttpGet(url);
@@ -54,8 +64,12 @@ public class RestfulClient {
             HttpEntity entity = response.getEntity();
             if (entity != null) {
                 String apiOutput = EntityUtils.toString(entity);
-                result = gson.fromJson(apiOutput, new TypeToken<List<T>>() {
-                }.getType());
+                JsonParser parser = new JsonParser();
+                JsonArray array = parser.parse(apiOutput).getAsJsonArray();
+                for(final JsonElement json: array){
+                    T item = gson.fromJson(json, clazz);
+                    result.add(item);
+                }
             }
         } catch (IOException e) {
             // TODO Auto-generated catch block
@@ -64,10 +78,9 @@ public class RestfulClient {
         return result;
     }
     
-    
     public static <T> List<T> get(Class<T> clazz) {
-        List<T> result = null;
-        String url = URL;
+        List<T> result = new ArrayList<>();
+        String url = String.format(URL, clazz.getSimpleName().substring(2));
 
         HttpGet httpget = new HttpGet(url);
         httpget.addHeader("accept", "application/json");
@@ -81,11 +94,15 @@ public class RestfulClient {
             HttpEntity entity = response.getEntity();
             if (entity != null) {
                 String apiOutput = EntityUtils.toString(entity);
-                result = gson.fromJson(apiOutput, new TypeToken<List<T>>() {
-                }.getType());
+                JsonParser parser = new JsonParser();
+                JsonArray array = parser.parse(apiOutput).getAsJsonArray();
+                for(final JsonElement json: array){
+                    T item = gson.fromJson(json, clazz);
+                    result.add(item);
+                }
+
             }
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return result;
