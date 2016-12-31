@@ -1,16 +1,24 @@
 package cl.eos.restful.tables;
 
+import com.google.gson.annotations.SerializedName;
+
 import cl.eos.persistence.AEntity;
 
 public class R_RangoEvaluacion  extends AEntity{
     
     private static final long serialVersionUID = 1L;
     
+    @SerializedName(value = "id", alternate = {"ID"})
     Long id;
+    @SerializedName(value = "abreviacion", alternate = {"ABREVIACION"})
     String abreviacion;
+    @SerializedName(value = "minimo", alternate = {"MINIMO"})
     float minimo;
+    @SerializedName(value = "name", alternate = {"NAME"})
     String name;
+    @SerializedName(value = "maximo", alternate = {"MAXIMO"})
     float maximo;
+    @SerializedName(value = "nivelevaluacion_id", alternate = {"NIVELEVALUACION_ID"})
     Long nivelevaluacion_id;
 
     /**

@@ -9,7 +9,7 @@ import javafx.fxml.FXMLLoader;
 public class RangosLecturaActivator extends AActivator {
     public RangosLecturaActivator() {
 
-        controller = new Contoller();
+        controller = new RangosLecturaContoller();
 
         final URL url = RangosLecturaActivator.class.getResource("/cl/eos/rangoslectura/RangoLectura.fxml");
         final FXMLLoader fxmlLoader = new FXMLLoader();

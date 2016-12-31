@@ -9,7 +9,7 @@ import javafx.fxml.FXMLLoader;
 public class VelocidadLectoraActivator extends AActivator {
     public VelocidadLectoraActivator() {
 
-        controller = new Contoller();
+        controller = new VelocidadLectoraContoller();
 
         final URL url = VelocidadLectoraActivator.class.getResource("/cl/eos/velocidadlectora/SVelocidadLectora.fxml");
         final FXMLLoader fxmlLoader = new FXMLLoader();

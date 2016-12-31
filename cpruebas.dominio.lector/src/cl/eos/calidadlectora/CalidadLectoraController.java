@@ -3,9 +3,9 @@ package cl.eos.calidadlectora;
 import cl.eos.imp.controller.AController;
 import cl.eos.persistence.models.SCalidadLectora;
 
-public class Contoller extends AController {
+public class CalidadLectoraController extends AController {
 
-    public Contoller() {
+    public CalidadLectoraController() {
 
     }
 

@@ -3,9 +3,9 @@ package cl.eos.velocidadlectora;
 import cl.eos.imp.controller.AController;
 import cl.eos.persistence.models.SVelocidadLectora;
 
-public class Contoller extends AController {
+public class VelocidadLectoraContoller extends AController {
 
-    public Contoller() {
+    public VelocidadLectoraContoller() {
 
     }
 

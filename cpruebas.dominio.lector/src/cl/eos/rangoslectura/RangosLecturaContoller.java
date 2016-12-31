@@ -3,9 +3,9 @@ package cl.eos.rangoslectura;
 import cl.eos.imp.controller.AController;
 import cl.eos.persistence.models.SRangosLectura;
 
-public class Contoller extends AController {
+public class RangosLecturaContoller extends AController {
 
-    public Contoller() {
+    public RangosLecturaContoller() {
 
     }
 

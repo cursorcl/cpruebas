@@ -1,13 +1,18 @@
 package cl.eos.restful.tables;
 
+import com.google.gson.annotations.SerializedName;
+
 import cl.eos.persistence.AEntity;
 
 public class R_DL_ComprensionLectora  extends AEntity{
     
     private static final long serialVersionUID = 1L;
     
+    @SerializedName(value = "id", alternate = {"ID"})
     Long id;
+    @SerializedName(value = "name", alternate = {"NAME"})
     String name;
+
 
     /**
      * @return the id

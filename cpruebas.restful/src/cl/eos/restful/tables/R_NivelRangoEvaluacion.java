@@ -1,7 +1,11 @@
 package cl.eos.restful.tables;
 
+import com.google.gson.annotations.SerializedName;
+
 public class R_NivelRangoEvaluacion {
+    @SerializedName(value = "nivelEvaluacionId", alternate = {"NIVELEVALUACIONID"})
     Long nivelEvaluacionId;
+    @SerializedName(value = "rangoId", alternate = {"RANGOID"})
     Long rangoId;
 
     public R_NivelRangoEvaluacion() {

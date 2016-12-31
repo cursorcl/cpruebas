@@ -9,7 +9,7 @@ import javafx.fxml.FXMLLoader;
 public class ComprensionLectoraActivator extends AActivator {
     public ComprensionLectoraActivator() {
 
-        controller = new Contoller();
+        controller = new ComprensionLectoraController();
 
         final URL url = ComprensionLectoraActivator.class
                 .getResource("/cl/eos/comprensionlectora/SComprensionLectora.fxml");

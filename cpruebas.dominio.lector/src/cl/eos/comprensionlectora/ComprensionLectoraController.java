@@ -3,9 +3,9 @@ package cl.eos.comprensionlectora;
 import cl.eos.imp.controller.AController;
 import cl.eos.persistence.models.SComprensionLectora;
 
-public class Contoller extends AController {
+public class ComprensionLectoraController extends AController {
 
-    public Contoller() {
+    public ComprensionLectoraController() {
 
     }
 

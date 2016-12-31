@@ -1,21 +1,34 @@
 package cl.eos.restful.tables;
 
+import com.google.gson.annotations.SerializedName;
+
 import cl.eos.persistence.AEntity;
 
 public class R_PruebaRendida  extends AEntity{
     
     private static final long serialVersionUID = 1L;
     
+    @SerializedName(value = "id", alternate = {"ID"})
     Long id;
+    @SerializedName(value = "omitidas", alternate = {"OMITIDAS"})
     Integer omitidas;
+    @SerializedName(value = "nota", alternate = {"NOTA"})
     float nota;
+    @SerializedName(value = "respuestas", alternate = {"RESPUESTAS"})
     String respuestas;
+    @SerializedName(value = "forma", alternate = {"FORMA"})
     Integer forma;
+    @SerializedName(value = "malas", alternate = {"MALAS"})
     Integer malas;
+    @SerializedName(value = "buenas", alternate = {"BUENAS"})
     Integer buenas;
+    @SerializedName(value = "name", alternate = {"NAME"})
     String name;
+    @SerializedName(value = "rango_id", alternate = {"RANGO_ID"})
     Long rango_id;
+    @SerializedName(value = "alumno_id", alternate = {"ALUMNO_ID"})
     Long alumno_id;
+    @SerializedName(value = "evaluacionprueba_id", alternate = {"EVALUACIONPRUEBA_ID"})
     Long evaluacionprueba_id;
 
     /**

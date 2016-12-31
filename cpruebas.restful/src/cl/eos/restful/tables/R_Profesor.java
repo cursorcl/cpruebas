@@ -1,15 +1,22 @@
 package cl.eos.restful.tables;
 
+import com.google.gson.annotations.SerializedName;
+
 import cl.eos.persistence.AEntity;
 
 public class R_Profesor  extends AEntity{
     
     private static final long serialVersionUID = 1L;
     
+    @SerializedName(value = "id", alternate = {"ID"})
     Long id;
+    @SerializedName(value = "name", alternate = {"NAME"})
     String name;
+    @SerializedName(value = "paterno", alternate = {"PATERNO"})
     String paterno;
+    @SerializedName(value = "rut", alternate = {"RUT"})
     String rut;
+    @SerializedName(value = "materno", alternate = {"MATERNO"})
     String materno;
 
     /**

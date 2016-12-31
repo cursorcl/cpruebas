@@ -1,13 +1,19 @@
 package cl.eos.restful.tables;
 
+import com.google.gson.annotations.SerializedName;
+
 import cl.eos.persistence.AEntity;
 
 public class R_DL_RangoLecturas  extends AEntity{
     private static final long serialVersionUID = 1L;
     
+    @SerializedName(value = "id", alternate = {"ID"})
     Long id;
+    @SerializedName(value = "tipocurso", alternate = {"TIPOCURSO"})
     Long tipocurso;
+    @SerializedName(value = "value", alternate = {"VALUE"})
     Integer value;
+    @SerializedName(value = "velocidadlectora_id", alternate = {"VELOCIDADLECTORA_ID"})
     Long velocidadlectora_id;
 
     /**

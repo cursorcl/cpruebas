@@ -1,13 +1,20 @@
 package cl.eos.restful.tables;
 
+import com.google.gson.annotations.SerializedName;
+
 import cl.eos.persistence.AEntity;
 
 public class R_Objetivo  extends AEntity{
     private static final long serialVersionUID = 1L;
+    @SerializedName(value = "id", alternate = {"ID"})
     Long id;
-    String descripcion;
+    @SerializedName(value = "name", alternate = {"NAME"})
     String name;
+    @SerializedName(value = "descripcion", alternate = {"DESCRIPCION"})
+    String descripcion;
+    @SerializedName(value = "tipocurso_id", alternate = {"TIPOCURSO_ID"})
     Long tipocurso_id;
+    @SerializedName(value = "asignatura_id", alternate = {"ASIGNATURA_ID"})
     Long asignatura_id;
 
     /**

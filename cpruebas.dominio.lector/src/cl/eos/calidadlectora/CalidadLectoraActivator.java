@@ -9,7 +9,7 @@ import javafx.fxml.FXMLLoader;
 public class CalidadLectoraActivator extends AActivator {
     public CalidadLectoraActivator() {
 
-        controller = new Contoller();
+        controller = new CalidadLectoraController();
 
         final URL url = CalidadLectoraActivator.class.getResource("/cl/eos/calidadlectora/SCalidadLectora.fxml");
         final FXMLLoader fxmlLoader = new FXMLLoader();

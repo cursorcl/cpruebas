@@ -7,15 +7,15 @@ import cl.eos.persistence.AEntity;
 public class R_Alternativas extends AEntity{
 
     private static final long serialVersionUID = 1L;
-    @SerializedName(value = "id", alternate = {"ID", "Id"})
+    @SerializedName(value = "id", alternate = {"ID"})
     Long id;
-    @SerializedName(value = "name", alternate = {"NAME", "Name"})
+    @SerializedName(value = "name", alternate = {"NAME"})
     String name;
-    @SerializedName(value = "numero", alternate = {"NUMERO", "Numero"})
+    @SerializedName(value = "numero", alternate = {"NUMERO"})
     Integer numero;
-    @SerializedName(value = "texto", alternate = {"TEXTO", "Texto"})
+    @SerializedName(value = "texto", alternate = {"TEXTO"})
     String texto;
-    @SerializedName(value = "respuesta_id", alternate = {"RESPUESTA_ID", "Respuesta_Id"})
+    @SerializedName(value = "respuesta_id", alternate = {"RESPUESTA_ID"})
     Long respuesta_id;
 
     /**

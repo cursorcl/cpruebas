@@ -1,15 +1,22 @@
 package cl.eos.restful.tables;
 
+import com.google.gson.annotations.SerializedName;
+
 import cl.eos.persistence.AEntity;
 
 public class R_Formas  extends AEntity{
     
     private static final long serialVersionUID = 1L;
     
+    @SerializedName(value = "id", alternate = {"ID"})
     Long id;
+    @SerializedName(value = "forma", alternate = {"FORMA"})
     Integer forma;
+    @SerializedName(value = "orden", alternate = {"ORDEN"})
     String orden;
+    @SerializedName(value = "name", alternate = {"NAME"})
     String name;
+    @SerializedName(value = "prueba_id", alternate = {"PRUEBA_ID"})
     Long prueba_id;
 
     /**

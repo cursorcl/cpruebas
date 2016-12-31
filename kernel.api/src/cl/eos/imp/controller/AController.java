@@ -20,9 +20,11 @@ public abstract class AController implements IController, IPersistenceListener {
     protected IModel model;
 
     public AController() {
-        initialize();
+
         if (model != null) {
-            model.setController(this);
+            {
+                model.setController(this);
+            }
         }
     }
 
@@ -44,6 +46,7 @@ public abstract class AController implements IController, IPersistenceListener {
 
             }
         }
+        initialize();
     }
 
     @Override
