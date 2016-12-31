@@ -1,6 +1,9 @@
 package cl.eos.controller;
 
+import java.util.List;
+
 import cl.eos.imp.controller.AController;
+import cl.eos.interfaces.entity.IEntity;
 import cl.eos.model.PruebasModel;
 import cl.eos.persistence.models.SAsignatura;
 import cl.eos.persistence.models.SEvaluacionPrueba;
@@ -26,6 +29,42 @@ public class PruebasController extends AController {
         model.findAll(SAsignatura.class, this);
         model.findAll(SNivelEvaluacion.class, this);
         model.findAll(SEvaluacionPrueba.class, this);
+    }
+
+    /* (non-Javadoc)
+     * @see cl.eos.imp.controller.AController#onError(java.lang.String)
+     */
+    @Override
+    public void onError(String error) {
+        // TODO Auto-generated method stub
+        super.onError(error);
+    }
+
+    /* (non-Javadoc)
+     * @see cl.eos.imp.controller.AController#onFindAllFinished(java.util.List)
+     */
+    @Override
+    public void onFindAllFinished(List<Object> list) {
+        // TODO Auto-generated method stub
+        super.onFindAllFinished(list);
+    }
+
+    /* (non-Javadoc)
+     * @see cl.eos.imp.controller.AController#onFindFinished(java.util.List)
+     */
+    @Override
+    public void onFindFinished(List<Object> list) {
+        // TODO Auto-generated method stub
+        super.onFindFinished(list);
+    }
+
+    /* (non-Javadoc)
+     * @see cl.eos.imp.controller.AController#onFound(cl.eos.interfaces.entity.IEntity)
+     */
+    @Override
+    public void onFound(IEntity entity) {
+        // TODO Auto-generated method stub
+        super.onFound(entity);
     }
 
 }

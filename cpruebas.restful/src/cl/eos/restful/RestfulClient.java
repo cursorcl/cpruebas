@@ -27,9 +27,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 
-import cl.eos.persistence.AEntity;
-import cl.eos.restful.tables.R_Formas;
-
 /**
  * Clase que realiza todas las operaciones tipo RESTFUL en el sistema.
  * 

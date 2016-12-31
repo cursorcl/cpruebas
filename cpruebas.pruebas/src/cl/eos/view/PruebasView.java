@@ -499,10 +499,10 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 
         final ObservableList<OTPrueba> otPruebas = tblListadoPruebas.getSelectionModel().getSelectedItems();
         if (otPruebas != null) {
-            final SPrueba[] pruebas = new SPrueba[otPruebas.size()];
+            final Long[] pruebas = new Long[otPruebas.size()];
             int n = 0;
             for (final OTPrueba ot : otPruebas) {
-                pruebas[n++] = ot.getPrueba();
+                pruebas[n++] = ot.getPrueba().getId();
             }
             controller.findByAllId(SPrueba.class, pruebas, comunalEje);
             controller.findAll(SEvaluacionEjeTematico.class, comunalEje);

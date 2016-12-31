@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Clientes>
+    <Cliente>
+		<rut>-</rut>
+		<nombre>CPruebas</nombre>
+		<direccion>-</direccion>
+		<fono>-</fono>
+		<alias>cpruebas</alias>
+	</Cliente>
+    <!-- 
 	<Cliente>
 		<rut>-</rut>
 		<nombre>Escuela Mariano Latorre</nombre>
@@ -29,19 +37,14 @@
 		<fono>-</fono>
 		<alias>balmaceda_cpruebas</alias>
 	</Cliente>		
-	<Cliente>
-		<rut>-</rut>
-		<nombre>CPruebas</nombre>
-		<direccion>-</direccion>
-		<fono>-</fono>
-		<alias>cpruebas</alias>
-	</Cliente>
+
 	<Cliente>
 		<rut>-</rut>
 		<nombre>CPruebas2</nombre>
 		<direccion>-</direccion>
 		<fono>-</fono>
 		<alias>cpruebas2</alias>
-	</Cliente>	
+	</Cliente>
+	 -->	
 			
 </Clientes>

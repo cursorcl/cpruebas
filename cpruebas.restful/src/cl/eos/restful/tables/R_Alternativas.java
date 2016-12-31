@@ -1,14 +1,21 @@
 package cl.eos.restful.tables;
 
+import com.google.gson.annotations.SerializedName;
+
 import cl.eos.persistence.AEntity;
 
 public class R_Alternativas extends AEntity{
 
     private static final long serialVersionUID = 1L;
+    @SerializedName(value = "id", alternate = {"ID", "Id"})
     Long id;
+    @SerializedName(value = "name", alternate = {"NAME", "Name"})
     String name;
+    @SerializedName(value = "numero", alternate = {"NUMERO", "Numero"})
     Integer numero;
+    @SerializedName(value = "texto", alternate = {"TEXTO", "Texto"})
     String texto;
+    @SerializedName(value = "respuesta_id", alternate = {"RESPUESTA_ID", "Respuesta_Id"})
     Long respuesta_id;
 
     /**
