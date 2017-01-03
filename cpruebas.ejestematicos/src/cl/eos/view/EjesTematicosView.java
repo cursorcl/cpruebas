@@ -6,10 +6,12 @@ import java.util.List;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.ot.OTEjeTematico;
-import cl.eos.persistence.models.SAsignatura;
-import cl.eos.persistence.models.SEjeTematico;
-import cl.eos.persistence.models.STipoPrueba;
+import cl.eos.restful.tables.R_Asignatura;
+import cl.eos.restful.tables.R_Ejetematico;
+import cl.eos.restful.tables.R_TipoCurso;
+import cl.eos.restful.tables.R_TipoPrueba;
 import cl.eos.util.ExcelSheetWriterObj;
+import cl.eos.util.Utils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -56,10 +58,10 @@ public class EjesTematicosView extends AFormView implements EventHandler<ActionE
     private TextField txtNombre;
 
     @FXML
-    private ComboBox<STipoPrueba> cmbTipoPrueba;
+    private ComboBox<R_TipoPrueba> cmbTipoPrueba;
 
     @FXML
-    private ComboBox<SAsignatura> cmbAsignatura;
+    private ComboBox<R_Asignatura> cmbAsignatura;
     @FXML
     private Label lblError;
 
@@ -76,6 +78,16 @@ public class EjesTematicosView extends AFormView implements EventHandler<ActionE
 
     @FXML
     private TableColumn<OTEjeTematico, String> colEnsayo;
+
+    private boolean b_TipoPrueba;
+
+    private boolean b_EjeTematico;
+
+    private boolean b_Asignatura;
+
+    ObservableList<OTEjeTematico> lstEjes;
+    ObservableList<R_TipoPrueba> lstTipoPruebas;
+    ObservableList<R_Asignatura> lstAsignaturas;
 
     public EjesTematicosView() {
         setTitle("Ejes Temáticos");
@@ -113,7 +125,7 @@ public class EjesTematicosView extends AFormView implements EventHandler<ActionE
         } else {
 
             if (otSeleccionados != null && !otSeleccionados.isEmpty()) {
-                final List<SEjeTematico> ejeTematico = new ArrayList<SEjeTematico>(otSeleccionados.size());
+                final List<R_Ejetematico> ejeTematico = new ArrayList<R_Ejetematico>(otSeleccionados.size());
                 for (final OTEjeTematico ot : otSeleccionados) {
                     ejeTematico.add(ot.getEjeTematico());
                 }
@@ -131,15 +143,15 @@ public class EjesTematicosView extends AFormView implements EventHandler<ActionE
             if (lblError != null) {
                 lblError.setText(" ");
             }
-            SEjeTematico ejeTematico = null;
-            if (entitySelected != null && entitySelected instanceof SEjeTematico) {
-                ejeTematico = (SEjeTematico) entitySelected;
+            R_Ejetematico ejeTematico = null;
+            if (entitySelected != null && entitySelected instanceof R_Ejetematico) {
+                ejeTematico = (R_Ejetematico) entitySelected;
             } else {
-                ejeTematico = new SEjeTematico();
+                ejeTematico = new R_Ejetematico.Builder().id(Utils.getLastIndex()).build();
             }
             ejeTematico.setName(txtNombre.getText());
-            ejeTematico.setTipoprueba(cmbTipoPrueba.getValue());
-            ejeTematico.setAsignatura(cmbAsignatura.getValue());
+            ejeTematico.setTipoprueba_id(cmbTipoPrueba.getValue().getId());
+            ejeTematico.setAsignatura_id(cmbAsignatura.getValue().getId());
             save(ejeTematico);
             limpiarControles();
         } else {
@@ -217,38 +229,53 @@ public class EjesTematicosView extends AFormView implements EventHandler<ActionE
     public void onDataArrived(List<Object> list) {
         if (list != null && !list.isEmpty()) {
             final Object entity = list.get(0);
-            if (entity instanceof SEjeTematico) {
-                final ObservableList<OTEjeTematico> value = FXCollections.observableArrayList();
+            if (entity instanceof R_Ejetematico) {
+                lstEjes = FXCollections.observableArrayList();
                 for (final Object iEntity : list) {
-                    value.add(new OTEjeTematico((SEjeTematico) iEntity));
+                    lstEjes.add(new OTEjeTematico((R_Ejetematico) iEntity));
                 }
-                tblEjesTematicos.setItems(value);
+                b_EjeTematico = true;
 
-            } else if (entity instanceof STipoPrueba) {
-                final ObservableList<STipoPrueba> oList = FXCollections.observableArrayList();
+            } else if (entity instanceof R_TipoPrueba) {
+                lstTipoPruebas = FXCollections.observableArrayList();
                 for (final Object iEntity : list) {
-                    oList.add((STipoPrueba) iEntity);
+                    lstTipoPruebas.add((R_TipoPrueba) iEntity);
                 }
-                cmbTipoPrueba.setItems(oList);
-            } else if (entity instanceof SAsignatura) {
-                final ObservableList<SAsignatura> oList = FXCollections.observableArrayList();
+                cmbTipoPrueba.setItems(lstTipoPruebas);
+                b_TipoPrueba = true;
+            } else if (entity instanceof R_Asignatura) {
+                lstAsignaturas = FXCollections.observableArrayList();
                 for (final Object iEntity : list) {
-                    oList.add((SAsignatura) iEntity);
+                    lstAsignaturas.add((R_Asignatura) iEntity);
                 }
-                cmbAsignatura.setItems(oList);
-
+                cmbAsignatura.setItems(lstAsignaturas);
+                b_Asignatura = true;
+            }
+            if (b_EjeTematico && b_TipoPrueba && b_Asignatura) {
+                for (OTEjeTematico eje : lstEjes) {
+                    R_Asignatura asignatura = lstAsignaturas.stream()
+                            .filter(a -> a.getId().equals(eje.getEjeTematico().getAsignatura_id())).findFirst().get();
+                    R_TipoPrueba tipoPrueba = lstTipoPruebas.stream()
+                            .filter(t -> t.getId().equals(eje.getEjeTematico().getTipoprueba_id())).findFirst().get();
+                    eje.setAsignatura(asignatura);
+                    eje.setTipoprueba(tipoPrueba);
+                }
+                tblEjesTematicos.setItems(lstEjes);
             }
         }
     }
 
     @Override
     public void onDeleted(IEntity entity) {
-        tblEjesTematicos.getItems().remove(new OTEjeTematico((SEjeTematico) entity));
+        tblEjesTematicos.getItems().remove(new OTEjeTematico((R_Ejetematico) entity));
     }
 
     @Override
     public void onSaved(IEntity otObject) {
-        final OTEjeTematico ejeTematico = new OTEjeTematico((SEjeTematico) otObject);
+        R_Ejetematico eje = (R_Ejetematico) otObject;
+        R_Asignatura asignatura = controller.findSynchroById(R_Asignatura.class, eje.getAsignatura_id());
+        R_TipoPrueba tpoPrueba = controller.findSynchroById(R_TipoPrueba.class, eje.getTipoprueba_id());
+        final OTEjeTematico ejeTematico = new OTEjeTematico((R_Ejetematico) otObject, tpoPrueba, asignatura);
         final int indice = tblEjesTematicos.getItems().lastIndexOf(ejeTematico);
         if (indice != -1) {
             tblEjesTematicos.getItems().set(indice, ejeTematico);

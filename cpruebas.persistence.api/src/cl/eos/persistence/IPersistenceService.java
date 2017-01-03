@@ -78,11 +78,13 @@ public interface IPersistenceService {
 
     List<Object> findSynchro(final String namedQuery, final Map<String, Object> parameters);
 
-    IEntity findSynchroById(Class<? extends IEntity> entityClazz, Long id);
+    <T extends IEntity> T findSynchroById(Class<T> entityClazz, Long id);
 
     void insert(String entity, List<Object> list, IPersistenceListener listener) throws ExceptionBD;
 
     IEntity save(IEntity entity);
 
     IEntity update(IEntity entity);
+
+    void findAll(Class<? extends IEntity> entityClazz, IPersistenceListener listener, int offset, int items);
 }

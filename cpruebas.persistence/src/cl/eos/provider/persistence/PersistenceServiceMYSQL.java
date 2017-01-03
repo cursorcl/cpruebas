@@ -28,7 +28,6 @@ import cl.eos.imp.view.ProgressForm;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.interfaces.entity.IPersistenceListener;
 import cl.eos.persistence.IPersistenceService;
-import cl.eos.persistence.models.SPrueba;
 import cl.eos.util.Pair;
 import cl.eos.util.Utils;
 import javafx.application.Platform;
@@ -350,9 +349,10 @@ public class PersistenceServiceMYSQL implements IPersistenceService {
 
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public IEntity findSynchroById(Class<? extends IEntity> entityClazz, Long id) {
-        IEntity lresult = null;
+    public <T extends IEntity> T findSynchroById(Class<T> entityClazz, Long id) {
+        T lresult = null;
         final String strEntity = entityClazz.getSimpleName();
         final String strQuery = String.format("select c from %s c where c.id = :id", strEntity.toLowerCase());
 
@@ -364,7 +364,7 @@ public class PersistenceServiceMYSQL implements IPersistenceService {
             query.setHint(QueryHints.CACHE_STORE_MODE, HintValues.TRUE);
             query.setParameter("id", id);
             try {
-                lresult = (IEntity) query.setLockMode(LockModeType.PESSIMISTIC_WRITE).getSingleResult();
+                lresult = (T) query.setLockMode(LockModeType.PESSIMISTIC_WRITE).getSingleResult();
                 eManager.getTransaction().commit();
             } catch (final Exception e) {
                 eManager.getTransaction().rollback();
@@ -524,6 +524,12 @@ public class PersistenceServiceMYSQL implements IPersistenceService {
         eManager.getTransaction().commit();
         eManager.close();
         return mEntity;
+    }
+
+    @Override
+    public void findAll(Class<? extends IEntity> entityClazz, IPersistenceListener listener, int offset, int items) {
+        // TODO Auto-generated method stub
+        
     }
 
 }

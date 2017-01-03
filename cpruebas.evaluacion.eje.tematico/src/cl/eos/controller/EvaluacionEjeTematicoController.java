@@ -2,7 +2,7 @@ package cl.eos.controller;
 
 import cl.eos.imp.controller.AController;
 import cl.eos.model.EvaluacionEjeTematicoModel;
-import cl.eos.persistence.models.SEvaluacionEjeTematico;
+import cl.eos.restful.tables.R_EvaluacionEjetematico;
 
 public class EvaluacionEjeTematicoController extends AController {
 
@@ -13,6 +13,6 @@ public class EvaluacionEjeTematicoController extends AController {
     @Override
     public void initialize() {
         model = new EvaluacionEjeTematicoModel();
-        model.findAll(SEvaluacionEjeTematico.class, this);
+        model.findAll(R_EvaluacionEjetematico.class, this);
     }
 }

@@ -3,16 +3,6 @@ package cl.eos.view.ots;
 import java.time.LocalDate;
 import java.util.List;
 
-import cl.eos.persistence.models.SAsignatura;
-import cl.eos.persistence.models.SEvaluacionPrueba;
-import cl.eos.persistence.models.SFormas;
-import cl.eos.persistence.models.SNivelEvaluacion;
-import cl.eos.persistence.models.SProfesor;
-import cl.eos.persistence.models.SPrueba;
-import cl.eos.persistence.models.SPrueba.Estado;
-import cl.eos.persistence.models.SRespuestasEsperadasPrueba;
-import cl.eos.persistence.models.STipoCurso;
-import cl.eos.persistence.models.STipoPrueba;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleObjectProperty;

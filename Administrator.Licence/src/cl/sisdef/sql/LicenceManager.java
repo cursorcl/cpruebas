@@ -134,7 +134,6 @@ public class LicenceManager extends SQLiteConnector
      */
     public void insertPlan(final Register newLicence)
     {
-        boolean success = false;
         final String sqlSentence = "INSERT INTO " + TABLE_DATA_LICENCE
                 + " ( serial, licence, date ) "
                 + " VALUES ( ?, ?, ? )";
@@ -151,7 +150,6 @@ public class LicenceManager extends SQLiteConnector
 
             pstmt.setLong(3, newLicence.getDate());
 
-            success = (pstmt.executeUpdate() > 0);
             pstmt.close();
         }
         catch (final Exception e)

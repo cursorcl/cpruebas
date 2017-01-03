@@ -256,6 +256,7 @@ public class AnswerTrainerPanel extends JPanel
                     dataset.addRow(lastElement.getDatasetRow());
                     label_trainingSetSize.setText(Integer.toString(dataset.getRows().size()));
                 }
+                brdr.close();
             } catch (final NumberFormatException e) {
                 AnswerTrainerPanel.log.warning(e.toString());
             } catch (final VectorSizeMismatchException e) {

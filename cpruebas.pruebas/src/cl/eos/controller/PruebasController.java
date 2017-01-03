@@ -22,13 +22,13 @@ public class PruebasController extends AController {
     @Override
     public void initialize() {
         model = new PruebasModel();
-        model.findAll(SPrueba.class, this);
         model.findAll(STipoPrueba.class, this);
         model.findAll(SProfesor.class, this);
         model.findAll(STipoCurso.class, this);
         model.findAll(SAsignatura.class, this);
         model.findAll(SNivelEvaluacion.class, this);
         model.findAll(SEvaluacionPrueba.class, this);
+        model.findAll(SPrueba.class, this);
     }
 
     /* (non-Javadoc)

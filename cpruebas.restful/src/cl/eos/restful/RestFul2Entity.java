@@ -132,7 +132,7 @@ public class RestFul2Entity {
         for (R_Prueba rEntity : lstREnity) {
             
             List<R_Formas> formas = mapFormas.get(rEntity.getId());
-            List<R_RespuestasEsperadasPrueba> respuestas = mapRespuestas.get(rEntity.getId());
+            //List<R_RespuestasEsperadasPrueba> respuestas = mapRespuestas.get(rEntity.getId());
             
             SAsignatura asignatura = mapAsig.get(rEntity.getAsignatura_id());
             STipoCurso curso = mapCurso.get(rEntity.getCurso_id());

@@ -2,29 +2,28 @@ package cl.eos.view.ots;
 
 import java.time.LocalDate;
 
-import cl.eos.persistence.models.SColegio;
-import cl.eos.persistence.models.SCurso;
-import cl.eos.persistence.models.SProfesor;
-import cl.eos.persistence.models.SPrueba;
+import cl.eos.restful.tables.R_Colegio;
+import cl.eos.restful.tables.R_Curso;
+import cl.eos.restful.tables.R_Profesor;
+import cl.eos.restful.tables.R_Prueba;
 
 public class OTImprimirPrueba {
 
-    private SPrueba prueba;
-    private SColegio colegio;
-    private SCurso curso;
-    private SProfesor profesor;
+    private R_Prueba prueba;
+    private R_Colegio colegio;
+    private R_Curso curso;
+    private R_Profesor profesor;
     private Long fecha;
-    private Integer nroAlumnos;
 
-    public OTImprimirPrueba(SPrueba prueba) {
+    public OTImprimirPrueba(R_Prueba prueba) {
         this.prueba = prueba;
     }
 
-    public SColegio getColegio() {
+    public R_Colegio getColegio() {
         return colegio;
     }
 
-    public SCurso getCurso() {
+    public R_Curso getCurso() {
         return curso;
     }
 
@@ -37,40 +36,31 @@ public class OTImprimirPrueba {
         return date.toString();
     }
 
-    public Integer getNroAlumnos() {
-        return nroAlumnos;
-    }
-
-    public SProfesor getProfesor() {
+    public R_Profesor getProfesor() {
         return profesor;
     }
 
-    public SPrueba getPrueba() {
+    public R_Prueba getPrueba() {
         return prueba;
     }
 
-    public void setColegio(SColegio colegio) {
+    public void setColegio(R_Colegio colegio) {
         this.colegio = colegio;
     }
 
-    public void setCurso(SCurso curso) {
+    public void setCurso(R_Curso curso) {
         this.curso = curso;
-        setNroAlumnos(curso.getAlumnos().size());
     }
 
     public void setFecha(Long fecha) {
         this.fecha = fecha;
     }
 
-    public void setNroAlumnos(Integer nroAlumnos) {
-        this.nroAlumnos = nroAlumnos;
-    }
-
-    public void setProfesor(SProfesor profesor) {
+    public void setProfesor(R_Profesor profesor) {
         this.profesor = profesor;
     }
 
-    public void setPrueba(SPrueba prueba) {
+    public void setPrueba(R_Prueba prueba) {
         this.prueba = prueba;
     }
 

@@ -4,7 +4,7 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.persistence"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/kernel.api"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.sytem.model"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.persistence.api"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.restful"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

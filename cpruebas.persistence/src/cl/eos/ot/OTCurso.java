@@ -1,12 +1,9 @@
 package cl.eos.ot;
 
-import java.util.Collection;
-
-import cl.eos.persistence.models.SAlumno;
-import cl.eos.persistence.models.SCiclo;
-import cl.eos.persistence.models.SColegio;
-import cl.eos.persistence.models.SCurso;
-import cl.eos.persistence.models.STipoCurso;
+import cl.eos.restful.tables.R_Ciclo;
+import cl.eos.restful.tables.R_Colegio;
+import cl.eos.restful.tables.R_Curso;
+import cl.eos.restful.tables.R_TipoCurso;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -15,37 +12,35 @@ public class OTCurso {
 
     private final SimpleLongProperty id = new SimpleLongProperty();
     private final SimpleStringProperty name = new SimpleStringProperty();
-    private final SimpleObjectProperty<SCiclo> ciclo = new SimpleObjectProperty<SCiclo>();
-    private final SimpleObjectProperty<SColegio> colegio = new SimpleObjectProperty<SColegio>();
+    private final SimpleObjectProperty<R_Ciclo> ciclo = new SimpleObjectProperty<R_Ciclo>();
+    private final SimpleObjectProperty<R_Colegio> colegio = new SimpleObjectProperty<R_Colegio>();
 
-    private final SimpleObjectProperty<Collection<SAlumno>> alumnos = new SimpleObjectProperty<Collection<SAlumno>>();
-    private final SimpleObjectProperty<STipoCurso> tipoCurso = new SimpleObjectProperty<STipoCurso>();
+    private final SimpleObjectProperty<R_TipoCurso> tipoCurso = new SimpleObjectProperty<R_TipoCurso>();
 
-    private SCurso curso;
+    private R_Curso curso;
 
     public OTCurso() {
         // TODO Auto-generated constructor stub
     }
 
-    public OTCurso(SCurso curso) {
-        this.curso = curso;
-        id.set(curso.getId());
-        name.set(curso.getName());
-        ciclo.set(curso.getCiclo());
-        colegio.set(curso.getColegio());
-        alumnos.set(curso.getAlumnos());
-        tipoCurso.set(curso.getTipoCurso());
+    public OTCurso(R_Curso p_curso) {
+        this(p_curso, null, null, null);
     }
 
-    public final SimpleObjectProperty<Collection<SAlumno>> alumnosProperty() {
-        return alumnos;
+    public OTCurso(R_Curso p_curso, R_Ciclo p_ciclo, R_Colegio p_colegio, R_TipoCurso p_tipoCurso) {
+        this.curso = p_curso;
+        id.set(p_curso.getId());
+        name.set(p_curso.getName());
+        ciclo.set(p_ciclo);
+        colegio.set(p_colegio);
+        tipoCurso.set(p_tipoCurso);
     }
 
-    public final SimpleObjectProperty<SCiclo> cicloProperty() {
+    public final SimpleObjectProperty<R_Ciclo> cicloProperty() {
         return ciclo;
     }
 
-    public final SimpleObjectProperty<SColegio> colegioProperty() {
+    public final SimpleObjectProperty<R_Colegio> colegioProperty() {
         return colegio;
     }
 
@@ -66,19 +61,15 @@ public class OTCurso {
         return true;
     }
 
-    public final java.util.Collection<cl.eos.persistence.models.SAlumno> getAlumnos() {
-        return alumnosProperty().get();
-    }
-
-    public final cl.eos.persistence.models.SCiclo getCiclo() {
+    public final R_Ciclo getCiclo() {
         return cicloProperty().get();
     }
 
-    public final cl.eos.persistence.models.SColegio getColegio() {
+    public final R_Colegio getColegio() {
         return colegioProperty().get();
     }
 
-    public SCurso getCurso() {
+    public R_Curso getCurso() {
         return curso;
     }
 
@@ -90,7 +81,7 @@ public class OTCurso {
         return nameProperty().get();
     }
 
-    public final cl.eos.persistence.models.STipoCurso getTipoCurso() {
+    public final R_TipoCurso getTipoCurso() {
         return tipoCursoProperty().get();
     }
 
@@ -110,19 +101,15 @@ public class OTCurso {
         return name;
     }
 
-    public final void setAlumnos(final java.util.Collection<cl.eos.persistence.models.SAlumno> alumnos) {
-        alumnosProperty().set(alumnos);
-    }
-
-    public final void setCiclo(final cl.eos.persistence.models.SCiclo ciclo) {
+    public final void setCiclo(final R_Ciclo ciclo) {
         cicloProperty().set(ciclo);
     }
 
-    public final void setColegio(final cl.eos.persistence.models.SColegio colegio) {
+    public final void setColegio(final R_Colegio colegio) {
         colegioProperty().set(colegio);
     }
 
-    public void setCurso(SCurso curso) {
+    public void setCurso(R_Curso curso) {
         this.curso = curso;
     }
 
@@ -134,11 +121,11 @@ public class OTCurso {
         nameProperty().set(name);
     }
 
-    public final void setTipoCurso(final cl.eos.persistence.models.STipoCurso tipoCurso) {
+    public final void setTipoCurso(final R_TipoCurso tipoCurso) {
         tipoCursoProperty().set(tipoCurso);
     }
 
-    public final SimpleObjectProperty<STipoCurso> tipoCursoProperty() {
+    public final SimpleObjectProperty<R_TipoCurso> tipoCursoProperty() {
         return tipoCurso;
     }
 

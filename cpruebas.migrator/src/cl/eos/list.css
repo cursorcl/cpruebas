@@ -1,4 +1,0 @@
-.list-cell:filled:selected:focused, .list-cell:filled:selected {
-    -fx-background-color: green;
-    -fx-text-fill: white;
-}

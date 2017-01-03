@@ -1,6 +1,6 @@
 package cl.eos.ot;
 
-import cl.eos.persistence.models.STipoPrueba;
+import cl.eos.restful.tables.R_TipoPrueba;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 
@@ -9,13 +9,13 @@ public class OTTipoPrueba {
     private final SimpleLongProperty id = new SimpleLongProperty();
     private final SimpleStringProperty name = new SimpleStringProperty();
 
-    private STipoPrueba tipoPrueba;
+    private R_TipoPrueba tipoPrueba;
 
     public OTTipoPrueba() {
         // TODO Auto-generated constructor stub
     }
 
-    public OTTipoPrueba(STipoPrueba tipoPrueba) {
+    public OTTipoPrueba(R_TipoPrueba tipoPrueba) {
         this.tipoPrueba = tipoPrueba;
         id.set(tipoPrueba.getId());
         name.set(tipoPrueba.getName());
@@ -46,7 +46,7 @@ public class OTTipoPrueba {
         return nameProperty().get();
     }
 
-    public STipoPrueba getTipoPrueba() {
+    public R_TipoPrueba getTipoPrueba() {
         return tipoPrueba;
     }
 
@@ -74,7 +74,7 @@ public class OTTipoPrueba {
         nameProperty().set(name);
     }
 
-    public void setTipoPrueba(STipoPrueba tipoPrueba) {
+    public void setTipoPrueba(R_TipoPrueba tipoPrueba) {
         this.tipoPrueba = tipoPrueba;
     }
 

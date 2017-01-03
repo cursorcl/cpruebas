@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src"/>
+	<classpathentry excluding="cl/eos/restful/RestFul2Entity.java" kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="O:/cpruebas_multiuser/cpruebas/jars/gson-2.8.0.jar" sourcepath="O:/cpruebas_multiuser/cpruebas/jars/gson-2.8.0-sources.jar">
 		<attributes>
@@ -20,6 +20,5 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/kernel.api"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.persistence.api"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/kernel.api.imp.fx"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.sytem.model"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

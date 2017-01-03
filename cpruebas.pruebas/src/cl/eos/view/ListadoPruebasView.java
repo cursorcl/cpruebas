@@ -43,14 +43,18 @@ import comunal.ComunalCursoView;
 import comunal.nivel.Nivel_ComparativoComunalEjeView;
 import comunal.nivel.Nivel_ComparativoComunalHabilidadView;
 import informe.InformeView;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.Pagination;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -143,6 +147,8 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
     private MenuItem mnuXObjetivos;
     @FXML
     private MenuItem mnuXNivelObjetivos;
+    @FXML
+    private Pagination pagination;
 
     private EvaluacionPruebaView evaluacionPrueba;
     private AnularPreguntasViewController anularPregunta;
@@ -154,6 +160,7 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
     private EvaluarPruebaView evaluarPruebaView;
     private ImprimirPruebaView imprimirPrueba;
     private ResumenColegioView resumenColegio;
+    private int rowsPerPage = 25;
 
     public ListadoPruebasView() {
         setTitle("Pruebas");
@@ -631,6 +638,15 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
         mnuComparativoColegioEjeHabilXNivel.setOnAction(this);
         mnuXObjetivos.setOnAction(this);
         mnuXNivelObjetivos.setOnAction(this);
+        pagination.currentPageIndexProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                int fromIndex = Math.min(oldValue.intValue(),  newValue.intValue()) * rowsPerPage ;
+                int toIndex = Math.max(oldValue.intValue(),  newValue.intValue()) * rowsPerPage ;
+                controller.findAll(null);
+            }
+        });
+        
         accionClicTabla();
     }
 

@@ -29,7 +29,6 @@ import cl.eos.persistence.util.Comparadores;
 import cl.eos.util.ExcelSheetWriterObj;
 import cl.eos.util.Pair;
 import cl.eos.util.Utils;
-import comparativo.colegio.eje.habilidad.x.curso.OTTipoCursoRangos;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -432,6 +431,7 @@ public class Nivel_ComparativoColegioEjeHabilidadView extends AFormView implemen
 
     }
 
+    @SuppressWarnings("unchecked")
     private void generarTablaEvaluaciones(Map<SEvaluacionEjeTematico, List<OTPreguntasEvaluacion>> mapEvaluaciones,
             int[] totalAlumnos, int[] alumnosEvaluados) {
         ObservableList<String> row = null;
@@ -484,6 +484,7 @@ public class Nivel_ComparativoColegioEjeHabilidadView extends AFormView implemen
      *            Mapa que contiene los valores para cada colegio de las
      *            habilidades.
      */
+    @SuppressWarnings("unchecked")
     private void generarTablaEjesHabilidades(Map<SEjeTematico, List<OTPreguntasEjes>> mapEjes,
             Map<SHabilidad, List<OTPreguntasHabilidad>> mapHabilidades) {
         ObservableList<String> row = null;

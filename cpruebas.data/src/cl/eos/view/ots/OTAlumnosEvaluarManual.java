@@ -1,13 +1,13 @@
 package cl.eos.view.ots;
 
-import cl.eos.persistence.models.SAlumno;
+import cl.eos.restful.tables.R_Alumno;
 
 public class OTAlumnosEvaluarManual {
 
     private final String respuestas;
-    private final SAlumno alumno;
+    private final R_Alumno alumno;
 
-    public OTAlumnosEvaluarManual(SAlumno alumno, String respuestas) {
+    public OTAlumnosEvaluarManual(R_Alumno alumno, String respuestas) {
         this.alumno = alumno;
         this.respuestas = respuestas;
     }

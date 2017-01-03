@@ -16,5 +16,6 @@ public class POITest {
         final FileOutputStream out = new FileOutputStream(System.getProperty("user.dir") + "/dd/simpleTable.docx");
         doc.write(out);
         out.close();
+        doc.close();
     }
 }

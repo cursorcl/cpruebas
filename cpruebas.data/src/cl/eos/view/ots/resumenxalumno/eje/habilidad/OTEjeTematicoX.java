@@ -1,6 +1,6 @@
 package cl.eos.view.ots.resumenxalumno.eje.habilidad;
 
-import cl.eos.persistence.models.SEjeTematico;
+import cl.eos.restful.tables.R_Ejetematico;
 
 /**
  * Para una prueba, contiene un eje temático y la cantidad de preguntas que hay
@@ -9,10 +9,10 @@ import cl.eos.persistence.models.SEjeTematico;
  * @author curso_000
  */
 public class OTEjeTematicoX {
-    private SEjeTematico eje;
+    private R_Ejetematico eje;
     private int cantidadPreguntas;
 
-    public OTEjeTematicoX(SEjeTematico eje) {
+    public OTEjeTematicoX(R_Ejetematico eje) {
         super();
         this.eje = eje;
     }
@@ -38,7 +38,7 @@ public class OTEjeTematicoX {
         return cantidadPreguntas;
     }
 
-    public SEjeTematico getEje() {
+    public R_Ejetematico getEje() {
         return eje;
     }
 
@@ -50,7 +50,7 @@ public class OTEjeTematicoX {
         return result;
     }
 
-    public boolean itIsTheSame(SEjeTematico eje) {
+    public boolean itIsTheSame(R_Ejetematico eje) {
         return this.eje.equals(eje);
     }
 
@@ -58,7 +58,7 @@ public class OTEjeTematicoX {
         this.cantidadPreguntas = cantidadPreguntas;
     }
 
-    public void setEje(SEjeTematico eje) {
+    public void setEje(R_Ejetematico eje) {
         this.eje = eje;
     }
 

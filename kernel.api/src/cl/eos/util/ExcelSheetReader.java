@@ -85,6 +85,7 @@ public class ExcelSheetReader {
                     }
                 }
             }
+            workBook.close();
         } catch (final Exception e) {
             final Alert alert = new Alert(AlertType.ERROR);
             alert.setTitle("Error en la importación desde excel");

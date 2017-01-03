@@ -5,9 +5,12 @@ import java.util.List;
 
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
-import cl.eos.ot.OTAsignatura;
-import cl.eos.persistence.models.SAsignatura;
+import cl.eos.restful.tables.R_Asignatura;
 import cl.eos.util.ExcelSheetWriterObj;
+import cl.eos.util.SystemConstants;
+import cl.eos.util.Utils;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -17,6 +20,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.Pagination;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -55,12 +59,14 @@ public class AsignaturasView extends AFormView implements EventHandler<ActionEve
     @FXML
     private Label lblError;
 
+    @FXML Pagination pagination;
+    
     @FXML
-    private TableView<OTAsignatura> tblAsignatura;
+    private TableView<R_Asignatura> tblAsignatura;
     @FXML
-    private TableColumn<OTAsignatura, Long> colId;
+    private TableColumn<R_Asignatura, Long> colId;
     @FXML
-    private TableColumn<OTAsignatura, String> colNombre;
+    private TableColumn<R_Asignatura, String> colNombre;
 
     public AsignaturasView() {
         setTitle("Asignaturas");
@@ -68,7 +74,7 @@ public class AsignaturasView extends AFormView implements EventHandler<ActionEve
 
     private void accionClicTabla() {
         tblAsignatura.setOnMouseClicked(event -> {
-            final ObservableList<OTAsignatura> itemsSelec = tblAsignatura.getSelectionModel().getSelectedItems();
+            final ObservableList<R_Asignatura> itemsSelec = tblAsignatura.getSelectionModel().getSelectedItems();
             if (itemsSelec.size() > 1) {
                 mnItemModificar.setDisable(true);
                 mnItemEliminar.setDisable(false);
@@ -87,12 +93,12 @@ public class AsignaturasView extends AFormView implements EventHandler<ActionEve
     }
 
     private void accionEliminar() {
-        final ObservableList<OTAsignatura> otSeleccionados = tblAsignatura.getSelectionModel().getSelectedItems();
+        final ObservableList<R_Asignatura> otSeleccionados = tblAsignatura.getSelectionModel().getSelectedItems();
 
         if (otSeleccionados != null && !otSeleccionados.isEmpty()) {
-            final List<SAsignatura> asignatura = new ArrayList<SAsignatura>(otSeleccionados.size());
-            for (final OTAsignatura ot : otSeleccionados) {
-                asignatura.add(ot.getAsignatura());
+            final List<R_Asignatura> asignatura = new ArrayList<>(otSeleccionados.size());
+            for (final R_Asignatura ot : otSeleccionados) {
+                asignatura.add(ot);
             }
             delete(asignatura);
             tblAsignatura.getSelectionModel().clearSelection();
@@ -114,11 +120,11 @@ public class AsignaturasView extends AFormView implements EventHandler<ActionEve
                 if (lblError != null) {
                     lblError.setText(" ");
                 }
-                SAsignatura asignatura = null;
-                if (entitySelected != null && entitySelected instanceof SAsignatura) {
-                    asignatura = (SAsignatura) entitySelected;
+                R_Asignatura asignatura = null;
+                if (entitySelected != null && entitySelected instanceof R_Asignatura) {
+                    asignatura = (R_Asignatura) entitySelected;
                 } else {
-                    asignatura = new SAsignatura();
+                    asignatura = new R_Asignatura.Builder().id(Utils.getLastIndex()).build();
                 }
                 asignatura.setName(txtNombre.getText());
                 save(asignatura);
@@ -131,10 +137,10 @@ public class AsignaturasView extends AFormView implements EventHandler<ActionEve
     }
 
     private void accionModificar() {
-        final OTAsignatura asignatura = tblAsignatura.getSelectionModel().getSelectedItem();
+        final R_Asignatura asignatura = tblAsignatura.getSelectionModel().getSelectedItem();
         if (asignatura != null) {
             txtNombre.setText(asignatura.getName());
-            select(asignatura.getAsignatura());
+            select(asignatura);
         }
     }
 
@@ -150,15 +156,15 @@ public class AsignaturasView extends AFormView implements EventHandler<ActionEve
         } else if (source == mnuEliminar || source == mnItemEliminar) {
             accionEliminar();
         } else if (source == mnuExportar || source == menuExportar) {
-            tblAsignatura.setId("OTAsignatura");
+            tblAsignatura.setId("R_Asignatura");
             ExcelSheetWriterObj.convertirDatosALibroDeExcel(tblAsignatura);
         }
     }
 
     private void inicializaTabla() {
         tblAsignatura.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        colId.setCellValueFactory(new PropertyValueFactory<OTAsignatura, Long>("id"));
-        colNombre.setCellValueFactory(new PropertyValueFactory<OTAsignatura, String>("name"));
+        colId.setCellValueFactory(new PropertyValueFactory<R_Asignatura, Long>("id"));
+        colNombre.setCellValueFactory(new PropertyValueFactory<R_Asignatura, String>("name"));
     }
 
     @FXML
@@ -178,6 +184,14 @@ public class AsignaturasView extends AFormView implements EventHandler<ActionEve
         mnuEliminar.setDisable(true);
         mnItemEliminar.setDisable(true);
         mnItemModificar.setDisable(true);
+        pagination.currentPageIndexProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                int fromIndex = Math.min(oldValue.intValue(),  newValue.intValue()) * SystemConstants.ROWS_FOR_PAGE ;
+                int toIndex = Math.max(oldValue.intValue(),  newValue.intValue()) * SystemConstants.ROWS_FOR_PAGE ;
+                controller.findAll(R_Asignatura.class, fromIndex, toIndex);
+            }
+        });
     }
 
     private void limpiarControles() {
@@ -190,10 +204,10 @@ public class AsignaturasView extends AFormView implements EventHandler<ActionEve
     public void onDataArrived(List<Object> list) {
         if (list != null && !list.isEmpty()) {
             final Object entity = list.get(0);
-            if (entity instanceof SAsignatura) {
-                final ObservableList<OTAsignatura> oList = FXCollections.observableArrayList();
+            if (entity instanceof R_Asignatura) {
+                final ObservableList<R_Asignatura> oList = FXCollections.observableArrayList();
                 for (final Object iEntity : list) {
-                    oList.add(new OTAsignatura((SAsignatura) iEntity));
+                    oList.add((R_Asignatura) iEntity);
                 }
                 tblAsignatura.setItems(oList);
             }
@@ -202,12 +216,12 @@ public class AsignaturasView extends AFormView implements EventHandler<ActionEve
 
     @Override
     public void onDeleted(IEntity entity) {
-        tblAsignatura.getItems().remove(new OTAsignatura((SAsignatura) entity));
+        tblAsignatura.getItems().remove((R_Asignatura) entity);
     }
 
     @Override
     public void onSaved(IEntity otObject) {
-        final OTAsignatura otAsignatura = new OTAsignatura((SAsignatura) otObject);
+        final R_Asignatura otAsignatura = (R_Asignatura) otObject;
         final int indice = tblAsignatura.getItems().lastIndexOf(otAsignatura);
         if (indice != -1) {
             tblAsignatura.getItems().set(indice, otAsignatura);
@@ -223,8 +237,8 @@ public class AsignaturasView extends AFormView implements EventHandler<ActionEve
 
     private boolean validaNombreAsignatura(final String nombre) {
         boolean existe = false;
-        final ObservableList<OTAsignatura> listaAsignaturas = tblAsignatura.getItems();
-        for (final OTAsignatura otAsignatura : listaAsignaturas) {
+        final ObservableList<R_Asignatura> listaAsignaturas = tblAsignatura.getItems();
+        for (final R_Asignatura otAsignatura : listaAsignaturas) {
             if (otAsignatura.getName().toUpperCase().equals(nombre.toUpperCase())) {
                 existe = true;
                 break;

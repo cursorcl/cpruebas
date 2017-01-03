@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -40,7 +39,6 @@ public class InformeXObjetivos_Nivel implements IInforme {
     private SColegio colegio;
     private SAsignatura asignatura;
     Pair<List<STipoCurso>, List<XItemTablaObjetivo>> reporte;
-    private Logger log = Logger.getLogger(InformeXObjetivos_Nivel.class.getName());
 
     @SuppressWarnings("unchecked")
     @Override

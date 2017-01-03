@@ -82,6 +82,7 @@ public class SimpleTable {
                 doc.write(out);
             } finally {
                 out.close();
+                doc.close();
             }
         } finally {
         }
@@ -190,6 +191,7 @@ public class SimpleTable {
                 doc.write(out);
             } finally {
                 out.close();
+                doc.close();
             }
         } finally {
         }

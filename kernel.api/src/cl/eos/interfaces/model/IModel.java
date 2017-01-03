@@ -44,7 +44,7 @@ public interface IModel {
     void find(final String namedQuery, final Map<String, Object> parameters, IPersistenceListener listener);
 
     void findAll(Class<? extends IEntity> entityClazz);
-
+    void findAll(Class<? extends IEntity> entityClazz, int offset, int items);
     /**
      * Busca todos los registros de una entidad.
      * 
@@ -54,6 +54,7 @@ public interface IModel {
      *            A quien se le notifica del termino de la ejecucion.
      */
     void findAll(Class<? extends IEntity> entityClazz, IPersistenceListener listener);
+    void findAll(Class<? extends IEntity> entityClazz, IPersistenceListener listener, int offset, int items);
 
     void findByAllId(Class<? extends IEntity> entityClazz, Long[] id);
 
@@ -67,7 +68,7 @@ public interface IModel {
 
     void findByName(Class<? extends IEntity> entityClazz, String name, IPersistenceListener listener);
 
-    IEntity findSynchroById(Class<? extends IEntity> entityClazz, Long id);
+    <T extends IEntity> T findSynchroById(Class<T> entityClazz, Long id);
 
     /**
      * Realiza la busqueda del elemento que tiene el mismo identificador de
@@ -123,4 +124,5 @@ public interface IModel {
      *            El elemento a ser grabado.
      */
     IEntity update(IEntity entity);
+
 }

@@ -7,6 +7,8 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.util.Iterator;
+import java.util.prefs.BackingStoreException;
+import java.util.prefs.Preferences;
 
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
@@ -17,6 +19,7 @@ import org.apache.log4j.Logger;
 
 public class Utils {
 
+    private static final String LASTKEY = "lastkey";
     public static float MAX_PUNTAJE = 340f;
     private static Logger log = Logger.getLogger(Utils.class);
 
@@ -223,4 +226,16 @@ public class Utils {
         return resultado;
     }
 
+    public static long getLastIndex()
+    {
+        Preferences p = Preferences.userRoot();
+        long result  = p.getLong(LASTKEY, 10000);
+        p.putLong(LASTKEY, ++result);
+        try {
+            p.flush();
+        } catch (BackingStoreException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
 }

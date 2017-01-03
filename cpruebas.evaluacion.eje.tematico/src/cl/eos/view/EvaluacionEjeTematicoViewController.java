@@ -5,7 +5,8 @@ import java.util.List;
 
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
-import cl.eos.persistence.models.SEvaluacionEjeTematico;
+import cl.eos.restful.tables.R_EvaluacionEjetematico;
+import cl.eos.util.Utils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -36,15 +37,15 @@ public class EvaluacionEjeTematicoViewController extends AFormView implements Ev
     @FXML
     private MenuItem mnuItemEliminar;
     @FXML
-    private TableView<SEvaluacionEjeTematico> tblEvaluacionEjeTematatico;
+    private TableView<R_EvaluacionEjetematico> tblEvaluacionEjeTematatico;
     @FXML
-    private TableColumn<SEvaluacionEjeTematico, Long> colId;
+    private TableColumn<R_EvaluacionEjetematico, Long> colId;
     @FXML
-    private TableColumn<SEvaluacionEjeTematico, String> colNombre;
+    private TableColumn<R_EvaluacionEjetematico, String> colNombre;
     @FXML
-    private TableColumn<SEvaluacionEjeTematico, Float> colMinimo;
+    private TableColumn<R_EvaluacionEjetematico, Float> colMinimo;
     @FXML
-    private TableColumn<SEvaluacionEjeTematico, Float> colMaximo;
+    private TableColumn<R_EvaluacionEjetematico, Float> colMaximo;
     @FXML
     private TextField txtNombre;
     @FXML
@@ -61,7 +62,7 @@ public class EvaluacionEjeTematicoViewController extends AFormView implements Ev
     @Override
     public void handle(ActionEvent event) {
         if (event.getSource() == mnuEliminar || event.getSource() == mnuItemEliminar) {
-            final SEvaluacionEjeTematico evaEjeTematico = tblEvaluacionEjeTematatico.getSelectionModel()
+            final R_EvaluacionEjetematico evaEjeTematico = tblEvaluacionEjeTematatico.getSelectionModel()
                     .getSelectedItem();
             if (evaEjeTematico != null) {
                 delete(evaEjeTematico);
@@ -69,12 +70,12 @@ public class EvaluacionEjeTematicoViewController extends AFormView implements Ev
             }
         }
         if (event.getSource() == mnuModificar || event.getSource() == mnuItemModificar) {
-            final SEvaluacionEjeTematico evaluacionEje = tblEvaluacionEjeTematatico.getSelectionModel()
+            final R_EvaluacionEjetematico evaluacionEje = tblEvaluacionEjeTematatico.getSelectionModel()
                     .getSelectedItem();
             if (evaluacionEje != null) {
                 txtNombre.setText(evaluacionEje.getName());
-                fltMinimo.setNumber(new BigDecimal(evaluacionEje.getNroRangoMin()));
-                fltMaximo.setNumber(new BigDecimal(evaluacionEje.getNroRangoMax()));
+                fltMinimo.setNumber(new BigDecimal(evaluacionEje.getNrorangomin()));
+                fltMaximo.setNumber(new BigDecimal(evaluacionEje.getNrorangomax()));
                 select(evaluacionEje);
             }
         }
@@ -88,15 +89,15 @@ public class EvaluacionEjeTematicoViewController extends AFormView implements Ev
                 if (lblError != null) {
                     lblError.setText(" ");
                 }
-                SEvaluacionEjeTematico eje = null;
-                if (entitySelected != null && entitySelected instanceof SEvaluacionEjeTematico) {
-                    eje = (SEvaluacionEjeTematico) entitySelected;
+                R_EvaluacionEjetematico eje = null;
+                if (entitySelected != null && entitySelected instanceof R_EvaluacionEjetematico) {
+                    eje = (R_EvaluacionEjetematico) entitySelected;
                 } else {
-                    eje = new SEvaluacionEjeTematico();
+                    eje = new R_EvaluacionEjetematico.Builder().id(Utils.getLastIndex()).build();
                 }
                 eje.setName(txtNombre.getText());
-                eje.setNroRangoMax(fltMaximo.getNumber().floatValue());
-                eje.setNroRangoMin(fltMinimo.getNumber().floatValue());
+                eje.setNrorangomax(fltMaximo.getNumber().floatValue());
+                eje.setNrorangomin(fltMinimo.getNumber().floatValue());
                 save(eje);
                 limpiarControles();
             } else {
@@ -109,10 +110,10 @@ public class EvaluacionEjeTematicoViewController extends AFormView implements Ev
 
     private void inicializaTabla() {
         tblEvaluacionEjeTematatico.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-        colId.setCellValueFactory(new PropertyValueFactory<SEvaluacionEjeTematico, Long>("id"));
-        colNombre.setCellValueFactory(new PropertyValueFactory<SEvaluacionEjeTematico, String>("name"));
-        colMinimo.setCellValueFactory(new PropertyValueFactory<SEvaluacionEjeTematico, Float>("nroRangoMin"));
-        colMaximo.setCellValueFactory(new PropertyValueFactory<SEvaluacionEjeTematico, Float>("nroRangoMax"));
+        colId.setCellValueFactory(new PropertyValueFactory<R_EvaluacionEjetematico, Long>("id"));
+        colNombre.setCellValueFactory(new PropertyValueFactory<R_EvaluacionEjetematico, String>("name"));
+        colMinimo.setCellValueFactory(new PropertyValueFactory<R_EvaluacionEjetematico, Float>("nroRangoMin"));
+        colMaximo.setCellValueFactory(new PropertyValueFactory<R_EvaluacionEjetematico, Float>("nroRangoMax"));
     }
 
     @FXML
@@ -146,10 +147,10 @@ public class EvaluacionEjeTematicoViewController extends AFormView implements Ev
     public void onDataArrived(List<Object> list) {
         if (list != null && !list.isEmpty()) {
             final Object entity = list.get(0);
-            if (entity instanceof SEvaluacionEjeTematico) {
-                final ObservableList<SEvaluacionEjeTematico> oList = FXCollections.observableArrayList();
+            if (entity instanceof R_EvaluacionEjetematico) {
+                final ObservableList<R_EvaluacionEjetematico> oList = FXCollections.observableArrayList();
                 for (final Object iEntity : list) {
-                    oList.add((SEvaluacionEjeTematico) iEntity);
+                    oList.add((R_EvaluacionEjetematico) iEntity);
                 }
                 tblEvaluacionEjeTematatico.setItems(oList);
             }
@@ -165,9 +166,9 @@ public class EvaluacionEjeTematicoViewController extends AFormView implements Ev
     public void onSaved(IEntity otObject) {
         final int index = tblEvaluacionEjeTematatico.getItems().indexOf(otObject);
         if (index == -1) {
-            tblEvaluacionEjeTematatico.getItems().add((SEvaluacionEjeTematico) otObject);
+            tblEvaluacionEjeTematatico.getItems().add((R_EvaluacionEjetematico) otObject);
         } else {
-            tblEvaluacionEjeTematatico.getItems().set(index, (SEvaluacionEjeTematico) otObject);
+            tblEvaluacionEjeTematatico.getItems().set(index, (R_EvaluacionEjetematico) otObject);
         }
     }
 

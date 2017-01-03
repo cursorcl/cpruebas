@@ -6,10 +6,10 @@ import java.util.Objects;
 
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
-import cl.eos.ot.OTColegio;
-import cl.eos.persistence.models.SColegio;
-import cl.eos.persistence.models.STipoColegio;
+import cl.eos.restful.tables.R_Colegio;
+import cl.eos.restful.tables.R_TipoColegio;
 import cl.eos.util.ExcelSheetWriterObj;
+import cl.eos.util.Utils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -68,23 +68,23 @@ public class ColegiosView extends AFormView implements EventHandler<ActionEvent>
     private ImageView imgColegio;
 
     @FXML
-    private ComboBox<STipoColegio> cmbTipoColegio;
+    private ComboBox<R_TipoColegio> cmbTipoColegio;
 
     @FXML
-    private TableView<OTColegio> tblColegio;
+    private TableView<R_Colegio> tblColegio;
 
     @FXML
-    private TableColumn<OTColegio, Long> colId;
+    private TableColumn<R_Colegio, Long> colId;
     @FXML
-    private TableColumn<OTColegio, String> colNombre;
+    private TableColumn<R_Colegio, String> colNombre;
 
     @FXML
-    private TableColumn<OTColegio, String> colDireccion;
+    private TableColumn<R_Colegio, String> colDireccion;
 
     @FXML
     private Label lblError;
     @FXML
-    private TableColumn<OTColegio, String> colTipoColegio;
+    private TableColumn<R_Colegio, String> colTipoColegio;
 
     public ColegiosView() {
         setTitle("Colegios");
@@ -92,7 +92,7 @@ public class ColegiosView extends AFormView implements EventHandler<ActionEvent>
 
     private void accionClicTabla() {
         tblColegio.setOnMouseClicked(event -> {
-            final ObservableList<OTColegio> itemsSelec = tblColegio.getSelectionModel().getSelectedItems();
+            final ObservableList<R_Colegio> itemsSelec = tblColegio.getSelectionModel().getSelectedItems();
             if (itemsSelec.size() > 1) {
                 mnItemModificar.setDisable(true);
                 mnItemEliminar.setDisable(false);
@@ -126,7 +126,7 @@ public class ColegiosView extends AFormView implements EventHandler<ActionEvent>
     // }
 
     private void accionEliminar() {
-        final ObservableList<OTColegio> otSeleccionados = tblColegio.getSelectionModel().getSelectedItems();
+        final ObservableList<R_Colegio> otSeleccionados = tblColegio.getSelectionModel().getSelectedItems();
         if (otSeleccionados.size() == 0) {
             final Alert alert = new Alert(AlertType.INFORMATION);
             alert.setTitle("Selección registro");
@@ -135,9 +135,9 @@ public class ColegiosView extends AFormView implements EventHandler<ActionEvent>
             alert.showAndWait();
         } else {
             if (otSeleccionados != null && !otSeleccionados.isEmpty()) {
-                final List<SColegio> colegio = new ArrayList<SColegio>(otSeleccionados.size());
-                for (final OTColegio ot : otSeleccionados) {
-                    colegio.add(ot.getColegio());
+                final List<R_Colegio> colegio = new ArrayList<>(otSeleccionados.size());
+                for (final R_Colegio ot : otSeleccionados) {
+                    colegio.add(ot);
                 }
                 delete(colegio);
                 tblColegio.getSelectionModel().clearSelection();
@@ -153,15 +153,15 @@ public class ColegiosView extends AFormView implements EventHandler<ActionEvent>
             if (lblError != null) {
                 lblError.setText(" ");
             }
-            SColegio colegio = null;
-            if (entitySelected != null && entitySelected instanceof SColegio) {
-                colegio = (SColegio) entitySelected;
+            R_Colegio colegio = null;
+            if (entitySelected != null && entitySelected instanceof R_Colegio) {
+                colegio = (R_Colegio) entitySelected;
             } else {
-                colegio = new SColegio();
+                colegio = new R_Colegio.Builder().id(Utils.getLastIndex()).build();
             }
             colegio.setName(txtNombre.getText());
             colegio.setDireccion(txtDireccion.getText());
-            colegio.setTipoColegio(cmbTipoColegio.getValue());
+            colegio.setTipocolegio_id(cmbTipoColegio.getValue().getId());
             save(colegio);
             limpiarControles();
         } else {
@@ -172,12 +172,13 @@ public class ColegiosView extends AFormView implements EventHandler<ActionEvent>
     }
 
     private void accionModificar() {
-        final OTColegio colegio = tblColegio.getSelectionModel().getSelectedItem();
+        final R_Colegio colegio = tblColegio.getSelectionModel().getSelectedItem();
         if (colegio != null) {
             txtNombre.setText(colegio.getName());
             txtDireccion.setText(colegio.getDireccion());
-            cmbTipoColegio.setValue(colegio.getTipo());
-            select(colegio.getColegio());
+            R_TipoColegio tColegio =  new R_TipoColegio.Builder().id(colegio.getTipocolegio_id()).build();
+            cmbTipoColegio.setValue(tColegio);
+            select(colegio);
         }
     }
 
@@ -202,11 +203,11 @@ public class ColegiosView extends AFormView implements EventHandler<ActionEvent>
 
     private void inicializaTabla() {
         tblColegio.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        colId.setCellValueFactory(new PropertyValueFactory<OTColegio, Long>("id"));
-        colNombre.setCellValueFactory(new PropertyValueFactory<OTColegio, String>("name"));
-        colDireccion.setCellValueFactory(new PropertyValueFactory<OTColegio, String>("direccion"));
+        colId.setCellValueFactory(new PropertyValueFactory<R_Colegio, Long>("id"));
+        colNombre.setCellValueFactory(new PropertyValueFactory<R_Colegio, String>("name"));
+        colDireccion.setCellValueFactory(new PropertyValueFactory<R_Colegio, String>("direccion"));
 
-        colTipoColegio.setCellValueFactory(new PropertyValueFactory<OTColegio, String>("tipo"));
+        colTipoColegio.setCellValueFactory(new PropertyValueFactory<R_Colegio, String>("tipo"));
     }
 
     @FXML
@@ -241,16 +242,16 @@ public class ColegiosView extends AFormView implements EventHandler<ActionEvent>
     public void onDataArrived(List<Object> list) {
         if (list != null && !list.isEmpty()) {
             final Object entity = list.get(0);
-            if (entity instanceof SColegio) {
-                final ObservableList<OTColegio> oList = FXCollections.observableArrayList();
+            if (entity instanceof R_Colegio) {
+                final ObservableList<R_Colegio> oList = FXCollections.observableArrayList();
                 for (final Object iEntity : list) {
-                    oList.add(new OTColegio((SColegio) iEntity));
+                    oList.add((R_Colegio) iEntity);
                 }
                 tblColegio.setItems(oList);
-            } else if (entity instanceof STipoColegio) {
-                final ObservableList<STipoColegio> value = FXCollections.observableArrayList();
+            } else if (entity instanceof R_TipoColegio) {
+                final ObservableList<R_TipoColegio> value = FXCollections.observableArrayList();
                 for (final Object iEntity : list) {
-                    value.add((STipoColegio) iEntity);
+                    value.add((R_TipoColegio) iEntity);
                 }
                 cmbTipoColegio.setItems(value);
             }
@@ -259,12 +260,12 @@ public class ColegiosView extends AFormView implements EventHandler<ActionEvent>
 
     @Override
     public void onDeleted(IEntity entity) {
-        tblColegio.getItems().remove(new OTColegio((SColegio) entity));
+        tblColegio.getItems().remove((R_Colegio) entity);
     }
 
     @Override
     public void onSaved(IEntity otObject) {
-        final OTColegio otColegio = new OTColegio((SColegio) otObject);
+        final R_Colegio otColegio = (R_Colegio) otObject;
         final int indice = tblColegio.getItems().lastIndexOf(otColegio);
         if (indice != -1) {
             tblColegio.getItems().set(indice, otColegio);

@@ -80,13 +80,10 @@ public class DateCellRenderer extends JPanel implements TableCellRenderer {
         final Register modelo = (Register) table.getModel().getValueAt(rowValue, 1);
         final Date fecha = new Date(modelo.getDate());
 
+        inicio.setText(DateCellRenderer.GUION);
         final String strFfecha = sdf.format(fecha);
 
-        if (fecha == null) {
-            inicio.setText(DateCellRenderer.GUION);
-        } else {
-            inicio.setText(strFfecha);
-        }
+        inicio.setText(strFfecha);
         return this;
     }
 }

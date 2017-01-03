@@ -97,6 +97,14 @@ public abstract class AController implements IController, IPersistenceListener {
     public void findAll(Class<? extends IEntity> entityClazz) {
         model.findAll(entityClazz, this);
     }
+    
+    /* (non-Javadoc)
+     * @see cl.eos.interfaces.controller.IController#findAll(java.lang.Class, int, int)
+     */
+    @Override
+    public void findAll(Class<? extends IEntity> entityClazz, int offset, int items) {
+        model.findAll(entityClazz, this, offset, items);        
+    }
 
     @Override
     public void findAll(Class<? extends IEntity> entityClazz, IPersistenceListener listener) {
@@ -182,7 +190,7 @@ public abstract class AController implements IController, IPersistenceListener {
     }
 
     @Override
-    public IEntity findSynchroById(Class<? extends IEntity> entityClazz, Long id) {
+    public <T extends IEntity> T findSynchroById(Class<T> entityClazz, Long id) {
         return model.findSynchroById(entityClazz, id);
     }
 
@@ -300,5 +308,25 @@ public abstract class AController implements IController, IPersistenceListener {
             selectedEntity = model.get(otObject);
         }
     }
+
+    /* (non-Javadoc)
+     * @see cl.eos.interfaces.controller.IController#findAll(java.lang.Class, cl.eos.interfaces.entity.IPersistenceListener, int, int)
+     */
+    @Override
+    public void findAll(Class<? extends IEntity> entityClazz, IPersistenceListener listener, int offset, int items) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    /* (non-Javadoc)
+     * @see cl.eos.interfaces.controller.IController#findAll(java.lang.Class, int, int, cl.eos.interfaces.view.IView[])
+     */
+    @Override
+    public void findAll(Class<? extends IEntity> entityClazz, int offset, int items, IView... view) {
+        // TODO Auto-generated method stub
+        
+    }
+    
+    
 
 }

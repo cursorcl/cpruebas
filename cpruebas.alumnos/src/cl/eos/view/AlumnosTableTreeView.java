@@ -380,21 +380,27 @@ public class AlumnosTableTreeView extends AFormView implements EventHandler<Acti
                 TreeItem<OTAlumno> itemCurso = null;
 
                 for (final Object iEntity : list) {
-                    final OTAlumno ot = new OTAlumno((SAlumno) iEntity);
-                    if (itemColegio == null || !ot.getColegio().equals(itemColegio.getValue().getColegio())) {
-                        final OTAlumno otColegio = new OTAlumno();
-                        otColegio.setColegio(ot.getColegio());
-                        itemColegio = new TreeItem<OTAlumno>(otColegio, getImagenColegio());
-                        root.getChildren().add(itemColegio);
+                    try {
+
+                        final OTAlumno ot = new OTAlumno((SAlumno) iEntity);
+                        if (itemColegio == null || !ot.getColegio().equals(itemColegio.getValue().getColegio())) {
+                            final OTAlumno otColegio = new OTAlumno();
+                            otColegio.setColegio(ot.getColegio());
+                            itemColegio = new TreeItem<OTAlumno>(otColegio, getImagenColegio());
+                            root.getChildren().add(itemColegio);
+                        }
+                        if (itemCurso == null || !ot.getCurso().equals(itemCurso.getValue().getCurso())) {
+                            final OTAlumno otCurso = new OTAlumno();
+                            otCurso.setCurso(ot.getCurso());
+                            otCurso.setColegio(ot.getColegio());
+                            itemCurso = new TreeItem<OTAlumno>(otCurso, getImagenCurso());
+                            itemColegio.getChildren().add(itemCurso);
+                        }
+                        itemCurso.getChildren().add(new TreeItem<OTAlumno>(ot));
+                    } catch (Exception ex) {
+                        LOG.info("Se ha producido un error al procesar un alumno:" + iEntity);
+                        LOG.severe(ex.getMessage());
                     }
-                    if (itemCurso == null || !ot.getCurso().equals(itemCurso.getValue().getCurso())) {
-                        final OTAlumno otCurso = new OTAlumno();
-                        otCurso.setCurso(ot.getCurso());
-                        otCurso.setColegio(ot.getColegio());
-                        itemCurso = new TreeItem<OTAlumno>(otCurso, getImagenCurso());
-                        itemColegio.getChildren().add(itemCurso);
-                    }
-                    itemCurso.getChildren().add(new TreeItem<OTAlumno>(ot));
 
                 }
                 tblAlumnos.setRoot(root);

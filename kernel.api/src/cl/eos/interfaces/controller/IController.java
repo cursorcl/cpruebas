@@ -37,10 +37,13 @@ public interface IController {
     void find(String namedQuery, Map<String, Object> parameters, IView... view);
 
     void findAll(Class<? extends IEntity> entityClazz);
+    void findAll(Class<? extends IEntity> entityClazz, int offset, int items);
 
     void findAll(Class<? extends IEntity> entityClazz, IPersistenceListener listener);
+    void findAll(Class<? extends IEntity> entityClazz, IPersistenceListener listener, int offset, int items);
 
     void findAll(Class<? extends IEntity> entityClazz, IView... view);
+    void findAll(Class<? extends IEntity> entityClazz, int offset, int items, IView... view);
 
     void findByAllId(Class<? extends IEntity> entityClazz, Long[] objects);
 
@@ -60,7 +63,7 @@ public interface IController {
 
     void findByName(Class<? extends IEntity> entityClazz, String name, IView... view);
 
-    IEntity findSynchroById(Class<? extends IEntity> entityClazz, Long id);
+    <T extends IEntity> T findSynchroById(Class<T> entityClazz, Long id);
 
     /**
      * Obtiene el modelo.

@@ -47,10 +47,22 @@ public abstract class AModel implements IModel {
             findAll(entityClazz, (IPersistenceListener) controller);
         }
     }
+    
+    @Override
+    public void findAll(Class<? extends IEntity> entityClazz, int offset, int items) {
+        if (controller != null && controller instanceof IPersistenceListener) {
+            findAll(entityClazz, (IPersistenceListener) controller, offset, items);
+        }
+    }
 
     @Override
     public void findAll(Class<? extends IEntity> entityClazz, IPersistenceListener listener) {
         PersistenceServiceFactory.getPersistenceService().findAll(entityClazz, listener);
+    }
+    
+    @Override
+    public void findAll(Class<? extends IEntity> entityClazz, IPersistenceListener listener, int offset, int items) {
+        PersistenceServiceFactory.getPersistenceService().findAll(entityClazz, listener, offset, items);
     }
 
     @Override
@@ -92,7 +104,7 @@ public abstract class AModel implements IModel {
     }
 
     @Override
-    public IEntity findSynchroById(Class<? extends IEntity> entityClazz, Long id) {
+    public <T extends IEntity> T  findSynchroById(Class<T> entityClazz, Long id) {
         return PersistenceServiceFactory.getPersistenceService().findSynchroById(entityClazz, id);
     }
 
