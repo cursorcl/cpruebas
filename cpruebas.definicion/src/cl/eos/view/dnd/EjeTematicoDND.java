@@ -1,20 +1,20 @@
 package cl.eos.view.dnd;
 
-import cl.eos.persistence.models.SEjeTematico;
+import cl.eos.restful.tables.R_Ejetematico;
 import cl.eos.view.RegistroDefinePrueba;
 import javafx.scene.control.TableCell;
 import javafx.scene.effect.BlendMode;
 import javafx.scene.input.DataFormat;
 import javafx.scene.input.TransferMode;
 
-public class EjeTematicoDND extends TableCell<RegistroDefinePrueba, SEjeTematico> {
+public class EjeTematicoDND extends TableCell<RegistroDefinePrueba, R_Ejetematico> {
     public static final DataFormat ejeTematicoTrackDataFormat = new DataFormat("cl.eos.persistence.EjeTematico");
 
     public EjeTematicoDND() {
         setOnDragDropped(dragEvent -> {
             final RegistroDefinePrueba myModel = getTableView().getItems().get(getTableRow().getIndex());
             if (myModel != null) {
-                final SEjeTematico ejeTematico = (SEjeTematico) dragEvent.getDragboard()
+                final R_Ejetematico ejeTematico = (R_Ejetematico) dragEvent.getDragboard()
                         .getContent(EjeTematicoDND.ejeTematicoTrackDataFormat);
                 myModel.setEjeTematico(ejeTematico);
             }
@@ -32,7 +32,7 @@ public class EjeTematicoDND extends TableCell<RegistroDefinePrueba, SEjeTematico
     }
 
     @Override
-    public void updateItem(SEjeTematico t, boolean empty) {
+    public void updateItem(R_Ejetematico t, boolean empty) {
         super.updateItem(t, empty);
         if (t == null) {
             setTooltip(null);

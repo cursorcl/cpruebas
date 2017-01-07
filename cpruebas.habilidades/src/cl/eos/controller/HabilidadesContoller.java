@@ -2,7 +2,7 @@ package cl.eos.controller;
 
 import cl.eos.imp.controller.AController;
 import cl.eos.model.HabilidadesModel;
-import cl.eos.persistence.models.SHabilidad;
+import cl.eos.restful.tables.R_Habilidad;
 
 public class HabilidadesContoller extends AController {
 
@@ -13,6 +13,6 @@ public class HabilidadesContoller extends AController {
     @Override
     public void initialize() {
         model = new HabilidadesModel();
-        model.findAll(SHabilidad.class, this);
+        model.findAll(R_Habilidad.class, this);
     }
 }

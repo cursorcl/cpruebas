@@ -21,7 +21,7 @@ public class PersistenceServiceFactory {
 
             if(MYSQL.equalsIgnoreCase(type))
             {
-                PersistenceServiceFactory.persistenceService = new PersistenceServiceMYSQL();
+                PersistenceServiceFactory.persistenceService = null;
             }
             else if(RESTFUL.equalsIgnoreCase(type))
             {

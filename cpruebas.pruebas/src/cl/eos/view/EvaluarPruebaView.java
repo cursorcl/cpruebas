@@ -23,18 +23,8 @@ import cl.eos.imp.view.ProgressForm;
 import cl.eos.imp.view.WindowManager;
 import cl.eos.interfaces.IActivator;
 import cl.eos.interfaces.entity.IEntity;
-import cl.eos.persistence.models.SAlumno;
-import cl.eos.persistence.models.SColegio;
-import cl.eos.persistence.models.SCurso;
-import cl.eos.persistence.models.SEjeTematico;
-import cl.eos.persistence.models.SEvaluacionPrueba;
-import cl.eos.persistence.models.SHabilidad;
-import cl.eos.persistence.models.SProfesor;
-import cl.eos.persistence.models.SPrueba;
-import cl.eos.persistence.models.SPruebaRendida;
-import cl.eos.persistence.models.SRangoEvaluacion;
-import cl.eos.persistence.models.SRespuestasEsperadasPrueba;
 import cl.eos.persistence.util.Comparadores;
+import cl.eos.restful.tables.R_RangoEvaluacion;
 import cl.eos.util.ExcelSheetWriterObj;
 import cl.eos.util.Pair;
 import cl.eos.util.Utils;
@@ -161,7 +151,7 @@ public class EvaluarPruebaView extends AFormView {
     @FXML
     private TableColumn<OTPruebaRendida, Boolean> rindeCol;
     @FXML
-    private TableColumn<OTPruebaRendida, SRangoEvaluacion> nivelCol;
+    private TableColumn<OTPruebaRendida, R_RangoEvaluacion> nivelCol;
     @FXML
     private ComboBox<SColegio> cmbColegios;
     @FXML
@@ -214,7 +204,7 @@ public class EvaluarPruebaView extends AFormView {
         omitidasCol.setCellValueFactory(new PropertyValueFactory<OTPruebaRendida, Integer>("omitidas"));
         notaCol.setCellValueFactory(new PropertyValueFactory<OTPruebaRendida, Float>("nota"));
         puntajeCol.setCellValueFactory(new PropertyValueFactory<OTPruebaRendida, Integer>("puntaje"));
-        nivelCol.setCellValueFactory(new PropertyValueFactory<OTPruebaRendida, SRangoEvaluacion>("nivel"));
+        nivelCol.setCellValueFactory(new PropertyValueFactory<OTPruebaRendida, R_RangoEvaluacion>("nivel"));
         rindeCol.setCellValueFactory(new PropertyValueFactory<OTPruebaRendida, Boolean>("rindioPrueba"));
         rindeCol.setCellFactory(CheckBoxTableCell.forTableColumn(rindeCol));
         tblListadoPruebas.setEditable(true);
@@ -273,7 +263,7 @@ public class EvaluarPruebaView extends AFormView {
         // float porcentaje = Utils.getPorcenta(otRendida.getNota());
         final float porcentaje = (float) otRendida.getBuenas() / total * 100f;
 
-        final SRangoEvaluacion rango = prueba.getNivelEvaluacion().getRango(porcentaje);
+        final R_RangoEvaluacion rango = prueba.getNivelEvaluacion().getRango(porcentaje);
         otRendida.setNivel(rango);
     }
 
@@ -581,7 +571,7 @@ public class EvaluarPruebaView extends AFormView {
                 pRendida.setNota(nota);
                 pRendida.setRespuestas(strResps.toString());
                 final float porcentaje = (float) pRendida.getBuenas() / nroPreguntas * 100f;
-                final SRangoEvaluacion rango = prueba.getNivelEvaluacion().getRango(porcentaje);
+                final R_RangoEvaluacion rango = prueba.getNivelEvaluacion().getRango(porcentaje);
                 pRendida.setRango(rango);
 
                 pRendida.setRespuestas(strResps.toString());

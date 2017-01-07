@@ -5,8 +5,9 @@ import java.util.List;
 
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
-import cl.eos.persistence.models.SComprensionLectora;
+import cl.eos.restful.tables.R_DL_ComprensionLectora;
 import cl.eos.util.ExcelSheetWriterObj;
+import cl.eos.util.Utils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -32,11 +33,11 @@ public class ViewComprensionLectora extends AFormView implements EventHandler<Ac
     @FXML
     private TextField txtNombre;
     @FXML
-    private TableView<SComprensionLectora> tblTable;
+    private TableView<R_DL_ComprensionLectora> tblTable;
     @FXML
-    private TableColumn<SComprensionLectora, Long> colId;
+    private TableColumn<R_DL_ComprensionLectora, Long> colId;
     @FXML
-    private TableColumn<SComprensionLectora, String> colNombre;
+    private TableColumn<R_DL_ComprensionLectora, String> colNombre;
     @FXML
     private MenuItem mnuAgregar;
     @FXML
@@ -59,7 +60,7 @@ public class ViewComprensionLectora extends AFormView implements EventHandler<Ac
     }
 
     private void accionEliminar() {
-        final ObservableList<SComprensionLectora> otSeleccionados = tblTable.getSelectionModel().getSelectedItems();
+        final ObservableList<R_DL_ComprensionLectora> otSeleccionados = tblTable.getSelectionModel().getSelectedItems();
         if (otSeleccionados.size() == 0) {
             final Alert alert = new Alert(AlertType.INFORMATION);
             alert.setTitle("Selección registro");
@@ -68,8 +69,8 @@ public class ViewComprensionLectora extends AFormView implements EventHandler<Ac
             alert.showAndWait();
         } else {
             if (otSeleccionados != null && !otSeleccionados.isEmpty()) {
-                final List<SComprensionLectora> colegio = new ArrayList<SComprensionLectora>(otSeleccionados.size());
-                for (final SComprensionLectora seleccionado : otSeleccionados) {
+                final List<R_DL_ComprensionLectora> colegio = new ArrayList<R_DL_ComprensionLectora>(otSeleccionados.size());
+                for (final R_DL_ComprensionLectora seleccionado : otSeleccionados) {
                     colegio.add(seleccionado);
                 }
                 delete(colegio);
@@ -86,11 +87,11 @@ public class ViewComprensionLectora extends AFormView implements EventHandler<Ac
             if (lblError != null) {
                 lblError.setText(" ");
             }
-            SComprensionLectora calidadLectora = null;
-            if (entitySelected != null && entitySelected instanceof SComprensionLectora) {
-                calidadLectora = (SComprensionLectora) entitySelected;
+            R_DL_ComprensionLectora calidadLectora = null;
+            if (entitySelected != null && entitySelected instanceof R_DL_ComprensionLectora) {
+                calidadLectora = (R_DL_ComprensionLectora) entitySelected;
             } else {
-                calidadLectora = new SComprensionLectora();
+                calidadLectora = new R_DL_ComprensionLectora.Builder().id(Utils.getLastIndex()).build();
             }
             calidadLectora.setName(txtNombre.getText());
             save(calidadLectora);
@@ -103,7 +104,7 @@ public class ViewComprensionLectora extends AFormView implements EventHandler<Ac
     }
 
     private void accionModificar() {
-        final SComprensionLectora calidadLectora = tblTable.getSelectionModel().getSelectedItem();
+        final R_DL_ComprensionLectora calidadLectora = tblTable.getSelectionModel().getSelectedItem();
         if (calidadLectora != null) {
             txtId.setText(String.format("%d", calidadLectora.getId()));
             txtNombre.setText(calidadLectora.getName());
@@ -129,10 +130,10 @@ public class ViewComprensionLectora extends AFormView implements EventHandler<Ac
 
     private void inicializaTabla() {
         tblTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        colId.setCellValueFactory(new PropertyValueFactory<SComprensionLectora, Long>("id"));
-        colNombre.setCellValueFactory(new PropertyValueFactory<SComprensionLectora, String>("name"));
+        colId.setCellValueFactory(new PropertyValueFactory<R_DL_ComprensionLectora, Long>("id"));
+        colNombre.setCellValueFactory(new PropertyValueFactory<R_DL_ComprensionLectora, String>("name"));
         tblTable.setOnMouseClicked(event -> {
-            final ObservableList<SComprensionLectora> itemsSelec = tblTable.getSelectionModel().getSelectedItems();
+            final ObservableList<R_DL_ComprensionLectora> itemsSelec = tblTable.getSelectionModel().getSelectedItems();
             if (itemsSelec.size() > 1) {
                 mnItemModificar.setDisable(true);
                 mnItemEliminar.setDisable(false);
@@ -177,10 +178,10 @@ public class ViewComprensionLectora extends AFormView implements EventHandler<Ac
     public void onDataArrived(List<Object> list) {
         if (list != null && !list.isEmpty()) {
             final Object entity = list.get(0);
-            if (entity instanceof SComprensionLectora) {
-                final ObservableList<SComprensionLectora> value = FXCollections.observableArrayList();
+            if (entity instanceof R_DL_ComprensionLectora) {
+                final ObservableList<R_DL_ComprensionLectora> value = FXCollections.observableArrayList();
                 for (final Object iEntity : list) {
-                    value.add((SComprensionLectora) iEntity);
+                    value.add((R_DL_ComprensionLectora) iEntity);
                 }
                 tblTable.setItems(value.sorted());
             }
@@ -194,7 +195,7 @@ public class ViewComprensionLectora extends AFormView implements EventHandler<Ac
 
     @Override
     public void onSaved(IEntity entity) {
-        final SComprensionLectora calidadLectora = (SComprensionLectora) entity;
+        final R_DL_ComprensionLectora calidadLectora = (R_DL_ComprensionLectora) entity;
         final int indice = tblTable.getItems().lastIndexOf(calidadLectora);
         if (indice != -1) {
             tblTable.getItems().set(indice, calidadLectora);

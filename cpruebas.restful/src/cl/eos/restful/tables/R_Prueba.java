@@ -8,6 +8,10 @@ public class R_Prueba  extends AEntity{
     
     private static final long serialVersionUID = 1L;
     
+    public enum Estado {
+        CREADA, DEFINIDA, EVALUADA
+    };
+    
     @SerializedName(value = "id", alternate = {"ID"})
     Long id;
     @SerializedName(value = "exigencia", alternate = {"EXIGENCIA"})

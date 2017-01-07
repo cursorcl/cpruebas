@@ -1,38 +1,41 @@
 package cl.eos.view;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.ot.OTAlumno;
-import cl.eos.persistence.models.SAlumno;
-import cl.eos.persistence.models.SColegio;
-import cl.eos.persistence.models.SCurso;
-import cl.eos.persistence.models.STipoAlumno;
+import cl.eos.restful.tables.R_Alumno;
+import cl.eos.restful.tables.R_Colegio;
+import cl.eos.restful.tables.R_Curso;
+import cl.eos.restful.tables.R_TipoAlumno;
 import cl.eos.util.ExcelSheetWriterObj;
+import cl.eos.util.SystemConstants;
 import cl.eos.util.Utils;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.Pagination;
 import javafx.scene.control.SelectionMode;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeTableColumn;
-import javafx.scene.control.TreeTableView;
-import javafx.scene.control.cell.TreeItemPropertyValueFactory;
-import javafx.scene.image.ImageView;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 public class AlumnosTableTreeView extends AFormView implements EventHandler<ActionEvent> {
 
@@ -82,48 +85,56 @@ public class AlumnosTableTreeView extends AFormView implements EventHandler<Acti
     private TextField txtDireccion;
 
     @FXML
-    private ComboBox<SColegio> cmbColegio;
+    private ComboBox<R_Colegio> cmbColegio;
+    @FXML
+    private ComboBox<R_Colegio> cmbSelectColegio;
 
     @FXML
-    private ComboBox<SCurso> cmbCurso;
+    private ComboBox<R_Curso> cmbCurso;
+
+    @FXML
+    private ComboBox<R_Curso> cmbSelectCurso;
 
     @FXML
     private Label lblError;
 
     @FXML
-    private TreeTableView<OTAlumno> tblAlumnos;
+    private TableView<OTAlumno> tblAlumnos;
 
     @FXML
-    private TreeTableColumn<OTAlumno, Long> colId;
+    private TableColumn<OTAlumno, Long> colId;
 
     @FXML
-    private TreeTableColumn<OTAlumno, String> colRut;
+    private TableColumn<OTAlumno, String> colRut;
 
     @FXML
-    private TreeTableColumn<OTAlumno, String> colName;
+    private TableColumn<OTAlumno, String> colName;
 
     @FXML
-    private TreeTableColumn<OTAlumno, String> colPaterno;
+    private TableColumn<OTAlumno, String> colPaterno;
 
     @FXML
-    private TreeTableColumn<OTAlumno, String> colMaterno;
+    private TableColumn<OTAlumno, String> colMaterno;
     @FXML
-    private TreeTableColumn<OTAlumno, String> colColegio;
+    private TableColumn<OTAlumno, String> colDireccion;
 
     @FXML
-    private TreeTableColumn<OTAlumno, String> colCurso;
+    private TableColumn<OTAlumno, String> colTipoAlumno;
 
     @FXML
-    private TreeTableColumn<OTAlumno, String> colTipoAlumno;
-
+    private ComboBox<R_TipoAlumno> cmbTipoAlumno;
     @FXML
-    private ComboBox<STipoAlumno> cmbTipoAlumno;
+    private Pagination pagination;
+    @FXML
+    private Button btnVer;
 
-    private ObservableList<SCurso> oListCursos;
+    private ObservableList<R_Curso> oListCursos;
+    private ObservableList<R_TipoAlumno> oListTipoAlumno;
+    ObservableList<OTAlumno> lstAlumnos;
 
     private void accionClicTabla() {
         tblAlumnos.setOnMouseClicked(event -> {
-            final ObservableList<TreeItem<OTAlumno>> selected = tblAlumnos.getSelectionModel().getSelectedItems();
+            final ObservableList<OTAlumno> selected = tblAlumnos.getSelectionModel().getSelectedItems();
 
             if (selected.size() > 1) {
                 mnItemModificar.setDisable(true);
@@ -141,7 +152,7 @@ public class AlumnosTableTreeView extends AFormView implements EventHandler<Acti
     }
 
     private void accionEliminar() {
-        final ObservableList<TreeItem<OTAlumno>> otSeleccionados = tblAlumnos.getSelectionModel().getSelectedItems();
+        final ObservableList<OTAlumno> otSeleccionados = tblAlumnos.getSelectionModel().getSelectedItems();
 
         if (otSeleccionados == null || otSeleccionados.isEmpty()) {
             final Alert alert = new Alert(AlertType.INFORMATION);
@@ -152,14 +163,14 @@ public class AlumnosTableTreeView extends AFormView implements EventHandler<Acti
             return;
         }
 
-        final List<SAlumno> alumno = new ArrayList<>(otSeleccionados.size());
-        for (final TreeItem<OTAlumno> ot : otSeleccionados) {
-            if (ot.getValue().getAlumno() != null) {
-                final SAlumno item = ot.getValue().getAlumno();
-                alumno.add(item);
+        final List<R_Alumno> lstAlumno = new ArrayList<>(otSeleccionados.size());
+        for (final OTAlumno ot : otSeleccionados) {
+            if (ot.getAlumno() != null) {
+                final R_Alumno item = ot.getAlumno();
+                lstAlumno.add(item);
             }
         }
-        delete(alumno);
+        delete(lstAlumno);
         tblAlumnos.getSelectionModel().clearSelection();
         limpiarControles();
     }
@@ -171,20 +182,20 @@ public class AlumnosTableTreeView extends AFormView implements EventHandler<Acti
             if (lblError != null) {
                 lblError.setText(" ");
             }
-            SAlumno alumno;
-            if (entitySelected != null && entitySelected instanceof SAlumno) {
-                alumno = (SAlumno) entitySelected;
+            R_Alumno alumno;
+            if (entitySelected != null && entitySelected instanceof R_Alumno) {
+                alumno = (R_Alumno) entitySelected;
             } else {
-                alumno = new SAlumno();
+                alumno = new R_Alumno.Builder().id(Utils.getLastIndex()).build();
             }
             alumno.setRut(txtRut.getText());
             alumno.setName(txtNombres.getText());
             alumno.setPaterno(txtAPaterno.getText());
             alumno.setMaterno(txtAMaterno.getText());
             alumno.setDireccion(txtDireccion.getText());
-            alumno.setColegio(cmbColegio.getValue());
-            alumno.setCurso(cmbCurso.getValue());
-            alumno.setTipoAlumno(cmbTipoAlumno.getValue());
+            alumno.setColegio_id(cmbColegio.getValue().getId());
+            alumno.setCurso_id(cmbCurso.getValue().getId());
+            alumno.setTipoalumno_id(cmbTipoAlumno.getValue().getId());
             save(alumno);
         } else {
             lblError.getStyleClass().add("bad");
@@ -194,106 +205,31 @@ public class AlumnosTableTreeView extends AFormView implements EventHandler<Acti
     }
 
     private void accionModificar() {
-        final OTAlumno alumno = tblAlumnos.getSelectionModel().getSelectedItem().getValue();
+        final OTAlumno alumno = tblAlumnos.getSelectionModel().getSelectedItem();
         if (alumno != null) {
             txtRut.setText(alumno.getRut());
             txtNombres.setText(alumno.getName());
             txtAPaterno.setText(alumno.getPaterno());
             txtAMaterno.setText(alumno.getMaterno());
             txtDireccion.setText(alumno.getDireccion());
-            cmbColegio.setValue(alumno.getColegio());
-            cmbCurso.setValue(alumno.getCurso());
+            cmbColegio.setValue(cmbSelectColegio.getSelectionModel().getSelectedItem());
+            cmbCurso.setValue(cmbSelectCurso.getSelectionModel().getSelectedItem());
             cmbTipoAlumno.setValue(alumno.getTipoAlumno());
             select(alumno.getAlumno());
         }
     }
 
-    private void addItem(TreeItem<OTAlumno> root, OTAlumno otAlumno) {
-        boolean founded = false;
-
-        for (final TreeItem<OTAlumno> item : root.getChildren()) {
-            final OTAlumno ot = item.getValue();
-
-            if (!ot.getColegio().equals(otAlumno.getColegio()))
-                continue;
-
-            for (final TreeItem<OTAlumno> itemCurso : item.getChildren()) {
-                if (!itemCurso.getValue().getCurso().equals(otAlumno.getCurso()))
-                    continue;
-                for (final TreeItem<OTAlumno> itemAlumno : itemCurso.getChildren()) {
-                    if (itemAlumno.getValue().getAlumno().equals(otAlumno.getAlumno())) {
-                        itemAlumno.setValue(otAlumno);
-                        founded = true;
-                        break;
-                    }
-                }
-                if (!founded) {
-                    final TreeItem<OTAlumno> nuevo = new TreeItem<>(otAlumno);
-                    itemCurso.getChildren().add(nuevo);
-                    founded = true;
-                }
-            }
-            if (!founded) {
-                final OTAlumno otCNuevo = new OTAlumno();
-                otCNuevo.setColegio(otAlumno.getColegio());
-                otCNuevo.setCurso(otAlumno.getCurso());
-                final TreeItem<OTAlumno> cursoNuevo = new TreeItem<>(otCNuevo, getImagenCurso());
-                item.getChildren().add(cursoNuevo);
-                final TreeItem<OTAlumno> nuevo = new TreeItem<>(otAlumno);
-                cursoNuevo.getChildren().add(nuevo);
-                founded = true;
-            }
-        }
-        if (!founded) {
-            final OTAlumno otLNuevo = new OTAlumno();
-            otLNuevo.setColegio(otAlumno.getColegio());
-
-            final OTAlumno otCNuevo = new OTAlumno();
-            otCNuevo.setColegio(otAlumno.getColegio());
-            otCNuevo.setCurso(otAlumno.getCurso());
-
-            final TreeItem<OTAlumno> colegioNuevo = new TreeItem<OTAlumno>(otLNuevo, getImagenColegio());
-            root.getChildren().add(colegioNuevo);
-
-            final TreeItem<OTAlumno> cursoNuevo = new TreeItem<OTAlumno>(otCNuevo, getImagenCurso());
-            colegioNuevo.getChildren().add(cursoNuevo);
-
-            final TreeItem<OTAlumno> nuevo = new TreeItem<OTAlumno>(otAlumno);
-            cursoNuevo.getChildren().add(nuevo);
-        }
-    }
-
-    private void asignaCursos() {
-        final SColegio colegioSeleccionado = cmbColegio.getValue();
-        if (colegioSeleccionado != null) {
-            final ObservableList<SCurso> oList = FXCollections.observableArrayList();
-            for (final SCurso object : oListCursos) {
-                if (object.getColegio().equals(colegioSeleccionado)) {
-                    oList.add(object);
-                }
-            }
-            cmbCurso.setItems(oList);
-        }
-    }
-
-    private Node getImagenColegio() {
-        try {
-            final File img = new File("res/school-icon1_16.png");
-            return new ImageView(img.toURI().toURL().toString());
-        } catch (final IOException e) {
-            AlumnosTableTreeView.LOG.severe(e.getMessage());
+    private ObservableList<R_Curso> obtenerCursos(final R_Colegio colegioSeleccionado) {
+        if (colegioSeleccionado == null)
             return null;
-        }
 
-    }
-
-    private Node getImagenCurso() {
-        try {
-            final File img = new File("res/curso_16.png");
-            return new ImageView(img.toURI().toURL().toString());
-        } catch (final IOException e) {
-            return null;
+        final ObservableList<R_Curso> oList = FXCollections.observableArrayList();
+        for (final R_Curso object : oListCursos) {
+            if (object.getColegio_id().equals(colegioSeleccionado.getId())) {
+                oList.add(object);
+            }
         }
+        return oList;
     }
 
     @Override
@@ -311,21 +247,22 @@ public class AlumnosTableTreeView extends AFormView implements EventHandler<Acti
             tblAlumnos.setId("Alumnos");
             ExcelSheetWriterObj.convertirDatosALibroDeExcel(tblAlumnos);
         } else if (source == cmbColegio) {
-            asignaCursos();
+            ObservableList<R_Curso> lst = obtenerCursos(cmbColegio.getSelectionModel().getSelectedItem());
+            cmbCurso.setItems(lst);
+        } else if (source == cmbSelectColegio) {
+            ObservableList<R_Curso> lst = obtenerCursos(cmbSelectColegio.getSelectionModel().getSelectedItem());
+            cmbSelectCurso.setItems(lst);
         }
     }
 
     private void inicializaTabla() {
         tblAlumnos.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        colId.setCellValueFactory(new TreeItemPropertyValueFactory<OTAlumno, Long>("id"));
-        colRut.setCellValueFactory(new TreeItemPropertyValueFactory<OTAlumno, String>("rut"));
-        colName.setCellValueFactory(new TreeItemPropertyValueFactory<OTAlumno, String>("name"));
-        colPaterno.setCellValueFactory(new TreeItemPropertyValueFactory<OTAlumno, String>("paterno"));
-        colMaterno.setCellValueFactory(new TreeItemPropertyValueFactory<OTAlumno, String>("materno"));
-        colColegio.setCellValueFactory(new TreeItemPropertyValueFactory<OTAlumno, String>("colegio"));
-        colCurso.setCellValueFactory(new TreeItemPropertyValueFactory<OTAlumno, String>("curso"));
-        colTipoAlumno.setCellValueFactory(new TreeItemPropertyValueFactory<OTAlumno, String>("tipoAlumno"));
-        tblAlumnos.setShowRoot(false);
+        colId.setCellValueFactory(new PropertyValueFactory<OTAlumno, Long>("id"));
+        colRut.setCellValueFactory(new PropertyValueFactory<OTAlumno, String>("rut"));
+        colName.setCellValueFactory(new PropertyValueFactory<OTAlumno, String>("name"));
+        colPaterno.setCellValueFactory(new PropertyValueFactory<OTAlumno, String>("paterno"));
+        colMaterno.setCellValueFactory(new PropertyValueFactory<OTAlumno, String>("materno"));
+        colTipoAlumno.setCellValueFactory(new PropertyValueFactory<OTAlumno, String>("tipoAlumno"));
     }
 
     @FXML
@@ -351,6 +288,20 @@ public class AlumnosTableTreeView extends AFormView implements EventHandler<Acti
         mnItemEliminar.setDisable(true);
 
         cmbColegio.setOnAction(this);
+        cmbSelectColegio.setOnAction(this);
+        
+        btnVer.setOnAction(this);
+        pagination.currentPageIndexProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+//                int fromIndex = Math.min(oldValue.intValue(),  newValue.intValue()) * SystemConstants.ROWS_FOR_PAGE ;
+//                int toIndex = Math.max(oldValue.intValue(),  newValue.intValue()) * SystemConstants.ROWS_FOR_PAGE ;
+                Map<String, Object> params = new HashMap<>();
+                params.put("curso_id", cmbSelectCurso.getSelectionModel().getSelectedItem().getId());
+                params.put("colegio_id", cmbSelectColegio.getSelectionModel().getSelectedItem().getId());
+                controller.findByParam(R_Alumno.class, params);
+            }
+        });
 
     }
 
@@ -372,56 +323,42 @@ public class AlumnosTableTreeView extends AFormView implements EventHandler<Acti
 
         if (list != null && !list.isEmpty()) {
             final Object entity = list.get(0);
-            if (entity instanceof SAlumno) {
-                final TreeItem<OTAlumno> root = new TreeItem<>(new OTAlumno());
-                root.setExpanded(true);
-
-                TreeItem<OTAlumno> itemColegio = null;
-                TreeItem<OTAlumno> itemCurso = null;
-
+            if (entity instanceof R_Alumno) {
+                lstAlumnos = FXCollections.observableArrayList();
                 for (final Object iEntity : list) {
-                    try {
-
-                        final OTAlumno ot = new OTAlumno((SAlumno) iEntity);
-                        if (itemColegio == null || !ot.getColegio().equals(itemColegio.getValue().getColegio())) {
-                            final OTAlumno otColegio = new OTAlumno();
-                            otColegio.setColegio(ot.getColegio());
-                            itemColegio = new TreeItem<OTAlumno>(otColegio, getImagenColegio());
-                            root.getChildren().add(itemColegio);
-                        }
-                        if (itemCurso == null || !ot.getCurso().equals(itemCurso.getValue().getCurso())) {
-                            final OTAlumno otCurso = new OTAlumno();
-                            otCurso.setCurso(ot.getCurso());
-                            otCurso.setColegio(ot.getColegio());
-                            itemCurso = new TreeItem<OTAlumno>(otCurso, getImagenCurso());
-                            itemColegio.getChildren().add(itemCurso);
-                        }
-                        itemCurso.getChildren().add(new TreeItem<OTAlumno>(ot));
-                    } catch (Exception ex) {
-                        LOG.info("Se ha producido un error al procesar un alumno:" + iEntity);
-                        LOG.severe(ex.getMessage());
-                    }
-
+                    R_Alumno alumno = (R_Alumno) iEntity;
+                    final OTAlumno ot = new OTAlumno(alumno);
+                    Optional<R_TipoAlumno> op = oListTipoAlumno.stream()
+                            .filter(t -> t.getId().equals(alumno.getTipoalumno_id())).findFirst();
+                    ot.setTipoAlumno(op.get());
+                    lstAlumnos.add(ot);
                 }
-                tblAlumnos.setRoot(root);
-            } else if (entity instanceof SCurso) {
+                tblAlumnos.setItems(lstAlumnos);
+
+            } else if (entity instanceof R_Curso) {
                 oListCursos = FXCollections.observableArrayList();
                 for (final Object iEntity : list) {
-                    oListCursos.add((SCurso) iEntity);
+                    oListCursos.add((R_Curso) iEntity);
                 }
-                asignaCursos();
-            } else if (entity instanceof SColegio) {
-                final ObservableList<SColegio> oList = FXCollections.observableArrayList();
+            } else if (entity instanceof R_Colegio) {
+                final ObservableList<R_Colegio> oList = FXCollections.observableArrayList();
                 for (final Object iEntity : list) {
-                    oList.add((SColegio) iEntity);
+                    oList.add((R_Colegio) iEntity);
                 }
                 cmbColegio.setItems(oList);
-            } else if (entity instanceof STipoAlumno) {
-                final ObservableList<STipoAlumno> oList = FXCollections.observableArrayList();
+
+                final ObservableList<R_Colegio> oLstSelColegio = FXCollections.observableArrayList();
                 for (final Object iEntity : list) {
-                    oList.add((STipoAlumno) iEntity);
+                    oLstSelColegio.add((R_Colegio) iEntity);
                 }
-                cmbTipoAlumno.setItems(oList);
+                cmbSelectColegio.setItems(oLstSelColegio);
+
+            } else if (entity instanceof R_TipoAlumno) {
+                oListTipoAlumno = FXCollections.observableArrayList();
+                for (final Object iEntity : list) {
+                    oListTipoAlumno.add((R_TipoAlumno) iEntity);
+                }
+                cmbTipoAlumno.setItems(oListTipoAlumno);
             }
 
         }
@@ -429,33 +366,28 @@ public class AlumnosTableTreeView extends AFormView implements EventHandler<Acti
 
     @Override
     public void onDeleted(IEntity entity) {
-        final OTAlumno otAlumno = new OTAlumno((SAlumno) entity);
-        final TreeItem<OTAlumno> root = tblAlumnos.getRoot();
-        for (final TreeItem<OTAlumno> item : root.getChildren()) {
-            final OTAlumno ot = item.getValue();
-            if (ot.getColegio().equals(otAlumno.getColegio())) {
-                for (final TreeItem<OTAlumno> itemCurso : item.getChildren()) {
-                    if (itemCurso.getValue().getCurso().equals(otAlumno.getCurso())) {
-                        int index = 0;
-                        for (final TreeItem<OTAlumno> itemAlumno : itemCurso.getChildren()) {
-                            if (itemAlumno.getValue().getAlumno().equals(otAlumno.getAlumno())) {
-                                itemCurso.getChildren().remove(index);
-                                break;
-                            }
-                            index++;
-                        }
-                    }
-                }
-            }
-        }
+        final OTAlumno otAlumno = new OTAlumno((R_Alumno) entity);
+        tblAlumnos.getItems().remove(otAlumno);
     }
 
     @Override
     public void onSaved(IEntity otObject) {
-        final OTAlumno otAlumno = new OTAlumno((SAlumno) otObject);
+        R_Alumno alumno = (R_Alumno) otObject;
+        Long idColegio = cmbSelectColegio.getSelectionModel().getSelectedItem().getId();
+        Long idCurso = cmbSelectCurso.getSelectionModel().getSelectedItem().getId();
 
-        final TreeItem<OTAlumno> root = tblAlumnos.getRoot();
-        addItem(root, otAlumno);
+        if (alumno.getColegio_id().equals(idColegio) && alumno.getCurso_id().equals(idCurso)) {
+            final OTAlumno otAlumno = new OTAlumno(alumno);
+            Optional<R_TipoAlumno> op = oListTipoAlumno.stream()
+                    .filter(t -> t.getId().equals(alumno.getTipoalumno_id())).findFirst();
+            otAlumno.setTipoAlumno(op.get());
+            final int indice = tblAlumnos.getItems().lastIndexOf(otAlumno);
+            if (indice != -1) {
+                tblAlumnos.getItems().set(indice, otAlumno);
+            } else {
+                tblAlumnos.getItems().add(otAlumno);
+            }
+        }
     }
 
     private void removeAllStyles() {

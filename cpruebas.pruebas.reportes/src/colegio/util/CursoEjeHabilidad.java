@@ -3,6 +3,17 @@ package colegio.util;
 import java.util.ArrayList;
 import java.util.List;
 
+import cl.eos.common.Constants;
+import cl.eos.restful.tables.R_Alumno;
+import cl.eos.restful.tables.R_Ejetematico;
+import cl.eos.restful.tables.R_EvaluacionPrueba;
+import cl.eos.restful.tables.R_Habilidad;
+import cl.eos.restful.tables.R_PruebaRendida;
+import cl.eos.restful.tables.R_RespuestasEsperadasPrueba;
+import cl.eos.restful.tables.R_TipoAlumno;
+import cl.eos.util.Pair;
+import cl.eos.util.Utils;
+import cl.eos.view.ots.resumenxalumno.eje.habilidad.OTAlumnoResumen;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -15,17 +26,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.TextAlignment;
 import javafx.util.Callback;
-import cl.eos.common.Constants;
-import cl.eos.persistence.models.SAlumno;
-import cl.eos.persistence.models.SEjeTematico;
-import cl.eos.persistence.models.SEvaluacionPrueba;
-import cl.eos.persistence.models.SHabilidad;
-import cl.eos.persistence.models.SPruebaRendida;
-import cl.eos.persistence.models.SRespuestasEsperadasPrueba;
-import cl.eos.persistence.models.STipoAlumno;
-import cl.eos.util.Pair;
-import cl.eos.util.Utils;
-import cl.eos.view.ots.resumenxalumno.eje.habilidad.OTAlumnoResumen;
 
 @SuppressWarnings("rawtypes")
 public class CursoEjeHabilidad {
@@ -34,21 +34,21 @@ public class CursoEjeHabilidad {
 	
     private TableView tblAlumnos;
 
-	private SEvaluacionPrueba evaluacionPrueba;
-	private List<SEjeTematico> lstEjes;
-	private List<SHabilidad> lstHabs;
-	private List<SRespuestasEsperadasPrueba> respEsperadas;
-	private  STipoAlumno tipoAlumno;
+	private R_EvaluacionPrueba evaluacionPrueba;
+	private List<R_Ejetematico> lstEjes;
+	private List<R_Habilidad> lstHabs;
+	private List<R_RespuestasEsperadasPrueba> respEsperadas;
+	private  R_TipoAlumno tipoAlumno;
 
-	public CursoEjeHabilidad( STipoAlumno tipoAlumno) {
+	public CursoEjeHabilidad( R_TipoAlumno tipoAlumno) {
 		this(null, tipoAlumno);
 	}
 
-	public CursoEjeHabilidad(SEvaluacionPrueba evaluacionPrueba, STipoAlumno tipoAlumno) {
+	public CursoEjeHabilidad(R_EvaluacionPrueba evaluacionPrueba, R_TipoAlumno tipoAlumno) {
 		super();
 		this.tipoAlumno =  tipoAlumno;
 		tblAlumnos = new TableView();
-		tblAlumnos.setId(evaluacionPrueba.getCurso().getName());
+		tblAlumnos.setId(evaluacionPrueba.getName() + evaluacionPrueba.getId());
 		setEvaluacionPrueba(evaluacionPrueba);
 	}
 
@@ -100,10 +100,10 @@ public class CursoEjeHabilidad {
 
 		List<OTAlumnoResumen> respuesta = new ArrayList<>();
 
-		List<SPruebaRendida> pRendidas = evaluacionPrueba.getPruebasRendidas();
-		for (SPruebaRendida pr : pRendidas) {
+		List<R_PruebaRendida> pRendidas = evaluacionPrueba.getPruebasRendidas();
+		for (R_PruebaRendida pr : pRendidas) {
 			String resps = pr.getRespuestas();
-			SAlumno alumno = pr.getAlumno();
+			R_Alumno alumno = pr.getAlumno();
 			
 			if (tipoAlumno.getId() != Constants.PIE_ALL && tipoAlumno.getId() != alumno.getTipoAlumno().getId()) {
 				// En este caso, no se considera este alumno para el
@@ -112,7 +112,7 @@ public class CursoEjeHabilidad {
 			}
 			
 			OTAlumnoResumen ot = new OTAlumnoResumen(alumno);
-			for (SEjeTematico eje : lstEjes) {
+			for (R_Ejetematico eje : lstEjes) {
 				Pair<Integer, Integer> pair = obtenerBuenasTotales(resps, eje);
 				Integer buenas = pair.getFirst();
 				Integer cantidad = pair.getSecond();
@@ -120,7 +120,7 @@ public class CursoEjeHabilidad {
 						* 100f;
 				ot.getPorcentajes().add(porcentaje);
 			}
-			for (SHabilidad hab : lstHabs) {
+			for (R_Habilidad hab : lstHabs) {
 				Pair<Integer, Integer> pair = obtenerBuenasTotales(resps, hab);
 				Integer buenas = pair.getFirst();
 				Integer cantidad = pair.getSecond();
@@ -140,15 +140,15 @@ public class CursoEjeHabilidad {
 	 * @param respuestas
 	 *            Las respuestas del alumno.
 	 * @param ahb
-	 *            La SHabilidad en base al que se realiza el calculo.
+	 *            La R_Habilidad en base al que se realiza el calculo.
 	 * @return Par <Preguntas buenas, Total de Preguntas> del eje.
 	 */
 	private Pair<Integer, Integer> obtenerBuenasTotales(String respuestas,
-			SHabilidad hab) {
+			R_Habilidad hab) {
 		int nroBuenas = 0;
 		int nroPreguntas = 0;
 		for (int n = 0; n < respEsperadas.size(); n++) {
-			SRespuestasEsperadasPrueba resp = respEsperadas.get(n);
+			R_RespuestasEsperadasPrueba resp = respEsperadas.get(n);
 			if(resp.isAnulada())
 			{
 				continue;
@@ -178,11 +178,11 @@ public class CursoEjeHabilidad {
 	 * @return Par <Preguntas buenas, Total de Preguntas> del eje.
 	 */
 	private Pair<Integer, Integer> obtenerBuenasTotales(String respuestas,
-			SEjeTematico eje) {
+			R_Ejetematico eje) {
 		int nroBuenas = 0;
 		int nroPreguntas = 0;
 		for (int n = 0; n < respEsperadas.size(); n++) {
-			SRespuestasEsperadasPrueba resp = respEsperadas.get(n);
+			R_RespuestasEsperadasPrueba resp = respEsperadas.get(n);
 			if(resp.isAnulada())
 			{
 				continue;
@@ -215,11 +215,11 @@ public class CursoEjeHabilidad {
 		tblAlumnos.getColumns().add(getFixedColumns("PATERNO", index++, 100));
 		tblAlumnos.getColumns().add(getFixedColumns("MATERNO", index++, 100));
 		tblAlumnos.getColumns().add(getFixedColumns("NOMBRE", index++, 150));
-		for (SEjeTematico eje : lstEjes) {
+		for (R_Ejetematico eje : lstEjes) {
 			tblAlumnos.getColumns().add(
 					getPercentColumns(eje.getName(), index++));
 		}
-		for (SHabilidad hab : lstHabs) {
+		for (R_Habilidad hab : lstHabs) {
 			tblAlumnos.getColumns().add(
 					getPercentColumns(hab.getName(), index++));
 		}
@@ -282,11 +282,11 @@ public class CursoEjeHabilidad {
 		this.tblAlumnos = tblAlumnos;
 	}
 
-	public SEvaluacionPrueba getEvaluacionPrueba() {
+	public R_EvaluacionPrueba getEvaluacionPrueba() {
 		return evaluacionPrueba;
 	}
 
-	public final void setEvaluacionPrueba(SEvaluacionPrueba evaluacionPrueba) {
+	public final void setEvaluacionPrueba(R_EvaluacionPrueba evaluacionPrueba) {
 		this.evaluacionPrueba = evaluacionPrueba;
 		respEsperadas = this.evaluacionPrueba.getPrueba().getRespuestas();
 		lstEjes = getEjesTematicos();
@@ -303,9 +303,9 @@ public class CursoEjeHabilidad {
 	 * @return Lista con las habilidades y la cantidad de preguntas de cada
 	 *         habilidad en la prueba.
 	 */
-	private List<SHabilidad> getHabilidades() {
-		List<SHabilidad> lstOtHabs = new ArrayList<SHabilidad>();
-		for (SRespuestasEsperadasPrueba r : respEsperadas) {
+	private List<R_Habilidad> getHabilidades() {
+		List<R_Habilidad> lstOtHabs = new ArrayList<R_Habilidad>();
+		for (R_RespuestasEsperadasPrueba r : respEsperadas) {
 			if (!lstOtHabs.contains(r.getHabilidad())) {
 				lstOtHabs.add(r.getHabilidad());
 			}
@@ -320,9 +320,9 @@ public class CursoEjeHabilidad {
 	 *            Lista de preguntas esperadas de una prueba.
 	 * @return Lista con los ejes temáticos en la prueba.
 	 */
-	private List<SEjeTematico> getEjesTematicos() {
-		List<SEjeTematico> lstOtEjes = new ArrayList<>();
-		for (SRespuestasEsperadasPrueba r : respEsperadas) {
+	private List<R_Ejetematico> getEjesTematicos() {
+		List<R_Ejetematico> lstOtEjes = new ArrayList<>();
+		for (R_RespuestasEsperadasPrueba r : respEsperadas) {
 			if (!lstOtEjes.contains(r.getEjeTematico())) {
 				lstOtEjes.add(r.getEjeTematico());
 			}

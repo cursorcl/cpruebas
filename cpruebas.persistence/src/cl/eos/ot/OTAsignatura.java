@@ -1,6 +1,6 @@
 package cl.eos.ot;
 
-import cl.eos.persistence.models.SAsignatura;
+import cl.eos.restful.tables.R_Asignatura;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 
@@ -8,13 +8,13 @@ public class OTAsignatura {
     private final SimpleLongProperty id = new SimpleLongProperty();
     private final SimpleStringProperty name = new SimpleStringProperty();
 
-    private SAsignatura asignatura;
+    private R_Asignatura asignatura;
 
     public OTAsignatura() {
         // TODO Auto-generated constructor stub
     }
 
-    public OTAsignatura(SAsignatura asignatura) {
+    public OTAsignatura(R_Asignatura asignatura) {
         this.asignatura = asignatura;
         id.set(asignatura.getId());
         name.set(asignatura.getName());
@@ -37,7 +37,7 @@ public class OTAsignatura {
         return true;
     }
 
-    public SAsignatura getAsignatura() {
+    public R_Asignatura getAsignatura() {
         return asignatura;
     }
 
@@ -65,7 +65,7 @@ public class OTAsignatura {
         return name;
     }
 
-    public void setAsignatura(SAsignatura asignatura) {
+    public void setAsignatura(R_Asignatura asignatura) {
         this.asignatura = asignatura;
     }
 

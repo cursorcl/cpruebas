@@ -30,10 +30,6 @@ public interface IFormView extends IView {
 
     void delete(List<? extends IEntity> otObject);
 
-    void find(String namedQuery, Map<String, Object> parameters);
-
-    void find(String namedQuery, Map<String, Object> parameters, IPersistenceListener listener);
-
     void findAll(Class<? extends IEntity> entityClazz);
 
     void findById(Class<? extends IEntity> entityClazz, Long id);

@@ -6,7 +6,7 @@ import java.util.List;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.ot.OTProfesor;
-import cl.eos.persistence.models.SProfesor;
+import cl.eos.restful.tables.R_Profesor;
 import cl.eos.util.ExcelSheetWriterObj;
 import cl.eos.util.Utils;
 import javafx.collections.FXCollections;
@@ -122,7 +122,7 @@ public class ProfesoresView extends AFormView implements EventHandler<ActionEven
         } else {
 
             if (otSeleccionados != null && !otSeleccionados.isEmpty()) {
-                final List<SProfesor> profesor = new ArrayList<SProfesor>(otSeleccionados.size());
+                final List<R_Profesor> profesor = new ArrayList<R_Profesor>(otSeleccionados.size());
                 for (final OTProfesor ot : otSeleccionados) {
                     profesor.add(ot.getProfesor());
                 }
@@ -140,11 +140,11 @@ public class ProfesoresView extends AFormView implements EventHandler<ActionEven
             if (lblError != null) {
                 lblError.setText(" ");
             }
-            SProfesor Profesor = null;
-            if (entitySelected != null && entitySelected instanceof SProfesor) {
-                Profesor = (SProfesor) entitySelected;
+            R_Profesor Profesor = null;
+            if (entitySelected != null && entitySelected instanceof R_Profesor) {
+                Profesor = (R_Profesor) entitySelected;
             } else {
-                Profesor = new SProfesor();
+                Profesor = new R_Profesor.Builder().id(Utils.getLastIndex()).build();
             }
             Profesor.setRut(txtRut.getText());
             Profesor.setName(txtNombres.getText());
@@ -227,10 +227,10 @@ public class ProfesoresView extends AFormView implements EventHandler<ActionEven
     public void onDataArrived(List<Object> list) {
         if (list != null && !list.isEmpty()) {
             final Object entity = list.get(0);
-            if (entity instanceof SProfesor) {
+            if (entity instanceof R_Profesor) {
                 final ObservableList<OTProfesor> oList = FXCollections.observableArrayList();
                 for (final Object iEntity : list) {
-                    oList.add(new OTProfesor((SProfesor) iEntity));
+                    oList.add(new OTProfesor((R_Profesor) iEntity));
                 }
                 tblProfesores.setItems(oList);
             }
@@ -239,12 +239,12 @@ public class ProfesoresView extends AFormView implements EventHandler<ActionEven
 
     @Override
     public void onDeleted(IEntity entity) {
-        tblProfesores.getItems().remove(new OTProfesor((SProfesor) entity));
+        tblProfesores.getItems().remove(new OTProfesor((R_Profesor) entity));
     }
 
     @Override
     public void onSaved(IEntity otObject) {
-        final OTProfesor profesor = new OTProfesor((SProfesor) otObject);
+        final OTProfesor profesor = new OTProfesor((R_Profesor) otObject);
         final int indice = tblProfesores.getItems().lastIndexOf(profesor);
         if (indice != -1) {
             tblProfesores.getItems().set(indice, profesor);

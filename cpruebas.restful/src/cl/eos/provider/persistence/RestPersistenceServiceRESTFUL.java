@@ -49,91 +49,67 @@ public class RestPersistenceServiceRESTFUL implements IPersistenceService {
 
     }
 
-    @Override
-    public IEntity delete(IEntity entity) {
-        RestfulClient.delete(entity.getClass(), entity.getId());
-        return entity;
-    }
-
-    @Override
-    public void disconnect() {
-    }
-
     @SuppressWarnings("unchecked")
     @Override
-    public void find(final String namedQuery, final Map<String, Object> parameters,
-            final IPersistenceListener listener) {
-
-        Runnable r = () -> {
-            List<Object> lresults = null;
-            Class<? extends IEntity> clazz = null;
-            try {
-                clazz = getClazz(namedQuery);
-                if (namedQuery.contains("findAll")) {
-                    lresults = (List<Object>) RestfulClient.get(clazz);
-                } else {
-                    lresults = (List<Object>) RestfulClient.getByParameters(clazz, parameters);
-                }
-                final List<Object>  results = lresults;
-                Platform.runLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        listener.onFindAllFinished(results);
-                    }
-                  });
-                
-            } catch (ClassNotFoundException e) {
-                LOG.severe("La clase " + namedQuery + " no existe.");
-            }
-
-        };
-        executor.execute(r);
-
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public void findAll(final Class<? extends IEntity> entityClazz, final IPersistenceListener listener) {
+    public <T extends IEntity> void findAll(final Class<T> entityClazz, final IPersistenceListener listener) {
 
         Runnable r = () -> {
             List<? extends IEntity> result = RestfulClient.get(entityClazz);
-            
+
             Platform.runLater(new Runnable() {
                 @Override
                 public void run() {
                     listener.onFindAllFinished((List<Object>) result);
                 }
-              });
-            
-            
+            });
+
         };
         executor.execute(r);
     }
+    
+    @Override
+    public <T extends IEntity> void findAll(Class<T> entityClazz, IPersistenceListener listener, int offset,
+            int items) {
+        Runnable r = () -> {
+            List<T> result = RestfulClient.get(entityClazz);
+
+            Platform.runLater(new Runnable() {
+                @SuppressWarnings("unchecked")
+                @Override
+                public void run() {
+                    listener.onFindAllFinished((List<Object>) result);
+                }
+            });
+
+        };
+        executor.execute(r);
+
+    }
 
     @Override
-    public void findByAllId(final Class<? extends IEntity> entityClazz, final Long[] id,
+    public <T extends IEntity> void findByAllId(final Class<T> entityClazz, final Long[] id,
             final IPersistenceListener listener) {
         Runnable r = () -> {
-            List<Object> lresult = new ArrayList<>();
+            List<T> lresult = new ArrayList<>();
             for (Long lId : id) {
-                List<? extends IEntity> lList = RestfulClient.get(entityClazz, lId);
-                for (Object o : lList) {
+                List<T> lList = RestfulClient.get(entityClazz, lId);
+                for (T o : lList) {
                     lresult.add(o);
                 }
             }
             Platform.runLater(new Runnable() {
                 @Override
                 public void run() {
-                    listener.onFindAllFinished(lresult);
+                    listener.onFindAllFinished((List<Object>) lresult);
                 }
-              });
-            
+            });
+
         };
         executor.execute(r);
     }
 
     @Override
-    public void findById(final Class<? extends IEntity> entityClazz, final Long id,
+    public <T extends IEntity> void findById(final Class<T> entityClazz, final Long id,
             final IPersistenceListener listener) {
         Runnable r = () -> {
             List<? extends IEntity> result = RestfulClient.get(entityClazz, id);
@@ -147,14 +123,14 @@ public class RestPersistenceServiceRESTFUL implements IPersistenceService {
                 public void run() {
                     listener.onFound(fResult);
                 }
-              });
+            });
 
         };
         executor.execute(r);
     }
 
     @Override
-    public void findByName(final Class<? extends IEntity> entityClazz, final String name,
+    public <T extends IEntity> void findByName(final Class<T> entityClazz, final String name,
             final IPersistenceListener listener) {
         Runnable r = () -> {
             Map<String, Object> params = new HashMap<>();
@@ -170,58 +146,29 @@ public class RestPersistenceServiceRESTFUL implements IPersistenceService {
                 public void run() {
                     listener.onFound(fResult);
                 }
-              });
+            });
         };
         executor.execute(r);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
-    public List<Object> findSynchro(final String namedQuery, final Map<String, Object> parameters) {
-        Callable<List<Object>> task = () -> {
-            List<Object> lresults = null;
-            try {
-                if (namedQuery.contains("findAll")) {
+    public <T extends IEntity> void findByParams(Class<T> entityClazz, Map<String, Object> params,
+            IPersistenceListener listener) {
 
-                    lresults = (List<Object>) RestfulClient.get(getClazz(namedQuery));
-                } else {
-                    lresults = (List<Object>) RestfulClient.getByParameters(getClazz(namedQuery), parameters);
+        Runnable r = () -> {
+            final List<T> result = RestfulClient.getByParameters(entityClazz, params);
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    listener.onFindFinished((List<Object>) result);
                 }
-            } catch (ClassNotFoundException e) {
-                lresults = null;
-            }
-
-            return lresults;
+            });
         };
-
-        Future<List<Object>> future = executor.submit(task);
-        try {
-            return future.get();
-        } catch (InterruptedException | ExecutionException e) {
-            throw new RuntimeException(e);
-        }
-
+        executor.execute(r);
     }
 
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T extends IEntity> T findSynchroById(Class<T> entityClazz, Long id) {
-
-        Callable<Object> task = () -> {
-            List<? extends IEntity> result = RestfulClient.get(entityClazz, id);
-            if (result != null && !result.isEmpty()) {
-                return result.get(0);
-            }
-            return null;
-        };
-
-        Future<Object> future = executor.submit(task);
-        try {
-            return (T) future.get();
-        } catch (InterruptedException | ExecutionException e) {
-            throw new RuntimeException(e);
-        }
-    }
+    
+    /************ Synchro methods **************/
 
     @Override
     public <T extends IEntity> List<T> findAllSynchro(Class<T> entityClazz) {
@@ -237,7 +184,71 @@ public class RestPersistenceServiceRESTFUL implements IPersistenceService {
             throw new RuntimeException(e);
         }
     }
+    
+    @Override
+    public <T extends IEntity> List<T> findAllSynchro(Class<T> entityClazz, int offset, int items) {
+        Callable<List<T>> task = () -> {
+            List<T> result = RestfulClient.get(entityClazz);
+            return result;
+        };
 
+        Future<List<T>> future = executor.submit(task);
+        try {
+            return future.get();
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    
+    @Override
+    public <T extends IEntity> List<T> findByAllIdSynchro(Class<T> entityClazz, Long[] id) {
+        List<T> lresult = new ArrayList<>();
+        for (Long lId : id) {
+            List<T> lList = RestfulClient.get(entityClazz, lId);
+            for (T o : lList) {
+                lresult.add(o);
+            }
+        }
+        return lresult;
+    }
+    
+    @Override
+    public <T extends IEntity> T findByIdSynchro(Class<T> entityClazz, Long id) {
+
+        Callable<T> task = () -> {
+            List<T> result = RestfulClient.get(entityClazz, id);
+            if (result != null && !result.isEmpty()) {
+                return result.get(0);
+            }
+            return null;
+        };
+
+        Future<T> future = executor.submit(task);
+        try {
+            return future.get();
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    
+    @Override
+    public <T extends IEntity> T findByNameSynchro(Class<T> entityClazz, String name) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("name", name);
+        List<T> result = RestfulClient.getByParameters(entityClazz, params);
+        T res = null;
+        if (result != null && !result.isEmpty()) {
+            res = result.get(0);
+        }
+        return res;
+    }
+
+
+    @Override
+    public <T extends IEntity> List<T> findByParamsSynchor(Class<T> entityClazz, Map<String, Object> params) {
+        return RestfulClient.getByParameters(entityClazz, params);
+    }
+    
     @Override
     public void insert(final String entity, final List<Object> list, final IPersistenceListener listener) {
 
@@ -308,6 +319,7 @@ public class RestPersistenceServiceRESTFUL implements IPersistenceService {
         Executors.newSingleThreadExecutor().execute(task);
     }
 
+
     @Override
     public IEntity save(IEntity entity) {
         RestfulClient.post(entity);
@@ -320,29 +332,14 @@ public class RestPersistenceServiceRESTFUL implements IPersistenceService {
         return entity;
     }
 
-    @SuppressWarnings("unchecked")
-    private static Class<? extends IEntity> getClazz(String namedQuery) throws ClassNotFoundException {
-        String[] parts = namedQuery.split(".");
-        Class<?> clazz = Class.forName("cl.eos.persistence.models." + parts[0]);
-        return (Class<? extends IEntity>) clazz;
+    @Override
+    public IEntity delete(IEntity entity) {
+        RestfulClient.delete(entity.getClass(), entity.getId());
+        return entity;
     }
 
     @Override
-    public void findAll(Class<? extends IEntity> entityClazz, IPersistenceListener listener, int offset, int items) {
-        Runnable r = () -> {
-            List<? extends IEntity> result = RestfulClient.get(entityClazz);
-            
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    listener.onFindAllFinished((List<Object>) result);
-                }
-              });
-            
-            
-        };
-        executor.execute(r);
-        
+    public void disconnect() {
     }
 
 }

@@ -2,7 +2,6 @@ package cl.eos.imp.view;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import cl.eos.interfaces.entity.IEntity;
@@ -59,16 +58,6 @@ public abstract class AFormView extends AView implements IFormView {
         if (controller != null && confirmaEliminar()) {
             controller.delete(otObject);
         }
-    }
-
-    @Override
-    public void find(String namedQuery, Map<String, Object> parameters) {
-        controller.find(namedQuery, parameters, (IPersistenceListener) this);
-    }
-
-    @Override
-    public void find(String namedQuery, Map<String, Object> parameters, IPersistenceListener listener) {
-        controller.find(namedQuery, parameters, listener);
     }
 
     @Override

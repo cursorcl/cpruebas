@@ -5,26 +5,25 @@ import java.util.Comparator;
 import cl.eos.ot.OTRangoEvaluacion;
 import cl.eos.ot.OTResumenColegio;
 import cl.eos.ot.OTResumenTipoCursoColegio;
-import cl.eos.persistence.models.SCurso;
-import cl.eos.persistence.models.SEvaluacionEjeTematico;
-import cl.eos.persistence.models.SEvaluacionPrueba;
-import cl.eos.persistence.models.SRangoEvaluacion;
-import cl.eos.persistence.models.SRespuestasEsperadasPrueba;
-import cl.eos.persistence.models.STipoCurso;
+import cl.eos.restful.tables.R_Curso;
+import cl.eos.restful.tables.R_EvaluacionEjetematico;
+import cl.eos.restful.tables.R_EvaluacionPrueba;
+import cl.eos.restful.tables.R_RangoEvaluacion;
+import cl.eos.restful.tables.R_RespuestasEsperadasPrueba;
+import cl.eos.restful.tables.R_TipoCurso;
 
 public class Comparadores {
 
-    public static Comparator<? super SEvaluacionEjeTematico> comparaEvaluacionEjeTematico() {
-        return (eetSource, eetTarget) -> eetSource.getNroRangoMin().compareTo(eetTarget.getNroRangoMin());
+    public static Comparator<? super R_EvaluacionEjetematico> comparaEvaluacionEjeTematico() {
+        return (eetSource, eetTarget) -> (int)Math.abs((eetSource.getNrorangomin() - eetTarget.getNrorangomin()));
     }
 
-    public static Comparator<? super SEvaluacionPrueba> comparaEvaluacionPruebaXCurso() {
-        return (eetSource, eetTarget) -> eetSource.getCurso().getName().compareTo(eetTarget.getCurso().getName());
+    public static Comparator<? super R_EvaluacionPrueba> comparaEvaluacionPruebaXCurso() {
+        return (eetSource, eetTarget) -> (int)(eetSource.getCurso_id()  - eetTarget.getCurso_id());
     }
 
     public static Comparator<? super OTRangoEvaluacion> comparaRangoEvaluacion() {
-        return (respSource, respTarget) -> respSource.getRango().getMinimo()
-                .compareTo(respTarget.getRango().getMinimo());
+        return (respSource, respTarget) -> (int)Math.abs(respSource.getRango().getMinimo() - respTarget.getRango().getMinimo());
     }
 
     public static Comparator<? super OTResumenColegio> comparaResumeColegio() {
@@ -41,7 +40,7 @@ public class Comparadores {
         };
     }
 
-    public static Comparator<? super SCurso> comparaResumeCurso() {
+    public static Comparator<? super R_Curso> comparaResumeCurso() {
         return (respSource, respTarget) -> {
 
             String source = "";
@@ -70,11 +69,11 @@ public class Comparadores {
         };
     }
 
-    public static Comparator<? super SRespuestasEsperadasPrueba> compararRespuestasEsperadas() {
+    public static Comparator<? super R_RespuestasEsperadasPrueba> compararRespuestasEsperadas() {
         return (respSource, respTarget) -> respSource.getNumero().compareTo(respTarget.getNumero());
     }
 
-    public static Comparator<? super STipoCurso> comparaTipoCurso() {
+    public static Comparator<? super R_TipoCurso> comparaTipoCurso() {
         return (respSource, respTarget) -> {
 
             Long source = 0L;
@@ -89,7 +88,7 @@ public class Comparadores {
         };
     }
 
-    public static Comparator<? super SCurso> odenarCurso() {
+    public static Comparator<? super R_Curso> odenarCurso() {
         return (cursoSource, cursoTarget) -> {
 
             String source = "";
@@ -100,12 +99,12 @@ public class Comparadores {
             if (cursoTarget.getName() != null) {
                 target = cursoTarget.getName().toUpperCase();
             }
-            final int result = cursoSource.getTipoCurso().getId().compareTo(cursoTarget.getTipoCurso().getId());
+            final int result = (int) (cursoSource.getTipocurso_id() - cursoTarget.getTipocurso_id());
             return result == 0 ? source.compareTo(target) : result;
         };
     }
 
-    public static Comparator<? super SRangoEvaluacion> rangoEvaluacionComparator() {
-        return (respSource, respTarget) -> respSource.getMinimo().compareTo(respTarget.getMinimo());
+    public static Comparator<? super R_RangoEvaluacion> rangoEvaluacionComparator() {
+        return (respSource, respTarget) -> (int)Math.abs(respSource.getMinimo() - respTarget.getMinimo());
     }
 }

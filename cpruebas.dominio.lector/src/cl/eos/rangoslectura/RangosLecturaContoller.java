@@ -1,7 +1,7 @@
 package cl.eos.rangoslectura;
 
 import cl.eos.imp.controller.AController;
-import cl.eos.persistence.models.SRangosLectura;
+import cl.eos.imp.model.RangosLectura;
 
 public class RangosLecturaContoller extends AController {
 
@@ -12,6 +12,6 @@ public class RangosLecturaContoller extends AController {
     @Override
     public void initialize() {
         model = new Model();
-        model.findAll(SRangosLectura.class, this);
+        model.findAll(RangosLectura.class, this);
     }
 }

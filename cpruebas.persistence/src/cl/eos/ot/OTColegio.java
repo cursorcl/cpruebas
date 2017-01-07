@@ -1,7 +1,6 @@
 package cl.eos.ot;
 
-import cl.eos.persistence.models.SColegio;
-import cl.eos.persistence.models.STipoColegio;
+import cl.eos.restful.tables.R_Colegio;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -12,20 +11,20 @@ public class OTColegio {
     private final SimpleLongProperty id = new SimpleLongProperty();
     private final SimpleStringProperty name = new SimpleStringProperty();
     private final SimpleStringProperty direccion = new SimpleStringProperty();
-    private final ObjectProperty<STipoColegio> tipo = new SimpleObjectProperty<STipoColegio>();
+    private final ObjectProperty<Long> tipo = new SimpleObjectProperty<Long>();
 
-    private SColegio colegio;
+    private R_Colegio colegio;
 
     public OTColegio() {
         // TODO Auto-generated constructor stub
     }
 
-    public OTColegio(SColegio colegio) {
+    public OTColegio(R_Colegio colegio) {
         this.colegio = colegio;
         id.set(colegio.getId());
         name.set(colegio.getName());
         direccion.set(colegio.getDireccion());
-        tipo.set(colegio.getTipoColegio());
+        tipo.set(colegio.getTipocolegio_id());
 
     }
 
@@ -50,7 +49,7 @@ public class OTColegio {
         return true;
     }
 
-    public SColegio getColegio() {
+    public R_Colegio getColegio() {
         return colegio;
     }
 
@@ -66,7 +65,7 @@ public class OTColegio {
         return nameProperty().get();
     }
 
-    public final STipoColegio getTipo() {
+    public final Long getTipo() {
         return tipoProperty().getValue();
     }
 
@@ -86,7 +85,7 @@ public class OTColegio {
         return name;
     }
 
-    public void setColegio(SColegio colegio) {
+    public void setColegio(R_Colegio colegio) {
         this.colegio = colegio;
     }
 
@@ -102,11 +101,11 @@ public class OTColegio {
         nameProperty().set(name);
     }
 
-    public final void setTipo(final STipoColegio tipoColegio) {
+    public final void setTipo(final Long tipoColegio) {
         tipoProperty().set(tipoColegio);
     }
 
-    public final ObjectProperty<STipoColegio> tipoProperty() {
+    public final ObjectProperty<Long> tipoProperty() {
         return tipo;
     }
 

@@ -1,19 +1,19 @@
 package cl.eos.ot;
 
-import cl.eos.persistence.models.SEjeTematico;
-import cl.eos.persistence.models.SRangoEvaluacion;
+import cl.eos.restful.tables.R_Ejetematico;
+import cl.eos.restful.tables.R_RangoEvaluacion;
 
 public class OTReporte {
 
-    private SRangoEvaluacion rango;
+    private R_RangoEvaluacion rango;
     private int total;
-    private SEjeTematico eje;
+    private R_Ejetematico eje;
 
-    public SEjeTematico getEje() {
+    public R_Ejetematico getEje() {
         return eje;
     }
 
-    public SRangoEvaluacion getRango() {
+    public R_RangoEvaluacion getRango() {
         return rango;
     }
 
@@ -21,11 +21,11 @@ public class OTReporte {
         return total;
     }
 
-    public void setEje(SEjeTematico eje) {
+    public void setEje(R_Ejetematico eje) {
         this.eje = eje;
     }
 
-    public void setRango(SRangoEvaluacion rango) {
+    public void setRango(R_RangoEvaluacion rango) {
         this.rango = rango;
     }
 

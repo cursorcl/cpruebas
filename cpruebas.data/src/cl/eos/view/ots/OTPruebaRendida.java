@@ -29,7 +29,7 @@ public class OTPruebaRendida {
         respuestas.set(pruebaRendida.getRespuestas());
         nota.set(Utils.redondeo2Decimales(pruebaRendida.getNota()));
         puntaje.set(Utils.getPuntaje(nota.floatValue()));
-        nivel.set(pruebaRendida.getRango());
+        nivel.set(null);
         rindioPrueba.set(true);
     }
 

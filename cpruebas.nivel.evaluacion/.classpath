@@ -8,5 +8,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/kernel.api.imp.fx"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.persistence.api"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.persistence.model"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.restful"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -9,12 +9,12 @@ import java.util.logging.Logger;
 
 import cl.eos.imp.view.AFormView;
 import cl.eos.imp.view.ProgressForm;
-import cl.eos.persistence.models.SAsignatura;
-import cl.eos.persistence.models.SColegio;
-import cl.eos.persistence.models.SCurso;
-import cl.eos.persistence.models.SEvaluacionPrueba;
-import cl.eos.persistence.models.STipoAlumno;
 import cl.eos.persistence.util.Comparadores;
+import cl.eos.restful.tables.R_Asignatura;
+import cl.eos.restful.tables.R_Colegio;
+import cl.eos.restful.tables.R_Curso;
+import cl.eos.restful.tables.R_EvaluacionPrueba;
+import cl.eos.restful.tables.R_TipoAlumno;
 import cl.eos.util.ExcelSheetWriterObj;
 import colegio.util.CursoEjeHabilidad;
 import javafx.application.Platform;
@@ -43,11 +43,11 @@ public class ResumenColegioXAlumnoEjeHabilidadView extends AFormView implements 
 	@FXML
 	private TabPane tabPane;
 	@FXML
-	private ComboBox<SColegio> cmbColegios;
+	private ComboBox<R_Colegio> cmbColegios;
 	@FXML
-	private ComboBox<SAsignatura> cmbAsignatura;
+	private ComboBox<R_Asignatura> cmbAsignatura;
 	@FXML
-	private ComboBox<STipoAlumno> cmbTipoAlumno;
+	private ComboBox<R_TipoAlumno> cmbTipoAlumno;
 	@FXML
 	private Button btnReportes;
 	@FXML
@@ -58,12 +58,12 @@ public class ResumenColegioXAlumnoEjeHabilidadView extends AFormView implements 
 	private MenuItem mnuExportarGeneral;
 
 	private Map<String, Object> parameters = new HashMap<String, Object>();
-	private ObservableList<SCurso> cursoList;
-	private ObservableList<SEvaluacionPrueba> evaluacionesPrueba;
+	private ObservableList<R_Curso> cursoList;
+	private ObservableList<R_EvaluacionPrueba> evaluacionesPrueba;
 	private ArrayList<CursoEjeHabilidad> lstCursoEjeHabilidad;
 
 	public ResumenColegioXAlumnoEjeHabilidadView() {
-		setTitle("Resumen SColegio/Ejes Temáticos/Habilidades x SAlumno");
+		setTitle("Resumen R_Colegio/Ejes Temáticos/Habilidades x SAlumno");
 	}
 
 	@SuppressWarnings("unchecked")
@@ -93,19 +93,19 @@ public class ResumenColegioXAlumnoEjeHabilidadView extends AFormView implements 
 	}
 
 	private void handleColegios() {
-		SColegio colegio = cmbColegios.getSelectionModel().getSelectedItem();
+		R_Colegio colegio = cmbColegios.getSelectionModel().getSelectedItem();
 		if (colegio != null) {
 			parameters.put(COLEGIO_ID, colegio.getId());
 			Map<String, Object> param = new HashMap<String, Object>();
 			param.put("colegioId", colegio.getId());
 			lblTitulo.setText(colegio.getName());
-			controller.find("SCurso.findByColegio", param);
+			controller.findByParam(R_Curso.class, param, this);
 			clearContent();
 		}
 	}
 
 	private void handleAsignatura() {
-		SAsignatura asignatura = cmbAsignatura.getSelectionModel().getSelectedItem();
+		R_Asignatura asignatura = cmbAsignatura.getSelectionModel().getSelectedItem();
 		if (asignatura != null) {
 			parameters.put(ASIGNATURA_ID, asignatura.getId());
 			clearContent();
@@ -115,7 +115,7 @@ public class ResumenColegioXAlumnoEjeHabilidadView extends AFormView implements 
 	private void handleReportes() {
 		if (!parameters.isEmpty() && parameters.containsKey(COLEGIO_ID) && parameters.containsKey(ASIGNATURA_ID)) {
 
-			controller.find("SEvaluacionPrueba.findEvaluacionByColegioAsig", parameters, this);
+			controller.findByParam(R_EvaluacionPrueba.class, parameters, this);
 		}
 	}
 
@@ -135,38 +135,38 @@ public class ResumenColegioXAlumnoEjeHabilidadView extends AFormView implements 
 	public void onDataArrived(List<Object> list) {
 		if (list != null && !list.isEmpty()) {
 			Object entity = list.get(0);
-			if (entity instanceof SColegio) {
-				ObservableList<SColegio> oList = FXCollections.observableArrayList();
+			if (entity instanceof R_Colegio) {
+				ObservableList<R_Colegio> oList = FXCollections.observableArrayList();
 				for (Object iEntity : list) {
-					oList.add((SColegio) iEntity);
+					oList.add((R_Colegio) iEntity);
 				}
 				cmbColegios.setItems(oList);
 			}
-			if (entity instanceof SAsignatura) {
-				ObservableList<SAsignatura> oList = FXCollections.observableArrayList();
+			if (entity instanceof R_Asignatura) {
+				ObservableList<R_Asignatura> oList = FXCollections.observableArrayList();
 				for (Object iEntity : list) {
-					oList.add((SAsignatura) iEntity);
+					oList.add((R_Asignatura) iEntity);
 				}
 				cmbAsignatura.setItems(oList);
 			}
-			if (entity instanceof SCurso) {
+			if (entity instanceof R_Curso) {
 				cursoList = FXCollections.observableArrayList();
 				for (Object iEntity : list) {
-					cursoList.add((SCurso) iEntity);
+					cursoList.add((R_Curso) iEntity);
 				}
 				FXCollections.sort(cursoList, Comparadores.comparaResumeCurso());
 			}
-			if (entity instanceof STipoAlumno) {
-				ObservableList<STipoAlumno> tAlumnoList = FXCollections.observableArrayList();
+			if (entity instanceof R_TipoAlumno) {
+				ObservableList<R_TipoAlumno> tAlumnoList = FXCollections.observableArrayList();
 				for (Object iEntity : list) {
-					tAlumnoList.add((STipoAlumno) iEntity);
+					tAlumnoList.add((R_TipoAlumno) iEntity);
 				}
 				cmbTipoAlumno.setItems(tAlumnoList);
 			}
-			if (entity instanceof SEvaluacionPrueba) {
+			if (entity instanceof R_EvaluacionPrueba) {
 				evaluacionesPrueba = FXCollections.observableArrayList();
 				for (Object object : list) {
-					SEvaluacionPrueba evaluacion = (SEvaluacionPrueba) object;
+					R_EvaluacionPrueba evaluacion = (R_EvaluacionPrueba) object;
 					evaluacionesPrueba.add(evaluacion);
 				}
 				generarReporte();
@@ -204,7 +204,7 @@ public class ResumenColegioXAlumnoEjeHabilidadView extends AFormView implements 
 				ArrayList<CursoEjeHabilidad> lst = new ArrayList<>();
 				int n = 1;
 				int total = evaluacionesPrueba.size();
-				for (SEvaluacionPrueba eval : evaluacionesPrueba) {
+				for (R_EvaluacionPrueba eval : evaluacionesPrueba) {
 					if (eval.getCurso() != null) {
 						updateMessage(String.format("Prcesando %s", eval.getCurso().getName()));
 						updateProgress(n++, total);

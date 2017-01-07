@@ -6,8 +6,9 @@ import java.util.List;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.ot.OTHabilidad;
-import cl.eos.persistence.models.SHabilidad;
+import cl.eos.restful.tables.R_Habilidad;
 import cl.eos.util.ExcelSheetWriterObj;
+import cl.eos.util.Utils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -108,7 +109,7 @@ public class HabilidadesView extends AFormView implements EventHandler<ActionEve
         } else {
 
             if (otSeleccionados != null && !otSeleccionados.isEmpty()) {
-                final List<SHabilidad> habilidad = new ArrayList<SHabilidad>(otSeleccionados.size());
+                final List<R_Habilidad> habilidad = new ArrayList<R_Habilidad>(otSeleccionados.size());
                 for (final OTHabilidad ot : otSeleccionados) {
                     habilidad.add(ot.getHabilidad());
                 }
@@ -126,11 +127,11 @@ public class HabilidadesView extends AFormView implements EventHandler<ActionEve
             if (lblError != null) {
                 lblError.setText(" ");
             }
-            SHabilidad habilidad = null;
-            if (entitySelected != null && entitySelected instanceof SHabilidad) {
-                habilidad = (SHabilidad) entitySelected;
+            R_Habilidad habilidad = null;
+            if (entitySelected != null && entitySelected instanceof R_Habilidad) {
+                habilidad = (R_Habilidad) entitySelected;
             } else {
-                habilidad = new SHabilidad();
+                habilidad = new R_Habilidad.Builder().id(Utils.getLastIndex()).build();
             }
             habilidad.setName(txtNombre.getText());
             habilidad.setDescripcion(txtDescripcion.getText());
@@ -207,10 +208,10 @@ public class HabilidadesView extends AFormView implements EventHandler<ActionEve
     public void onDataArrived(List<Object> list) {
         if (list != null && !list.isEmpty()) {
             final Object entity = list.get(0);
-            if (entity instanceof SHabilidad) {
+            if (entity instanceof R_Habilidad) {
                 final ObservableList<OTHabilidad> oList = FXCollections.observableArrayList();
                 for (final Object iEntity : list) {
-                    oList.add(new OTHabilidad((SHabilidad) iEntity));
+                    oList.add(new OTHabilidad((R_Habilidad) iEntity));
                 }
                 tblHabilidades.setItems(oList);
             }
@@ -219,12 +220,12 @@ public class HabilidadesView extends AFormView implements EventHandler<ActionEve
 
     @Override
     public void onDeleted(IEntity entity) {
-        tblHabilidades.getItems().remove(new OTHabilidad((SHabilidad) entity));
+        tblHabilidades.getItems().remove(new OTHabilidad((R_Habilidad) entity));
     }
 
     @Override
     public void onSaved(IEntity otObject) {
-        final OTHabilidad habilidad = new OTHabilidad((SHabilidad) otObject);
+        final OTHabilidad habilidad = new OTHabilidad((R_Habilidad) otObject);
         final int indice = tblHabilidades.getItems().lastIndexOf(habilidad);
         if (indice != -1) {
             tblHabilidades.getItems().set(indice, habilidad);

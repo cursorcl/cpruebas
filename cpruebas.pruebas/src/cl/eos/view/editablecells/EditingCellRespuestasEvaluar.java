@@ -1,12 +1,11 @@
 package cl.eos.view.editablecells;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import cl.eos.persistence.models.SPrueba;
-import cl.eos.persistence.models.SRespuestasEsperadasPrueba;
 import cl.eos.persistence.util.Comparadores;
+import cl.eos.restful.tables.R_Prueba;
+import cl.eos.restful.tables.R_RespuestasEsperadasPrueba;
 import cl.eos.view.ots.OTPruebaRendida;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -18,18 +17,17 @@ import javafx.scene.input.KeyCode;
 public class EditingCellRespuestasEvaluar extends TableCell<OTPruebaRendida, String> {
 
     private TextField textField;
-    private SPrueba prueba = null;
+    private R_Prueba prueba = null;
     private final int maxLength;
-    private List<SRespuestasEsperadasPrueba> listaRespuestas = null;
+    private List<R_RespuestasEsperadasPrueba> listaRespuestas = null;
 
-    public EditingCellRespuestasEvaluar(SPrueba prueba) {
+    public EditingCellRespuestasEvaluar(R_Prueba prueba, List<R_RespuestasEsperadasPrueba> respEsperadas) {
         super();
         this.prueba = prueba;
-
-        listaRespuestas = new ArrayList<SRespuestasEsperadasPrueba>(prueba.getRespuestas());
+        listaRespuestas = respEsperadas;
         Collections.sort(listaRespuestas, Comparadores.compararRespuestasEsperadas());
 
-        maxLength = prueba.getRespuestas().size();
+        maxLength = listaRespuestas.size();
     }
 
     @Override
@@ -70,8 +68,8 @@ public class EditingCellRespuestasEvaluar extends TableCell<OTPruebaRendida, Str
                     if (len > 0) {
 
                         final String s = newValue.substring(len - 1, len);
-                        final SRespuestasEsperadasPrueba resp = listaRespuestas.get(len - 1);
-                        if (resp.getVerdaderoFalso()) {
+                        final R_RespuestasEsperadasPrueba resp = listaRespuestas.get(len - 1);
+                        if (resp.getVerdaderofalso()) {
                             validValue = "VFO".contains(s.toUpperCase());
                         } else if (resp.getMental()) {
                             validValue = "-+O".contains(s.toUpperCase());

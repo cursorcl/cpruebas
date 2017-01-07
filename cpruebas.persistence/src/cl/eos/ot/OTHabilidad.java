@@ -1,6 +1,6 @@
 package cl.eos.ot;
 
-import cl.eos.persistence.models.SHabilidad;
+import cl.eos.restful.tables.R_Habilidad;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 
@@ -9,9 +9,9 @@ public class OTHabilidad {
     private final SimpleLongProperty id = new SimpleLongProperty();
     private final SimpleStringProperty name = new SimpleStringProperty();
     private final SimpleStringProperty descripcion = new SimpleStringProperty();
-    private SHabilidad habilidad;
+    private R_Habilidad habilidad;
 
-    public OTHabilidad(SHabilidad habilidad) {
+    public OTHabilidad(R_Habilidad habilidad) {
         this.habilidad = habilidad;
         id.set(habilidad.getId());
         name.set(habilidad.getName());
@@ -43,7 +43,7 @@ public class OTHabilidad {
         return descripcionProperty().get();
     }
 
-    public SHabilidad getHabilidad() {
+    public R_Habilidad getHabilidad() {
         return habilidad;
     }
 
@@ -75,7 +75,7 @@ public class OTHabilidad {
         descripcionProperty().set(descripcion);
     }
 
-    public void setHabilidad(SHabilidad habilidad) {
+    public void setHabilidad(R_Habilidad habilidad) {
         this.habilidad = habilidad;
     }
 

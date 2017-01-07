@@ -7,14 +7,14 @@ import java.util.List;
 
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
-import cl.eos.persistence.models.SEjeTematico;
-import cl.eos.persistence.models.SFormas;
-import cl.eos.persistence.models.SHabilidad;
-import cl.eos.persistence.models.SObjetivo;
-import cl.eos.persistence.models.SPrueba;
-import cl.eos.persistence.models.SPrueba.Estado;
-import cl.eos.persistence.models.SRespuestasEsperadasPrueba;
 import cl.eos.persistence.util.Comparadores;
+import cl.eos.restful.tables.R_Ejetematico;
+import cl.eos.restful.tables.R_Formas;
+import cl.eos.restful.tables.R_Habilidad;
+import cl.eos.restful.tables.R_Objetivo;
+import cl.eos.restful.tables.R_Prueba;
+import cl.eos.restful.tables.R_Prueba.Estado;
+import cl.eos.restful.tables.R_RespuestasEsperadasPrueba;
 import cl.eos.util.ExcelSheetWriterObj;
 import cl.eos.view.dnd.EjeTematicoDND;
 import cl.eos.view.dnd.HabilidadDND;
@@ -54,26 +54,26 @@ public class DefinePruebaViewController extends AFormView {
     @FXML
     private TableColumn<RegistroDefinePrueba, Boolean> mentalCol;
     @FXML
-    private TableColumn<RegistroDefinePrueba, SHabilidad> habCol;
+    private TableColumn<RegistroDefinePrueba, R_Habilidad> habCol;
     @FXML
-    private TableColumn<RegistroDefinePrueba, SEjeTematico> ejeCol;
+    private TableColumn<RegistroDefinePrueba, R_Ejetematico> ejeCol;
     @FXML
-    private TableColumn<RegistroDefinePrueba, SObjetivo> objCol;
+    private TableColumn<RegistroDefinePrueba, R_Objetivo> objCol;
     @FXML
     private TableColumn<RegistroDefinePrueba, String> badCol;
     @FXML
-    private TableView<SEjeTematico> tblEjesTematicos;
+    private TableView<R_Ejetematico> tblEjesTematicos;
     @FXML
-    private TableColumn<SEjeTematico, String> ejeTematicoCol;
+    private TableColumn<R_Ejetematico, String> ejeTematicoCol;
     @FXML
-    private TableView<SObjetivo> tblObjetivos;
+    private TableView<R_Objetivo> tblObjetivos;
     @FXML
-    private TableColumn<SObjetivo, String> objetivoCol;
+    private TableColumn<R_Objetivo, String> objetivoCol;
 
     @FXML
-    private TableView<SHabilidad> tblHabilidades;
+    private TableView<R_Habilidad> tblHabilidades;
     @FXML
-    private TableColumn<SHabilidad, String> habilidadCol;
+    private TableColumn<R_Habilidad, String> habilidadCol;
     @FXML
     private MenuItem mnuGrabar;
     @FXML
@@ -85,13 +85,13 @@ public class DefinePruebaViewController extends AFormView {
     @FXML
     private Label lblCount;
 
-    private SPrueba prueba;
+    private R_Prueba prueba;
 
     private ObservableList<RegistroDefinePrueba> registros;
     private StyleChangingRowFactory<RegistroDefinePrueba> rowFactory;
 
     public DefinePruebaViewController() {
-        setTitle("Definir SPrueba");
+        setTitle("Definir R_Prueba");
     }
 
     private void actualizaLabelCuenta(int nro) {
@@ -102,23 +102,23 @@ public class DefinePruebaViewController extends AFormView {
         if (validate()) {
             final String responses = txtRespuestas.getText();
             prueba.setResponses(responses);
-            final List<SRespuestasEsperadasPrueba> fromPrueba = getRespuestasEsperadas();
+            final List<R_RespuestasEsperadasPrueba> fromPrueba = getRespuestasEsperadas();
             int n = 0;
-            for (SRespuestasEsperadasPrueba resp : fromPrueba) {
+            for (R_RespuestasEsperadasPrueba resp : fromPrueba) {
                 resp.setPrueba(prueba);
-                resp = (SRespuestasEsperadasPrueba) save(resp);
+                resp = (R_RespuestasEsperadasPrueba) save(resp);
                 fromPrueba.set(n++, resp);
             }
             prueba.setRespuestas(fromPrueba);
 
-            final List<SFormas> formas = getFormasPrueba();
+            final List<R_Formas> formas = getFormasPrueba();
             n = 0;
-            for (final SFormas forma : formas) {
+            for (final R_Formas forma : formas) {
                 forma.setPrueba(prueba);
                 formas.set(n++, forma);
             }
             prueba.setFormas(formas);
-            prueba = (SPrueba) save(prueba);
+            prueba = (R_Prueba) save(prueba);
         }
     }
 
@@ -142,24 +142,24 @@ public class DefinePruebaViewController extends AFormView {
         }
     }
 
-    private List<SFormas> getFormasPrueba() {
-        List<SFormas> formas = prueba.getFormas();
+    private List<R_Formas> getFormasPrueba() {
+        List<R_Formas> formas = prueba.getFormas();
         if (formas == null) {
-            formas = new ArrayList<SFormas>();
+            formas = new ArrayList<R_Formas>();
         }
         final int nroFormas = prueba.getNroFormas().intValue();
         while (formas.size() > nroFormas) {
             formas.remove(nroFormas);
         }
         while (formas.size() < nroFormas) {
-            formas.add(new SFormas());
+            formas.add(new R_Formas());
         }
         final List<Integer> numeros = new ArrayList<Integer>();
         for (int n = 1; n <= prueba.getNroPreguntas(); n++) {
             numeros.add(new Integer(n));
         }
         for (int n = 0; n < nroFormas; n++) {
-            final SFormas forma = formas.get(n);
+            final R_Formas forma = formas.get(n);
             forma.setForma(n + 1);
             forma.setName("Forma " + (n + 1));
             String orden = new String();
@@ -177,15 +177,15 @@ public class DefinePruebaViewController extends AFormView {
         return formas;
     }
 
-    private List<SRespuestasEsperadasPrueba> getRespuestasEsperadas() {
-        List<SRespuestasEsperadasPrueba> fromPrueba = prueba.getRespuestas();
+    private List<R_RespuestasEsperadasPrueba> getRespuestasEsperadas() {
+        List<R_RespuestasEsperadasPrueba> fromPrueba = prueba.getRespuestas();
         if (fromPrueba == null) {
-            fromPrueba = new ArrayList<SRespuestasEsperadasPrueba>();
+            fromPrueba = new ArrayList<R_RespuestasEsperadasPrueba>();
         }
         int n = 0;
         while (n < fromPrueba.size() && n < registros.size()) {
             final RegistroDefinePrueba registro = registros.get(n);
-            final SRespuestasEsperadasPrueba respuesta = fromPrueba.get(n);
+            final R_RespuestasEsperadasPrueba respuesta = fromPrueba.get(n);
             respuesta.setEjeTematico(registro.getEjeTematico());
             respuesta.setHabilidad(registro.getHabilidad());
             respuesta.setMental(registro.getMental());
@@ -200,7 +200,7 @@ public class DefinePruebaViewController extends AFormView {
 
             while (n < registros.size()) {
                 final RegistroDefinePrueba registro = registros.get(n);
-                final SRespuestasEsperadasPrueba respuesta = new SRespuestasEsperadasPrueba();
+                final R_RespuestasEsperadasPrueba respuesta = new R_RespuestasEsperadasPrueba();
                 respuesta.setEjeTematico(registro.getEjeTematico());
                 respuesta.setHabilidad(registro.getHabilidad());
                 respuesta.setMental(registro.getMental());
@@ -246,13 +246,13 @@ public class DefinePruebaViewController extends AFormView {
         mentalCol.setCellFactory(CheckBoxTableCell.forTableColumn(mentalCol));
         mentalCol.setEditable(true);
 
-        habCol.setCellValueFactory(new PropertyValueFactory<RegistroDefinePrueba, SHabilidad>("habilidad"));
-        ejeCol.setCellValueFactory(new PropertyValueFactory<RegistroDefinePrueba, SEjeTematico>("ejeTematico"));
-        objCol.setCellValueFactory(new PropertyValueFactory<RegistroDefinePrueba, SObjetivo>("objetivo"));
+        habCol.setCellValueFactory(new PropertyValueFactory<RegistroDefinePrueba, R_Habilidad>("habilidad"));
+        ejeCol.setCellValueFactory(new PropertyValueFactory<RegistroDefinePrueba, R_Ejetematico>("ejeTematico"));
+        objCol.setCellValueFactory(new PropertyValueFactory<RegistroDefinePrueba, R_Objetivo>("objetivo"));
 
-        habilidadCol.setCellValueFactory(new PropertyValueFactory<SHabilidad, String>("name"));
-        ejeTematicoCol.setCellValueFactory(new PropertyValueFactory<SEjeTematico, String>("name"));
-        objetivoCol.setCellValueFactory(new PropertyValueFactory<SObjetivo, String>("name"));
+        habilidadCol.setCellValueFactory(new PropertyValueFactory<R_Habilidad, String>("name"));
+        ejeTematicoCol.setCellValueFactory(new PropertyValueFactory<R_Ejetematico, String>("name"));
+        objetivoCol.setCellValueFactory(new PropertyValueFactory<R_Objetivo, String>("name"));
 
         tblRegistroDefinePrueba.setOnMouseClicked(event -> {
             final boolean ennabled = tblRegistroDefinePrueba.getSelectionModel().getSelectedItems() != null
@@ -322,22 +322,22 @@ public class DefinePruebaViewController extends AFormView {
 
         if (list != null && !list.isEmpty()) {
             final Object entity = list.get(0);
-            if (entity instanceof SEjeTematico) {
-                final ObservableList<SEjeTematico> ejesTematicos = FXCollections.observableArrayList();
+            if (entity instanceof R_Ejetematico) {
+                final ObservableList<R_Ejetematico> ejesTematicos = FXCollections.observableArrayList();
                 for (final Object lEntity : list) {
-                    ejesTematicos.add((SEjeTematico) lEntity);
+                    ejesTematicos.add((R_Ejetematico) lEntity);
                 }
                 tblEjesTematicos.setItems(ejesTematicos);
-            } else if (entity instanceof SHabilidad) {
-                final ObservableList<SHabilidad> habilidades = FXCollections.observableArrayList();
+            } else if (entity instanceof R_Habilidad) {
+                final ObservableList<R_Habilidad> habilidades = FXCollections.observableArrayList();
                 for (final Object lEntity : list) {
-                    habilidades.add((SHabilidad) lEntity);
+                    habilidades.add((R_Habilidad) lEntity);
                 }
                 tblHabilidades.setItems(habilidades);
-            } else if (entity instanceof SObjetivo) {
-                final ObservableList<SObjetivo> objetivos = FXCollections.observableArrayList();
+            } else if (entity instanceof R_Objetivo) {
+                final ObservableList<R_Objetivo> objetivos = FXCollections.observableArrayList();
                 for (final Object lEntity : list) {
-                    objetivos.add((SObjetivo) lEntity);
+                    objetivos.add((R_Objetivo) lEntity);
                 }
                 tblObjetivos.setItems(objetivos);
             }
@@ -347,9 +347,9 @@ public class DefinePruebaViewController extends AFormView {
 
     @Override
     public void onFound(IEntity entity) {
-        if (entity instanceof SPrueba) {
+        if (entity instanceof R_Prueba) {
             registros = FXCollections.observableArrayList();
-            prueba = (SPrueba) entity;
+            prueba = (R_Prueba) entity;
 
             respsValidas = DefinePruebaViewController.VALID_LETTERS.substring(0, prueba.getAlternativas());
             respuestaCol.setCellFactory(column -> {
@@ -362,16 +362,16 @@ public class DefinePruebaViewController extends AFormView {
             if (prueba.getRespuestas() != null && !prueba.getRespuestas().isEmpty()) {
 
                 final StringBuffer resps = new StringBuffer();
-                final List<SRespuestasEsperadasPrueba> respuestas = new ArrayList<SRespuestasEsperadasPrueba>();
+                final List<R_RespuestasEsperadasPrueba> respuestas = new ArrayList<R_RespuestasEsperadasPrueba>();
 
                 final int nroPreguntas = prueba.getNroPreguntas();
                 final int oldNroPreguntas = prueba.getRespuestas().size();
-                for (final SRespuestasEsperadasPrueba respuesta : prueba.getRespuestas()) {
+                for (final R_RespuestasEsperadasPrueba respuesta : prueba.getRespuestas()) {
                     respuestas.add(respuesta);
                 }
                 if (nroPreguntas > oldNroPreguntas) {
                     for (int n = oldNroPreguntas + 1; n < nroPreguntas; n++) {
-                        final SRespuestasEsperadasPrueba resp = new SRespuestasEsperadasPrueba();
+                        final R_RespuestasEsperadasPrueba resp = new R_RespuestasEsperadasPrueba();
                         resp.setNumero(n);
                         respuestas.add(resp);
                     }
@@ -382,7 +382,7 @@ public class DefinePruebaViewController extends AFormView {
                 }
 
                 Collections.sort(respuestas, Comparadores.compararRespuestasEsperadas());
-                for (final SRespuestasEsperadasPrueba respuesta : respuestas) {
+                for (final R_RespuestasEsperadasPrueba respuesta : respuestas) {
                     final RegistroDefinePrueba registro = new RegistroDefinePrueba();
                     registro.setNumero(respuesta.getNumero());
                     registro.setRespuesta(respuesta.getRespuesta());
@@ -424,19 +424,19 @@ public class DefinePruebaViewController extends AFormView {
                     .getSelectedItems();
             if (seleccionados != null && !seleccionados.isEmpty()) {
                 if (dragEvent.getDragboard().getContent(EjeTematicoDND.ejeTematicoTrackDataFormat) != null) {
-                    final SEjeTematico ejeTematico = (SEjeTematico) dragEvent.getDragboard()
+                    final R_Ejetematico ejeTematico = (R_Ejetematico) dragEvent.getDragboard()
                             .getContent(EjeTematicoDND.ejeTematicoTrackDataFormat);
                     for (final RegistroDefinePrueba registro1 : seleccionados) {
                         registro1.setEjeTematico(ejeTematico);
                     }
                 } else if (dragEvent.getDragboard().getContent(HabilidadDND.habilidadTrackDataFormat) != null) {
-                    final SHabilidad habilidad = (SHabilidad) dragEvent.getDragboard()
+                    final R_Habilidad habilidad = (R_Habilidad) dragEvent.getDragboard()
                             .getContent(HabilidadDND.habilidadTrackDataFormat);
                     for (final RegistroDefinePrueba registro2 : seleccionados) {
                         registro2.setHabilidad(habilidad);
                     }
                 } else if (dragEvent.getDragboard().getContent(ObjetivoDND.objetivoTrackDataFormat) != null) {
-                    final SObjetivo objetivo = (SObjetivo) dragEvent.getDragboard()
+                    final R_Objetivo objetivo = (R_Objetivo) dragEvent.getDragboard()
                             .getContent(ObjetivoDND.objetivoTrackDataFormat);
                     for (final RegistroDefinePrueba registro3 : seleccionados) {
                         registro3.setObjetivo(objetivo);

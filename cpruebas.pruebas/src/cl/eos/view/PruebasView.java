@@ -595,10 +595,6 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
             final SPrueba pPrueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
             if (pPrueba != null) {
                 controller.findById(SPrueba.class, pPrueba.getId(), imprimirPrueba);
-                final Map<String, Object> parameters = new HashMap<>();
-                parameters.put("idAsignatura", pPrueba.getAsignatura().getId());
-                controller.find("SEjeTematico.findByAsigntura", parameters, imprimirPrueba);
-                controller.findAll(SHabilidad.class, imprimirPrueba);
                 controller.findAll(SProfesor.class, imprimirPrueba);
                 controller.findAll(SColegio.class, imprimirPrueba);
             }
@@ -811,7 +807,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
         }
 
         if (prueba != null) {
-            prueba = (SPrueba) findSynchroById(SPrueba.class, prueba.getId());
+            prueba = (SPrueba) findByIdSynchro(SPrueba.class, prueba.getId());
             final OTPrueba ot = new OTPrueba(prueba);
             final int indice = tblListadoPruebas.getItems().lastIndexOf(ot);
             if (indice != -1) {

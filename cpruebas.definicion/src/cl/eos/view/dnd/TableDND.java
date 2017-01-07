@@ -1,7 +1,7 @@
 package cl.eos.view.dnd;
 
-import cl.eos.persistence.models.SEjeTematico;
-import cl.eos.persistence.models.SHabilidad;
+import cl.eos.restful.tables.R_Ejetematico;
+import cl.eos.restful.tables.R_Habilidad;
 import cl.eos.view.RegistroDefinePrueba;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableCell;
@@ -16,13 +16,13 @@ public class TableDND extends TableCell<RegistroDefinePrueba, Object> {
                     .getSelectedItems();
             if (seleccionados != null && !seleccionados.isEmpty()) {
                 if (dragEvent.getDragboard().getContent(EjeTematicoDND.ejeTematicoTrackDataFormat) != null) {
-                    final SEjeTematico ejeTematico = (SEjeTematico) dragEvent.getDragboard()
+                    final R_Ejetematico ejeTematico = (R_Ejetematico) dragEvent.getDragboard()
                             .getContent(EjeTematicoDND.ejeTematicoTrackDataFormat);
                     for (final RegistroDefinePrueba registro1 : seleccionados) {
                         registro1.setEjeTematico(ejeTematico);
                     }
                 } else if (dragEvent.getDragboard().getContent(HabilidadDND.habilidadTrackDataFormat) != null) {
-                    final SHabilidad habilidad = (SHabilidad) dragEvent.getDragboard()
+                    final R_Habilidad habilidad = (R_Habilidad) dragEvent.getDragboard()
                             .getContent(HabilidadDND.habilidadTrackDataFormat);
                     for (final RegistroDefinePrueba registro2 : seleccionados) {
                         registro2.setHabilidad(habilidad);

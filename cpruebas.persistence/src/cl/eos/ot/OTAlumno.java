@@ -1,9 +1,7 @@
 package cl.eos.ot;
 
-import cl.eos.persistence.models.SAlumno;
-import cl.eos.persistence.models.SColegio;
-import cl.eos.persistence.models.SCurso;
-import cl.eos.persistence.models.STipoAlumno;
+import cl.eos.restful.tables.R_Alumno;
+import cl.eos.restful.tables.R_TipoAlumno;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -16,16 +14,14 @@ public class OTAlumno {
     private final SimpleStringProperty paterno = new SimpleStringProperty();
     private final SimpleStringProperty materno = new SimpleStringProperty();
     private final SimpleStringProperty direccion = new SimpleStringProperty();
-    private final SimpleObjectProperty<SColegio> colegio = new SimpleObjectProperty<SColegio>();
-    private final SimpleObjectProperty<SCurso> curso = new SimpleObjectProperty<SCurso>();
-    private final SimpleObjectProperty<STipoAlumno> tipoAlumno = new SimpleObjectProperty<STipoAlumno>();
-    private SAlumno alumno;
+    private final SimpleObjectProperty<R_TipoAlumno> tipoAlumno = new SimpleObjectProperty<R_TipoAlumno>();
+    private R_Alumno alumno;
 
     public OTAlumno() {
         id.setValue(null);
     }
 
-    public OTAlumno(SAlumno alumno) {
+    public OTAlumno(R_Alumno alumno) {
         this.alumno = alumno;
         id.set(alumno.getId());
         rut.set(alumno.getRut());
@@ -33,18 +29,7 @@ public class OTAlumno {
         paterno.set(alumno.getPaterno());
         materno.set(alumno.getMaterno());
         direccion.set(alumno.getDireccion());
-        colegio.set(alumno.getColegio());
-        curso.set(alumno.getCurso());
-        tipoAlumno.set(alumno.getTipoAlumno());
 
-    }
-
-    public final SimpleObjectProperty<SColegio> colegioProperty() {
-        return colegio;
-    }
-
-    public final SimpleObjectProperty<SCurso> cursoProperty() {
-        return curso;
     }
 
     public final SimpleStringProperty direccionProperty() {
@@ -66,18 +51,6 @@ public class OTAlumno {
         } else if (id.get() != other.id.get())
             return false;
         return true;
-    }
-
-    public SAlumno getAlumno() {
-        return alumno;
-    }
-
-    public final cl.eos.persistence.models.SColegio getColegio() {
-        return colegioProperty().get();
-    }
-
-    public final cl.eos.persistence.models.SCurso getCurso() {
-        return cursoProperty().get();
     }
 
     public final java.lang.String getDireccion() {
@@ -104,7 +77,7 @@ public class OTAlumno {
         return rutProperty().get();
     }
 
-    public final cl.eos.persistence.models.STipoAlumno getTipoAlumno() {
+    public final R_TipoAlumno getTipoAlumno() {
         return tipoAlumnoProperty().get();
     }
 
@@ -136,19 +109,18 @@ public class OTAlumno {
         return rut;
     }
 
-    public void setAlumno(SAlumno alumno) {
+    /**
+     * @return the alumno
+     */
+    public final R_Alumno getAlumno() {
+        return alumno;
+    }
+
+    public void setAlumno(R_Alumno alumno) {
         this.alumno = alumno;
     }
 
-    public final void setColegio(final cl.eos.persistence.models.SColegio colegio) {
-        colegioProperty().set(colegio);
-    }
-
-    public final void setCurso(final cl.eos.persistence.models.SCurso curso) {
-        cursoProperty().set(curso);
-    }
-
-    public final void setDireccion(final java.lang.String direccion) {
+    public final void setDireccion(final String direccion) {
         direccionProperty().set(direccion);
     }
 
@@ -156,27 +128,27 @@ public class OTAlumno {
         idProperty().set(id);
     }
 
-    public final void setMaterno(final java.lang.String materno) {
+    public final void setMaterno(final String materno) {
         maternoProperty().set(materno);
     }
 
-    public final void setName(final java.lang.String name) {
+    public final void setName(final String name) {
         nameProperty().set(name);
     }
 
-    public final void setPaterno(final java.lang.String paterno) {
+    public final void setPaterno(final String paterno) {
         paternoProperty().set(paterno);
     }
 
-    public final void setRut(final java.lang.String rut) {
+    public final void setRut(final String rut) {
         rutProperty().set(rut);
     }
 
-    public final void setTipoAlumno(final cl.eos.persistence.models.STipoAlumno tipoAlumno) {
+    public final void setTipoAlumno(final R_TipoAlumno tipoAlumno) {
         tipoAlumnoProperty().set(tipoAlumno);
     }
 
-    public final SimpleObjectProperty<STipoAlumno> tipoAlumnoProperty() {
+    public final SimpleObjectProperty<R_TipoAlumno> tipoAlumnoProperty() {
         return tipoAlumno;
     }
 
@@ -184,8 +156,8 @@ public class OTAlumno {
     public String toString() {
         String result = "";
         if (alumno != null) {
-            result = String.format("%s\t%s\t%s %s %s %s", alumno.getColegio().getName(), alumno.getCurso().getName(),
-                    alumno.getRut(), alumno.getPaterno(), alumno.getMaterno(), alumno.getName());
+            result = String.format("%s %s %s %s", alumno.getRut(), alumno.getPaterno(), alumno.getMaterno(),
+                    alumno.getName());
         }
         return result;
     }

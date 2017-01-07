@@ -3,6 +3,16 @@ package cl.eos.view.ots;
 import java.time.LocalDate;
 import java.util.List;
 
+import cl.eos.imp.model.Prueba.Estado;
+import cl.eos.restful.tables.R_Asignatura;
+import cl.eos.restful.tables.R_EvaluacionPrueba;
+import cl.eos.restful.tables.R_Formas;
+import cl.eos.restful.tables.R_NivelEvaluacion;
+import cl.eos.restful.tables.R_Profesor;
+import cl.eos.restful.tables.R_Prueba;
+import cl.eos.restful.tables.R_RespuestasEsperadasPrueba;
+import cl.eos.restful.tables.R_TipoCurso;
+import cl.eos.restful.tables.R_TipoPrueba;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -16,14 +26,14 @@ public class OTPrueba {
     private final SimpleStringProperty name = new SimpleStringProperty();
     private final SimpleStringProperty responses = new SimpleStringProperty();
 
-    private final SimpleObjectProperty<STipoPrueba> tipoPrueba = new SimpleObjectProperty<STipoPrueba>();
-    private final SimpleObjectProperty<STipoCurso> curso = new SimpleObjectProperty<STipoCurso>();
-    private final SimpleObjectProperty<SAsignatura> asignatura = new SimpleObjectProperty<SAsignatura>();
-    private final SimpleObjectProperty<SNivelEvaluacion> nivelEvaluacion = new SimpleObjectProperty<SNivelEvaluacion>();
-    private final SimpleObjectProperty<SProfesor> profesor = new SimpleObjectProperty<SProfesor>();
-    private final SimpleObjectProperty<List<SFormas>> formas = new SimpleObjectProperty<List<SFormas>>();
-    private final SimpleObjectProperty<List<SRespuestasEsperadasPrueba>> respuestas = new SimpleObjectProperty<List<SRespuestasEsperadasPrueba>>();
-    private final SimpleObjectProperty<List<SEvaluacionPrueba>> evaluaciones = new SimpleObjectProperty<List<SEvaluacionPrueba>>();
+    private final SimpleObjectProperty<R_TipoPrueba> tipoPrueba = new SimpleObjectProperty<R_TipoPrueba>();
+    private final SimpleObjectProperty<R_TipoCurso> curso = new SimpleObjectProperty<R_TipoCurso>();
+    private final SimpleObjectProperty<R_Asignatura> asignatura = new SimpleObjectProperty<R_Asignatura>();
+    private final SimpleObjectProperty<R_NivelEvaluacion> nivelEvaluacion = new SimpleObjectProperty<R_NivelEvaluacion>();
+    private final SimpleObjectProperty<R_Profesor> profesor = new SimpleObjectProperty<R_Profesor>();
+    private final SimpleObjectProperty<List<R_Formas>> formas = new SimpleObjectProperty<List<R_Formas>>();
+    private final SimpleObjectProperty<List<R_RespuestasEsperadasPrueba>> respuestas = new SimpleObjectProperty<List<R_RespuestasEsperadasPrueba>>();
+    private final SimpleObjectProperty<List<R_EvaluacionPrueba>> evaluaciones = new SimpleObjectProperty<List<R_EvaluacionPrueba>>();
     private final SimpleObjectProperty<LocalDate> fechaLocal = new SimpleObjectProperty<LocalDate>();
     private final SimpleObjectProperty<Estado> estado = new SimpleObjectProperty<Estado>();
 
@@ -33,13 +43,13 @@ public class OTPrueba {
     private final SimpleIntegerProperty puntajeBase = new SimpleIntegerProperty();
     private final SimpleIntegerProperty exigencia = new SimpleIntegerProperty();
 
-    private SPrueba prueba;
+    private R_Prueba prueba;
 
     public OTPrueba() {
 
     }
 
-    public OTPrueba(SPrueba prueba) {
+    public OTPrueba(R_Prueba prueba) {
         this.prueba = prueba;
         id.set(prueba.getId());
         fecha.set(prueba.getFecha());
@@ -67,11 +77,11 @@ public class OTPrueba {
         return alternativas;
     }
 
-    public final SimpleObjectProperty<SAsignatura> asignaturaProperty() {
+    public final SimpleObjectProperty<R_Asignatura> asignaturaProperty() {
         return asignatura;
     }
 
-    public final SimpleObjectProperty<STipoCurso> cursoProperty() {
+    public final SimpleObjectProperty<R_TipoCurso> cursoProperty() {
         return curso;
     }
 
@@ -96,7 +106,7 @@ public class OTPrueba {
         return estado;
     }
 
-    public final SimpleObjectProperty<List<SEvaluacionPrueba>> evaluacionesProperty() {
+    public final SimpleObjectProperty<List<R_EvaluacionPrueba>> evaluacionesProperty() {
         return evaluaciones;
     }
 
@@ -112,7 +122,7 @@ public class OTPrueba {
         return fecha;
     }
 
-    public final SimpleObjectProperty<List<SFormas>> formasProperty() {
+    public final SimpleObjectProperty<List<R_Formas>> formasProperty() {
         return formas;
     }
 
@@ -120,19 +130,19 @@ public class OTPrueba {
         return alternativasProperty().get();
     }
 
-    public final cl.eos.persistence.models.SAsignatura getAsignatura() {
+    public final R_Asignatura getAsignatura() {
         return asignaturaProperty().get();
     }
 
-    public final cl.eos.persistence.models.STipoCurso getCurso() {
+    public final R_TipoCurso getCurso() {
         return cursoProperty().get();
     }
 
-    public final cl.eos.persistence.models.SPrueba.Estado getEstado() {
+    public final R_Prueba.Estado getEstado() {
         return estadoProperty().get();
     }
 
-    public final java.util.List<cl.eos.persistence.models.SEvaluacionPrueba> getEvaluaciones() {
+    public final List<R_EvaluacionPrueba> getEvaluaciones() {
         return evaluacionesProperty().get();
     }
 
@@ -148,7 +158,7 @@ public class OTPrueba {
         return fechaLocalProperty().get();
     }
 
-    public final java.util.List<cl.eos.persistence.models.SFormas> getFormas() {
+    public final List<R_Formas> getFormas() {
         return formasProperty().get();
     }
 
@@ -160,7 +170,7 @@ public class OTPrueba {
         return nameProperty().get();
     }
 
-    public final cl.eos.persistence.models.SNivelEvaluacion getNivelEvaluacion() {
+    public final R_NivelEvaluacion getNivelEvaluacion() {
         return nivelEvaluacionProperty().get();
     }
 
@@ -172,11 +182,11 @@ public class OTPrueba {
         return nroPreguntasProperty().get();
     }
 
-    public final cl.eos.persistence.models.SProfesor getProfesor() {
+    public final R_Profesor getProfesor() {
         return profesorProperty().get();
     }
 
-    public SPrueba getPrueba() {
+    public R_Prueba getPrueba() {
         return prueba;
     }
 
@@ -188,11 +198,11 @@ public class OTPrueba {
         return responsesProperty().get();
     }
 
-    public final java.util.List<cl.eos.persistence.models.SRespuestasEsperadasPrueba> getRespuestas() {
+    public final List<R_RespuestasEsperadasPrueba> getRespuestas() {
         return respuestasProperty().get();
     }
 
-    public final cl.eos.persistence.models.STipoPrueba getTipoPrueba() {
+    public final R_TipoPrueba getTipoPrueba() {
         return tipoPruebaProperty().get();
     }
 
@@ -212,7 +222,7 @@ public class OTPrueba {
         return name;
     }
 
-    public final SimpleObjectProperty<SNivelEvaluacion> nivelEvaluacionProperty() {
+    public final SimpleObjectProperty<R_NivelEvaluacion> nivelEvaluacionProperty() {
         return nivelEvaluacion;
     }
 
@@ -224,7 +234,7 @@ public class OTPrueba {
         return nroPreguntas;
     }
 
-    public final SimpleObjectProperty<SProfesor> profesorProperty() {
+    public final SimpleObjectProperty<R_Profesor> profesorProperty() {
         return profesor;
     }
 
@@ -236,7 +246,7 @@ public class OTPrueba {
         return responses;
     }
 
-    public final SimpleObjectProperty<List<SRespuestasEsperadasPrueba>> respuestasProperty() {
+    public final SimpleObjectProperty<List<R_RespuestasEsperadasPrueba>> respuestasProperty() {
         return respuestas;
     }
 
@@ -244,19 +254,19 @@ public class OTPrueba {
         alternativasProperty().set(alternativas);
     }
 
-    public final void setAsignatura(final cl.eos.persistence.models.SAsignatura asignatura) {
+    public final void setAsignatura(final R_Asignatura asignatura) {
         asignaturaProperty().set(asignatura);
     }
 
-    public final void setCurso(final cl.eos.persistence.models.STipoCurso curso) {
+    public final void setCurso(final R_TipoCurso curso) {
         cursoProperty().set(curso);
     }
 
-    public final void setEstado(final cl.eos.persistence.models.SPrueba.Estado estado) {
+    public final void setEstado(final R_Prueba.Estado estado) {
         estadoProperty().set(estado);
     }
 
-    public final void setEvaluaciones(final java.util.List<cl.eos.persistence.models.SEvaluacionPrueba> evaluaciones) {
+    public final void setEvaluaciones(final List<R_EvaluacionPrueba> evaluaciones) {
         evaluacionesProperty().set(evaluaciones);
     }
 
@@ -273,7 +283,7 @@ public class OTPrueba {
         fechaLocalProperty().set(fechaLocal);
     }
 
-    public final void setFormas(final java.util.List<cl.eos.persistence.models.SFormas> formas) {
+    public final void setFormas(final List<R_Formas> formas) {
         formasProperty().set(formas);
     }
 
@@ -285,7 +295,7 @@ public class OTPrueba {
         nameProperty().set(name);
     }
 
-    public final void setNivelEvaluacion(final cl.eos.persistence.models.SNivelEvaluacion nivelEvaluacion) {
+    public final void setNivelEvaluacion(final R_NivelEvaluacion nivelEvaluacion) {
         nivelEvaluacionProperty().set(nivelEvaluacion);
     }
 
@@ -297,11 +307,11 @@ public class OTPrueba {
         nroPreguntasProperty().set(nroPreguntas);
     }
 
-    public final void setProfesor(final cl.eos.persistence.models.SProfesor profesor) {
+    public final void setProfesor(final R_Profesor profesor) {
         profesorProperty().set(profesor);
     }
 
-    public void setPrueba(SPrueba prueba) {
+    public void setPrueba(R_Prueba prueba) {
         this.prueba = prueba;
     }
 
@@ -314,15 +324,15 @@ public class OTPrueba {
     }
 
     public final void setRespuestas(
-            final java.util.List<cl.eos.persistence.models.SRespuestasEsperadasPrueba> respuestas) {
+            final List<R_RespuestasEsperadasPrueba> respuestas) {
         respuestasProperty().set(respuestas);
     }
 
-    public final void setTipoPrueba(final cl.eos.persistence.models.STipoPrueba tipoPrueba) {
+    public final void setTipoPrueba(final R_TipoPrueba tipoPrueba) {
         tipoPruebaProperty().set(tipoPrueba);
     }
 
-    public final SimpleObjectProperty<STipoPrueba> tipoPruebaProperty() {
+    public final SimpleObjectProperty<R_TipoPrueba> tipoPruebaProperty() {
         return tipoPrueba;
     }
 

@@ -1,6 +1,6 @@
 package cl.eos.ot;
 
-import cl.eos.persistence.models.SProfesor;
+import cl.eos.restful.tables.R_Profesor;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 
@@ -12,13 +12,13 @@ public class OTProfesor {
     private final SimpleStringProperty paterno = new SimpleStringProperty();
     private final SimpleStringProperty materno = new SimpleStringProperty();
 
-    private SProfesor profesor;
+    private R_Profesor profesor;
 
     public OTProfesor() {
         // TODO Auto-generated constructor stub
     }
 
-    public OTProfesor(SProfesor profesor) {
+    public OTProfesor(R_Profesor profesor) {
         this.profesor = profesor;
         id.set(profesor.getId());
         rut.set(profesor.getRut());
@@ -60,7 +60,7 @@ public class OTProfesor {
         return paternoProperty().get();
     }
 
-    public SProfesor getProfesor() {
+    public R_Profesor getProfesor() {
         return profesor;
     }
 
@@ -112,7 +112,7 @@ public class OTProfesor {
         paternoProperty().set(paterno);
     }
 
-    public void setProfesor(SProfesor profesor) {
+    public void setProfesor(R_Profesor profesor) {
         this.profesor = profesor;
     }
 

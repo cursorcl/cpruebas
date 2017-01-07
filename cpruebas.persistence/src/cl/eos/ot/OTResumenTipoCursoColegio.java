@@ -1,12 +1,12 @@
 package cl.eos.ot;
 
-import cl.eos.persistence.models.SColegio;
-import cl.eos.persistence.models.STipoCurso;
+import cl.eos.restful.tables.R_Colegio;
+import cl.eos.restful.tables.R_TipoCurso;
 import cl.eos.util.Utils;
 
 public class OTResumenTipoCursoColegio {
-    private SColegio colegio;
-    private STipoCurso tipoCurso;
+    private R_Colegio colegio;
+    private R_TipoCurso tipoCurso;
     private String name;
     private int totalAlumnos;
     private int totalEvaluados;
@@ -60,7 +60,7 @@ public class OTResumenTipoCursoColegio {
         return alumnosReprobados;
     }
 
-    public SColegio getColegio() {
+    public R_Colegio getColegio() {
         return colegio;
     }
 
@@ -68,7 +68,7 @@ public class OTResumenTipoCursoColegio {
         return name;
     }
 
-    public STipoCurso getTipoCurso() {
+    public R_TipoCurso getTipoCurso() {
         return tipoCurso;
     }
 
@@ -109,7 +109,7 @@ public class OTResumenTipoCursoColegio {
         this.alumnosReprobados = alumnosReprobados;
     }
 
-    public void setColegio(SColegio colegio) {
+    public void setColegio(R_Colegio colegio) {
         this.colegio = colegio;
     }
 
@@ -117,7 +117,7 @@ public class OTResumenTipoCursoColegio {
         this.name = name;
     }
 
-    public void setTipoCurso(STipoCurso curso) {
+    public void setTipoCurso(R_TipoCurso curso) {
         tipoCurso = curso;
     }
 

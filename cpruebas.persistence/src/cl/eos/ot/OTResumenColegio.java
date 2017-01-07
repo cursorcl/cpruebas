@@ -1,12 +1,10 @@
 package cl.eos.ot;
 
-import cl.eos.persistence.models.SColegio;
-import cl.eos.persistence.models.SCurso;
+import cl.eos.restful.tables.R_Colegio;
+import cl.eos.restful.tables.R_Curso;
 import cl.eos.util.Utils;
 
 public class OTResumenColegio {
-    private SColegio colegio;
-    private SCurso curso;
     private String name;
     private int totalAlumnos;
     private int totalEvaluados;
@@ -15,6 +13,8 @@ public class OTResumenColegio {
     private float porcAlumnosEvaluados;
     private float porcAlumnosAprobados;
     private float porcAlumnosReprobados;
+    private R_Colegio colegio;
+    private R_Curso curso;
 
     private void calculate() {
         setPorcAlumnosEvaluados(Utils.redondeo2Decimales((float) totalEvaluados / (float) totalAlumnos * 100f));
@@ -22,11 +22,11 @@ public class OTResumenColegio {
         setPorcAlumnosReprobados(Utils.redondeo2Decimales((float) totalReprobados / (float) totalEvaluados * 100f));
     }
 
-    public SColegio getColegio() {
+    public R_Colegio getColegio() {
         return colegio;
     }
 
-    public SCurso getCurso() {
+    public R_Curso getCurso() {
         return curso;
     }
 
@@ -62,11 +62,11 @@ public class OTResumenColegio {
         return totalReprobados;
     }
 
-    public void setColegio(SColegio colegio) {
+    public void setColegio(R_Colegio colegio) {
         this.colegio = colegio;
     }
 
-    public void setCurso(SCurso curso) {
+    public void setCurso(R_Curso curso) {
         this.curso = curso;
     }
 

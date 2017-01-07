@@ -71,6 +71,25 @@ public class R_EvaluacionEjetematico  extends AEntity{
         this.nrorangomax = nrorangomax;
     }
 
+    /**
+     * Indica si el valor esta dentro del rango.
+     * @param porcentaje Porcentaje de logro
+     * @return Verdadero si esta dentro.
+     */
+    public boolean isInside(float porcentaje)
+    {
+      boolean res = false;
+      if(porcentaje > nrorangomin && porcentaje <= nrorangomax )
+      {
+          res = true;
+      }
+      else if(nrorangomin == 0 && porcentaje == 0)
+      {
+        res = true;
+      }
+      return res;
+    }
+    
 
     public static class Builder {
         private Long id;

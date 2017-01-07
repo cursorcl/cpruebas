@@ -1,7 +1,7 @@
 package cl.eos.velocidadlectora;
 
 import cl.eos.imp.controller.AController;
-import cl.eos.persistence.models.SVelocidadLectora;
+import cl.eos.restful.tables.R_DL_VelocidadLectora;
 
 public class VelocidadLectoraContoller extends AController {
 
@@ -12,6 +12,6 @@ public class VelocidadLectoraContoller extends AController {
     @Override
     public void initialize() {
         model = new Model();
-        model.findAll(SVelocidadLectora.class, this);
+        model.findAll(R_DL_VelocidadLectora.class, this);
     }
 }

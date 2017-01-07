@@ -1,19 +1,19 @@
 package cl.eos.ot;
 
-import cl.eos.persistence.models.SRangoEvaluacion;
-import cl.eos.persistence.models.STipoCurso;
+import cl.eos.restful.tables.R_RangoEvaluacion;
+import cl.eos.restful.tables.R_TipoCurso;
 
 public class OTRangoTipoCurso {
 
-    private SRangoEvaluacion rango;
+    private R_RangoEvaluacion rango;
     private int total;
-    private STipoCurso curso;
+    private R_TipoCurso curso;
 
-    public STipoCurso getCurso() {
+    public R_TipoCurso getCurso() {
         return curso;
     }
 
-    public SRangoEvaluacion getRango() {
+    public R_RangoEvaluacion getRango() {
         return rango;
     }
 
@@ -21,11 +21,11 @@ public class OTRangoTipoCurso {
         return total;
     }
 
-    public void setCurso(STipoCurso curso) {
+    public void setCurso(R_TipoCurso curso) {
         this.curso = curso;
     }
 
-    public void setRango(SRangoEvaluacion rango) {
+    public void setRango(R_RangoEvaluacion rango) {
         this.rango = rango;
     }
 

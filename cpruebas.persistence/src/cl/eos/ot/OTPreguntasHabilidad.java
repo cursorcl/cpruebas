@@ -3,12 +3,13 @@ package cl.eos.ot;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
-import cl.eos.persistence.models.SHabilidad;
+import cl.eos.restful.tables.R_Habilidad;
+
 
 public class OTPreguntasHabilidad {
 
     NumberFormat formatter = new DecimalFormat("#0.00");
-    private SHabilidad habilidad;
+    private R_Habilidad habilidad;
     private Integer buenas = 0;
     private Integer total = 0;
 
@@ -16,7 +17,7 @@ public class OTPreguntasHabilidad {
 
     }
 
-    public OTPreguntasHabilidad(SHabilidad habilidad) {
+    public OTPreguntasHabilidad(R_Habilidad habilidad) {
         this.habilidad = habilidad;
     }
 
@@ -28,7 +29,7 @@ public class OTPreguntasHabilidad {
         return "Respuestas correctas: " + buenas.toString() + " de " + total.toString();
     }
 
-    public SHabilidad getHabilidad() {
+    public R_Habilidad getHabilidad() {
         return habilidad;
     }
 
@@ -66,7 +67,7 @@ public class OTPreguntasHabilidad {
         this.buenas = buenas;
     }
 
-    public void setHabilidad(SHabilidad habilidad) {
+    public void setHabilidad(R_Habilidad habilidad) {
         this.habilidad = habilidad;
     }
 

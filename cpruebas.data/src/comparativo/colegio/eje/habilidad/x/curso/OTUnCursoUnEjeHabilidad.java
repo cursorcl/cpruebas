@@ -4,9 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import cl.eos.interfaces.entity.IEntity;
-import cl.eos.persistence.models.SEjeTematico;
-import cl.eos.persistence.models.SEvaluacionEjeTematico;
-import cl.eos.persistence.models.SHabilidad;
+import cl.eos.restful.tables.R_EvaluacionEjetematico;
 
 /**
  * Representa una entrade de {@link SEjeTematico} o {@link SHabilidad} asociado a
@@ -38,13 +36,13 @@ public class OTUnCursoUnEjeHabilidad {
      * @param evalEjeHab
      *            Los porcentajes de rangos para poder realizar el analisis
      */
-    public int[] calculateAlumnosXRango(List<SEvaluacionEjeTematico> evalEjeHab) {
+    public int[] calculateAlumnosXRango(List<R_EvaluacionEjetematico> evalEjeHab) {
         alumnosPorRango = new int[evalEjeHab.size()];
         Arrays.fill(alumnosPorRango, 0);
         for (int n = 0; n < nroAlumnos; n++) {
             final float porcentaje = 100f * buenasPorAlumno[n] / nroPreguntas;
             for (int idx = 0; idx < evalEjeHab.size(); idx++) {
-                final SEvaluacionEjeTematico eval = evalEjeHab.get(idx);
+                final R_EvaluacionEjetematico eval = evalEjeHab.get(idx);
                 if (eval.isInside(porcentaje)) {
                     alumnosPorRango[idx] = alumnosPorRango[idx] + 1;
                 }

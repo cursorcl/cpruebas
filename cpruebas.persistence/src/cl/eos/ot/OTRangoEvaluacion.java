@@ -1,10 +1,10 @@
 package cl.eos.ot;
 
-import cl.eos.persistence.models.SRangoEvaluacion;
+import cl.eos.restful.tables.R_RangoEvaluacion;
 
 public class OTRangoEvaluacion {
 
-    private SRangoEvaluacion rango;
+    private R_RangoEvaluacion rango;
     private int cantidad;
     private float logrado;
 
@@ -20,7 +20,7 @@ public class OTRangoEvaluacion {
         return rango.getName();
     }
 
-    public SRangoEvaluacion getRango() {
+    public R_RangoEvaluacion getRango() {
         return rango;
     }
 
@@ -32,7 +32,7 @@ public class OTRangoEvaluacion {
         this.logrado = logrado;
     }
 
-    public void setRango(SRangoEvaluacion rango) {
+    public void setRango(R_RangoEvaluacion rango) {
         this.rango = rango;
     }
 
