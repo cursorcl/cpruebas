@@ -3,13 +3,13 @@ package cl.eos.view.ots;
 import java.time.LocalDate;
 import java.util.List;
 
-import cl.eos.imp.model.Prueba.Estado;
 import cl.eos.restful.tables.R_Asignatura;
 import cl.eos.restful.tables.R_EvaluacionPrueba;
 import cl.eos.restful.tables.R_Formas;
 import cl.eos.restful.tables.R_NivelEvaluacion;
 import cl.eos.restful.tables.R_Profesor;
 import cl.eos.restful.tables.R_Prueba;
+import cl.eos.restful.tables.R_Prueba.Estado;
 import cl.eos.restful.tables.R_RespuestasEsperadasPrueba;
 import cl.eos.restful.tables.R_TipoCurso;
 import cl.eos.restful.tables.R_TipoPrueba;
