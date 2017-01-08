@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.input.*?>
-<?import jfxtras.labs.scene.control.*?>
-<?import javafx.scene.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import java.lang.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.ContextMenu?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="485.0" prefWidth="1074.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.EvaluacionPruebaView">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="485.0" prefWidth="1074.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.EvaluacionPruebaView">
    <center>
       <SplitPane prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <items>
@@ -18,15 +24,9 @@
                      <children>
                         <TableView id="tblListadoPruebas" fx:id="tblListadoPruebas" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="6.0" AnchorPane.topAnchor="2.0">
                           <columns>
-                              <TableColumn fx:id="nameCol" prefWidth="268.0" text="Nombre" />
-                            <TableColumn fx:id="fechaCol" prefWidth="101.0" text="Fecha" />
-                              <TableColumn fx:id="colTipo" prefWidth="99.0" text="Tipo" />
-                              <TableColumn fx:id="cursoCol" prefWidth="85.0" text="Curso" />
-                            <TableColumn fx:id="asignaturaCol" prefWidth="157.0" text="Asignatura" />
-                              <TableColumn fx:id="formasCol" prefWidth="69.0" style="-fx-alignment: CENTER;" text="Formas" />
-                              <TableColumn fx:id="profesorCol" prefWidth="130.0" text="Profesor" />
-                              <TableColumn fx:id="nroPreguntasCol" prefWidth="68.0" style="-fx-alignment: CENTER;" text="Preguntas" />
-                              <TableColumn fx:id="colExigencia" maxWidth="231.0" minWidth="-1.0" prefWidth="74.0" style="-fx-alignment: CENTER;" text="Exigencia" />
+                              <TableColumn fx:id="nameCol" prefWidth="722.0" text="Nombre" />
+                            <TableColumn fx:id="fechaCol" minWidth="0.0" prefWidth="179.0" text="Fecha" />
+                              <TableColumn fx:id="cursoCol" prefWidth="145.0" text="Curso" />
                           </columns>
                            <contextMenu>
                               <ContextMenu>
@@ -49,6 +49,24 @@
                      </children>
                   </AnchorPane>
                </center>
+               <top>
+                  <AnchorPane prefHeight="29.0" prefWidth="1072.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <HBox alignment="CENTER" prefHeight="57.0" prefWidth="1072.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <Label text="Asignatura:" />
+                              <TextField fx:id="txtAsignatura" editable="false" focusTraversable="false" prefHeight="25.0" prefWidth="186.0" promptText="Asignatura" />
+                              <Label text="Tipo de Prueba" />
+                              <TextField fx:id="txtTipoPrueba" editable="false" focusTraversable="false" promptText="Tipo de Prueba" />
+                              <Label text="Nº Preguntas" />
+                              <TextField fx:id="txtNroPreguntas" editable="false" focusTraversable="false" promptText="Nº Preguntas" />
+                              <Label text="\% Exigencia" />
+                              <TextField fx:id="txtExigencia" editable="false" focusTraversable="false" promptText="Exigencia" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </AnchorPane>
+               </top>
             </BorderPane>
         </items>
       </SplitPane>

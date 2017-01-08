@@ -5,13 +5,13 @@ import java.util.List;
 import cl.eos.imp.controller.AController;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.model.PruebasModel;
-import cl.eos.persistence.models.SAsignatura;
-import cl.eos.persistence.models.SEvaluacionPrueba;
-import cl.eos.persistence.models.SNivelEvaluacion;
-import cl.eos.persistence.models.SProfesor;
-import cl.eos.persistence.models.SPrueba;
-import cl.eos.persistence.models.STipoCurso;
-import cl.eos.persistence.models.STipoPrueba;
+import cl.eos.restful.tables.R_Asignatura;
+import cl.eos.restful.tables.R_EvaluacionPrueba;
+import cl.eos.restful.tables.R_NivelEvaluacion;
+import cl.eos.restful.tables.R_Profesor;
+import cl.eos.restful.tables.R_Prueba;
+import cl.eos.restful.tables.R_TipoCurso;
+import cl.eos.restful.tables.R_TipoPrueba;
 
 public class PruebasController extends AController {
 
@@ -22,13 +22,13 @@ public class PruebasController extends AController {
     @Override
     public void initialize() {
         model = new PruebasModel();
-        model.findAll(STipoPrueba.class, this);
-        model.findAll(SProfesor.class, this);
-        model.findAll(STipoCurso.class, this);
-        model.findAll(SAsignatura.class, this);
-        model.findAll(SNivelEvaluacion.class, this);
-        model.findAll(SEvaluacionPrueba.class, this);
-        model.findAll(SPrueba.class, this);
+        model.findAll(R_TipoPrueba.class, this);
+        model.findAll(R_Profesor.class, this);
+        model.findAll(R_TipoCurso.class, this);
+        model.findAll(R_Asignatura.class, this);
+        model.findAll(R_NivelEvaluacion.class, this);
+        model.findAll(R_EvaluacionPrueba.class, this);
+        model.findAll(R_Prueba.class, this);
     }
 
     /* (non-Javadoc)

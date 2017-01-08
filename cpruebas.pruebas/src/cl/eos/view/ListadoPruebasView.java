@@ -285,6 +285,9 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
             anularPregunta = (AnularPreguntasViewController) show("/cl/eos/view/AnulaPreguntasView.fxml");
             if (prueba != null) {
                 controller.findById(R_Prueba.class, prueba.getId(), anularPregunta);
+                Map<String, Object> params = new HashMap<>();
+                params.put("prueba_id", prueba.getId());
+                controller.findByParam(R_EvaluacionPrueba.class, params, anularPregunta);
             }
         }
     }
@@ -471,6 +474,8 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
         evaluacionPrueba = (EvaluacionPruebaView) show("/cl/eos/view/R_EvaluacionPrueba.fxml");
         if (tblListadoPruebas.getSelectionModel().getSelectedItem() != null) {
             final R_Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
+            evaluacionPrueba.setPrueba(prueba);
+            
             final Map<String, Object> parameters = new HashMap<String, Object>();
             parameters.put("idPrueba", prueba.getId());
             controller.findByParam(R_EvaluacionPrueba.class, parameters, evaluacionPrueba);

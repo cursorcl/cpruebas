@@ -1,10 +1,10 @@
 package cl.eos.view;
 
-import cl.eos.persistence.models.SPruebaRendida;
+import cl.eos.restful.tables.R_PruebaRendida;
 import javafx.geometry.Pos;
 import javafx.scene.control.TableCell;
 
-public class LetraRespuesta extends TableCell<SPruebaRendida, String> {
+public class LetraRespuesta extends TableCell<R_PruebaRendida, String> {
 
     private String responses;
 
