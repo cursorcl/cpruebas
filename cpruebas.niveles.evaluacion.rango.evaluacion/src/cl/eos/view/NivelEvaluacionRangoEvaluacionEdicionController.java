@@ -3,12 +3,15 @@ package cl.eos.view;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
-import cl.eos.persistence.models.SNivelEvaluacion;
-import cl.eos.persistence.models.SRangoEvaluacion;
+import cl.eos.restful.tables.R_NivelEvaluacion;
+import cl.eos.restful.tables.R_RangoEvaluacion;
+import cl.eos.util.MapBuilder;
+import cl.eos.util.Utils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -48,15 +51,15 @@ public class NivelEvaluacionRangoEvaluacionEdicionController extends AFormView i
     @FXML
     private BigDecimalField bdMaximo;
     @FXML
-    private TableView<SRangoEvaluacion> tblRangos;
+    private TableView<R_RangoEvaluacion> tblRangos;
     @FXML
-    private TableColumn<SRangoEvaluacion, Float> colRangoMaximo;
+    private TableColumn<R_RangoEvaluacion, Float> colRangoMaximo;
     @FXML
-    private TableColumn<SRangoEvaluacion, Float> colRangoMinimo;
+    private TableColumn<R_RangoEvaluacion, Float> colRangoMinimo;
     @FXML
-    private TableColumn<SRangoEvaluacion, String> colRangosAbrev;
+    private TableColumn<R_RangoEvaluacion, String> colRangosAbrev;
     @FXML
-    private TableColumn<SRangoEvaluacion, String> colRangosNombre;
+    private TableColumn<R_RangoEvaluacion, String> colRangosNombre;
     @FXML
     private Label lblButton;
     @FXML
@@ -67,29 +70,33 @@ public class NivelEvaluacionRangoEvaluacionEdicionController extends AFormView i
     @FXML
     private MenuItem mnuItemEliminar;
 
-    private SNivelEvaluacion nivel;
+    private R_NivelEvaluacion nivel;
     private boolean agregando;
+    private List<R_RangoEvaluacion> rangos;
 
     @Override
     public void handle(ActionEvent event) {
         if (event.getSource() == mnuGrabar || event.getSource() == btnGrabar) {
             final Stage stage = (Stage) btnCancelar.getScene().getWindow();
             stage.close();
-            final List<SRangoEvaluacion> toRemove = new ArrayList<SRangoEvaluacion>();
-            final ObservableList<SRangoEvaluacion> items = tblRangos.getItems();
+            final List<R_RangoEvaluacion> toRemove = new ArrayList<R_RangoEvaluacion>();
+            final ObservableList<R_RangoEvaluacion> items = tblRangos.getItems();
             final int size = items == null ? 0 : items.size();
             if (nivel == null) {
-                nivel = new SNivelEvaluacion();
-                nivel.setRangos(new ArrayList<SRangoEvaluacion>());
-                for (final SRangoEvaluacion rango : items) {
-                    //rango.setNivelEvaluacion(nivel);
-                    nivel.getRangos().add(rango);
+                nivel = new R_NivelEvaluacion.Builder().id(Utils.getLastIndex()).build();
+                nivel.setName(txtNivelEvaluacion.getText());
+                nivel.setNrorangos(items.size());
+                for (final R_RangoEvaluacion rango : items) {
+                    rango.setNivelevaluacion_id(nivel.getId());
                 }
             } else {
-                final List<SRangoEvaluacion> lst = new ArrayList<>(nivel.getRangos());
-                for (final SRangoEvaluacion rango : lst) {
+                final List<R_RangoEvaluacion> lst = new ArrayList<>(rangos);
+                
+                //tengo que eliminar los rangos que han sido sacados
+                // y tengo que agregar los nuevos
+                for (final R_RangoEvaluacion rango : lst) {
                     boolean founded = false;
-                    for (final SRangoEvaluacion rng : items) {
+                    for (final R_RangoEvaluacion rng : items) {
                         if (rango.equals(rng)) {
                             founded = true;
                             rango.setAbreviacion(rng.getAbreviacion());
@@ -103,12 +110,12 @@ public class NivelEvaluacionRangoEvaluacionEdicionController extends AFormView i
                         toRemove.add(rango);
                     }
                 }
-                for (final SRangoEvaluacion rango : toRemove) {
-                    nivel.getRangos().remove(rango);
+                for (final R_RangoEvaluacion rango : toRemove) {
+                    controller.delete(rango);
                 }
-                for (final SRangoEvaluacion rango : items) {
+                for (final R_RangoEvaluacion rango : items) {
                     boolean founded = false;
-                    for (final SRangoEvaluacion rng : lst) {
+                    for (final R_RangoEvaluacion rng : lst) {
                         if (rango.equals(rng)) {
                             founded = true;
                             break;
@@ -122,9 +129,9 @@ public class NivelEvaluacionRangoEvaluacionEdicionController extends AFormView i
             }
 
             nivel.setName(txtNivelEvaluacion.getText());
-            nivel.setNroRangos(size);
-            nivel = (SNivelEvaluacion) save(nivel);
-            for (final SRangoEvaluacion rango : nivel.getRangos()) {
+            nivel.setNrorangos(size);
+            nivel = (R_NivelEvaluacion) save(nivel);
+            for (final R_RangoEvaluacion rango : nivel.getRangos()) {
                 save(rango);
             }
         }
@@ -134,7 +141,7 @@ public class NivelEvaluacionRangoEvaluacionEdicionController extends AFormView i
         }
         if (event.getSource() == btnCambiar) {
             if (agregando) {
-                final SRangoEvaluacion rango = new SRangoEvaluacion();
+                final R_RangoEvaluacion rango = new R_RangoEvaluacion.Builder().id(Utils.getLastIndex()).build();
                 rango.setAbreviacion(txtAbreviacion.getText());
                 rango.setName(txtRango.getText());
                 rango.setMinimo(bdMinimo.getNumber().floatValue());
@@ -143,7 +150,7 @@ public class NivelEvaluacionRangoEvaluacionEdicionController extends AFormView i
 
             } else {
                 final int index = tblRangos.getSelectionModel().getSelectedIndex();
-                final SRangoEvaluacion rango = tblRangos.getSelectionModel().getSelectedItem();
+                final R_RangoEvaluacion rango = tblRangos.getSelectionModel().getSelectedItem();
                 rango.setAbreviacion(txtAbreviacion.getText());
                 rango.setName(txtRango.getText());
                 rango.setMinimo(bdMinimo.getNumber().floatValue());
@@ -152,7 +159,7 @@ public class NivelEvaluacionRangoEvaluacionEdicionController extends AFormView i
             }
         }
         if (event.getSource() == mnuItemEliminar) {
-            final SRangoEvaluacion rango = tblRangos.getSelectionModel().getSelectedItem();
+            final R_RangoEvaluacion rango = tblRangos.getSelectionModel().getSelectedItem();
             if (rango != null) {
 
                 final Alert alert = new Alert(AlertType.CONFIRMATION);
@@ -179,15 +186,15 @@ public class NivelEvaluacionRangoEvaluacionEdicionController extends AFormView i
 
     private void inicializaTabla() {
         tblRangos.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-        colRangosNombre.setCellValueFactory(new PropertyValueFactory<SRangoEvaluacion, String>("name"));
-        colRangosAbrev.setCellValueFactory(new PropertyValueFactory<SRangoEvaluacion, String>("abreviacion"));
-        colRangoMinimo.setCellValueFactory(new PropertyValueFactory<SRangoEvaluacion, Float>("minimo"));
-        colRangoMaximo.setCellValueFactory(new PropertyValueFactory<SRangoEvaluacion, Float>("maximo"));
+        colRangosNombre.setCellValueFactory(new PropertyValueFactory<R_RangoEvaluacion, String>("name"));
+        colRangosAbrev.setCellValueFactory(new PropertyValueFactory<R_RangoEvaluacion, String>("abreviacion"));
+        colRangoMinimo.setCellValueFactory(new PropertyValueFactory<R_RangoEvaluacion, Float>("minimo"));
+        colRangoMaximo.setCellValueFactory(new PropertyValueFactory<R_RangoEvaluacion, Float>("maximo"));
 
         tblRangos.setOnMouseClicked(arg0 -> {
             if (tblRangos.getItems() == null || tblRangos.getItems().isEmpty())
                 return;
-            final SRangoEvaluacion rango = tblRangos.getSelectionModel().getSelectedItem();
+            final R_RangoEvaluacion rango = tblRangos.getSelectionModel().getSelectedItem();
             if (rango == null)
                 return;
 
@@ -213,15 +220,18 @@ public class NivelEvaluacionRangoEvaluacionEdicionController extends AFormView i
 
     @Override
     public void onFound(IEntity entity) {
-        if (entity instanceof SNivelEvaluacion) {
-            nivel = (SNivelEvaluacion) entity;
+        if (entity instanceof R_NivelEvaluacion) {
+            nivel = (R_NivelEvaluacion) entity;
             txtNivelEvaluacion.setText(nivel.getName());
 
-            final ObservableList<SRangoEvaluacion> lsRangoEvaluacion = FXCollections.observableArrayList();
-            for (final SRangoEvaluacion iEntity : nivel.getRangos()) {
-                lsRangoEvaluacion.add(iEntity);
+            Map<String, Object> params = MapBuilder.<String, Object> unordered().put("nivelevaluacion_id", nivel.getId()).build();
+            rangos =  controller.findByParamsSynchro(R_RangoEvaluacion.class, params);
+            
+            final ObservableList<R_RangoEvaluacion> lR_RangoEvaluacion = FXCollections.observableArrayList();
+            for (final R_RangoEvaluacion iEntity : rangos) {
+                lR_RangoEvaluacion.add(iEntity);
             }
-            tblRangos.setItems(lsRangoEvaluacion);
+            tblRangos.setItems(lR_RangoEvaluacion);
         }
     }
 

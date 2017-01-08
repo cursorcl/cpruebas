@@ -1,6 +1,6 @@
 package ot;
 
-import cl.eos.persistence.models.SObjetivo;
+import cl.eos.restful.tables.R_Objetivo;
 
 /**
  * Contiene el resultado de un alumno, clasificando la cantidad de buenas que
@@ -10,7 +10,7 @@ import cl.eos.persistence.models.SObjetivo;
  */
 public class XItemObjetivo {
 
-    SObjetivo objetivo = null;
+    R_Objetivo objetivo = null;
     int buenas = 0;
     int nroPreguntas = 0;
     String preguntas = "";
@@ -91,7 +91,7 @@ public class XItemObjetivo {
         return nroPreguntas;
     }
 
-    public SObjetivo getObjetivo() {
+    public R_Objetivo getObjetivo() {
         return objetivo;
     }
 
@@ -118,7 +118,7 @@ public class XItemObjetivo {
         this.nroPreguntas = nroPreguntas;
     }
 
-    public void setObjetivo(SObjetivo objetivo) {
+    public void setObjetivo(R_Objetivo objetivo) {
         this.objetivo = objetivo;
     }
 
@@ -152,14 +152,14 @@ public class XItemObjetivo {
     }
 
     public static class Builder {
-        private SObjetivo objetivo;
+        private R_Objetivo objetivo;
         int buenas = 0;
         int nroPreguntas = 0;
         String preguntas = "";
         String ejesAsociados = "";
         String habilidades = "";
 
-        public Builder objetivo(SObjetivo objetivo) {
+        public Builder objetivo(R_Objetivo objetivo) {
             this.objetivo = objetivo;
             return this;
         }

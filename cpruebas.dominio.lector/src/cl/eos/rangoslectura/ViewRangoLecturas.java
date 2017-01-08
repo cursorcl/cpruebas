@@ -3,10 +3,11 @@ package cl.eos.rangoslectura;
 import java.util.ArrayList;
 import java.util.List;
 
-import cl.eos.imp.model.RangosLectura;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
+import cl.eos.restful.tables.R_DL_RangoLecturas;
 import cl.eos.util.ExcelSheetWriterObj;
+import cl.eos.util.Utils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -32,11 +33,11 @@ public class ViewRangoLecturas extends AFormView implements EventHandler<ActionE
     @FXML
     private TextField txtNombre;
     @FXML
-    private TableView<RangosLectura> tblTable;
+    private TableView<R_DL_RangoLecturas> tblTable;
     @FXML
-    private TableColumn<RangosLectura, Long> colId;
+    private TableColumn<R_DL_RangoLecturas, Long> colId;
     @FXML
-    private TableColumn<RangosLectura, String> colNombre;
+    private TableColumn<R_DL_RangoLecturas, String> colNombre;
     @FXML
     private MenuItem mnuAgregar;
     @FXML
@@ -59,7 +60,7 @@ public class ViewRangoLecturas extends AFormView implements EventHandler<ActionE
     }
 
     private void accionEliminar() {
-        final ObservableList<RangosLectura> otSeleccionados = tblTable.getSelectionModel().getSelectedItems();
+        final ObservableList<R_DL_RangoLecturas> otSeleccionados = tblTable.getSelectionModel().getSelectedItems();
         if (otSeleccionados.size() == 0) {
             final Alert alert = new Alert(AlertType.INFORMATION);
             alert.setTitle("Selección registro");
@@ -68,8 +69,8 @@ public class ViewRangoLecturas extends AFormView implements EventHandler<ActionE
             alert.showAndWait();
         } else {
             if (otSeleccionados != null && !otSeleccionados.isEmpty()) {
-                final List<RangosLectura> colegio = new ArrayList<RangosLectura>(otSeleccionados.size());
-                for (final RangosLectura seleccionado : otSeleccionados) {
+                final List<R_DL_RangoLecturas> colegio = new ArrayList<R_DL_RangoLecturas>(otSeleccionados.size());
+                for (final R_DL_RangoLecturas seleccionado : otSeleccionados) {
                     colegio.add(seleccionado);
                 }
                 delete(colegio);
@@ -86,11 +87,11 @@ public class ViewRangoLecturas extends AFormView implements EventHandler<ActionE
             if (lblError != null) {
                 lblError.setText(" ");
             }
-            RangosLectura calidadLectora = null;
-            if (entitySelected != null && entitySelected instanceof RangosLectura) {
-                calidadLectora = (RangosLectura) entitySelected;
+            R_DL_RangoLecturas calidadLectora = null;
+            if (entitySelected != null && entitySelected instanceof R_DL_RangoLecturas) {
+                calidadLectora = (R_DL_RangoLecturas) entitySelected;
             } else {
-                calidadLectora = new RangosLectura();
+                calidadLectora = new R_DL_RangoLecturas.Builder().id(Utils.getLastIndex()).build();
             }
             calidadLectora.setName(txtNombre.getText());
             save(calidadLectora);
@@ -103,7 +104,7 @@ public class ViewRangoLecturas extends AFormView implements EventHandler<ActionE
     }
 
     private void accionModificar() {
-        final RangosLectura calidadLectora = tblTable.getSelectionModel().getSelectedItem();
+        final R_DL_RangoLecturas calidadLectora = tblTable.getSelectionModel().getSelectedItem();
         if (calidadLectora != null) {
             txtId.setText(String.format("%d", calidadLectora.getId()));
             txtNombre.setText(calidadLectora.getName());
@@ -131,10 +132,10 @@ public class ViewRangoLecturas extends AFormView implements EventHandler<ActionE
 
     private void inicializaTabla() {
         tblTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        colId.setCellValueFactory(new PropertyValueFactory<RangosLectura, Long>("id"));
-        colNombre.setCellValueFactory(new PropertyValueFactory<RangosLectura, String>("name"));
+        colId.setCellValueFactory(new PropertyValueFactory<R_DL_RangoLecturas, Long>("id"));
+        colNombre.setCellValueFactory(new PropertyValueFactory<R_DL_RangoLecturas, String>("name"));
         tblTable.setOnMouseClicked(event -> {
-            final ObservableList<RangosLectura> itemsSelec = tblTable.getSelectionModel().getSelectedItems();
+            final ObservableList<R_DL_RangoLecturas> itemsSelec = tblTable.getSelectionModel().getSelectedItems();
             if (itemsSelec.size() > 1) {
                 mnItemModificar.setDisable(true);
                 mnItemEliminar.setDisable(false);
@@ -179,10 +180,10 @@ public class ViewRangoLecturas extends AFormView implements EventHandler<ActionE
     public void onDataArrived(List<Object> list) {
         if (list != null && !list.isEmpty()) {
             final Object entity = list.get(0);
-            if (entity instanceof RangosLectura) {
-                final ObservableList<RangosLectura> value = FXCollections.observableArrayList();
+            if (entity instanceof R_DL_RangoLecturas) {
+                final ObservableList<R_DL_RangoLecturas> value = FXCollections.observableArrayList();
                 for (final Object iEntity : list) {
-                    value.add((RangosLectura) iEntity);
+                    value.add((R_DL_RangoLecturas) iEntity);
                 }
                 // tblTable.setItems(value);
             }
@@ -196,7 +197,7 @@ public class ViewRangoLecturas extends AFormView implements EventHandler<ActionE
 
     @Override
     public void onSaved(IEntity entity) {
-        final RangosLectura calidadLectora = (RangosLectura) entity;
+        final R_DL_RangoLecturas calidadLectora = (R_DL_RangoLecturas) entity;
         final int indice = tblTable.getItems().lastIndexOf(calidadLectora);
         if (indice != -1) {
             tblTable.getItems().set(indice, calidadLectora);

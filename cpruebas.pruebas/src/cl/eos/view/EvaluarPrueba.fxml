@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.input.*?>
-<?import jfxtras.labs.scene.control.*?>
-<?import javafx.scene.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import java.lang.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.ContextMenu?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
 
-<BorderPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="563.0" prefWidth="1087.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.EvaluarPruebaView">
+<BorderPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="563.0" prefWidth="1087.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.EvaluarPruebaView">
    <top>
       <VBox>
          <children>
@@ -27,27 +34,23 @@
             </MenuBar>
             <AnchorPane prefHeight="108.0" prefWidth="1087.0" styleClass="sample-page" BorderPane.alignment="CENTER">
                <children>
-                  <Label layoutX="174.0" layoutY="62.0" text="Colegio" />
-                  <Label layoutX="492.0" layoutY="63.0" text="Fecha" />
-                  <Label layoutX="334.0" layoutY="63.0" text="Curso" />
-                  <ComboBox fx:id="cmbProfesor" layoutX="15.0" layoutY="78.0" prefWidth="150.0" promptText="Profesor" />
-                  <ComboBox fx:id="cmbColegios" layoutX="173.0" layoutY="78.0" prefWidth="150.0" promptText="Colegio" />
-                  <ComboBox fx:id="cmbCursos" disable="true" layoutX="332.0" layoutY="78.0" prefWidth="150.0" promptText="Curso" />
-                  <DatePicker fx:id="dtpFecha" layoutX="491.0" layoutY="78.0" />
-                  <TextField fx:id="txtName" disable="true" editable="false" focusTraversable="false" layoutX="14.0" layoutY="26.0" prefHeight="25.0" prefWidth="228.0" promptText="Nombre Prueba" />
-                  <TextField fx:id="txtAsignatura" disable="true" editable="false" focusTraversable="false" layoutX="249.0" layoutY="26.0" prefHeight="25.0" prefWidth="234.0" promptText="Asignatura" />
+                  <Label layoutX="256.0" layoutY="58.0" text="Colegio" />
+                  <Label layoutX="843.0" layoutY="59.0" text="Fecha" />
+                  <Label layoutX="544.0" layoutY="53.0" text="Curso" />
+                  <ComboBox fx:id="cmbProfesor" layoutX="17.0" layoutY="74.0" prefHeight="25.0" prefWidth="210.0" promptText="Profesor" />
+                  <ComboBox fx:id="cmbColegios" layoutX="255.0" layoutY="74.0" prefHeight="25.0" prefWidth="249.0" promptText="Colegio" />
+                  <ComboBox fx:id="cmbCursos" disable="true" layoutX="544.0" layoutY="73.0" prefHeight="25.0" prefWidth="259.0" promptText="Curso" />
+                  <DatePicker fx:id="dtpFecha" layoutX="842.0" layoutY="74.0" />
+                  <TextField fx:id="txtName" disable="true" editable="false" focusTraversable="false" layoutX="14.0" layoutY="26.0" prefHeight="25.0" prefWidth="388.0" promptText="Nombre Prueba" />
+                  <TextField fx:id="txtAsignatura" disable="true" editable="false" focusTraversable="false" layoutX="436.0" layoutY="23.0" prefHeight="25.0" prefWidth="280.0" promptText="Asignatura" />
                   <Label layoutX="15.0" layoutY="9.0" text="Nombre de la prueba" />
-                  <Label layoutX="249.0" layoutY="7.0" text="Asignatura" />
-                  <ListView fx:id="lstEjes" disable="true" focusTraversable="false" layoutX="668.0" layoutY="26.0" prefHeight="73.0" prefWidth="200.0" />
-                  <ListView fx:id="lstHabilidad" disable="true" focusTraversable="false" layoutX="870.0" layoutY="24.0" prefHeight="76.0" prefWidth="200.0" />
-                  <Label layoutX="668.0" layoutY="6.0" text="Ejes temáticos" />
-                  <Label layoutX="873.0" layoutY="6.0" text="Habilidades" />
-                  <Label layoutX="15.0" layoutY="62.0" text="Profesor" />
-                  <Label fx:id="lblError" layoutX="411.0" layoutY="9.0" prefHeight="17.0" prefWidth="246.0" />
-                  <Label layoutX="495.0" layoutY="7.0" text="#Preguntas" />
-                  <TextField fx:id="txtNroPreguntas" disable="true" editable="false" focusTraversable="false" layoutX="492.0" layoutY="27.0" prefHeight="23.0" prefWidth="63.0" promptText="#Preg" />
-                  <Label layoutX="569.0" layoutY="6.0" text="#Alternativas" />
-                  <TextField fx:id="txtNroAlternativas" disable="true" editable="false" focusTraversable="false" layoutX="569.0" layoutY="27.0" prefHeight="23.0" prefWidth="69.0" promptText="#Altern" />
+                  <Label layoutX="603.0" layoutY="4.0" text="Asignatura" />
+                  <Label layoutX="17.0" layoutY="58.0" text="Profesor" />
+                  <Label fx:id="lblError" layoutX="440.0" layoutY="6.0" prefHeight="17.0" prefWidth="104.0" />
+                  <Label layoutX="781.0" layoutY="4.0" text="#Preguntas" />
+                  <TextField fx:id="txtNroPreguntas" disable="true" editable="false" focusTraversable="false" layoutX="778.0" layoutY="24.0" prefHeight="23.0" prefWidth="63.0" promptText="#Preg" />
+                  <Label layoutX="923.0" layoutY="3.0" text="#Alternativas" />
+                  <TextField fx:id="txtNroAlternativas" disable="true" editable="false" focusTraversable="false" layoutX="923.0" layoutY="24.0" prefHeight="25.0" prefWidth="89.0" promptText="#Altern" />
                </children>
             </AnchorPane>
          </children>

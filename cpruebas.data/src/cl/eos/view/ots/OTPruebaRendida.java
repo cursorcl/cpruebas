@@ -1,5 +1,6 @@
 package cl.eos.view.ots;
 
+import cl.eos.restful.tables.R_Alumno;
 import cl.eos.restful.tables.R_PruebaRendida;
 import cl.eos.restful.tables.R_RangoEvaluacion;
 import cl.eos.util.Utils;
@@ -12,6 +13,7 @@ import javafx.beans.property.SimpleStringProperty;
 public class OTPruebaRendida {
 
     private R_PruebaRendida pruebaRendida;
+    private R_Alumno alumno;
     private final SimpleIntegerProperty buenas = new SimpleIntegerProperty();
     private final SimpleIntegerProperty omitidas = new SimpleIntegerProperty();
     private final SimpleIntegerProperty malas = new SimpleIntegerProperty();
@@ -21,7 +23,7 @@ public class OTPruebaRendida {
     private final SimpleBooleanProperty rindioPrueba = new SimpleBooleanProperty();
     private final SimpleObjectProperty<R_RangoEvaluacion> nivel = new SimpleObjectProperty<R_RangoEvaluacion>();
 
-    public OTPruebaRendida(R_PruebaRendida pruebaRendida) {
+    public OTPruebaRendida(R_PruebaRendida pruebaRendida, R_Alumno alumno) {
         this.pruebaRendida = pruebaRendida;
         buenas.set(pruebaRendida.getBuenas());
         omitidas.set(pruebaRendida.getOmitidas());
@@ -31,6 +33,7 @@ public class OTPruebaRendida {
         puntaje.set(Utils.getPuntaje(nota.floatValue()));
         nivel.set(null);
         rindioPrueba.set(true);
+        this.alumno = alumno;
     }
 
     public SimpleIntegerProperty buenasProperty() {
@@ -63,7 +66,7 @@ public class OTPruebaRendida {
     }
 
     public String getMaterno() {
-        return pruebaRendida.getAlumno().getMaterno();
+        return alumno == null ? "" : alumno.getMaterno();
     }
 
     public R_RangoEvaluacion getNivel() {
@@ -71,7 +74,7 @@ public class OTPruebaRendida {
     }
 
     public String getNombres() {
-        return pruebaRendida.getAlumno().getName();
+        return alumno == null ? "" : alumno.getName();
     }
 
     public Float getNota() {
@@ -83,7 +86,7 @@ public class OTPruebaRendida {
     }
 
     public String getPaterno() {
-        return pruebaRendida.getAlumno().getPaterno();
+        return alumno == null ? "" : alumno.getPaterno();
     }
 
     public R_PruebaRendida getPruebaRendida() {

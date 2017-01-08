@@ -3,7 +3,7 @@ package ot;
 import java.util.ArrayList;
 import java.util.List;
 
-import cl.eos.persistence.models.SObjetivo;
+import cl.eos.restful.tables.R_Objetivo;
 
 /**
  * Representa un registro del reporte final.
@@ -20,7 +20,7 @@ public class XItemTablaObjetivo {
     /**
      * El objetivo para el que se asocian los elementos.
      */
-    private SObjetivo objetivo;
+    private R_Objetivo objetivo;
 
     /**
      * Contiene los valores de todos los cursos.
@@ -54,7 +54,7 @@ public class XItemTablaObjetivo {
         return items;
     }
 
-    public SObjetivo getObjetivo() {
+    public R_Objetivo getObjetivo() {
         return objetivo;
     }
 
@@ -70,15 +70,15 @@ public class XItemTablaObjetivo {
         this.items = items;
     }
 
-    public void setObjetivo(SObjetivo objetivo) {
+    public void setObjetivo(R_Objetivo objetivo) {
         this.objetivo = objetivo;
     }
 
     public static class Builder {
-        private SObjetivo objetivo;
+        private R_Objetivo objetivo;
         private List<XItemObjetivo> items = new ArrayList<>();
 
-        public Builder objetivo(SObjetivo objetivo) {
+        public Builder objetivo(R_Objetivo objetivo) {
             this.objetivo = objetivo;
             return this;
         }

@@ -285,6 +285,9 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
             anularPregunta = (AnularPreguntasViewController) show("/cl/eos/view/AnulaPreguntasView.fxml");
             if (prueba != null) {
                 controller.findById(R_Prueba.class, prueba.getId(), anularPregunta);
+                Map<String, Object> params = new HashMap<>();
+                params.put("prueba_id", prueba.getId());
+                controller.findByParam(R_EvaluacionPrueba.class, params, anularPregunta);
             }
         }
     }
@@ -411,6 +414,7 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
                 controller.findById(R_Prueba.class, prueba.getId(), evaluarPruebaView);
                 controller.findAll(R_Colegio.class, evaluarPruebaView);
                 controller.findAll(R_Profesor.class, evaluarPruebaView);
+                
             }
         }
     }
@@ -433,10 +437,15 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
     private void handlerHabilidadEvaluacionXAlumnoXNivel() {
         final Nivel_ComparativoColegioEjeEvaluacionView resHabEjeAlumno = (Nivel_ComparativoColegioEjeEvaluacionView) show(
                 "/colegio/nivel/fxml/Nivel_ComparativoColegioEjeEvaluacion.fxml");
+        R_NivelEvaluacion nivelEvaluacion = tblListadoPruebas.getSelectionModel().getSelectedItem().getNivelEvaluacion();
+        R_Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
+        resHabEjeAlumno.setPrueba(prueba);
+        resHabEjeAlumno.setNivelEvaluacion(nivelEvaluacion);
         show(resHabEjeAlumno);
         controller.findAll(R_Colegio.class, resHabEjeAlumno);
         controller.findAll(R_Asignatura.class, resHabEjeAlumno);
         controller.findAll(R_TipoAlumno.class, resHabEjeAlumno);
+        
     }
     private void handlerHabilidadEvaluacionXNivel() {
         final Nivel_ComparativoColegioHabilidadesView resumenHabilidades = (Nivel_ComparativoColegioHabilidadesView) show(
@@ -471,6 +480,8 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
         evaluacionPrueba = (EvaluacionPruebaView) show("/cl/eos/view/R_EvaluacionPrueba.fxml");
         if (tblListadoPruebas.getSelectionModel().getSelectedItem() != null) {
             final R_Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
+            evaluacionPrueba.setPrueba(prueba);
+            
             final Map<String, Object> parameters = new HashMap<String, Object>();
             parameters.put("idPrueba", prueba.getId());
             controller.findByParam(R_EvaluacionPrueba.class, parameters, evaluacionPrueba);

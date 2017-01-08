@@ -2,13 +2,15 @@ package cl.eos.view;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
-import cl.eos.persistence.models.SAsignatura;
-import cl.eos.persistence.models.SObjetivo;
-import cl.eos.persistence.models.STipoCurso;
+import cl.eos.restful.tables.R_Asignatura;
+import cl.eos.restful.tables.R_Objetivo;
+import cl.eos.restful.tables.R_TipoCurso;
 import cl.eos.util.ExcelSheetWriterObj;
+import cl.eos.util.Utils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -30,89 +32,48 @@ import javafx.scene.layout.Region;
 import javafx.scene.text.Text;
 
 public class ObjetivosView extends AFormView implements EventHandler<ActionEvent> {
-
     private static final int LARGO_CAMPO_TEXT = 1024;
-    @FXML
-    private MenuItem mnuAgregar;
-
-    @FXML
-    private MenuItem mnuGrabar;
-
-    @FXML
-    private MenuItem mnuEliminar;
-
-    @FXML
-    private MenuItem mnuModificar;
-
-    @FXML
-    private MenuItem menuEliminar;
-
-    @FXML
-    private MenuItem menuModificar;
-
-    @FXML
-    private MenuItem menuExportar;
-
-    @FXML
-    private MenuItem mnuExportar;
-
-    @FXML
-    private TextField txtNombre;
-    @FXML
-    private TextArea txtDescripcion;
-
-    @FXML
-    private ComboBox<STipoCurso> cmbTipoCurso;
-
-    @FXML
-    private ComboBox<SAsignatura> cmbAsignatura;
-
-    @FXML
-    private Label lblError;
-
-    @FXML
-    private TableView<SObjetivo> tblObjetivos;
-
-    @FXML
-    private TableColumn<SObjetivo, Float> colId;
-    @FXML
-    private TableColumn<SObjetivo, String> colNombre;
-    @FXML
-    private TableColumn<SObjetivo, String> colDescripcion;
-    @FXML
-    private TableColumn<SObjetivo, STipoCurso> colTipoCurso;
-    @FXML
-    private TableColumn<SObjetivo, SAsignatura> colAsignatura;
-
+    @FXML private MenuItem mnuAgregar;
+    @FXML private MenuItem mnuGrabar;
+    @FXML private MenuItem mnuEliminar;
+    @FXML private MenuItem mnuModificar;
+    @FXML private MenuItem menuEliminar;
+    @FXML private MenuItem menuModificar;
+    @FXML private MenuItem menuExportar;
+    @FXML private MenuItem mnuExportar;
+    @FXML private TextField txtNombre;
+    @FXML private TextArea txtDescripcion;
+    @FXML private ComboBox<R_TipoCurso> cmbTipoCurso;
+    @FXML private ComboBox<R_Asignatura> cmbAsignatura;
+    @FXML private Label lblError;
+    @FXML private TableView<R_Objetivo> tblObjetivos;
+    @FXML private TableColumn<R_Objetivo, Float> colId;
+    @FXML private TableColumn<R_Objetivo, String> colNombre;
+    @FXML private TableColumn<R_Objetivo, String> colDescripcion;
+    @FXML private TableColumn<R_Objetivo, R_TipoCurso> colTipoCurso;
+    @FXML private TableColumn<R_Objetivo, R_Asignatura> colAsignatura;
     public ObjetivosView() {
         setTitle("Objetivos");
     }
-
     private void accionClicTabla() {
         tblObjetivos.setOnMouseClicked(event -> {
-            final ObservableList<SObjetivo> itemsSelec = tblObjetivos.getSelectionModel().getSelectedItems();
-
+            final ObservableList<R_Objetivo> itemsSelec = tblObjetivos.getSelectionModel().getSelectedItems();
             if (itemsSelec.size() > 1) {
                 mnuModificar.setDisable(true);
                 mnuEliminar.setDisable(false);
-
                 menuModificar.setDisable(true);
                 menuEliminar.setDisable(false);
             } else if (itemsSelec.size() == 1) {
-
                 mnuModificar.setDisable(false);
                 mnuEliminar.setDisable(false);
-
                 menuModificar.setDisable(false);
                 menuEliminar.setDisable(false);
-
                 accionModificar();
             }
         });
     }
-
     private void accionEliminar() {
-        final ObservableList<SObjetivo> otSeleccionados = tblObjetivos.getSelectionModel().getSelectedItems();
+        final ObservableList<R_Objetivo> otSeleccionados = tblObjetivos.getSelectionModel().getSelectedItems();
         if (otSeleccionados.size() == 0) {
             final Alert alert = new Alert(AlertType.INFORMATION);
             alert.setTitle("Selección registro");
@@ -120,10 +81,9 @@ public class ObjetivosView extends AFormView implements EventHandler<ActionEvent
             alert.setContentText("Debe seleccionar registro a procesar");
             alert.showAndWait();
         } else {
-
             if (otSeleccionados != null && !otSeleccionados.isEmpty()) {
-                final List<SObjetivo> objAborrar = new ArrayList<SObjetivo>(otSeleccionados.size());
-                for (final SObjetivo ot : otSeleccionados) {
+                final List<R_Objetivo> objAborrar = new ArrayList<R_Objetivo>(otSeleccionados.size());
+                for (final R_Objetivo ot : otSeleccionados) {
                     objAborrar.add(ot);
                 }
                 delete(objAborrar);
@@ -132,7 +92,6 @@ public class ObjetivosView extends AFormView implements EventHandler<ActionEvent
             }
         }
     }
-
     private void accionGrabar() {
         final IEntity entitySelected = getSelectedEntity();
         removeAllStyles();
@@ -140,16 +99,16 @@ public class ObjetivosView extends AFormView implements EventHandler<ActionEvent
             if (lblError != null) {
                 lblError.setText(" ");
             }
-            SObjetivo objetivo = null;
-            if (entitySelected != null && entitySelected instanceof SObjetivo) {
-                objetivo = (SObjetivo) entitySelected;
+            R_Objetivo objetivo = null;
+            if (entitySelected != null && entitySelected instanceof R_Objetivo) {
+                objetivo = (R_Objetivo) entitySelected;
             } else {
-                objetivo = new SObjetivo();
+                objetivo = new R_Objetivo.Builder().id(Utils.getLastIndex()).build();
             }
             objetivo.setName(txtNombre.getText());
             objetivo.setDescripcion(txtDescripcion.getText());
-            objetivo.setTipoCurso(cmbTipoCurso.getValue());
-            objetivo.setAsignatura(cmbAsignatura.getValue());
+            objetivo.setTipocurso_id(cmbTipoCurso.getValue().getId());
+            objetivo.setAsignatura_id(cmbAsignatura.getValue().getId());
             save(objetivo);
             limpiarControles();
         } else {
@@ -157,18 +116,19 @@ public class ObjetivosView extends AFormView implements EventHandler<ActionEvent
             lblError.setText("Corregir campos destacados en color rojo");
         }
     }
-
     private void accionModificar() {
-        final SObjetivo objetivo = tblObjetivos.getSelectionModel().getSelectedItem();
+        final R_Objetivo objetivo = tblObjetivos.getSelectionModel().getSelectedItem();
         if (objetivo != null) {
             txtNombre.setText(objetivo.getName());
             txtDescripcion.setText(objetivo.getDescripcion());
-            cmbTipoCurso.getSelectionModel().select(objetivo.getTipoCurso());
-            cmbAsignatura.getSelectionModel().select(objetivo.getAsignatura());
+            Optional<R_TipoCurso> oCurso = cmbTipoCurso.getItems().stream().filter(t -> t.getId().equals(objetivo.getTipocurso_id())).findFirst();
+            cmbTipoCurso.getSelectionModel().select(oCurso.isPresent() ? oCurso.get() : null);
+            Optional<R_Asignatura> oAsignatura = cmbAsignatura.getItems().stream().filter(t -> t.getId().equals(objetivo.getAsignatura_id()))
+                    .findFirst();
+            cmbAsignatura.getSelectionModel().select(oAsignatura.isPresent() ? oAsignatura.get() : null);
             select(objetivo);
         }
     }
-
     @Override
     public void handle(ActionEvent event) {
         final Object source = event.getSource();
@@ -184,36 +144,29 @@ public class ObjetivosView extends AFormView implements EventHandler<ActionEvent
             tblObjetivos.setId("Ejes temáticos");
             ExcelSheetWriterObj.convertirDatosALibroDeExcel(tblObjetivos);
         }
-
     }
-
     private void inicializaTabla() {
         tblObjetivos.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        colId.setCellValueFactory(new PropertyValueFactory<SObjetivo, Float>("id"));
-        colNombre.setCellValueFactory(new PropertyValueFactory<SObjetivo, String>("name"));
-        colDescripcion.setCellValueFactory(new PropertyValueFactory<SObjetivo, String>("descripcion"));
-        colTipoCurso.setCellValueFactory(new PropertyValueFactory<SObjetivo, STipoCurso>("tipoCurso"));
-        colAsignatura.setCellValueFactory(new PropertyValueFactory<SObjetivo, SAsignatura>("asignatura"));
-
+        colId.setCellValueFactory(new PropertyValueFactory<R_Objetivo, Float>("id"));
+        colNombre.setCellValueFactory(new PropertyValueFactory<R_Objetivo, String>("name"));
+        colDescripcion.setCellValueFactory(new PropertyValueFactory<R_Objetivo, String>("descripcion"));
+        colTipoCurso.setCellValueFactory(new PropertyValueFactory<R_Objetivo, R_TipoCurso>("tipoCurso"));
+        colAsignatura.setCellValueFactory(new PropertyValueFactory<R_Objetivo, R_Asignatura>("asignatura"));
         colDescripcion.setCellFactory(param -> {
-            final TableCell<SObjetivo, String> cell = new TableCell<>();
+            final TableCell<R_Objetivo, String> cell = new TableCell<>();
             final Text text = new Text();
             cell.setGraphic(text);
             cell.setPrefHeight(Region.USE_COMPUTED_SIZE);
             // text.wrappingWidthProperty().bind(cell.widthProperty());
             text.wrappingWidthProperty().bind(colDescripcion.widthProperty());
             text.textProperty().bind(cell.itemProperty());
-
             return cell;
         });
-
     }
-
     @FXML
     public void initialize() {
         inicializaTabla();
         accionClicTabla();
-
         mnuAgregar.setOnAction(this);
         mnuGrabar.setOnAction(this);
         mnuModificar.setOnAction(this);
@@ -222,16 +175,12 @@ public class ObjetivosView extends AFormView implements EventHandler<ActionEvent
         menuEliminar.setOnAction(this);
         menuExportar.setOnAction(this);
         mnuExportar.setOnAction(this);
-
         mnuModificar.setDisable(true);
         mnuEliminar.setDisable(true);
         menuEliminar.setDisable(true);
         menuModificar.setDisable(true);
-
         txtDescripcion.wrapTextProperty().set(true);
-
     }
-
     private void limpiarControles() {
         txtNombre.clear();
         txtDescripcion.clear();
@@ -239,41 +188,38 @@ public class ObjetivosView extends AFormView implements EventHandler<ActionEvent
         cmbTipoCurso.getSelectionModel().clearSelection();
         select(null);
     }
-
     @Override
     public void onDataArrived(List<Object> list) {
         if (list != null && !list.isEmpty()) {
             final Object entity = list.get(0);
-            if (entity instanceof SObjetivo) {
-                final ObservableList<SObjetivo> value = FXCollections.observableArrayList();
+            if (entity instanceof R_Objetivo) {
+                final ObservableList<R_Objetivo> value = FXCollections.observableArrayList();
                 for (final Object iEntity : list) {
-                    value.add((SObjetivo) iEntity);
+                    value.add((R_Objetivo) iEntity);
                 }
                 tblObjetivos.setItems(value);
-            } else if (entity instanceof STipoCurso) {
-                final ObservableList<STipoCurso> value = FXCollections.observableArrayList();
+            } else if (entity instanceof R_TipoCurso) {
+                final ObservableList<R_TipoCurso> value = FXCollections.observableArrayList();
                 for (final Object iEntity : list) {
-                    value.add((STipoCurso) iEntity);
+                    value.add((R_TipoCurso) iEntity);
                 }
                 cmbTipoCurso.setItems(value);
-            } else if (entity instanceof SAsignatura) {
-                final ObservableList<SAsignatura> value = FXCollections.observableArrayList();
+            } else if (entity instanceof R_Asignatura) {
+                final ObservableList<R_Asignatura> value = FXCollections.observableArrayList();
                 for (final Object iEntity : list) {
-                    value.add((SAsignatura) iEntity);
+                    value.add((R_Asignatura) iEntity);
                 }
                 cmbAsignatura.setItems(value);
             }
         }
     }
-
     @Override
     public void onDeleted(IEntity entity) {
         tblObjetivos.getItems().remove(entity);
     }
-
     @Override
     public void onSaved(IEntity otObject) {
-        final SObjetivo objetivo = (SObjetivo) otObject;
+        final R_Objetivo objetivo = (R_Objetivo) otObject;
         final int indice = tblObjetivos.getItems().lastIndexOf(objetivo);
         if (indice != -1) {
             tblObjetivos.getItems().set(indice, objetivo);
@@ -281,7 +227,6 @@ public class ObjetivosView extends AFormView implements EventHandler<ActionEvent
             tblObjetivos.getItems().add(objetivo);
         }
     }
-
     private void removeAllStyles() {
         removeAllStyle(lblError);
         removeAllStyle(txtNombre);
@@ -289,7 +234,6 @@ public class ObjetivosView extends AFormView implements EventHandler<ActionEvent
         removeAllStyle(cmbTipoCurso);
         removeAllStyle(cmbAsignatura);
     }
-
     @Override
     public boolean validate() {
         removeAllStyles();
@@ -306,8 +250,7 @@ public class ObjetivosView extends AFormView implements EventHandler<ActionEvent
             txtDescripcion.getStyleClass().add("bad");
             valida = false;
         }
-        if (txtDescripcion.getText() != null
-                && txtDescripcion.getText().length() > 2 * ObjetivosView.LARGO_CAMPO_TEXT) {
+        if (txtDescripcion.getText() != null && txtDescripcion.getText().length() > 2 * ObjetivosView.LARGO_CAMPO_TEXT) {
             txtDescripcion.getStyleClass().add("bad");
             valida = false;
         }
