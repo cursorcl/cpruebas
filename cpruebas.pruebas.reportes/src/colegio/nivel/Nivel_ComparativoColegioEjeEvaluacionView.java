@@ -2,7 +2,6 @@ package colegio.nivel;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,7 +55,7 @@ public class Nivel_ComparativoColegioEjeEvaluacionView extends AFormView impleme
     @FXML private Label lblColegio;
     @FXML private Label lblTitulo;
     @FXML private MenuItem mnuExportarAlumnos;
-    private Map<String, Object> parameters = new HashMap<String, Object>();
+    private Map<String, Object> parameters = new HashMap<>();
     private ObservableList<R_TipoCurso> tipoCursoList;
     private ObservableList<R_RangoEvaluacion> rangoEvalList;
     private ObservableList<R_EvaluacionPrueba> evaluacionesPrueba;
@@ -150,8 +149,8 @@ public class Nivel_ComparativoColegioEjeEvaluacionView extends AFormView impleme
             for (Object iEntity : list) {
                 R_Curso curso = (R_Curso) iEntity;
                 cursoList.add(curso);
-                Optional<R_TipoCurso> op = lstTipoCursos.stream().filter(t ->  t.getId().equals(curso.getTipocurso_id())).findFirst();
-                R_TipoCurso tipoCurso = op.isPresent() ? op.get() : null;  
+                Optional<R_TipoCurso> op = lstTipoCursos.stream().filter(t -> t.getId().equals(curso.getTipocurso_id())).findFirst();
+                R_TipoCurso tipoCurso = op.isPresent() ? op.get() : null;
                 if (!tipoCursoList.contains(tipoCurso)) {
                     tipoCursoList.add(tipoCurso);
                 }
@@ -173,8 +172,7 @@ public class Nivel_ComparativoColegioEjeEvaluacionView extends AFormView impleme
             }
             rangoEvalList = FXCollections.observableArrayList();
             Map<String, Object> params = MapBuilder.<String, Object> unordered().put("nivelevaluacion_id", nivelEvaluacion.getId()).build();
-            List<R_RangoEvaluacion> rngs =  controller.findByParamsSynchro(R_RangoEvaluacion.class, params);
-            
+            List<R_RangoEvaluacion> rngs = controller.findByParamsSynchro(R_RangoEvaluacion.class, params);
             for (R_RangoEvaluacion rng : rngs) {
                 rangoEvalList.add(rng);
             }
@@ -241,18 +239,16 @@ public class Nivel_ComparativoColegioEjeEvaluacionView extends AFormView impleme
         llenarColumnas(tipoCursoList, rangoEvalList);
         int nroCursos = tipoCursoList.size();
         int nroRangos = rangoEvalList.size();
-        Map<R_Ejetematico, List<OTAcumulador>> mapEjes = new HashMap<>();
-        
+        // Map<R_Ejetematico, List<OTAcumulador>> mapEjes = new HashMap<>();
+        Map<Long, List<OTAcumulador>> mapEjes = new HashMap<>();
         /*
          * Aqui verificamos el TIPO ALUMNO SELECCIONADO PARA EL REPORTE
          */
         long tipoAlumno = cmbTipoAlumno.getSelectionModel().getSelectedItem().getId();
         // Todas las evaluaciones asociadas (Todos los cursos)
         for (R_EvaluacionPrueba eval : evaluacionesPrueba) {
-            
             Map<String, Object> params = MapBuilder.<String, Object> unordered().put("evaluacionprueba_id", eval.getId()).build();
-            List<R_PruebaRendida> pruebasRendidas =  controller.findByParamsSynchro(R_PruebaRendida.class, params);
-            
+            List<R_PruebaRendida> pruebasRendidas = controller.findByParamsSynchro(R_PruebaRendida.class, params);
             params = MapBuilder.<String, Object> unordered().put("prueba_id", prueba.getId()).build();
             List<R_RespuestasEsperadasPrueba> respEsperadas = controller.findByParamsSynchro(R_RespuestasEsperadasPrueba.class, params);
             // Estamos procesando un colegio/una prueba
@@ -273,14 +269,12 @@ public class Nivel_ComparativoColegioEjeEvaluacionView extends AFormView impleme
                     continue;
                 }
                 Optional<R_Curso> op = cursoList.stream().filter(c -> c.getId().equals(alumno.getCurso_id())).findFirst();
-                if(!op.isPresent()) // No hay curso asociado al alumno, algo imposible.
+                if (!op.isPresent()) // No hay curso asociado al alumno, algo imposible.
                     continue;
-                
                 Optional<R_TipoCurso> opTipoCurso = tipoCursoList.stream().filter(t -> t.getId().equals(op.get().getTipocurso_id())).findFirst();
-                if(!opTipoCurso.isPresent())
-                    continue;
+                if (!opTipoCurso.isPresent()) continue;
                 int index = tipoCursoList.indexOf(opTipoCurso.get());
-                if (index == -1) { 
+                if (index == -1) {
                     continue;
                 }
                 String respuestas = pruebaRendida.getRespuestas();
@@ -289,7 +283,8 @@ public class Nivel_ComparativoColegioEjeEvaluacionView extends AFormView impleme
                 }
                 for (int n = 0; n < respEsperadas.size(); n++) {
                     // Sumando a ejes tematicos
-                    R_Ejetematico eje = respEsperadas.get(n).getEjeTematico();
+                    // R_Ejetematico eje = respEsperadas.get(n).getEjeTematico();
+                    Long eje = respEsperadas.get(n).getEjetematico_id();
                     if (!mapEjes.containsKey(eje)) {
                         List<OTAcumulador> lista = new ArrayList<OTAcumulador>(nroCursos);
                         for (int idx = 0; idx < nroCursos; idx++) {
@@ -309,7 +304,8 @@ public class Nivel_ComparativoColegioEjeEvaluacionView extends AFormView impleme
                         lstEjes.set(index, otEjeEval);
                     }
                 }
-                for (R_Ejetematico eje : mapEjes.keySet()) {
+                // for (R_Ejetematico eje : mapEjes.keySet()) {
+                for (Long eje : mapEjes.keySet()) {
                     List<OTAcumulador> lstEjes = mapEjes.get(eje);
                     OTAcumulador otEjeEval = lstEjes.get(index);
                     float porcentaje = obtenerPorcentaje(respuestas, respEsperadas, eje);
@@ -335,13 +331,25 @@ public class Nivel_ComparativoColegioEjeEvaluacionView extends AFormView impleme
      * @param mapHabilidades
      *            Mapa que contiene los valores para cada colegio de las habilidades.
      */
-    private void generarTablaEjes(Map<R_Ejetematico, List<OTAcumulador>> mapEjes) {
+//    private void generarTablaEjes(Map<R_Ejetematico, List<OTAcumulador>> mapEjes) {
+    private void generarTablaEjes(Map<Long, List<OTAcumulador>> mapEjes) {
         ObservableList<String> row = null;
+        Map<Long, R_Ejetematico> ejes = new HashMap<>();
+        
         ObservableList<ObservableList<String>> items = FXCollections.observableArrayList();
-        for (R_Ejetematico eje : mapEjes.keySet()) {
+//        for (R_Ejetematico eje : mapEjes.keySet()) {
+            for (Long eje : mapEjes.keySet()) {
             row = FXCollections.observableArrayList();
             List<OTAcumulador> lst = mapEjes.get(eje);
-            row.add(eje.getName());
+            
+            //TODO ESTO, DEBE CAMBIAR SI ES MUY LENTO
+            R_Ejetematico rEje = ejes.get(eje);
+            if(rEje == null)
+            {
+                rEje = controller.findByIdSynchro(R_Ejetematico.class, eje);
+                ejes.put(eje, rEje);
+            }
+            row.add(rEje.getName());
             for (OTAcumulador otEje : lst) {
                 if (otEje != null && otEje.getNroPersonas() != null) {
                     int[] personas = otEje.getNroPersonas();
@@ -358,13 +366,14 @@ public class Nivel_ComparativoColegioEjeEvaluacionView extends AFormView impleme
         }
         tblEjesCantidad.setItems(items);
     }
-    private float obtenerPorcentaje(String respuestas, List<R_RespuestasEsperadasPrueba> respEsperadas, R_Ejetematico eje) {
+//    private float obtenerPorcentaje(String respuestas, List<R_RespuestasEsperadasPrueba> respEsperadas, R_Ejetematico eje) {
+    private float obtenerPorcentaje(String respuestas, List<R_RespuestasEsperadasPrueba> respEsperadas, Long eje) {
         float nroBuenas = 0;
         float nroPreguntas = 0;
         for (int n = 0; n < respEsperadas.size(); n++) {
             R_RespuestasEsperadasPrueba resp = respEsperadas.get(n);
             if (!resp.getAnulada()) {
-                if (resp.getEjeTematico().equals(eje)) {
+                if (resp.getEjetematico_id().equals(eje)) {
                     if (respuestas.length() > n) {
                         String sResp = respuestas.substring(n, n + 1);
                         if ("+".equals(sResp) || resp.getRespuesta().equalsIgnoreCase(sResp)) {
@@ -385,7 +394,6 @@ public class Nivel_ComparativoColegioEjeEvaluacionView extends AFormView impleme
     }
     public void setPrueba(R_Prueba prueba) {
         this.prueba = prueba;
-        
     }
     public void setNivelEvaluacion(R_NivelEvaluacion nivelEvaluacion) {
         this.nivelEvaluacion = nivelEvaluacion;
