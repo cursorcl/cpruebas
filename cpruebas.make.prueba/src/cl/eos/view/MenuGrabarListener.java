@@ -12,10 +12,10 @@ import org.imgscalr.Scalr;
 import org.imgscalr.Scalr.Method;
 import org.imgscalr.Scalr.Mode;
 
-import cl.eos.persistence.models.SAlternativas;
-import cl.eos.persistence.models.SImagenes;
-import cl.eos.persistence.models.SPrueba;
-import cl.eos.persistence.models.SRespuestasEsperadasPrueba;
+import cl.eos.restful.tables.R_Alternativas;
+import cl.eos.restful.tables.R_Imagenes;
+import cl.eos.restful.tables.R_Prueba;
+import cl.eos.restful.tables.R_RespuestasEsperadasPrueba;
 import cl.eos.util.Utils;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
@@ -43,23 +43,23 @@ public class MenuGrabarListener implements EventHandler<ActionEvent> {
         idCurso = defPrueba.cmbAsignatura.getValue().getId();
         nroAlternativas = defPrueba.spnNroAlternativas.getNumber().intValue();
 
-        SPrueba prueba = new SPrueba();
+        R_Prueba prueba = new R_Prueba.Builder().id(Utils.getLastIndex()).build();
 
-        prueba.setAsignatura(defPrueba.cmbAsignatura.getValue());
-        prueba.setCurso(defPrueba.cmbCurso.getValue());
+        prueba.setAsignatura_id(defPrueba.cmbAsignatura.getValue().getId());
+        prueba.setCurso_id(defPrueba.cmbCurso.getValue().getId());
         prueba.setFecha(defPrueba.fecFeha.getValue().toEpochDay());
-        prueba.setNroFormas(defPrueba.spnForma.getNumber().intValue());
+        prueba.setNroformas(defPrueba.spnForma.getNumber().intValue());
         prueba.setName(name);
-        prueba.setNivelEvaluacion(defPrueba.cmbNivelEvaluacion.getValue());
-        prueba.setProfesor(defPrueba.cmbProfesor.getValue());
-        prueba.setPuntajeBase(defPrueba.spnPjeBase.getNumber().intValue());
-        prueba.setNroPreguntas(defPrueba.spnNroPreguntas.getNumber().intValue());
+        prueba.setNivelevaluacion_id(defPrueba.cmbNivelEvaluacion.getValue().getId());
+        prueba.setProfesor_id(defPrueba.cmbProfesor.getValue().getId());
+        prueba.setPuntajebase(defPrueba.spnPjeBase.getNumber().intValue());
+        prueba.setNropreguntas(defPrueba.spnNroPreguntas.getNumber().intValue());
         prueba.setAlternativas(nroAlternativas);
-        prueba.setTipoPrueba(defPrueba.cmbTipoPrueba.getValue());
+        prueba.setTipoprueba_id(defPrueba.cmbTipoPrueba.getValue().getId());
         prueba.setExigencia(defPrueba.spnExigencia.getNumber().intValue());
 
         final ObservableList<ItemList> items = defPrueba.lstPreguntas.getItems();
-        // List<SRespuestasEsperadasPrueba> lstRespuestas = new ArrayList<>();
+        // List<R_RespuestasEsperadasPrueba> lstRespuestas = new ArrayList<>();
         String respuestas = "";
 
         for (final ItemList item : items) {
@@ -67,7 +67,7 @@ public class MenuGrabarListener implements EventHandler<ActionEvent> {
         }
         prueba.setResponses(respuestas);
 
-        prueba = (SPrueba) defPrueba.save(prueba);
+        prueba = (R_Prueba) defPrueba.save(prueba);
 
         for (final ItemList item : items) {
             final String itemName = String.format("%d", item.nro);
@@ -75,29 +75,27 @@ public class MenuGrabarListener implements EventHandler<ActionEvent> {
             final boolean isMental = item.rightAnswer.equals("M");
             final boolean isTrueFalse = "VF".contains(item.rightAnswer.toUpperCase());
 
-            SRespuestasEsperadasPrueba respuesta = new SRespuestasEsperadasPrueba.Builder().anulada(false)
-                    .ejeTematico(item.thematic).habilidad(item.ability).mental(isMental).name(itemName).numero(item.nro)
-                    .objetivo(item.objetive).respuesta(item.rightAnswer).verdaderoFalso(isTrueFalse).prueba(prueba)
+            R_RespuestasEsperadasPrueba respuesta = new R_RespuestasEsperadasPrueba.Builder().id(Utils.getLastIndex()).anulada(false)
+                    .ejetematico_id(item.thematic.getId()).habilidad_id(item.ability.getId()).mental(isMental).name(itemName).numero(item.nro)
+                    .objetivo_id(item.objetive.getId()).respuesta(item.rightAnswer).verdaderofalso(isTrueFalse).prueba_id(prueba.getId())
                     .build();
-            final List<SImagenes> lstImages = processImages(item, respuesta);
-            final List<SAlternativas> lstAlternativas = processAlteratives(item, respuesta);
+            final List<R_Imagenes> lstImages = processImages(item, respuesta);
+            final List<R_Alternativas> lstAlternativas = processAlteratives(item, respuesta);
 
-            respuesta = (SRespuestasEsperadasPrueba) defPrueba.save(respuesta);
-
-            // respuesta.setAlternativas(lstAlternativas);
+            defPrueba.save(respuesta);
 
             for (int n = 0; n < lstAlternativas.size(); n++) {
-                SAlternativas alt = lstAlternativas.get(n);
-                alt.setRespuesta(respuesta);
-                alt = (SAlternativas) defPrueba.save(alt);
+                R_Alternativas alt = lstAlternativas.get(n);
+                alt.setRespuesta_id(respuesta.getId());
+                alt = (R_Alternativas) defPrueba.save(alt);
                 lstAlternativas.set(n, alt);
             }
 
             if (lstImages != null && !lstImages.isEmpty()) {
                 for (int n = 0; n < lstImages.size(); n++) {
-                    SImagenes img = lstImages.get(n);
-                    img.setRespuesta(respuesta);
-                    img = (SImagenes) defPrueba.save(img);
+                    R_Imagenes img = lstImages.get(n);
+                    img.setRespuesta_id(respuesta.getId());
+                    img = (R_Imagenes) defPrueba.save(img);
                     lstImages.set(n, img);
                 }
             }
@@ -109,21 +107,21 @@ public class MenuGrabarListener implements EventHandler<ActionEvent> {
 
     }
 
-    private List<SAlternativas> processAlteratives(ItemList item, SRespuestasEsperadasPrueba respuesta) {
-        List<SAlternativas> lstAlternatives = null;
+    private List<R_Alternativas> processAlteratives(ItemList item, R_RespuestasEsperadasPrueba respuesta) {
+        List<R_Alternativas> lstAlternatives = null;
         for (int n = 0; n < nroAlternativas; n++) {
             if (lstAlternatives == null)
                 lstAlternatives = new ArrayList<>();
             final String altName = String.format("%d_%d", item.nro, n + 1);
-            final SAlternativas alternative = new SAlternativas.Builder().name(altName).numero(n).texto(item.question)
-                    .respuesta(respuesta).build();
+            final R_Alternativas alternative = new R_Alternativas.Builder().name(altName).numero(n).texto(item.question)
+                    .respuesta_id(respuesta.getId()).build();
             lstAlternatives.add(alternative);
         }
         return lstAlternatives;
     }
 
-    private List<SImagenes> processImages(ItemList item, SRespuestasEsperadasPrueba respuesta) {
-        List<SImagenes> lstImages = null;
+    private List<R_Imagenes> processImages(ItemList item, R_RespuestasEsperadasPrueba respuesta) {
+        List<R_Imagenes> lstImages = null;
         for (int n = 0; n < item.images.size(); n++) {
             if (item.images.get(n) == null)
                 break;
@@ -148,7 +146,7 @@ public class MenuGrabarListener implements EventHandler<ActionEvent> {
                 }
                 if (lstImages == null)
                     lstImages = new ArrayList<>();
-                final SImagenes image = new SImagenes.Builder().numero(item.nro).name(fName).respuesta(respuesta).build();
+                final R_Imagenes image = new R_Imagenes.Builder().numero(item.nro).name(fName).respuesta_id(respuesta.getId()).build();
                 lstImages.add(image);
             }
         }

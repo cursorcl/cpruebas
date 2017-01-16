@@ -1,16 +1,10 @@
 package cl.eos.view.ots;
 
 import java.time.LocalDate;
-import java.util.List;
 
 import cl.eos.restful.tables.R_Asignatura;
-import cl.eos.restful.tables.R_EvaluacionPrueba;
-import cl.eos.restful.tables.R_Formas;
-import cl.eos.restful.tables.R_NivelEvaluacion;
-import cl.eos.restful.tables.R_Profesor;
 import cl.eos.restful.tables.R_Prueba;
 import cl.eos.restful.tables.R_Prueba.Estado;
-import cl.eos.restful.tables.R_RespuestasEsperadasPrueba;
 import cl.eos.restful.tables.R_TipoCurso;
 import cl.eos.restful.tables.R_TipoPrueba;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -29,11 +23,6 @@ public class OTPrueba {
     private final SimpleObjectProperty<R_TipoPrueba> tipoPrueba = new SimpleObjectProperty<R_TipoPrueba>();
     private final SimpleObjectProperty<R_TipoCurso> curso = new SimpleObjectProperty<R_TipoCurso>();
     private final SimpleObjectProperty<R_Asignatura> asignatura = new SimpleObjectProperty<R_Asignatura>();
-    private final SimpleObjectProperty<R_NivelEvaluacion> nivelEvaluacion = new SimpleObjectProperty<R_NivelEvaluacion>();
-    private final SimpleObjectProperty<R_Profesor> profesor = new SimpleObjectProperty<R_Profesor>();
-    private final SimpleObjectProperty<List<R_Formas>> formas = new SimpleObjectProperty<List<R_Formas>>();
-    private final SimpleObjectProperty<List<R_RespuestasEsperadasPrueba>> respuestas = new SimpleObjectProperty<List<R_RespuestasEsperadasPrueba>>();
-    private final SimpleObjectProperty<List<R_EvaluacionPrueba>> evaluaciones = new SimpleObjectProperty<List<R_EvaluacionPrueba>>();
     private final SimpleObjectProperty<LocalDate> fechaLocal = new SimpleObjectProperty<LocalDate>();
     private final SimpleObjectProperty<Estado> estado = new SimpleObjectProperty<Estado>();
 
@@ -49,28 +38,22 @@ public class OTPrueba {
 
     }
 
-    public OTPrueba(R_Prueba prueba) {
+    public OTPrueba(R_Prueba prueba, R_Asignatura asignatura, R_TipoCurso tipoCurso) {
         this.prueba = prueba;
         id.set(prueba.getId());
         fecha.set(prueba.getFecha());
         name.set(prueba.getName());
         responses.set(prueba.getResponses());
-        tipoPrueba.set(prueba.getTipoPrueba());
-        curso.set(prueba.getCurso());
-        asignatura.set(prueba.getAsignatura());
-        nivelEvaluacion.set(prueba.getNivelEvaluacion());
-        profesor.set(prueba.getProfesor());
-        formas.set(prueba.getFormas());
-        respuestas.set(prueba.getRespuestas());
-        evaluaciones.set(prueba.getEvaluaciones());
+        curso.set(tipoCurso);
+        this.asignatura.set(asignatura);
 
-        nroPreguntas.set(prueba.getNroPreguntas());
-        nroFormas.set(prueba.getNroFormas());
+        nroPreguntas.set(prueba.getNropreguntas());
+        nroFormas.set(prueba.getNroformas());
         alternativas.set(prueba.getAlternativas());
-        puntajeBase.set(prueba.getPuntajeBase());
+        puntajeBase.set(prueba.getPuntajebase());
         exigencia.set(prueba.getExigencia());
         fechaLocal.set(LocalDate.ofEpochDay(fecha.longValue()));
-        estado.set(prueba.getEstado());
+        estado.set(Estado.getEstado(prueba.getEstado()));
     }
 
     public final SimpleIntegerProperty alternativasProperty() {
@@ -106,9 +89,6 @@ public class OTPrueba {
         return estado;
     }
 
-    public final SimpleObjectProperty<List<R_EvaluacionPrueba>> evaluacionesProperty() {
-        return evaluaciones;
-    }
 
     public final SimpleIntegerProperty exigenciaProperty() {
         return exigencia;
@@ -120,10 +100,6 @@ public class OTPrueba {
 
     public final SimpleLongProperty fechaProperty() {
         return fecha;
-    }
-
-    public final SimpleObjectProperty<List<R_Formas>> formasProperty() {
-        return formas;
     }
 
     public final int getAlternativas() {
@@ -142,10 +118,6 @@ public class OTPrueba {
         return estadoProperty().get();
     }
 
-    public final List<R_EvaluacionPrueba> getEvaluaciones() {
-        return evaluacionesProperty().get();
-    }
-
     public final int getExigencia() {
         return exigenciaProperty().get();
     }
@@ -158,10 +130,6 @@ public class OTPrueba {
         return fechaLocalProperty().get();
     }
 
-    public final List<R_Formas> getFormas() {
-        return formasProperty().get();
-    }
-
     public final long getId() {
         return idProperty().get();
     }
@@ -170,20 +138,12 @@ public class OTPrueba {
         return nameProperty().get();
     }
 
-    public final R_NivelEvaluacion getNivelEvaluacion() {
-        return nivelEvaluacionProperty().get();
-    }
-
     public final int getNroFormas() {
         return nroFormasProperty().get();
     }
 
     public final int getNroPreguntas() {
         return nroPreguntasProperty().get();
-    }
-
-    public final R_Profesor getProfesor() {
-        return profesorProperty().get();
     }
 
     public R_Prueba getPrueba() {
@@ -196,10 +156,6 @@ public class OTPrueba {
 
     public final java.lang.String getResponses() {
         return responsesProperty().get();
-    }
-
-    public final List<R_RespuestasEsperadasPrueba> getRespuestas() {
-        return respuestasProperty().get();
     }
 
     public final R_TipoPrueba getTipoPrueba() {
@@ -222,10 +178,6 @@ public class OTPrueba {
         return name;
     }
 
-    public final SimpleObjectProperty<R_NivelEvaluacion> nivelEvaluacionProperty() {
-        return nivelEvaluacion;
-    }
-
     public final SimpleIntegerProperty nroFormasProperty() {
         return nroFormas;
     }
@@ -234,20 +186,12 @@ public class OTPrueba {
         return nroPreguntas;
     }
 
-    public final SimpleObjectProperty<R_Profesor> profesorProperty() {
-        return profesor;
-    }
-
     public final SimpleIntegerProperty puntajeBaseProperty() {
         return puntajeBase;
     }
 
     public final SimpleStringProperty responsesProperty() {
         return responses;
-    }
-
-    public final SimpleObjectProperty<List<R_RespuestasEsperadasPrueba>> respuestasProperty() {
-        return respuestas;
     }
 
     public final void setAlternativas(final int alternativas) {
@@ -266,10 +210,6 @@ public class OTPrueba {
         estadoProperty().set(estado);
     }
 
-    public final void setEvaluaciones(final List<R_EvaluacionPrueba> evaluaciones) {
-        evaluacionesProperty().set(evaluaciones);
-    }
-
     public final void setExigencia(final int exigencia) {
         exigenciaProperty().set(exigencia);
     }
@@ -283,10 +223,6 @@ public class OTPrueba {
         fechaLocalProperty().set(fechaLocal);
     }
 
-    public final void setFormas(final List<R_Formas> formas) {
-        formasProperty().set(formas);
-    }
-
     public final void setId(final long id) {
         idProperty().set(id);
     }
@@ -295,20 +231,12 @@ public class OTPrueba {
         nameProperty().set(name);
     }
 
-    public final void setNivelEvaluacion(final R_NivelEvaluacion nivelEvaluacion) {
-        nivelEvaluacionProperty().set(nivelEvaluacion);
-    }
-
     public final void setNroFormas(final int nroFormas) {
         nroFormasProperty().set(nroFormas);
     }
 
     public final void setNroPreguntas(final int nroPreguntas) {
         nroPreguntasProperty().set(nroPreguntas);
-    }
-
-    public final void setProfesor(final R_Profesor profesor) {
-        profesorProperty().set(profesor);
     }
 
     public void setPrueba(R_Prueba prueba) {
@@ -321,11 +249,6 @@ public class OTPrueba {
 
     public final void setResponses(final java.lang.String responses) {
         responsesProperty().set(responses);
-    }
-
-    public final void setRespuestas(
-            final List<R_RespuestasEsperadasPrueba> respuestas) {
-        respuestasProperty().set(respuestas);
     }
 
     public final void setTipoPrueba(final R_TipoPrueba tipoPrueba) {

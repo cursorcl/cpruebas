@@ -437,7 +437,8 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
     private void handlerHabilidadEvaluacionXAlumnoXNivel() {
         final Nivel_ComparativoColegioEjeEvaluacionView resHabEjeAlumno = (Nivel_ComparativoColegioEjeEvaluacionView) show(
                 "/colegio/nivel/fxml/Nivel_ComparativoColegioEjeEvaluacion.fxml");
-        R_NivelEvaluacion nivelEvaluacion = tblListadoPruebas.getSelectionModel().getSelectedItem().getNivelEvaluacion();
+        Long idNivelEval = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba().getNivelevaluacion_id();
+        R_NivelEvaluacion nivelEvaluacion = controller.findByIdSynchro(R_NivelEvaluacion.class, idNivelEval);
         R_Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
         resHabEjeAlumno.setPrueba(prueba);
         resHabEjeAlumno.setNivelEvaluacion(nivelEvaluacion);
