@@ -2,14 +2,14 @@ package cl.eos.view;
 
 import java.util.List;
 
-import cl.eos.persistence.models.SAsignatura;
-import cl.eos.persistence.models.SEjeTematico;
-import cl.eos.persistence.models.SHabilidad;
-import cl.eos.persistence.models.SNivelEvaluacion;
-import cl.eos.persistence.models.SObjetivo;
-import cl.eos.persistence.models.SProfesor;
-import cl.eos.persistence.models.STipoCurso;
-import cl.eos.persistence.models.STipoPrueba;
+import cl.eos.restful.tables.R_Asignatura;
+import cl.eos.restful.tables.R_Ejetematico;
+import cl.eos.restful.tables.R_Habilidad;
+import cl.eos.restful.tables.R_NivelEvaluacion;
+import cl.eos.restful.tables.R_Objetivo;
+import cl.eos.restful.tables.R_Profesor;
+import cl.eos.restful.tables.R_TipoCurso;
+import cl.eos.restful.tables.R_TipoPrueba;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -38,10 +38,10 @@ public class DataProcessor {
     }
 
     private static void processAsignatura(Object entity, DefinirPrueba defPrueba, List<Object> list) {
-        if (entity instanceof SAsignatura) {
-            final ObservableList<SAsignatura> asignaturas = FXCollections.observableArrayList();
+        if (entity instanceof R_Asignatura) {
+            final ObservableList<R_Asignatura> asignaturas = FXCollections.observableArrayList();
             for (final Object lEntity : list) {
-                asignaturas.add((SAsignatura) lEntity);
+                asignaturas.add((R_Asignatura) lEntity);
             }
             defPrueba.cmbAsignatura.setItems(asignaturas);
             if (list != null && !list.isEmpty())
@@ -50,10 +50,10 @@ public class DataProcessor {
     }
 
     private static void processEjeTematico(Object entity, DefinirPrueba defPrueba, List<Object> list) {
-        if (entity instanceof SEjeTematico) {
-            final ObservableList<SEjeTematico> ejesTematicos = FXCollections.observableArrayList();
+        if (entity instanceof R_Ejetematico) {
+            final ObservableList<R_Ejetematico> ejesTematicos = FXCollections.observableArrayList();
             for (final Object lEntity : list) {
-                ejesTematicos.add((SEjeTematico) lEntity);
+                ejesTematicos.add((R_Ejetematico) lEntity);
             }
             defPrueba.cmbEjesTematicos.setItems(ejesTematicos);
             if (list != null && !list.isEmpty())
@@ -62,10 +62,10 @@ public class DataProcessor {
     }
 
     private static void processHabilidad(Object entity, DefinirPrueba defPrueba, List<Object> list) {
-        if (entity instanceof SHabilidad) {
-            final ObservableList<SHabilidad> habilidades = FXCollections.observableArrayList();
+        if (entity instanceof R_Habilidad) {
+            final ObservableList<R_Habilidad> habilidades = FXCollections.observableArrayList();
             for (final Object lEntity : list) {
-                habilidades.add((SHabilidad) lEntity);
+                habilidades.add((R_Habilidad) lEntity);
             }
             defPrueba.cmbHabilidades.setItems(habilidades);
             if (list != null && !list.isEmpty())
@@ -74,10 +74,10 @@ public class DataProcessor {
     }
 
     private static void processNivelEvaluacion(Object entity, DefinirPrueba defPrueba, List<Object> list) {
-        if (entity instanceof SNivelEvaluacion) {
-            final ObservableList<SNivelEvaluacion> nivelEvaluacion = FXCollections.observableArrayList();
+        if (entity instanceof R_NivelEvaluacion) {
+            final ObservableList<R_NivelEvaluacion> nivelEvaluacion = FXCollections.observableArrayList();
             for (final Object lEntity : list) {
-                nivelEvaluacion.add((SNivelEvaluacion) lEntity);
+                nivelEvaluacion.add((R_NivelEvaluacion) lEntity);
             }
             defPrueba.cmbNivelEvaluacion.setItems(nivelEvaluacion);
             if (list != null && !list.isEmpty())
@@ -86,10 +86,10 @@ public class DataProcessor {
     }
 
     private static void processObjetivo(Object entity, DefinirPrueba defPrueba, List<Object> list) {
-        if (entity instanceof SObjetivo) {
-            final ObservableList<SObjetivo> objetivos = FXCollections.observableArrayList();
+        if (entity instanceof R_Objetivo) {
+            final ObservableList<R_Objetivo> objetivos = FXCollections.observableArrayList();
             for (final Object lEntity : list) {
-                objetivos.add((SObjetivo) lEntity);
+                objetivos.add((R_Objetivo) lEntity);
             }
             defPrueba.cmbObjetivos.setItems(objetivos);
             if (list != null && !list.isEmpty())
@@ -98,10 +98,10 @@ public class DataProcessor {
     }
 
     private static void processProfesor(Object entity, DefinirPrueba defPrueba, List<Object> list) {
-        if (entity instanceof SProfesor) {
-            final ObservableList<SProfesor> profesores = FXCollections.observableArrayList();
+        if (entity instanceof R_Profesor) {
+            final ObservableList<R_Profesor> profesores = FXCollections.observableArrayList();
             for (final Object lEntity : list) {
-                profesores.add((SProfesor) lEntity);
+                profesores.add((R_Profesor) lEntity);
             }
             defPrueba.cmbProfesor.setItems(profesores);
             if (list != null && !list.isEmpty())
@@ -110,10 +110,10 @@ public class DataProcessor {
     }
 
     private static void processTipoCurso(Object entity, DefinirPrueba defPrueba, List<Object> list) {
-        if (entity instanceof STipoCurso) {
-            final ObservableList<STipoCurso> cursos = FXCollections.observableArrayList();
+        if (entity instanceof R_TipoCurso) {
+            final ObservableList<R_TipoCurso> cursos = FXCollections.observableArrayList();
             for (final Object lEntity : list) {
-                cursos.add((STipoCurso) lEntity);
+                cursos.add((R_TipoCurso) lEntity);
             }
             defPrueba.cmbCurso.setItems(cursos);
             if (list != null && !list.isEmpty())
@@ -122,11 +122,11 @@ public class DataProcessor {
     }
 
     private static void processTipoPrueba(Object entity, DefinirPrueba defPrueba, List<Object> list) {
-        if (entity instanceof STipoPrueba) {
+        if (entity instanceof R_TipoPrueba) {
 
-            final ObservableList<STipoPrueba> tipoPruebas = FXCollections.observableArrayList();
+            final ObservableList<R_TipoPrueba> tipoPruebas = FXCollections.observableArrayList();
             for (final Object lEntity : list) {
-                tipoPruebas.add((STipoPrueba) lEntity);
+                tipoPruebas.add((R_TipoPrueba) lEntity);
             }
             defPrueba.cmbTipoPrueba.setItems(tipoPruebas);
             if (list != null && !list.isEmpty())

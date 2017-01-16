@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
@@ -115,6 +117,8 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
     private ImprimirPruebaView imprimirPrueba;
     private ResumenColegioView resumenColegio;
     private int rowsPerPage = 25;
+    private ObservableList<R_Asignatura> lstAsignaturas;
+    private ObservableList<R_TipoCurso> lstTipoCurso;
     public ListadoPruebasView() {
         setTitle("Pruebas");
     }
@@ -414,7 +418,6 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
                 controller.findById(R_Prueba.class, prueba.getId(), evaluarPruebaView);
                 controller.findAll(R_Colegio.class, evaluarPruebaView);
                 controller.findAll(R_Profesor.class, evaluarPruebaView);
-                
             }
         }
     }
@@ -437,7 +440,8 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
     private void handlerHabilidadEvaluacionXAlumnoXNivel() {
         final Nivel_ComparativoColegioEjeEvaluacionView resHabEjeAlumno = (Nivel_ComparativoColegioEjeEvaluacionView) show(
                 "/colegio/nivel/fxml/Nivel_ComparativoColegioEjeEvaluacion.fxml");
-        R_NivelEvaluacion nivelEvaluacion = tblListadoPruebas.getSelectionModel().getSelectedItem().getNivelEvaluacion();
+        Long idNivelEval = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba().getNivelevaluacion_id();
+        R_NivelEvaluacion nivelEvaluacion = controller.findByIdSynchro(R_NivelEvaluacion.class, idNivelEval);
         R_Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
         resHabEjeAlumno.setPrueba(prueba);
         resHabEjeAlumno.setNivelEvaluacion(nivelEvaluacion);
@@ -445,7 +449,6 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
         controller.findAll(R_Colegio.class, resHabEjeAlumno);
         controller.findAll(R_Asignatura.class, resHabEjeAlumno);
         controller.findAll(R_TipoAlumno.class, resHabEjeAlumno);
-        
     }
     private void handlerHabilidadEvaluacionXNivel() {
         final Nivel_ComparativoColegioHabilidadesView resumenHabilidades = (Nivel_ComparativoColegioHabilidadesView) show(
@@ -481,7 +484,6 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
         if (tblListadoPruebas.getSelectionModel().getSelectedItem() != null) {
             final R_Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
             evaluacionPrueba.setPrueba(prueba);
-            
             final Map<String, Object> parameters = new HashMap<String, Object>();
             parameters.put("idPrueba", prueba.getId());
             controller.findByParam(R_EvaluacionPrueba.class, parameters, evaluacionPrueba);
@@ -561,10 +563,26 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
             final Object entity = list.get(0);
             if (entity instanceof R_Prueba) {
                 final ObservableList<OTPrueba> pruebas = FXCollections.observableArrayList();
+                Map<Long, R_Asignatura> mapAsignaturas = lstAsignaturas.stream().collect(Collectors.toMap(R_Asignatura::getId, Function.identity()));
+                Map<Long, R_TipoCurso> mapTiposCurso = lstTipoCurso.stream().collect(Collectors.toMap(R_TipoCurso::getId, Function.identity()));
                 for (final Object lEntity : list) {
-                    pruebas.add(new OTPrueba((R_Prueba) lEntity));
+                    R_Prueba pPrueba = (R_Prueba) lEntity;
+                    R_Asignatura asig = mapAsignaturas.get(pPrueba.getAsignatura_id());
+                    R_Curso curso = controller.findByIdSynchro(R_Curso.class, pPrueba.getCurso_id());
+                    R_TipoCurso tpoCur = mapTiposCurso.get(curso.getTipocurso_id());
+                    pruebas.add(new OTPrueba(pPrueba, asig, tpoCur));
                 }
                 tblListadoPruebas.setItems(pruebas);
+            } else if (entity instanceof R_Asignatura) {
+                lstAsignaturas = FXCollections.observableArrayList();
+                for (final Object lEntity : list) {
+                    lstAsignaturas.add((R_Asignatura) lEntity);
+                }
+            } else if (entity instanceof R_TipoCurso) {
+                lstTipoCurso = FXCollections.observableArrayList();
+                for (final Object lEntity : list) {
+                    lstTipoCurso.add((R_TipoCurso) lEntity);
+                }
             }
         }
     }

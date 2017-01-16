@@ -70,7 +70,6 @@
 										<TableColumn fx:id="fechaCol" prefWidth="78.0" text="Fecha" />
 										<TableColumn fx:id="nroPreguntasCol" prefWidth="57.0" style="-fx-alignment: CENTER-RIGHT;" text="Preg." />
 										<TableColumn fx:id="estadoCol" prefWidth="88.0" text="Estado" />
-										<TableColumn fx:id="profesorCol" prefWidth="127.0" text="Profesor" />
 									</columns>
 									<contextMenu>
 										<ContextMenu>

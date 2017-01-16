@@ -5,22 +5,22 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import cl.eos.persistence.models.SEjeTematico;
-import cl.eos.persistence.models.SHabilidad;
-import cl.eos.persistence.models.SObjetivo;
+import cl.eos.restful.tables.R_Ejetematico;
+import cl.eos.restful.tables.R_Habilidad;
+import cl.eos.restful.tables.R_Objetivo;
 import javafx.scene.image.Image;
 
 public class ItemList {
     public static class Builder {
         private String question;
-        private SEjeTematico thematic;
-        private SHabilidad ability;
-        private SObjetivo objetive;
+        private R_Ejetematico thematic;
+        private R_Habilidad ability;
+        private R_Objetivo objetive;
         private List<String> alternatives;
         private List<Image> images;
         private String rightAnswer;
 
-        public Builder ability(SHabilidad ability) {
+        public Builder ability(R_Habilidad ability) {
             this.ability = ability;
             return this;
         }
@@ -47,7 +47,7 @@ public class ItemList {
             return this;
         }
 
-        public Builder objetive(SObjetivo objetive) {
+        public Builder objetive(R_Objetivo objetive) {
             this.objetive = objetive;
             return this;
         }
@@ -62,7 +62,7 @@ public class ItemList {
             return this;
         }
 
-        public Builder thematic(SEjeTematico thematic) {
+        public Builder thematic(R_Ejetematico thematic) {
             this.thematic = thematic;
             return this;
         }
@@ -70,9 +70,9 @@ public class ItemList {
 
     int nro = 0;
     String question;
-    SEjeTematico thematic;
-    SHabilidad ability;
-    SObjetivo objetive;
+    R_Ejetematico thematic;
+    R_Habilidad ability;
+    R_Objetivo objetive;
     List<String> alternatives;
     List<Image> images;
 
