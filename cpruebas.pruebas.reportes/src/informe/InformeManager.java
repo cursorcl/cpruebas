@@ -24,9 +24,9 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTVerticalJc;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STVerticalJc;
 
 import cl.eos.imp.view.UtilsAlert;
-import cl.eos.persistence.models.SAsignatura;
-import cl.eos.persistence.models.SColegio;
-import cl.eos.persistence.models.STipoAlumno;
+import cl.eos.restful.tables.R_Asignatura;
+import cl.eos.restful.tables.R_Colegio;
+import cl.eos.restful.tables.R_TipoAlumno;
 import informe.informes.IInforme;
 import informe.informes.imp.InformeEjeEvaluacion;
 import informe.informes.imp.InformeEjesXCurso;
@@ -72,9 +72,9 @@ public class InformeManager {
     List<IInforme> informes;
     private final XWPFDocument doc;
     File file;
-    SColegio colegio;
+    R_Colegio colegio;
 
-    public InformeManager(SColegio colegio, File selectedFile) throws FileNotFoundException, IOException {
+    public InformeManager(R_Colegio colegio, File selectedFile) throws FileNotFoundException, IOException {
 
         file = selectedFile;
         this.colegio = colegio;
@@ -114,7 +114,7 @@ public class InformeManager {
         }
     }
 
-    protected void generarPaginaAsignatura(XWPFDocument document, SAsignatura asignatura) {
+    protected void generarPaginaAsignatura(XWPFDocument document, R_Asignatura asignatura) {
 
         final CTDocument1 lDoc = document.getDocument();
         final CTBody body = lDoc.getBody();
@@ -168,7 +168,7 @@ public class InformeManager {
         return informes;
     }
 
-    public void processAsignatura(STipoAlumno tipoAlumno, SColegio colegio, SAsignatura asignatura) {
+    public void processAsignatura(R_TipoAlumno tipoAlumno, R_Colegio colegio, R_Asignatura asignatura) {
 
         generarPaginaAsignatura(doc, asignatura);
         for (final IInforme informe : informes) {

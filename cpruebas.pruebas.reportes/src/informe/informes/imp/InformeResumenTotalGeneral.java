@@ -19,15 +19,15 @@ import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 
 import cl.eos.common.Constants;
-import cl.eos.persistence.models.SAlumno;
-import cl.eos.persistence.models.SAsignatura;
-import cl.eos.persistence.models.SColegio;
-import cl.eos.persistence.models.SEvaluacionEjeTematico;
-import cl.eos.persistence.models.SEvaluacionPrueba;
-import cl.eos.persistence.models.SPruebaRendida;
-import cl.eos.persistence.models.STipoAlumno;
 import cl.eos.persistence.util.Comparadores;
 import cl.eos.provider.persistence.PersistenceServiceFactory;
+import cl.eos.restful.tables.R_Alumno;
+import cl.eos.restful.tables.R_Asignatura;
+import cl.eos.restful.tables.R_Colegio;
+import cl.eos.restful.tables.R_EvaluacionEjetematico;
+import cl.eos.restful.tables.R_EvaluacionPrueba;
+import cl.eos.restful.tables.R_PruebaRendida;
+import cl.eos.restful.tables.R_TipoAlumno;
 import cl.eos.util.Pair;
 import informe.InformeManager;
 import informe.informes.IInforme;
@@ -41,7 +41,6 @@ import utils.WordUtil;
  *
  */
 public class InformeResumenTotalGeneral implements IInforme {
-
     private static final String ALUMNOS = "ALUMNOS";
     private static final String REPORBADOS = "Reprobados";
     private static final String APROBADOS = "Aprobados";
@@ -49,41 +48,35 @@ public class InformeResumenTotalGeneral implements IInforme {
     private static final String TOTAL_ESCUELA = "Total Escuela";
     private static final String ASIGNATURA_ID = "idAsignatura";
     private static final String COLEGIO_ID = "idColegio";
-    final static String[] TABLE_HEAD = { " ", InformeResumenTotalGeneral.TOTAL_ESCUELA,
-            InformeResumenTotalGeneral.EVALUADOS, InformeResumenTotalGeneral.APROBADOS,
-            InformeResumenTotalGeneral.REPORBADOS };
+    final static String[] TABLE_HEAD = { " ", InformeResumenTotalGeneral.TOTAL_ESCUELA, InformeResumenTotalGeneral.EVALUADOS,
+            InformeResumenTotalGeneral.APROBADOS, InformeResumenTotalGeneral.REPORBADOS };
     static Logger log = Logger.getLogger(InformeResumenTotalGeneral.class);
-    private STipoAlumno tipoAlumno;
-    private SColegio colegio;
-    private SAsignatura asignatura;
+    private R_TipoAlumno tipoAlumno;
+    private R_Colegio colegio;
+    private R_Asignatura asignatura;
     private Map<String, Pair<Integer, Float>> resultado;
-    private List<SEvaluacionEjeTematico> evalEjeTematico;
-
+    private List<R_EvaluacionEjetematico> evalEjeTematico;
     public InformeResumenTotalGeneral() {
         super();
     }
-
     @SuppressWarnings("unchecked")
     @Override
-    public void execute(STipoAlumno tipoAlumno, SColegio colegio, SAsignatura asignatura) {
+    public void execute(R_TipoAlumno tipoAlumno, R_Colegio colegio, R_Asignatura asignatura) {
         this.tipoAlumno = tipoAlumno;
         this.colegio = colegio;
         this.asignatura = asignatura;
         final Map<String, Object> params = new HashMap<>();
         params.put(InformeResumenTotalGeneral.COLEGIO_ID, colegio.getId());
         params.put(InformeResumenTotalGeneral.ASIGNATURA_ID, asignatura.getId());
-        final List<SEvaluacionPrueba> evaluaciones = (List<SEvaluacionPrueba>) (Object) PersistenceServiceFactory
-                .getPersistenceService().findSynchro("SEvaluacionPrueba.findEvaluacionByColegioAsig", params);
-        if (evaluaciones == null || evaluaciones.isEmpty())
-            return;
-        evalEjeTematico = PersistenceServiceFactory.getPersistenceService().findAllSynchro(SEvaluacionEjeTematico.class);
+        final List<R_EvaluacionPrueba> evaluaciones = (List<R_EvaluacionPrueba>) (Object) PersistenceServiceFactory.getPersistenceService()
+                .findByParamsSynchor(R_EvaluacionPrueba.class, params);
+        if (evaluaciones == null || evaluaciones.isEmpty()) return;
+        evalEjeTematico = PersistenceServiceFactory.getPersistenceService().findAllSynchro(R_EvaluacionEjetematico.class);
         resultado = procesar(evaluaciones);
     }
-
     /**
-     * Obtiene el mapa que se usa para los titulos de la tabla. Establece
-     * nombres de las columnas y coloca valor 0, para luego realizar la
-     * acumulación.
+     * Obtiene el mapa que se usa para los titulos de la tabla. Establece nombres de las columnas y coloca valor 0, para
+     * luego realizar la acumulación.
      *
      * @return Mapa de titulos de la tabla y valores.
      */
@@ -93,41 +86,30 @@ public class InformeResumenTotalGeneral implements IInforme {
         mResumen.put(InformeResumenTotalGeneral.EVALUADOS, new Pair<Integer, Float>(0, 0f));
         mResumen.put(InformeResumenTotalGeneral.APROBADOS, new Pair<Integer, Float>(0, 0f));
         mResumen.put(InformeResumenTotalGeneral.REPORBADOS, new Pair<Integer, Float>(0, 0f));
-
-        List<SEvaluacionEjeTematico> ejes = new ArrayList<>();
+        List<R_EvaluacionEjetematico> ejes = new ArrayList<>();
         for (final Object obj : evalEjeTematico) {
-            final SEvaluacionEjeTematico eje = (SEvaluacionEjeTematico) obj;
+            final R_EvaluacionEjetematico eje = (R_EvaluacionEjetematico) obj;
             ejes.add(eje);
         }
-
         ejes = ejes.stream().sorted(Comparadores.comparaEvaluacionEjeTematico()).collect(Collectors.toList());
-        for (final SEvaluacionEjeTematico eje : ejes) {
+        for (final R_EvaluacionEjetematico eje : ejes) {
             mResumen.put(eje.getName(), new Pair<Integer, Float>(0, 0f));
         }
         return mResumen;
-
     }
-
     @Override
     public void graph(XWPFDocument document) {
-
-        if (resultado == null || resultado.isEmpty())
-            return;
-
+        if (resultado == null || resultado.isEmpty()) return;
         final XWPFParagraph paragraph = document.createParagraph();
-
         paragraph.setStyle("PEREKE-TITULO");
         final List<String> titles = new ArrayList<>();
         final List<Double> values = new ArrayList<>();
-
         for (final Object obj : evalEjeTematico) {
-            final SEvaluacionEjeTematico eET = (SEvaluacionEjeTematico) obj;
+            final R_EvaluacionEjetematico eET = (R_EvaluacionEjetematico) obj;
             final Pair<Integer, Float> pair = resultado.get(eET.getName());
-
             titles.add(String.format("%s\n%5.2f%%", eET.getName(), pair.getSecond()));
             values.add(new Double(pair.getSecond()));
         }
-
         try {
             final File file = ChartsUtil.createPieChart("TOTAL GENERAL", titles, values);
             WordUtil.addImage(file, "TOTAL GENERAL", paragraph);
@@ -138,39 +120,28 @@ public class InformeResumenTotalGeneral implements IInforme {
             e.printStackTrace();
         }
     }
-
     @Override
     public void page(XWPFDocument document) {
-
-        if (resultado == null || resultado.isEmpty())
-            return;
-
+        if (resultado == null || resultado.isEmpty()) return;
         XWPFParagraph paragraph = document.createParagraph();
-
         paragraph.setStyle("PEREKE-TITULO");
         XWPFRun run = paragraph.createRun(); // create new run
         run.setText("INFORME DE RESULTADOS A NIVEL DE ESTABLECIMIENTO ");
         run.addCarriageReturn();
         run.setText(colegio.getName().toUpperCase());
-
         paragraph = document.createParagraph();
         paragraph.setStyle("PEREKE-SUBTITULO");
         run = paragraph.createRun(); // create new run
-        run.setText("Instrumento de Evaluación y Resultados Obtenidos en la asignatura de "
-                + asignatura.getName().toUpperCase() + ".");
-
+        run.setText("Instrumento de Evaluación y Resultados Obtenidos en la asignatura de " + asignatura.getName().toUpperCase() + ".");
         paragraph = document.createParagraph();
         paragraph.setStyle("Normal");
         run = paragraph.createRun();
         run.addCarriageReturn();
-
         final int nroColumnas = resultado.size() + 1;
         final XWPFTable table = document.createTable(5, nroColumnas);
         WordUtil.setTableFormat(table, 2, 0);
-
         table.getRow(0).setRepeatHeader(true);
         table.getRow(0).setCantSplitRow(false);
-
         table.getRow(0).getCell(0).setText(InformeResumenTotalGeneral.TOTAL_ESCUELA);
         table.getRow(0).getCell(2).setText(InformeResumenTotalGeneral.ALUMNOS);
         table.getRow(0).getCell(5).setText("ESTÁNDARES DE APRENDIZAJE");
@@ -178,13 +149,11 @@ public class InformeResumenTotalGeneral implements IInforme {
         table.getRow(3).getCell(0).setText("%");
         table.getRow(4).getCell(3).setText("100%");
         table.getRow(4).getCell(5).setText("100%");
-
         final XWPFTableRow tableRow = table.getRow(1);
         int n = 1;
         for (final Map.Entry<String, Pair<Integer, Float>> entry : resultado.entrySet()) {
             tableRow.getCell(n++).setText(entry.getKey());
         }
-
         WordUtil.mergeCellHorizontally(table, 0, 0, 1);
         WordUtil.mergeCellHorizontally(table, 1, 0, 1);
         WordUtil.mergeCellVertically(table, 0, 0, 1);
@@ -193,35 +162,28 @@ public class InformeResumenTotalGeneral implements IInforme {
         WordUtil.mergeCellHorizontally(table, 4, 0, 2);
         WordUtil.mergeCellHorizontally(table, 4, 3, 4);
         WordUtil.mergeCellHorizontally(table, 4, 5, nroColumnas - 1);
-
         n = 1;
         for (final Map.Entry<String, Pair<Integer, Float>> entry : resultado.entrySet()) {
             final Pair<Integer, Float> res = entry.getValue();
             table.getRow(2).getCell(n).setText(String.format("%d", res.getFirst().intValue()));
             table.getRow(3).getCell(n++).setText(String.format("%5.2f%%", res.getSecond().floatValue()));
-
         }
-
         paragraph = document.createParagraph();
         paragraph.setStyle("Descripción");
         run = paragraph.createRun();
         paragraph.setAlignment(ParagraphAlignment.CENTER);
-        run.setText(String.format("Tabla  %d: TOTAL GENERAL %s en %s", InformeManager.TABLA++, colegio.getName(),
-                asignatura.getName()));
+        run.setText(String.format("Tabla  %d: TOTAL GENERAL %s en %s", InformeManager.TABLA++, colegio.getName(), asignatura.getName()));
         run.addCarriageReturn();
-
         final Pair<Integer, Float> pEvaluados = resultado.get(InformeResumenTotalGeneral.EVALUADOS);
         final Pair<Integer, Float> pAprobados = resultado.get(InformeResumenTotalGeneral.APROBADOS);
         paragraph = document.createParagraph();
         paragraph.setStyle("Normal");
         run = paragraph.createRun();
         final String f = "De la matrícula total del establecimiento %s, se evaluaron %d items que corresponden al %5.2f del total del liceo. El nivel de aprobación es de %5.2f.";
-        final String row = String.format(f, colegio.getName(), pEvaluados.getFirst(), pEvaluados.getSecond(),
-                pAprobados.getSecond());
+        final String row = String.format(f, colegio.getName(), pEvaluados.getFirst(), pEvaluados.getSecond(), pAprobados.getSecond());
         run.setText(row);
         run.addCarriageReturn();
     }
-
     /**
      * Realiza el computo de los valores de la tabla de valores TOTAL GENERAL.
      *
@@ -229,25 +191,22 @@ public class InformeResumenTotalGeneral implements IInforme {
      *            lista de valores obtenidos desde la base de datos.
      * @return Mapa con valores <Titulo, Cantidad Alumnos>.
      */
-    protected Map<String, Pair<Integer, Float>> procesar(List<SEvaluacionPrueba> list) {
+    protected Map<String, Pair<Integer, Float>> procesar(List<R_EvaluacionPrueba> list) {
         int totalColAlumnos = 0;
         int totalColEvaluados = 0;
         int totalColAprobados = 0;
         int totalColReprobados = 0;
-
         final Map<String, Pair<Integer, Float>> mResumen = getMap();
-
-        for (final SEvaluacionPrueba evaluacion : list) {
+        for (final R_EvaluacionPrueba evaluacion : list) {
             int totalAlumnos = evaluacion.getCurso().getAlumnos().size();
             int totalEvaluados = 0;
             int totalAprobados = 0;
             int totalReprobados = 0;
-
-            final List<SPruebaRendida> rendidas = evaluacion.getPruebasRendidas();
-            for (final SPruebaRendida pruebaRendida : rendidas) {
-                final SAlumno alumno = pruebaRendida.getAlumno();
+            final List<R_PruebaRendida> rendidas = evaluacion.getPruebasRendidas();
+            for (final R_PruebaRendida pruebaRendida : rendidas) {
+                final R_Alumno alumno = pruebaRendida.getAlumno();
                 if (alumno == null || alumno.getTipoAlumno() == null) {
-                    InformeResumenTotalGeneral.log.error("SAlumno NULO");
+                    InformeResumenTotalGeneral.log.error("R_Alumno NULO");
                     totalAlumnos--;
                     continue;
                 }
@@ -261,10 +220,9 @@ public class InformeResumenTotalGeneral implements IInforme {
                 } else {
                     totalReprobados++;
                 }
-
                 final Float pBuenas = pruebaRendida.getPbuenas();
                 for (final Object obj : evalEjeTematico) {
-                    final SEvaluacionEjeTematico eET = (SEvaluacionEjeTematico) obj;
+                    final R_EvaluacionEjetematico eET = (R_EvaluacionEjetematico) obj;
                     if (eET.isInside(pBuenas)) {
                         if (mResumen.containsKey(eET.getName())) {
                             final Pair<Integer, Float> pair = mResumen.get(eET.getName());
@@ -272,30 +230,24 @@ public class InformeResumenTotalGeneral implements IInforme {
                         }
                     }
                 }
-
             }
             totalColAlumnos = totalColAlumnos + totalAlumnos;
             totalColEvaluados = totalColEvaluados + totalEvaluados;
             totalColAprobados = totalColAprobados + totalAprobados;
             totalColReprobados = totalColReprobados + totalReprobados;
-
         }
         final float porEvaluados = 100f * totalColEvaluados / totalColAlumnos;
         final float porAprobados = 100f * totalColAprobados / totalColEvaluados;
         final float porReporbados = 100f * totalColReprobados / totalColEvaluados;
-
         mResumen.put(InformeResumenTotalGeneral.TOTAL_ESCUELA, new Pair<Integer, Float>(totalColAlumnos, 100f));
         mResumen.put(InformeResumenTotalGeneral.EVALUADOS, new Pair<Integer, Float>(totalColEvaluados, porEvaluados));
         mResumen.put(InformeResumenTotalGeneral.APROBADOS, new Pair<Integer, Float>(totalColAprobados, porAprobados));
-        mResumen.put(InformeResumenTotalGeneral.REPORBADOS,
-                new Pair<Integer, Float>(totalColReprobados, porReporbados));
-
+        mResumen.put(InformeResumenTotalGeneral.REPORBADOS, new Pair<Integer, Float>(totalColReprobados, porReporbados));
         for (final Object obj : evalEjeTematico) {
-            final SEvaluacionEjeTematico eET = (SEvaluacionEjeTematico) obj;
+            final R_EvaluacionEjetematico eET = (R_EvaluacionEjetematico) obj;
             final Pair<Integer, Float> pair = mResumen.get(eET.getName());
             pair.setSecond(100f * pair.getFirst().floatValue() / totalColEvaluados);
         }
-
         return mResumen;
     }
 }

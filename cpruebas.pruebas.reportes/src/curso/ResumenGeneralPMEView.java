@@ -20,16 +20,15 @@ import cl.eos.ot.OTPreguntasHabilidad;
 import cl.eos.ot.OTRangoEvaluacion;
 import cl.eos.ot.OTReporte;
 import cl.eos.ot.OTResultado;
-import cl.eos.persistence.models.SEjeTematico;
-import cl.eos.persistence.models.SEvaluacionPrueba;
-import cl.eos.persistence.models.SHabilidad;
-import cl.eos.persistence.models.SNivelEvaluacion;
-import cl.eos.persistence.models.SPrueba;
-import cl.eos.persistence.models.SPruebaRendida;
-import cl.eos.persistence.models.SRangoEvaluacion;
-import cl.eos.persistence.models.SRespuestasEsperadasPrueba;
-import cl.eos.persistence.models.STipoAlumno;
 import cl.eos.persistence.util.Comparadores;
+import cl.eos.restful.tables.R_Ejetematico;
+import cl.eos.restful.tables.R_EvaluacionPrueba;
+import cl.eos.restful.tables.R_Habilidad;
+import cl.eos.restful.tables.R_NivelEvaluacion;
+import cl.eos.restful.tables.R_PruebaRendida;
+import cl.eos.restful.tables.R_RangoEvaluacion;
+import cl.eos.restful.tables.R_RespuestasEsperadasPrueba;
+import cl.eos.restful.tables.R_TipoAlumno;
 import cl.eos.util.ExcelSheetWriterObj;
 import cl.eos.util.Utils;
 import javafx.beans.property.SimpleStringProperty;
@@ -102,26 +101,26 @@ public class ResumenGeneralPMEView extends AFormView implements EventHandler<Act
 	private TextField txtEvaluados;
 
 	@FXML
-	private ComboBox<STipoAlumno> cmbTipoAlumno;
+	private ComboBox<R_TipoAlumno> cmbTipoAlumno;
 
 	long tipoAlumno = Constants.PIE_ALL;
 
 	@FXML
 	private Button btnGenerar;
 
-	private Map<SEjeTematico, Float> mapaEjesCurso = new HashMap<SEjeTematico, Float>();
-	private Map<SEjeTematico, Float> mapaPorEjes = new HashMap<SEjeTematico, Float>();
-	private Map<SEjeTematico, OTPreguntasEjes> mapaEjesAlumno = new HashMap<SEjeTematico, OTPreguntasEjes>();
+	private Map<R_Ejetematico, Float> mapaEjesCurso = new HashMap<R_Ejetematico, Float>();
+	private Map<R_Ejetematico, Float> mapaPorEjes = new HashMap<R_Ejetematico, Float>();
+	private Map<R_Ejetematico, OTPreguntasEjes> mapaEjesAlumno = new HashMap<R_Ejetematico, OTPreguntasEjes>();
 
-	private Map<SHabilidad, Float> mapaHabilidadesCurso = new HashMap<SHabilidad, Float>();
-	Map<SHabilidad, OTPreguntasHabilidad> mapaHabilidadAlumno = new HashMap<SHabilidad, OTPreguntasHabilidad>();
-	private Map<SRangoEvaluacion, OTRangoEvaluacion> mRango;
-	private Map<SRangoEvaluacion, List<Map<SEjeTematico, OTReporte>>> mapReporte = new HashMap<SRangoEvaluacion, List<Map<SEjeTematico, OTReporte>>>();
+	private Map<R_Habilidad, Float> mapaHabilidadesCurso = new HashMap<R_Habilidad, Float>();
+	Map<R_Habilidad, OTPreguntasHabilidad> mapaHabilidadAlumno = new HashMap<R_Habilidad, OTPreguntasHabilidad>();
+	private Map<R_RangoEvaluacion, OTRangoEvaluacion> mRango;
+	private Map<R_RangoEvaluacion, List<Map<R_Ejetematico, OTReporte>>> mapReporte = new HashMap<R_RangoEvaluacion, List<Map<R_Ejetematico, OTReporte>>>();
 
 	private boolean llegaOnFound = false;
-	private SEvaluacionPrueba evaluacionPrueba;
-	private ArrayList<SEjeTematico> titulosColumnas = new ArrayList<>();
-	private Collection<SRangoEvaluacion> listaRangos;
+	private R_EvaluacionPrueba evaluacionPrueba;
+	private ArrayList<R_Ejetematico> titulosColumnas = new ArrayList<>();
+	private Collection<R_RangoEvaluacion> listaRangos;
 	private boolean llegaDatArrived;
 
 	public ResumenGeneralPMEView() {
@@ -165,11 +164,11 @@ public class ResumenGeneralPMEView extends AFormView implements EventHandler<Act
 
 	@Override
 	public void onFound(IEntity entity) {
-		if (entity instanceof SEvaluacionPrueba) {
-			evaluacionPrueba = (SEvaluacionPrueba) entity;
+		if (entity instanceof R_EvaluacionPrueba) {
+			evaluacionPrueba = (R_EvaluacionPrueba) entity;
 			listaRangos = evaluacionPrueba.getPrueba().getNivelEvaluacion().getRangos();
-			mRango = new HashMap<SRangoEvaluacion, OTRangoEvaluacion>();
-			for (SRangoEvaluacion rango : listaRangos) {
+			mRango = new HashMap<R_RangoEvaluacion, OTRangoEvaluacion>();
+			for (R_RangoEvaluacion rango : listaRangos) {
 				OTRangoEvaluacion otRango = new OTRangoEvaluacion();
 				otRango.setRango(rango);
 				mRango.put(rango, otRango);
@@ -184,10 +183,10 @@ public class ResumenGeneralPMEView extends AFormView implements EventHandler<Act
 	public void onDataArrived(List<Object> list) {
 		if (list != null && !list.isEmpty()) {
 			Object entity = list.get(0);
-			if (entity instanceof STipoAlumno) {
-				ObservableList<STipoAlumno> tAlumnoList = FXCollections.observableArrayList();
+			if (entity instanceof R_TipoAlumno) {
+				ObservableList<R_TipoAlumno> tAlumnoList = FXCollections.observableArrayList();
 				for (Object iEntity : list) {
-					tAlumnoList.add((STipoAlumno) iEntity);
+					tAlumnoList.add((R_TipoAlumno) iEntity);
 				}
 				cmbTipoAlumno.setItems(tAlumnoList);
 				cmbTipoAlumno.getSelectionModel().select(0);
@@ -210,7 +209,7 @@ public class ResumenGeneralPMEView extends AFormView implements EventHandler<Act
 		mapaHabilidadAlumno.clear();
 		mapReporte.clear();
 		mapaEjesAlumno.clear();
-		for(SRangoEvaluacion rng: mRango.keySet())
+		for(R_RangoEvaluacion rng: mRango.keySet())
 		{
 			OTRangoEvaluacion rango = mRango.get(rng);
 			rango.setCantidad(0);
@@ -218,18 +217,18 @@ public class ResumenGeneralPMEView extends AFormView implements EventHandler<Act
 		}
 
 		lblTitulo.setText(evaluacionPrueba.getName());
-		List<SPruebaRendida> pruebasRendidas = evaluacionPrueba.getPruebasRendidas();
+		List<R_PruebaRendida> pruebasRendidas = evaluacionPrueba.getPruebasRendidas();
 
 		int totalAlumnos = 0;
 		float totalPreguntas = evaluacionPrueba.getPrueba().getNroPreguntas();
 
 		SPrueba prueba = evaluacionPrueba.getPrueba();
-		SNivelEvaluacion nivelEvaluacion = prueba.getNivelEvaluacion();
-		List<SRespuestasEsperadasPrueba> respuestasEsperadas = prueba.getRespuestas();
+		R_NivelEvaluacion nivelEvaluacion = prueba.getNivelEvaluacion();
+		List<R_RespuestasEsperadasPrueba> respuestasEsperadas = prueba.getRespuestas();
 
 		float sumaNotas = 0;
 		float sumaLogro = 0;
-		for (SPruebaRendida pRendida : pruebasRendidas) {
+		for (R_PruebaRendida pRendida : pruebasRendidas) {
 			if (tipoAlumno != Constants.PIE_ALL && !pRendida.getAlumno().getTipoAlumno().getId().equals(tipoAlumno))
 				continue;
 
@@ -240,7 +239,7 @@ public class ResumenGeneralPMEView extends AFormView implements EventHandler<Act
 			float logro = (pRendida.getBuenas() / totalPreguntas) * 100f;
 			sumaLogro = sumaLogro + logro;
 
-			SRangoEvaluacion rango = nivelEvaluacion.getRango(logro);
+			R_RangoEvaluacion rango = nivelEvaluacion.getRango(logro);
 			OTRangoEvaluacion otRango = mRango.get(rango);
 			otRango.setCantidad(otRango.getCantidad() + 1);
 			otRango.setLogrado(((float) otRango.getCantidad()) / totalAlumnos);
@@ -257,8 +256,8 @@ public class ResumenGeneralPMEView extends AFormView implements EventHandler<Act
 		generarDespliegueContenidoReporte(totalAlumnos);
 	}
 
-	private void generaContenidosHabilidades(SPruebaRendida pruebaRendida,
-			List<SRespuestasEsperadasPrueba> respuestasEsperadas) {
+	private void generaContenidosHabilidades(R_PruebaRendida pruebaRendida,
+			List<R_RespuestasEsperadasPrueba> respuestasEsperadas) {
 
 		int len = pruebaRendida.getEvaluacionPrueba().getPrueba().getNroPreguntas();
 		String respuesta = pruebaRendida.getRespuestas().toUpperCase();
@@ -271,9 +270,9 @@ public class ResumenGeneralPMEView extends AFormView implements EventHandler<Act
 		}
 		cR = null;
 
-		for (SRespuestasEsperadasPrueba respuestasEsperadasPrueba : respuestasEsperadas) {
+		for (R_RespuestasEsperadasPrueba respuestasEsperadasPrueba : respuestasEsperadas) {
 
-			SHabilidad habilidad = respuestasEsperadasPrueba.getHabilidad();
+			R_Habilidad habilidad = respuestasEsperadasPrueba.getHabilidad();
 
 			Integer numeroPreg = respuestasEsperadasPrueba.getNumero();
 			if (mapaHabilidadAlumno.containsKey(habilidad)) {
@@ -310,8 +309,8 @@ public class ResumenGeneralPMEView extends AFormView implements EventHandler<Act
 		}
 	}
 
-	private void generaContenidosEjes(SPruebaRendida pruebaRendida, List<SRespuestasEsperadasPrueba> respuestasEsperadas,
-			SNivelEvaluacion nivelEvaluacion) {
+	private void generaContenidosEjes(R_PruebaRendida pruebaRendida, List<R_RespuestasEsperadasPrueba> respuestasEsperadas,
+			R_NivelEvaluacion nivelEvaluacion) {
 		int len = pruebaRendida.getEvaluacionPrueba().getPrueba().getNroPreguntas();
 		String respuesta = pruebaRendida.getRespuestas().toUpperCase();
 		char[] cRespuesta = new char[len];
@@ -322,8 +321,8 @@ public class ResumenGeneralPMEView extends AFormView implements EventHandler<Act
 			cRespuesta[n] = cR[n];
 		}
 		cR = null;
-		for (SRespuestasEsperadasPrueba respuestasEsperadasPrueba : respuestasEsperadas) {
-			SEjeTematico ejeTematico = respuestasEsperadasPrueba.getEjeTematico();
+		for (R_RespuestasEsperadasPrueba respuestasEsperadasPrueba : respuestasEsperadas) {
+			R_Ejetematico ejeTematico = respuestasEsperadasPrueba.getEjeTematico();
 
 			Integer numeroPreg = respuestasEsperadasPrueba.getNumero();
 			if (mapaEjesAlumno.containsKey(ejeTematico)) {
@@ -364,18 +363,18 @@ public class ResumenGeneralPMEView extends AFormView implements EventHandler<Act
 
 	}
 
-	private void generaContenidosReportes(SNivelEvaluacion nivelEvaluacion) {
+	private void generaContenidosReportes(R_NivelEvaluacion nivelEvaluacion) {
 		// genera datos de reportes
 
-		for (Entry<SEjeTematico, Float> otEje : mapaPorEjes.entrySet()) {
-			SEjeTematico eje = otEje.getKey();
+		for (Entry<R_Ejetematico, Float> otEje : mapaPorEjes.entrySet()) {
+			R_Ejetematico eje = otEje.getKey();
 			float promedioLogro = otEje.getValue();
-			SRangoEvaluacion rango = nivelEvaluacion.getRango(promedioLogro);
+			R_RangoEvaluacion rango = nivelEvaluacion.getRango(promedioLogro);
 
 			if (mapReporte.containsKey(rango)) {
-				List<Map<SEjeTematico, OTReporte>> lstMapEje = mapReporte.get(rango);
+				List<Map<R_Ejetematico, OTReporte>> lstMapEje = mapReporte.get(rango);
 				boolean existe = false;
-				for (Map<SEjeTematico, OTReporte> map : lstMapEje) {
+				for (Map<R_Ejetematico, OTReporte> map : lstMapEje) {
 					if (map.containsKey(eje)) {
 						OTReporte otReporte = map.get(eje);
 						otReporte.setTotal(otReporte.getTotal() + 1);
@@ -388,7 +387,7 @@ public class ResumenGeneralPMEView extends AFormView implements EventHandler<Act
 					otReporte.setTotal(1);
 					otReporte.setEje(eje);
 
-					Map<SEjeTematico, OTReporte> nuevo = new HashMap<SEjeTematico, OTReporte>();
+					Map<R_Ejetematico, OTReporte> nuevo = new HashMap<R_Ejetematico, OTReporte>();
 					nuevo.put(eje, otReporte);
 					lstMapEje.add(nuevo);
 					mapReporte.put(rango, lstMapEje);
@@ -399,10 +398,10 @@ public class ResumenGeneralPMEView extends AFormView implements EventHandler<Act
 				reporte.setRango(rango);
 				reporte.setTotal(1);
 				reporte.setEje(eje);
-				Map<SEjeTematico, OTReporte> nuevo = new HashMap<SEjeTematico, OTReporte>();
+				Map<R_Ejetematico, OTReporte> nuevo = new HashMap<R_Ejetematico, OTReporte>();
 				nuevo.put(eje, reporte);
 
-				List<Map<SEjeTematico, OTReporte>> listaMapas = new LinkedList<Map<SEjeTematico, OTReporte>>();
+				List<Map<R_Ejetematico, OTReporte>> listaMapas = new LinkedList<Map<R_Ejetematico, OTReporte>>();
 				listaMapas.add(nuevo);
 				mapReporte.put(rango, listaMapas);
 			}
@@ -441,7 +440,7 @@ public class ResumenGeneralPMEView extends AFormView implements EventHandler<Act
 			return;
 		
 		int indice = 1;
-		for (SEjeTematico titulo : titulosColumnas) {
+		for (R_Ejetematico titulo : titulosColumnas) {
 			// Columnas
 			final int col = indice;
 			TableColumn columna = new TableColumn(titulo.getName());
@@ -483,7 +482,7 @@ public class ResumenGeneralPMEView extends AFormView implements EventHandler<Act
 			return;
 		
 		ObservableList<OTResultado> mapa = FXCollections.observableArrayList();
-		for (Entry<SEjeTematico, OTPreguntasEjes> lEntity : mapaEjesAlumno.entrySet()) {
+		for (Entry<R_Ejetematico, OTPreguntasEjes> lEntity : mapaEjesAlumno.entrySet()) {
 			OTResultado resultado = new OTResultado();
 			resultado.setNombre(lEntity.getKey().getName());
 			float valor = (float) lEntity.getValue().getBuenas() / (float) lEntity.getValue().getTotal();
@@ -500,7 +499,7 @@ public class ResumenGeneralPMEView extends AFormView implements EventHandler<Act
 		if(mapaHabilidadAlumno == null || mapaHabilidadAlumno.isEmpty())
 			return;
 		ObservableList<OTResultado> mapa = FXCollections.observableArrayList();
-		for (Entry<SHabilidad, OTPreguntasHabilidad> lEntity : mapaHabilidadAlumno.entrySet()) {
+		for (Entry<R_Habilidad, OTPreguntasHabilidad> lEntity : mapaHabilidadAlumno.entrySet()) {
 			OTResultado resultado = new OTResultado();
 			resultado.setNombre(lEntity.getKey().getName());
 			float valor = (float) lEntity.getValue().getBuenas() / (float) lEntity.getValue().getTotal();
@@ -520,8 +519,8 @@ public class ResumenGeneralPMEView extends AFormView implements EventHandler<Act
         ObservableList<ObservableList> registroseReporte = FXCollections.observableArrayList();
 
 		ObservableList<String> row = null;
-		for (SRangoEvaluacion rango : listaRangos) {
-			List<Map<SEjeTematico, OTReporte>> lstEjeTematico = mapReporte.get(rango);
+		for (R_RangoEvaluacion rango : listaRangos) {
+			List<Map<R_Ejetematico, OTReporte>> lstEjeTematico = mapReporte.get(rango);
 
 			row = FXCollections.observableArrayList();
 			row.add(rango.getName());
@@ -531,9 +530,9 @@ public class ResumenGeneralPMEView extends AFormView implements EventHandler<Act
 					row.add(String.valueOf(0));
 				}
 			} else {
-				for (SEjeTematico ejeTematico : titulosColumnas) {
+				for (R_Ejetematico ejeTematico : titulosColumnas) {
 					OTReporte valor = null;
-					for (Map<SEjeTematico, OTReporte> map : lstEjeTematico) {
+					for (Map<R_Ejetematico, OTReporte> map : lstEjeTematico) {
 						if (map.containsKey(ejeTematico)) {
 							valor = map.get(ejeTematico);
 							break;
@@ -551,7 +550,7 @@ public class ResumenGeneralPMEView extends AFormView implements EventHandler<Act
 		tblReportePME.setItems(registroseReporte);
 	}
 
-	private void generarDespliegueContenidosGenerales(int totalAlumnos, SNivelEvaluacion nivelEvaluacion,
+	private void generarDespliegueContenidosGenerales(int totalAlumnos, R_NivelEvaluacion nivelEvaluacion,
 			float sumaNotas, float sumaLogro) {
 		txtEvaluados.setText(String.valueOf(totalAlumnos));
 
@@ -565,7 +564,7 @@ public class ResumenGeneralPMEView extends AFormView implements EventHandler<Act
 
 		txtLogro.setText(formatter.format(promedioLogro));
 
-		SRangoEvaluacion rango = nivelEvaluacion.getRango(promedioLogro);
+		R_RangoEvaluacion rango = nivelEvaluacion.getRango(promedioLogro);
 		txtNivel.setText(rango.getAbreviacion());
 	}
 

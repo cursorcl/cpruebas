@@ -20,15 +20,14 @@ import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 
 import cl.eos.common.Constants;
 import cl.eos.ot.OTResumenColegio;
-import cl.eos.persistence.models.SAlumno;
-import cl.eos.persistence.models.SAsignatura;
-import cl.eos.persistence.models.SColegio;
-import cl.eos.persistence.models.SCurso;
-import cl.eos.persistence.models.SEvaluacionPrueba;
-import cl.eos.persistence.models.SPruebaRendida;
-import cl.eos.persistence.models.STipoAlumno;
 import cl.eos.persistence.util.Comparadores;
 import cl.eos.provider.persistence.PersistenceServiceFactory;
+import cl.eos.restful.tables.R_Alumno;
+import cl.eos.restful.tables.R_Asignatura;
+import cl.eos.restful.tables.R_Colegio;
+import cl.eos.restful.tables.R_EvaluacionPrueba;
+import cl.eos.restful.tables.R_PruebaRendida;
+import cl.eos.restful.tables.R_TipoAlumno;
 import informe.InformeManager;
 import informe.informes.IInforme;
 import utils.ChartsUtil;
@@ -48,9 +47,9 @@ public class InformeResumenTotalAlumnos implements IInforme {
             "% APROBADOS", "% REPROBADOS" };
 
     static Logger log = Logger.getLogger(InformeResumenTotalAlumnos.class);
-    private STipoAlumno tipoAlumno;
-    private SColegio colegio;
-    private SAsignatura asignatura;
+    private R_TipoAlumno tipoAlumno;
+    private R_Colegio colegio;
+    private R_Asignatura asignatura;
     private List<OTResumenColegio> resultado;
 
     public InformeResumenTotalAlumnos() {
@@ -59,15 +58,15 @@ public class InformeResumenTotalAlumnos implements IInforme {
 
     @SuppressWarnings("unchecked")
     @Override
-    public void execute(STipoAlumno tipoAlumno, SColegio colegio, SAsignatura asignatura) {
+    public void execute(R_TipoAlumno tipoAlumno, R_Colegio colegio, R_Asignatura asignatura) {
         this.tipoAlumno = tipoAlumno;
         this.colegio = colegio;
         this.asignatura = asignatura;
         final Map<String, Object> params = new HashMap<>();
         params.put(InformeResumenTotalAlumnos.COLEGIO_ID, colegio.getId());
         params.put(InformeResumenTotalAlumnos.ASIGNATURA_ID, asignatura.getId());
-        final List<SEvaluacionPrueba> evaluaciones = (List<SEvaluacionPrueba>) (Object) PersistenceServiceFactory
-                .getPersistenceService().findSynchro("SEvaluacionPrueba.findEvaluacionByColegioAsig", params);
+        final List<R_EvaluacionPrueba> evaluaciones = (List<R_EvaluacionPrueba>) (Object) PersistenceServiceFactory
+                .getPersistenceService().findByParamsSynchor(R_EvaluacionPrueba.class, params);
         if (evaluaciones == null || evaluaciones.isEmpty())
             return;
         if (Objects.isNull(evaluaciones) || evaluaciones.isEmpty())
@@ -172,13 +171,13 @@ public class InformeResumenTotalAlumnos implements IInforme {
 
     }
 
-    protected ArrayList<OTResumenColegio> procesar(List<SEvaluacionPrueba> list) {
+    protected ArrayList<OTResumenColegio> procesar(List<R_EvaluacionPrueba> list) {
         final ArrayList<OTResumenColegio> lstCursos = new ArrayList<>();
         int totalColAlumnos = 0;
         int totalColEvaluados = 0;
         int totalColAprobados = 0;
         int totalColReprobados = 0;
-        for (final SEvaluacionPrueba evaluacion : list) {
+        for (final R_EvaluacionPrueba evaluacion : list) {
             final OTResumenColegio resumenCurso = new OTResumenColegio();
             resumenCurso.setColegio(evaluacion.getColegio());
             resumenCurso.setCurso(evaluacion.getCurso());
@@ -188,11 +187,11 @@ public class InformeResumenTotalAlumnos implements IInforme {
             int totalAprobados = 0;
             int totalReprobados = 0;
 
-            final List<SPruebaRendida> rendidas = evaluacion.getPruebasRendidas();
-            for (final SPruebaRendida pruebaRendida : rendidas) {
-                final SAlumno alumno = pruebaRendida.getAlumno();
+            final List<R_PruebaRendida> rendidas = evaluacion.getPruebasRendidas();
+            for (final R_PruebaRendida pruebaRendida : rendidas) {
+                final R_Alumno alumno = pruebaRendida.getAlumno();
                 if (alumno == null || alumno.getTipoAlumno() == null) {
-                    InformeResumenTotalAlumnos.log.error("SAlumno NULO");
+                    InformeResumenTotalAlumnos.log.error("R_Alumno NULO");
                     totalAlumnos--;
                     continue;
                 }

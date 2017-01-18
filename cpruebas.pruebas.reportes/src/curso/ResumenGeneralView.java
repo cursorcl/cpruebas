@@ -7,9 +7,9 @@ import cl.eos.common.Constants;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.ot.OTResumenGeneral;
-import cl.eos.persistence.models.SEvaluacionPrueba;
-import cl.eos.persistence.models.SPruebaRendida;
-import cl.eos.persistence.models.STipoAlumno;
+import cl.eos.restful.tables.R_EvaluacionPrueba;
+import cl.eos.restful.tables.R_PruebaRendida;
+import cl.eos.restful.tables.R_TipoAlumno;
 import cl.eos.util.ExcelSheetWriterObj;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -54,36 +54,36 @@ public class ResumenGeneralView extends AFormView implements EventHandler<Action
     private TableColumn<OTResumenGeneral, Float> colPuntaje;
 
     @FXML
-    private TableView<SPruebaRendida> tblAlumnos;
+    private TableView<R_PruebaRendida> tblAlumnos;
     @FXML
-    private TableColumn<SPruebaRendida, String> colRut;
+    private TableColumn<R_PruebaRendida, String> colRut;
     @FXML
-    private TableColumn<SPruebaRendida, String> colPaterno;
+    private TableColumn<R_PruebaRendida, String> colPaterno;
     @FXML
-    private TableColumn<SPruebaRendida, String> colMaterno;
+    private TableColumn<R_PruebaRendida, String> colMaterno;
     @FXML
-    private TableColumn<SPruebaRendida, String> colName;
+    private TableColumn<R_PruebaRendida, String> colName;
     @FXML
-    private TableColumn<SPruebaRendida, Integer> colABuenas;
+    private TableColumn<R_PruebaRendida, Integer> colABuenas;
     @FXML
-    private TableColumn<SPruebaRendida, Integer> colAMalas;
+    private TableColumn<R_PruebaRendida, Integer> colAMalas;
     @FXML
-    private TableColumn<SPruebaRendida, Integer> colAOmitidas;
+    private TableColumn<R_PruebaRendida, Integer> colAOmitidas;
     @FXML
-    private TableColumn<SPruebaRendida, Float> colPBuenas;
+    private TableColumn<R_PruebaRendida, Float> colPBuenas;
     @FXML
-    private TableColumn<SPruebaRendida, Integer> colAPuntaje;
+    private TableColumn<R_PruebaRendida, Integer> colAPuntaje;
     @FXML
-    private TableColumn<SPruebaRendida, Float> colPPuntaje;
+    private TableColumn<R_PruebaRendida, Float> colPPuntaje;
     @FXML
-    private TableColumn<SPruebaRendida, Float> colANota;
+    private TableColumn<R_PruebaRendida, Float> colANota;
     @FXML
     private MenuItem mnuExportarAlumnos;
     @FXML
     private MenuItem mnuExportarResumen;
 
     @FXML
-    private ComboBox<STipoAlumno> cmbTipoAlumno;
+    private ComboBox<R_TipoAlumno> cmbTipoAlumno;
 
     @FXML
     private Button btnGenerar;
@@ -98,13 +98,13 @@ public class ResumenGeneralView extends AFormView implements EventHandler<Action
     private Float ppuntajeMax = Float.MIN_VALUE;
     private Integer puntajeMin = Integer.MAX_VALUE;
     private Integer puntajeMax = Integer.MIN_VALUE;
-    private SEvaluacionPrueba evaluacionPrueba;
+    private R_EvaluacionPrueba evaluacionPrueba;
 
     public ResumenGeneralView() {
         // TODO Auto-generated constructor stub
     }
 
-    private void asignarDatosEvalucion(SEvaluacionPrueba entity, List<OTResumenGeneral> listaResumen) {
+    private void asignarDatosEvalucion(R_EvaluacionPrueba entity, List<OTResumenGeneral> listaResumen) {
         if (entity.getCurso() != null) {
             txtCurso.setText(entity.getCurso().getName());
             txtExigencia.setText(String.valueOf(entity.getExigencia()));
@@ -119,10 +119,10 @@ public class ResumenGeneralView extends AFormView implements EventHandler<Action
             }
         }
 
-        final List<SPruebaRendida> list = entity.getPruebasRendidas();
+        final List<R_PruebaRendida> list = entity.getPruebasRendidas();
         if (list != null && !list.isEmpty()) {
-            final ObservableList<SPruebaRendida> oList = FXCollections.observableArrayList();
-            for (final SPruebaRendida pruebaRendida : list) {
+            final ObservableList<R_PruebaRendida> oList = FXCollections.observableArrayList();
+            for (final R_PruebaRendida pruebaRendida : list) {
                 if (tipoAlumno != Constants.PIE_ALL
                         && !pruebaRendida.getAlumno().getTipoAlumno().getId().equals(tipoAlumno))
                     continue;
@@ -141,7 +141,7 @@ public class ResumenGeneralView extends AFormView implements EventHandler<Action
         if (evaluacionPrueba == null || cmbTipoAlumno.getItems().isEmpty())
             return;
 
-        final List<SPruebaRendida> pRendidas = evaluacionPrueba.getPruebasRendidas();
+        final List<R_PruebaRendida> pRendidas = evaluacionPrueba.getPruebasRendidas();
         final List<OTResumenGeneral> listaResumen = procesarValoresMinMax(pRendidas);
         asignarDatosEvalucion(evaluacionPrueba, listaResumen);
 
@@ -167,17 +167,17 @@ public class ResumenGeneralView extends AFormView implements EventHandler<Action
 
     private void inicializarTablaAlumnos() {
         tblAlumnos.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        colRut.setCellValueFactory(new PropertyValueFactory<SPruebaRendida, String>("rut"));
-        colName.setCellValueFactory(new PropertyValueFactory<SPruebaRendida, String>("nombre"));
-        colPaterno.setCellValueFactory(new PropertyValueFactory<SPruebaRendida, String>("paterno"));
-        colMaterno.setCellValueFactory(new PropertyValueFactory<SPruebaRendida, String>("materno"));
-        colABuenas.setCellValueFactory(new PropertyValueFactory<SPruebaRendida, Integer>("buenas"));
-        colAMalas.setCellValueFactory(new PropertyValueFactory<SPruebaRendida, Integer>("malas"));
-        colAOmitidas.setCellValueFactory(new PropertyValueFactory<SPruebaRendida, Integer>("omitidas"));
-        colPBuenas.setCellValueFactory(new PropertyValueFactory<SPruebaRendida, Float>("pbuenas"));
-        colAPuntaje.setCellValueFactory(new PropertyValueFactory<SPruebaRendida, Integer>("puntaje"));
-        colPPuntaje.setCellValueFactory(new PropertyValueFactory<SPruebaRendida, Float>("ppuntajes"));
-        colANota.setCellValueFactory(new PropertyValueFactory<SPruebaRendida, Float>("nota"));
+        colRut.setCellValueFactory(new PropertyValueFactory<R_PruebaRendida, String>("rut"));
+        colName.setCellValueFactory(new PropertyValueFactory<R_PruebaRendida, String>("nombre"));
+        colPaterno.setCellValueFactory(new PropertyValueFactory<R_PruebaRendida, String>("paterno"));
+        colMaterno.setCellValueFactory(new PropertyValueFactory<R_PruebaRendida, String>("materno"));
+        colABuenas.setCellValueFactory(new PropertyValueFactory<R_PruebaRendida, Integer>("buenas"));
+        colAMalas.setCellValueFactory(new PropertyValueFactory<R_PruebaRendida, Integer>("malas"));
+        colAOmitidas.setCellValueFactory(new PropertyValueFactory<R_PruebaRendida, Integer>("omitidas"));
+        colPBuenas.setCellValueFactory(new PropertyValueFactory<R_PruebaRendida, Float>("pbuenas"));
+        colAPuntaje.setCellValueFactory(new PropertyValueFactory<R_PruebaRendida, Integer>("puntaje"));
+        colPPuntaje.setCellValueFactory(new PropertyValueFactory<R_PruebaRendida, Float>("ppuntajes"));
+        colANota.setCellValueFactory(new PropertyValueFactory<R_PruebaRendida, Float>("nota"));
 
     }
 
@@ -209,10 +209,10 @@ public class ResumenGeneralView extends AFormView implements EventHandler<Action
     public void onDataArrived(List<Object> list) {
         if (list != null && !list.isEmpty()) {
             final Object entity = list.get(0);
-            if (entity instanceof STipoAlumno) {
-                final ObservableList<STipoAlumno> tAlumnoList = FXCollections.observableArrayList();
+            if (entity instanceof R_TipoAlumno) {
+                final ObservableList<R_TipoAlumno> tAlumnoList = FXCollections.observableArrayList();
                 for (final Object iEntity : list) {
-                    tAlumnoList.add((STipoAlumno) iEntity);
+                    tAlumnoList.add((R_TipoAlumno) iEntity);
                 }
                 cmbTipoAlumno.setItems(tAlumnoList);
                 cmbTipoAlumno.getSelectionModel().select(0);
@@ -223,13 +223,13 @@ public class ResumenGeneralView extends AFormView implements EventHandler<Action
 
     @Override
     public void onFound(IEntity entity) {
-        if (entity instanceof SEvaluacionPrueba) {
-            evaluacionPrueba = (SEvaluacionPrueba) entity;
+        if (entity instanceof R_EvaluacionPrueba) {
+            evaluacionPrueba = (R_EvaluacionPrueba) entity;
             generateReport();
         }
     }
 
-    private List<OTResumenGeneral> procesarValoresMinMax(List<SPruebaRendida> pruebasRendidas) {
+    private List<OTResumenGeneral> procesarValoresMinMax(List<R_PruebaRendida> pruebasRendidas) {
         notaMin = Float.MAX_VALUE;
         notaMax = Float.MIN_VALUE;
         pbuenasMin = Float.MAX_VALUE;
@@ -239,7 +239,7 @@ public class ResumenGeneralView extends AFormView implements EventHandler<Action
         puntajeMin = Integer.MAX_VALUE;
         puntajeMax = Integer.MIN_VALUE;
         int nCount = 0;
-        for (final SPruebaRendida pruebaRendida : pruebasRendidas) {
+        for (final R_PruebaRendida pruebaRendida : pruebasRendidas) {
 
             if (tipoAlumno != Constants.PIE_ALL
                     && !pruebaRendida.getAlumno().getTipoAlumno().getId().equals(tipoAlumno))

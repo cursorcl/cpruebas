@@ -9,12 +9,11 @@ import cl.eos.common.Constants;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.ot.OTPreguntasHabilidad;
-import cl.eos.persistence.models.SEvaluacionPrueba;
-import cl.eos.persistence.models.SHabilidad;
-import cl.eos.persistence.models.SPrueba;
-import cl.eos.persistence.models.SPruebaRendida;
-import cl.eos.persistence.models.SRespuestasEsperadasPrueba;
-import cl.eos.persistence.models.STipoAlumno;
+import cl.eos.restful.tables.R_EvaluacionPrueba;
+import cl.eos.restful.tables.R_Habilidad;
+import cl.eos.restful.tables.R_PruebaRendida;
+import cl.eos.restful.tables.R_RespuestasEsperadasPrueba;
+import cl.eos.restful.tables.R_TipoAlumno;
 import cl.eos.util.ExcelSheetWriterObj;
 import cl.eos.util.Pair;
 import javafx.beans.value.ChangeListener;
@@ -66,17 +65,17 @@ public class ResumenHabilidadesView extends AFormView implements EventHandler<Ac
     @FXML
     private final BarChart<String, Number> graficoBarra = new BarChart<String, Number>(yAxis, xAxis);
 
-    private HashMap<SHabilidad, OTPreguntasHabilidad> mapaHabilidades;
+    private HashMap<R_Habilidad, OTPreguntasHabilidad> mapaHabilidades;
     @FXML
     private MenuItem mnuExportarHabilidad;
 
     @FXML
-    private ComboBox<STipoAlumno> cmbTipoAlumno;
+    private ComboBox<R_TipoAlumno> cmbTipoAlumno;
     @FXML
     private Button btnGenerar;
     long tipoAlumno = Constants.PIE_ALL;
 
-    private SEvaluacionPrueba evaluacionPrueba;
+    private R_EvaluacionPrueba evaluacionPrueba;
 
     public ResumenHabilidadesView() {
 
@@ -176,17 +175,17 @@ public class ResumenHabilidadesView extends AFormView implements EventHandler<Ac
      * @param respEsperadas
      *            Las respuestas correctas definidas en la prueba.
      * @param ahb
-     *            La SHabilidad en base al que se realiza el calculo.
+     *            La R_Habilidad en base al que se realiza el calculo.
      * @return Par <Preguntas buenas, Total de Preguntas> del eje.
      */
     private Pair<Integer, Integer> obtenerBuenasTotales(String respuestas,
-            List<SRespuestasEsperadasPrueba> respEsperadas, SHabilidad hab) {
+            List<R_RespuestasEsperadasPrueba> respEsperadas, R_Habilidad hab) {
         int nroBuenas = 0;
         int nroPreguntas = 0;
         for (int n = 0; n < respEsperadas.size(); n++) {
-            final SRespuestasEsperadasPrueba resp = respEsperadas.get(n);
-            if (!resp.isAnulada()) {
-                if (resp.getHabilidad().equals(hab)) {
+            final R_RespuestasEsperadasPrueba resp = respEsperadas.get(n);
+            if (!resp.getAnulada()) {
+                if (hab.getId().equals(resp.getHabilidad_id())) {
                     if (respuestas.length() > n) {
                         final String sResp = respuestas.substring(n, n + 1);
                         if ("+".equals(sResp) || resp.getRespuesta().equalsIgnoreCase(sResp)) {
@@ -200,15 +199,15 @@ public class ResumenHabilidadesView extends AFormView implements EventHandler<Ac
         return new Pair<Integer, Integer>(nroBuenas, nroPreguntas);
     }
 
-    private void obtenerResultados(SEvaluacionPrueba entity) {
-        final List<SPruebaRendida> pruebasRendidas = entity.getPruebasRendidas();
+    private void obtenerResultados(R_EvaluacionPrueba entity) {
+        final List<R_PruebaRendida> pruebasRendidas = entity.getPruebasRendidas();
 
-        mapaHabilidades = new HashMap<SHabilidad, OTPreguntasHabilidad>();
+        mapaHabilidades = new HashMap<R_Habilidad, OTPreguntasHabilidad>();
 
         final SPrueba prueba = entity.getPrueba();
-        final List<SRespuestasEsperadasPrueba> respuestasEsperadas = prueba.getRespuestas();
+        final List<R_RespuestasEsperadasPrueba> respuestasEsperadas = prueba.getRespuestas();
 
-        for (final SRespuestasEsperadasPrueba resp : respuestasEsperadas) {
+        for (final R_RespuestasEsperadasPrueba resp : respuestasEsperadas) {
             if (mapaHabilidades.containsKey(resp.getHabilidad()))
                 continue;
             final OTPreguntasHabilidad otPreguntas = new OTPreguntasHabilidad();
@@ -218,14 +217,14 @@ public class ResumenHabilidadesView extends AFormView implements EventHandler<Ac
             mapaHabilidades.put(resp.getHabilidad(), otPreguntas);
         }
 
-        for (final SPruebaRendida pruebaRendida : pruebasRendidas) {
+        for (final R_PruebaRendida pruebaRendida : pruebasRendidas) {
             if (tipoAlumno != Constants.PIE_ALL
                     && !pruebaRendida.getAlumno().getTipoAlumno().getId().equals(tipoAlumno)) {
                 continue;
             }
             final String respuesta = pruebaRendida.getRespuestas();
 
-            for (final SHabilidad hab : mapaHabilidades.keySet()) {
+            for (final R_Habilidad hab : mapaHabilidades.keySet()) {
                 final OTPreguntasHabilidad otPreguntas = mapaHabilidades.get(hab);
                 final Pair<Integer, Integer> result = obtenerBuenasTotales(respuesta, respuestasEsperadas, hab);
                 otPreguntas.setHabilidad(hab);
@@ -240,10 +239,10 @@ public class ResumenHabilidadesView extends AFormView implements EventHandler<Ac
     public void onDataArrived(List<Object> list) {
         if (list != null && !list.isEmpty()) {
             final Object entity = list.get(0);
-            if (entity instanceof STipoAlumno) {
-                final ObservableList<STipoAlumno> tAlumnoList = FXCollections.observableArrayList();
+            if (entity instanceof R_TipoAlumno) {
+                final ObservableList<R_TipoAlumno> tAlumnoList = FXCollections.observableArrayList();
                 for (final Object iEntity : list) {
-                    tAlumnoList.add((STipoAlumno) iEntity);
+                    tAlumnoList.add((R_TipoAlumno) iEntity);
                 }
                 cmbTipoAlumno.setItems(tAlumnoList);
                 cmbTipoAlumno.getSelectionModel().select((int) Constants.PIE_ALL);
@@ -254,8 +253,8 @@ public class ResumenHabilidadesView extends AFormView implements EventHandler<Ac
 
     @Override
     public void onFound(IEntity entity) {
-        if (entity instanceof SEvaluacionPrueba) {
-            evaluacionPrueba = (SEvaluacionPrueba) entity;
+        if (entity instanceof R_EvaluacionPrueba) {
+            evaluacionPrueba = (R_EvaluacionPrueba) entity;
             generateReport();
         }
     }
