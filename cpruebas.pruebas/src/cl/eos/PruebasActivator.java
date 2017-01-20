@@ -17,7 +17,7 @@ public class PruebasActivator extends AActivator {
         }
         controller = new PruebasController();
 
-        final URL url = PruebasActivator.class.getResource("/cl/eos/view/Pruebas.fxml");
+        final URL url = PruebasActivator.class.getResource("/cl/eos/view/ListadoPruebas.fxml");
         final FXMLLoader fxmlLoader = new FXMLLoader();
         try {
             pane = fxmlLoader.load(url.openStream());

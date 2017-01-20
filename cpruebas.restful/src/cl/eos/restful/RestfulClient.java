@@ -43,7 +43,6 @@ public class RestfulClient {
     private static final String BY_ID = URL + "/%d";
     private static final Gson gson = new Gson();
     private static final CloseableHttpClient httpclient = HttpClients.createDefault();
-
     /**
      * Obtiene una lista de elementos de la clase T que tengan el ID indicado.
      * 
@@ -56,16 +55,12 @@ public class RestfulClient {
     public static <T> List<T> get(Class<T> clazz, Long id) {
         List<T> result = new ArrayList<>();
         String url = String.format(BY_ID, clazz.getSimpleName().toLowerCase(), id);
-
         HttpGet httpget = new HttpGet(url);
         httpget.addHeader("accept", "application/json");
-
         CloseableHttpResponse response = null;
         try {
             response = httpclient.execute(httpget);
-            if (response.getStatusLine().getStatusCode() != 200)
-                return null;
-
+            if (response.getStatusLine().getStatusCode() != 200) return null;
             HttpEntity entity = response.getEntity();
             if (entity != null) {
                 String apiOutput = EntityUtils.toString(entity);
@@ -82,62 +77,22 @@ public class RestfulClient {
         }
         return result;
     }
-
-    public static <T> List<T> get(Class<T> clazz) {
-        List<T> result = new ArrayList<>();
-        String url = String.format(URL, clazz.getSimpleName().substring(2));
-
-        HttpGet httpget = new HttpGet(url);
-        httpget.addHeader("accept", "application/json");
-
-        CloseableHttpResponse response = null;
-        try {
-            response = httpclient.execute(httpget);
-            if (response.getStatusLine().getStatusCode() != 200)
-                return null;
-
-            HttpEntity entity = response.getEntity();
-            if (entity != null) {
-                String apiOutput = EntityUtils.toString(entity);
-                JsonParser parser = new JsonParser();
-                JsonArray array = parser.parse(apiOutput).getAsJsonArray();
-                for (final JsonElement json : array) {
-                    T item = gson.fromJson(json, clazz);
-                    result.add(item);
-                }
-
-            }
-        } catch (IOException e) {
-
-            JOptionPane.showMessageDialog(null, "Comuníquese con el administrador del servicio de red.",
-                    "Error en conexión al servicio de red.", JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
-        }
-        return result;
-    }
-
-    public static <T> List<T> getByParameters(Class<T> clazz, Map<String, Object> map) {
+    public static <T> List<T> getByQuery(Class<T> clazz, String query) {
         List<T> result = null;
         String url = URL;
         try {
             HttpGet httpget = new HttpGet(url);
             httpget.addHeader("accept", "application/json");
             URIBuilder uriBuilder = new URIBuilder(url);
-
-            for (Entry<String, Object> entry : map.entrySet()) {
-                uriBuilder.addParameter(entry.getKey(), entry.getValue().toString());
-            }
+            uriBuilder.addParameter("query", query);
             httpget.setURI(uriBuilder.build());
             CloseableHttpResponse response = null;
             response = httpclient.execute(httpget);
-            if (response.getStatusLine().getStatusCode() != 200)
-                return null;
-
+            if (response.getStatusLine().getStatusCode() != 200) return null;
             HttpEntity entity = response.getEntity();
             if (entity != null) {
                 String apiOutput = EntityUtils.toString(entity);
-                result = gson.fromJson(apiOutput, new TypeToken<List<T>>() {
-                }.getType());
+                result = gson.fromJson(apiOutput, new TypeToken<List<T>>() {}.getType());
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -146,25 +101,71 @@ public class RestfulClient {
         }
         return result;
     }
-
-    public static <T> List<T> delete(Class<T> clazz, Long id) {
-        List<T> result = null;
-        String url = String.format(BY_ID, clazz.getSimpleName().toLowerCase(), id);
-
-        HttpDelete httpdelete = new HttpDelete(url);
-        httpdelete.addHeader("accept", "application/json");
-
+    public static <T> List<T> get(Class<T> clazz) {
+        List<T> result = new ArrayList<>();
+        String url = String.format(URL, clazz.getSimpleName().substring(2));
+        HttpGet httpget = new HttpGet(url);
+        httpget.addHeader("accept", "application/json");
         CloseableHttpResponse response = null;
         try {
-            response = httpclient.execute(httpdelete);
-            if (response.getStatusLine().getStatusCode() != 200)
-                return null;
-
+            response = httpclient.execute(httpget);
+            if (response.getStatusLine().getStatusCode() != 200) return null;
             HttpEntity entity = response.getEntity();
             if (entity != null) {
                 String apiOutput = EntityUtils.toString(entity);
-                result = gson.fromJson(apiOutput, new TypeToken<List<T>>() {
-                }.getType());
+                JsonParser parser = new JsonParser();
+                JsonArray array = parser.parse(apiOutput).getAsJsonArray();
+                for (final JsonElement json : array) {
+                    T item = gson.fromJson(json, clazz);
+                    result.add(item);
+                }
+            }
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Comuníquese con el administrador del servicio de red.", "Error en conexión al servicio de red.",
+                    JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+        return result;
+    }
+    public static <T> List<T> getByParameters(Class<T> clazz, Map<String, Object> map) {
+        List<T> result = null;
+        String url = URL;
+        try {
+            HttpGet httpget = new HttpGet(url);
+            httpget.addHeader("accept", "application/json");
+            URIBuilder uriBuilder = new URIBuilder(url);
+            for (Entry<String, Object> entry : map.entrySet()) {
+                uriBuilder.addParameter(entry.getKey(), entry.getValue().toString());
+            }
+            httpget.setURI(uriBuilder.build());
+            CloseableHttpResponse response = null;
+            response = httpclient.execute(httpget);
+            if (response.getStatusLine().getStatusCode() != 200) return null;
+            HttpEntity entity = response.getEntity();
+            if (entity != null) {
+                String apiOutput = EntityUtils.toString(entity);
+                result = gson.fromJson(apiOutput, new TypeToken<List<T>>() {}.getType());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+    public static <T> List<T> delete(Class<T> clazz, Long id) {
+        List<T> result = null;
+        String url = String.format(BY_ID, clazz.getSimpleName().toLowerCase(), id);
+        HttpDelete httpdelete = new HttpDelete(url);
+        httpdelete.addHeader("accept", "application/json");
+        CloseableHttpResponse response = null;
+        try {
+            response = httpclient.execute(httpdelete);
+            if (response.getStatusLine().getStatusCode() != 200) return null;
+            HttpEntity entity = response.getEntity();
+            if (entity != null) {
+                String apiOutput = EntityUtils.toString(entity);
+                result = gson.fromJson(apiOutput, new TypeToken<List<T>>() {}.getType());
             }
         } catch (IOException e) {
             // TODO Auto-generated catch block
@@ -172,23 +173,17 @@ public class RestfulClient {
         }
         return result;
     }
-
     public static <T> boolean post(T element) {
         String url = URL;
-
         StringEntity postingString;
         try {
             postingString = new StringEntity(gson.toJson(element));
             HttpPost httppost = new HttpPost(url);
             httppost.addHeader("accept", "application/json");
             httppost.setEntity(postingString);
-
             CloseableHttpResponse response = null;
-
             response = httpclient.execute(httppost);
-            if (response.getStatusLine().getStatusCode() != 200)
-                return false;
-
+            if (response.getStatusLine().getStatusCode() != 200) return false;
         } catch (UnsupportedEncodingException e1) {
             e1.printStackTrace();
             return false;
@@ -199,26 +194,19 @@ public class RestfulClient {
             e.printStackTrace();
             return false;
         }
-
         return true;
     }
-
     public static <T> boolean put(T element, Long id) {
         String url = String.format(BY_ID, element.getClass().getSimpleName().toLowerCase(), id);
-
         StringEntity postingString;
         try {
             postingString = new StringEntity(gson.toJson(element));
             HttpPut httpput = new HttpPut(url);
             httpput.addHeader("accept", "application/json");
             httpput.setEntity(postingString);
-
             CloseableHttpResponse response = null;
-
             response = httpclient.execute(httpput);
-            if (response.getStatusLine().getStatusCode() != 200)
-                return false;
-
+            if (response.getStatusLine().getStatusCode() != 200) return false;
         } catch (UnsupportedEncodingException e1) {
             e1.printStackTrace();
             return false;
@@ -229,10 +217,8 @@ public class RestfulClient {
             e.printStackTrace();
             return false;
         }
-
         return true;
     }
-
     public static boolean existService() {
         String url = URL_CONEXION;
         HttpGet httpget = new HttpGet(url);
@@ -242,14 +228,11 @@ public class RestfulClient {
             response = httpclient.execute(httpget);
             int status = response.getStatusLine().getStatusCode();
             if (status != 200) {
-
                 JOptionPane.showMessageDialog(null,
-                        "El servidor retorna código de estado:" + status + ".\n["
-                                + response.getStatusLine().getReasonPhrase() + "]",
+                        "El servidor retorna código de estado:" + status + ".\n[" + response.getStatusLine().getReasonPhrase() + "]",
                         "Error en conexión al servicio.", JOptionPane.ERROR_MESSAGE);
                 return false;
             }
-
             HttpEntity entity = response.getEntity();
             if (entity != null) {
                 String apiOutput = EntityUtils.toString(entity);
@@ -259,24 +242,18 @@ public class RestfulClient {
                     int value = json.getAsJsonObject().get("exist").getAsInt();
                     System.out.println("Valor desde la BD:" + value);
                 }
-
-                
             }
-
         } catch (HttpHostConnectException ex) {
-            JOptionPane.showMessageDialog(null, "El servidor no responde:" + ex.getMessage(),
-                    "Error en conexión al servicio.", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "El servidor no responde:" + ex.getMessage(), "Error en conexión al servicio.",
+                    JOptionPane.ERROR_MESSAGE);
             return false;
         } catch (JsonSyntaxException ex) {
-            JOptionPane.showMessageDialog(null, "Excepción:" + ex.getMessage(), "Base de datos no activa.",
-                    JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Excepción:" + ex.getMessage(), "Base de datos no activa.", JOptionPane.ERROR_MESSAGE);
             return false;
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, "Excepción:" + ex.getMessage(), "Se ha producido una excepción.",
-                    JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Excepción:" + ex.getMessage(), "Se ha producido una excepción.", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         return true;
-
     }
 }

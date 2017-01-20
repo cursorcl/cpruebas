@@ -19,6 +19,7 @@ public class R_PruebaRendida extends AEntity {
     @SerializedName(value = "name", alternate = { "NAME" }) String name;
     @SerializedName(value = "rango_id", alternate = { "RANGO_ID" }) Long rango_id;
     @SerializedName(value = "alumno_id", alternate = { "ALUMNO_ID" }) Long alumno_id;
+    @SerializedName(value = "tipoalumno_id", alternate = { "TIPOALUMNO_ID" }) Long tipoalumno_id;
     @SerializedName(value = "evaluacionprueba_id", alternate = { "EVALUACIONPRUEBA_ID" }) Long evaluacionprueba_id;
     /**
      * @return the id
@@ -164,6 +165,19 @@ public class R_PruebaRendida extends AEntity {
         this.evaluacionprueba_id = evaluacionprueba_id;
     }
     /**
+     * @return the tipoalumno_id
+     */
+    public final Long getTipoalumno_id() {
+        return tipoalumno_id;
+    }
+    /**
+     * @param tipoalumno_id
+     *            the tipoalumno_id to set
+     */
+    public final void setTipoalumno_id(Long tipoalumno_id) {
+        this.tipoalumno_id = tipoalumno_id;
+    }
+    /**
      * Este metodo recalcula la nota y el rango de la prueba rendida. Esto se hace cuando se ha realizado una anulación
      * de alguna pregunta.
      */
@@ -237,11 +251,9 @@ public class R_PruebaRendida extends AEntity {
         R_RangoEvaluacion rango = getRango(porcentaje, rangos);
         this.setRango_id(rango.getId());
     }
-    
-    
-    
-    
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -252,7 +264,9 @@ public class R_PruebaRendida extends AEntity {
         result = prime * result + ((evaluacionprueba_id == null) ? 0 : evaluacionprueba_id.hashCode());
         return result;
     }
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -305,8 +319,8 @@ public class R_PruebaRendida extends AEntity {
         private String name;
         private Long rango_id;
         private Long alumno_id;
+        private Long tipoalumno_id;
         private Long evaluacionprueba_id;
-        private Integer version;
         public Builder id(Long id) {
             this.id = id;
             return this;
@@ -347,12 +361,12 @@ public class R_PruebaRendida extends AEntity {
             this.alumno_id = alumno_id;
             return this;
         }
-        public Builder evaluacionprueba_id(Long evaluacionprueba_id) {
-            this.evaluacionprueba_id = evaluacionprueba_id;
+        public Builder tipoalumno_id(Long tipoalumno_id) {
+            this.tipoalumno_id = tipoalumno_id;
             return this;
         }
-        public Builder version(Integer version) {
-            this.version = version;
+        public Builder evaluacionprueba_id(Long evaluacionprueba_id) {
+            this.evaluacionprueba_id = evaluacionprueba_id;
             return this;
         }
         public R_PruebaRendida build() {
@@ -370,7 +384,7 @@ public class R_PruebaRendida extends AEntity {
         this.name = builder.name;
         this.rango_id = builder.rango_id;
         this.alumno_id = builder.alumno_id;
+        this.tipoalumno_id = builder.tipoalumno_id;
         this.evaluacionprueba_id = builder.evaluacionprueba_id;
-        this.version = builder.version;
     }
 }
