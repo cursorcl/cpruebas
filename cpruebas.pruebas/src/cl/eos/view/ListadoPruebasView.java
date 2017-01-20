@@ -22,10 +22,12 @@ import cl.eos.restful.tables.R_Profesor;
 import cl.eos.restful.tables.R_Prueba;
 import cl.eos.restful.tables.R_Prueba.Estado;
 import cl.eos.restful.tables.R_RangoEvaluacion;
+import cl.eos.restful.tables.R_RespuestasEsperadasPrueba;
 import cl.eos.restful.tables.R_TipoAlumno;
 import cl.eos.restful.tables.R_TipoColegio;
 import cl.eos.restful.tables.R_TipoCurso;
 import cl.eos.restful.tables.R_TipoPrueba;
+import cl.eos.util.MapBuilder;
 import cl.eos.view.editablecells.PruebaCellFactory;
 import cl.eos.view.ots.OTPrueba;
 import colegio.ComparativoColegioEjeEvaluacionView;
@@ -71,10 +73,7 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
     @FXML private TableColumn<OTPrueba, String> cursoCol;
     @FXML private TableColumn<OTPrueba, String> nameCol;
     @FXML private TableColumn<OTPrueba, String> asignaturaCol;
-    @FXML private TableColumn<OTPrueba, String> profesorCol;
     @FXML private TableColumn<OTPrueba, Integer> nroPreguntasCol;
-    @FXML private TableColumn<OTPrueba, Integer> formasCol;
-    @FXML private TableColumn<OTPrueba, Integer> alternativasCol;
     @FXML private TableColumn<OTPrueba, Estado> estadoCol;
     @FXML private MenuItem mnuCrear;
     @FXML private MenuItem mnuModificar;
@@ -308,6 +307,10 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
         final Nivel_ComparativoColegioEjeHabilidadView resumenColegioEjeHabiliadad = (Nivel_ComparativoColegioEjeHabilidadView) show(
                 "/colegio/nivel/fxml/Nivel_ComparativoColegioEjeHabilidad.fxml");
         show(resumenColegioEjeHabiliadad);
+        final R_Prueba pPrueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
+        resumenColegioEjeHabiliadad.setPrueba(pPrueba);
+        Map<String, Object> params = MapBuilder.<String, Object> unordered().put("prueba_id", prueba.getId()).build();
+        controller.findByParam(R_RespuestasEsperadasPrueba.class, params, resumenColegioEjeHabiliadad);
         controller.findAll(R_Colegio.class, resumenColegioEjeHabiliadad);
         controller.findAll(R_Asignatura.class, resumenColegioEjeHabiliadad);
         controller.findAll(R_EvaluacionEjetematico.class, resumenColegioEjeHabiliadad);
@@ -513,7 +516,6 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
         fechaCol.setCellValueFactory(new PropertyValueFactory<OTPrueba, LocalDate>("fechaLocal"));
         nameCol.setCellValueFactory(new PropertyValueFactory<OTPrueba, String>("name"));
         asignaturaCol.setCellValueFactory(new PropertyValueFactory<OTPrueba, String>("asignatura"));
-        profesorCol.setCellValueFactory(new PropertyValueFactory<OTPrueba, String>("profesor"));
         cursoCol.setCellValueFactory(new PropertyValueFactory<OTPrueba, String>("curso"));
         nroPreguntasCol.setCellValueFactory(new PropertyValueFactory<OTPrueba, Integer>("nroPreguntas"));
         estadoCol.setCellValueFactory(new PropertyValueFactory<OTPrueba, Estado>("estado"));
