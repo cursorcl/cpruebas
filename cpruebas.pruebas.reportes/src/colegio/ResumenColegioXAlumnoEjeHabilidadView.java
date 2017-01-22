@@ -205,13 +205,14 @@ public class ResumenColegioXAlumnoEjeHabilidadView extends AFormView implements 
 				int n = 1;
 				int total = evaluacionesPrueba.size();
 				for (R_EvaluacionPrueba eval : evaluacionesPrueba) {
-					if (eval.getCurso() != null) {
-						updateMessage(String.format("Prcesando %s", eval.getCurso().getName()));
+				    R_Curso rCurso =  controller.findByIdSynchro(R_Curso.class, eval.getCurso_id());
+					if (rCurso != null) {
+						updateMessage(String.format("Procesando curso %s", rCurso.getName()));
 						updateProgress(n++, total);
 						CursoEjeHabilidad curso = new CursoEjeHabilidad(eval,
 								cmbTipoAlumno.getSelectionModel().getSelectedItem());
 						Runnable r = () -> {
-							Tab tab = new Tab(eval.getCurso().getName());
+							Tab tab = new Tab(rCurso.getName());
 							tab.setContent(curso.getTblAlumnos());
 							tabPane.getTabs().add(tab);
 						};

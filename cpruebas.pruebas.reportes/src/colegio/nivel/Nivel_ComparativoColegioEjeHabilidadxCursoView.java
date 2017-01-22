@@ -15,7 +15,6 @@ import cl.eos.imp.view.AFormView;
 import cl.eos.imp.view.ProgressForm;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.persistence.util.Comparadores;
-import cl.eos.restful.tables.R_Alumno;
 import cl.eos.restful.tables.R_Asignatura;
 import cl.eos.restful.tables.R_Colegio;
 import cl.eos.restful.tables.R_Curso;

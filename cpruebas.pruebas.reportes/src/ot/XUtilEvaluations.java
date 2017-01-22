@@ -128,9 +128,9 @@ public class XUtilEvaluations {
         }
         final List<XItemObjetivo> result = new ArrayList<>();
         for (final R_PruebaRendida p : pruebas) {
-            Long idTipoAlumno = p.getAlumno().getTipoAlumno().getId();
+            Long idTipoAlumno = p.getTipoalumno_id();
             if (tipoAlumno == Constants.PIE_ALL || tipoAlumno == idTipoAlumno) {
-                log.fine("Evaluando prueba:" + p.getNombre() + " " + p.getPaterno() + " " + p.getMaterno());
+                log.fine("Evaluando prueba:" + p.getAlumno_id());
                 final List<XItemObjetivo> rAlumno = XUtilEvaluations.evaluarAlumno(p);
                 if (result.isEmpty()) {
                     result.addAll(rAlumno);
@@ -145,7 +145,7 @@ public class XUtilEvaluations {
                     }
                 }
             } else {
-                log.info("POR CRITERIO PIE: No se a evalúa prueba:" + p.getNombre() + " " + p.getPaterno() + " " + p.getMaterno());
+                log.info("POR CRITERIO PIE: No se a evalúa prueba:" + p.getAlumno_id());
             }
         }
         return result;
