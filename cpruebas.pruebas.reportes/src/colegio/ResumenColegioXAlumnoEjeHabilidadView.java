@@ -14,8 +14,10 @@ import cl.eos.restful.tables.R_Asignatura;
 import cl.eos.restful.tables.R_Colegio;
 import cl.eos.restful.tables.R_Curso;
 import cl.eos.restful.tables.R_EvaluacionPrueba;
+import cl.eos.restful.tables.R_RespuestasEsperadasPrueba;
 import cl.eos.restful.tables.R_TipoAlumno;
 import cl.eos.util.ExcelSheetWriterObj;
+import cl.eos.util.MapBuilder;
 import colegio.util.CursoEjeHabilidad;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -204,13 +206,22 @@ public class ResumenColegioXAlumnoEjeHabilidadView extends AFormView implements 
 				ArrayList<CursoEjeHabilidad> lst = new ArrayList<>();
 				int n = 1;
 				int total = evaluacionesPrueba.size();
+				// Asocia las respuestas esperadas a cada prueba.
+				Map<Long, List<R_RespuestasEsperadasPrueba>> mapREsperadas =  new HashMap<>();
 				for (R_EvaluacionPrueba eval : evaluacionesPrueba) {
 				    R_Curso rCurso =  controller.findByIdSynchro(R_Curso.class, eval.getCurso_id());
+				    List<R_RespuestasEsperadasPrueba> respEsperadas =  mapREsperadas.get(eval.getPrueba_id());
+				    if(respEsperadas == null)
+				    {
+				      Map<String, Object> parameters =  MapBuilder.<String, Object> unordered().put("prueba_id", eval.getPrueba_id()).build();
+				      respEsperadas = controller.findByParamsSynchro(R_RespuestasEsperadasPrueba.class, parameters);
+				      mapREsperadas.put(eval.getPrueba_id(), respEsperadas);
+				    }
 					if (rCurso != null) {
 						updateMessage(String.format("Procesando curso %s", rCurso.getName()));
 						updateProgress(n++, total);
-						CursoEjeHabilidad curso = new CursoEjeHabilidad(eval,
-								cmbTipoAlumno.getSelectionModel().getSelectedItem());
+						
+						CursoEjeHabilidad curso = new CursoEjeHabilidad(eval, cmbTipoAlumno.getSelectionModel().getSelectedItem(), respEsperadas);
 						Runnable r = () -> {
 							Tab tab = new Tab(rCurso.getName());
 							tab.setContent(curso.getTblAlumnos());

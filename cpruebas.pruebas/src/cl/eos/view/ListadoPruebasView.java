@@ -352,6 +352,10 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
         (ComparativoColegioEjeHabilidadView) show(
             "/colegio/fxml/ComparativoColegioEjeHabilidad.fxml");
     show(resumenColegioEjeHabiliadad);
+    final R_Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
+    resumenColegioEjeHabiliadad.setPrueba(prueba);
+    Map<String, Object> params = MapBuilder.<String, Object>unordered().put("prueba_id", prueba.getId()).build();
+    controller.findByParam(R_RespuestasEsperadasPrueba.class, params,resumenColegioEjeHabiliadad);
     controller.findAll(R_Colegio.class, resumenColegioEjeHabiliadad);
     controller.findAll(R_Asignatura.class, resumenColegioEjeHabiliadad);
     controller.findAll(R_EvaluacionEjetematico.class, resumenColegioEjeHabiliadad);
@@ -437,6 +441,11 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
         (ComparativoColegioEjeHabilidadxCursoView) show(
             "/colegio/fxml/ComparativoColegioEjeHabilidadxCurso.fxml");
     show(resColegioHabEjeCurso);
+    final R_Prueba pPrueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
+    resColegioHabEjeCurso.setPrueba(pPrueba);
+    
+    Map<String, Object> params = MapBuilder.<String, Object>unordered().put("prueba_id", pPrueba.getId()).build();
+    controller.findByParamsSynchro(R_RespuestasEsperadasPrueba.class, params);
     controller.findAll(R_Colegio.class, resColegioHabEjeCurso);
     controller.findAll(R_Asignatura.class, resColegioHabEjeCurso);
     controller.findAll(R_EvaluacionEjetematico.class, resColegioHabEjeCurso);
@@ -483,6 +492,14 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
         (ComparativoColegioEjeEvaluacionView) show(
             "/colegio/fxml/ComparativoColegioEjeEvaluacion.fxml");
     show(resumenEjeEvaluacion);
+    final R_Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
+    // Rangos para la evaluación
+    Map<String, Object> params =  MapBuilder.<String, Object> unordered().put("nivelevaluacion_id", prueba.getNivelevaluacion_id()).build();
+    controller.findByParam(R_RangoEvaluacion.class, params);
+    // Respuestas esperadas de la prueba.
+    params =  MapBuilder.<String, Object> unordered().put("prueba_id", prueba.getId()).build();
+    controller.findByParam(R_RespuestasEsperadasPrueba.class, params);
+    
     controller.findAll(R_Colegio.class, resumenEjeEvaluacion);
     controller.findAll(R_Asignatura.class, resumenEjeEvaluacion);
     controller.findAll(R_TipoAlumno.class, resumenEjeEvaluacion);
