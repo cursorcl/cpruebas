@@ -108,7 +108,7 @@ public class ResumenAlumnoView extends AFormView implements EventHandler<ActionE
             evaluacionPrueba = (R_EvaluacionPrueba) entity;
             
             Map<String, Object> params = MapBuilder.<String, Object> unordered().put("evaluacionprueba_id", evaluacionPrueba.getId()).build();
-            list = PersistenceServiceFactory.getPersistenceService().findByParamsSynchor(R_PruebaRendida.class, params);
+            list = PersistenceServiceFactory.getPersistenceService().findByParamsSynchro(R_PruebaRendida.class, params);
             generateReport();
         }
     }

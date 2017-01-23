@@ -194,7 +194,7 @@ public class PorObjetivosView extends AFormView {
             evaluacionPrueba = (R_EvaluacionPrueba) entity;
             curso = PersistenceServiceFactory.getPersistenceService().findByIdSynchro(R_Curso.class, evaluacionPrueba.getCurso_id());
             Map<String, Object> params = MapBuilder.<String, Object> unordered().put("evaluacionprueba_id", evaluacionPrueba.getId()).build();
-            pRendidas = PersistenceServiceFactory.getPersistenceService().findByParamsSynchor(R_PruebaRendida.class, params);
+            pRendidas = PersistenceServiceFactory.getPersistenceService().findByParamsSynchro(R_PruebaRendida.class, params);
             generateXReport();
         }
     }

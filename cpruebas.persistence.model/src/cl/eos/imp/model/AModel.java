@@ -94,7 +94,7 @@ public abstract class AModel implements IModel {
     }
     @Override
     public <T extends IEntity> List<T> findByParamsSynchro(Class<T> entityClazz, Map<String, Object> params) {
-        return PersistenceServiceFactory.getPersistenceService().findByParamsSynchor(entityClazz, params);
+        return PersistenceServiceFactory.getPersistenceService().findByParamsSynchro(entityClazz, params);
     }
     @Override
     public IEntity get(IEntity entity) {

@@ -64,11 +64,11 @@ public class InformeHabilidades implements IInforme {
         params.put(InformeHabilidades.COLEGIO_ID, colegio.getId());
         params.put(InformeHabilidades.ASIGNATURA_ID, asignatura.getId());
         final List<R_EvaluacionPrueba> evaluaciones = (List<R_EvaluacionPrueba>) (Object) PersistenceServiceFactory.getPersistenceService()
-                .findByParamsSynchor(R_EvaluacionPrueba.class, params);
+                .findByParamsSynchro(R_EvaluacionPrueba.class, params);
         if (evaluaciones == null || evaluaciones.isEmpty()) return;
         params.clear();
         params.put("colegioId", colegio.getId());
-        lstCursos = (List<R_Curso>) (Object) PersistenceServiceFactory.getPersistenceService().findByParamsSynchor(R_Curso.class, params);
+        lstCursos = (List<R_Curso>) (Object) PersistenceServiceFactory.getPersistenceService().findByParamsSynchro(R_Curso.class, params);
         if (Objects.isNull(evaluaciones) || Objects.isNull(lstCursos) || lstCursos.isEmpty() || evaluaciones.isEmpty()) return;
         resultado = procesar(evaluaciones);
     }

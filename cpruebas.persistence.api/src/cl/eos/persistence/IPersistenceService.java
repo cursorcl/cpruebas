@@ -34,7 +34,7 @@ public interface IPersistenceService {
 
     <T extends IEntity> T findByNameSynchro(Class<T> entityClazz, String name);
 
-    <T extends IEntity> List<T> findByParamsSynchor(Class<T> entityClazz, Map<String, Object> params);
+    <T extends IEntity> List<T> findByParamsSynchro(Class<T> entityClazz, Map<String, Object> params);
 
 
     void insert(String entity, List<Object> list, IPersistenceListener listener) throws ExceptionBD;

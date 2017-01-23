@@ -101,7 +101,7 @@ public class CursoEjeHabilidad {
     Map<String, Object> params = MapBuilder.<String, Object>unordered()
         .put("evaluacionprueba_id", evaluacionPrueba.getId()).build();
     List<R_PruebaRendida> pRendidas = PersistenceServiceFactory.getPersistenceService()
-        .findByParamsSynchor(R_PruebaRendida.class, params);
+        .findByParamsSynchro(R_PruebaRendida.class, params);
     for (R_PruebaRendida pr : pRendidas) {
       String resps = pr.getRespuestas();
       R_Alumno alumno = PersistenceServiceFactory.getPersistenceService()

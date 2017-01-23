@@ -66,7 +66,7 @@ public class InformeResumenTotalAlumnos implements IInforme {
         params.put(InformeResumenTotalAlumnos.COLEGIO_ID, colegio.getId());
         params.put(InformeResumenTotalAlumnos.ASIGNATURA_ID, asignatura.getId());
         final List<R_EvaluacionPrueba> evaluaciones = (List<R_EvaluacionPrueba>) (Object) PersistenceServiceFactory
-                .getPersistenceService().findByParamsSynchor(R_EvaluacionPrueba.class, params);
+                .getPersistenceService().findByParamsSynchro(R_EvaluacionPrueba.class, params);
         if (evaluaciones == null || evaluaciones.isEmpty())
             return;
         if (Objects.isNull(evaluaciones) || evaluaciones.isEmpty())

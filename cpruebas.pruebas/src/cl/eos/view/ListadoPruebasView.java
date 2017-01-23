@@ -500,6 +500,8 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
     params =  MapBuilder.<String, Object> unordered().put("prueba_id", prueba.getId()).build();
     controller.findByParam(R_RespuestasEsperadasPrueba.class, params);
     
+    
+    
     controller.findAll(R_Colegio.class, resumenEjeEvaluacion);
     controller.findAll(R_Asignatura.class, resumenEjeEvaluacion);
     controller.findAll(R_TipoAlumno.class, resumenEjeEvaluacion);
@@ -522,6 +524,10 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
         (ComparativoColegioHabilidadesView) show(
             "/colegio/fxml/ComparativoColegioHabilidades.fxml");
     show(resumenHabilidades);
+    final R_Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
+    // Rangos para la evaluación
+    Map<String, Object> params =  MapBuilder.<String, Object> unordered().put("nivelevaluacion_id", prueba.getNivelevaluacion_id()).build();
+    controller.findByParam(R_RangoEvaluacion.class, params);
     controller.findAll(R_Colegio.class, resumenHabilidades);
     controller.findAll(R_Asignatura.class, resumenHabilidades);
     controller.findAll(R_TipoAlumno.class, resumenHabilidades);

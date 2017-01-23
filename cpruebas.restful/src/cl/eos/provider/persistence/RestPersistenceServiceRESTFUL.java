@@ -245,7 +245,7 @@ public class RestPersistenceServiceRESTFUL implements IPersistenceService {
 
 
     @Override
-    public <T extends IEntity> List<T> findByParamsSynchor(Class<T> entityClazz, Map<String, Object> params) {
+    public <T extends IEntity> List<T> findByParamsSynchro(Class<T> entityClazz, Map<String, Object> params) {
         return RestfulClient.getByParameters(entityClazz, params);
     }
     
