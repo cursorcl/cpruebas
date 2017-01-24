@@ -406,7 +406,7 @@ public class ResumenColegioView extends AFormView implements EventHandler<Action
 	}
 
 	private void generaDatosGeneral(R_PruebaRendida pruebaRendida) {
-		Float pBuenas = pruebaRendida.getPbuenas();
+		Float pBuenas = pruebaRendida.getBuenas().floatValue();
 		for (Entry<Long, R_EvaluacionEjetematico> otResumenColegio : mEvaluaciones.entrySet()) {
 
 			R_EvaluacionEjetematico otEvaluacion = otResumenColegio.getValue();
@@ -465,7 +465,7 @@ public class ResumenColegioView extends AFormView implements EventHandler<Action
 	private void generaDatosRangos(R_PruebaRendida rendida, R_NivelEvaluacion nivelEvaluacion) {
 
 		float porcentaje = (float) rendida.getBuenas()
-				/ (float) rendida.getEvaluacionPrueba().getPrueba().getNroPreguntas() * 100f;
+				/ (float) rendida.getEvaluacionPrueba().getPrueba().getNropreguntas() * 100f;
 		R_RangoEvaluacion rango = nivelEvaluacion.getRango(porcentaje);
 
 		log.info(String.format(";\"%s\";%f;%5.2f%%;\"%s\"", rendida.getCurso(), rendida.getNota(), porcentaje,

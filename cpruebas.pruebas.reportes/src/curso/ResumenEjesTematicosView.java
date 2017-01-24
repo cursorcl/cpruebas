@@ -11,6 +11,7 @@ import cl.eos.interfaces.entity.IEntity;
 import cl.eos.ot.OTPreguntasEjes;
 import cl.eos.restful.tables.R_Ejetematico;
 import cl.eos.restful.tables.R_EvaluacionPrueba;
+import cl.eos.restful.tables.R_Prueba;
 import cl.eos.restful.tables.R_PruebaRendida;
 import cl.eos.restful.tables.R_RespuestasEsperadasPrueba;
 import cl.eos.restful.tables.R_TipoAlumno;
@@ -212,7 +213,7 @@ public class ResumenEjesTematicosView extends AFormView implements EventHandler<
 
         mapaEjesTematicos = new HashMap<R_Ejetematico, OTPreguntasEjes>();
 
-        final SPrueba prueba = entity.getPrueba();
+        final R_Prueba prueba = entity.getPrueba();
         final List<R_RespuestasEsperadasPrueba> respuestasEsperadas = prueba.getRespuestas();
 
         for (final R_RespuestasEsperadasPrueba resp : respuestasEsperadas) {

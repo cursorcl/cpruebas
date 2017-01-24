@@ -354,8 +354,9 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
     show(resumenColegioEjeHabiliadad);
     final R_Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
     resumenColegioEjeHabiliadad.setPrueba(prueba);
-    Map<String, Object> params = MapBuilder.<String, Object>unordered().put("prueba_id", prueba.getId()).build();
-    controller.findByParam(R_RespuestasEsperadasPrueba.class, params,resumenColegioEjeHabiliadad);
+    Map<String, Object> params =
+        MapBuilder.<String, Object>unordered().put("prueba_id", prueba.getId()).build();
+    controller.findByParam(R_RespuestasEsperadasPrueba.class, params, resumenColegioEjeHabiliadad);
     controller.findAll(R_Colegio.class, resumenColegioEjeHabiliadad);
     controller.findAll(R_Asignatura.class, resumenColegioEjeHabiliadad);
     controller.findAll(R_EvaluacionEjetematico.class, resumenColegioEjeHabiliadad);
@@ -384,7 +385,14 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
     if (tblListadoPruebas.getSelectionModel().getSelectedItem() != null) {
       final R_Prueba pPrueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
       if (pPrueba != null) {
-        controller.findById(R_Prueba.class, pPrueba.getId(), comparativoComunal);
+        comparativoComunal.setPrueba(pPrueba);
+
+        Map<String, Object> params =
+            MapBuilder.<String, Object>unordered().put("prueba_id", pPrueba.getId()).build();
+        controller.findByParam(R_EvaluacionPrueba.class, params);
+
+        controller.findById(R_Asignatura.class, pPrueba.getAsignatura_id());
+        controller.findByParam(R_RespuestasEsperadasPrueba.class, params);
         controller.findAll(R_EvaluacionEjetematico.class, comparativoComunal);
         controller.findAll(R_TipoAlumno.class, comparativoComunal);
         controller.findAll(R_TipoColegio.class, comparativoComunal);
@@ -428,7 +436,15 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
     if (tblListadoPruebas.getSelectionModel().getSelectedItem() != null) {
       final R_Prueba pPrueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
       if (pPrueba != null) {
+
         controller.findById(R_Prueba.class, pPrueba.getId(), comparativoComunalNivel);
+        controller.findById(R_Asignatura.class, pPrueba.getAsignatura_id(), comparativoComunalNivel);
+        R_Curso curso = controller.findByIdSynchro(R_Curso.class, pPrueba.getCurso_id());
+        controller.findById(R_TipoCurso.class, curso.getTipocurso_id(), comparativoComunalNivel);
+        Map<String, Object> params =
+            MapBuilder.<String, Object>unordered().put("prueba_id", pPrueba.getId()).build();
+        controller.findByParam(R_EvaluacionPrueba.class, params, comparativoComunalNivel);
+        controller.findByParam(R_RespuestasEsperadasPrueba.class, params, comparativoComunalNivel);
         controller.findAll(R_EvaluacionEjetematico.class, comparativoComunalNivel);
         controller.findAll(R_TipoAlumno.class, comparativoComunalNivel);
         controller.findAll(R_TipoColegio.class, comparativoComunalNivel);
@@ -443,8 +459,9 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
     show(resColegioHabEjeCurso);
     final R_Prueba pPrueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
     resColegioHabEjeCurso.setPrueba(pPrueba);
-    
-    Map<String, Object> params = MapBuilder.<String, Object>unordered().put("prueba_id", pPrueba.getId()).build();
+
+    Map<String, Object> params =
+        MapBuilder.<String, Object>unordered().put("prueba_id", pPrueba.getId()).build();
     controller.findByParamsSynchro(R_RespuestasEsperadasPrueba.class, params);
     controller.findAll(R_Colegio.class, resColegioHabEjeCurso);
     controller.findAll(R_Asignatura.class, resColegioHabEjeCurso);
@@ -494,14 +511,15 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
     show(resumenEjeEvaluacion);
     final R_Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
     // Rangos para la evaluación
-    Map<String, Object> params =  MapBuilder.<String, Object> unordered().put("nivelevaluacion_id", prueba.getNivelevaluacion_id()).build();
+    Map<String, Object> params = MapBuilder.<String, Object>unordered()
+        .put("nivelevaluacion_id", prueba.getNivelevaluacion_id()).build();
     controller.findByParam(R_RangoEvaluacion.class, params);
     // Respuestas esperadas de la prueba.
-    params =  MapBuilder.<String, Object> unordered().put("prueba_id", prueba.getId()).build();
+    params = MapBuilder.<String, Object>unordered().put("prueba_id", prueba.getId()).build();
     controller.findByParam(R_RespuestasEsperadasPrueba.class, params);
-    
-    
-    
+
+
+
     controller.findAll(R_Colegio.class, resumenEjeEvaluacion);
     controller.findAll(R_Asignatura.class, resumenEjeEvaluacion);
     controller.findAll(R_TipoAlumno.class, resumenEjeEvaluacion);
@@ -526,7 +544,8 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
     show(resumenHabilidades);
     final R_Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
     // Rangos para la evaluación
-    Map<String, Object> params =  MapBuilder.<String, Object> unordered().put("nivelevaluacion_id", prueba.getNivelevaluacion_id()).build();
+    Map<String, Object> params = MapBuilder.<String, Object>unordered()
+        .put("nivelevaluacion_id", prueba.getNivelevaluacion_id()).build();
     controller.findByParam(R_RangoEvaluacion.class, params);
     controller.findAll(R_Colegio.class, resumenHabilidades);
     controller.findAll(R_Asignatura.class, resumenHabilidades);

@@ -18,11 +18,11 @@ public class DataProcessor {
     public static void process(List<Object> list, DefinirPrueba defPrueba) {
         if (list != null && !list.isEmpty()) {
             final Object entity = list.get(0);
-            // if (entity instanceof SPrueba) {
+            // if (entity instanceof R_Prueba) {
             // ObservableList<OTPrueba> pruebas =
             // FXCollections.observableArrayList();
             // for (Object lEntity : list) {
-            // pruebas.add(new OTPrueba((SPrueba) lEntity));
+            // pruebas.add(new OTPrueba((R_Prueba) lEntity));
             // }
             // tblListadoPruebas.setItems(pruebas);
             // }

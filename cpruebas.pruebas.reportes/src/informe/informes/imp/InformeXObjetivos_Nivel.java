@@ -18,10 +18,10 @@ import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 
 import cl.eos.persistence.models.SAsignatura;
 import cl.eos.persistence.models.SColegio;
-import cl.eos.persistence.models.SEvaluacionPrueba;
-import cl.eos.persistence.models.SPruebaRendida;
-import cl.eos.persistence.models.STipoAlumno;
-import cl.eos.persistence.models.STipoCurso;
+
+
+
+
 import cl.eos.provider.persistence.PersistenceServiceFactory;
 import cl.eos.util.Pair;
 import informe.InformeManager;
@@ -38,25 +38,25 @@ public class InformeXObjetivos_Nivel implements IInforme {
     private static final String COLEGIO_ID = "idColegio";
     private SColegio colegio;
     private SAsignatura asignatura;
-    Pair<List<STipoCurso>, List<XItemTablaObjetivo>> reporte;
+    Pair<List<R_TipoCurso>, List<XItemTablaObjetivo>> reporte;
 
     @SuppressWarnings("unchecked")
     @Override
-    public void execute(STipoAlumno tipoAlumno, SColegio colegio, SAsignatura asignatura) {
+    public void execute(R_TipoAlumno tipoAlumno, SColegio colegio, SAsignatura asignatura) {
         this.colegio = colegio;
         this.asignatura = asignatura;
         final Map<String, Object> params = new HashMap<>();
         params.put(InformeXObjetivos_Nivel.COLEGIO_ID, colegio.getId());
         params.put(InformeXObjetivos_Nivel.ASIGNATURA_ID, asignatura.getId());
         
-        final List<SEvaluacionPrueba> evaluaciones = (List<SEvaluacionPrueba>) (Object) PersistenceServiceFactory
-                .getPersistenceService().findSynchro("SEvaluacionPrueba.findEvaluacionByColegioAsig", params);
+        final List<R_EvaluacionPrueba> evaluaciones = (List<R_EvaluacionPrueba>) (Object) PersistenceServiceFactory
+                .getPersistenceService().findSynchro("R_EvaluacionPrueba.findEvaluacionByColegioAsig", params);
         
         if (evaluaciones == null || evaluaciones.isEmpty()) {
             return;
         }
-        final List<SPruebaRendida> pRendidas = new ArrayList<>();
-        for (SEvaluacionPrueba evaluacionPrueba : evaluaciones) {
+        final List<R_PruebaRendida> pRendidas = new ArrayList<>();
+        for (R_EvaluacionPrueba evaluacionPrueba : evaluaciones) {
             pRendidas.addAll(evaluacionPrueba.getPruebasRendidas());
         }
 
@@ -70,7 +70,7 @@ public class InformeXObjetivos_Nivel implements IInforme {
         if (reporte == null || reporte.getSecond().isEmpty())
             return;
 
-        List<STipoCurso> tipoCursos = reporte.getFirst();
+        List<R_TipoCurso> tipoCursos = reporte.getFirst();
         List<XItemTablaObjetivo> resultado = reporte.getSecond();
 
         XWPFParagraph paragraph = document.createParagraph();
@@ -87,7 +87,7 @@ public class InformeXObjetivos_Nivel implements IInforme {
         run.setText("Instrumento de Evaluación y Resultados Obtenidos en la asignatura de "
                 + asignatura.getName().toUpperCase() + ".");
         int idx = 0;
-        for (STipoCurso tipoCurso : tipoCursos) {
+        for (R_TipoCurso tipoCurso : tipoCursos) {
 
             paragraph = document.createParagraph();
             paragraph.setStyle("Normal");
@@ -156,7 +156,7 @@ public class InformeXObjetivos_Nivel implements IInforme {
         final XWPFParagraph paragraph = document.createParagraph();
         paragraph.setStyle("PEREKE-TITULO");
 
-        List<STipoCurso> tiposCurso = reporte.getFirst();
+        List<R_TipoCurso> tiposCurso = reporte.getFirst();
         List<XItemTablaObjetivo> resultado = reporte.getSecond();
 
         // Creo la lista de tipo cursos.

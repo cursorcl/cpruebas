@@ -7,10 +7,10 @@ import cl.eos.interfaces.entity.IEntity;
 import cl.eos.restful.tables.R_EvaluacionEjetematico;
 
 /**
- * Representa una entrade de {@link SEjeTematico} o {@link SHabilidad} asociado a
+ * Representa una entrade de {@link SEjeTematico} o {@link R_Habilidad} asociado a
  * el número de preguntas en una prueba junto a la cantidad de alumnos que
  * rindieron la prueba y las buenas por alumno para dicho {@link SEjeTematico} o
- * {@link SHabilidad}.
+ * {@link R_Habilidad}.
  *
  * @author curso
  */

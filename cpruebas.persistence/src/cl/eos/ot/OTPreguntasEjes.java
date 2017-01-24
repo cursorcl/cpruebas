@@ -33,9 +33,6 @@ public class OTPreguntasEjes {
         return (float) buenas / (float) total * 100f;
     }
 
-    public String getName() {
-        return ejeTematico.getName();
-    }
 
     public Float getNologrado() {
         final Float valor = (float) total - (float) buenas;
@@ -62,7 +59,7 @@ public class OTPreguntasEjes {
     }
 
     public void setEjeTematico(R_Ejetematico ejeTematico) {
-        this.ejeTematico = ejeTematico;
+      this.ejeTematico = ejeTematico;
     }
 
     public void setTotal(Integer total) {

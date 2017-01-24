@@ -146,7 +146,7 @@ public class InformeEjesXCurso implements IInforme {
         int nroPreguntas = 0;
         for (int n = 0; n < respEsperadas.size(); n++) {
             final R_RespuestasEsperadasPrueba resp = respEsperadas.get(n);
-            if (!resp.isAnulada()) {
+            if (!resp.getAnulada()) {
                 if (resp.getEjeTematico().equals(eje)) {
                     if (respuestas.length() > n) {
                         final String sResp = respuestas.substring(n, n + 1);
@@ -251,7 +251,7 @@ public class InformeEjesXCurso implements IInforme {
             }
             totalAlumnos[index] = 0;
 
-            for (final SAlumno alumno : eval.getCurso().getAlumnos())
+            for (final R_Alumno alumno : eval.getCurso().getAlumnos())
                 if (tipoAlumno.getId() == Constants.PIE_ALL || alumno.getTipoAlumno().getId().equals(tipoAlumno))
                     totalAlumnos[index] = totalAlumnos[index] + 1;
 

@@ -88,7 +88,7 @@ public class ResumenRespuestaView extends AFormView implements EventHandler<Acti
         if (evaluacionPrueba != null && cmbTipoAlumno.getItems() != null && !cmbTipoAlumno.getItems().isEmpty()) {
             txtAsignatura.setText(evaluacionPrueba.getAsignatura());
             txtCurso.setText(evaluacionPrueba.getCurso().getName());
-            final String nroPreguntas = String.valueOf(evaluacionPrueba.getPrueba().getNroPreguntas());
+            final String nroPreguntas = String.valueOf(evaluacionPrueba.getPrueba().getNropreguntas());
             txtNroPreguntas.setText(nroPreguntas);
             txtPrueba.setText(evaluacionPrueba.getPrueba().getName());
             obtenerResultados(evaluacionPrueba);
@@ -153,7 +153,7 @@ public class ResumenRespuestaView extends AFormView implements EventHandler<Acti
     @SuppressWarnings({ "rawtypes", "unchecked" })
     private void obtenerResultados(R_EvaluacionPrueba entity) {
         final List<R_PruebaRendida> pruebasRendidas = entity.getPruebasRendidas();
-        final Integer nroPreguntas = entity.getPrueba().getNroPreguntas();
+        final Integer nroPreguntas = entity.getPrueba().getNropreguntas();
 
         Integer buenas = 0;
         Integer malas = 0;

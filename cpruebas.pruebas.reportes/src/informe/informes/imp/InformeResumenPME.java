@@ -149,7 +149,7 @@ public class InformeResumenPME implements IInforme {
                     continue;
                 }
                 final float porcentaje = (float) pruebaRendida.getBuenas()
-                        / (float) pruebaRendida.getEvaluacionPrueba().getPrueba().getNroPreguntas() * 100f;
+                        / (float) pruebaRendida.getEvaluacionPrueba().getPrueba().getNropreguntas() * 100f;
                 final R_RangoEvaluacion rango = nivel.getRango(porcentaje);
                 final R_Curso curso = pruebaRendida.getEvaluacionPrueba().getCurso();
 

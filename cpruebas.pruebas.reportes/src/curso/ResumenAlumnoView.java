@@ -9,7 +9,6 @@ import cl.eos.common.Constants;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.provider.persistence.PersistenceServiceFactory;
-import cl.eos.restful.tables.R_Curso;
 import cl.eos.restful.tables.R_EvaluacionPrueba;
 import cl.eos.restful.tables.R_PruebaRendida;
 import cl.eos.restful.tables.R_TipoAlumno;
@@ -172,7 +171,7 @@ public class ResumenAlumnoView extends AFormView implements EventHandler<ActionE
         columns.add("Nombre");
         columns.add("Paterno");
         columns.add("Materno");
-        for (int n = 0; n < eval.getNroPreguntas(); n++) {
+        for (int n = 0; n < eval.getNropreguntas(); n++) {
             columns.add(String.valueOf(n + 1));
         }
         TableColumn[] tableColumns = new TableColumn[columns.size()];
@@ -223,7 +222,7 @@ public class ResumenAlumnoView extends AFormView implements EventHandler<ActionE
             row.add(pr.getMaterno());
             row.add(pr.getNombre());
             String resps = pr.getRespuestas().toUpperCase();
-            for (int m = 0; m < eval.getNroPreguntas(); m++) {
+            for (int m = 0; m < eval.getNropreguntas(); m++) {
                 String rP = resps.substring(m, m + 1);
                 if (ResumenAlumnoView.O.equals(rP)) {
                     rP = ResumenAlumnoView.O;

@@ -288,7 +288,7 @@ public class Nivel_ComparativoComunalHabilidadView extends AFormView implements 
 
         HashMap<String, OTPreguntasEvaluacion> mapaOT = new HashMap<String, OTPreguntasEvaluacion>();
 
-        Float pBuenas = pruebaRendida.getPbuenas();
+        Float pBuenas = pruebaRendida.getBuenas().floatValue();
         for (Entry<Long, R_EvaluacionEjetematico> mEvaluacion : mEvaluaciones.entrySet()) {
 
             R_EvaluacionEjetematico evaluacionAl = mEvaluacion.getValue();

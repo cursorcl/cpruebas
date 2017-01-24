@@ -73,7 +73,7 @@ public class TipoPruebaView extends AFormView implements EventHandler<ActionEven
     Pagination pagination;
 
     public TipoPruebaView() {
-        setTitle("Tipo SPrueba");
+        setTitle("Tipo R_Prueba");
     }
 
     private void accionClicTabla() {

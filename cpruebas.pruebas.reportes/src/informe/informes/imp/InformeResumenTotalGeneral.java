@@ -220,7 +220,7 @@ public class InformeResumenTotalGeneral implements IInforme {
                 } else {
                     totalReprobados++;
                 }
-                final Float pBuenas = pruebaRendida.getPbuenas();
+                final Float pBuenas = pruebaRendida.getBuenas().floatValue();
                 for (final Object obj : evalEjeTematico) {
                     final R_EvaluacionEjetematico eET = (R_EvaluacionEjetematico) obj;
                     if (eET.isInside(pBuenas)) {

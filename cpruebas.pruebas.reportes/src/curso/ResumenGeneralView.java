@@ -113,7 +113,7 @@ public class ResumenGeneralView extends AFormView implements EventHandler<Action
         if (entity.getPrueba() != null) {
             txtPrueba.setText(entity.getPrueba().getName());
             txtPjePrueba.setText(entity.getPrueba().getPuntajeBase().toString());
-            txtNoPregunta.setText(entity.getPrueba().getNroPreguntas().toString());
+            txtNoPregunta.setText(entity.getPrueba().getNropreguntas().toString());
             if (entity.getPrueba().getAsignatura() != null) {
                 txtAsignatura.setText(entity.getPrueba().getAsignatura().getName());
             }
@@ -252,11 +252,11 @@ public class ResumenGeneralView extends AFormView implements EventHandler<Action
                 notaMax = pruebaRendida.getNota();
             }
 
-            if (pruebaRendida.getPbuenas() < pbuenasMin) {
-                pbuenasMin = pruebaRendida.getPbuenas();
+            if (pruebaRendida.getBuenas().floatValue() < pbuenasMin) {
+                pbuenasMin = pruebaRendida.getBuenas().floatValue();
             }
-            if (pruebaRendida.getPbuenas() > pbuenasMax) {
-                pbuenasMax = pruebaRendida.getPbuenas();
+            if (pruebaRendida.getBuenas().floatValue() > pbuenasMax) {
+                pbuenasMax = pruebaRendida.getBuenas().floatValue();
             }
 
             if (pruebaRendida.getPpuntaje() < ppuntajeMin) {

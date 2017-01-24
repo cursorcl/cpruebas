@@ -220,9 +220,9 @@ public class ResumenGeneralPMEView extends AFormView implements EventHandler<Act
 		List<R_PruebaRendida> pruebasRendidas = evaluacionPrueba.getPruebasRendidas();
 
 		int totalAlumnos = 0;
-		float totalPreguntas = evaluacionPrueba.getPrueba().getNroPreguntas();
+		float totalPreguntas = evaluacionPrueba.getPrueba().getNropreguntas();
 
-		SPrueba prueba = evaluacionPrueba.getPrueba();
+		R_Prueba prueba = evaluacionPrueba.getPrueba();
 		R_NivelEvaluacion nivelEvaluacion = prueba.getNivelEvaluacion();
 		List<R_RespuestasEsperadasPrueba> respuestasEsperadas = prueba.getRespuestas();
 
@@ -259,7 +259,7 @@ public class ResumenGeneralPMEView extends AFormView implements EventHandler<Act
 	private void generaContenidosHabilidades(R_PruebaRendida pruebaRendida,
 			List<R_RespuestasEsperadasPrueba> respuestasEsperadas) {
 
-		int len = pruebaRendida.getEvaluacionPrueba().getPrueba().getNroPreguntas();
+		int len = pruebaRendida.getEvaluacionPrueba().getPrueba().getNropreguntas();
 		String respuesta = pruebaRendida.getRespuestas().toUpperCase();
 		char[] cRespuesta = new char[len];
 		Arrays.fill(cRespuesta, 'O');
@@ -311,7 +311,7 @@ public class ResumenGeneralPMEView extends AFormView implements EventHandler<Act
 
 	private void generaContenidosEjes(R_PruebaRendida pruebaRendida, List<R_RespuestasEsperadasPrueba> respuestasEsperadas,
 			R_NivelEvaluacion nivelEvaluacion) {
-		int len = pruebaRendida.getEvaluacionPrueba().getPrueba().getNroPreguntas();
+		int len = pruebaRendida.getEvaluacionPrueba().getPrueba().getNropreguntas();
 		String respuesta = pruebaRendida.getRespuestas().toUpperCase();
 		char[] cRespuesta = new char[len];
 		Arrays.fill(cRespuesta, 'O');

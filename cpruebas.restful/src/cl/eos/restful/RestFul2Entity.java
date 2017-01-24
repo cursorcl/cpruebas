@@ -8,26 +8,26 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import cl.eos.persistence.AEntity;
-import cl.eos.persistence.models.SAlumno;
+
 import cl.eos.persistence.models.SAsignatura;
 import cl.eos.persistence.models.SCiclo;
 import cl.eos.persistence.models.SColegio;
 import cl.eos.persistence.models.SCurso;
 import cl.eos.persistence.models.SEjeTematico;
-import cl.eos.persistence.models.SEvaluacionEjeTematico;
-import cl.eos.persistence.models.SEvaluacionPrueba;
+
+
 import cl.eos.persistence.models.SFormas;
-import cl.eos.persistence.models.SHabilidad;
+
 import cl.eos.persistence.models.SImagenes;
 import cl.eos.persistence.models.SNivelEvaluacion;
 import cl.eos.persistence.models.SObjetivo;
 import cl.eos.persistence.models.SProfesor;
-import cl.eos.persistence.models.SPrueba;
+
 import cl.eos.persistence.models.SRangoEvaluacion;
-import cl.eos.persistence.models.SRespuestasEsperadasPrueba;
-import cl.eos.persistence.models.STipoAlumno;
-import cl.eos.persistence.models.STipoColegio;
-import cl.eos.persistence.models.STipoCurso;
+
+
+
+
 import cl.eos.persistence.models.STipoPrueba;
 import cl.eos.restful.tables.R_Alumno;
 import cl.eos.restful.tables.R_Asignatura;
@@ -55,15 +55,15 @@ public class RestFul2Entity {
 
     @SuppressWarnings("unchecked")
     public static <T> List<T> getAll(Class<T> clazz) {
-        if (clazz.equals(SAlumno.class)) {
+        if (clazz.equals(R_Alumno.class)) {
             return (List<T>) getAllAlumnos();
-        } else if (clazz.equals(STipoAlumno.class)) {
+        } else if (clazz.equals(R_TipoAlumno.class)) {
             return (List<T>) getAllTipoAlumnos();
         } else if (clazz.equals(SColegio.class)) {
             return (List<T>) getAllColegios();
         } else if (clazz.equals(SCurso.class)) {
             return (List<T>) getAllCursos();
-        } else if (clazz.equals(STipoColegio.class)) {
+        } else if (clazz.equals(R_TipoColegio.class)) {
             return (List<T>) getAllTipoColegios();
         } else if (clazz.equals(STipoPrueba.class)) {
             return (List<T>) getAllTipoPruebas();
@@ -73,13 +73,13 @@ public class RestFul2Entity {
             return (List<T>) getAllCiclos();
         } else if (clazz.equals(SEjeTematico.class)) {
             return (List<T>) getAllEjesTematicos();
-        } else if (clazz.equals(SEvaluacionEjeTematico.class)) {
+        } else if (clazz.equals(R_EvaluacionEjetematico.class)) {
             return (List<T>) getAllEvaluacionEjeTematico();
-        } else if (clazz.equals(SEvaluacionPrueba.class)) {
+        } else if (clazz.equals(R_EvaluacionPrueba.class)) {
             return (List<T>) getAllEvaluacionPrueba();
         } else if (clazz.equals(SFormas.class)) {
             return (List<T>) getAllFormas();
-        } else if (clazz.equals(SHabilidad.class)) {
+        } else if (clazz.equals(R_Habilidad.class)) {
             return (List<T>) getAllHabilidades();
         } else if (clazz.equals(SImagenes.class)) {
             return (List<T>) getAllImagenes();
@@ -91,9 +91,9 @@ public class RestFul2Entity {
             return (List<T>) getAllObjetivos();
         } else if (clazz.equals(SProfesor.class)) {
             return (List<T>) getAllProfesores();
-        } else if (clazz.equals(SRespuestasEsperadasPrueba.class)) {
+        } else if (clazz.equals(R_RespuestasEsperadasPrueba.class)) {
             return (List<T>) getAllRespuestasEsperadasPrueba();
-        } else if (clazz.equals(SPrueba.class)) {
+        } else if (clazz.equals(R_Prueba.class)) {
             return (List<T>) getAllPrueba();
         }
 
@@ -111,9 +111,9 @@ public class RestFul2Entity {
         return lstEntity;
     }
 
-    private static List<SPrueba> getAllPrueba() {
+    private static List<R_Prueba> getAllPrueba() {
         Map<Long, SAsignatura> mapAsig = getMap(getAllAsignaturas());
-        Map<Long, STipoCurso> mapCurso = getMap(getAllTipoCursos());
+        Map<Long, R_TipoCurso> mapCurso = getMap(getAllTipoCursos());
         Map<Long, STipoPrueba> mapTpoPrueba = getMap(getAllTipoPruebas());
         Map<Long, SProfesor> mapProfesor = getMap(getAllProfesores());
         Map<Long, SNivelEvaluacion> mapNEval = getMap(getAllNivelEvaluacion());
@@ -127,7 +127,7 @@ public class RestFul2Entity {
         Map<Long, List<R_RespuestasEsperadasPrueba>> mapRespuestas = lstRRespuestas.stream()
                 .collect(Collectors.groupingBy(R_RespuestasEsperadasPrueba::getPrueba_id, Collectors.toList()));
         
-        ArrayList<SPrueba> lstEntity = new ArrayList<>();
+        ArrayList<R_Prueba> lstEntity = new ArrayList<>();
         List<R_Prueba> lstREnity = RestfulClient.get(R_Prueba.class);
         for (R_Prueba rEntity : lstREnity) {
             
@@ -135,12 +135,12 @@ public class RestFul2Entity {
             //List<R_RespuestasEsperadasPrueba> respuestas = mapRespuestas.get(rEntity.getId());
             
             SAsignatura asignatura = mapAsig.get(rEntity.getAsignatura_id());
-            STipoCurso curso = mapCurso.get(rEntity.getCurso_id());
+            R_TipoCurso curso = mapCurso.get(rEntity.getCurso_id());
             STipoPrueba tpoPrueba = mapTpoPrueba.get(rEntity.getTipoprueba_id());
             SProfesor profesor = mapProfesor.get(rEntity.getProfesor_id());
             SNivelEvaluacion nivelEval = mapNEval.get(rEntity.getNivelevaluacion_id());
             
-            SPrueba entity = new SPrueba.Builder().id(rEntity.getId()).name(rEntity.getName())
+            R_Prueba entity = new R_Prueba.Builder().id(rEntity.getId()).name(rEntity.getName())
                     .exigencia(rEntity.getExigencia()).alternativas(rEntity.getAlternativas()).fecha(rEntity.getFecha())
                     .puntajeBase(rEntity.getPuntajebase()).responses(rEntity.getResponses())
                     .nroPreguntas(rEntity.getNropreguntas()).asignatura(asignatura).curso(curso).tipoPrueba(tpoPrueba)
@@ -163,21 +163,21 @@ public class RestFul2Entity {
 
     }
 
-    private static List<SRespuestasEsperadasPrueba> getAllRespuestasEsperadasPrueba() {
+    private static List<R_RespuestasEsperadasPrueba> getAllRespuestasEsperadasPrueba() {
 
-        Map<Long, SHabilidad> mapHab = getMap(getAllHabilidades());
+        Map<Long, R_Habilidad> mapHab = getMap(getAllHabilidades());
         Map<Long, SEjeTematico> mapEje = getMap(getAllEjesTematicos());
         Map<Long, SObjetivo> mapObj = getMap(getAllObjetivos());
-        Map<Long, SPrueba> mapPrb = getMap(getAllPrueba());
+        Map<Long, R_Prueba> mapPrb = getMap(getAllPrueba());
 
-        ArrayList<SRespuestasEsperadasPrueba> lstEntity = new ArrayList<>();
+        ArrayList<R_RespuestasEsperadasPrueba> lstEntity = new ArrayList<>();
         List<R_RespuestasEsperadasPrueba> lstREnity = RestfulClient.get(R_RespuestasEsperadasPrueba.class);
         for (R_RespuestasEsperadasPrueba rEntity : lstREnity) {
-            SHabilidad habilidad = mapHab.get(rEntity.getHabilidad_id());
+            R_Habilidad habilidad = mapHab.get(rEntity.getHabilidad_id());
             SEjeTematico ejeTematico = mapEje.get(rEntity.getEjetematico_id());
             SObjetivo objetivo = mapObj.get(rEntity.getObjetivo_id());
-            SPrueba prueba = mapPrb.get(rEntity.getPrueba_id());
-            SRespuestasEsperadasPrueba entity = new SRespuestasEsperadasPrueba.Builder().id(rEntity.getId())
+            R_Prueba prueba = mapPrb.get(rEntity.getPrueba_id());
+            R_RespuestasEsperadasPrueba entity = new R_RespuestasEsperadasPrueba.Builder().id(rEntity.getId())
                     .name(rEntity.getName()).numero(rEntity.getNumero()).verdaderoFalso(rEntity.getVerdaderofalso())
                     .anulada(rEntity.getAnulada()).respuesta(rEntity.getRespuesta()).mental(rEntity.getMental())
                     .habilidad(habilidad).ejeTematico(ejeTematico).objetivo(objetivo).prueba(prueba).build();
@@ -188,11 +188,11 @@ public class RestFul2Entity {
 
     private static List<SImagenes> getAllImagenes() {
         
-        Map<Long, SRespuestasEsperadasPrueba> mapResp = getMap(getAllRespuestasEsperadasPrueba());
+        Map<Long, R_RespuestasEsperadasPrueba> mapResp = getMap(getAllRespuestasEsperadasPrueba());
         ArrayList<SImagenes> lstEntity = new ArrayList<>();
         List<R_Imagenes> lstREnity = RestfulClient.get(R_Imagenes.class);
         for (R_Imagenes rEntity : lstREnity) {
-            SRespuestasEsperadasPrueba respuesta = mapResp.get(rEntity.getRespuesta_id());
+            R_RespuestasEsperadasPrueba respuesta = mapResp.get(rEntity.getRespuesta_id());
             SImagenes entity = new SImagenes.Builder().id(rEntity.getId()).name(rEntity.getName()).eliminada(false)
                     .numero(rEntity.getNumero()).respuesta(respuesta).build();
             lstEntity.add(entity);
@@ -214,14 +214,14 @@ public class RestFul2Entity {
 
     private static List<SObjetivo> getAllObjetivos() {
 
-        Map<Long, STipoCurso> mapTipoCurso = getMap(getAllTipoCursos());
+        Map<Long, R_TipoCurso> mapTipoCurso = getMap(getAllTipoCursos());
         Map<Long, SAsignatura> mapAsignatura = getMap(getAllAsignaturas());
 
         ArrayList<SObjetivo> lstEntity = new ArrayList<>();
         List<R_Objetivo> lstREnity = RestfulClient.get(R_Objetivo.class);
         for (R_Objetivo rEntity : lstREnity) {
             SAsignatura asignatura = mapAsignatura.get(rEntity.getAsignatura_id());
-            STipoCurso tipoCurso = mapTipoCurso.get(rEntity.getTipocurso_id());
+            R_TipoCurso tipoCurso = mapTipoCurso.get(rEntity.getTipocurso_id());
             SObjetivo entity = new SObjetivo.Builder().id(rEntity.getId()).name(rEntity.getName())
                     .descripcion(rEntity.getDescripcion()).asignatura(asignatura).tipoCurso(tipoCurso).build();
             lstEntity.add(entity);
@@ -277,22 +277,22 @@ public class RestFul2Entity {
 
     }
 
-    private static List<SHabilidad> getAllHabilidades() {
-        ArrayList<SHabilidad> lstEntity = new ArrayList<>();
+    private static List<R_Habilidad> getAllHabilidades() {
+        ArrayList<R_Habilidad> lstEntity = new ArrayList<>();
         List<R_Habilidad> lstREnity = RestfulClient.get(R_Habilidad.class);
         for (R_Habilidad rEntity : lstREnity) {
-            SHabilidad entity = new SHabilidad.Builder().id(rEntity.getId()).name(rEntity.getName())
+            R_Habilidad entity = new R_Habilidad.Builder().id(rEntity.getId()).name(rEntity.getName())
                     .descripcion(rEntity.getDescripcion()).build();
             lstEntity.add(entity);
         }
         return lstEntity;
     }
 
-    private static List<SEvaluacionPrueba> getAllEvaluacionPrueba() {
-        ArrayList<SEvaluacionPrueba> lstEntity = new ArrayList<>();
+    private static List<R_EvaluacionPrueba> getAllEvaluacionPrueba() {
+        ArrayList<R_EvaluacionPrueba> lstEntity = new ArrayList<>();
         List<R_EvaluacionPrueba> lstREnity = RestfulClient.get(R_EvaluacionPrueba.class);
         for (R_EvaluacionPrueba rEntity : lstREnity) {
-            SEvaluacionPrueba entity = new SEvaluacionPrueba.Builder().id(rEntity.getId()).name(rEntity.getName())
+            R_EvaluacionPrueba entity = new R_EvaluacionPrueba.Builder().id(rEntity.getId()).name(rEntity.getName())
                     .build();
             lstEntity.add(entity);
         }
@@ -300,11 +300,11 @@ public class RestFul2Entity {
 
     }
 
-    private static List<SEvaluacionEjeTematico> getAllEvaluacionEjeTematico() {
-        ArrayList<SEvaluacionEjeTematico> lstEntity = new ArrayList<>();
+    private static List<R_EvaluacionEjetematico> getAllEvaluacionEjeTematico() {
+        ArrayList<R_EvaluacionEjetematico> lstEntity = new ArrayList<>();
         List<R_EvaluacionEjetematico> lstREnity = RestfulClient.get(R_EvaluacionEjetematico.class);
         for (R_EvaluacionEjetematico rEntity : lstREnity) {
-            SEvaluacionEjeTematico entity = new SEvaluacionEjeTematico.Builder().id(rEntity.getId())
+            R_EvaluacionEjetematico entity = new R_EvaluacionEjetematico.Builder().id(rEntity.getId())
                     .name(rEntity.getName()).nroRangoMax(rEntity.getNrorangomax()).nroRangoMin(rEntity.getNrorangomin())
                     .build();
             lstEntity.add(entity);
@@ -353,31 +353,31 @@ public class RestFul2Entity {
      * 
      * @return
      */
-    public static List<STipoCurso> getAllTipoCursos() {
-        List<STipoCurso> lstEntity = new ArrayList<>();
+    public static List<R_TipoCurso> getAllTipoCursos() {
+        List<R_TipoCurso> lstEntity = new ArrayList<>();
         List<R_TipoCurso> lstREntity = RestfulClient.get(R_TipoCurso.class);
         for (R_TipoCurso rEntity : lstREntity) {
-            STipoCurso entity = new STipoCurso(rEntity.getId(), rEntity.getName());
+            R_TipoCurso entity = new R_TipoCurso(rEntity.getId(), rEntity.getName());
             lstEntity.add(entity);
         }
         return lstEntity;
     }
 
-    public static List<STipoAlumno> getAllTipoAlumnos() {
-        List<STipoAlumno> lstEntity = new ArrayList<>();
+    public static List<R_TipoAlumno> getAllTipoAlumnos() {
+        List<R_TipoAlumno> lstEntity = new ArrayList<>();
         List<R_TipoAlumno> lstREntity = RestfulClient.get(R_TipoAlumno.class);
         for (R_TipoAlumno rEntity : lstREntity) {
-            STipoAlumno entity = new STipoAlumno(rEntity.getId(), rEntity.getName());
+            R_TipoAlumno entity = new R_TipoAlumno(rEntity.getId(), rEntity.getName());
             lstEntity.add(entity);
         }
         return lstEntity;
     }
 
-    public static List<STipoColegio> getAllTipoColegios() {
-        ArrayList<STipoColegio> lstEntity = new ArrayList<STipoColegio>();
+    public static List<R_TipoColegio> getAllTipoColegios() {
+        ArrayList<R_TipoColegio> lstEntity = new ArrayList<R_TipoColegio>();
         List<R_TipoColegio> tipoColegios = RestfulClient.get(R_TipoColegio.class);
         for (R_TipoColegio tpoAlumno : tipoColegios) {
-            STipoColegio tpo = new STipoColegio(tpoAlumno.getId(), tpoAlumno.getName());
+            R_TipoColegio tpo = new R_TipoColegio(tpoAlumno.getId(), tpoAlumno.getName());
             lstEntity.add(tpo);
         }
         return lstEntity;
@@ -393,19 +393,19 @@ public class RestFul2Entity {
         return lstEntity;
     }
 
-    public static List<SAlumno> getAllAlumnos() {
-        Map<Long, STipoAlumno> mapTpo = getMap(getAllTipoAlumnos());
+    public static List<R_Alumno> getAllAlumnos() {
+        Map<Long, R_TipoAlumno> mapTpo = getMap(getAllTipoAlumnos());
         Map<Long, SCurso> mapCurso = getMap(getAllCursos());
         Map<Long, SColegio> mapCol = getMap(getAllColegios());
 
-        List<SAlumno> lstEntity = new ArrayList<>();
+        List<R_Alumno> lstEntity = new ArrayList<>();
         List<R_Alumno> lstRAlumnos = RestfulClient.get(R_Alumno.class);
         for (R_Alumno ralumno : lstRAlumnos) {
             SCurso curso = mapCurso.get(ralumno.getCurso_id());
             SColegio colegio = mapCol.get(ralumno.getColegio_id());
-            STipoAlumno tipoAlumno = mapTpo.get(ralumno.getTipoalumno_id());
+            R_TipoAlumno tipoAlumno = mapTpo.get(ralumno.getTipoalumno_id());
 
-            SAlumno alumno = new SAlumno.Builder().colegio(colegio).curso(curso).tipoAlumno(tipoAlumno)
+            R_Alumno alumno = new R_Alumno.Builder().colegio(colegio).curso(curso).tipoAlumno(tipoAlumno)
                     .direccion(ralumno.getDireccion()).materno(ralumno.getMaterno()).name(ralumno.getName())
                     .rut(ralumno.getRut()).id(ralumno.getId()).build();
             lstEntity.add(alumno);
@@ -417,14 +417,14 @@ public class RestFul2Entity {
     public static List<SCurso> getAllCursos() {
         Map<Long, SColegio> mapColegios = getMap(getAllColegios());
         Map<Long, SCiclo> mapCiclos = getMap(getAllCiclos());
-        Map<Long, STipoCurso> mapTipoCurso = getMap(getAllTipoCursos());
+        Map<Long, R_TipoCurso> mapTipoCurso = getMap(getAllTipoCursos());
 
         List<SCurso> lstEntity = new ArrayList<SCurso>();
         List<R_Curso> r_cursos = RestfulClient.get(R_Curso.class);
         for (R_Curso rCur : r_cursos) {
             SCiclo ciclo = mapCiclos.get(rCur.getCiclo_id());
             SColegio colegio = mapColegios.get(rCur.getColegio_id());
-            STipoCurso tipoCurso = mapTipoCurso.get(rCur.getTipocurso_id());
+            R_TipoCurso tipoCurso = mapTipoCurso.get(rCur.getTipocurso_id());
 
             SCurso curso = new SCurso.Builder().ciclo(ciclo).colegio(colegio).id(rCur.getId()).name(rCur.getName())
                     .tipoCurso(tipoCurso).build();
@@ -434,7 +434,7 @@ public class RestFul2Entity {
     }
 
     public static List<SColegio> getAllColegios() {
-        Map<Long, STipoColegio> mapTpo = getMap(getAllTipoColegios());
+        Map<Long, R_TipoColegio> mapTpo = getMap(getAllTipoColegios());
 
         List<SColegio> lstEntity = new ArrayList<SColegio>();
         List<R_Colegio> colegios = RestfulClient.get(R_Colegio.class);

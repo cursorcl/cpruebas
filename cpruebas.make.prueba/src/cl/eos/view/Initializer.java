@@ -41,7 +41,7 @@ public class Initializer {
             defPrueba.spnExigencia.setNumber(new BigDecimal(60));
             defPrueba.fecFeha.setValue(LocalDate.now());
         } else {
-            // SPrueba prueba = defPrueba.prueba;
+            // R_Prueba prueba = defPrueba.prueba;
             // defPrueba.cmbAsignatura.;
             // defPrueba.cmbProfesor;
             // defPrueba.spnExigencia;

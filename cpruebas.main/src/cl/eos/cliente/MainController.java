@@ -121,7 +121,7 @@ public class MainController {
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
     protected void importarExcel() {
-        final ButtonType bTypeAlumno = new ButtonType("SAlumno");
+        final ButtonType bTypeAlumno = new ButtonType("R_Alumno");
         final ButtonType bTypeColegio = new ButtonType("SColegio");
         final ButtonType bTypeCurso = new ButtonType("SCurso");
         final ButtonType bTypeProfesor = new ButtonType("SProfesor");

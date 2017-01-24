@@ -204,7 +204,7 @@ public class ResumenHabilidadesView extends AFormView implements EventHandler<Ac
 
         mapaHabilidades = new HashMap<R_Habilidad, OTPreguntasHabilidad>();
 
-        final SPrueba prueba = entity.getPrueba();
+        final R_Prueba prueba = entity.getPrueba();
         final List<R_RespuestasEsperadasPrueba> respuestasEsperadas = prueba.getRespuestas();
 
         for (final R_RespuestasEsperadasPrueba resp : respuestasEsperadas) {
