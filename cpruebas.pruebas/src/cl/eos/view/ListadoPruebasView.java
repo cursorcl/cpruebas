@@ -422,6 +422,13 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
       final R_Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
       if (prueba != null) {
         controller.findById(R_Prueba.class, prueba.getId(), comparativoComunalHabilidadNivel);
+        controller.findById(R_Asignatura.class, prueba.getAsignatura_id(),
+            comparativoComunalHabilidadNivel);
+        Map<String, Object> params =
+            MapBuilder.<String, Object>unordered().put("prueba_id", prueba.getId()).build();
+        controller.findByParam(R_EvaluacionPrueba.class, params, comparativoComunalHabilidadNivel);
+        controller.findByParam(R_RespuestasEsperadasPrueba.class, params,
+            comparativoComunalHabilidadNivel);
         controller.findAll(R_EvaluacionEjetematico.class, comparativoComunalHabilidadNivel);
         controller.findAll(R_TipoAlumno.class, comparativoComunalHabilidadNivel);
         controller.findAll(R_TipoColegio.class, comparativoComunalHabilidadNivel);
@@ -438,9 +445,8 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
       if (pPrueba != null) {
 
         controller.findById(R_Prueba.class, pPrueba.getId(), comparativoComunalNivel);
-        controller.findById(R_Asignatura.class, pPrueba.getAsignatura_id(), comparativoComunalNivel);
-        R_Curso curso = controller.findByIdSynchro(R_Curso.class, pPrueba.getCurso_id());
-        controller.findById(R_TipoCurso.class, curso.getTipocurso_id(), comparativoComunalNivel);
+        controller.findById(R_Asignatura.class, pPrueba.getAsignatura_id(),
+            comparativoComunalNivel);
         Map<String, Object> params =
             MapBuilder.<String, Object>unordered().put("prueba_id", pPrueba.getId()).build();
         controller.findByParam(R_EvaluacionPrueba.class, params, comparativoComunalNivel);

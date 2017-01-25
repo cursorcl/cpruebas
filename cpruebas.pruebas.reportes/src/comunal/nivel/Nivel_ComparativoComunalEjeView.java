@@ -9,7 +9,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.logging.Logger;
 
 import cl.eos.common.Constants;
 import cl.eos.imp.view.AFormView;
@@ -28,7 +27,6 @@ import cl.eos.restful.tables.R_PruebaRendida;
 import cl.eos.restful.tables.R_RespuestasEsperadasPrueba;
 import cl.eos.restful.tables.R_TipoAlumno;
 import cl.eos.restful.tables.R_TipoColegio;
-import cl.eos.restful.tables.R_TipoCurso;
 import cl.eos.util.ExcelSheetWriterObj;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -50,7 +48,6 @@ import javafx.scene.control.TableView;
 public class Nivel_ComparativoComunalEjeView extends AFormView
     implements EventHandler<ActionEvent> {
 
-  private static Logger log = Logger.getLogger(Nivel_ComparativoComunalEjeView.class.getName());
   private final NumberFormat formatter = new DecimalFormat("#0.00");
   @FXML
   private Label lblTitulo;
@@ -70,7 +67,6 @@ public class Nivel_ComparativoComunalEjeView extends AFormView
   private Map<R_EvaluacionEjetematico, HashMap<String, OTPreguntasEvaluacion>> mapEvaAlumnos = null;
   private List<R_EvaluacionPrueba> listaEvaluaciones;
   private List<R_RespuestasEsperadasPrueba> respuestasEsperadas;
-  private Map<Long, String> mapCursoColegio = new HashMap<>();
 
 
   @FXML
@@ -91,9 +87,32 @@ public class Nivel_ComparativoComunalEjeView extends AFormView
   private boolean llegaTipoColegio;
   private R_Asignatura asignatura;
   private boolean llegaAsignatura;
-  private R_TipoCurso tipoCurso;
-  private boolean llegTipoCurso;
   private Map<Long, R_Colegio> mapColegios = new HashMap<>();
+  
+  
+  @FXML
+  public void initialize() {
+    setTitle("Resumen Comparativo Comunal Ejes Temáticos x Nivel");
+    tblEjesTematicos.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+    tblEvaluacionEjesTematicos.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
+    mnuExportarEjesTematicos.setOnAction(this);
+    mnuExportarEvaluacion.setOnAction(this);
+    btnGenerar.setOnAction(this);
+    cmbTipoAlumno.setOnAction(event -> {
+      if (cmbTipoAlumno.getSelectionModel() == null)
+        return;
+      tipoAlumno = cmbTipoAlumno.getSelectionModel().getSelectedItem().getId();
+    });
+
+    cmbTipoColegio.setOnAction(event -> {
+      if (cmbTipoColegio.getSelectionModel().getSelectedItem() == null)
+        return;
+      tipoColegio = cmbTipoColegio.getSelectionModel().getSelectedItem().getId();
+    });
+
+  }
+  
 
   @SuppressWarnings({"unchecked", "rawtypes"})
   private void creacionColumnasEjesTematicos() {
@@ -101,8 +120,7 @@ public class Nivel_ComparativoComunalEjeView extends AFormView
     tblEjesTematicos.getColumns().clear();
 
     final TableColumn columna0 = new TableColumn("Eje Temático");
-    columna0.setCellValueFactory(param -> new SimpleStringProperty(
-        ((CellDataFeatures<ObservableList, String>) param).getValue().get(0).toString()));
+    columna0.setCellValueFactory(param -> new SimpleStringProperty(((CellDataFeatures<ObservableList, String>) param).getValue().get(0).toString()));
     columna0.setPrefWidth(100);
     tblEjesTematicos.getColumns().add(columna0);
 
@@ -137,11 +155,11 @@ public class Nivel_ComparativoComunalEjeView extends AFormView
     tblEvaluacionEjesTematicos.getColumns().add(columna0);
 
     int indice = 1;
-    for (final String evaluacion : titulosColumnas) {
+    for (final String column : titulosColumnas) {
 
       // Columnas
       final int col = indice;
-      final String colegioCurso = evaluacion;
+      final String colegioCurso = column;
       final TableColumn columna = new TableColumn(colegioCurso);
       columna.setCellValueFactory(param -> new SimpleStringProperty(
           ((CellDataFeatures<ObservableList, String>) param).getValue().get(col).toString()));
@@ -299,28 +317,6 @@ public class Nivel_ComparativoComunalEjeView extends AFormView
 
   }
 
-  @FXML
-  public void initialize() {
-    setTitle("Resumen Comparativo Comunal Ejes Temáticos x Nivel");
-    tblEjesTematicos.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-    tblEvaluacionEjesTematicos.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-
-    mnuExportarEjesTematicos.setOnAction(this);
-    mnuExportarEvaluacion.setOnAction(this);
-    btnGenerar.setOnAction(this);
-    cmbTipoAlumno.setOnAction(event -> {
-      if (cmbTipoAlumno.getSelectionModel() == null)
-        return;
-      tipoAlumno = cmbTipoAlumno.getSelectionModel().getSelectedItem().getId();
-    });
-
-    cmbTipoColegio.setOnAction(event -> {
-      if (cmbTipoColegio.getSelectionModel().getSelectedItem() == null)
-        return;
-      tipoColegio = cmbTipoColegio.getSelectionModel().getSelectedItem().getId();
-    });
-
-  }
 
   // (1)
   private void llenarDatosTabla() {
@@ -479,16 +475,12 @@ public class Nivel_ComparativoComunalEjeView extends AFormView
       llegaAsignatura = true;
     }
 
-    if (entity instanceof R_TipoCurso) {
-      tipoCurso = (R_TipoCurso) entity;
-      llegTipoCurso = true;
-    }
     procesaDatosReporte();
   }
 
   private void procesaDatosReporte() {
     if (llegaEvaluacionEjeTematico && llegaTipoAlumno && llegaOnFound && llegaTipoColegio
-        && llegaAsignatura && llegTipoCurso) {
+        && llegaAsignatura ) {
       llenarDatosTabla();
       desplegarDatosEjesTematicos();
       desplegarDatosEvaluaciones();

@@ -18,14 +18,20 @@ import cl.eos.ot.OTPreguntasEvaluacion;
 import cl.eos.ot.OTPreguntasHabilidad;
 import cl.eos.persistence.util.Comparadores;
 import cl.eos.restful.tables.R_Alumno;
+import cl.eos.restful.tables.R_Asignatura;
+import cl.eos.restful.tables.R_Colegio;
+import cl.eos.restful.tables.R_Curso;
+import cl.eos.restful.tables.R_Ejetematico;
 import cl.eos.restful.tables.R_EvaluacionEjetematico;
 import cl.eos.restful.tables.R_EvaluacionPrueba;
 import cl.eos.restful.tables.R_Habilidad;
 import cl.eos.restful.tables.R_Prueba;
+import cl.eos.restful.tables.R_PruebaRendida;
 import cl.eos.restful.tables.R_RespuestasEsperadasPrueba;
 import cl.eos.restful.tables.R_TipoAlumno;
 import cl.eos.restful.tables.R_TipoColegio;
 import cl.eos.util.ExcelSheetWriterObj;
+import cl.eos.util.MapBuilder;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -76,12 +82,17 @@ public class ComparativoComunalHabilidadView extends AFormView
 
   long tipoAlumno = Constants.PIE_ALL;
   long tipoColegio = Constants.TIPO_COLEGIO_ALL;
+  List<R_EvaluacionPrueba> listaEvaluaciones;
+  List<R_RespuestasEsperadasPrueba> respuestasEsperadas;
 
   private boolean llegaOnFound = false;
   private boolean llegaEvaluacionEjeTematico = false;
   private boolean llegaTipoAlumno = false;
   private ArrayList<String> titulosColumnas;
   private R_Prueba prueba;
+  private Map<Long, String> mapColegioCurso = new HashMap<>();
+  private List<R_Colegio> lstColegios = new ArrayList<>();
+  private R_Asignatura asignatura;
   private boolean llegaTipoColegio;
 
   public ComparativoComunalHabilidadView() {
@@ -180,52 +191,46 @@ public class ComparativoComunalHabilidadView extends AFormView
 
     if (llegaOnFound && llegaEvaluacionEjeTematico) {
       StringBuffer buffer = new StringBuffer();
-      buffer.append(prueba.getAsignatura());
-      buffer.append(" ");
-      buffer.append(prueba.getCurso());
+      buffer.append(asignatura);
       lblTitulo.setText(buffer.toString());
 
-      mapaHabilidad = new HashMap<R_Habilidad, HashMap<String, OTPreguntasHabilidad>>();
-      mapEvaAlumnos = new HashMap<R_EvaluacionEjetematico, HashMap<String, OTPreguntasEvaluacion>>();
+      mapaHabilidad = new HashMap<>();
+      mapEvaAlumnos = new HashMap<>();
       HashMap<String, OTPreguntasHabilidad> mapaColegios = null;
 
-      List<R_EvaluacionPrueba> listaEvaluaciones = prueba.getEvaluaciones();
 
-      creacionColumnasEjesTematicos(listaEvaluaciones);
-      creacionColumnasEvaluaciones(listaEvaluaciones);
+      creacionColumnasEjesTematicos();
+      creacionColumnasEvaluaciones();
 
       for (R_EvaluacionPrueba evaluacionPrueba : listaEvaluaciones) {
-        String colegioCurso = evaluacionPrueba.getColegiocurso();
+        String colegioCurso = mapColegioCurso.get(evaluacionPrueba.getId());
 
-        List<R_PruebaRendida> pruebasRendidas = evaluacionPrueba.getPruebasRendidas();
-        List<R_RespuestasEsperadasPrueba> respuestasEsperadas = prueba.getRespuestas();
+        Map<String, Object> params = MapBuilder.<String, Object>unordered()
+            .put("evaluacionprueba_id", evaluacionPrueba.getId()).build();
+        final List<R_PruebaRendida> pruebasRendidas =
+            controller.findByParamsSynchro(R_PruebaRendida.class, params);
+
 
         for (R_PruebaRendida pruebaRendida : pruebasRendidas) {
-          if (pruebaRendida == null || pruebaRendida.getAlumno() == null
-              || pruebaRendida.getAlumno().getTipoAlumno() == null)
+          Long alumno = pruebaRendida.getAlumno_id();
+          if (tipoAlumno != Constants.PIE_ALL && tipoAlumno != pruebaRendida.getTipoalumno_id())
             continue;
-          R_Alumno alumno = pruebaRendida.getAlumno();
 
-          if (tipoAlumno != Constants.PIE_ALL && tipoAlumno != alumno.getTipoAlumno().getId())
-            continue;
-          if (tipoColegio != Constants.TIPO_COLEGIO_ALL
-              && tipoColegio != alumno.getColegio().getTipoColegio().getId())
+          R_Colegio colegio =
+              lstColegios.stream().filter(c -> c.getId().equals(evaluacionPrueba.getColegio_id()))
+                  .findFirst().orElse(null);
+
+          if (colegio == null || tipoColegio != Constants.TIPO_COLEGIO_ALL
+              && tipoColegio != colegio.getTipocolegio_id())
             continue;
 
 
           generaDatosEvaluacion(pruebaRendida, colegioCurso);
 
           String respuesta = pruebaRendida.getRespuestas().toUpperCase();
-          R_Alumno al = pruebaRendida.getAlumno();
-          if (al == null) {
-            log.severe(String.format("NO EXISTE ALUMNO: %s %s", colegioCurso, respuesta));
-            continue; // Caso que el alumno sea nulo.
-          }
-          log.info(String.format("%s %s %s %s %s %s", colegioCurso, al.getRut(), al.getName(),
-              al.getPaterno(), al.getMaterno(), respuesta));
 
           if (respuesta == null || respuesta.length() < prueba.getNropreguntas()) {
-            informarProblemas(colegioCurso, al, respuesta);
+            informarProblemas(colegioCurso, alumno, respuesta);
             continue;
           }
 
@@ -236,9 +241,12 @@ public class ComparativoComunalHabilidadView extends AFormView
               continue;
             }
 
-            R_Habilidad habilidad = respuestasEsperadasPrueba.getHabilidad();
-            Integer numeroPreg = respuestasEsperadasPrueba.getNumero();
-            if (mapaHabilidad.containsKey(habilidad)) {
+            final Long idHabilidad= respuestasEsperadasPrueba.getEjetematico_id();
+            final Integer numeroPreg = respuestasEsperadasPrueba.getNumero();
+            R_Habilidad habilidad = mapaHabilidad.keySet().stream().filter(e -> e.getId().equals(idHabilidad)).findFirst().orElse(null);
+            
+            
+            if (mapaHabilidad != null) {
               HashMap<String, OTPreguntasHabilidad> mapa = mapaHabilidad.get(habilidad);
 
               if (mapa.containsKey(colegioCurso)) {
@@ -263,6 +271,7 @@ public class ComparativoComunalHabilidadView extends AFormView
                 mapa.put(colegioCurso, otPreguntas);
               }
             } else {
+              habilidad =  controller.findByIdSynchro(R_Habilidad.class, idHabilidad);
               OTPreguntasHabilidad otPreguntas = new OTPreguntasHabilidad();
               otPreguntas.setHabilidad(habilidad);
               if (cRespuesta[numeroPreg - 1] == respuestasEsperadasPrueba.getRespuesta()
@@ -399,7 +408,7 @@ public class ComparativoComunalHabilidadView extends AFormView
   }
 
   @SuppressWarnings({"rawtypes", "unchecked"})
-  private void creacionColumnasEjesTematicos(List<R_EvaluacionPrueba> pListaEvaluaciones) {
+  private void creacionColumnasEjesTematicos() {
     tblHabilidades.getColumns().clear();
 
     TableColumn columna0 = new TableColumn("Eje Temático");
@@ -415,11 +424,13 @@ public class ComparativoComunalHabilidadView extends AFormView
 
     titulosColumnas = new ArrayList<>();
     int indice = 1;
-    List<R_EvaluacionPrueba> listaEvaluaciones = pListaEvaluaciones;
     for (R_EvaluacionPrueba evaluacion : listaEvaluaciones) {
       // Columnas
       final int col = indice;
-      final String colegioCurso = evaluacion.getColegiocurso();
+      R_Curso curso = controller.findByIdSynchro(R_Curso.class, evaluacion.getCurso_id());
+      R_Colegio colegio = controller.findByIdSynchro(R_Colegio.class, evaluacion.getColegio_id());
+      final String colegioCurso =
+          String.format("%s\n%s", colegio.getName().toUpperCase(), curso.getName());
       titulosColumnas.add(colegioCurso);
       TableColumn columna = new TableColumn(colegioCurso);
       columna.setCellValueFactory(
@@ -435,7 +446,7 @@ public class ComparativoComunalHabilidadView extends AFormView
   }
 
   @SuppressWarnings({"rawtypes", "unchecked"})
-  private void creacionColumnasEvaluaciones(List<R_EvaluacionPrueba> pListaEvaluaciones) {
+  private void creacionColumnasEvaluaciones() {
     tblEvaluaciones.getColumns().clear();
 
     TableColumn columna0 = new TableColumn("");
@@ -486,11 +497,14 @@ public class ComparativoComunalHabilidadView extends AFormView
     }
   }
 
-  private void informarProblemas(String colegioCurso, R_Alumno al, String respuesta) {
-    Alert alert = new Alert(AlertType.ERROR);
-    alert.setTitle("R_Alumno con respuestas incompletas.");
-    alert.setHeaderText(String.format("%s/%s", colegioCurso, al.toString()));
+
+  private void informarProblemas(String colegioCurso, Long al, String respuesta) {
+    final Alert alert = new Alert(AlertType.ERROR);
+    R_Alumno alumno = controller.findByIdSynchro(R_Alumno.class, al);
+    alert.setTitle("Alumno con respuestas incompletas.");
+    alert.setHeaderText(String.format("%s/%s", colegioCurso, alumno.toString()));
     alert.setContentText(String.format("La respuesta [%s] es incompleta", respuesta));
     alert.showAndWait();
+
   }
 }

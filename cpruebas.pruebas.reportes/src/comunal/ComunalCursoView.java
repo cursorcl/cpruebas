@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.stream.Collectors;
 
 import cl.eos.common.Constants;
 import cl.eos.imp.view.AFormView;
@@ -63,7 +64,7 @@ public class ComunalCursoView extends AFormView implements EventHandler<ActionEv
 	private boolean llegaEvaluacionEjeTematico;
 	private boolean llegaOnFound;
 	private boolean llegaTipoAlumno = false;
-	private List<Object> listaPruebas;
+	private List<R_Prueba> listaPruebas;
 
 	public ComunalCursoView() {
 		setTitle("Resumen comunal");
@@ -206,6 +207,7 @@ public class ComunalCursoView extends AFormView implements EventHandler<ActionEv
 	private List<R_EvaluacionPrueba> listaEvaluacionesTitulos = new LinkedList<R_EvaluacionPrueba>();
 	private Map<R_EvaluacionEjetematico, HashMap<String, OTPreguntasEvaluacion>> mapEvaAlumnos;
 	private boolean llegaTipoColegio;
+  private List<R_EvaluacionPrueba> listaEvaluaciones;
 
 	private void llenarDatosTabla() {
 
@@ -366,7 +368,7 @@ public class ComunalCursoView extends AFormView implements EventHandler<ActionEv
 			}
 			if (entity instanceof R_Prueba) {
 				llegaOnFound = true;
-				listaPruebas = list;
+				listaPruebas = list.stream().map(o -> (R_Prueba)o).collect(Collectors.toList());
 			}
 
 			if (entity instanceof R_TipoAlumno) {
@@ -385,10 +387,14 @@ public class ComunalCursoView extends AFormView implements EventHandler<ActionEv
 					tColegioList.add((R_TipoColegio) iEntity);
 				}
 				cmbTipoColegio.setItems(tColegioList);
-				R_TipoColegio tColegio = new R_TipoColegio();
-				tColegio.setId(Constants.TIPO_COLEGIO_ALL);
+				R_TipoColegio tColegio = new R_TipoColegio.Builder().id(Constants.TIPO_COLEGIO_ALL).build();
 				cmbTipoColegio.getSelectionModel().select(tColegio);
 			}	
+			
+			if(entity instanceof R_EvaluacionPrueba)
+			{
+			  listaEvaluaciones = list.stream().map(o -> (R_EvaluacionPrueba)o).collect(Collectors.toList());
+			}
 			procesaDatosReporte();
 		}
 	}
