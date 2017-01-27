@@ -17,6 +17,7 @@ import cl.eos.restful.tables.R_Curso;
 import cl.eos.restful.tables.R_EvaluacionPrueba;
 import cl.eos.restful.tables.R_Objetivo;
 import cl.eos.restful.tables.R_PruebaRendida;
+import cl.eos.restful.tables.R_RespuestasEsperadasPrueba;
 import cl.eos.restful.tables.R_TipoAlumno;
 import cl.eos.util.MapBuilder;
 import cl.eos.util.Pair;
@@ -90,9 +91,16 @@ public class PorObjetivosColegioView extends AFormView {
         && cmbTipoAlumno.getSelectionModel().getSelectedItem() != null) {
       tipoAlumno = cmbTipoAlumno.getSelectionModel().getSelectedItem().getId();
 
+      
+      Map<String, Object> params = MapBuilder.<String, Object>unordered().put("prueba_id", evaluacionesPrueba.get(0).getPrueba_id()).build();
+      List<R_RespuestasEsperadasPrueba> lstRespEsperadas =
+          controller.findByParamsSynchro(R_RespuestasEsperadasPrueba.class, params);
+      
       final List<R_PruebaRendida> pRendidas = new ArrayList<>();
+      
+       
       for (R_EvaluacionPrueba evaluacionPrueba : evaluacionesPrueba) {
-        Map<String, Object> params = MapBuilder.<String, Object>unordered()
+        params = MapBuilder.<String, Object>unordered()
             .put("evaluacionprueba_id", evaluacionPrueba.getId()).build();
         List<R_PruebaRendida> lstR_PruebaRendida =
             controller.findByParamsSynchro(R_PruebaRendida.class, params);
@@ -101,7 +109,7 @@ public class PorObjetivosColegioView extends AFormView {
 
       if (pRendidas != null && !pRendidas.isEmpty()) {
         final Pair<List<R_Curso>, List<XItemTablaObjetivo>> reporte =
-            XUtilReportBuilder.reporteColegio(pRendidas, tipoAlumno);
+            XUtilReportBuilder.reporteColegio(pRendidas, lstRespEsperadas, tipoAlumno);
 
         List<R_Curso> cursos = reporte.getFirst();
 
