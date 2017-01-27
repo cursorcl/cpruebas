@@ -45,7 +45,7 @@ import colegio.nivel.Nivel_PorObjetivosColegioView;
 import colegio.nivel.Nivel_ResumenColegioView;
 import comunal.ComparativoComunalEjeView;
 import comunal.ComparativoComunalHabilidadView;
-import comunal.ComunalCursoView;
+import comunal.ResumenComunalViewView;
 import comunal.nivel.Nivel_ComparativoComunalEjeView;
 import comunal.nivel.Nivel_ComparativoComunalHabilidadView;
 import informe.InformeView;
@@ -102,7 +102,7 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
   @FXML
   private MenuItem mnuListaEvaluaciones;
   @FXML
-  private MenuItem mnuComparativoComunal;
+  private MenuItem mnuComparativoComunalEje;
   @FXML
   private MenuItem mnuComparativoComunalNivel;
   @FXML
@@ -120,7 +120,7 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
   @FXML
   private MenuItem mnuColegio;
   @FXML
-  private MenuItem mnuComunalEje;
+  private MenuItem mnuResumenComunal;
   @FXML
   private MenuItem mnuEjesEvaluacion;
   @FXML
@@ -150,7 +150,7 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
   private R_Prueba prueba;
   private ComparativoComunalEjeView comparativoComunal;
   private ComparativoComunalHabilidadView comparativoComunalHabilidad;
-  private ComunalCursoView comunalEje;
+  private ResumenComunalViewView resumenComunal;
   private EvaluarPruebaView evaluarPruebaView;
   private ImprimirPruebaView imprimirPrueba;
   private ResumenColegioView resumenColegio;
@@ -170,7 +170,7 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
         mnuCrear.setDisable(false);
         mnuModificar.setDisable(true);
         mnuEliminar.setDisable(false);
-        mnuComunalEje.setDisable(false);
+        mnuResumenComunal.setDisable(false);
         mnuPopupCrear.setDisable(false);
         mnuPopupModificar.setDisable(true);
         mnuPopupEliminar.setDisable(false);
@@ -178,7 +178,7 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
         mnuListaEvaluaciones.setDisable(true);
         mnuEvaluarPrueba.setDisable(true);
         mnuAnularPregunta.setDisable(true);
-        mnuComparativoComunal.setDisable(true);
+        mnuComparativoComunalEje.setDisable(true);
         mnuComparativoComunalHab.setDisable(true);
       } else if (itemsSelec.size() == 1) {
         final OTPrueba prueba = itemsSelec.get(0);
@@ -196,20 +196,20 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
         if (estadoDefinida) {
           mnuEvaluarPrueba.setDisable(!estadoDefinida);
           mnuListaEvaluaciones.setDisable(estadoDefinida);
-          mnuComunalEje.setDisable(estadoDefinida);
-          mnuComparativoComunal.setDisable(estadoDefinida);
+          mnuResumenComunal.setDisable(estadoDefinida);
+          mnuComparativoComunalEje.setDisable(estadoDefinida);
           mnuComparativoComunalHab.setDisable(estadoDefinida);
         } else if (estadoEvaluada) {
           mnuEvaluarPrueba.setDisable(!estadoEvaluada);
           mnuListaEvaluaciones.setDisable(!estadoEvaluada);
-          mnuComunalEje.setDisable(!estadoEvaluada);
-          mnuComparativoComunal.setDisable(!estadoEvaluada);
+          mnuResumenComunal.setDisable(!estadoEvaluada);
+          mnuComparativoComunalEje.setDisable(!estadoEvaluada);
           mnuComparativoComunalHab.setDisable(!estadoEvaluada);
         } else if (estadoCreada) {
           mnuEvaluarPrueba.setDisable(estadoCreada);
           mnuListaEvaluaciones.setDisable(estadoCreada);
-          mnuComunalEje.setDisable(estadoCreada);
-          mnuComparativoComunal.setDisable(estadoCreada);
+          mnuResumenComunal.setDisable(estadoCreada);
+          mnuComparativoComunalEje.setDisable(estadoCreada);
           mnuComparativoComunalHab.setDisable(estadoCreada);
           mnuAnularPregunta.setDisable(true);
         }
@@ -234,7 +234,7 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
       handlerAnularPregunta();
     } else if (source == mnuListaEvaluaciones) {
       handlerListaEvaluaciones();
-    } else if (source == mnuComparativoComunal) {
+    } else if (source == mnuComparativoComunalEje) {
       handlerComparativoComunal();
     } else if (source == mnuComparativoComunalNivel) {
       handlerComparativoComunalNivel();
@@ -242,8 +242,8 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
       handlerComparativoComunalHab();
     } else if (source == mnuComparativoComunalHabNivel) {
       handlerComparativoComunalHabNivel();
-    } else if (source == mnuComunalEje) {
-      handlerComunalEje();
+    } else if (source == mnuResumenComunal) {
+      handlerResumenComunal();
     } else if (source == mnuColegio) {
       handlerResumenColegios();
     } else if (source == mnuImprimirPrueba) {
@@ -493,20 +493,27 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
     }
   }
 
-  private void handlerComunalEje() {
-    comunalEje = (ComunalCursoView) show("/comunal/fxml/ComunalEje.fxml");
+  private void handlerResumenComunal() {
+    
+    //  TODO debo preocuparme que solamente se seleccionen pruebas del mismo ramo.
+    resumenComunal = (ResumenComunalViewView) show("/comunal/fxml/ResumenComunal.fxml");
     final ObservableList<OTPrueba> otPruebas =
         tblListadoPruebas.getSelectionModel().getSelectedItems();
     if (otPruebas != null) {
+      
       final Long[] pruebas = new Long[otPruebas.size()];
       int n = 0;
       for (final OTPrueba ot : otPruebas) {
         pruebas[n++] = ot.getPrueba().getId();
       }
-      controller.findByAllId(R_Prueba.class, pruebas, comunalEje);
-      controller.findAll(R_EvaluacionEjetematico.class, comunalEje);
-      controller.findAll(R_TipoAlumno.class, comunalEje);
-      controller.findAll(R_TipoColegio.class, comunalEje);
+      R_Prueba prueba = otPruebas.get(0).getPrueba();
+      
+      R_Curso curso = controller.findByIdSynchro(R_Curso.class, prueba.getCurso_id());
+      controller.findById(R_Asignatura.class, prueba.getAsignatura_id(), resumenComunal);
+      controller.findByAllId(R_Prueba.class, pruebas, resumenComunal);
+      controller.findAll(R_EvaluacionEjetematico.class, resumenComunal);
+      controller.findAll(R_TipoAlumno.class, resumenComunal);
+      controller.findAll(R_TipoColegio.class, resumenComunal);
     }
   }
 
@@ -685,11 +692,11 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
     mnuEvaluarPrueba.setOnAction(this);
     mnuAnularPregunta.setOnAction(this);
     mnuListaEvaluaciones.setOnAction(this);
-    mnuComparativoComunal.setOnAction(this);
+    mnuComparativoComunalEje.setOnAction(this);
     mnuComparativoComunalNivel.setOnAction(this);
     mnuComparativoComunalHab.setOnAction(this);
     mnuComparativoComunalHabNivel.setOnAction(this);
-    mnuComunalEje.setOnAction(this);
+    mnuResumenComunal.setOnAction(this);
     mnuColegio.setOnAction(this);
     mnuImprimirPrueba.setOnAction(this);
     mnuInforme.setOnAction(this);

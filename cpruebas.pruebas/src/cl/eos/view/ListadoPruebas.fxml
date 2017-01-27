@@ -110,9 +110,9 @@
 												</Menu>
 												<Menu mnemonicParsing="false" text="Reportes Comunales">
 													<items>
-														<MenuItem fx:id="mnuComunalEje" mnemonicParsing="false" text="Resumen Comunal" />
+														<MenuItem fx:id="mnuResumenComunal" mnemonicParsing="false" text="Resumen Comunal" />
 														<MenuItem fx:id="mnuComparativoComunalHab" mnemonicParsing="false" text="Comparativo Habilidades" />
-														<MenuItem fx:id="mnuComparativoComunal" mnemonicParsing="false" text="Comparativo Ejes Temáticos" />
+														<MenuItem fx:id="mnuComparativoComunalEje" mnemonicParsing="false" text="Comparativo Ejes Temáticos" />
 														<Menu mnemonicParsing="false" text="x  Nivel">
 															<items>
 																<MenuItem fx:id="mnuComparativoComunalHabNivel" mnemonicParsing="false" text="Comparativo Habilidades" />
