@@ -87,7 +87,6 @@ public abstract class AFormView extends AView implements IFormView {
 
     @Override
     public IEntity findSynchroById(Class<? extends IEntity> entityClazz, Long id) {
-        // TODO Auto-generated method stub
         return controller.findSynchroById(entityClazz, id);
     }
 

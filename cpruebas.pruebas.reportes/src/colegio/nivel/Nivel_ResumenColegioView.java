@@ -16,6 +16,7 @@ import cl.eos.ot.OTRangoTipoCurso;
 import cl.eos.ot.OTResumenColegio;
 import cl.eos.ot.OTResumenTipoCursoColegio;
 import cl.eos.persistence.util.Comparadores;
+import cl.eos.restful.EntityUtils;
 import cl.eos.restful.tables.R_Alumno;
 import cl.eos.restful.tables.R_Asignatura;
 import cl.eos.restful.tables.R_Colegio;
@@ -380,8 +381,8 @@ public class Nivel_ResumenColegioView extends AFormView implements EventHandler<
 
     Collections.sort(lstCursos, Comparadores.comparaResumeTipoCursoColegio());
     resumenTotal = new OTResumenTipoCursoColegio();
-    R_Curso curso = new R_Curso.Builder().id(Long.MAX_VALUE).name("Total").build();
-    resumenTotal.setTipoCurso(null);
+    R_TipoCurso curso = new R_TipoCurso.Builder().id(Long.MAX_VALUE).name("Total").build();
+    resumenTotal.setTipoCurso(curso);
     resumenTotal.setTotalAlumnos(totalColAlumnos);
     resumenTotal.setTotalEvaluados(totalColEvaluados);
     resumenTotal.setTotalAprobados(totalColAprobados);
@@ -505,7 +506,7 @@ public class Nivel_ResumenColegioView extends AFormView implements EventHandler<
 
     float porcentaje = (float) rendida.getBuenas() / (float) prueba.getNropreguntas() * 100f;
     
-    R_RangoEvaluacion rango = R_PruebaRendida.getRango(porcentaje, lstRangoEvaluacion);
+    R_RangoEvaluacion rango = EntityUtils.getRango(porcentaje, lstRangoEvaluacion);
     log.fine(String.format(";\"%s\";%f;%5.2f%%;\"%s\"", pCurso, rendida.getNota(),
         porcentaje, rango.getName()));
 

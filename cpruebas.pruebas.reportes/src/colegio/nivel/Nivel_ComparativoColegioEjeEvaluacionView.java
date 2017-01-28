@@ -331,18 +331,15 @@ public class Nivel_ComparativoColegioEjeEvaluacionView extends AFormView impleme
      * @param mapHabilidades
      *            Mapa que contiene los valores para cada colegio de las habilidades.
      */
-//    private void generarTablaEjes(Map<R_Ejetematico, List<OTAcumulador>> mapEjes) {
     private void generarTablaEjes(Map<Long, List<OTAcumulador>> mapEjes) {
         ObservableList<String> row = null;
         Map<Long, R_Ejetematico> ejes = new HashMap<>();
         
         ObservableList<ObservableList<String>> items = FXCollections.observableArrayList();
-//        for (R_Ejetematico eje : mapEjes.keySet()) {
             for (Long eje : mapEjes.keySet()) {
             row = FXCollections.observableArrayList();
             List<OTAcumulador> lst = mapEjes.get(eje);
             
-            //TODO ESTO, DEBE CAMBIAR SI ES MUY LENTO
             R_Ejetematico rEje = ejes.get(eje);
             if(rEje == null)
             {
@@ -366,7 +363,6 @@ public class Nivel_ComparativoColegioEjeEvaluacionView extends AFormView impleme
         }
         tblEjesCantidad.setItems(items);
     }
-//    private float obtenerPorcentaje(String respuestas, List<R_RespuestasEsperadasPrueba> respEsperadas, R_Ejetematico eje) {
     private float obtenerPorcentaje(String respuestas, List<R_RespuestasEsperadasPrueba> respEsperadas, Long eje) {
         float nroBuenas = 0;
         float nroPreguntas = 0;

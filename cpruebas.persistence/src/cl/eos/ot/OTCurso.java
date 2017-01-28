@@ -20,7 +20,6 @@ public class OTCurso {
     private R_Curso curso;
 
     public OTCurso() {
-        // TODO Auto-generated constructor stub
     }
 
     public OTCurso(R_Curso p_curso) {

@@ -16,7 +16,6 @@ public class OTColegio {
     private R_Colegio colegio;
 
     public OTColegio() {
-        // TODO Auto-generated constructor stub
     }
 
     public OTColegio(R_Colegio colegio) {

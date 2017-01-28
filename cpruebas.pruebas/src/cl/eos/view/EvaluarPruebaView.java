@@ -25,6 +25,7 @@ import cl.eos.imp.view.WindowManager;
 import cl.eos.interfaces.IActivator;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.persistence.util.Comparadores;
+import cl.eos.restful.EntityUtils;
 import cl.eos.restful.tables.R_Alumno;
 import cl.eos.restful.tables.R_Asignatura;
 import cl.eos.restful.tables.R_Colegio;
@@ -237,7 +238,7 @@ public class EvaluarPruebaView extends AFormView {
         otRendida.setNota(Utils.getNota(nroPreguntas, porcDificultad, otRendida.getBuenas(), notaMinima));
         final float total = otRendida.getBuenas() + otRendida.getMalas() + otRendida.getOmitidas();
         final float porcentaje = (float) otRendida.getBuenas() / total * 100f;
-        final R_RangoEvaluacion rango = R_PruebaRendida.getRango(porcentaje, rangos);
+        final R_RangoEvaluacion rango = EntityUtils.getRango(porcentaje, rangos);
         otRendida.setNivel(rango);
     }
     protected void handlerExportar() {
@@ -521,7 +522,7 @@ public class EvaluarPruebaView extends AFormView {
                 pRendida.setNota(nota);
                 pRendida.setRespuestas(strResps.toString());
                 final float porcentaje = (float) pRendida.getBuenas() / nroPreguntas * 100f;
-                final R_RangoEvaluacion rango = R_PruebaRendida.getRango(porcentaje, rangos);
+                final R_RangoEvaluacion rango = EntityUtils.getRango(porcentaje, rangos);
                 pRendida.setRango_id(rango.getId());
                 pRendida.setRespuestas(strResps.toString());
             }

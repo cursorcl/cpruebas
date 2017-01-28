@@ -90,7 +90,6 @@ public class InformeHabilidades implements IInforme {
     }
     @Override
     public void graph(XWPFDocument document) {
-        // TODO Auto-generated method stub
     }
     private float obtenerPorcentaje(String respuestas, List<R_RespuestasEsperadasPrueba> respEsperadas, R_Habilidad eje) {
         float nroBuenas = 0;

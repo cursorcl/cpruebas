@@ -17,7 +17,6 @@ public class TestNeuroph {
      * @param args
      */
     public static void main(String[] args) {
-        // TODO Auto-generated method stub
 
         // create multi layer perceptron network
         // ... inner cells = (input + output)/2 + 1

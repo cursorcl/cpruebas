@@ -15,6 +15,7 @@ import cl.eos.imp.view.AFormView;
 import cl.eos.ot.OTRangoCurso;
 import cl.eos.ot.OTResumenColegio;
 import cl.eos.persistence.util.Comparadores;
+import cl.eos.restful.EntityUtils;
 import cl.eos.restful.tables.R_Alumno;
 import cl.eos.restful.tables.R_Asignatura;
 import cl.eos.restful.tables.R_Colegio;
@@ -499,7 +500,7 @@ public class ResumenColegioView extends AFormView implements EventHandler<Action
   private void generaDatosRangos(R_PruebaRendida rendida, R_Curso curso) {
 
     float porcentaje = (float) rendida.getBuenas() / (float) prueba.getNropreguntas() * 100f;
-    R_RangoEvaluacion rango = R_PruebaRendida.getRango(porcentaje, lstRangos);
+    R_RangoEvaluacion rango = EntityUtils.getRango(porcentaje, lstRangos);
 
     log.info(String.format(";\"%s\";%f;%5.2f%%;\"%s\"", curso, rendida.getNota(), porcentaje,
         rango.getName()));

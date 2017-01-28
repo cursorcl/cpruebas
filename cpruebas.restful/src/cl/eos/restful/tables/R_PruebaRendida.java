@@ -5,6 +5,7 @@ import java.util.List;
 import com.google.gson.annotations.SerializedName;
 
 import cl.eos.persistence.AEntity;
+import cl.eos.restful.EntityUtils;
 import cl.eos.util.Utils;
 
 public class R_PruebaRendida extends AEntity {
@@ -177,6 +178,24 @@ public class R_PruebaRendida extends AEntity {
     public final void setTipoalumno_id(Long tipoalumno_id) {
         this.tipoalumno_id = tipoalumno_id;
     }
+    
+    
+    public Float getPbuenas() {
+      Float totalRespuestas = (float) (this.malas + this.buenas + this.omitidas);
+      float valor = ((float) this.buenas) / totalRespuestas * 100f;
+      return Utils.redondeo2Decimales(valor);
+    }
+
+    public Integer getPuntaje() {
+      return (Integer) Utils.getPuntaje(nota);
+    }
+
+    public Float getPpuntaje() {
+      float valor = ((float) (Utils.getPuntaje(nota) / Utils.MAX_PUNTAJE)) * 100f;
+      return Utils.redondeo2Decimales(valor);
+    }
+
+    
     /**
      * Este metodo recalcula la nota y el rango de la prueba rendida. Esto se hace cuando se ha realizado una anulación
      * de alguna pregunta.
@@ -248,7 +267,7 @@ public class R_PruebaRendida extends AEntity {
         this.setOmitidas(omitidas);
         this.setNota(nota);
         float porcentaje = ((float) this.getBuenas()) / nroPreguntas * 100f;
-        R_RangoEvaluacion rango = getRango(porcentaje, rangos);
+        R_RangoEvaluacion rango = EntityUtils.getRango(porcentaje, rangos);
         this.setRango_id(rango.getId());
     }
     /*
@@ -283,31 +302,7 @@ public class R_PruebaRendida extends AEntity {
         } else if (!evaluacionprueba_id.equals(other.evaluacionprueba_id)) return false;
         return true;
     }
-    public static R_RangoEvaluacion getRango(float porcentaje, List<R_RangoEvaluacion> rangos) {
-        R_RangoEvaluacion result = null;
-        int nroRangos = rangos.size();
-        int n = 0;
-        for (R_RangoEvaluacion rango : rangos) {
-            if (n == 0) {
-                if (porcentaje < rango.getMaximo()) {
-                    result = rango;
-                    break;
-                }
-            } else if (n == nroRangos - 1) {
-                if (porcentaje >= rango.getMinimo()) {
-                    result = rango;
-                    break;
-                }
-            } else {
-                if (porcentaje >= rango.getMinimo() && porcentaje < rango.getMaximo()) {
-                    result = rango;
-                    break;
-                }
-            }
-            n++;
-        }
-        return result;
-    }
+    
     public static class Builder {
         private Long id;
         private Integer omitidas;

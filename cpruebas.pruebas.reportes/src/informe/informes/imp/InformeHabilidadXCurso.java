@@ -124,7 +124,6 @@ public class InformeHabilidadXCurso implements IInforme {
         } catch (final IOException e) {
             e.printStackTrace();
         } catch (final InvalidFormatException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 

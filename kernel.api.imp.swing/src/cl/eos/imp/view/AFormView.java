@@ -16,43 +16,36 @@ public abstract class AFormView extends AView implements IFormView {
 
     @Override
     public void onDataArrived(List<Object> list) {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void onDeleted(IEntity entity) {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void onDeleting(IEntity entity) {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void onFound(IEntity entity) {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void onSaved(IEntity entity) {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void onSaving(IEntity entity) {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void onSelected(IEntity entity) {
-        // TODO Auto-generated method stub
 
     }
 

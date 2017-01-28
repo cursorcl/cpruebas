@@ -12,7 +12,6 @@ public class OTCiclo {
     private R_Ciclo ciclo;
 
     public OTCiclo() {
-        // TODO Auto-generated constructor stub
     }
 
     public OTCiclo(R_Ciclo ciclo) {

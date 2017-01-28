@@ -321,9 +321,7 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
     if (tblListadoPruebas.getSelectionModel().getSelectedItem() != null) {
       prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
       if (prueba != null) {
-        if (!Estado.getEstado(prueba.getEstado()).equals(Estado.EVALUADA)) {
-          // TODO debo llamar la nueva creación de prueba con datos.
-        } else {
+        if (Estado.getEstado(prueba.getEstado()).equals(Estado.EVALUADA)) {
           final Alert info = new Alert(AlertType.INFORMATION);
           info.setTitle("No se puede modificar.");
           info.setHeaderText("La prueba ya se encuentra evaluada.");

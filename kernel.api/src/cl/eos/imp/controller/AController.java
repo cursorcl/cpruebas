@@ -36,7 +36,6 @@ public abstract class AController implements IController, IPersistenceListener {
     }
     @Override
     public void add(IEntity entity) {
-        // TODO Auto-generated method stub
     }
     @Override
     public <T extends IEntity> void delete(Collection<T> entity) {
@@ -144,11 +143,9 @@ public abstract class AController implements IController, IPersistenceListener {
     }
     @Override
     public <T extends IEntity> void findAll(Class<T> entityClazz, IPersistenceListener listener, int offset, int items) {
-        // TODO Auto-generated method stub
     }
     @Override
     public <T extends IEntity> void findAll(Class<T> entityClazz, int offset, int items, IView... view) {
-        // TODO Auto-generated method stub
     }
     @Override
     public <T extends IEntity> void findByParam(Class<T> entityClazz, Map<String, Object> params) {

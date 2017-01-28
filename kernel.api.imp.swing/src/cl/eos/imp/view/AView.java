@@ -16,7 +16,6 @@ public abstract class AView implements IView {
 
     @Override
     public void addView(IView view) {
-        // TODO Auto-generated method stub
 
     }
 
@@ -27,7 +26,6 @@ public abstract class AView implements IView {
 
     @Override
     public String getName() {
-        // TODO Auto-generated method stub
         return null;
     }
 
@@ -38,7 +36,6 @@ public abstract class AView implements IView {
 
     @Override
     public Dimension getPreferredSize() {
-        // TODO Auto-generated method stub
         return null;
     }
 
@@ -49,36 +46,30 @@ public abstract class AView implements IView {
 
     @Override
     public List<IView> getViews() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public void onChangeStatus(Object status) {
-        // TODO Auto-generated method stub
     }
 
     @Override
     public void onDataArrived(List<Object> list) {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void onError(String error) {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void onFound(IEntity entity) {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void removeView(IView view) {
-        // TODO Auto-generated method stub
 
     }
 

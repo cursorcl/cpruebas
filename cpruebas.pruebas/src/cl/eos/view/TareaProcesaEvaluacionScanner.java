@@ -7,6 +7,7 @@ import java.util.List;
 import cl.eos.detection.ExtractorResultadosPrueba;
 import cl.eos.detection.OTResultadoScanner;
 import cl.eos.exceptions.CPruebasException;
+import cl.eos.restful.EntityUtils;
 import cl.eos.restful.tables.R_Alumno;
 import cl.eos.restful.tables.R_Prueba;
 import cl.eos.restful.tables.R_PruebaRendida;
@@ -96,7 +97,7 @@ public class TareaProcesaEvaluacionScanner extends Task<ObservableList<R_PruebaR
         pRendida.setNota(Utils.getNota(nroPreguntas, porcDificultad, pRendida.getBuenas(), notaMinima));
         final float total = pRendida.getBuenas() + pRendida.getMalas() + pRendida.getOmitidas();
         final float porcentaje = (float) pRendida.getBuenas() / total * 100f;
-        final R_RangoEvaluacion rango = R_PruebaRendida.getRango(porcentaje, rangos);
+        final R_RangoEvaluacion rango = EntityUtils.getRango(porcentaje, rangos);
         pRendida.setRango_id(rango.getId());
     }
 }

@@ -15,7 +15,6 @@ public class OTProfesor {
     private R_Profesor profesor;
 
     public OTProfesor() {
-        // TODO Auto-generated constructor stub
     }
 
     public OTProfesor(R_Profesor profesor) {

@@ -332,7 +332,6 @@ public class AnswerTrainerPanel extends JPanel
                 // the file with the net
                 neuralNetwork.save(nnfile.getAbsolutePath());
             } catch (final FileNotFoundException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
@@ -470,7 +469,6 @@ public class AnswerTrainerPanel extends JPanel
 
     @Override
     public void stateChanged(ChangeEvent event) {
-        // TODO Auto-generated method stub
 
     }
 }

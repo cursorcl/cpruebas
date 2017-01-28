@@ -15,7 +15,6 @@ public class CursosContoller extends AController {
 
     @Override
     public void initialize() {
-        // TODO Auto-generated method stub
         model = new CursosModel();
         model.findAll(R_Curso.class, this);
         model.findAll(R_Ciclo.class, this);

@@ -11,7 +11,6 @@ public class OTAsignatura {
     private R_Asignatura asignatura;
 
     public OTAsignatura() {
-        // TODO Auto-generated constructor stub
     }
 
     public OTAsignatura(R_Asignatura asignatura) {

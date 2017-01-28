@@ -117,8 +117,6 @@ public class TestTrainedRecognizer extends JFrame implements ActionListener {
             }
         }
 
-        // TODO Auto-generated method stub
-
     }
 
     final void initialize() {

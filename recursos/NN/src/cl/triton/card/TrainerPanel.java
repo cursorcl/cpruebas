@@ -364,7 +364,6 @@ public class TrainerPanel extends JPanel implements ActionListener, ChangeListen
 
     @Override
     public void stateChanged(ChangeEvent event) {
-        // TODO Auto-generated method stub
 
     }
 

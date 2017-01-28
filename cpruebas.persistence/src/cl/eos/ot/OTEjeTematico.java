@@ -16,7 +16,6 @@ public class OTEjeTematico {
     private R_Ejetematico ejeTematico;
 
     public OTEjeTematico() {
-        // TODO Auto-generated constructor stub
     }
     public OTEjeTematico(R_Ejetematico ejeTematico) {
         this.ejeTematico = ejeTematico;

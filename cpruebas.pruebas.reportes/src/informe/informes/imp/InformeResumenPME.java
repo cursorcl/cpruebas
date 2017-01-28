@@ -82,7 +82,6 @@ public class InformeResumenPME implements IInforme {
 
     @Override
     public void graph(XWPFDocument document) {
-        // TODO Auto-generated method stub
 
     }
 

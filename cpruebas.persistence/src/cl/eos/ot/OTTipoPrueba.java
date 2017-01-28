@@ -12,7 +12,6 @@ public class OTTipoPrueba {
     private R_TipoPrueba tipoPrueba;
 
     public OTTipoPrueba() {
-        // TODO Auto-generated constructor stub
     }
 
     public OTTipoPrueba(R_TipoPrueba tipoPrueba) {

@@ -72,7 +72,6 @@ public class RestfulClient {
                 }
             }
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return result;
@@ -168,7 +167,6 @@ public class RestfulClient {
                 result = gson.fromJson(apiOutput, new TypeToken<List<T>>() {}.getType());
             }
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return result;

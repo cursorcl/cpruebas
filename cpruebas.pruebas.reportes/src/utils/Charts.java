@@ -61,7 +61,6 @@ public class Charts extends JDialog {
                     try {
                         example();
                     } catch (final IOException e1) {
-                        // TODO Auto-generated catch block
                         e1.printStackTrace();
                     }
                 });

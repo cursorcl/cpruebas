@@ -384,7 +384,6 @@ public class StaticExtractorResultados {
         try {
             ImageIO.write(image, "png", new File("/res/ruts/" + name + ".png"));
         } catch (final IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         ;
