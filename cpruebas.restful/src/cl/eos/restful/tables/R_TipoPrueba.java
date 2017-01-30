@@ -40,6 +40,18 @@ public class R_TipoPrueba  extends AEntity{
     public final void setName(String name) {
         this.name = name;
     }
+    
+    
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+      return name;
+    }
+
+
 
     public static class Builder {
         private Long id;

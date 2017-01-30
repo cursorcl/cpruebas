@@ -86,10 +86,9 @@ public class XUtilEvaluations {
   }
 
 
-  static Map<R_Curso, List<XItemObjetivo>> evaluarColegio(List<R_PruebaRendida> pruebas,
-      List<R_RespuestasEsperadasPrueba> lstRespEsperadas, long tipoAlumno) {
+  static Map<R_Curso, List<XItemObjetivo>> evaluarColegio(List<R_PruebaRendida> pruebas, List<R_RespuestasEsperadasPrueba> lstRespEsperadas, long tipoAlumno) {
+    
     final Map<R_Curso, List<XItemObjetivo>> result = new HashMap<>();
-
 
     List<Long> lstIdAlumnos = pruebas.stream().map(p -> p.getAlumno_id()).collect(Collectors.toList());
     Long[] ids = lstIdAlumnos.toArray(new Long[lstIdAlumnos.size()]);
@@ -133,8 +132,7 @@ public class XUtilEvaluations {
     return result;
   }
 
-  static Map<R_TipoCurso, List<XItemObjetivo>> evaluarColegioxNivel(List<R_PruebaRendida> pruebas,
-      List<R_RespuestasEsperadasPrueba> lstRespEsperadas, long tipoAlumno) {
+  static Map<R_TipoCurso, List<XItemObjetivo>> evaluarColegioxNivel(List<R_PruebaRendida> pruebas, List<R_RespuestasEsperadasPrueba> lstRespEsperadas, long tipoAlumno) {
     final Map<R_TipoCurso, List<XItemObjetivo>> result = new HashMap<>();
 
     List<Long> lstIdAlumnos = pruebas.stream().map(p -> p.getAlumno_id()).collect(Collectors.toList());
@@ -194,8 +192,7 @@ public class XUtilEvaluations {
     return result;
   }
 
-  static List<XItemObjetivo> evaluarCurso(List<R_PruebaRendida> pruebas,
-      List<R_RespuestasEsperadasPrueba> lstRespEsperadas, long tipoAlumno) {
+  static List<XItemObjetivo> evaluarCurso(List<R_PruebaRendida> pruebas, List<R_RespuestasEsperadasPrueba> lstRespEsperadas, long tipoAlumno) {
     if (pruebas == null || pruebas.isEmpty()) {
       log.severe("En evaluarCuso viene una lista de pruebas vacía");
     }

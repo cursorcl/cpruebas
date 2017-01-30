@@ -109,7 +109,7 @@ public class PorObjetivosColegioView extends AFormView {
 
       if (pRendidas != null && !pRendidas.isEmpty()) {
         final Pair<List<R_Curso>, List<XItemTablaObjetivo>> reporte =
-            XUtilReportBuilder.reporteColegio(pRendidas, lstRespEsperadas, tipoAlumno);
+            XUtilReportBuilder.reporteColegio(evaluacionesPrueba, pRendidas, lstRespEsperadas, tipoAlumno);
 
         List<R_Curso> cursos = reporte.getFirst();
 

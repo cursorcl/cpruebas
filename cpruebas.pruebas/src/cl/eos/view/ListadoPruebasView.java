@@ -67,6 +67,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.StackPane;
 
 public class ListadoPruebasView extends AFormView implements EventHandler<ActionEvent> {
+  
+  public static int rowsPerPage = 25;
   @FXML
   private StackPane pnlRoot;
   @FXML
@@ -154,11 +156,12 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
   private EvaluarPruebaView evaluarPruebaView;
   private ImprimirPruebaView imprimirPrueba;
   private ResumenColegioView resumenColegio;
-  private int rowsPerPage = 25;
+  
   private ObservableList<R_Asignatura> lstAsignaturas;
   private ObservableList<R_TipoCurso> lstTipoCurso;
 
   public ListadoPruebasView() {
+    super();
     setTitle("Pruebas");
   }
 
@@ -280,6 +283,10 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
   private void handlerXNivelObjetivos() {
     final Nivel_PorObjetivosColegioView view =
         (Nivel_PorObjetivosColegioView) show("/colegio/nivel/fxml/Nivel_PorObjetivosColegio.fxml");
+    
+    prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
+    Map<String, Object> params = MapBuilder.<String, Object>unordered().put("prueba_id", prueba.getId()).build();
+    controller.findByParam(R_RespuestasEsperadasPrueba.class, params);
     controller.findAll(R_Asignatura.class, view);
     controller.findAll(R_TipoAlumno.class, view);
     controller.findAll(R_Colegio.class, view);
@@ -649,7 +656,6 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
     controller.findByParam(R_RangoEvaluacion.class, params, resumenColegio);
     controller.findAll(R_Colegio.class, resumenColegio);
     controller.findAll(R_Asignatura.class, resumenColegio);
-    controller.findAll(R_RangoEvaluacion.class, resumenColegio);
     controller.findAll(R_EvaluacionEjetematico.class, resumenColegio);
     controller.findAll(R_TipoAlumno.class, resumenColegio);
   }
@@ -735,8 +741,7 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
         for (final Object lEntity : list) {
           R_Prueba pPrueba = (R_Prueba) lEntity;
           R_Asignatura asig = mapAsignaturas.get(pPrueba.getAsignatura_id());
-          R_Curso curso = controller.findByIdSynchro(R_Curso.class, pPrueba.getCurso_id());
-          R_TipoCurso tpoCur = mapTiposCurso.get(curso.getTipocurso_id());
+          R_TipoCurso tpoCur = mapTiposCurso.get(pPrueba.getCurso_id());
           pruebas.add(new OTPrueba(pPrueba, asig, tpoCur));
         }
         tblListadoPruebas.setItems(pruebas);
@@ -745,11 +750,13 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
         for (final Object lEntity : list) {
           lstAsignaturas.add((R_Asignatura) lEntity);
         }
+        //assignValues();
       } else if (entity instanceof R_TipoCurso) {
         lstTipoCurso = FXCollections.observableArrayList();
         for (final Object lEntity : list) {
           lstTipoCurso.add((R_TipoCurso) lEntity);
         }
+        //assignValues();
       }
     }
   }

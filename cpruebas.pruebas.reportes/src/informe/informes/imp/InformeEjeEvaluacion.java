@@ -58,7 +58,6 @@ public class InformeEjeEvaluacion implements IInforme {
     super();
   }
 
-  @SuppressWarnings("unchecked")
   @Override
   public void execute(R_TipoAlumno tipoAlumno, R_Colegio colegio, R_Asignatura asignatura) {
     rangos =

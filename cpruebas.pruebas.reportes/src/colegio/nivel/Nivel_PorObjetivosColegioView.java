@@ -9,11 +9,13 @@ import java.util.stream.Collectors;
 
 import cl.eos.common.Constants;
 import cl.eos.imp.view.AFormView;
+import cl.eos.provider.persistence.PersistenceServiceFactory;
 import cl.eos.restful.tables.R_Asignatura;
 import cl.eos.restful.tables.R_Colegio;
 import cl.eos.restful.tables.R_EvaluacionPrueba;
 import cl.eos.restful.tables.R_Objetivo;
 import cl.eos.restful.tables.R_PruebaRendida;
+import cl.eos.restful.tables.R_RespuestasEsperadasPrueba;
 import cl.eos.restful.tables.R_TipoAlumno;
 import cl.eos.restful.tables.R_TipoCurso;
 import cl.eos.util.MapBuilder;
@@ -69,6 +71,7 @@ public class Nivel_PorObjetivosColegioView extends AFormView {
 
   long tipoAlumno = Constants.PIE_ALL;
   private ObservableList<R_EvaluacionPrueba> evaluacionesPrueba;
+  private List<R_RespuestasEsperadasPrueba> respEsperadas;
 
   protected void clearContent() {
     if (tblObjetivos.getItems() != null)
@@ -85,8 +88,9 @@ public class Nivel_PorObjetivosColegioView extends AFormView {
   private void generateReport() {
 
     if (cmbAsignaturas.getItems() != null && cmbTipoAlumno.getItems() != null
-        && cmbTipoAlumno.getSelectionModel().getSelectedItem() != null) {
+        && cmbTipoAlumno.getSelectionModel().getSelectedItem() != null && respEsperadas != null) {
       long tipoAlumno = cmbTipoAlumno.getSelectionModel().getSelectedItem().getId();
+      
       final List<R_PruebaRendida> pRendidas = new ArrayList<>();
       for (R_EvaluacionPrueba evaluacionPrueba : evaluacionesPrueba) {
         Map<String, Object> parameters = MapBuilder.<String, Object>unordered()
@@ -96,7 +100,7 @@ public class Nivel_PorObjetivosColegioView extends AFormView {
 
       if (pRendidas != null && !pRendidas.isEmpty()) {
         final Pair<List<R_TipoCurso>, List<XItemTablaObjetivo>> reporte =
-            XUtilReportBuilder.reporteColegioxNivel(pRendidas, tipoAlumno);
+            XUtilReportBuilder.reporteColegioxNivel(pRendidas, evaluacionesPrueba, respEsperadas, tipoAlumno);
 
         List<R_TipoCurso> cursos = reporte.getFirst();
 
@@ -316,6 +320,12 @@ public class Nivel_PorObjetivosColegioView extends AFormView {
           R_EvaluacionPrueba evaluacion = (R_EvaluacionPrueba) object;
           evaluacionesPrueba.add(evaluacion);
         }
+        generateReport();
+      }
+      
+      if(entity instanceof R_RespuestasEsperadasPrueba)
+      {
+        respEsperadas =  list.stream().map(i -> (R_RespuestasEsperadasPrueba)i).collect(Collectors.toList());
         generateReport();
       }
     }

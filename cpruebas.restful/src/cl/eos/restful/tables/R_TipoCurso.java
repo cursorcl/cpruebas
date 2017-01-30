@@ -40,6 +40,16 @@ public class R_TipoCurso  extends AEntity{
     public final void setName(String name) {
         this.name = name;
     }
+    
+    
+    @Override
+    public String toString() {
+      StringBuilder builder2 = new StringBuilder();
+      builder2.append(name);
+      return builder2.toString();
+    }
+
+
 
     public static class Builder {
         private Long id;

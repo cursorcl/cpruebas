@@ -1,5 +1,6 @@
 package curso;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -12,7 +13,9 @@ import cl.eos.provider.persistence.PersistenceServiceFactory;
 import cl.eos.restful.tables.R_Curso;
 import cl.eos.restful.tables.R_EvaluacionPrueba;
 import cl.eos.restful.tables.R_Objetivo;
+import cl.eos.restful.tables.R_Prueba;
 import cl.eos.restful.tables.R_PruebaRendida;
+import cl.eos.restful.tables.R_RespuestasEsperadasPrueba;
 import cl.eos.restful.tables.R_TipoAlumno;
 import cl.eos.util.MapBuilder;
 import javafx.beans.property.ReadOnlyFloatWrapper;
@@ -49,6 +52,7 @@ public class PorObjetivosView extends AFormView {
     private R_Curso curso;
     private List<R_PruebaRendida> pRendidas;
     long tipoAlumno = Constants.PIE_ALL;
+    private List<R_RespuestasEsperadasPrueba> respEsperadas;
     protected void clearContent() {
         if (tblObjetivos.getItems() != null) tblObjetivos.getItems().clear();
         if (tblObjetivos.getColumns() != null) {
@@ -66,8 +70,10 @@ public class PorObjetivosView extends AFormView {
                     && cmbTipoAlumno.getSelectionModel().getSelectedItem() != null) {
                 tipoAlumno = cmbTipoAlumno.getSelectionModel().getSelectedItem().getId();
             }
-            if (pRendidas != null && !pRendidas.isEmpty()) {
-                final List<XItemTablaObjetivo> reporte = XUtilReportBuilder.reporteCurso(pRendidas, tipoAlumno);
+            if (pRendidas != null && !pRendidas.isEmpty() && respEsperadas != null && !respEsperadas.isEmpty()) {
+              List<R_EvaluacionPrueba> lstEvaluacion = new ArrayList<>();
+              lstEvaluacion.add(evaluacionPrueba);
+                final List<XItemTablaObjetivo> reporte = XUtilReportBuilder.reporteCurso(lstEvaluacion, pRendidas, respEsperadas, tipoAlumno);
                 final ObservableList<XItemTablaObjetivo> itemsTable = FXCollections.observableList(reporte);
                 final Optional<XItemTablaObjetivo> opFirst = itemsTable.stream().findFirst();
                 if (!opFirst.isPresent()) return;
@@ -195,6 +201,8 @@ public class PorObjetivosView extends AFormView {
             curso = PersistenceServiceFactory.getPersistenceService().findByIdSynchro(R_Curso.class, evaluacionPrueba.getCurso_id());
             Map<String, Object> params = MapBuilder.<String, Object> unordered().put("evaluacionprueba_id", evaluacionPrueba.getId()).build();
             pRendidas = PersistenceServiceFactory.getPersistenceService().findByParamsSynchro(R_PruebaRendida.class, params);
+            params = MapBuilder.<String, Object> unordered().put("prueba_id", evaluacionPrueba.getPrueba_id()).build();
+            respEsperadas = PersistenceServiceFactory.getPersistenceService().findByParamsSynchro(R_RespuestasEsperadasPrueba.class, params);
             generateXReport();
         }
     }

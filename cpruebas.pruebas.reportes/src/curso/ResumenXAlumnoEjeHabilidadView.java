@@ -7,12 +7,9 @@ import cl.eos.common.Constants;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.restful.tables.R_Alumno;
-import cl.eos.restful.tables.R_Asignatura;
-import cl.eos.restful.tables.R_Curso;
 import cl.eos.restful.tables.R_Ejetematico;
 import cl.eos.restful.tables.R_EvaluacionPrueba;
 import cl.eos.restful.tables.R_Habilidad;
-import cl.eos.restful.tables.R_Prueba;
 import cl.eos.restful.tables.R_PruebaRendida;
 import cl.eos.restful.tables.R_RespuestasEsperadasPrueba;
 import cl.eos.restful.tables.R_TipoAlumno;
@@ -77,10 +74,6 @@ public class ResumenXAlumnoEjeHabilidadView extends AFormView implements EventHa
   private List<R_Habilidad> lstOtHabs;
   private R_EvaluacionPrueba evaluacionPrueba;
 
-  // TODO colocar valores iniciales
-  private R_Prueba prueba;
-  private R_Asignatura asignatura;
-  private R_Curso curso;
   private List<R_PruebaRendida> lstPruebasRendidas;
   private List<R_RespuestasEsperadasPrueba> lstRespuestasEsperadas;
 

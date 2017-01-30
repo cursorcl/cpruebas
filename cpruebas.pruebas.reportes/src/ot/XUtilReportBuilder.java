@@ -1,6 +1,7 @@
 package ot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -8,21 +9,28 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import cl.eos.persistence.util.Comparadores;
+import cl.eos.provider.persistence.PersistenceServiceFactory;
 import cl.eos.restful.tables.R_Curso;
+import cl.eos.restful.tables.R_EvaluacionPrueba;
+import cl.eos.restful.tables.R_Objetivo;
 import cl.eos.restful.tables.R_PruebaRendida;
 import cl.eos.restful.tables.R_RespuestasEsperadasPrueba;
 import cl.eos.restful.tables.R_TipoCurso;
+import cl.eos.util.MapBuilder;
 import cl.eos.util.Pair;
+import javafx.collections.ObservableList;
 
 public class XUtilReportBuilder {
 
     
 
-    public static Pair<List<R_TipoCurso>, List<XItemTablaObjetivo>> reporteColegioxNivel(List<R_PruebaRendida> pruebas, long tipoAlumno) {
+    private static R_Curso curso;
 
-        final List<XItemTablaObjetivo> objetivos = XUtilReportBuilder.buildFixedColumnsReport(pruebas);
+    public static Pair<List<R_TipoCurso>, List<XItemTablaObjetivo>> reporteColegioxNivel(List<R_PruebaRendida> pruebas, List<R_EvaluacionPrueba> evaluacionesPrueba, List<R_RespuestasEsperadasPrueba> respEsperadas,   long tipoAlumno) {
 
-        final Map<R_TipoCurso, List<XItemObjetivo>> eval = XUtilEvaluations.evaluarColegioxNivel(pruebas, tipoAlumno);
+        final List<XItemTablaObjetivo> objetivos = XUtilReportBuilder.buildFixedColumnsReport(evaluacionesPrueba, pruebas, respEsperadas);
+
+        final Map<R_TipoCurso, List<XItemObjetivo>> eval = XUtilEvaluations.evaluarColegioxNivel(pruebas, respEsperadas, tipoAlumno);
 
         // Obtengo los tipos de curso ordenados
         final List<R_TipoCurso> tipoCursosOrdenados = eval.keySet().stream().sorted(Comparadores.comparaTipoCurso())
@@ -53,17 +61,39 @@ public class XUtilReportBuilder {
      * @param lstRespEsperadas 
      * @return Lista con los items de tabla asociados.
      */
-    static List<XItemTablaObjetivo> buildFixedColumnsReport(List<R_PruebaRendida> pRendidas, List<R_RespuestasEsperadasPrueba> lstRespEsperadas) {
+    static List<XItemTablaObjetivo> buildFixedColumnsReport(List<R_EvaluacionPrueba> eval, List<R_PruebaRendida> pRendidas, List<R_RespuestasEsperadasPrueba> lstRespEsperadas) {
         final List<XItemTablaObjetivo> objetivos = new ArrayList<>();
-
-        final Map<R_Curso, List<R_PruebaRendida>> mapCursos = pRendidas.stream()
-                .collect(Collectors.groupingBy(R_PruebaRendida::getObjCurso));
-
+        
+        Long[] ids = eval.stream().map(e -> e.getCurso_id()).distinct().toArray(n ->new Long[n]);
+        List<R_Curso> lstCurso = PersistenceServiceFactory.getPersistenceService().findByAllIdSynchro(R_Curso.class, ids); 
+        ids = lstRespEsperadas.stream().map(r -> r.getObjetivo_id()).toArray(n -> new Long[n]);
+        List<R_Objetivo> lstObjetivos = PersistenceServiceFactory.getPersistenceService().findByAllIdSynchro(R_Objetivo.class, ids);
+        Map<R_Curso, List<R_PruebaRendida>> mapCursos = new HashMap<>();
+        
+        for(R_PruebaRendida pRend : pRendidas)
+        {
+          R_EvaluacionPrueba evaluacion = eval.stream().filter(e -> e.getId().equals(pRend.getEvaluacionprueba_id())).findFirst().orElse(null);
+          curso = lstCurso.stream().filter(c -> c.getId().equals(evaluacion.getCurso_id())).findFirst().orElse(null);
+          List<R_PruebaRendida> lstPRendidas = mapCursos.get(curso);
+          if(lstPRendidas == null)
+          {
+            lstPRendidas = new ArrayList<>();
+            mapCursos.put(curso, lstPRendidas);
+          }
+          lstPRendidas.add(pRend);
+        }
+          
+        
+        
         for (R_Curso curso : mapCursos.keySet()) {
             List<R_PruebaRendida> pR = mapCursos.get(curso);
-            R_PruebaRendida p = pR.get(0);
             for (final R_RespuestasEsperadasPrueba re : lstRespEsperadas) {
-                XItemTablaObjetivo ot = new XItemTablaObjetivo.Builder().objetivo(re.getObjetivo()).build();
+                R_Objetivo objetivo = lstObjetivos.stream().filter(o -> o.getId().equals(re.getObjetivo_id())).findFirst().orElse(null);
+                if(objetivo == null)
+                {
+                  continue;
+                }
+                XItemTablaObjetivo ot = new XItemTablaObjetivo.Builder().objetivo(objetivo).build();
                 final int index = objetivos.indexOf(ot);
                 if (index != -1) {
                     ot = objetivos.get(index);
@@ -88,9 +118,9 @@ public class XUtilReportBuilder {
      *            Lista de pruebas rendidas.
      * @return Calculo de las buenas de cada objetivo y curso.
      */
-    public static List<XItemTablaObjetivo> reporteCurso(List<R_PruebaRendida> pruebas, long tipoAlumno) {
-        final List<XItemTablaObjetivo> objetivos = XUtilReportBuilder.buildFixedColumnsReport(pruebas);
-        final List<XItemObjetivo> eval = XUtilEvaluations.evaluarCurso(pruebas, tipoAlumno);
+    public static List<XItemTablaObjetivo> reporteCurso(List<R_EvaluacionPrueba> evaluacionPrueba,List<R_PruebaRendida> pruebas, List<R_RespuestasEsperadasPrueba> respEsperadas, long tipoAlumno) {
+        final List<XItemTablaObjetivo> objetivos = XUtilReportBuilder.buildFixedColumnsReport(evaluacionPrueba, pruebas, respEsperadas);
+        final List<XItemObjetivo> eval = XUtilEvaluations.evaluarCurso(pruebas, respEsperadas, tipoAlumno);
 
         for (final XItemObjetivo item : eval) {
             Optional<XItemTablaObjetivo> obj = objetivos.stream().filter(o -> o.getObjetivo().equals(item.getObjetivo()))
@@ -119,9 +149,9 @@ public class XUtilReportBuilder {
      * @param lstRespEsperadas 
      * @return Calculo de las buenas de cada objetivo y lista de cursos.
      */
-    public static Pair<List<R_Curso>, List<XItemTablaObjetivo>> reporteColegio(List<R_PruebaRendida> pruebas, List<R_RespuestasEsperadasPrueba> lstRespEsperadas, long tipoAlumno) {
+    public static Pair<List<R_Curso>, List<XItemTablaObjetivo>> reporteColegio(List<R_EvaluacionPrueba> evaluaciones, List<R_PruebaRendida> pruebas, List<R_RespuestasEsperadasPrueba> lstRespEsperadas, long tipoAlumno) {
 
-        final List<XItemTablaObjetivo> objetivos = XUtilReportBuilder.buildFixedColumnsReport(pruebas, lstRespEsperadas);
+        final List<XItemTablaObjetivo> objetivos = XUtilReportBuilder.buildFixedColumnsReport(evaluaciones, pruebas, lstRespEsperadas);
 
         final Map<R_Curso, List<XItemObjetivo>> eval = XUtilEvaluations.evaluarColegio(pruebas, lstRespEsperadas, tipoAlumno);
 

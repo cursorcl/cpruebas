@@ -247,21 +247,17 @@ public class R_Prueba extends AEntity {
     public LocalDate getFechaLocal() {
         return LocalDate.ofEpochDay(this.fecha.longValue());
     }
-    /*
-     * (non-Javadoc)
-     * 
+
+    
+    /* (non-Javadoc)
      * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("R_Prueba [id=");
-        builder.append(id);
-        builder.append(", name=");
-        builder.append(name);
-        builder.append("]");
-        return builder.toString();
+      return name;
     }
+
+
     public static class Builder {
         private Long id;
         private Integer exigencia;

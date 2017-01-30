@@ -84,7 +84,6 @@ public class ResumenRespuestaView extends AFormView implements EventHandler<Acti
   private LinkedList<OTRespuestasPorcentaje> listaPorcentaje;
   private R_EvaluacionPrueba evaluacionPrueba;
 
-  // TODO establecer valores
   private R_Prueba prueba;
   private R_Asignatura asignatura;
   private R_Curso curso;

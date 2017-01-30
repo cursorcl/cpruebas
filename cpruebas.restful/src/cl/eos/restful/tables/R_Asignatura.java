@@ -39,6 +39,15 @@ public class R_Asignatura extends AEntity {
     public final void setName(String name) {
         this.name = name;
     }
+    
+    
+
+    @Override
+    public String toString() {
+      return name;
+    }
+
+
 
     public static class Builder {
         private Long id;
