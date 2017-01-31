@@ -651,6 +651,7 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
     resumenColegio = (ResumenColegioView) show("/colegio/fxml/ResumenColegio.fxml");
     show(resumenColegio);
     final R_Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
+    resumenColegio.setPrueba(prueba);
     Map<String, Object> params = MapBuilder.<String, Object>unordered()
         .put("nivelevaluacion_id", prueba.getNivelevaluacion_id()).build();
     controller.findByParam(R_RangoEvaluacion.class, params, resumenColegio);

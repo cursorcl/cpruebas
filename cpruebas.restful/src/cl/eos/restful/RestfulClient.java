@@ -2,6 +2,8 @@ package cl.eos.restful;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,11 +27,16 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
+import com.google.gson.TypeAdapter;
 import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonToken;
+import com.google.gson.stream.JsonWriter;
 
 /**
  * Clase que realiza todas las operaciones tipo RESTFUL en el sistema.
@@ -41,8 +48,41 @@ public class RestfulClient {
   private static final String URL = "http://localhost/tpruebas/%s";
   private static final String URL_CONEXION = "http://localhost/tpruebas/connection";
   private static final String BY_ID = URL + "/%d";
-  private static final Gson gson = new Gson();
+  
+  
+  static final TypeAdapter<Boolean> booleanAsIntAdapter = new TypeAdapter<Boolean>() {
+    @Override public void write(JsonWriter out, Boolean value) throws IOException {
+      if (value == null) {
+        out.nullValue();
+      } else {
+        out.value(value);
+      }
+    }
+    @Override public Boolean read(JsonReader in) throws IOException {
+      JsonToken peek = in.peek();
+      switch (peek) {
+      case BOOLEAN:
+        return in.nextBoolean();
+      case NULL:
+        in.nextNull();
+        return null;
+      case NUMBER:
+        return in.nextInt() != 0;
+      case STRING:
+        return Boolean.parseBoolean(in.nextString());
+      default:
+        throw new IllegalStateException("Expected BOOLEAN or NUMBER but was " + peek);
+      }
+    }
+  };
+  
+  private static final Gson gson =  new GsonBuilder()
+      .registerTypeAdapter(Boolean.class, booleanAsIntAdapter)
+      .registerTypeAdapter(boolean.class, booleanAsIntAdapter)
+      .create();
   private static final CloseableHttpClient httpclient = HttpClients.createDefault();
+  static {
+  }
 
   /**
    * Obtiene una lista de elementos de la clase T que tengan el ID indicado.
@@ -150,7 +190,8 @@ public class RestfulClient {
       HttpEntity entity = response.getEntity();
       if (entity != null) {
         String apiOutput = EntityUtils.toString(entity);
-        result = gson.fromJson(apiOutput, new TypeToken<List<T>>() {}.getType());
+        Type tType = new ListParameterizedType(clazz);
+        result = gson.fromJson(apiOutput, tType);
       }
     } catch (IOException e) {
       e.printStackTrace();
@@ -253,7 +294,7 @@ public class RestfulClient {
         JsonArray array = parser.parse(apiOutput).getAsJsonArray();
         for (final JsonElement json : array) {
           int value = json.getAsJsonObject().get("exist").getAsInt();
-          System.out.println("Valor desde la BD:" + value);
+          System.out.println("Conexión a la BD:" + (value == 1));
         }
       }
     } catch (HttpHostConnectException ex) {
@@ -275,4 +316,31 @@ public class RestfulClient {
   private static String getTablName(Class<?> clazz) {
     return clazz.getSimpleName().substring(2);
   }
+
+  private static class ListParameterizedType implements ParameterizedType {
+
+    private Type type;
+
+    private ListParameterizedType(Type type) {
+      this.type = type;
+    }
+
+    @Override
+    public Type[] getActualTypeArguments() {
+      return new Type[] {type};
+    }
+
+    @Override
+    public Type getRawType() {
+      return ArrayList.class;
+    }
+
+    @Override
+    public Type getOwnerType() {
+      return null;
+    }
+
+    // implement equals method too! (as per javadoc)
+  }
+  
 }

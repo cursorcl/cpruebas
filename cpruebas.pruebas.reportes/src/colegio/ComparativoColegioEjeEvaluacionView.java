@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 import java.util.stream.IntStream;
 
 import cl.eos.common.Constants;
@@ -44,6 +45,7 @@ import javafx.util.Callback;
 public class ComparativoColegioEjeEvaluacionView extends AFormView
     implements EventHandler<ActionEvent> {
 
+  Logger log = Logger.getLogger(ComparativoColegioEjeEvaluacionView.class.getName());
   private static final String ASIGNATURA_ID = "asignatura_id";
   private static final String COLEGIO_ID = "colegio_id";
   @FXML
@@ -180,6 +182,7 @@ public class ComparativoColegioEjeEvaluacionView extends AFormView
         R_EvaluacionPrueba evaluacion = (R_EvaluacionPrueba) object;
         evaluacionesPrueba.add(evaluacion);
       }
+      generarReporte();
     }
     if (entity instanceof R_RangoEvaluacion) {
       rangoEvalList = FXCollections.observableArrayList();
@@ -282,14 +285,17 @@ public class ComparativoColegioEjeEvaluacionView extends AFormView
     // Todas las evaluaciones asociadas (Todos los cursos)
     for (R_EvaluacionPrueba eval : evaluacionesPrueba) {
       // Se esta revisando un colegio.
-
+      log.info("Procesando evaluación:" + eval.getName());
       Map<String, Object> params = MapBuilder.<String, Object>unordered().put("evaluacionprueba_id", eval.getId()).build();
       List<R_PruebaRendida> pruebasRendidas = controller.findByParamsSynchro(R_PruebaRendida.class, params);
       // Estamos procesando un colegio/una prueba
+      
+      Long[] ids = pruebasRendidas.stream().map(p -> p.getAlumno_id()).toArray(n -> new Long[n]);
+      List<R_Alumno> alumnos = controller.findByAllIdSynchro(R_Alumno.class, ids);
       for (R_PruebaRendida pruebaRendida : pruebasRendidas) {
+        log.info("Procesando prueba rendida:" + pruebaRendida.getName());
         // Se procesa un alumno.
-        R_Alumno alumno =  controller.findSynchroById(R_Alumno.class, pruebaRendida.getAlumno_id());
-        
+        R_Alumno alumno = alumnos.stream().filter(a -> a.getId().equals(pruebaRendida.getAlumno_id())).findFirst().orElse(null);
         
         // Obtengo el index de la columna que tengo que llenar (mas 1
         // por que la primera es de contenido
@@ -308,7 +314,7 @@ public class ComparativoColegioEjeEvaluacionView extends AFormView
         }
 
         Integer index = IntStream.range(0, cursoList.size())
-            .filter(i -> alumno.getId().equals(cursoList.get(i)))
+            .filter(i -> alumno.getCurso_id().equals(cursoList.get(i).getId()))
             .findFirst().orElse(-1);
         
         

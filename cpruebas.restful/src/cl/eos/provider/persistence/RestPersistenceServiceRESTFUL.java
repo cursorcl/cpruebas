@@ -163,6 +163,7 @@ public class RestPersistenceServiceRESTFUL implements IPersistenceService {
     Runnable r = () -> {
       final List<T> result = RestfulClient.getByParameters(entityClazz, params);
       Platform.runLater(new Runnable() {
+        @SuppressWarnings("unchecked")
         @Override
         public void run() {
           listener.onFindFinished((List<Object>) result);
