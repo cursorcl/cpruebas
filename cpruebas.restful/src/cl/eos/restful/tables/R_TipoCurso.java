@@ -54,7 +54,6 @@ public class R_TipoCurso  extends AEntity{
     public static class Builder {
         private Long id;
         private String name;
-        private Integer version;
 
         public Builder id(Long id) {
             this.id = id;
@@ -66,11 +65,6 @@ public class R_TipoCurso  extends AEntity{
             return this;
         }
 
-        public Builder version(Integer version) {
-            this.version = version;
-            return this;
-        }
-
         public R_TipoCurso build() {
             return new R_TipoCurso(this);
         }
@@ -79,6 +73,5 @@ public class R_TipoCurso  extends AEntity{
     private R_TipoCurso(Builder builder) {
         this.id = builder.id;
         this.name = builder.name;
-        this.version = builder.version;
     }
 }

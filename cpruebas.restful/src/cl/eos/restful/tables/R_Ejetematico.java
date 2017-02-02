@@ -71,12 +71,21 @@ public class R_Ejetematico  extends AEntity{
         this.tipoprueba_id = tipoprueba_id;
     }
 
+    
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+      return name;
+    }
+
+
     public static class Builder {
         private Long id;
         private String name;
         private Long asignatura_id;
         private Long tipoprueba_id;
-        private Integer version;
 
         public Builder id(Long id) {
             this.id = id;
@@ -98,11 +107,6 @@ public class R_Ejetematico  extends AEntity{
             return this;
         }
 
-        public Builder version(Integer version) {
-            this.version = version;
-            return this;
-        }
-
         public R_Ejetematico build() {
             return new R_Ejetematico(this);
         }
@@ -113,6 +117,5 @@ public class R_Ejetematico  extends AEntity{
         this.name = builder.name;
         this.asignatura_id = builder.asignatura_id;
         this.tipoprueba_id = builder.tipoprueba_id;
-        this.version = builder.version;
     }
 }

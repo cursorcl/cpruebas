@@ -93,7 +93,6 @@ public class R_Alternativas extends AEntity{
         private String name;
         private Integer numero;
         private String texto;
-        private Integer version;
         private Long respuesta_id;
 
         public Builder id(Long id) {
@@ -116,10 +115,6 @@ public class R_Alternativas extends AEntity{
             return this;
         }
 
-        public Builder version(Integer version) {
-            this.version = version;
-            return this;
-        }
 
         public Builder respuesta_id(Long respuesta_id) {
             this.respuesta_id = respuesta_id;
@@ -136,7 +131,6 @@ public class R_Alternativas extends AEntity{
         this.name = builder.name;
         this.numero = builder.numero;
         this.texto = builder.texto;
-        this.version = builder.version;
         this.respuesta_id = builder.respuesta_id;
     }
 

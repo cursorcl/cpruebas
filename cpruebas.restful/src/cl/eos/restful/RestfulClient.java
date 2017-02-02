@@ -115,19 +115,26 @@ public class RestfulClient {
     } catch (IOException e) {
       e.printStackTrace();
     }
+    finally {
+      try {
+        response.close();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
     return result;
   }
 
   public static <T> List<T> getByQuery(Class<T> clazz, String query) {
     List<T> result = null;
     String url = String.format(URL, getTablName(clazz));
+    CloseableHttpResponse response = null;
     try {
       HttpGet httpget = new HttpGet(url);
       httpget.addHeader("accept", "application/json");
       URIBuilder uriBuilder = new URIBuilder(url);
       uriBuilder.addParameter("query", query);
       httpget.setURI(uriBuilder.build());
-      CloseableHttpResponse response = null;
       response = httpclient.execute(httpget);
       if (response.getStatusLine().getStatusCode() != 200)
         return null;
@@ -140,6 +147,13 @@ public class RestfulClient {
       e.printStackTrace();
     } catch (URISyntaxException e) {
       e.printStackTrace();
+    }
+    finally {
+      try {
+        response.close();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
     }
     return result;
   }
@@ -169,12 +183,20 @@ public class RestfulClient {
           "Error en conexión al servicio de red.", JOptionPane.ERROR_MESSAGE);
       e.printStackTrace();
     }
+    finally {
+      try {
+        response.close();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
     return result;
   }
 
   public static <T> List<T> getByParameters(Class<T> clazz, Map<String, Object> map) {
     List<T> result = null;
     String url = String.format(URL, getTablName(clazz));
+    CloseableHttpResponse response = null;
     try {
       HttpGet httpget = new HttpGet(url);
       httpget.addHeader("accept", "application/json");
@@ -183,7 +205,7 @@ public class RestfulClient {
         uriBuilder.addParameter(entry.getKey(), entry.getValue().toString());
       }
       httpget.setURI(uriBuilder.build());
-      CloseableHttpResponse response = null;
+      
       response = httpclient.execute(httpget);
       if (response.getStatusLine().getStatusCode() != 200)
         return null;
@@ -197,6 +219,13 @@ public class RestfulClient {
       e.printStackTrace();
     } catch (URISyntaxException e) {
       e.printStackTrace();
+    }
+    finally {
+      try {
+        response.close();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
     }
     return result;
   }
@@ -219,18 +248,26 @@ public class RestfulClient {
     } catch (IOException e) {
       e.printStackTrace();
     }
+    finally {
+      try {
+        response.close();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
     return result;
   }
 
   public static <T> boolean post(T element) {
     String url = String.format(URL, getTablName(element.getClass()));
     StringEntity postingString;
+    CloseableHttpResponse response = null;
     try {
       postingString = new StringEntity(gson.toJson(element));
       HttpPost httppost = new HttpPost(url);
       httppost.addHeader("accept", "application/json");
       httppost.setEntity(postingString);
-      CloseableHttpResponse response = null;
+      
       response = httpclient.execute(httppost);
       if (response.getStatusLine().getStatusCode() != 200)
         return false;
@@ -244,18 +281,26 @@ public class RestfulClient {
       e.printStackTrace();
       return false;
     }
+    finally {
+      try {
+        response.close();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
     return true;
   }
 
   public static <T> boolean put(T element, Long id) {
     String url = String.format(BY_ID, getTablName(element.getClass()), id);
     StringEntity postingString;
+    CloseableHttpResponse response = null;
     try {
       postingString = new StringEntity(gson.toJson(element));
       HttpPut httpput = new HttpPut(url);
       httpput.addHeader("accept", "application/json");
       httpput.setEntity(postingString);
-      CloseableHttpResponse response = null;
+      
       response = httpclient.execute(httpput);
       if (response.getStatusLine().getStatusCode() != 200)
         return false;
@@ -268,6 +313,13 @@ public class RestfulClient {
     } catch (IOException e) {
       e.printStackTrace();
       return false;
+    }
+    finally {
+      try {
+        response.close();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
     }
     return true;
   }
@@ -309,6 +361,13 @@ public class RestfulClient {
       JOptionPane.showMessageDialog(null, "Excepción:" + ex.getMessage(),
           "Se ha producido una excepción.", JOptionPane.ERROR_MESSAGE);
       return false;
+    }
+    finally {
+      try {
+        response.close();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
     }
     return true;
   }

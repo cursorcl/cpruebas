@@ -56,11 +56,22 @@ public class R_Habilidad  extends AEntity{
         this.descripcion = descripcion;
     }
 
+    
+    
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+      return name;
+    }
+
+
+
     public static class Builder {
         private Long id;
         private String name;
         private String descripcion;
-        private Integer version;
 
         public Builder id(Long id) {
             this.id = id;
@@ -77,10 +88,6 @@ public class R_Habilidad  extends AEntity{
             return this;
         }
 
-        public Builder version(Integer version) {
-            this.version = version;
-            return this;
-        }
 
         public R_Habilidad build() {
             return new R_Habilidad(this);
@@ -91,6 +98,5 @@ public class R_Habilidad  extends AEntity{
         this.id = builder.id;
         this.name = builder.name;
         this.descripcion = builder.descripcion;
-        this.version = builder.version;
     }
 }

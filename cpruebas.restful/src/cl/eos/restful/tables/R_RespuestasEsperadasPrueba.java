@@ -196,7 +196,6 @@ public class R_RespuestasEsperadasPrueba  extends AEntity{
         private Long habilidad_id;
         private Long ejetematico_id;
         private Boolean anulada;
-        private Integer version;
         private Long objetivo_id;
 
         public Builder id(Long id) {
@@ -249,10 +248,6 @@ public class R_RespuestasEsperadasPrueba  extends AEntity{
             return this;
         }
 
-        public Builder version(Integer version) {
-            this.version = version;
-            return this;
-        }
 
         public Builder objetivo_id(Long objetivo_id) {
             this.objetivo_id = objetivo_id;
@@ -275,7 +270,6 @@ public class R_RespuestasEsperadasPrueba  extends AEntity{
         this.habilidad_id = builder.habilidad_id;
         this.ejetematico_id = builder.ejetematico_id;
         this.anulada = builder.anulada;
-        this.version = builder.version;
         this.objetivo_id = builder.objetivo_id;
     }
 }

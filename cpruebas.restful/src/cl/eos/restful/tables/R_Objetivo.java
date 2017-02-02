@@ -86,12 +86,23 @@ public class R_Objetivo  extends AEntity{
     public final void setAsignatura_id(Long asignatura_id) {
         this.asignatura_id = asignatura_id;
     }
+    
+    
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+      return name;
+    }
+
+
 
     public static class Builder {
         private Long id;
         private String descripcion;
         private String name;
-        private Integer version;
         private Long tipocurso_id;
         private Long asignatura_id;
 
@@ -110,10 +121,6 @@ public class R_Objetivo  extends AEntity{
             return this;
         }
 
-        public Builder version(Integer version) {
-            this.version = version;
-            return this;
-        }
 
         public Builder tipocurso_id(Long tipocurso_id) {
             this.tipocurso_id = tipocurso_id;
@@ -134,7 +141,6 @@ public class R_Objetivo  extends AEntity{
         this.id = builder.id;
         this.descripcion = builder.descripcion;
         this.name = builder.name;
-        this.version = builder.version;
         this.tipocurso_id = builder.tipocurso_id;
         this.asignatura_id = builder.asignatura_id;
     }

@@ -58,26 +58,11 @@ public class R_DL_RangoLecturas  extends AEntity{
         this.velocidadlectora_id = velocidadlectora_id;
     }
 
-    /**
-     * @return the version
-     */
-    public final Integer getVersion() {
-        return version;
-    }
-
-    /**
-     * @param version the version to set
-     */
-    public final void setVersion(Integer version) {
-        this.version = version;
-    }
-
     public static class Builder {
         private Long id;
         private Long tipocurso;
         private Integer value;
         private Long velocidadlectora_id;
-        private Integer version;
 
         public Builder id(Long id) {
             this.id = id;
@@ -99,11 +84,6 @@ public class R_DL_RangoLecturas  extends AEntity{
             return this;
         }
 
-        public Builder version(Integer version) {
-            this.version = version;
-            return this;
-        }
-
         public R_DL_RangoLecturas build() {
             return new R_DL_RangoLecturas(this);
         }
@@ -114,7 +94,6 @@ public class R_DL_RangoLecturas  extends AEntity{
         this.tipocurso = builder.tipocurso;
         this.value = builder.value;
         this.velocidadlectora_id = builder.velocidadlectora_id;
-        this.version = builder.version;
     }
 
     @Override

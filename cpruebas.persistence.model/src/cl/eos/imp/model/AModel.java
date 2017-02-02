@@ -138,7 +138,7 @@ public abstract class AModel implements IModel {
     }
     @Override
     public IEntity update(IEntity entity) {
-        final IEntity result = PersistenceServiceFactory.getPersistenceService().save(entity);
+        final IEntity result = PersistenceServiceFactory.getPersistenceService().update(entity);
         final int idx = entities.indexOf(result);
         if (idx != -1) entities.remove(idx);
         entities.add(result);

@@ -96,7 +96,6 @@ public class R_EvaluacionEjetematico  extends AEntity{
         private String name;
         private float nrorangomin;
         private float nrorangomax;
-        private Integer version;
 
         public Builder id(Long id) {
             this.id = id;
@@ -118,11 +117,6 @@ public class R_EvaluacionEjetematico  extends AEntity{
             return this;
         }
 
-        public Builder version(Integer version) {
-            this.version = version;
-            return this;
-        }
-
         public R_EvaluacionEjetematico build() {
             return new R_EvaluacionEjetematico(this);
         }
@@ -133,6 +127,5 @@ public class R_EvaluacionEjetematico  extends AEntity{
         this.name = builder.name;
         this.nrorangomin = builder.nrorangomin;
         this.nrorangomax = builder.nrorangomax;
-        this.version = builder.version;
     }
 }

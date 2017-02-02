@@ -111,7 +111,6 @@ public class R_RangoEvaluacion  extends AEntity{
         private float minimo;
         private String name;
         private float maximo;
-        private Integer version;
         private Long nivelevaluacion_id;
 
         public Builder id(Long id) {
@@ -139,10 +138,6 @@ public class R_RangoEvaluacion  extends AEntity{
             return this;
         }
 
-        public Builder version(Integer version) {
-            this.version = version;
-            return this;
-        }
 
         public Builder nivelevaluacion_id(Long nivelevaluacion_id) {
             this.nivelevaluacion_id = nivelevaluacion_id;
@@ -160,7 +155,6 @@ public class R_RangoEvaluacion  extends AEntity{
         this.minimo = builder.minimo;
         this.name = builder.name;
         this.maximo = builder.maximo;
-        this.version = builder.version;
         this.nivelevaluacion_id = builder.nivelevaluacion_id;
     }
     

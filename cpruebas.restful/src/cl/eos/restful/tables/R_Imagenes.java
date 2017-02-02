@@ -75,7 +75,6 @@ public class R_Imagenes  extends AEntity{
         private Long id;
         private String name;
         private Integer numero;
-        private Integer version;
         private Long respuesta_id;
 
         public Builder id(Long id) {
@@ -93,10 +92,6 @@ public class R_Imagenes  extends AEntity{
             return this;
         }
 
-        public Builder version(Integer version) {
-            this.version = version;
-            return this;
-        }
 
         public Builder respuesta_id(Long respuesta_id) {
             this.respuesta_id = respuesta_id;
@@ -112,7 +107,6 @@ public class R_Imagenes  extends AEntity{
         this.id = builder.id;
         this.name = builder.name;
         this.numero = builder.numero;
-        this.version = builder.version;
         this.respuesta_id = builder.respuesta_id;
     }
 }

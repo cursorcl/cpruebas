@@ -56,7 +56,6 @@ public class R_TipoPrueba  extends AEntity{
     public static class Builder {
         private Long id;
         private String name;
-        private Integer version;
 
         public Builder id(Long id) {
             this.id = id;
@@ -68,11 +67,6 @@ public class R_TipoPrueba  extends AEntity{
             return this;
         }
 
-        public Builder version(Integer version) {
-            this.version = version;
-            return this;
-        }
-
         public R_TipoPrueba build() {
             return new R_TipoPrueba(this);
         }
@@ -81,6 +75,5 @@ public class R_TipoPrueba  extends AEntity{
     private R_TipoPrueba(Builder builder) {
         this.id = builder.id;
         this.name = builder.name;
-        this.version = builder.version;
     }
 }

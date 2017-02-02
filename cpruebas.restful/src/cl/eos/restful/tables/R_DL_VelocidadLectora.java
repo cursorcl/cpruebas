@@ -44,7 +44,6 @@ public class R_DL_VelocidadLectora  extends AEntity{
     public static class Builder {
         private Long id;
         private String name;
-        private Integer version;
 
         public Builder id(Long id) {
             this.id = id;
@@ -56,11 +55,6 @@ public class R_DL_VelocidadLectora  extends AEntity{
             return this;
         }
 
-        public Builder version(Integer version) {
-            this.version = version;
-            return this;
-        }
-
         public R_DL_VelocidadLectora build() {
             return new R_DL_VelocidadLectora(this);
         }
@@ -69,6 +63,5 @@ public class R_DL_VelocidadLectora  extends AEntity{
     private R_DL_VelocidadLectora(Builder builder) {
         this.id = builder.id;
         this.name = builder.name;
-        this.version = builder.version;
     }
 }

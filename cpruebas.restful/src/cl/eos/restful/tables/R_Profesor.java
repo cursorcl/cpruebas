@@ -91,7 +91,6 @@ public class R_Profesor extends AEntity {
         private String paterno;
         private String rut;
         private String materno;
-        private Integer version;
         public Builder id(Long id) {
             this.id = id;
             return this;
@@ -112,10 +111,6 @@ public class R_Profesor extends AEntity {
             this.materno = materno;
             return this;
         }
-        public Builder version(Integer version) {
-            this.version = version;
-            return this;
-        }
         public R_Profesor build() {
             return new R_Profesor(this);
         }
@@ -126,6 +121,5 @@ public class R_Profesor extends AEntity {
         this.paterno = builder.paterno;
         this.rut = builder.rut;
         this.materno = builder.materno;
-        this.version = builder.version;
     }
 }

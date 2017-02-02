@@ -105,7 +105,6 @@ public class R_Curso extends AEntity{
         private Long tipocurso_id;
         private Long ciclo_id;
         private Long colegio_id;
-        private Integer version;
 
         public Builder id(Long id) {
             this.id = id;
@@ -132,11 +131,6 @@ public class R_Curso extends AEntity{
             return this;
         }
 
-        public Builder version(Integer version) {
-            this.version = version;
-            return this;
-        }
-
         public R_Curso build() {
             return new R_Curso(this);
         }
@@ -148,6 +142,5 @@ public class R_Curso extends AEntity{
         this.tipocurso_id = builder.tipocurso_id;
         this.ciclo_id = builder.ciclo_id;
         this.colegio_id = builder.colegio_id;
-        this.version = builder.version;
     }
 }

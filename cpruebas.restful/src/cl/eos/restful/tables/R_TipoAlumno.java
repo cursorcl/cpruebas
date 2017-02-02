@@ -44,13 +44,12 @@ public class R_TipoAlumno  extends AEntity{
      */
     @Override
     public String toString() {
-      return id + ", " + name;
+      return name;
     }
 
     public static class Builder {
         private Long id;
         private String name;
-        private Integer version;
 
         public Builder id(Long id) {
             this.id = id;
@@ -62,11 +61,6 @@ public class R_TipoAlumno  extends AEntity{
             return this;
         }
 
-        public Builder version(Integer version) {
-            this.version = version;
-            return this;
-        }
-
         public R_TipoAlumno build() {
             return new R_TipoAlumno(this);
         }
@@ -75,6 +69,5 @@ public class R_TipoAlumno  extends AEntity{
     private R_TipoAlumno(Builder builder) {
         this.id = builder.id;
         this.name = builder.name;
-        this.version = builder.version;
     }
 }

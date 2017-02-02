@@ -12,6 +12,9 @@ import org.imgscalr.Scalr;
 import org.imgscalr.Scalr.Method;
 import org.imgscalr.Scalr.Mode;
 
+import com.sun.corba.se.impl.javax.rmi.CORBA.Util;
+import com.sun.org.apache.xerces.internal.impl.dv.ValidatedInfo;
+
 import cl.eos.restful.tables.R_Alternativas;
 import cl.eos.restful.tables.R_Imagenes;
 import cl.eos.restful.tables.R_Prueba;
@@ -38,6 +41,8 @@ public class MenuGrabarListener implements EventHandler<ActionEvent> {
     @Override
     public void handle(ActionEvent event) {
 
+        if(!validate())
+          return;
         name = defPrueba.txtNombre.getText();
         idAsignatura = defPrueba.cmbAsignatura.getValue().getId();
         idCurso = defPrueba.cmbAsignatura.getValue().getId();
@@ -86,6 +91,7 @@ public class MenuGrabarListener implements EventHandler<ActionEvent> {
 
             for (int n = 0; n < lstAlternativas.size(); n++) {
                 R_Alternativas alt = lstAlternativas.get(n);
+                alt.setId(Utils.getLastIndex());
                 alt.setRespuesta_id(respuesta.getId());
                 alt = (R_Alternativas) defPrueba.save(alt);
                 lstAlternativas.set(n, alt);
@@ -94,17 +100,23 @@ public class MenuGrabarListener implements EventHandler<ActionEvent> {
             if (lstImages != null && !lstImages.isEmpty()) {
                 for (int n = 0; n < lstImages.size(); n++) {
                     R_Imagenes img = lstImages.get(n);
+                    img.setId(Utils.getLastIndex());
                     img.setRespuesta_id(respuesta.getId());
                     img = (R_Imagenes) defPrueba.save(img);
                     lstImages.set(n, img);
                 }
             }
 
-            // respuesta.setImagenes(lstImages);
-            // lstRespuestas.add(respuesta);
         }
-        // prueba.setRespuestas(lstRespuestas);
+    }
 
+    /**
+     * Corrresponde validar todas las entradas de datos.
+     * @return
+     */
+    private boolean validate() {
+      // TODO Auto-generated method stub
+      return true;
     }
 
     private List<R_Alternativas> processAlteratives(ItemList item, R_RespuestasEsperadasPrueba respuesta) {

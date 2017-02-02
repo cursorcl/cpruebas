@@ -8,6 +8,4 @@ public interface IBaseEntity {
     String getName();
     void setName(String name);
     
-    Integer getVersion();
-    void setVersion(Integer version);
 }

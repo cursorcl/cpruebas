@@ -102,7 +102,6 @@ public class R_Colegio extends AEntity{
         private String name;
         private String direccion;
         private Long tipocolegio_id;
-        private Integer version;
         private String ciudad;
 
         public Builder id(Long id) {
@@ -125,11 +124,6 @@ public class R_Colegio extends AEntity{
             return this;
         }
 
-        public Builder version(Integer version) {
-            this.version = version;
-            return this;
-        }
-
         public Builder ciudad(String ciudad) {
             this.ciudad = ciudad;
             return this;
@@ -145,7 +139,6 @@ public class R_Colegio extends AEntity{
         this.name = builder.name;
         this.direccion = builder.direccion;
         this.tipocolegio_id = builder.tipocolegio_id;
-        this.version = builder.version;
         this.ciudad = builder.ciudad;
     }
 }

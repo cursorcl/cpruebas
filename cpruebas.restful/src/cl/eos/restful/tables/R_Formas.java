@@ -95,7 +95,6 @@ public class R_Formas  extends AEntity{
         private String orden;
         private String name;
         private Long prueba_id;
-        private Integer version;
 
         public Builder id(Long id) {
             this.id = id;
@@ -123,7 +122,6 @@ public class R_Formas  extends AEntity{
         }
 
         public Builder version(Integer version) {
-            this.version = version;
             return this;
         }
 
@@ -138,6 +136,5 @@ public class R_Formas  extends AEntity{
         this.orden = builder.orden;
         this.name = builder.name;
         this.prueba_id = builder.prueba_id;
-        this.version = builder.version;
     }
 }

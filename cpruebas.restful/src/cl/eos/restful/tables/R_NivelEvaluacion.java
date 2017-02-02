@@ -57,11 +57,20 @@ public class R_NivelEvaluacion  extends AEntity{
         this.nrorangos = nrorangos;
     }
 
+    
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+      return name;
+    }
+
+
     public static class Builder {
         private Long id;
         private String name;
         private Integer nrorangos;
-        private Integer version;
 
         public Builder id(Long id) {
             this.id = id;
@@ -78,10 +87,6 @@ public class R_NivelEvaluacion  extends AEntity{
             return this;
         }
 
-        public Builder version(Integer version) {
-            this.version = version;
-            return this;
-        }
 
         public R_NivelEvaluacion build() {
             return new R_NivelEvaluacion(this);
@@ -92,6 +97,5 @@ public class R_NivelEvaluacion  extends AEntity{
         this.id = builder.id;
         this.name = builder.name;
         this.nrorangos = builder.nrorangos;
-        this.version = builder.version;
     }
 }
