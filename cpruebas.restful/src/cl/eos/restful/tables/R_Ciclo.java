@@ -41,6 +41,13 @@ public class R_Ciclo extends AEntity {
         this.name = name;
     }
 
+    
+    @Override
+    public String toString() {
+      return name;
+    }
+
+
     public static class Builder {
         private Long id;
         private String name;

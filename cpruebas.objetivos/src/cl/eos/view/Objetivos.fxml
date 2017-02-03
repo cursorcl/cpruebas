@@ -1,13 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.input.*?>
-<?import javafx.scene.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import java.lang.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.ContextMenu?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.input.KeyCodeCombination?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="1187.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.ObjetivosView">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="1187.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.ObjetivosView">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
@@ -48,8 +58,14 @@
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
                   <Label fx:id="lblError" focusTraversable="false" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="10.0" />
-                  <ComboBox fx:id="cmbTipoCurso" layoutX="13.0" layoutY="44.0" prefHeight="25.0" prefWidth="239.0" promptText="Curso" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="12.0" />
-                  <ComboBox fx:id="cmbAsignatura" layoutX="13.0" layoutY="95.0" prefHeight="25.0" prefWidth="244.0" promptText="Asignatura" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="12.0" />
+                  <ComboBox fx:id="cmbTipoCurso" layoutX="13.0" layoutY="44.0" prefHeight="25.0" prefWidth="239.0" promptText="Curso" style="-fx-background-radius: 30;" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="12.0">
+                     <effect>
+                        <DropShadow />
+                     </effect></ComboBox>
+                  <ComboBox fx:id="cmbAsignatura" layoutX="13.0" layoutY="95.0" prefHeight="25.0" prefWidth="244.0" promptText="Asignatura" style="-fx-background-radius: 30;" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="12.0">
+                     <effect>
+                        <DropShadow />
+                     </effect></ComboBox>
                   <Label focusTraversable="false" layoutX="13.0" layoutY="130.0" text="Objetivo" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="12.0" />
                   <TextField id="txtNombre" fx:id="txtNombre" focusTraversable="false" layoutX="13.0" layoutY="147.0" prefHeight="25.0" prefWidth="301.0" promptText="Nombre Objetivo" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="12.0" />
                   <Label focusTraversable="false" layoutX="17.0" layoutY="195.0" text="Descripción" />

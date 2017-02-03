@@ -1,13 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.input.*?>
-<?import javafx.scene.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import java.lang.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.ContextMenu?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.input.KeyCodeCombination?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.EjesTematicosView">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="940.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.EjesTematicosView">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
@@ -43,17 +52,20 @@
       </MenuBar>
    </top>
    <center>
-      <SplitPane dividerPositions="0.3343065693430657" prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <SplitPane dividerPositions="0.25692963752665243" prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
                   <Label fx:id="lblError" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="10.0" />
-                  <Label text="Eje Temático" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="30.0" />
-                  <TextField id="txtNombre" fx:id="txtNombre" prefHeight="25.0" prefWidth="301.0" promptText="Nombre Eje" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="50.0" />
-                  <Label text="Tipo prueba" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="80.0" />
-                  <ComboBox id="cmbTipoPrueba" fx:id="cmbTipoPrueba" prefHeight="25.0" prefWidth="204.0" promptText="Tipo Prueba" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="100.0" />
-                  <Label text="Asignatura" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="130.0" />
-                  <ComboBox id="cmbAsignatura" fx:id="cmbAsignatura" prefHeight="25.0" prefWidth="203.0" promptText="Asignatura" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="150.0" />
+                  <Label layoutX="13.0" layoutY="93.0" text="Eje Temático" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="93.0" />
+                  <TextField id="txtNombre" fx:id="txtNombre" layoutX="13.0" layoutY="113.0" prefHeight="25.0" prefWidth="301.0" promptText="Nombre Eje" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="113.0" />
+                  <Label layoutX="13.0" layoutY="143.0" text="Tipo prueba" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="143.0" />
+                  <ComboBox id="cmbTipoPrueba" fx:id="cmbTipoPrueba" layoutX="13.0" layoutY="163.0" prefHeight="25.0" prefWidth="204.0" promptText="Tipo Prueba" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="163.0" />
+                  <Label layoutX="13.0" layoutY="27.0" text="Asignatura" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="27.0" />
+                  <ComboBox id="cmbAsignatura" fx:id="cmbAsignatura" layoutX="13.0" layoutY="47.0" prefHeight="25.0" prefWidth="203.0" promptText="Asignatura" style="-fx-background-radius: 30;" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="47.0">
+                     <effect>
+                        <DropShadow />
+                     </effect></ComboBox>
                </children>
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
@@ -64,10 +76,10 @@
                            <children>
                               <TableView id="tblEjesTematicos" fx:id="tblEjesTematicos" prefHeight="400.0" prefWidth="439.0" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="2.0">
                                 <columns>
-                                    <TableColumn fx:id="colId" prefWidth="75.0" text="Identificación" />
-                                  <TableColumn fx:id="colNombre" prefWidth="151.0" text="Nombre" />
-                                    <TableColumn fx:id="colTipoPrueba" prefWidth="110.0" text="Tipo prueba" />
-                                    <TableColumn fx:id="colEnsayo" prefWidth="68.0" text="Asignatura" />
+                                    <TableColumn fx:id="colId" prefWidth="98.0" resizable="false" text="Identificación" />
+                                  <TableColumn fx:id="colNombre" prefWidth="271.0" resizable="false" text="Nombre" />
+                                    <TableColumn fx:id="colTipoPrueba" prefWidth="159.0" resizable="false" text="Tipo prueba" />
+                                    <TableColumn fx:id="colEnsayo" prefWidth="154.0" resizable="false" text="Asignatura" />
                                 </columns>
                                  <contextMenu>
                                     <ContextMenu>

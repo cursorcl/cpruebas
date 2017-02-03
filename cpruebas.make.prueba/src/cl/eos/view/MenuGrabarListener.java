@@ -12,9 +12,6 @@ import org.imgscalr.Scalr;
 import org.imgscalr.Scalr.Method;
 import org.imgscalr.Scalr.Mode;
 
-import com.sun.corba.se.impl.javax.rmi.CORBA.Util;
-import com.sun.org.apache.xerces.internal.impl.dv.ValidatedInfo;
-
 import cl.eos.restful.tables.R_Alternativas;
 import cl.eos.restful.tables.R_Imagenes;
 import cl.eos.restful.tables.R_Prueba;

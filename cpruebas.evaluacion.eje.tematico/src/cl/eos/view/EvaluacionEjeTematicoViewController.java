@@ -112,8 +112,8 @@ public class EvaluacionEjeTematicoViewController extends AFormView implements Ev
         tblEvaluacionEjeTematatico.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         colId.setCellValueFactory(new PropertyValueFactory<R_EvaluacionEjetematico, Long>("id"));
         colNombre.setCellValueFactory(new PropertyValueFactory<R_EvaluacionEjetematico, String>("name"));
-        colMinimo.setCellValueFactory(new PropertyValueFactory<R_EvaluacionEjetematico, Float>("nroRangoMin"));
-        colMaximo.setCellValueFactory(new PropertyValueFactory<R_EvaluacionEjetematico, Float>("nroRangoMax"));
+        colMinimo.setCellValueFactory(new PropertyValueFactory<R_EvaluacionEjetematico, Float>("nrorangomin"));
+        colMaximo.setCellValueFactory(new PropertyValueFactory<R_EvaluacionEjetematico, Float>("nrorangomax"));
     }
 
     @FXML

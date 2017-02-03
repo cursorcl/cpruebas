@@ -2,15 +2,16 @@ package cl.eos.view;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.ot.OTEjeTematico;
 import cl.eos.restful.tables.R_Asignatura;
 import cl.eos.restful.tables.R_Ejetematico;
-import cl.eos.restful.tables.R_TipoCurso;
 import cl.eos.restful.tables.R_TipoPrueba;
 import cl.eos.util.ExcelSheetWriterObj;
+import cl.eos.util.MapBuilder;
 import cl.eos.util.Utils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -215,6 +216,15 @@ public class EjesTematicosView extends AFormView implements EventHandler<ActionE
         mnuEliminar.setDisable(true);
         menuEliminar.setDisable(true);
         menuModificar.setDisable(true);
+        
+        cmbAsignatura.setOnAction(h -> {
+          R_Asignatura asignatura = cmbAsignatura.getSelectionModel().getSelectedItem();
+          if (asignatura == null)
+            return;
+          Map<String, Object> params =
+              MapBuilder.<String, Object>unordered().put("asignatura_id", asignatura.getId()).build();
+          controller.findByParam(R_Ejetematico.class, params, this);
+        });
 
     }
 

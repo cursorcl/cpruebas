@@ -45,8 +45,9 @@ import com.google.gson.stream.JsonWriter;
  *
  */
 public class RestfulClient {
-  private static final String URL = "http://localhost/tpruebas/%s";
-  private static final String URL_CONEXION = "http://localhost/tpruebas/connection";
+  private static final String URL = "http://www.aplicacionestest.cl/%s";
+//  private static final String URL_CONEXION = "http://localhost/tpruebas/connection";
+  private static final String URL_CONEXION = "http://www.aplicacionestest.cl/connection";
   private static final String BY_ID = URL + "/%d";
   
   
@@ -373,7 +374,7 @@ public class RestfulClient {
   }
 
   private static String getTablName(Class<?> clazz) {
-    return clazz.getSimpleName().substring(2);
+    return clazz.getSimpleName().substring(2).toLowerCase();
   }
 
   private static class ListParameterizedType implements ParameterizedType {

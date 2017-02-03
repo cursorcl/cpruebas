@@ -1,13 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.input.*?>
-<?import javafx.scene.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import java.lang.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ContextMenu?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.input.KeyCodeCombination?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.HabilidadesView">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.HabilidadesView">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
@@ -66,9 +74,9 @@
                            <children>
                               <TableView id="tblHabilidades" fx:id="tblHabilidades" prefHeight="400.0" prefWidth="439.0" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="2.0">
                                 <columns>
-                                    <TableColumn fx:id="colId" prefWidth="75.0" text="Identificacion" />
-                                  <TableColumn fx:id="colNombre" prefWidth="194.0" text="Nombre" />
-                                    <TableColumn fx:id="colDescripcion" prefWidth="151.0" text="Descripción" />
+                                    <TableColumn fx:id="colId" prefWidth="100.0" resizable="false" text="Identificacion" />
+                                  <TableColumn fx:id="colNombre" prefWidth="200.0" resizable="false" text="Nombre" />
+                                    <TableColumn fx:id="colDescripcion" prefWidth="217.0" resizable="false" text="Descripción" />
                                 </columns>
                                  <contextMenu>
                                     <ContextMenu>
