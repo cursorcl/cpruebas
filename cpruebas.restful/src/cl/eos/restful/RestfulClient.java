@@ -81,9 +81,8 @@ public class RestfulClient {
       .registerTypeAdapter(Boolean.class, booleanAsIntAdapter)
       .registerTypeAdapter(boolean.class, booleanAsIntAdapter)
       .create();
+  
   private static final CloseableHttpClient httpclient = HttpClients.createDefault();
-  static {
-  }
 
   /**
    * Obtiene una lista de elementos de la clase T que tengan el ID indicado.

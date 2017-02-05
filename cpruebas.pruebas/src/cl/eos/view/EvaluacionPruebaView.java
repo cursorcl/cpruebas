@@ -1,6 +1,5 @@
 package cl.eos.view;
 
-import java.awt.TextField;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -40,6 +39,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 public class EvaluacionPruebaView extends AFormView implements EventHandler<ActionEvent> {
@@ -338,8 +338,8 @@ public class EvaluacionPruebaView extends AFormView implements EventHandler<Acti
     tipoPrueba = controller.findByIdSynchro(R_TipoPrueba.class, prueba.getTipoprueba_id());
     txtAsignatura.setText(asignatura.getName());
     txtTipoPrueba.setText(tipoPrueba.getName());
-    txtNroPreguntas.setText(String.format("%0d", prueba.getNropreguntas().intValue()));
-    txtExigencia.setText(String.format("%00d%%", prueba.getExigencia().intValue()));
+    txtNroPreguntas.setText(String.format("%02d", prueba.getNropreguntas().intValue()));
+    txtExigencia.setText(String.format("%d%%", prueba.getExigencia().intValue()));
   }
 
   /**

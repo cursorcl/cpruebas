@@ -24,7 +24,6 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.Pagination;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -66,7 +65,7 @@ public class CursosView extends AFormView implements EventHandler<ActionEvent> {
   private ComboBox<R_Ciclo> cmbNivel;
 
   @FXML
-  private ComboBox<R_Colegio> cmbColegio;
+  private ComboBox<R_Colegio> cmbColegios;
 
   @FXML
   private ComboBox<R_TipoCurso> cmbTipoCurso;
@@ -91,8 +90,6 @@ public class CursosView extends AFormView implements EventHandler<ActionEvent> {
 
   @FXML
   private TableColumn<OTCurso, String> colTpCurso;
-  @FXML
-  private Pagination pagination;
 
 
   private ObservableList<R_TipoCurso> lstTipoCurso;
@@ -160,7 +157,7 @@ public class CursosView extends AFormView implements EventHandler<ActionEvent> {
       }
       curso.setName(txtNombre.getText());
       curso.setCiclo_id(cmbNivel.getValue().getId());
-      curso.setColegio_id(cmbColegio.getValue().getId());
+      curso.setColegio_id(cmbColegios.getValue().getId());
       curso.setTipocurso_id(cmbTipoCurso.getValue().getId());
       save(curso);
       limpiarControles();
@@ -176,7 +173,7 @@ public class CursosView extends AFormView implements EventHandler<ActionEvent> {
     if (curso != null) {
       txtNombre.setText(curso.getName());
       cmbNivel.setValue(curso.getCiclo());
-      cmbColegio.setValue(curso.getColegio());
+      cmbColegios.setValue(curso.getColegio());
       cmbTipoCurso.setValue(curso.getTipoCurso());
       select(curso.getCurso());
     }
@@ -227,8 +224,8 @@ public class CursosView extends AFormView implements EventHandler<ActionEvent> {
     mnuEliminar.setDisable(true);
     mnItemEliminar.setDisable(true);
     mnItemModificar.setDisable(true);
-    cmbColegio.setOnAction(h -> {
-      R_Colegio colegio = cmbColegio.getSelectionModel().getSelectedItem();
+    cmbColegios.setOnAction(h -> {
+      R_Colegio colegio = cmbColegios.getSelectionModel().getSelectedItem();
       if (colegio == null)
         return;
       Map<String, Object> params =
@@ -241,7 +238,7 @@ public class CursosView extends AFormView implements EventHandler<ActionEvent> {
   private void limpiarControles() {
     txtNombre.clear();
     cmbNivel.getSelectionModel().clearSelection();
-    cmbColegio.getSelectionModel().clearSelection();
+    cmbColegios.getSelectionModel().clearSelection();
     tblCurso.getSelectionModel().clearSelection();
     cmbTipoCurso.getSelectionModel().clearSelection();
     select(null);
@@ -257,7 +254,7 @@ public class CursosView extends AFormView implements EventHandler<ActionEvent> {
         for (final Object iEntity : list) {
           R_Curso curso = (R_Curso) iEntity;
           OTCurso ot = new OTCurso(curso);
-          R_Colegio colegio = cmbColegio.getSelectionModel().getSelectedItem();
+          R_Colegio colegio = cmbColegios.getSelectionModel().getSelectedItem();
           ot.setColegio(colegio);
           R_TipoCurso tipoCurso = lstTipoCurso.stream()
               .filter(t -> t.getId().equals(curso.getTipocurso_id())).findFirst().orElse(null);
@@ -267,13 +264,14 @@ public class CursosView extends AFormView implements EventHandler<ActionEvent> {
           ot.setCiclo(ciclo);
           lstCursos.add(ot);
         }
+        tblCurso.getItems().clear();
         tblCurso.setItems(lstCursos);
       } else if (entity instanceof R_Colegio) {
         lstColegios = FXCollections.observableArrayList();
         for (final Object iEntity : list) {
           lstColegios.add((R_Colegio) iEntity);
         }
-        cmbColegio.setItems(lstColegios);
+        cmbColegios.setItems(lstColegios);
       } else if (entity instanceof R_Ciclo) {
         lstCiclos = FXCollections.observableArrayList();
         for (final Object iEntity : list) {
@@ -317,7 +315,7 @@ public class CursosView extends AFormView implements EventHandler<ActionEvent> {
   private void removeAllStyles() {
     removeAllStyle(lblError);
     removeAllStyle(txtNombre);
-    removeAllStyle(cmbColegio);
+    removeAllStyle(cmbColegios);
   }
 
   @Override
@@ -331,8 +329,8 @@ public class CursosView extends AFormView implements EventHandler<ActionEvent> {
       txtNombre.getStyleClass().add("bad");
       valida = false;
     }
-    if (cmbColegio.getValue() == null) {
-      cmbColegio.getStyleClass().add("bad");
+    if (cmbColegios.getValue() == null) {
+      cmbColegios.getStyleClass().add("bad");
       valida = false;
     }
     return valida;

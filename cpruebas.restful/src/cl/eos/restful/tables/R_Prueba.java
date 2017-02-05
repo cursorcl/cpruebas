@@ -43,7 +43,7 @@ public class R_Prueba extends AEntity {
     @SerializedName(value = "nropreguntas", alternate = { "NROPREGUNTAS" }) Integer nropreguntas;
     @SerializedName(value = "name", alternate = { "NAME" }) String name;
     @SerializedName(value = "asignatura_id", alternate = { "ASIGNATURA_ID" }) Long asignatura_id;
-    @SerializedName(value = "curso_id", alternate = { "CURSO_ID" }) Long curso_id;
+    @SerializedName(value = "curso_id", alternate = { "TIPOCURSO_ID" }) Long curso_id;
     @SerializedName(value = "tipoprueba_id", alternate = { "TIPOPRUEBA_ID" }) Long tipoprueba_id;
     @SerializedName(value = "profesor_id", alternate = { "PROFESOR_ID" }) Long profesor_id;
     @SerializedName(value = "nivelevaluacion_id", alternate = { "NIVELEVALUACION_ID" }) Long nivelevaluacion_id;

@@ -15,8 +15,8 @@ public class CursosContoller extends AController {
     @Override
     public void initialize() {
         model = new CursosModel();
-        model.findAll(R_Ciclo.class, this);
         model.findAll(R_Colegio.class, this);
+        model.findAll(R_Ciclo.class, this);
         model.findAll(R_TipoCurso.class, this);
     }
 }

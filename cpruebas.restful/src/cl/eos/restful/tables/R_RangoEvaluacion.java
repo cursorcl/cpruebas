@@ -105,6 +105,18 @@ public class R_RangoEvaluacion  extends AEntity{
         this.nivelevaluacion_id = nivelevaluacion_id;
     }
 
+    
+    
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+      return name;
+    }
+
+
+
     public static class Builder {
         private Long id;
         private String abreviacion;

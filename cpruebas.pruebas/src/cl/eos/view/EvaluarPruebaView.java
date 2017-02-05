@@ -31,11 +31,13 @@ import cl.eos.restful.tables.R_Asignatura;
 import cl.eos.restful.tables.R_Colegio;
 import cl.eos.restful.tables.R_Curso;
 import cl.eos.restful.tables.R_EvaluacionPrueba;
+import cl.eos.restful.tables.R_Formas;
 import cl.eos.restful.tables.R_Profesor;
 import cl.eos.restful.tables.R_Prueba;
 import cl.eos.restful.tables.R_PruebaRendida;
 import cl.eos.restful.tables.R_RangoEvaluacion;
 import cl.eos.restful.tables.R_RespuestasEsperadasPrueba;
+import cl.eos.restful.tables.R_TipoAlumno;
 import cl.eos.restful.tables.R_TipoCurso;
 import cl.eos.util.ExcelSheetWriterObj;
 import cl.eos.util.MapBuilder;
@@ -77,6 +79,9 @@ public class EvaluarPruebaView extends AFormView {
                 final R_Profesor profesor = cmbProfesor.getSelectionModel().getSelectedItem();
                 Map<String, Object> params = MapBuilder.<String, Object> unordered().put("curso_id", curso.getId()).build();
                 lstAlumnos = controller.findByParamsSynchro(R_Alumno.class, params);
+                
+                List<R_TipoAlumno> lstTipoAlumno = controller.findAllSynchro(R_TipoAlumno.class);
+                
                 params = MapBuilder.<String, Object> unordered().put("curso_id", curso.getId()).put("colegio_id", colegio.getId()).build();
                 final List<R_EvaluacionPrueba> listEvaluaciones = controller.findByParamsSynchro(R_EvaluacionPrueba.class, params);
                 if (listEvaluaciones != null && !listEvaluaciones.isEmpty()) {
@@ -86,15 +91,23 @@ public class EvaluarPruebaView extends AFormView {
                     List<Long> pRendAlumno = lstPRendidas.stream().map(p -> p.getAlumno_id()).collect(Collectors.toList());
                     List<R_Alumno> aNoRendido = lstAlumnos.stream().filter(a -> !pRendAlumno.contains(a.getId())).collect(Collectors.toList());
                     for (R_PruebaRendida r : lstPRendidas) {
-                        Optional<R_Alumno> oAlumno = lstAlumnos.stream().filter(a -> a.getId().equals(r.getAlumno_id())).findFirst();
-                        oList.add(new OTPruebaRendida(r, oAlumno.isPresent() ? oAlumno.get() : null));
+                        R_Alumno oAlumno = lstAlumnos.stream().filter(a -> a.getId().equals(r.getAlumno_id())).findFirst().orElse(null);
+                        OTPruebaRendida ot = new OTPruebaRendida(r, oAlumno);
+                        R_TipoAlumno tipoAlumno = lstTipoAlumno.stream().filter(t -> t.getId().equals(r.getTipoalumno_id())).findFirst().orElse(null);
+                        ot.setTipoAlumno(tipoAlumno);
+                        R_RangoEvaluacion eval =  lstRangos.stream().filter(t -> t.getId().equals(r.getRango_id())).findFirst().orElse(null);
+                        ot.setNivel(eval);
+                        oList.add(ot);
                     }
                     if (aNoRendido != null && !aNoRendido.isEmpty()) {
                         for (final R_Alumno alumno : aNoRendido) {
                             R_PruebaRendida pRendida = new R_PruebaRendida.Builder().id(Utils.getLastIndex()).build();
                             pRendida.setAlumno_id(alumno.getId());
                             pRendida.setEvaluacionprueba_id(evalPrueba.getId());
-                            oList.add(new OTPruebaRendida(pRendida, alumno));
+                            OTPruebaRendida ot = new OTPruebaRendida(pRendida, alumno);
+                            R_TipoAlumno tipoAlumno = lstTipoAlumno.stream().filter(t -> t.getId().equals(alumno.getTipoalumno_id())).findFirst().orElse(null);
+                            ot.setTipoAlumno(tipoAlumno);
+                            oList.add(ot);
                         }
                     }
                 } else {
@@ -109,7 +122,10 @@ public class EvaluarPruebaView extends AFormView {
                             R_PruebaRendida pRendida = new R_PruebaRendida.Builder().id(Utils.getLastIndex()).build();
                             pRendida.setAlumno_id(alumno.getId());
                             pRendida.setEvaluacionprueba_id(evalPrueba.getId());
-                            oList.add(new OTPruebaRendida(pRendida, alumno));
+                            OTPruebaRendida ot = new OTPruebaRendida(pRendida, alumno);
+                            R_TipoAlumno tipoAlumno = lstTipoAlumno.stream().filter(t -> t.getId().equals(alumno.getTipoalumno_id())).findFirst().orElse(null);
+                            ot.setTipoAlumno(tipoAlumno);
+                            oList.add(ot);
                         }
                     }
                 }
@@ -171,9 +187,11 @@ public class EvaluarPruebaView extends AFormView {
     private R_Curso curso;
     private R_Colegio colegio;
     private R_TipoCurso tipoCurso;
-    private ObservableList<Object> lstEvaluaciones;
+    private ObservableList<R_EvaluacionPrueba> lstEvaluaciones;
     private List<R_RangoEvaluacion> rangos;
     private List<R_Alumno> lstAlumnos;
+    private List<R_Formas> lstFormas;
+    private List<R_RangoEvaluacion> lstRangos;
     public EvaluarPruebaView() {
         setTitle("Evaluar");
     }
@@ -247,6 +265,10 @@ public class EvaluarPruebaView extends AFormView {
     protected void handlerGrabar() {
         evalPrueba.setProfesor_id(cmbProfesor.getSelectionModel().getSelectedItem().getId());
         if (validate()) {
+            if(lstEvaluaciones == null)
+            {
+              lstEvaluaciones = FXCollections.observableArrayList();
+            }
             if (!lstEvaluaciones.contains(evalPrueba)) {
                 final String s = String.format("%s %s %s %s", asignatura, colegio, curso,
                         LocalDate.ofEpochDay(evalPrueba.getFecha()).toString());
@@ -258,6 +280,7 @@ public class EvaluarPruebaView extends AFormView {
                 if (otPRendida.isRindioPrueba() && otPRendida.getRespuestas() != null && !otPRendida.getRespuestas().trim().isEmpty()) {
                     R_PruebaRendida pRendida = otPRendida.getPruebaRendida();
                     pRendida.setEvaluacionprueba_id(evalPrueba.getId());
+                    pRendida.setForma(lstFormas == null || lstFormas.isEmpty()? 0 :lstFormas.get(0).getForma());
                     if (pRendida.getId() != null) {
                         pRendida = (R_PruebaRendida) save(pRendida);
                     }
@@ -397,7 +420,7 @@ public class EvaluarPruebaView extends AFormView {
             final R_Colegio colegio = cmbColegios.getSelectionModel().getSelectedItem();
             if (colegio != null) {
                 final Map<String, Object> parameters = new HashMap<String, Object>();
-                parameters.put("tipocursor_id", tipoCurso.getId());
+                parameters.put("tipocurso_id", tipoCurso.getId());
                 parameters.put("colegio_id", colegio.getId());
                 controller.findByParam(R_Curso.class, parameters);
             }
@@ -578,15 +601,19 @@ public class EvaluarPruebaView extends AFormView {
             asignatura = controller.findByIdSynchro(R_Asignatura.class, prueba.getAsignatura_id());
             Collections.sort(respuestas, Comparadores.compararRespuestasEsperadas());            
             
-            curso = controller.findByIdSynchro(R_Curso.class, prueba.getCurso_id());
-            colegio = controller.findByIdSynchro(R_Colegio.class, curso.getColegio_id());
-            tipoCurso = controller.findByIdSynchro(R_TipoCurso.class, curso.getTipocurso_id());
+            tipoCurso = controller.findByIdSynchro(R_TipoCurso.class, prueba.getCurso_id());
             
             params = MapBuilder.<String, Object> unordered().put("nivelevaluacion_id", prueba.getNivelevaluacion_id()).build();
             rangos = controller.findByParamsSynchro(R_RangoEvaluacion.class, params);
             
-            params = MapBuilder.<String, Object> unordered().put("prueba_id", prueba.getId()).put("curso_id", curso.getId()).build();
+            params = MapBuilder.<String, Object> unordered().put("prueba_id", prueba.getId()).put("curso_id", prueba.getCurso_id()).build();
             controller.findByParam(R_EvaluacionPrueba.class, params);
+            
+            params = MapBuilder.<String, Object> unordered().put("prueba_id", prueba.getId()).build();
+            lstFormas = controller.findByParamsSynchro(R_Formas.class, params);
+            
+            params = MapBuilder.<String, Object> unordered().put("nivelevaluacion_id", prueba.getNivelevaluacion_id()).build();
+            lstRangos = controller.findByParamsSynchro(R_RangoEvaluacion.class, params);
             
             txtName.setText(prueba.getName());
             txtNroAlternativas.setText(prueba.getAlternativas().toString());

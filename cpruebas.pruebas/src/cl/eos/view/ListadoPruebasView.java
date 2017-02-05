@@ -154,6 +154,7 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
   
   private ObservableList<R_Asignatura> lstAsignaturas;
   private ObservableList<R_TipoCurso> lstTipoCurso;
+  private ObservableList<OTPrueba>  pruebas;
 
   public ListadoPruebasView() {
     super();
@@ -508,7 +509,6 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
       }
       R_Prueba prueba = otPruebas.get(0).getPrueba();
       
-      R_Curso curso = controller.findByIdSynchro(R_Curso.class, prueba.getCurso_id());
       controller.findById(R_Asignatura.class, prueba.getAsignatura_id(), resumenComunal);
       controller.findByAllId(R_Prueba.class, pruebas, resumenComunal);
       controller.findAll(R_EvaluacionEjetematico.class, resumenComunal);
@@ -632,12 +632,12 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
   }
 
   private void handlerListaEvaluaciones() {
-    evaluacionPrueba = (EvaluacionPruebaView) show("/cl/eos/view/R_EvaluacionPrueba.fxml");
+    evaluacionPrueba = (EvaluacionPruebaView) show("/cl/eos/view/EvaluacionPrueba.fxml");
     if (tblListadoPruebas.getSelectionModel().getSelectedItem() != null) {
       final R_Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
       evaluacionPrueba.setPrueba(prueba);
       final Map<String, Object> parameters = new HashMap<String, Object>();
-      parameters.put("idPrueba", prueba.getId());
+      parameters.put("prueba_id", prueba.getId());
       controller.findByParam(R_EvaluacionPrueba.class, parameters, evaluacionPrueba);
     }
   }
@@ -720,32 +720,44 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
     if (list != null && !list.isEmpty()) {
       final Object entity = list.get(0);
       if (entity instanceof R_Prueba) {
-        final ObservableList<OTPrueba> pruebas = FXCollections.observableArrayList();
-        Map<Long, R_Asignatura> mapAsignaturas = lstAsignaturas.stream()
-            .collect(Collectors.toMap(R_Asignatura::getId, Function.identity()));
-        Map<Long, R_TipoCurso> mapTiposCurso = lstTipoCurso.stream()
-            .collect(Collectors.toMap(R_TipoCurso::getId, Function.identity()));
+        pruebas = FXCollections.observableArrayList();
         for (final Object lEntity : list) {
           R_Prueba pPrueba = (R_Prueba) lEntity;
-          R_Asignatura asig = mapAsignaturas.get(pPrueba.getAsignatura_id());
-          R_TipoCurso tpoCur = mapTiposCurso.get(pPrueba.getCurso_id());
-          pruebas.add(new OTPrueba(pPrueba, asig, tpoCur));
+          pruebas.add(new OTPrueba(pPrueba));
         }
-        tblListadoPruebas.setItems(pruebas);
+        assignValues();
       } else if (entity instanceof R_Asignatura) {
         lstAsignaturas = FXCollections.observableArrayList();
         for (final Object lEntity : list) {
           lstAsignaturas.add((R_Asignatura) lEntity);
         }
-        //assignValues();
+        assignValues();
       } else if (entity instanceof R_TipoCurso) {
         lstTipoCurso = FXCollections.observableArrayList();
         for (final Object lEntity : list) {
           lstTipoCurso.add((R_TipoCurso) lEntity);
         }
-        //assignValues();
+        assignValues();
       }
     }
+  }
+
+  private void assignValues() {
+    
+    if(lstAsignaturas == null || lstTipoCurso == null || pruebas == null)
+    {
+      return;
+    }
+    Map<Long, R_Asignatura> mapAsignaturas = lstAsignaturas.stream()
+        .collect(Collectors.toMap(R_Asignatura::getId, Function.identity()));
+    Map<Long, R_TipoCurso> mapTiposCurso = lstTipoCurso.stream()
+        .collect(Collectors.toMap(R_TipoCurso::getId, Function.identity()));
+    for (final OTPrueba ot : pruebas) {
+      ot.setAsignatura( mapAsignaturas.get(ot.getPrueba().getAsignatura_id()));
+      ot.setCurso(mapTiposCurso.get(ot.getPrueba().getCurso_id()));
+    }
+    tblListadoPruebas.setItems(pruebas);
+    
   }
 
   @Override

@@ -7,10 +7,7 @@ import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.restful.tables.R_Asignatura;
 import cl.eos.util.ExcelSheetWriterObj;
-import cl.eos.util.SystemConstants;
 import cl.eos.util.Utils;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -20,7 +17,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.Pagination;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -59,8 +55,6 @@ public class AsignaturasView extends AFormView implements EventHandler<ActionEve
     @FXML
     private Label lblError;
 
-    @FXML Pagination pagination;
-    
     @FXML
     private TableView<R_Asignatura> tblAsignatura;
     @FXML
@@ -184,14 +178,6 @@ public class AsignaturasView extends AFormView implements EventHandler<ActionEve
         mnuEliminar.setDisable(true);
         mnItemEliminar.setDisable(true);
         mnItemModificar.setDisable(true);
-        pagination.currentPageIndexProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                int fromIndex = Math.min(oldValue.intValue(),  newValue.intValue()) * SystemConstants.ROWS_FOR_PAGE ;
-                int toIndex = Math.max(oldValue.intValue(),  newValue.intValue()) * SystemConstants.ROWS_FOR_PAGE ;
-                controller.findAll(R_Asignatura.class, fromIndex, toIndex);
-            }
-        });
     }
 
     private void limpiarControles() {

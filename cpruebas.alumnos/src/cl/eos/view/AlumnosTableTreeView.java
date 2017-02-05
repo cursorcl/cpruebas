@@ -15,7 +15,6 @@ import cl.eos.restful.tables.R_Colegio;
 import cl.eos.restful.tables.R_Curso;
 import cl.eos.restful.tables.R_TipoAlumno;
 import cl.eos.util.ExcelSheetWriterObj;
-import cl.eos.util.SystemConstants;
 import cl.eos.util.Utils;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -123,8 +122,6 @@ public class AlumnosTableTreeView extends AFormView implements EventHandler<Acti
 
     @FXML
     private ComboBox<R_TipoAlumno> cmbTipoAlumno;
-    @FXML
-    private Pagination pagination;
     @FXML
     private Button btnVer;
 
@@ -291,17 +288,6 @@ public class AlumnosTableTreeView extends AFormView implements EventHandler<Acti
         cmbSelectColegio.setOnAction(this);
         
         btnVer.setOnAction(this);
-        pagination.currentPageIndexProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-//                int fromIndex = Math.min(oldValue.intValue(),  newValue.intValue()) * SystemConstants.ROWS_FOR_PAGE ;
-//                int toIndex = Math.max(oldValue.intValue(),  newValue.intValue()) * SystemConstants.ROWS_FOR_PAGE ;
-                Map<String, Object> params = new HashMap<>();
-                params.put("curso_id", cmbSelectCurso.getSelectionModel().getSelectedItem().getId());
-                params.put("colegio_id", cmbSelectColegio.getSelectionModel().getSelectedItem().getId());
-                controller.findByParam(R_Alumno.class, params);
-            }
-        });
 
     }
 
