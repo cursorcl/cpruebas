@@ -134,6 +134,7 @@ public class ResumenAlumnoView extends AFormView implements EventHandler<ActionE
     if (entity instanceof R_EvaluacionPrueba) {
       evaluacionPrueba = (R_EvaluacionPrueba) entity;
 
+      prueba = controller.findByIdSynchro(R_Prueba.class, evaluacionPrueba.getPrueba_id());
       Map<String, Object> params =
           MapBuilder.<String, Object>unordered().put("evaluacionprueba_id", evaluacionPrueba.getId()).build();
       lstPruebaRendida = controller.findByParamsSynchro(R_PruebaRendida.class, params);

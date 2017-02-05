@@ -2,6 +2,7 @@ package curso;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import cl.eos.common.Constants;
@@ -15,6 +16,7 @@ import cl.eos.restful.tables.R_Prueba;
 import cl.eos.restful.tables.R_PruebaRendida;
 import cl.eos.restful.tables.R_TipoAlumno;
 import cl.eos.util.ExcelSheetWriterObj;
+import cl.eos.util.MapBuilder;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -234,19 +236,19 @@ public class ResumenGeneralView extends AFormView implements EventHandler<Action
   public void onFound(IEntity entity) {
     if (entity instanceof R_EvaluacionPrueba) {
       evaluacionPrueba = (R_EvaluacionPrueba) entity;
-      generateReport();
-    }
-    if (entity instanceof R_Prueba) {
-      prueba = (R_Prueba) entity;
-      generateReport();
-    }
-    if (entity instanceof R_Asignatura) {
-      asignatura = (R_Asignatura) entity;
-      generateReport();
-    }
-    if (entity instanceof R_Curso) {
-      curso = (R_Curso) entity;
-      generateReport();
+      prueba = controller.findByIdSynchro(R_Prueba.class, evaluacionPrueba.getPrueba_id());
+      txtPrueba.setText(prueba.getName());
+      asignatura = controller.findByIdSynchro(R_Asignatura.class, prueba.getAsignatura_id());
+      txtAsignatura.setText(asignatura.getName());
+      curso = controller.findByIdSynchro(R_Curso.class, evaluacionPrueba.getCurso_id());
+      txtCurso.setText(curso.getName());
+      txtExigencia.setText(String.format("%d",prueba.getExigencia()));
+      txtNoPregunta.setText(String.format("%d",prueba.getNropreguntas()));
+      txtPjePrueba.setText(String.format("%d",prueba.getPuntajebase()));
+      
+      Map<String, Object> params = MapBuilder.<String, Object>unordered().put("evaluacionprueba_id", evaluacionPrueba.getId()).build();
+      controller.findByParam(R_PruebaRendida.class, params);
+      
     }
 
   }
