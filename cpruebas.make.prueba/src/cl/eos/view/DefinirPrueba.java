@@ -30,116 +30,141 @@ import jfxtras.labs.scene.control.BigDecimalField;
 
 public class DefinirPrueba extends AFormView {
 
-    @FXML
-    VBox dataContainer;
-    @FXML
-    ResourceBundle resources;
-    @FXML
-    URL location;
-    @FXML
-    ComboBox<R_Habilidad> cmbHabilidades;
-    @FXML
-    ComboBox<R_Asignatura> cmbAsignatura;
-    @FXML
-    ComboBox<R_Profesor> cmbProfesor;
-    @FXML
-    TextArea txtPregunta;
-    @FXML
-    BigDecimalField spnExigencia;
-    @FXML
-    BigDecimalField spnPjeBase;
-    @FXML
-    ComboBox<R_NivelEvaluacion> cmbNivelEvaluacion;
-    @FXML
-    ComboBox<R_Objetivo> cmbObjetivos;
+  @FXML
+  VBox dataContainer;
+  @FXML
+  ResourceBundle resources;
+  @FXML
+  URL location;
+  @FXML
+  ComboBox<R_Habilidad> cmbHabilidades;
+  @FXML
+  ComboBox<R_Asignatura> cmbAsignatura;
+  @FXML
+  ComboBox<R_Profesor> cmbProfesor;
+  @FXML
+  TextArea txtPregunta;
+  @FXML
+  BigDecimalField spnExigencia;
+  @FXML
+  BigDecimalField spnPjeBase;
+  @FXML
+  ComboBox<R_NivelEvaluacion> cmbNivelEvaluacion;
+  @FXML
+  ComboBox<R_Objetivo> cmbObjetivos;
 
-    @FXML
-    ComboBox<R_Ejetematico> cmbEjesTematicos;
-    @FXML
-    ComboBox<R_TipoPrueba> cmbTipoPrueba;
-    @FXML
-    TextField txtNombre;
-    @FXML
-    TextField txtAlternativaA;
-    @FXML
-    TextField txtAlternativaB;
-    @FXML
-    TextField txtAlternativaC;
-    @FXML
-    TextField txtAlternativaD;
-    @FXML
-    TextField txtAlternativaE;
-    @FXML
-    ListView<ItemList> lstPreguntas;
-    @FXML
-    BigDecimalField spnNroAlternativas;
-    @FXML
-    BigDecimalField spnNroPreguntas;
-    @FXML
-    BigDecimalField spnForma;
+  @FXML
+  ComboBox<R_Ejetematico> cmbEjesTematicos;
+  @FXML
+  ComboBox<R_TipoPrueba> cmbTipoPrueba;
+  @FXML
+  TextField txtNombre;
+  @FXML
+  TextField txtAlternativaA;
+  @FXML
+  TextField txtAlternativaB;
+  @FXML
+  TextField txtAlternativaC;
+  @FXML
+  TextField txtAlternativaD;
+  @FXML
+  TextField txtAlternativaE;
+  @FXML
+  ListView<ItemList> lstPreguntas;
+  @FXML
+  BigDecimalField spnNroAlternativas;
+  @FXML
+  BigDecimalField spnNroPreguntas;
+  @FXML
+  BigDecimalField spnForma;
 
-    @FXML
-    DatePicker fecFeha;
-    @FXML
-    Tooltip objetivoToolTips;
+  @FXML
+  DatePicker fecFeha;
+  @FXML
+  Tooltip objetivoToolTips;
 
-    @FXML
-    RadioButton chkOpcionA;
-    @FXML
-    RadioButton chkOpcionB;
-    @FXML
-    RadioButton chkOpcionC;
-    @FXML
-    RadioButton chkOpcionE;
-    @FXML
-    RadioButton chkOpcionD;
+  @FXML
+  RadioButton chkOpcionA;
+  @FXML
+  RadioButton chkOpcionB;
+  @FXML
+  RadioButton chkOpcionC;
+  @FXML
+  RadioButton chkOpcionE;
+  @FXML
+  RadioButton chkOpcionD;
 
-    @FXML
-    ComboBox<R_TipoCurso> cmbCurso;
-    @FXML
-    RadioButton chkOpcionV;
-    @FXML
-    RadioButton chkOpcionF;
-    @FXML
-    RadioButton chkOpcionMental;
-    @FXML
-    MenuItem mnuEliminarPregunta;
-    @FXML
-    MenuItem mnuGrabar;
+  @FXML
+  ComboBox<R_TipoCurso> cmbCurso;
+  @FXML
+  RadioButton chkOpcionV;
+  @FXML
+  RadioButton chkOpcionF;
+  @FXML
+  RadioButton chkOpcionMental;
+  @FXML
+  MenuItem mnuEliminarPregunta;
+  @FXML
+  MenuItem mnuGrabar;
 
-    @FXML
-    ImageView img1;
-    @FXML
-    ImageView img2;
-    @FXML
-    ImageView img3;
-    @FXML
-    ImageView img4;
-    @FXML
-    ImageView img5;
+  @FXML
+  ImageView img1;
+  @FXML
+  ImageView img2;
+  @FXML
+  ImageView img3;
+  @FXML
+  ImageView img4;
+  @FXML
+  ImageView img5;
 
-    ToggleGroup group;
+  ToggleGroup group;
 
-    R_Prueba prueba;
+  R_Prueba prueba;
 
-    public DefinirPrueba() {
-        prueba = null;
-    }
+  public DefinirPrueba() {
+    prueba = null;
+  }
 
-    public DefinirPrueba(R_Prueba prueba) {
-        this.prueba = prueba;
-    }
 
-    @FXML
-    void initialize() {
-        setTitle("Creación de Pruebas");
-        Initializer.initialize(this);
+  @FXML
+  void initialize() {
+    setTitle("Creación de Pruebas");
+    Initializer.initialize(this);
 
-    }
+  }
 
-    @Override
-    public void onDataArrived(List<Object> list) {
-        DataProcessor.process(list, this);
-    }
+  /**
+   * @return the prueba
+   */
+  public final R_Prueba getPrueba() {
+    return prueba;
+  }
+
+
+  /**
+   * @param prueba the prueba to set
+   */
+  public final void setPrueba(R_Prueba prueba) {
+    this.prueba = prueba;
+    Initializer.setPrueba(prueba, this);
+  }
+
+
+  @Override
+  public void onDataArrived(List<Object> list) {
+    DataProcessor.process(list, this);
+  }
+
+  /**
+   * Se validan todos los datos necesatios para que se pueda grabar.
+   */
+  @Override
+  public boolean validate() {
+    // TODO Auto-generated method stub
+    return super.validate();
+  }
+
+
 
 }

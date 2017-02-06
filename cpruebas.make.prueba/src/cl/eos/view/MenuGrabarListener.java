@@ -112,8 +112,7 @@ public class MenuGrabarListener implements EventHandler<ActionEvent> {
      * @return
      */
     private boolean validate() {
-      // TODO Auto-generated method stub
-      return true;
+      return defPrueba.validate();
     }
 
     private List<R_Alternativas> processAlteratives(ItemList item, R_RespuestasEsperadasPrueba respuesta) {

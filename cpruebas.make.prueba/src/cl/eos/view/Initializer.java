@@ -10,6 +10,7 @@ import java.util.Map;
 import cl.eos.restful.tables.R_Asignatura;
 import cl.eos.restful.tables.R_Ejetematico;
 import cl.eos.restful.tables.R_Objetivo;
+import cl.eos.restful.tables.R_Prueba;
 import cl.eos.util.MapBuilder;
 import javafx.beans.value.ChangeListener;
 import javafx.event.EventHandler;
@@ -46,22 +47,6 @@ public class Initializer {
       defPrueba.spnForma.setNumber(new BigDecimal(1));
       defPrueba.spnExigencia.setNumber(new BigDecimal(60));
       defPrueba.fecFeha.setValue(LocalDate.now());
-    } else {
-      // R_Prueba prueba = defPrueba.prueba;
-      // defPrueba.cmbAsignatura.;
-      // defPrueba.cmbProfesor;
-      // defPrueba.spnExigencia;
-      // defPrueba.spnPjeBase;
-      // defPrueba.cmbNivelEvaluacion;
-      // defPrueba.cmbTipoPrueba;
-      // defPrueba.cmbCurso;
-      // defPrueba.txtNombre;
-      // defPrueba.spnNroAlternativas;
-      // defPrueba.spnNroPreguntas;
-      // defPrueba.spnForma;
-      // defPrueba.fecFeha;
-      //
-      // ListView<ItemList> lstPreguntas;
     }
   }
 
@@ -368,4 +353,29 @@ public class Initializer {
           defPrueba.chkOpcionMental.setSelected(ranswer.equals("M"));
         });
   }
+  
+  
+  public static void setPrueba(R_Prueba prueba, DefinirPrueba defPrueba)
+  {
+    
+    R_Asignatura asignatura = defPrueba.cmbAsignatura.getItems().stream().filter(v -> v.getId().equals(prueba.getAsignatura_id())).findFirst().orElse(null);
+    defPrueba.cmbAsignatura.getSelectionModel().select(asignatura);
+    defPrueba.cmbProfesor.getItems().stream().filter(v -> v.getId().equals(prueba.getProfesor_id())).findFirst().orElse(null);
+    defPrueba.spnExigencia.setNumber(new BigDecimal(prueba.getExigencia()));
+    defPrueba.spnPjeBase.setNumber(new BigDecimal(prueba.getPuntajebase()));
+    defPrueba.cmbNivelEvaluacion.getItems().stream().filter(v -> v.getId().equals(prueba.getNivelevaluacion_id())).findFirst().orElse(null);
+    defPrueba.cmbTipoPrueba.getItems().stream().filter(v -> v.getId().equals(prueba.getTipoprueba_id())).findFirst().orElse(null);
+    defPrueba.cmbCurso.getItems().stream().filter(v -> v.getId().equals(prueba.getCurso_id())).findFirst().orElse(null);
+    defPrueba.txtNombre.setText(prueba.getName());
+    Integer nroAlternativas = prueba.getAlternativas();
+    nroAlternativas = nroAlternativas == null || nroAlternativas < 3 ? 3 : nroAlternativas;
+    defPrueba.spnNroAlternativas.setNumber(new BigDecimal(nroAlternativas));
+    defPrueba.spnNroPreguntas.setNumber(new BigDecimal(prueba.getNropreguntas()));
+    defPrueba.spnForma.setNumber(new BigDecimal(prueba.getNroformas()));
+    defPrueba.fecFeha.setValue(prueba.getFechaLocal());
+   
+//    ListView<ItemList> lstPreguntas;
+
+  }
+  
 }

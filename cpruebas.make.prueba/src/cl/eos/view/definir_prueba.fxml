@@ -1,17 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.input.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.effect.*?>
-<?import javafx.scene.text.*?>
-<?import jfxtras.labs.scene.control.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.image.*?>
-<?import java.lang.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.ContextMenu?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.input.KeyCodeCombination?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import jfxtras.labs.scene.control.BigDecimalField?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="582.0" prefWidth="1087.0" styleClass="sample-page" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.DefinirPrueba">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="582.0" prefWidth="1087.0" styleClass="sample-page" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.DefinirPrueba">
    <left>
       <VBox style="-fx-border-color: #aaaaa0;">
          <children>
@@ -228,50 +239,54 @@
                                     <Font name="System Bold" size="14.0" />
                                  </font>
                               </Label>
-                              <HBox alignment="CENTER_LEFT" prefHeight="17.0" prefWidth="176.0">
+                              <HBox alignment="CENTER" prefHeight="35.0" VBox.vgrow="NEVER">
                                  <children>
-                                    <RadioButton fx:id="chkOpcionA" layoutX="14.0" layoutY="87.0" mnemonicParsing="false" text="A">
+                                    <RadioButton fx:id="chkOpcionA" layoutX="14.0" layoutY="87.0" mnemonicParsing="false" style="-fx-rotate: 270;" text="A">
                                        <HBox.margin>
                                           <Insets left="2.0" right="1.0" />
                                        </HBox.margin>
                                     </RadioButton>
-                                    <RadioButton fx:id="chkOpcionB" layoutX="49.0" layoutY="89.0" mnemonicParsing="false" text="B">
+                                    <RadioButton fx:id="chkOpcionB" layoutX="49.0" layoutY="89.0" mnemonicParsing="false" style="-fx-rotate: 270;" text="B">
                                        <HBox.margin>
                                           <Insets left="1.0" right="1.0" />
                                        </HBox.margin>
                                     </RadioButton>
-                                    <RadioButton fx:id="chkOpcionC" layoutX="86.0" layoutY="89.0" mnemonicParsing="false" text="C">
+                                    <RadioButton fx:id="chkOpcionC" layoutX="86.0" layoutY="89.0" mnemonicParsing="false" style="-fx-rotate: 270;" text="C">
                                        <HBox.margin>
                                           <Insets left="1.0" right="1.0" />
                                        </HBox.margin>
                                     </RadioButton>
-                                    <RadioButton fx:id="chkOpcionD" layoutX="125.0" layoutY="88.0" mnemonicParsing="false" text="D">
+                                    <RadioButton fx:id="chkOpcionD" layoutX="125.0" layoutY="88.0" mnemonicParsing="false" style="-fx-rotate: 270;" text="D">
                                        <HBox.margin>
                                           <Insets left="1.0" right="1.0" />
                                        </HBox.margin>
                                     </RadioButton>
-                                    <RadioButton fx:id="chkOpcionE" layoutX="163.0" layoutY="88.0" mnemonicParsing="false" text="E">
+                                    <RadioButton fx:id="chkOpcionE" layoutX="163.0" layoutY="88.0" mnemonicParsing="false" style="-fx-rotate: 270;" text="E">
                                        <HBox.margin>
                                           <Insets left="1.0" right="2.0" />
                                        </HBox.margin>
                                     </RadioButton>
                                  </children>
                               </HBox>
-                              <HBox alignment="CENTER_LEFT" prefHeight="17.0" prefWidth="67.0">
+                              <HBox alignment="CENTER" prefHeight="35.0" VBox.vgrow="NEVER">
                                  <children>
-                                    <RadioButton fx:id="chkOpcionV" layoutX="253.0" layoutY="87.0" mnemonicParsing="false" text="V">
+                                    <RadioButton fx:id="chkOpcionV" layoutX="253.0" layoutY="87.0" mnemonicParsing="false" style="-fx-rotate: 270;" text="V">
                                        <HBox.margin>
                                           <Insets left="2.0" right="1.0" />
                                        </HBox.margin>
                                     </RadioButton>
-                                    <RadioButton fx:id="chkOpcionF" layoutX="291.0" layoutY="87.0" mnemonicParsing="false" text="F">
+                                    <RadioButton fx:id="chkOpcionF" layoutX="291.0" layoutY="87.0" mnemonicParsing="false" style="-fx-rotate: 270;" text="F">
                                        <HBox.margin>
                                           <Insets left="1.0" right="2.0" />
                                        </HBox.margin>
                                     </RadioButton>
                                  </children>
                               </HBox>
-                              <RadioButton fx:id="chkOpcionMental" mnemonicParsing="false" text="Mental" />
+                              <HBox alignment="CENTER" fillHeight="false" prefHeight="35.0">
+                                 <children>
+                                    <RadioButton fx:id="chkOpcionMental" mnemonicParsing="false" text="Mental" HBox.hgrow="NEVER" />
+                                 </children>
+                              </HBox>
                            </children>
                            <HBox.margin>
                               <Insets />

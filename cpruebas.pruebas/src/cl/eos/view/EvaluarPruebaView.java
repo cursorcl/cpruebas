@@ -82,7 +82,7 @@ public class EvaluarPruebaView extends AFormView {
                 
                 List<R_TipoAlumno> lstTipoAlumno = controller.findAllSynchro(R_TipoAlumno.class);
                 
-                params = MapBuilder.<String, Object> unordered().put("curso_id", curso.getId()).put("colegio_id", colegio.getId()).build();
+                params = MapBuilder.<String, Object> unordered().put("curso_id", curso.getId()).put("colegio_id", colegio.getId()).put("prueba_id", prueba.getId()).build();
                 final List<R_EvaluacionPrueba> listEvaluaciones = controller.findByParamsSynchro(R_EvaluacionPrueba.class, params);
                 if (listEvaluaciones != null && !listEvaluaciones.isEmpty()) {
                     evalPrueba = listEvaluaciones.get(0);

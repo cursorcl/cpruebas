@@ -26,7 +26,6 @@ public class EditingCellRespuestasEvaluar extends TableCell<OTPruebaRendida, Str
         this.prueba = prueba;
         listaRespuestas = respEsperadas;
         Collections.sort(listaRespuestas, Comparadores.compararRespuestasEsperadas());
-
         maxLength = listaRespuestas.size();
     }
 

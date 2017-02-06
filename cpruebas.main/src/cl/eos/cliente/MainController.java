@@ -15,7 +15,6 @@ import cl.eos.HabilidadesActivator;
 import cl.eos.NivelEvaluacionActivator;
 import cl.eos.ObjetivosActivator;
 import cl.eos.ProfesoresActivator;
-import cl.eos.PruebasActivator;
 import cl.eos.TipoPruebaActivator;
 import cl.eos.activator.ListadoPruebasActivator;
 import cl.eos.calidadlectora.CalidadLectoraActivator;
@@ -49,8 +48,6 @@ public class MainController {
     @FXML
     private MenuContainer mnuPrincipal;
     @FXML
-    private MenuItem mnuListarPruebasPlus;
-    @FXML
     private Menu mnuAdministrar;
     @FXML
     private MenuItem mnuAlumno;
@@ -70,8 +67,6 @@ public class MainController {
     private MenuItem mnuNivelEvaluacion;
     @FXML
     private MenuItem mnuHabilidades;
-    @FXML
-    private MenuItem mnuHacerPrueba;
     @FXML
     private MenuItem mnuEvaluarPrueba;
     @FXML
@@ -185,7 +180,7 @@ public class MainController {
         try {
             WindowManager.getInstance().setRoot(groupRoot);
             WindowManager.getInstance().setBreadcrumbBar(breadCrumb);
-            final IActivator activator = new PruebasActivator();
+            final IActivator activator = new ListadoPruebasActivator();
             WindowManager.getInstance().setHomeView(activator.getView());
 
         } catch (final Exception e) {
@@ -226,10 +221,6 @@ public class MainController {
             WindowManager.getInstance().show(activator.getView());
         });
 
-        mnuHacerPrueba.setOnAction(arg0 -> {
-            final IActivator activator = new PruebasActivator();
-            WindowManager.getInstance().show(activator.getView());
-        });
         mnuTipoPrueba.setOnAction(arg0 -> {
             final IActivator activator = new TipoPruebaActivator();
             WindowManager.getInstance().show(activator.getView());
@@ -266,10 +257,6 @@ public class MainController {
         });
         mnuRangoLectores.setOnAction(event -> {
             final IActivator activator = new RangosLecturaActivator();
-            WindowManager.getInstance().show(activator.getView());
-        });
-        mnuListarPruebasPlus.setOnAction(event -> {
-            final IActivator activator = new ListadoPruebasActivator();
             WindowManager.getInstance().show(activator.getView());
         });
     }
