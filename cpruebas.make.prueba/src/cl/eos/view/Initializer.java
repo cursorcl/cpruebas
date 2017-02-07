@@ -5,14 +5,30 @@ import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.text.Normalizer;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
+import cl.eos.restful.tables.R_Alternativas;
 import cl.eos.restful.tables.R_Asignatura;
 import cl.eos.restful.tables.R_Ejetematico;
+import cl.eos.restful.tables.R_Habilidad;
+import cl.eos.restful.tables.R_Imagenes;
+import cl.eos.restful.tables.R_NivelEvaluacion;
 import cl.eos.restful.tables.R_Objetivo;
+import cl.eos.restful.tables.R_Preguntas;
+import cl.eos.restful.tables.R_Profesor;
 import cl.eos.restful.tables.R_Prueba;
+import cl.eos.restful.tables.R_RespuestasEsperadasPrueba;
+import cl.eos.restful.tables.R_TipoCurso;
+import cl.eos.restful.tables.R_TipoPrueba;
 import cl.eos.util.MapBuilder;
 import javafx.beans.value.ChangeListener;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
@@ -122,29 +138,10 @@ public class Initializer {
         });
     Initializer.assignValues(defPrueba);
     defPrueba.cmbAsignatura.setOnAction(event -> {
-      
-      R_Asignatura asignatura = defPrueba.cmbAsignatura.getSelectionModel().getSelectedItem();
-      Map<String, Object> params = MapBuilder.<String, Object>unordered().put("asignatura_id", asignatura.getId()).build();
-      defPrueba.getController().findByParam(R_Ejetematico.class, params, defPrueba);
-      
-      if (defPrueba.cmbCurso.getSelectionModel().getSelectedItem() != null) {
-        Initializer.asinarNombrePrueba(defPrueba);
-        defPrueba.cmbObjetivos.getItems().clear();
-        params = MapBuilder.<String, Object>unordered().put("asignatura_id", asignatura.getId()).put("tipocurso_id",defPrueba.cmbCurso.getSelectionModel().getSelectedItem().getId()).build();
-        defPrueba.getController().findByParam(R_Objetivo.class, params, defPrueba);
-      }
+      processSelection(defPrueba);
     });
     defPrueba.cmbCurso.setOnAction(event -> {
-      R_Asignatura asignatura = defPrueba.cmbAsignatura.getSelectionModel().getSelectedItem();
-      Map<String, Object> params = MapBuilder.<String, Object>unordered().put("asignatura_id", asignatura.getId()).build();
-      defPrueba.getController().findByParam(R_Ejetematico.class, params, defPrueba);
-      
-      if (defPrueba.cmbCurso.getSelectionModel().getSelectedItem() != null) {
-        Initializer.asinarNombrePrueba(defPrueba);
-        defPrueba.cmbObjetivos.getItems().clear();
-        params = MapBuilder.<String, Object>unordered().put("asignatura_id", asignatura.getId()).put("tipocurso_id",defPrueba.cmbCurso.getSelectionModel().getSelectedItem().getId()).build();
-        defPrueba.getController().findByParam(R_Objetivo.class, params, defPrueba);
-      }
+      processSelection(defPrueba);
     });
     defPrueba.mnuEliminarPregunta.setOnAction(event -> {
       int idx = defPrueba.lstPreguntas.getSelectionModel().getSelectedIndex();
@@ -162,6 +159,30 @@ public class Initializer {
     Initializer.initializeImages(defPrueba);
     Initializer.initializeList(defPrueba);
     Initializer.initializeInteraction(defPrueba);
+  }
+
+  /**
+   * Procesa los eventos de selección de asignatura y curso.
+   * 
+   * @param defPrueba La vista que contiene los controles donde se presenta la prueba.
+   */
+  private static void processSelection(DefinirPrueba defPrueba) {
+    R_Asignatura asignatura = defPrueba.cmbAsignatura.getSelectionModel().getSelectedItem();
+    if (asignatura != null) {
+      Map<String, Object> params =
+          MapBuilder.<String, Object>unordered().put("asignatura_id", asignatura.getId()).build();
+      defPrueba.getController().findByParam(R_Ejetematico.class, params, defPrueba);
+      Initializer.asinarNombrePrueba(defPrueba);
+
+      if (defPrueba.cmbCurso.getSelectionModel().getSelectedItem() != null) {
+        Initializer.asinarNombrePrueba(defPrueba);
+        defPrueba.cmbObjetivos.getItems().clear();
+        params = MapBuilder.<String, Object>unordered().put("asignatura_id", asignatura.getId())
+            .put("tipocurso_id", defPrueba.cmbCurso.getSelectionModel().getSelectedItem().getId())
+            .build();
+        defPrueba.getController().findByParam(R_Objetivo.class, params, defPrueba);
+      }
+    }
   }
 
   private static void initializeImages(DefinirPrueba defPrueba) {
@@ -353,29 +374,89 @@ public class Initializer {
           defPrueba.chkOpcionMental.setSelected(ranswer.equals("M"));
         });
   }
-  
-  
-  public static void setPrueba(R_Prueba prueba, DefinirPrueba defPrueba)
-  {
-    
-    R_Asignatura asignatura = defPrueba.cmbAsignatura.getItems().stream().filter(v -> v.getId().equals(prueba.getAsignatura_id())).findFirst().orElse(null);
+
+
+  public static void setPrueba(R_Prueba prueba, DefinirPrueba defPrueba) {
+
+    // Asignatura
+    R_Asignatura asignatura = defPrueba.cmbAsignatura.getItems().stream()
+        .filter(v -> v.getId().equals(prueba.getAsignatura_id())).findFirst().orElse(null);
     defPrueba.cmbAsignatura.getSelectionModel().select(asignatura);
-    defPrueba.cmbProfesor.getItems().stream().filter(v -> v.getId().equals(prueba.getProfesor_id())).findFirst().orElse(null);
+    // Profesor
+    R_Profesor profesor = defPrueba.cmbProfesor.getItems().stream()
+        .filter(v -> v.getId().equals(prueba.getProfesor_id())).findFirst().orElse(null);
+    defPrueba.cmbProfesor.getSelectionModel().select(profesor);
+    // Curso
+    R_TipoCurso curso = defPrueba.cmbCurso.getItems().stream()
+        .filter(v -> v.getId().equals(prueba.getCurso_id())).findFirst().orElse(null);
+    defPrueba.cmbCurso.getSelectionModel().select(curso);
+    // Tipo de prueba
+    R_TipoPrueba tipoPrueba = defPrueba.cmbTipoPrueba.getItems().stream()
+        .filter(v -> v.getId().equals(prueba.getTipoprueba_id())).findFirst().orElse(null);
+    defPrueba.cmbTipoPrueba.getSelectionModel().select(tipoPrueba);
+    // Nivel de evaluación
+    R_NivelEvaluacion nivel = defPrueba.cmbNivelEvaluacion.getItems().stream()
+        .filter(v -> v.getId().equals(prueba.getNivelevaluacion_id())).findFirst().orElse(null);
+    defPrueba.cmbNivelEvaluacion.getSelectionModel().select(nivel);
+
+    defPrueba.txtNombre.setText(prueba.getName());
+
     defPrueba.spnExigencia.setNumber(new BigDecimal(prueba.getExigencia()));
     defPrueba.spnPjeBase.setNumber(new BigDecimal(prueba.getPuntajebase()));
-    defPrueba.cmbNivelEvaluacion.getItems().stream().filter(v -> v.getId().equals(prueba.getNivelevaluacion_id())).findFirst().orElse(null);
-    defPrueba.cmbTipoPrueba.getItems().stream().filter(v -> v.getId().equals(prueba.getTipoprueba_id())).findFirst().orElse(null);
-    defPrueba.cmbCurso.getItems().stream().filter(v -> v.getId().equals(prueba.getCurso_id())).findFirst().orElse(null);
-    defPrueba.txtNombre.setText(prueba.getName());
+
     Integer nroAlternativas = prueba.getAlternativas();
     nroAlternativas = nroAlternativas == null || nroAlternativas < 3 ? 3 : nroAlternativas;
     defPrueba.spnNroAlternativas.setNumber(new BigDecimal(nroAlternativas));
     defPrueba.spnNroPreguntas.setNumber(new BigDecimal(prueba.getNropreguntas()));
     defPrueba.spnForma.setNumber(new BigDecimal(prueba.getNroformas()));
     defPrueba.fecFeha.setValue(prueba.getFechaLocal());
-   
-//    ListView<ItemList> lstPreguntas;
+
+    // Se obtienen las Preguntas, respuestas esperadas, alternativas, imágenes, eje temático,
+    // habilidad y objetivo por cada una
+    Map<String, Object> params =
+        MapBuilder.<String, Object>unordered().put("prueba_id", prueba.getId()).build();
+    List<R_RespuestasEsperadasPrueba> lstRespEsperadas =
+        defPrueba.getController().findByParamsSynchro(R_RespuestasEsperadasPrueba.class, params);
+    List<R_Preguntas> lstPreguntas =
+        defPrueba.getController().findByParamsSynchro(R_Preguntas.class, params);
+    ObservableList<ItemList> olstPreguntas =
+        FXCollections.observableArrayList(Stream.generate(ItemList::new)
+            .limit(defPrueba.spnNroPreguntas.getNumber().intValue()).collect(Collectors.toList()));
+
+    if (lstRespEsperadas == null || lstRespEsperadas.isEmpty()) {
+      for (int n = 0; n < prueba.getNropreguntas(); n++) {
+        olstPreguntas.set(n, new ItemList(n + 1));
+      }
+      defPrueba.lstPreguntas.setItems(olstPreguntas);
+    } else {
+      for (R_RespuestasEsperadasPrueba resp : lstRespEsperadas) {
+        params = MapBuilder.<String, Object>unordered().put("respuesta_id", resp.getId()).build();
+        List<R_Alternativas> lstAlternativas =
+            defPrueba.getController().findByParamsSynchro(R_Alternativas.class, params);
+        List<R_Imagenes> lstImagenes =
+            defPrueba.getController().findByParamsSynchro(R_Imagenes.class, params);
+        R_Ejetematico eje = defPrueba.getController().findByIdSynchro(R_Ejetematico.class,
+            resp.getEjetematico_id());
+        R_Habilidad hab =
+            defPrueba.getController().findByIdSynchro(R_Habilidad.class, resp.getHabilidad_id());
+        R_Objetivo obj =
+            defPrueba.getController().findByIdSynchro(R_Objetivo.class, resp.getObjetivo_id());
+
+        int n = resp.getNumero();
+        List<String> sAlternativas = lstAlternativas == null ? null
+            : lstAlternativas.stream().map(a -> a.getTexto()).collect(Collectors.toList());
+
+        List<Image> iImages =
+            lstImagenes.stream().map(i -> new Image(i.getName())).collect(Collectors.toList());
+
+        ItemList item = new ItemList.Builder().hability(hab).alternatives(sAlternativas)
+            .images(iImages).objetive(obj).question(lstPreguntas.get(resp.getNumero()).getName())
+            .thematic(eje).rightAnswer(resp.getRespuesta()).build(resp.getNumero());
+        olstPreguntas.set(n - 1, item);
+      }
+    }
+
 
   }
-  
+
 }

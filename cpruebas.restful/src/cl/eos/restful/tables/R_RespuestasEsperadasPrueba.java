@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import cl.eos.persistence.AEntity;
 
-public class R_RespuestasEsperadasPrueba  extends AEntity{
+public class R_RespuestasEsperadasPrueba  extends AEntity implements Comparable<R_RespuestasEsperadasPrueba>{
     
     private static final long serialVersionUID = 1L;
     
@@ -271,5 +271,10 @@ public class R_RespuestasEsperadasPrueba  extends AEntity{
         this.ejetematico_id = builder.ejetematico_id;
         this.anulada = builder.anulada;
         this.objetivo_id = builder.objetivo_id;
+    }
+
+    @Override
+    public int compareTo(R_RespuestasEsperadasPrueba other) {
+      return this.numero - other.numero;
     }
 }
