@@ -40,6 +40,10 @@ public class ItemList {
       itemList.ability = ability;
       itemList.objetive = objetive;
       itemList.alternatives = alternatives;
+      if(itemList.alternatives == null || itemList.alternatives.size() == 0)
+      {
+        alternatives = Stream.generate(String::new).limit(5).collect(Collectors.toList());
+      }
       itemList.images = images;
       itemList.rightAnswer = rightAnswer;
       return itemList;
