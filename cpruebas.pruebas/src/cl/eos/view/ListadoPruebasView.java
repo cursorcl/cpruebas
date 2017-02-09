@@ -71,6 +71,9 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
   @FXML
   private TableView<OTPrueba> tblListadoPruebas;
   @FXML
+  private TableColumn<OTPrueba, Long> idCol;
+
+  @FXML
   private TableColumn<OTPrueba, LocalDate> fechaCol;
   @FXML
   private TableColumn<OTPrueba, String> cursoCol;
@@ -689,6 +692,7 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
   @FXML
   public void initialize() {
     tblListadoPruebas.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+    idCol.setCellValueFactory(new PropertyValueFactory<OTPrueba, Long>("id"));
     fechaCol.setCellValueFactory(new PropertyValueFactory<OTPrueba, LocalDate>("fechaLocal"));
     nameCol.setCellValueFactory(new PropertyValueFactory<OTPrueba, String>("name"));
     asignaturaCol.setCellValueFactory(new PropertyValueFactory<OTPrueba, String>("asignatura"));

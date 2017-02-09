@@ -63,12 +63,13 @@
 							<children>
 								<TableView id="tblListadoPruebas" fx:id="tblListadoPruebas" layoutX="-10.0" layoutY="-31.0" prefHeight="400.0" prefWidth="696.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="0.0">
 									<columns>
+                              <TableColumn fx:id="idCol" prefWidth="75.0" text="ID" />
 										<TableColumn fx:id="fechaCol" prefWidth="78.0" text="Fecha" />
 										<TableColumn fx:id="nroPreguntasCol" prefWidth="57.0" style="-fx-alignment: CENTER-RIGHT;" text="Preg." />
 										<TableColumn fx:id="estadoCol" prefWidth="88.0" text="Estado" />
-										<TableColumn fx:id="nameCol" prefWidth="310.0" text="Nombre" />
-										<TableColumn fx:id="asignaturaCol" prefWidth="240.0" text="Asignatura" />
-										<TableColumn fx:id="cursoCol" prefWidth="161.0" text="Curso" />
+										<TableColumn fx:id="nameCol" prefWidth="450.0" text="Nombre" />
+										<TableColumn fx:id="asignaturaCol" prefWidth="200.0" text="Asignatura" />
+										<TableColumn fx:id="cursoCol" prefWidth="126.0" text="Curso" />
 									</columns>
 									<contextMenu>
 										<ContextMenu>

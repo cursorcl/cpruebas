@@ -416,8 +416,14 @@ public class Initializer {
     defPrueba.spnForma.setNumber(new BigDecimal(prueba.getNroformas()));
     defPrueba.fecFeha.setValue(prueba.getFechaLocal());
 
+    
+    
+    
     // Se obtienen las Preguntas, respuestas esperadas, alternativas, imágenes, eje temático,
     // habilidad y objetivo por cada una
+    
+    
+    
     Map<String, Object> params = MapBuilder.<String, Object>unordered().put("prueba_id", prueba.getId()).build();
 
     final List<R_RespuestasEsperadasPrueba> lstRespEsperadas =
