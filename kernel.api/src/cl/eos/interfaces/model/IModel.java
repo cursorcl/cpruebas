@@ -103,4 +103,5 @@ public interface IModel {
      *            Lista de elementos a ser eliminados.
      */
     <T extends IEntity> void delete(List<T> entity);
+     <T extends IEntity>  void deleteByParams(T entity, Map<String, Object> params);
 }

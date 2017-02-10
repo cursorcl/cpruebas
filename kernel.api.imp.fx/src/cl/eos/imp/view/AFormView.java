@@ -2,6 +2,7 @@ package cl.eos.imp.view;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import cl.eos.interfaces.entity.IEntity;
@@ -59,6 +60,13 @@ public abstract class AFormView extends AView implements IFormView {
             controller.delete(otObject);
         }
     }
+    
+    @Override
+    public void deleteByParams(IEntity entity, Map<String, Object> params)
+    {
+      controller.deleteByParams(entity, params);
+    }
+    
 
     @Override
     public void findAll(Class<? extends IEntity> entityClazz) {

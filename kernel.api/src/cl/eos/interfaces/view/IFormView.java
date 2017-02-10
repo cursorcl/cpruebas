@@ -29,6 +29,8 @@ public interface IFormView extends IView {
     void delete(IEntity otObject, boolean confirm);
 
     void delete(List<? extends IEntity> otObject);
+    
+    void deleteByParams(IEntity entity, Map<String, Object> params);
 
     void findAll(Class<? extends IEntity> entityClazz);
 

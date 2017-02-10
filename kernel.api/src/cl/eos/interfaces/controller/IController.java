@@ -80,6 +80,7 @@ public interface IController {
      * @param entity
      *            Objeto a grabar.
      */
-    <T extends IEntity> void delete(IEntity entity);
+    <T extends IEntity> void delete(T entity);
     <T extends IEntity> void delete(List<T> entity);
+    <T extends IEntity> void deleteByParams(T entity, Map<String, Object> params);
 }

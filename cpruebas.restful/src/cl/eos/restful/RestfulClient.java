@@ -38,6 +38,8 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 
+import cl.eos.interfaces.entity.IEntity;
+
 /**
  * Clase que realiza todas las operaciones tipo RESTFUL en el sistema.
  * 
@@ -259,6 +261,37 @@ public class RestfulClient {
     return result;
   }
 
+
+  public static void deleteByParams(Class<? extends IEntity> clazz, Map<String, Object> params) {
+    String url = String.format(URL, getTablName(clazz));
+    CloseableHttpResponse response = null;
+    try {
+      HttpDelete httpget = new HttpDelete(url);
+      httpget.addHeader("accept", "application/json");
+      URIBuilder uriBuilder = new URIBuilder(url);
+      for (Entry<String, Object> entry : params.entrySet()) {
+        uriBuilder.addParameter(entry.getKey(), entry.getValue().toString());
+      }
+      httpget.setURI(uriBuilder.build());
+      
+      response = httpclient.execute(httpget);
+      if (response.getStatusLine().getStatusCode() != 200)
+        return;
+    } catch (IOException e) {
+      e.printStackTrace();
+    } catch (URISyntaxException e) {
+      e.printStackTrace();
+    }
+    finally {
+      try {
+        response.close();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
+  }
+  
+  
   public static <T> boolean post(T element) {
     String url = String.format(URL, getTablName(element.getClass()));
     StringEntity postingString;
@@ -402,5 +435,5 @@ public class RestfulClient {
 
     // implement equals method too! (as per javadoc)
   }
-  
+
 }

@@ -42,6 +42,7 @@ public class MenuGrabarListener implements EventHandler<ActionEvent> {
 
     if (!validate())
       return;
+    boolean isNew = false;
     name = defPrueba.txtNombre.getText();
     idAsignatura = defPrueba.cmbAsignatura.getValue().getId();
     idCurso = defPrueba.cmbAsignatura.getValue().getId();
@@ -49,6 +50,7 @@ public class MenuGrabarListener implements EventHandler<ActionEvent> {
 
     R_Prueba prueba = defPrueba.prueba;
     if (defPrueba.prueba == null) {
+      isNew =  true;
       prueba = new R_Prueba.Builder().id(Utils.getLastIndex()).build();
     }
 
@@ -74,8 +76,6 @@ public class MenuGrabarListener implements EventHandler<ActionEvent> {
     }
     prueba.setResponses(respuestas);
 
-    prueba = (R_Prueba) defPrueba.save(prueba);
-
     for (final ItemList item : items) {
       final String itemName = String.format("%d", item.nro);
 
@@ -93,6 +93,8 @@ public class MenuGrabarListener implements EventHandler<ActionEvent> {
       final List<R_Imagenes> lstImages = processImages(item, respuesta);
       final List<R_Alternativas> lstAlternativas = processAlteratives(item, respuesta);
 
+
+      prueba = (R_Prueba) defPrueba.save(prueba);
       defPrueba.save(respuesta);
       defPrueba.save(pregunta);
 

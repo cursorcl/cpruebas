@@ -156,4 +156,7 @@ public abstract class AModel implements IModel {
             delete(iEntity);
         }
     }
+    public <T extends IEntity>  void deleteByParams(T entity, Map<String, Object> params) {
+      PersistenceServiceFactory.getPersistenceService().deleteByParams(entity, params);
+    }
 }

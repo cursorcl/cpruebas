@@ -344,4 +344,9 @@ public class RestPersistenceServiceRESTFUL implements IPersistenceService {
   @Override
   public void disconnect() {}
 
+  @Override
+  public <T extends IEntity> void deleteByParams(T entity, Map<String, Object> params) {
+    RestfulClient.deleteByParams(entity.getClass(), params);
+  }
+
 }
