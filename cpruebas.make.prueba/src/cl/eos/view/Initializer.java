@@ -42,8 +42,14 @@ public class Initializer {
   static ImageView[] images = new ImageView[5];
 
   protected static void assignTestName(DefinirPrueba defPrueba) {
-    final String asign = defPrueba.cmbAsignatura.getValue().getName().replace(" ", "").replace(".", "_").toUpperCase();
-    final String curso = defPrueba.cmbCurso.getValue().getName().replace(" ", "").replace(".", "_").toUpperCase();
+    String asign = "";
+    if (defPrueba.cmbAsignatura.getValue() != null) {
+      asign = defPrueba.cmbAsignatura.getValue().getName().replace(" ", "").replace(".", "_").toUpperCase();
+    }
+    String curso = "";
+    if (defPrueba.cmbCurso.getValue() != null) {
+      curso = defPrueba.cmbCurso.getValue().getName().replace(" ", "").replace(".", "_").toUpperCase();
+    }
     String name = String.format("%s%s%04d.%02d%02d", asign, curso, defPrueba.fecFeha.getValue().getYear(),
         defPrueba.fecFeha.getValue().getMonthValue(), defPrueba.fecFeha.getValue().getDayOfMonth());
     final String normalized = Normalizer.normalize(name, Normalizer.Form.NFD);
@@ -138,12 +144,7 @@ public class Initializer {
             defPrueba.img5.setDisable(newValue.intValue() < 5);
           }
         });
-    defPrueba.cmbAsignatura.setOnAction(event -> {
-      processSelection(defPrueba);
-    });
-    defPrueba.cmbCurso.setOnAction(event -> {
-      processSelection(defPrueba);
-    });
+
     defPrueba.mnuEliminarPregunta.setOnAction(event -> {
       int idx = defPrueba.lstPreguntas.getSelectionModel().getSelectedIndex();
       if (idx == -1)
@@ -162,7 +163,12 @@ public class Initializer {
     Initializer.initializeInteraction(defPrueba);
 
     Initializer.assignDefaultValues(defPrueba);
-    
+    defPrueba.cmbAsignatura.setOnAction(event -> {
+      processSelection(defPrueba);
+    });
+    defPrueba.cmbCurso.setOnAction(event -> {
+      processSelection(defPrueba);
+    });
   }
 
   /**
@@ -348,7 +354,7 @@ public class Initializer {
         .addListener((ChangeListener<ItemList>) (observable, oldValue, newValue) -> {
           defPrueba.dataContainer.setDisable(false);
           Initializer.selected = newValue;
-          if(newValue == null)
+          if (newValue == null)
             return;
           defPrueba.txtPregunta.setText(Initializer.selected.question);
           defPrueba.cmbEjesTematicos.getSelectionModel().select(Initializer.selected.thematic);
@@ -363,8 +369,7 @@ public class Initializer {
               Initializer.images[n2].setImage(Initializer.selected.images.get(n2));
           }
           final String ranswer = Initializer.selected.rightAnswer;
-          if (ranswer == null || ranswer.isEmpty())
-          {
+          if (ranswer == null || ranswer.isEmpty()) {
             defPrueba.chkOpcionA.setSelected(true);
             return;
           }
@@ -395,6 +400,7 @@ public class Initializer {
     final R_Profesor profesor = defPrueba.cmbProfesor.getItems().stream()
         .filter(v -> v.getId().equals(prueba.getProfesor_id())).findFirst().orElse(null);
     defPrueba.cmbProfesor.getSelectionModel().select(profesor);
+    processSelection(defPrueba);
     // Curso
     final R_TipoCurso curso = defPrueba.cmbCurso.getItems().stream().filter(v -> v.getId().equals(prueba.getCurso_id()))
         .findFirst().orElse(null);
@@ -416,14 +422,13 @@ public class Initializer {
     defPrueba.spnForma.setNumber(new BigDecimal(prueba.getNroformas()));
     defPrueba.fecFeha.setValue(prueba.getFechaLocal());
 
-    
-    
-    
+
+
     // Se obtienen las Preguntas, respuestas esperadas, alternativas, imágenes, eje temático,
     // habilidad y objetivo por cada una
-    
-    
-    
+
+
+
     Map<String, Object> params = MapBuilder.<String, Object>unordered().put("prueba_id", prueba.getId()).build();
 
     final List<R_RespuestasEsperadasPrueba> lstRespEsperadas =
