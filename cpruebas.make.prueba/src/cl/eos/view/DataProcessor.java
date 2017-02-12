@@ -14,7 +14,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class DataProcessor {
-  private static boolean bTipoPrueba, bProfesor, bTipoCurso, bAsignatura, bNivelEvaluacion, bHabilidad;
+  private static boolean bTipoPrueba = false, bProfesor = false, bTipoCurso = false, bAsignatura = false,
+      bNivelEvaluacion = false, bHabilidad = false;
 
   public static void process(List<Object> list, DefinirPrueba defPrueba) {
     if (list != null && !list.isEmpty()) {
@@ -39,8 +40,8 @@ public class DataProcessor {
       defPrueba.cmbAsignatura.setItems(asignaturas);
       if (list != null && !list.isEmpty())
         defPrueba.cmbAsignatura.getSelectionModel().select(0);
-      
-      bAsignatura =  true;
+
+      bAsignatura = true;
     }
   }
 
@@ -65,8 +66,8 @@ public class DataProcessor {
       defPrueba.cmbHabilidades.setItems(habilidades);
       if (list != null && !list.isEmpty())
         defPrueba.cmbHabilidades.getSelectionModel().select(-1);
-      
-      bHabilidad =  true;
+
+      bHabilidad = true;
     }
   }
 
@@ -79,8 +80,8 @@ public class DataProcessor {
       defPrueba.cmbNivelEvaluacion.setItems(nivelEvaluacion);
       if (list != null && !list.isEmpty())
         defPrueba.cmbNivelEvaluacion.getSelectionModel().select(0);
-      
-      bNivelEvaluacion =  true;
+
+      bNivelEvaluacion = true;
     }
   }
 
@@ -105,7 +106,7 @@ public class DataProcessor {
       defPrueba.cmbProfesor.setItems(profesores);
       if (list != null && !list.isEmpty())
         defPrueba.cmbProfesor.getSelectionModel().select(0);
-      
+
       bProfesor = true;
     }
   }
@@ -119,8 +120,8 @@ public class DataProcessor {
       defPrueba.cmbCurso.setItems(cursos);
       if (list != null && !list.isEmpty())
         defPrueba.cmbCurso.getSelectionModel().select(0);
-      
-      bTipoCurso =  true;
+
+      bTipoCurso = true;
     }
   }
 
@@ -134,7 +135,7 @@ public class DataProcessor {
       defPrueba.cmbTipoPrueba.setItems(tipoPruebas);
       if (list != null && !list.isEmpty())
         defPrueba.cmbTipoPrueba.getSelectionModel().select(0);
-      
+
       bTipoPrueba = true;
     }
 

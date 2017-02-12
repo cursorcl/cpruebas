@@ -182,7 +182,8 @@ public class Initializer {
     if (asignatura != null) {
       Map<String, Object> params =
           MapBuilder.<String, Object>unordered().put("asignatura_id", asignatura.getId()).build();
-      defPrueba.getController().findByParam(R_Ejetematico.class, params, defPrueba);
+      List<R_Ejetematico> ejes = defPrueba.getController().findByParamsSynchro(R_Ejetematico.class, params);
+      defPrueba.cmbEjesTematicos.setItems(FXCollections.observableArrayList(ejes));
       Initializer.assignTestName(defPrueba);
 
       if (defPrueba.cmbCurso.getSelectionModel().getSelectedItem() != null) {
@@ -190,7 +191,9 @@ public class Initializer {
         defPrueba.cmbObjetivos.getItems().clear();
         params = MapBuilder.<String, Object>unordered().put("asignatura_id", asignatura.getId())
             .put("tipocurso_id", defPrueba.cmbCurso.getSelectionModel().getSelectedItem().getId()).build();
-        defPrueba.getController().findByParam(R_Objetivo.class, params, defPrueba);
+        List<R_Objetivo> objetivos = defPrueba.getController().findByParamsSynchro(R_Objetivo.class, params);
+        defPrueba.cmbObjetivos.setItems(FXCollections.observableArrayList(objetivos));
+        
       }
     }
   }
@@ -406,15 +409,15 @@ public class Initializer {
     final R_Asignatura asignatura = defPrueba.cmbAsignatura.getItems().stream()
         .filter(v -> v.getId().equals(prueba.getAsignatura_id())).findFirst().orElse(null);
     defPrueba.cmbAsignatura.getSelectionModel().select(asignatura);
-    // Profesor
-    final R_Profesor profesor = defPrueba.cmbProfesor.getItems().stream()
-        .filter(v -> v.getId().equals(prueba.getProfesor_id())).findFirst().orElse(null);
-    defPrueba.cmbProfesor.getSelectionModel().select(profesor);
-    processSelection(defPrueba);
     // Curso
     final R_TipoCurso curso = defPrueba.cmbCurso.getItems().stream().filter(v -> v.getId().equals(prueba.getCurso_id()))
         .findFirst().orElse(null);
     defPrueba.cmbCurso.getSelectionModel().select(curso);
+    // Profesor
+    final R_Profesor profesor = defPrueba.cmbProfesor.getItems().stream()
+        .filter(v -> v.getId().equals(prueba.getProfesor_id())).findFirst().orElse(null);
+    defPrueba.cmbProfesor.getSelectionModel().select(profesor);
+    //processSelection(defPrueba);
     // Tipo de prueba
     final R_TipoPrueba tipoPrueba = defPrueba.cmbTipoPrueba.getItems().stream()
         .filter(v -> v.getId().equals(prueba.getTipoprueba_id())).findFirst().orElse(null);

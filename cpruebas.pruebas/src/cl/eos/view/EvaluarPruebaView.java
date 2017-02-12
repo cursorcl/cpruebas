@@ -15,7 +15,7 @@ import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-import cl.eos.PruebasActivator;
+import cl.eos.activator.ListadoPruebasActivator;
 import cl.eos.detection.ExtractorResultadosPrueba;
 import cl.eos.detection.OTResultadoScanner;
 import cl.eos.exceptions.CPruebasException;
@@ -457,7 +457,7 @@ public class EvaluarPruebaView extends AFormView {
             }
         });
         mnuVolver.setOnAction(event -> {
-            final IActivator activator = new PruebasActivator();
+            final IActivator activator = new ListadoPruebasActivator();
             WindowManager.getInstance().show(activator.getView());
         });
     }

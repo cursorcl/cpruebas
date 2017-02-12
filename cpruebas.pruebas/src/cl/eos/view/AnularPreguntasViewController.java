@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import cl.eos.PruebasActivator;
+import cl.eos.activator.ListadoPruebasActivator;
 import cl.eos.imp.view.AFormView;
 import cl.eos.imp.view.WindowManager;
 import cl.eos.interfaces.IActivator;
@@ -89,7 +89,7 @@ public class AnularPreguntasViewController extends AFormView {
         anularCol.setEditable(true);
         mnuGrabar.setOnAction(event -> {
             ejecutaGrabar();
-            final IActivator activator = new PruebasActivator();
+            final IActivator activator = new ListadoPruebasActivator();
             WindowManager.getInstance().show(activator.getView());
         });
         mnuExportar.setOnAction(event -> {
@@ -98,7 +98,7 @@ public class AnularPreguntasViewController extends AFormView {
             ExcelSheetWriterObj.convertirDatosALibroDeExcel(listaTablas);
         });
         mnuVolver.setOnAction(event -> {
-            final IActivator activator = new PruebasActivator();
+            final IActivator activator = new ListadoPruebasActivator();
             WindowManager.getInstance().show(activator.getView());
         });
     }

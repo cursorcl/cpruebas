@@ -3,6 +3,7 @@ package cl.eos.view;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Logger;
 
 import cl.eos.imp.view.AFormView;
 import cl.eos.restful.tables.R_Asignatura;
@@ -29,6 +30,8 @@ import javafx.scene.layout.VBox;
 import jfxtras.labs.scene.control.BigDecimalField;
 
 public class DefinirPrueba extends AFormView {
+
+  static public final Logger log = Logger.getLogger(DefinirPrueba.class.getName());
 
   @FXML
   VBox dataContainer;
@@ -155,9 +158,18 @@ public class DefinirPrueba extends AFormView {
 
   @Override
   public void onDataArrived(List<Object> list) {
+
     DataProcessor.process(list, this);
-    if (DataProcessor.isFinishedDataProcess() && prueba != null) {
-      Initializer.setPrueba(prueba, this);
+    if (list != null && !list.isEmpty()) {
+      final Object entity = list.get(0);
+      log.info("ONDATAARRIVED:" + entity.getClass().getName() + " " + DataProcessor.isFinishedDataProcess());
+      if (!(entity instanceof R_Ejetematico) && !(entity instanceof R_Objetivo)) {
+        if (DataProcessor.isFinishedDataProcess() && prueba != null) {
+          Initializer.setPrueba(prueba, this);
+        }
+      }
+
+
     }
   }
 

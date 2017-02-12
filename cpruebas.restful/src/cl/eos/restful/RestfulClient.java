@@ -47,10 +47,10 @@ import cl.eos.interfaces.entity.IEntity;
  *
  */
 public class RestfulClient {
-  private static final String URL = "http://localhost/tpruebas/%s";
-  private static final String URL_CONEXION = "http://localhost/tpruebas/connection";
-//  private static final String URL = "http://www.aplicacionestest.cl/%s";
-//  private static final String URL_CONEXION = "http://www.aplicacionestest.cl/connection";
+//  private static final String URL = "http://localhost/tpruebas/%s";
+//  private static final String URL_CONEXION = "http://localhost/tpruebas/connection";
+  private static final String URL = "http://www.aplicacionestest.cl/%s";
+  private static final String URL_CONEXION = "http://www.aplicacionestest.cl/connection";
   private static final String BY_ID = URL + "/%d";
   
   
