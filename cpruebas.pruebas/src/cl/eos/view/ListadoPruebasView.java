@@ -306,7 +306,6 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
     controller.findAll(R_Asignatura.class, definicion);
     controller.findAll(R_TipoPrueba.class, definicion);
     controller.findAll(R_NivelEvaluacion.class, definicion);
-    controller.findAll(R_Curso.class, definicion);
     controller.findAll(R_Habilidad.class, definicion);
   }
 
@@ -343,7 +342,6 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
           controller.findAll(R_Asignatura.class, definicion);
           controller.findAll(R_TipoPrueba.class, definicion);
           controller.findAll(R_NivelEvaluacion.class, definicion);
-          controller.findAll(R_Curso.class, definicion);
           controller.findAll(R_Habilidad.class, definicion);
           definicion.setPrueba(prueba);
          

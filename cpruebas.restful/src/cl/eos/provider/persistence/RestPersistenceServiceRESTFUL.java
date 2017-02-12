@@ -54,22 +54,22 @@ public class RestPersistenceServiceRESTFUL implements IPersistenceService {
   public <T extends IEntity> void findAll(final Class<T> entityClazz,
       final IPersistenceListener listener) {
 
-    List<? extends IEntity> result = RestfulClient.get(entityClazz);
-    listener.onFindAllFinished((List<Object>) result);
+//    List<? extends IEntity> result = RestfulClient.get(entityClazz);
+//    listener.onFindAllFinished((List<Object>) result);
 
 
-//    Runnable r = () -> {
-//      List<? extends IEntity> result = RestfulClient.get(entityClazz);
-//
-//      Platform.runLater(new Runnable() {
-//        @Override
-//        public void run() {
-//          listener.onFindAllFinished((List<Object>) result);
-//        }
-//      });
-//
-//    };
-//    executor.execute(r);
+    Runnable r = () -> {
+      List<? extends IEntity> result = RestfulClient.get(entityClazz);
+
+      Platform.runLater(new Runnable() {
+        @Override
+        public void run() {
+          listener.onFindAllFinished((List<Object>) result);
+        }
+      });
+
+    };
+    executor.execute(r);
   }
 
   @Override
@@ -345,8 +345,8 @@ public class RestPersistenceServiceRESTFUL implements IPersistenceService {
   public void disconnect() {}
 
   @Override
-  public <T extends IEntity> void deleteByParams(T entity, Map<String, Object> params) {
-    RestfulClient.deleteByParams(entity.getClass(), params);
+  public <T extends IEntity> void deleteByParams(Class<T> entity, Map<String, Object> params) {
+    RestfulClient.deleteByParams(entity, params);
   }
 
 }

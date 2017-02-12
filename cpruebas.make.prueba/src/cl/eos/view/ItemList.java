@@ -12,8 +12,10 @@ import javafx.scene.image.Image;
 
 public class ItemList {
   public ItemList() {
+    rightAnswer = "A";
   }
 
+  
   public static class Builder {
     private String question;
     private R_Ejetematico thematic;
@@ -23,6 +25,8 @@ public class ItemList {
     private List<Image> images;
     private String rightAnswer;
 
+    
+    
     public Builder hability(R_Habilidad ability) {
       this.ability = ability;
       return this;
@@ -88,6 +92,7 @@ public class ItemList {
   public ItemList(int nro) {
     this.nro = nro;
     alternatives = Stream.generate(String::new).limit(5).collect(Collectors.toList());
+    rightAnswer="A";
     images = new ArrayList<>(5);
     for (int n = 0; n < 5; n++)
       images.add(null);

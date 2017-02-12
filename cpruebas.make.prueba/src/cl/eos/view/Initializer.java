@@ -158,6 +158,7 @@ public class Initializer {
       defPrueba.lstPreguntas.getSelectionModel().clearSelection();
       defPrueba.dataContainer.setDisable(true);
     });
+    defPrueba.chkOpcionA.setSelected(true);
     Initializer.initializeImages(defPrueba);
     Initializer.initializeList(defPrueba);
     Initializer.initializeInteraction(defPrueba);
@@ -386,6 +387,15 @@ public class Initializer {
 
 
   public static void setPrueba(R_Prueba prueba, DefinirPrueba defPrueba) {
+    
+    
+    
+    defPrueba.txtNombre.setDisable(true);
+    defPrueba.spnPjeBase.setDisable(true);
+    defPrueba.spnNroAlternativas.setDisable(true);
+    defPrueba.spnForma.setDisable(true);
+    defPrueba.fecFeha.setDisable(true);
+    defPrueba.cmbAsignatura.setDisable(true);
 
     Integer nroAlternativas = prueba.getAlternativas();
     nroAlternativas = nroAlternativas == null || nroAlternativas < 3 ? 3 : nroAlternativas;

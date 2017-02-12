@@ -47,5 +47,5 @@ public interface IPersistenceService {
 
     void disconnect();
 
-    <T extends IEntity> void deleteByParams(T entity, Map<String, Object> params);
+    <T extends IEntity> void deleteByParams(Class<T> entity, Map<String, Object> params);
 }

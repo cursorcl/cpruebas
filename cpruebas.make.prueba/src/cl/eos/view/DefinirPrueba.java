@@ -147,13 +147,18 @@ public class DefinirPrueba extends AFormView {
    */
   public final void setPrueba(R_Prueba prueba) {
     this.prueba = prueba;
-    Initializer.setPrueba(prueba, this);
+    if (DataProcessor.isFinishedDataProcess() && prueba != null) {
+      Initializer.setPrueba(prueba, this);
+    }
   }
 
 
   @Override
   public void onDataArrived(List<Object> list) {
     DataProcessor.process(list, this);
+    if (DataProcessor.isFinishedDataProcess() && prueba != null) {
+      Initializer.setPrueba(prueba, this);
+    }
   }
 
   /**
@@ -161,7 +166,6 @@ public class DefinirPrueba extends AFormView {
    */
   @Override
   public boolean validate() {
-    // TODO Auto-generated method stub
     return super.validate();
   }
 

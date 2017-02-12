@@ -30,7 +30,7 @@ public interface IFormView extends IView {
 
     void delete(List<? extends IEntity> otObject);
     
-    void deleteByParams(IEntity entity, Map<String, Object> params);
+    void deleteByParams(Class<? extends IEntity> entityClazz, Map<String, Object> params);
 
     void findAll(Class<? extends IEntity> entityClazz);
 

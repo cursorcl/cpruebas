@@ -62,7 +62,7 @@ public abstract class AFormView extends AView implements IFormView {
     }
     
     @Override
-    public void deleteByParams(IEntity entity, Map<String, Object> params)
+    public void deleteByParams(Class<? extends IEntity> entity, Map<String, Object> params)
     {
       controller.deleteByParams(entity, params);
     }

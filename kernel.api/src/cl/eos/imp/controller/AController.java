@@ -62,7 +62,7 @@ public abstract class AController implements IController, IPersistenceListener {
     }
   }
   
-  public <T extends IEntity> void deleteByParams(T entity, Map<String, Object> params) {
+  public <T extends IEntity> void deleteByParams(Class<T> entity, Map<String, Object> params) {
     model.deleteByParams(entity, params);
   }
 

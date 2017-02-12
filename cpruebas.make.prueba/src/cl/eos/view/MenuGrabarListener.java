@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
 
@@ -17,6 +18,7 @@ import cl.eos.restful.tables.R_Imagenes;
 import cl.eos.restful.tables.R_Preguntas;
 import cl.eos.restful.tables.R_Prueba;
 import cl.eos.restful.tables.R_RespuestasEsperadasPrueba;
+import cl.eos.util.MapBuilder;
 import cl.eos.util.Utils;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
@@ -50,7 +52,7 @@ public class MenuGrabarListener implements EventHandler<ActionEvent> {
 
     R_Prueba prueba = defPrueba.prueba;
     if (defPrueba.prueba == null) {
-      isNew =  true;
+      isNew = true;
       prueba = new R_Prueba.Builder().id(Utils.getLastIndex()).build();
     }
 
@@ -76,6 +78,13 @@ public class MenuGrabarListener implements EventHandler<ActionEvent> {
     }
     prueba.setResponses(respuestas);
 
+    if (!isNew) {
+      Map<String, Object> params = MapBuilder.<String, Object>unordered().put("prueba_id", prueba.getId()).build();
+      defPrueba.getController().deleteByParams(R_RespuestasEsperadasPrueba.class, params);
+      defPrueba.getController().deleteByParams(R_Preguntas.class, params);
+      defPrueba.getController().deleteByParams(R_Alternativas.class, params);
+      defPrueba.getController().deleteByParams(R_Imagenes.class, params);
+    }
     for (final ItemList item : items) {
       final String itemName = String.format("%d", item.nro);
 
@@ -95,8 +104,10 @@ public class MenuGrabarListener implements EventHandler<ActionEvent> {
 
 
       prueba = (R_Prueba) defPrueba.save(prueba);
+
       defPrueba.save(respuesta);
       defPrueba.save(pregunta);
+
 
       for (int n = 0; n < lstAlternativas.size(); n++) {
         R_Alternativas alt = lstAlternativas.get(n);
@@ -106,6 +117,7 @@ public class MenuGrabarListener implements EventHandler<ActionEvent> {
         lstAlternativas.set(n, alt);
       }
 
+      
       if (lstImages != null && !lstImages.isEmpty()) {
         for (int n = 0; n < lstImages.size(); n++) {
           R_Imagenes img = lstImages.get(n);

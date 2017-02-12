@@ -82,5 +82,5 @@ public interface IController {
      */
     <T extends IEntity> void delete(T entity);
     <T extends IEntity> void delete(List<T> entity);
-    <T extends IEntity> void deleteByParams(T entity, Map<String, Object> params);
+    <T extends IEntity> void deleteByParams(Class<T> entity, Map<String, Object> params);
 }
