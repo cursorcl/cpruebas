@@ -2,7 +2,7 @@ package curso;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
 
 import cl.eos.common.Constants;
 import cl.eos.imp.view.AFormView;
@@ -16,7 +16,10 @@ import cl.eos.restful.tables.R_Prueba;
 import cl.eos.restful.tables.R_PruebaRendida;
 import cl.eos.restful.tables.R_TipoAlumno;
 import cl.eos.util.ExcelSheetWriterObj;
+import cl.eos.util.MapBuilder;
 import cl.eos.util.Utils;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -40,7 +43,7 @@ public class ResumenRespuestaView extends AFormView implements EventHandler<Acti
   @FXML
   private TableView<OTRespuestaPreguntas> tblPreguntas;
   @FXML
-  private TableColumn<OTRespuestaPreguntas, String> colPregunta;
+  private TableColumn<OTRespuestaPreguntas, Integer> colPregunta;
   @FXML
   private TableColumn<OTRespuestaPreguntas, Integer> colBuenas;
   @FXML
@@ -65,10 +68,10 @@ public class ResumenRespuestaView extends AFormView implements EventHandler<Acti
   private TextField txtNroPreguntas;
   @FXML
   private TextField txtPuntaje;
-  final NumberAxis xAxis = new NumberAxis();
-  final CategoryAxis yAxis = new CategoryAxis();
+
   @FXML
-  private final BarChart<String, Number> graficoBarra = new BarChart<String, Number>(yAxis, xAxis);
+  private BarChart<String, Number> graficoBarra = new BarChart<String, Number>(new CategoryAxis(), new NumberAxis());
+
 
   @FXML
   private MenuItem mnuExportarRespuestas;
@@ -94,7 +97,11 @@ public class ResumenRespuestaView extends AFormView implements EventHandler<Acti
   }
 
   private void generateReport() {
-    if (evaluacionPrueba != null && cmbTipoAlumno.getItems() != null && !cmbTipoAlumno.getItems().isEmpty()) {
+    if (asignatura != null && evaluacionPrueba != null && cmbTipoAlumno.getItems() != null
+        && !cmbTipoAlumno.getItems().isEmpty() && curso != null && lstPruebasRendidas != null && prueba != null) {
+
+      ((NumberAxis) graficoBarra.getYAxis()).setAutoRanging(false);
+      ((NumberAxis) graficoBarra.getYAxis()).setUpperBound(prueba.getNropreguntas());
       txtAsignatura.setText(asignatura.getName());
       txtCurso.setText(curso.getName());
       final String nroPreguntas = String.valueOf(prueba.getNropreguntas());
@@ -140,10 +147,35 @@ public class ResumenRespuestaView extends AFormView implements EventHandler<Acti
 
   private void inicializarTablaRespuestas() {
     tblPreguntas.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-    colPregunta.setCellValueFactory(new PropertyValueFactory<OTRespuestaPreguntas, String>("name"));
+    colPregunta.setCellValueFactory(new PropertyValueFactory<OTRespuestaPreguntas, Integer>("numero"));
     colBuenas.setCellValueFactory(new PropertyValueFactory<OTRespuestaPreguntas, Integer>("buenas"));
     colMalas.setCellValueFactory(new PropertyValueFactory<OTRespuestaPreguntas, Integer>("malas"));
     colOmitidas.setCellValueFactory(new PropertyValueFactory<OTRespuestaPreguntas, Integer>("omitidas"));
+    tblPreguntas.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<OTRespuestaPreguntas>() {
+
+      @SuppressWarnings({"rawtypes", "unchecked"})
+      @Override
+      public void changed(ObservableValue<? extends OTRespuestaPreguntas> observable, OTRespuestaPreguntas oldValue,
+          OTRespuestaPreguntas newValue) {
+        final ObservableList<OTRespuestaPreguntas> itemsSelec = tblPreguntas.getSelectionModel().getSelectedItems();
+
+        if (itemsSelec.size() == 1) {
+
+          final OTRespuestaPreguntas ot = itemsSelec.get(0);
+          final XYChart.Series series1 = new XYChart.Series();
+          series1.setName("Nro. Preguntas");
+          series1.getData().clear();
+          series1.getData().add(new XYChart.Data("Buenas", ot.getBuenas()));
+          series1.getData().add(new XYChart.Data("Malas", ot.getMalas()));
+          series1.getData().add(new XYChart.Data("Omitidas", ot.getOmitidas()));
+
+          graficoBarra.getData().clear();
+          graficoBarra.getData().add(series1);
+          graficoBarra.setLegendVisible(false);
+
+        }
+      }
+    });
   }
 
   @FXML
@@ -151,9 +183,6 @@ public class ResumenRespuestaView extends AFormView implements EventHandler<Acti
     setTitle("Resumen de respuestas por pregunta");
     inicializarTablaRespuestas();
     inicializarTablaPorcentaje();
-    graficoBarra.setTitle("Gráfico Respuestas por pregunta");
-    xAxis.setLabel("Country");
-    yAxis.setLabel("Value");
     mnuExportarRespuestas.setOnAction(this);
     btnGenerar.setOnAction(this);
     cmbTipoAlumno.setOnAction(event -> tipoAlumno = cmbTipoAlumno.getSelectionModel().getSelectedIndex());
@@ -171,6 +200,7 @@ public class ResumenRespuestaView extends AFormView implements EventHandler<Acti
     final int[] sBuenas = new int[nroPreguntas];
     final int[] sMalas = new int[nroPreguntas];
     final int[] sOmitidas = new int[nroPreguntas];
+
 
     for (final R_PruebaRendida pruebaRendida : lstPruebasRendidas) {
 
@@ -211,6 +241,7 @@ public class ResumenRespuestaView extends AFormView implements EventHandler<Acti
     for (int i = 0; i < nroPreguntas; i++) {
       final OTRespuestaPreguntas otRespuesta = new OTRespuestaPreguntas();
       otRespuesta.setName(String.valueOf(i + 1));
+      otRespuesta.setNumero(i + 1);
       otRespuesta.setBuenas(sBuenas[i]);
       otRespuesta.setMalas(sMalas[i]);
       otRespuesta.setOmitidas(sOmitidas[i]);
@@ -258,9 +289,6 @@ public class ResumenRespuestaView extends AFormView implements EventHandler<Acti
         cmbTipoAlumno.setItems(tAlumnoList);
         cmbTipoAlumno.getSelectionModel().select((int) Constants.PIE_ALL);
         generateReport();
-      } else if (entity instanceof R_PruebaRendida) {
-        lstPruebasRendidas = list.stream().map(p -> (R_PruebaRendida) p).collect(Collectors.toList());
-        generateReport();
       }
     }
   }
@@ -270,9 +298,15 @@ public class ResumenRespuestaView extends AFormView implements EventHandler<Acti
 
     if (entity instanceof R_EvaluacionPrueba) {
       evaluacionPrueba = (R_EvaluacionPrueba) entity;
+      curso = controller.findByIdSynchro(R_Curso.class, evaluacionPrueba.getCurso_id());
+      Map<String, Object> params =
+          MapBuilder.<String, Object>unordered().put("evaluacionprueba_id", evaluacionPrueba.getId()).build();
+      lstPruebasRendidas = controller.findByParamsSynchro(R_PruebaRendida.class, params);
+
       generateReport();
     }
     if (entity instanceof R_Prueba) {
+
       prueba = (R_Prueba) entity;
       generateReport();
     }

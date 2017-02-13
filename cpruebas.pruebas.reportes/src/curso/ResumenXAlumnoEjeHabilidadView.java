@@ -2,6 +2,7 @@ package curso;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import cl.eos.common.Constants;
 import cl.eos.imp.view.AFormView;
@@ -14,6 +15,7 @@ import cl.eos.restful.tables.R_PruebaRendida;
 import cl.eos.restful.tables.R_RespuestasEsperadasPrueba;
 import cl.eos.restful.tables.R_TipoAlumno;
 import cl.eos.util.ExcelSheetWriterObj;
+import cl.eos.util.MapBuilder;
 import cl.eos.util.Pair;
 import cl.eos.util.Utils;
 import cl.eos.view.ots.resumenxalumno.eje.habilidad.OTAlumnoResumen;
@@ -76,9 +78,10 @@ public class ResumenXAlumnoEjeHabilidadView extends AFormView implements EventHa
 
   private List<R_PruebaRendida> lstPruebasRendidas;
   private List<R_RespuestasEsperadasPrueba> lstRespuestasEsperadas;
+  private List<R_Alumno> lstCursos;
 
   public ResumenXAlumnoEjeHabilidadView() {
-    setTitle("Resumen Eje/R_Habilidad x R_Alumno");
+    setTitle("Resumen Eje/Habilidad x Alumno");
   }
 
   @SuppressWarnings("unchecked")
@@ -136,6 +139,16 @@ public class ResumenXAlumnoEjeHabilidadView extends AFormView implements EventHa
   public void onFound(IEntity entity) {
     if (entity instanceof R_EvaluacionPrueba) {
       evaluacionPrueba = (R_EvaluacionPrueba) entity;
+
+      Map<String, Object> params =
+          MapBuilder.<String, Object>unordered().put("evaluacionprueba_id", evaluacionPrueba.getId()).build();
+      lstPruebasRendidas = controller.findByParamsSynchro(R_PruebaRendida.class, params);
+
+      params = MapBuilder.<String, Object>unordered().put("prueba_id", evaluacionPrueba.getPrueba_id()).build();
+      lstRespuestasEsperadas = controller.findByParamsSynchro(R_RespuestasEsperadasPrueba.class, params);
+      
+      params = MapBuilder.<String, Object>unordered().put("curso_id", evaluacionPrueba.getCurso_id()).build();
+      lstCursos = controller.findByParamsSynchro(R_Alumno.class, params);
       generateReport();
     }
   }
@@ -192,7 +205,7 @@ public class ResumenXAlumnoEjeHabilidadView extends AFormView implements EventHa
   private List<OTAlumnoResumen> obtenerPuntos(R_EvaluacionPrueba evaluacionPrueba, List<R_Ejetematico> lstEjes,
       List<R_Habilidad> lstHabs) {
 
-    List<OTAlumnoResumen> respuesta = new ArrayList<OTAlumnoResumen>();
+    List<OTAlumnoResumen> respuesta = new ArrayList<>();
 
     List<R_PruebaRendida> pRendidas = new ArrayList<>();
     for (R_PruebaRendida pruebaRendida : lstPruebasRendidas) {
@@ -204,11 +217,9 @@ public class ResumenXAlumnoEjeHabilidadView extends AFormView implements EventHa
 
 
     for (R_PruebaRendida pr : pRendidas) {
-      Long[] ids = pRendidas.stream().map(p -> p.getAlumno_id()).toArray(n -> new Long[n]);
-      List<R_Alumno> alumnos = controller.findByAllIdSynchro(R_Alumno.class, ids);
       String resps = pr.getRespuestas();
       
-      R_Alumno alumno = alumnos.stream().filter(a -> a.getId().equals(pr.getAlumno_id())).findFirst().orElse(null);
+      R_Alumno alumno = lstCursos.stream().filter(a -> a.getId().equals(pr.getAlumno_id())).findFirst().orElse(null);
       if(alumno == null)
         continue;
       
@@ -296,7 +307,7 @@ public class ResumenXAlumnoEjeHabilidadView extends AFormView implements EventHa
    */
   private List<R_Habilidad> getHabilidades(List<R_RespuestasEsperadasPrueba> respEsperadas) {
 
-    Long[] ids = respEsperadas.stream().map(r -> r.getHabilidad_id()).toArray(n -> new Long[n]);
+    Long[] ids = respEsperadas.stream().map(r -> r.getHabilidad_id()).distinct().toArray(n -> new Long[n]);
     List<R_Habilidad> lstOtHabs = controller.findByAllIdSynchro(R_Habilidad.class, ids);
     return lstOtHabs;
   }
@@ -308,7 +319,7 @@ public class ResumenXAlumnoEjeHabilidadView extends AFormView implements EventHa
    * @return Lista con los ejes temáticos en la prueba.
    */
   private List<R_Ejetematico> getEjesTematicos(List<R_RespuestasEsperadasPrueba> respEsperadas) {
-    Long[] ids = respEsperadas.stream().map(r -> r.getEjetematico_id()).toArray(n -> new Long[n]);
+    Long[] ids = respEsperadas.stream().map(r -> r.getEjetematico_id()).distinct().toArray(n -> new Long[n]);
     List<R_Ejetematico> lstOtEjes = controller.findByAllIdSynchro(R_Ejetematico.class, ids);
     return lstOtEjes;
   }
@@ -399,6 +410,7 @@ public class ResumenXAlumnoEjeHabilidadView extends AFormView implements EventHa
     grfEjes.getData().add(seriesE);
     grfEjes.getYAxis().autoRangingProperty().set(false);
     grfEjes.setLegendVisible(false);
+    
     XYChart.Series seriesH = new XYChart.Series();
     seriesH.setName("Porcentaje logro Habilidades");
     seriesH.getData().clear();

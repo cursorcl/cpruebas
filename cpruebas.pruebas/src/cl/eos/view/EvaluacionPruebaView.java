@@ -245,13 +245,11 @@ public class EvaluacionPruebaView extends AFormView implements EventHandler<Acti
         show(resumenRespuestas);
       }
 
+      controller.findAll(R_TipoAlumno.class, resumenRespuestas);
       controller.findById(R_Prueba.class, evaluacionPrueba.getPrueba_id());
       controller.findById(R_Asignatura.class, evaluacionPrueba.getAsignatura_id());
-      controller.findById(R_EvaluacionPrueba.class, evaluacionPrueba.getId(), resumeHabilidad);
-      Map<String, Object> params =
-          MapBuilder.<String, Object>unordered().put("prueba_id", evaluacionPrueba.getPrueba_id()).build();
-      controller.findByParam(R_PruebaRendida.class, params);
-      controller.findAll(R_TipoAlumno.class, resumenRespuestas);
+      controller.findById(R_EvaluacionPrueba.class, evaluacionPrueba.getId(), resumenRespuestas);
+      
     } else {
       final Alert alert = new Alert(AlertType.INFORMATION);
       alert.setTitle("Selección registro");
@@ -270,14 +268,6 @@ public class EvaluacionPruebaView extends AFormView implements EventHandler<Acti
       final ResumenXAlumnoEjeHabilidadView resXAlumnoEjeHab =
           (ResumenXAlumnoEjeHabilidadView) show("/curso/fxml/ResumenXAlumnoEjeHabilidad.fxml");
       controller.findById(R_EvaluacionPrueba.class, evaluacionPrueba.getId(), resXAlumnoEjeHab);
-
-      Map<String, Object> params =
-          MapBuilder.<String, Object>unordered().put("evaluacionprueba_id", evaluacionPrueba.getId()).build();
-      controller.findByParam(R_PruebaRendida.class, params);
-
-      params = MapBuilder.<String, Object>unordered().put("prueba_id", evaluacionPrueba.getPrueba_id()).build();
-      controller.findByParam(R_RespuestasEsperadasPrueba.class, params);
-
       controller.findAll(R_TipoAlumno.class, resXAlumnoEjeHab);
     } else {
       final Alert alert = new Alert(AlertType.INFORMATION);

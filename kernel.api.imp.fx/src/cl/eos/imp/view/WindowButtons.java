@@ -37,50 +37,53 @@ import javafx.stage.Stage;
  * Vertical box with 3 small buttons for window close, minimize and maximize.
  */
 public class WindowButtons extends VBox {
-    private final Stage stage;
-    private Rectangle2D backupWindowBounds = null;
-    private boolean maximized = false;
+  private final Stage stage;
+  private Rectangle2D backupWindowBounds = null;
+  private boolean maximized = false;
 
-    public WindowButtons(final Stage stage) {
-        super(4);
-        this.stage = stage;
-        // create buttons
-        final Button closeBtn = new Button();
-        closeBtn.setId("window-close");
-        closeBtn.setOnAction(actionEvent -> Platform.exit());
-        final Button minBtn = new Button();
-        minBtn.setId("window-min");
-        minBtn.setOnAction(actionEvent -> stage.setIconified(true));
-        final Button maxBtn = new Button();
-        maxBtn.setId("window-max");
-        maxBtn.setOnAction(actionEvent -> toogleMaximized());
-        getChildren().addAll(closeBtn, minBtn, maxBtn);
-    }
+  public WindowButtons(final Stage stage) {
+    super(4);
+    this.stage = stage;
+    // create buttons
+    final Button closeBtn = new Button();
+    closeBtn.setId("window-close");
+    closeBtn.setOnAction(actionEvent -> {
+      Platform.exit();
+      System.exit(0);
+    });
+    final Button minBtn = new Button();
+    minBtn.setId("window-min");
+    minBtn.setOnAction(actionEvent -> stage.setIconified(true));
+    final Button maxBtn = new Button();
+    maxBtn.setId("window-max");
+    maxBtn.setOnAction(actionEvent -> toogleMaximized());
+    getChildren().addAll(closeBtn, minBtn, maxBtn);
+  }
 
-    public boolean isMaximized() {
-        return maximized;
-    }
+  public boolean isMaximized() {
+    return maximized;
+  }
 
-    public void toogleMaximized() {
-        final ObservableList<Screen> list = Screen.getScreensForRectangle(stage.getX(), stage.getY(), 1, 1);
-        if (list != null) {
-            final Screen screen = list.get(0);
-            if (maximized) {
-                maximized = false;
-                if (backupWindowBounds != null) {
-                    stage.setX(backupWindowBounds.getMinX());
-                    stage.setY(backupWindowBounds.getMinY());
-                    stage.setWidth(backupWindowBounds.getWidth());
-                    stage.setHeight(backupWindowBounds.getHeight());
-                }
-            } else {
-                maximized = true;
-                backupWindowBounds = new Rectangle2D(stage.getX(), stage.getY(), stage.getWidth(), stage.getHeight());
-                stage.setX(screen.getVisualBounds().getMinX());
-                stage.setY(screen.getVisualBounds().getMinY());
-                stage.setWidth(screen.getVisualBounds().getWidth());
-                stage.setHeight(screen.getVisualBounds().getHeight());
-            }
+  public void toogleMaximized() {
+    final ObservableList<Screen> list = Screen.getScreensForRectangle(stage.getX(), stage.getY(), 1, 1);
+    if (list != null) {
+      final Screen screen = list.get(0);
+      if (maximized) {
+        maximized = false;
+        if (backupWindowBounds != null) {
+          stage.setX(backupWindowBounds.getMinX());
+          stage.setY(backupWindowBounds.getMinY());
+          stage.setWidth(backupWindowBounds.getWidth());
+          stage.setHeight(backupWindowBounds.getHeight());
         }
+      } else {
+        maximized = true;
+        backupWindowBounds = new Rectangle2D(stage.getX(), stage.getY(), stage.getWidth(), stage.getHeight());
+        stage.setX(screen.getVisualBounds().getMinX());
+        stage.setY(screen.getVisualBounds().getMinY());
+        stage.setWidth(screen.getVisualBounds().getWidth());
+        stage.setHeight(screen.getVisualBounds().getHeight());
+      }
     }
+  }
 }

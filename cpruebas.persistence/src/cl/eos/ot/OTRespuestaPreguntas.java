@@ -2,6 +2,7 @@ package cl.eos.ot;
 
 public class OTRespuestaPreguntas {
 
+  private Integer numero;
     private String name;
     private Integer buenas;
     private Integer malas;
@@ -37,6 +38,20 @@ public class OTRespuestaPreguntas {
 
     public void setOmitidas(Integer omitidas) {
         this.omitidas = omitidas;
+    }
+
+    /**
+     * @return the numero
+     */
+    public final Integer getNumero() {
+      return numero;
+    }
+
+    /**
+     * @param numero the numero to set
+     */
+    public final void setNumero(Integer numero) {
+      this.numero = numero;
     }
 
 }
