@@ -29,7 +29,7 @@ public class OTPruebaRendida {
     this.pruebaRendida = pruebaRendida;
     buenas.set(pruebaRendida.getBuenas() == null ? 0 : pruebaRendida.getBuenas());
     omitidas.set(pruebaRendida.getOmitidas() == null ? 0 : pruebaRendida.getOmitidas());
-    malas.set(pruebaRendida.getMalas() == null ? 0 : pruebaRendida.getOmitidas());
+    malas.set(pruebaRendida.getMalas() == null ? 0 : pruebaRendida.getMalas());
     respuestas.set(pruebaRendida.getRespuestas() == null ? "" : pruebaRendida.getRespuestas());
     nota.set(Utils.redondeo2Decimales(pruebaRendida.getNota()));
     puntaje.set(Utils.getPuntaje(nota.floatValue()));
@@ -75,7 +75,7 @@ public class OTPruebaRendida {
     return nivel.get();
   }
 
-  public String getNombres() {
+  public String getNombre() {
     return alumno == null ? "" : alumno.getName();
   }
 
@@ -99,10 +99,24 @@ public class OTPruebaRendida {
     return puntaje.getValue();
   }
 
+  public Float getPbuenas()
+  {
+    return pruebaRendida.getPbuenas();
+  }
+  public Float getPpuntajes()
+  {
+    return pruebaRendida.getPpuntaje();
+  }
+  
   public String getRespuestas() {
     return respuestas.get();
   }
 
+  public String getRut()
+  {
+    return alumno == null ? "" : alumno.getRut();
+  }
+  
   @Override
   public int hashCode() {
     final int prime = 31;
@@ -205,5 +219,7 @@ public class OTPruebaRendida {
   public final void setRindioPrueba(final boolean rindioPrueba) {
     rindioPruebaProperty().set(rindioPrueba);
   }
+  
+  
 
 }

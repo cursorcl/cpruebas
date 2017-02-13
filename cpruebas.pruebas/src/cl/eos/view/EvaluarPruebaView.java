@@ -144,11 +144,11 @@ public class EvaluarPruebaView extends AFormView {
             final StringBuffer sb1 = new StringBuffer();
             sb1.append(o1.getPaterno());
             sb1.append(o1.getMaterno());
-            sb1.append(o1.getNombres());
+            sb1.append(o1.getNombre());
             final StringBuffer sb2 = new StringBuffer();
             sb1.append(o2.getPaterno());
             sb1.append(o2.getMaterno());
-            sb1.append(o2.getNombres());
+            sb1.append(o2.getNombre());
             return sb1.toString().compareTo(sb2.toString());
         };
     }

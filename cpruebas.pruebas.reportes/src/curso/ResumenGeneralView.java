@@ -9,6 +9,7 @@ import cl.eos.common.Constants;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.ot.OTResumenGeneral;
+import cl.eos.restful.tables.R_Alumno;
 import cl.eos.restful.tables.R_Asignatura;
 import cl.eos.restful.tables.R_Curso;
 import cl.eos.restful.tables.R_EvaluacionPrueba;
@@ -17,6 +18,7 @@ import cl.eos.restful.tables.R_PruebaRendida;
 import cl.eos.restful.tables.R_TipoAlumno;
 import cl.eos.util.ExcelSheetWriterObj;
 import cl.eos.util.MapBuilder;
+import cl.eos.view.ots.OTPruebaRendida;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -59,29 +61,29 @@ public class ResumenGeneralView extends AFormView implements EventHandler<Action
   private TableColumn<OTResumenGeneral, Float> colPuntaje;
 
   @FXML
-  private TableView<R_PruebaRendida> tblAlumnos;
+  private TableView<OTPruebaRendida> tblAlumnos;
   @FXML
-  private TableColumn<R_PruebaRendida, String> colRut;
+  private TableColumn<OTPruebaRendida, String> colRut;
   @FXML
-  private TableColumn<R_PruebaRendida, String> colPaterno;
+  private TableColumn<OTPruebaRendida, String> colPaterno;
   @FXML
-  private TableColumn<R_PruebaRendida, String> colMaterno;
+  private TableColumn<OTPruebaRendida, String> colMaterno;
   @FXML
-  private TableColumn<R_PruebaRendida, String> colName;
+  private TableColumn<OTPruebaRendida, String> colName;
   @FXML
-  private TableColumn<R_PruebaRendida, Integer> colABuenas;
+  private TableColumn<OTPruebaRendida, Integer> colABuenas;
   @FXML
-  private TableColumn<R_PruebaRendida, Integer> colAMalas;
+  private TableColumn<OTPruebaRendida, Integer> colAMalas;
   @FXML
-  private TableColumn<R_PruebaRendida, Integer> colAOmitidas;
+  private TableColumn<OTPruebaRendida, Integer> colAOmitidas;
   @FXML
-  private TableColumn<R_PruebaRendida, Float> colPBuenas;
+  private TableColumn<OTPruebaRendida, Float> colPBuenas;
   @FXML
-  private TableColumn<R_PruebaRendida, Integer> colAPuntaje;
+  private TableColumn<OTPruebaRendida, Integer> colAPuntaje;
   @FXML
-  private TableColumn<R_PruebaRendida, Float> colPPuntaje;
+  private TableColumn<OTPruebaRendida, Float> colPPuntaje;
   @FXML
-  private TableColumn<R_PruebaRendida, Float> colANota;
+  private TableColumn<OTPruebaRendida, Float> colANota;
   @FXML
   private MenuItem mnuExportarAlumnos;
   @FXML
@@ -109,6 +111,7 @@ public class ResumenGeneralView extends AFormView implements EventHandler<Action
   private R_Asignatura asignatura;
   private R_Curso curso;
   private List<R_PruebaRendida> lstPruebasRendidas;
+  private List<R_Alumno> lstAlumnos;
 
   public ResumenGeneralView() {}
 
@@ -129,11 +132,13 @@ public class ResumenGeneralView extends AFormView implements EventHandler<Action
 
     final List<R_PruebaRendida> list = lstPruebasRendidas;
     if (list != null && !list.isEmpty()) {
-      final ObservableList<R_PruebaRendida> oList = FXCollections.observableArrayList();
-      for (final R_PruebaRendida pruebaRendida : list) {
-        if (tipoAlumno != Constants.PIE_ALL && !pruebaRendida.getTipoalumno_id().equals(tipoAlumno))
+      final ObservableList<OTPruebaRendida> oList = FXCollections.observableArrayList();
+      for (final R_PruebaRendida pr : list) {
+        if (tipoAlumno != Constants.PIE_ALL && !pr.getTipoalumno_id().equals(tipoAlumno))
           continue;
-        oList.add(pruebaRendida);
+        R_Alumno al = lstAlumnos.stream().filter(a -> a.getId().equals(pr.getAlumno_id())).findFirst().orElse(null);
+        OTPruebaRendida ot = new OTPruebaRendida(pr, al);
+        oList.add(ot);
 
       }
       tblAlumnos.setItems(oList);
@@ -146,7 +151,7 @@ public class ResumenGeneralView extends AFormView implements EventHandler<Action
   private void generateReport() {
 
     if (evaluacionPrueba == null || cmbTipoAlumno.getItems().isEmpty() || curso == null || asignatura == null
-        || prueba == null ||  lstPruebasRendidas == null)
+        || prueba == null || lstPruebasRendidas == null || lstAlumnos == null)
       return;
 
     final List<OTResumenGeneral> listaResumen = procesarValoresMinMax(lstPruebasRendidas);
@@ -174,17 +179,17 @@ public class ResumenGeneralView extends AFormView implements EventHandler<Action
 
   private void inicializarTablaAlumnos() {
     tblAlumnos.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-    colRut.setCellValueFactory(new PropertyValueFactory<R_PruebaRendida, String>("rut"));
-    colName.setCellValueFactory(new PropertyValueFactory<R_PruebaRendida, String>("nombre"));
-    colPaterno.setCellValueFactory(new PropertyValueFactory<R_PruebaRendida, String>("paterno"));
-    colMaterno.setCellValueFactory(new PropertyValueFactory<R_PruebaRendida, String>("materno"));
-    colABuenas.setCellValueFactory(new PropertyValueFactory<R_PruebaRendida, Integer>("buenas"));
-    colAMalas.setCellValueFactory(new PropertyValueFactory<R_PruebaRendida, Integer>("malas"));
-    colAOmitidas.setCellValueFactory(new PropertyValueFactory<R_PruebaRendida, Integer>("omitidas"));
-    colPBuenas.setCellValueFactory(new PropertyValueFactory<R_PruebaRendida, Float>("pbuenas"));
-    colAPuntaje.setCellValueFactory(new PropertyValueFactory<R_PruebaRendida, Integer>("puntaje"));
-    colPPuntaje.setCellValueFactory(new PropertyValueFactory<R_PruebaRendida, Float>("ppuntajes"));
-    colANota.setCellValueFactory(new PropertyValueFactory<R_PruebaRendida, Float>("nota"));
+    colRut.setCellValueFactory(new PropertyValueFactory<OTPruebaRendida, String>("rut"));
+    colName.setCellValueFactory(new PropertyValueFactory<OTPruebaRendida, String>("nombre"));
+    colPaterno.setCellValueFactory(new PropertyValueFactory<OTPruebaRendida, String>("paterno"));
+    colMaterno.setCellValueFactory(new PropertyValueFactory<OTPruebaRendida, String>("materno"));
+    colABuenas.setCellValueFactory(new PropertyValueFactory<OTPruebaRendida, Integer>("buenas"));
+    colAMalas.setCellValueFactory(new PropertyValueFactory<OTPruebaRendida, Integer>("malas"));
+    colAOmitidas.setCellValueFactory(new PropertyValueFactory<OTPruebaRendida, Integer>("omitidas"));
+    colPBuenas.setCellValueFactory(new PropertyValueFactory<OTPruebaRendida, Float>("pbuenas"));
+    colAPuntaje.setCellValueFactory(new PropertyValueFactory<OTPruebaRendida, Integer>("puntaje"));
+    colPPuntaje.setCellValueFactory(new PropertyValueFactory<OTPruebaRendida, Float>("ppuntajes"));
+    colANota.setCellValueFactory(new PropertyValueFactory<OTPruebaRendida, Float>("nota"));
 
   }
 
@@ -242,13 +247,14 @@ public class ResumenGeneralView extends AFormView implements EventHandler<Action
       txtAsignatura.setText(asignatura.getName());
       curso = controller.findByIdSynchro(R_Curso.class, evaluacionPrueba.getCurso_id());
       txtCurso.setText(curso.getName());
-      txtExigencia.setText(String.format("%d",prueba.getExigencia()));
-      txtNoPregunta.setText(String.format("%d",prueba.getNropreguntas()));
-      txtPjePrueba.setText(String.format("%d",prueba.getPuntajebase()));
-      
-      Map<String, Object> params = MapBuilder.<String, Object>unordered().put("evaluacionprueba_id", evaluacionPrueba.getId()).build();
+      txtExigencia.setText(String.format("%d", prueba.getExigencia()));
+      txtNoPregunta.setText(String.format("%d", prueba.getNropreguntas()));
+      txtPjePrueba.setText(String.format("%d", prueba.getPuntajebase()));
+
+      Map<String, Object> params = MapBuilder.<String, Object>unordered().put("curso_id", curso.getId()).build();
+      lstAlumnos = controller.findByParamsSynchro(R_Alumno.class, params);
+      params = MapBuilder.<String, Object>unordered().put("evaluacionprueba_id", evaluacionPrueba.getId()).build();
       controller.findByParam(R_PruebaRendida.class, params);
-      
     }
 
   }
