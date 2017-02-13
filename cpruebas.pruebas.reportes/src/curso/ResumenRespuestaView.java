@@ -68,11 +68,8 @@ public class ResumenRespuestaView extends AFormView implements EventHandler<Acti
   private TextField txtNroPreguntas;
   @FXML
   private TextField txtPuntaje;
-
   @FXML
   private BarChart<String, Number> graficoBarra = new BarChart<String, Number>(new CategoryAxis(), new NumberAxis());
-
-
   @FXML
   private MenuItem mnuExportarRespuestas;
 
@@ -97,6 +94,7 @@ public class ResumenRespuestaView extends AFormView implements EventHandler<Acti
   }
 
   private void generateReport() {
+
     if (asignatura != null && evaluacionPrueba != null && cmbTipoAlumno.getItems() != null
         && !cmbTipoAlumno.getItems().isEmpty() && curso != null && lstPruebasRendidas != null && prueba != null) {
 
@@ -302,11 +300,9 @@ public class ResumenRespuestaView extends AFormView implements EventHandler<Acti
       Map<String, Object> params =
           MapBuilder.<String, Object>unordered().put("evaluacionprueba_id", evaluacionPrueba.getId()).build();
       lstPruebasRendidas = controller.findByParamsSynchro(R_PruebaRendida.class, params);
-
       generateReport();
     }
     if (entity instanceof R_Prueba) {
-
       prueba = (R_Prueba) entity;
       generateReport();
     }
