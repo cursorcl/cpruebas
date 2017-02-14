@@ -8,7 +8,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="605.0" prefWidth="1087.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="curso.ResumenHabilidadesView">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="557.0" prefWidth="1087.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="curso.ResumenHabilidadesView">
    <center>
       <SplitPane orientation="VERTICAL" prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <items>
@@ -67,10 +67,10 @@
                                  <children>
                                     <BarChart fx:id="graficoBarra" layoutX="-8.0" layoutY="99.0" prefHeight="216.0" prefWidth="327.0" title="Respuestas por habilidades">
                                       <xAxis>
-                                        <CategoryAxis side="BOTTOM" />
+                                        <CategoryAxis side="BOTTOM" fx:id="xCategory" />
                                       </xAxis>
                                       <yAxis>
-                                        <NumberAxis side="LEFT" />
+                                        <NumberAxis fx:id="yNumber" side="LEFT" />
                                       </yAxis>
                                     </BarChart>
                                  </children>

@@ -13,7 +13,6 @@ import cl.eos.provider.persistence.PersistenceServiceFactory;
 import cl.eos.restful.tables.R_Curso;
 import cl.eos.restful.tables.R_EvaluacionPrueba;
 import cl.eos.restful.tables.R_Objetivo;
-import cl.eos.restful.tables.R_Prueba;
 import cl.eos.restful.tables.R_PruebaRendida;
 import cl.eos.restful.tables.R_RespuestasEsperadasPrueba;
 import cl.eos.restful.tables.R_TipoAlumno;

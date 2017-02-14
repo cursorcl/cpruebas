@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
 
 import cl.eos.common.Constants;
 import cl.eos.imp.view.AFormView;
@@ -19,6 +19,7 @@ import cl.eos.restful.tables.R_PruebaRendida;
 import cl.eos.restful.tables.R_RespuestasEsperadasPrueba;
 import cl.eos.restful.tables.R_TipoAlumno;
 import cl.eos.util.ExcelSheetWriterObj;
+import cl.eos.util.MapBuilder;
 import cl.eos.util.Pair;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
@@ -64,10 +65,12 @@ public class ResumenHabilidadesView extends AFormView implements EventHandler<Ac
   @FXML
   private TextField txtHabilidad;
 
-  final NumberAxis xAxis = new NumberAxis();
-  final CategoryAxis yAxis = new CategoryAxis();
   @FXML
-  private final BarChart<String, Number> graficoBarra = new BarChart<String, Number>(yAxis, xAxis);
+  final NumberAxis yNumber = new NumberAxis();
+  @FXML
+  final CategoryAxis xCategory = new CategoryAxis();
+  @FXML
+  private BarChart<String, Number> graficoBarra = new BarChart<String, Number>(xCategory, yNumber);
 
   private HashMap<R_Habilidad, OTPreguntasHabilidad> mapaHabilidades;
   @FXML
@@ -106,11 +109,12 @@ public class ResumenHabilidadesView extends AFormView implements EventHandler<Ac
             final Float porcentajeNologrado = habilidad.getNologrado();
 
             final XYChart.Series series1 = new XYChart.Series();
-            series1.setName("%");
+            series1.setName("Porcentaje");
             series1.getData().add(new XYChart.Data<String, Float>("Logrado", porcentajeLogrado));
             series1.getData().add(new XYChart.Data<String, Float>("No Logrado", porcentajeNologrado));
             graficoBarra.getData().clear();
             graficoBarra.getData().add(series1);
+            graficoBarra.setLegendVisible(false);
 
             for (final Series<String, Number> s : graficoBarra.getData()) {
               for (final Data<String, Number> d : s.getData()) {
@@ -123,8 +127,9 @@ public class ResumenHabilidadesView extends AFormView implements EventHandler<Ac
   }
 
   private void generateReport() {
-    if (evaluacionPrueba != null && cmbTipoAlumno.getItems() != null && !cmbTipoAlumno.getItems().isEmpty()
-        || prueba == null || asignatura == null || lstPruebasRendidas == null || respuestasEsperadas == null) {
+    if (asignatura != null && evaluacionPrueba != null && cmbTipoAlumno.getItems() != null
+        && !cmbTipoAlumno.getItems().isEmpty() && prueba != null &&  lstPruebasRendidas != null
+            && respuestasEsperadas != null && curso != null) {
       txtAsignatura.setText(asignatura.getName());
       txtCurso.setText(curso.getName());
       txtPrueba.setText(prueba.getName());
@@ -166,12 +171,13 @@ public class ResumenHabilidadesView extends AFormView implements EventHandler<Ac
 
   @FXML
   public void initialize() {
+    
+    yNumber.setAutoRanging(false);
+    yNumber.setUpperBound(100);
     inicializarTablaHabilidades();
     accionClicTabla();
     setTitle("Resumen Respuestas por Habilidades");
     graficoBarra.setTitle("Gráfico Respuestas por habilidad");
-    xAxis.setLabel("Country");
-    yAxis.setLabel("Value");
     mnuExportarHabilidad.setOnAction(this);
     btnGenerar.setOnAction(this);
     cmbTipoAlumno.setOnAction(event -> tipoAlumno = cmbTipoAlumno.getSelectionModel().getSelectedIndex());
@@ -209,11 +215,9 @@ public class ResumenHabilidadesView extends AFormView implements EventHandler<Ac
 
   private void obtenerResultados() {
 
-
-
     mapaHabilidades = new HashMap<R_Habilidad, OTPreguntasHabilidad>();
 
-    Long[] ids = respuestasEsperadas.stream().map(r -> r.getHabilidad_id()).toArray(n -> new Long[n]);
+    Long[] ids = respuestasEsperadas.stream().map(r -> r.getHabilidad_id()).distinct().toArray(n -> new Long[n]);
     List<R_Habilidad> lstHabilidades = controller.findByAllIdSynchro(R_Habilidad.class, ids);
 
 
@@ -257,12 +261,6 @@ public class ResumenHabilidadesView extends AFormView implements EventHandler<Ac
         cmbTipoAlumno.setItems(tAlumnoList);
         cmbTipoAlumno.getSelectionModel().select((int) Constants.PIE_ALL);
         generateReport();
-      } else if (entity instanceof R_PruebaRendida) {
-        lstPruebasRendidas = list.stream().map(p -> (R_PruebaRendida) p).collect(Collectors.toList());
-        generateReport();
-      } else if (entity instanceof R_RespuestasEsperadasPrueba) {
-        respuestasEsperadas = list.stream().map(p -> (R_RespuestasEsperadasPrueba) p).collect(Collectors.toList());
-        generateReport();
       }
     }
   }
@@ -271,6 +269,13 @@ public class ResumenHabilidadesView extends AFormView implements EventHandler<Ac
   public void onFound(IEntity entity) {
     if (entity instanceof R_EvaluacionPrueba) {
       evaluacionPrueba = (R_EvaluacionPrueba) entity;
+      Map<String, Object> params =
+          MapBuilder.<String, Object>unordered().put("evaluacionprueba_id", evaluacionPrueba.getId()).build();
+      lstPruebasRendidas = controller.findByParamsSynchro(R_PruebaRendida.class, params);
+      params =
+          MapBuilder.<String, Object>unordered().put("prueba_id", evaluacionPrueba.getPrueba_id()).build();
+      respuestasEsperadas = controller.findByParamsSynchro(R_RespuestasEsperadasPrueba.class, params);
+      curso = controller.findByIdSynchro(R_Curso.class, evaluacionPrueba.getCurso_id());
       generateReport();
     }
 

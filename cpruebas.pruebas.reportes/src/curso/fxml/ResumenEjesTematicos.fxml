@@ -67,10 +67,10 @@
                                  <children>
                                     <BarChart fx:id="graficoBarra" layoutY="99.0" prefHeight="216.0" prefWidth="322.0" title="Respuestas por  ejes temáticos" AnchorPane.topAnchor="120.0">
                                       <xAxis>
-                                        <CategoryAxis side="BOTTOM" />
+                                        <CategoryAxis side="BOTTOM" fx:id="xAxis" />
                                       </xAxis>
                                       <yAxis>
-                                        <NumberAxis side="LEFT" />
+                                        <NumberAxis fx:id="yAxis" side="LEFT" />
                                       </yAxis>
                                     </BarChart>
                                  </children>

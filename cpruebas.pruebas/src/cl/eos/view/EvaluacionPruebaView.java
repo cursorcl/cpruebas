@@ -13,9 +13,7 @@ import cl.eos.restful.tables.R_Curso;
 import cl.eos.restful.tables.R_EvaluacionPrueba;
 import cl.eos.restful.tables.R_NivelEvaluacion;
 import cl.eos.restful.tables.R_Prueba;
-import cl.eos.restful.tables.R_PruebaRendida;
 import cl.eos.restful.tables.R_RangoEvaluacion;
-import cl.eos.restful.tables.R_RespuestasEsperadasPrueba;
 import cl.eos.restful.tables.R_TipoAlumno;
 import cl.eos.restful.tables.R_TipoPrueba;
 import cl.eos.util.ExcelSheetWriterObj;
@@ -179,13 +177,8 @@ public class EvaluacionPruebaView extends AFormView implements EventHandler<Acti
 
       resumeEjeTematico = (ResumenEjesTematicosView) show("/curso/fxml/ResumenEjesTematicos.fxml");
       resumeEjeTematico.setPrueba(prueba);
+      controller.findById(R_Asignatura.class, evaluacionPrueba.getAsignatura_id());
       controller.findById(R_EvaluacionPrueba.class, evaluacionPrueba.getId(), resumeEjeTematico);
-
-      Map<String, Object> params =
-          MapBuilder.<String, Object>unordered().put("evaluacionprueba_id", evaluacionPrueba.getId()).build();
-      controller.findByParam(R_PruebaRendida.class, params, resumeEjeTematico);
-      params = MapBuilder.<String, Object>unordered().put("prueba_id", prueba.getId()).build();
-      controller.findByParam(R_RespuestasEsperadasPrueba.class, params, resumeEjeTematico);
       controller.findAll(R_TipoAlumno.class, resumeEjeTematico);
     } else {
       final Alert alert = new Alert(AlertType.INFORMATION);
@@ -220,12 +213,6 @@ public class EvaluacionPruebaView extends AFormView implements EventHandler<Acti
       controller.findById(R_Prueba.class, evaluacionPrueba.getPrueba_id());
       controller.findById(R_Asignatura.class, evaluacionPrueba.getAsignatura_id());
       controller.findById(R_EvaluacionPrueba.class, evaluacionPrueba.getId(), resumeHabilidad);
-
-      Map<String, Object> params =
-          MapBuilder.<String, Object>unordered().put("prueba_id", evaluacionPrueba.getPrueba_id()).build();
-      controller.findByParam(R_PruebaRendida.class, params);
-      controller.findByParam(R_RespuestasEsperadasPrueba.class, params);
-
       controller.findAll(R_TipoAlumno.class, resumeHabilidad);
     } else {
       final Alert alert = new Alert(AlertType.INFORMATION);
@@ -249,7 +236,7 @@ public class EvaluacionPruebaView extends AFormView implements EventHandler<Acti
       controller.findById(R_Prueba.class, evaluacionPrueba.getPrueba_id());
       controller.findById(R_Asignatura.class, evaluacionPrueba.getAsignatura_id());
       controller.findById(R_EvaluacionPrueba.class, evaluacionPrueba.getId(), resumenRespuestas);
-      
+
     } else {
       final Alert alert = new Alert(AlertType.INFORMATION);
       alert.setTitle("Selección registro");
@@ -286,16 +273,10 @@ public class EvaluacionPruebaView extends AFormView implements EventHandler<Acti
   private void handlerResumenPME() {
     final R_EvaluacionPrueba evaluacion = tblListadoPruebas.getSelectionModel().getSelectedItem().getEvaluacionPrueba();
     if (evaluacion != null) {
-      if (resumenGeneralPME == null) {
-        resumenGeneralPME = (ResumenGeneralPMEView) show("/curso/fxml/ResumenGeneralPME.fxml");
-      } else {
-        show(resumenGeneralPME);
-      }
-      controller.findById(R_NivelEvaluacion.class, evaluacion.getId());
-      Map<String, Object> params =
-          MapBuilder.<String, Object>unordered().put("nivelevaluacion_id", evaluacion.getId()).build();
-      controller.findByParam(R_RangoEvaluacion.class, params);
-      controller.findById(R_EvaluacionPrueba.class, evaluacion.getId(), resumenGeneralPME);
+      resumenGeneralPME = (ResumenGeneralPMEView) show("/curso/fxml/ResumenGeneralPME.fxml");
+      resumenGeneralPME.setPrueba(prueba);
+      controller.findById(R_EvaluacionPrueba.class, evaluacion.getId());
+      controller.findById(R_NivelEvaluacion.class, prueba.getNivelevaluacion_id());
       controller.findAll(R_RangoEvaluacion.class);
       controller.findAll(R_TipoAlumno.class);
     } else {

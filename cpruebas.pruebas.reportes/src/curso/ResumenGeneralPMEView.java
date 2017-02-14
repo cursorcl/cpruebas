@@ -123,7 +123,7 @@ public class ResumenGeneralPMEView extends AFormView implements EventHandler<Act
 
   private boolean llegaEvaluacion = false;
   private R_EvaluacionPrueba evaluacionPrueba;
-  private ArrayList<R_Ejetematico> titulosColumnas = new ArrayList<>();
+  private List<R_Ejetematico> titulosColumnas = new ArrayList<>();
   private List<R_RangoEvaluacion> listaRangos;
   private boolean llegaTipoAlumno;
   private boolean llegaRangos;
@@ -132,6 +132,8 @@ public class ResumenGeneralPMEView extends AFormView implements EventHandler<Act
   private List<R_RespuestasEsperadasPrueba> respuestasEsperadas;
   private R_NivelEvaluacion nivelEvaluacion;
   private boolean llegaNivelEvaluacion;
+  private List<R_Habilidad> habilidades;
+  private List<R_Ejetematico> ejes;
 
   public ResumenGeneralPMEView() {
     setTitle("Resumen general P.M.E.");
@@ -170,6 +172,17 @@ public class ResumenGeneralPMEView extends AFormView implements EventHandler<Act
     colRango.setCellValueFactory(new PropertyValueFactory<OTRangoEvaluacion, String>("name"));
     colRangoCantidad.setCellValueFactory(new PropertyValueFactory<OTRangoEvaluacion, Integer>("cantidad"));
     colRangolLogro.setCellValueFactory(new PropertyValueFactory<OTRangoEvaluacion, Float>("logrado"));
+    colRangolLogro.setCellFactory(tc -> new TableCell<OTRangoEvaluacion, Float>() {
+      @Override
+      protected void updateItem(Float value, boolean empty) {
+          super.updateItem(value, empty) ;
+          if (empty) {
+              setText(null);
+          } else {
+              setText(String.format("%3.2f", value));
+          }
+      }
+  });
   }
 
   @Override
@@ -177,12 +190,10 @@ public class ResumenGeneralPMEView extends AFormView implements EventHandler<Act
     if (entity instanceof R_EvaluacionPrueba) {
       evaluacionPrueba = (R_EvaluacionPrueba) entity;
       llegaEvaluacion = true;
-      llenarDatosTabla();
     } else if (entity instanceof R_NivelEvaluacion) {
       nivelEvaluacion = (R_NivelEvaluacion) entity;
       llegaNivelEvaluacion = true;
     }
-
     llenarDatosTabla();
 
   }
@@ -209,7 +220,6 @@ public class ResumenGeneralPMEView extends AFormView implements EventHandler<Act
           OTRangoEvaluacion otRango = new OTRangoEvaluacion();
           otRango.setRango(rango);
           mRango.put(rango, otRango);
-          llegaEvaluacion = true;
         }
         llegaRangos = true;
         llenarDatosTabla();
@@ -230,6 +240,7 @@ public class ResumenGeneralPMEView extends AFormView implements EventHandler<Act
     mapaHabilidadAlumno.clear();
     mapReporte.clear();
     mapaEjesAlumno.clear();
+    titulosColumnas.clear();
     for (R_RangoEvaluacion rng : mRango.keySet()) {
       OTRangoEvaluacion rango = mRango.get(rng);
       rango.setCantidad(0);
@@ -241,19 +252,22 @@ public class ResumenGeneralPMEView extends AFormView implements EventHandler<Act
     Map<String, Object> params =
         MapBuilder.<String, Object>unordered().put("evaluacionprueba_id", evaluacionPrueba.getId()).build();
     pruebasRendidas = controller.findByParamsSynchro(R_PruebaRendida.class, params);
-    prueba = controller.findSynchroById(R_Prueba.class, evaluacionPrueba.getPrueba_id());
     params = MapBuilder.<String, Object>unordered().put("prueba_id", prueba.getId()).build();
     respuestasEsperadas = controller.findByParamsSynchro(R_RespuestasEsperadasPrueba.class, params);
 
     int totalAlumnos = 0;
     float totalPreguntas = prueba.getNropreguntas();
 
+    Long[] ids = respuestasEsperadas.stream().map(r -> r.getHabilidad_id()).distinct().toArray(l -> new Long[l]);
+    habilidades = controller.findByAllIdSynchro(R_Habilidad.class, ids);
 
-
+    ids = respuestasEsperadas.stream().map(r -> r.getEjetematico_id()).distinct().toArray(l -> new Long[l]);
+    ejes = controller.findByAllIdSynchro(R_Ejetematico.class, ids);
+    
     float sumaNotas = 0;
     float sumaLogro = 0;
     for (R_PruebaRendida pRendida : pruebasRendidas) {
-      if (tipoAlumno != Constants.PIE_ALL && !pRendida.getAlumno_id().equals(tipoAlumno))
+      if (tipoAlumno != Constants.PIE_ALL && !pRendida.getTipoalumno_id().equals(tipoAlumno))
         continue;
 
       totalAlumnos++;
@@ -294,8 +308,7 @@ public class ResumenGeneralPMEView extends AFormView implements EventHandler<Act
     }
     cR = null;
 
-    Long[] ids = respuestasEsperadas.stream().map(r -> r.getHabilidad_id()).toArray(l -> new Long[l]);
-    List<R_Habilidad> habilidades = controller.findByAllIdSynchro(R_Habilidad.class, ids);
+
     for (R_RespuestasEsperadasPrueba respuestasEsperadasPrueba : respuestasEsperadas) {
 
       R_Habilidad habilidad = habilidades.stream()
@@ -351,9 +364,6 @@ public class ResumenGeneralPMEView extends AFormView implements EventHandler<Act
       cRespuesta[n] = cR[n];
     }
     cR = null;
-    Long[] ids = respuestasEsperadas.stream().map(r -> r.getEjetematico_id()).toArray(l -> new Long[l]);
-    List<R_Ejetematico> ejes = controller.findByAllIdSynchro(R_Ejetematico.class, ids);
-
     for (R_RespuestasEsperadasPrueba respuestasEsperadasPrueba : respuestasEsperadas) {
       R_Ejetematico ejeTematico = ejes.stream()
           .filter(e -> e.getId().equals(respuestasEsperadasPrueba.getEjetematico_id())).findFirst().orElse(null);
@@ -484,6 +494,7 @@ public class ResumenGeneralPMEView extends AFormView implements EventHandler<Act
         }
       });
       columna.setPrefWidth(100);
+      columna.setStyle("-fx-alignment: CENTER;");
       tblReportePME.getColumns().add(columna);
       indice++;
     }
@@ -622,5 +633,19 @@ public class ResumenGeneralPMEView extends AFormView implements EventHandler<Act
     } else if (source == btnGenerar) {
       llenarDatosTabla();
     }
+  }
+
+  /**
+   * @return the prueba
+   */
+  public final R_Prueba getPrueba() {
+    return prueba;
+  }
+
+  /**
+   * @param prueba the prueba to set
+   */
+  public final void setPrueba(R_Prueba prueba) {
+    this.prueba = prueba;
   }
 }

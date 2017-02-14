@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
 
 import cl.eos.common.Constants;
 import cl.eos.imp.view.AFormView;
@@ -19,6 +19,7 @@ import cl.eos.restful.tables.R_PruebaRendida;
 import cl.eos.restful.tables.R_RespuestasEsperadasPrueba;
 import cl.eos.restful.tables.R_TipoAlumno;
 import cl.eos.util.ExcelSheetWriterObj;
+import cl.eos.util.MapBuilder;
 import cl.eos.util.Pair;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -65,10 +66,12 @@ public class ResumenEjesTematicosView extends AFormView implements EventHandler<
   @FXML
   private TextField txtEjeTematico;
 
-  final NumberAxis xAxis = new NumberAxis();
-  final CategoryAxis yAxis = new CategoryAxis();
   @FXML
-  private final BarChart<String, Number> graficoBarra = new BarChart<String, Number>(yAxis, xAxis);
+  final NumberAxis yAxis = new NumberAxis();
+  @FXML
+  final CategoryAxis xAxis = new CategoryAxis();
+  @FXML
+  private BarChart<String, Number> graficoBarra = new BarChart<String, Number>(xAxis, yAxis);
 
   @FXML
   private MenuItem mnuExportarEjes;
@@ -85,7 +88,7 @@ public class ResumenEjesTematicosView extends AFormView implements EventHandler<
   private R_Prueba prueba;
   private R_Asignatura asignatura;
   private R_Curso curso;
-  private List<R_PruebaRendida> pruebasRendidas;
+  private List<R_PruebaRendida> lstPruebasRendidas;
   private List<R_RespuestasEsperadasPrueba> respuestasEsperadas;
 
   public ResumenEjesTematicosView() {
@@ -109,11 +112,12 @@ public class ResumenEjesTematicosView extends AFormView implements EventHandler<
           final Float porcentajeNologrado = ot.getNologrado();
 
           final XYChart.Series series1 = new XYChart.Series();
-          series1.setName("%");
+          series1.setName("Porcentaje");
           series1.getData().add(new XYChart.Data<String, Float>("Logrado", porcentajeLogrado));
           series1.getData().add(new XYChart.Data<String, Float>("No Logrado", porcentajeNologrado));
           graficoBarra.getData().clear();
           graficoBarra.getData().add(series1);
+          graficoBarra.setLegendVisible(false);
 
           for (final Series<String, Number> s : graficoBarra.getData()) {
             for (final Data<String, Number> d : s.getData()) {
@@ -176,12 +180,12 @@ public class ResumenEjesTematicosView extends AFormView implements EventHandler<
     btnGenerar.setOnAction(this);
     cmbTipoAlumno.setOnAction(event -> tipoAlumno = cmbTipoAlumno.getSelectionModel().getSelectedIndex());
 
+    yAxis.setAutoRanging(false);
+    yAxis.setUpperBound(100);
+    
     inicializarTablaEjes();
     accionClicTabla();
     setTitle("Resumen Respuestas por Ejes Temáticos");
-    graficoBarra.setTitle("Gráfico Respuestas por ejes temáticos");
-    xAxis.setLabel("Country");
-    yAxis.setLabel("Value");
     mnuExportarEjes.setOnAction(this);
   }
 
@@ -237,7 +241,7 @@ public class ResumenEjesTematicosView extends AFormView implements EventHandler<
       mapaEjesTematicos.put(ejeTematico, otPreguntas);
     }
 
-    for (final R_PruebaRendida pruebaRendida : pruebasRendidas) {
+    for (final R_PruebaRendida pruebaRendida : lstPruebasRendidas) {
       if (tipoAlumno != Constants.PIE_ALL && !pruebaRendida.getTipoalumno_id().equals(tipoAlumno)) {
         continue;
       }
@@ -267,12 +271,6 @@ public class ResumenEjesTematicosView extends AFormView implements EventHandler<
         cmbTipoAlumno.getSelectionModel().select((int) Constants.PIE_ALL);
         generateReport();
       }
-      if (entity instanceof R_PruebaRendida) {
-        pruebasRendidas = list.stream().map(p -> (R_PruebaRendida) p).collect(Collectors.toList());
-      }
-      if (entity instanceof R_RespuestasEsperadasPrueba) {
-        respuestasEsperadas = list.stream().map(p -> (R_RespuestasEsperadasPrueba) p).collect(Collectors.toList());
-      }
     }
   }
 
@@ -280,6 +278,17 @@ public class ResumenEjesTematicosView extends AFormView implements EventHandler<
   public void onFound(IEntity entity) {
     if (entity instanceof R_EvaluacionPrueba) {
       evaluacionPrueba = (R_EvaluacionPrueba) entity;
+      Map<String, Object> params =
+          MapBuilder.<String, Object>unordered().put("evaluacionprueba_id", evaluacionPrueba.getId()).build();
+      lstPruebasRendidas = controller.findByParamsSynchro(R_PruebaRendida.class, params);
+      params =
+          MapBuilder.<String, Object>unordered().put("prueba_id", evaluacionPrueba.getPrueba_id()).build();
+      respuestasEsperadas = controller.findByParamsSynchro(R_RespuestasEsperadasPrueba.class, params);
+      curso = controller.findByIdSynchro(R_Curso.class, evaluacionPrueba.getCurso_id());
+      generateReport();
+    }
+    if (entity instanceof R_Asignatura) {
+      asignatura = (R_Asignatura) entity;
       generateReport();
     }
   }

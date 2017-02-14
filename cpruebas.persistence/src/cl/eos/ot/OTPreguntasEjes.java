@@ -17,6 +17,11 @@ public class OTPreguntasEjes {
         this.ejeTematico = ejeTematico;
     }
 
+    public String getName()
+    {
+      return this.ejeTematico == null ? "" :  this.ejeTematico.getName();
+    }
+    
     public Integer getBuenas() {
         return buenas;
     }
