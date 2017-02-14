@@ -151,6 +151,18 @@ public class XItemObjetivo {
         this.habilidades = habilidades;
     }
 
+    
+    
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+      return objetivo.getName();
+    }
+
+
+
     public static class Builder {
         private R_Objetivo objetivo;
         int buenas = 0;

@@ -43,6 +43,10 @@ public class XUtilEvaluations {
     final String[] reps = respuestas.split("");
     final Map<Long, List<R_RespuestasEsperadasPrueba>> byObjective =
         resEsperadas.stream().collect(Collectors.groupingBy(R_RespuestasEsperadasPrueba::getObjetivo_id));
+    
+    List<R_Ejetematico> lstEjes =  new ArrayList<>();
+    List<R_Habilidad> lstHab =  new ArrayList<>();
+    
     Map<Long, R_Objetivo> mapObjetivos = new HashMap<>();
     final List<XItemObjetivo> result = new ArrayList<>();
     for (final Long key : byObjective.keySet()) {
@@ -61,15 +65,24 @@ public class XUtilEvaluations {
         objxAlumno.addPregunta();
         String value;
 
-        R_Ejetematico eje = PersistenceServiceFactory.getPersistenceService().findByIdSynchro(R_Ejetematico.class,
+        R_Ejetematico eje = lstEjes.stream().filter(e -> e.getId().equals(re.getEjetematico_id())).findFirst().orElse(null);
+        if(eje == null)
+        {
+          eje = PersistenceServiceFactory.getPersistenceService().findByIdSynchro(R_Ejetematico.class,
             re.getEjetematico_id());
+          lstEjes.add(eje);
+        }
         if (!objxAlumno.getEjesAsociados().contains(eje.getName())) {
           value = objxAlumno.getEjesAsociados() + (objxAlumno.getEjesAsociados().isEmpty() ? "" : "\n")
               + eje.getName().toUpperCase();
           objxAlumno.setEjesAsociados(value);
         }
-        R_Habilidad hab =
-            PersistenceServiceFactory.getPersistenceService().findByIdSynchro(R_Habilidad.class, re.getHabilidad_id());
+        R_Habilidad hab = lstHab.stream().filter(e -> e.getId().equals(re.getHabilidad_id())).findFirst().orElse(null);
+        if(hab == null)
+        {
+            hab = PersistenceServiceFactory.getPersistenceService().findByIdSynchro(R_Habilidad.class, re.getHabilidad_id());
+            lstHab.add(hab);
+        }
         if (!objxAlumno.getHabilidades().contains(hab.getName())) {
           value = objxAlumno.getHabilidades() + (objxAlumno.getHabilidades().isEmpty() ? "" : "\n")
               + hab.getName().toUpperCase();
