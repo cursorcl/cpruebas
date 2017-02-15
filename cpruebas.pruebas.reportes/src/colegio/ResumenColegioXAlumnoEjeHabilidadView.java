@@ -40,8 +40,8 @@ import javafx.scene.control.TableView;
 public class ResumenColegioXAlumnoEjeHabilidadView extends AFormView implements EventHandler<ActionEvent> {
 
 	private static Logger log = Logger.getLogger(ResumenColegioXAlumnoEjeHabilidadView.class.getName());
-	private static final String ASIGNATURA_ID = "idAsignatura";
-	private static final String COLEGIO_ID = "idColegio";
+	private static final String ASIGNATURA_ID = "asignatura_id";
+	private static final String COLEGIO_ID = "colegio_id";
 	@FXML
 	private TabPane tabPane;
 	@FXML
@@ -256,7 +256,7 @@ public class ResumenColegioXAlumnoEjeHabilidadView extends AFormView implements 
 		pForm.showWorkerProgress(task);
 		Executors.newSingleThreadExecutor().execute(task);
 
-		Executors.newSingleThreadExecutor().execute(task);
+		//Executors.newSingleThreadExecutor().execute(task);
 
 	}
 

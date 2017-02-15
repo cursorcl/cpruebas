@@ -104,7 +104,7 @@ public class Nivel_ComparativoColegioHabilidadesView extends AFormView
       Map<String, Object> param =
           MapBuilder.<String, Object>unordered().put(COLEGIO_ID, colegio.getId()).build();
       lblTitulo.setText(colegio.getName());
-      controller.findByParam(R_Curso.class, param);
+      controller.findByParam(R_Curso.class, param, this);
       clearContent();
     }
   }

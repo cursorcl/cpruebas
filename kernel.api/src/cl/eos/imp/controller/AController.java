@@ -71,20 +71,6 @@ public abstract class AController implements IController, IPersistenceListener {
     model.deleteByParams(entity, params);
   }
 
-  @Override
-  public <T extends IEntity> void findAll(Class<T> entityClazz) {
-    model.findAll(entityClazz, this);
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see cl.eos.interfaces.controller.IController#findAll(java.lang.Class, int, int)
-   */
-  @Override
-  public <T extends IEntity> void findAll(Class<T> entityClazz, int offset, int items) {
-    model.findAll(entityClazz, this, offset, items);
-  }
 
   @Override
   public <T extends IEntity> void findAll(Class<T> entityClazz, IPersistenceListener listener) {
@@ -103,10 +89,6 @@ public abstract class AController implements IController, IPersistenceListener {
     });
   }
 
-  @Override
-  public <T extends IEntity> void findByAllId(Class<T> entityClazz, Long[] id) {
-    model.findByAllId(entityClazz, id);
-  }
 
   @Override
   public <T extends IEntity> void findByAllId(Class<T> entityClazz, Long[] objects,
@@ -127,10 +109,6 @@ public abstract class AController implements IController, IPersistenceListener {
     });
   }
 
-  @Override
-  public <T extends IEntity> void findById(Class<T> entityClazz, Long id) {
-    model.findById(entityClazz, id, this);
-  }
 
   @Override
   public <T extends IEntity> void findById(Class<T> entityClazz, Long id,
@@ -148,11 +126,6 @@ public abstract class AController implements IController, IPersistenceListener {
         }
       }
     });
-  }
-
-  @Override
-  public <T extends IEntity> void findByName(Class<T> entityClazz, String name) {
-    model.findByName(entityClazz, name, this);
   }
 
   @Override
@@ -181,11 +154,6 @@ public abstract class AController implements IController, IPersistenceListener {
   @Override
   public <T extends IEntity> void findAll(Class<T> entityClazz, int offset, int items,
       IView... view) {}
-
-  @Override
-  public <T extends IEntity> void findByParam(Class<T> entityClazz, Map<String, Object> params) {
-    model.findByParams(entityClazz, params);
-  }
 
   /*
    * (non-Javadoc)

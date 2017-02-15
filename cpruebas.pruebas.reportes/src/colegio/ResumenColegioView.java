@@ -7,11 +7,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import cl.eos.common.Constants;
 import cl.eos.imp.view.AFormView;
+import cl.eos.imp.view.ProgressForm;
 import cl.eos.ot.OTRangoCurso;
 import cl.eos.ot.OTResumenColegio;
 import cl.eos.persistence.util.Comparadores;
@@ -33,6 +35,8 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -181,8 +185,7 @@ public class ResumenColegioView extends AFormView implements EventHandler<Action
     tblCursos.getItems().clear();
     tblPME.getItems().clear();
     tblResumenTotal.getItems().clear();
-    if (!parameters.isEmpty() && parameters.containsKey(COLEGIO_ID)
-        && parameters.containsKey(ASIGNATURA_ID)) {
+    if (!parameters.isEmpty() && parameters.containsKey(COLEGIO_ID) && parameters.containsKey(ASIGNATURA_ID)) {
       controller.findByParam(R_EvaluacionPrueba.class, parameters, this);
     }
   }
@@ -196,20 +199,13 @@ public class ResumenColegioView extends AFormView implements EventHandler<Action
   private void inicializarTablaCursos() {
     tblCursos.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     colCurso.setCellValueFactory(new PropertyValueFactory<OTResumenColegio, String>("curso"));
-    colTotal
-        .setCellValueFactory(new PropertyValueFactory<OTResumenColegio, Integer>("totalAlumnos"));
-    colEvaluados
-        .setCellValueFactory(new PropertyValueFactory<OTResumenColegio, Integer>("totalEvaluados"));
-    colAprobados
-        .setCellValueFactory(new PropertyValueFactory<OTResumenColegio, Integer>("totalAprobados"));
-    colReprobados.setCellValueFactory(
-        new PropertyValueFactory<OTResumenColegio, Integer>("totalReprobados"));
-    colPEvaluados.setCellValueFactory(
-        new PropertyValueFactory<OTResumenColegio, Float>("porcAlumnosEvaluados"));
-    colPAprobados.setCellValueFactory(
-        new PropertyValueFactory<OTResumenColegio, Float>("porcAlumnosAprobados"));
-    colPReprobados.setCellValueFactory(
-        new PropertyValueFactory<OTResumenColegio, Float>("porcAlumnosReprobados"));
+    colTotal.setCellValueFactory(new PropertyValueFactory<OTResumenColegio, Integer>("totalAlumnos"));
+    colEvaluados.setCellValueFactory(new PropertyValueFactory<OTResumenColegio, Integer>("totalEvaluados"));
+    colAprobados.setCellValueFactory(new PropertyValueFactory<OTResumenColegio, Integer>("totalAprobados"));
+    colReprobados.setCellValueFactory(new PropertyValueFactory<OTResumenColegio, Integer>("totalReprobados"));
+    colPEvaluados.setCellValueFactory(new PropertyValueFactory<OTResumenColegio, Float>("porcAlumnosEvaluados"));
+    colPAprobados.setCellValueFactory(new PropertyValueFactory<OTResumenColegio, Float>("porcAlumnosAprobados"));
+    colPReprobados.setCellValueFactory(new PropertyValueFactory<OTResumenColegio, Float>("porcAlumnosReprobados"));
 
   }
 
@@ -303,89 +299,132 @@ public class ResumenColegioView extends AFormView implements EventHandler<Action
     string.append(colegio);
     lblColegio.setText(string.toString());
 
-    int totalColAlumnos = 0;
-    int totalColEvaluados = 0;
-    int totalColAprobados = 0;
-    int totalColReprobados = 0;
-    long tipoAlumno = cmbTipoAlumno.getSelectionModel().getSelectedItem().getId();
-    // Todas las evaluaciones asociadas (Todos los cursos)
-    for (R_EvaluacionPrueba evaluacion : list) {
 
-      R_Curso curso = controller.findByIdSynchro(R_Curso.class, evaluacion.getCurso_id());
-      OTResumenColegio resumenCurso = new OTResumenColegio();
-      resumenCurso.setColegio(colegio);
-      resumenCurso.setCurso(curso);
+    ProgressForm pForm = new ProgressForm();
+    pForm.title("Procesando");
+    pForm.message("Esto tomará algunos segundos.");
+
+    Task<Void> task = new Task<Void>() {
+      @Override
+      protected Void call() throws Exception {
+        int totalColAlumnos = 0;
+        int totalColEvaluados = 0;
+        int totalColAprobados = 0;
+        int totalColReprobados = 0;
+        long tipoAlumno = cmbTipoAlumno.getSelectionModel().getSelectedItem().getId();
+
+        int n = 0;
+        int total = list.size();
+
+        // Todas las evaluaciones asociadas (Todos los cursos)
+        for (R_EvaluacionPrueba evaluacion : list) {
+
+          R_Curso curso = controller.findByIdSynchro(R_Curso.class, evaluacion.getCurso_id());
+          OTResumenColegio resumenCurso = new OTResumenColegio();
+          resumenCurso.setColegio(colegio);
+          resumenCurso.setCurso(curso);
 
 
-      Map<String, Object> params =
-          MapBuilder.<String, Object>unordered().put("curso_id", curso.getId()).build();
-      List<R_Alumno> alumnos = controller.findByParamsSynchro(R_Alumno.class, params);
-      int totalAlumnos = alumnos.size();
-      int totalEvaluados = 0;
-      int totalAprobados = 0;
-      int totalReprobados = 0;
+          Map<String, Object> params = MapBuilder.<String, Object>unordered().put("curso_id", curso.getId()).build();
+          List<R_Alumno> alumnos = controller.findByParamsSynchro(R_Alumno.class, params);
+          int totalAlumnos = alumnos.size();
+          int totalEvaluados = 0;
+          int totalAprobados = 0;
+          int totalReprobados = 0;
 
 
-      params = MapBuilder.<String, Object>unordered().put("evaluacionprueba_id", evaluacion.getId())
-          .build();
-      List<R_PruebaRendida> rendidas =
-          controller.findByParamsSynchro(R_PruebaRendida.class, params);
-      // Estamos procesando un colegio/una prueba
-      for (R_PruebaRendida pruebaRendida : rendidas) {
-        if (tipoAlumno != Constants.PIE_ALL && tipoAlumno != pruebaRendida.getTipoalumno_id()) {
-          // En este caso, no se considera este alumno para el
-          // cálculo.
-          totalAlumnos--;
-          continue;
+          params = MapBuilder.<String, Object>unordered().put("evaluacionprueba_id", evaluacion.getId()).build();
+
+          updateMessage("Obteniendo lista de pruebas rendidas");
+          updateProgress(n++, total);
+
+          List<R_PruebaRendida> rendidas = controller.findByParamsSynchro(R_PruebaRendida.class, params);
+          // Estamos procesando un colegio/una prueba
+
+          int m = 0;
+          for (R_PruebaRendida pruebaRendida : rendidas) {
+            if (tipoAlumno != Constants.PIE_ALL && tipoAlumno != pruebaRendida.getTipoalumno_id()) {
+              // En este caso, no se considera este alumno para el
+              // cálculo.
+              totalAlumnos--;
+              continue;
+            }
+            totalEvaluados++;
+            if (pruebaRendida.getNota() >= 4) {
+              totalAprobados++;
+            } else {
+              totalReprobados++;
+            }
+            updateMessage("Generando datos de rangos de prueba rendida " + (++m));
+            generaDatosRangos(pruebaRendida, curso);
+            updateMessage("Generando datos de generales de prueba rendida " + m);
+            generaDatosGeneral(pruebaRendida);
+          }
+
+          resumenCurso.setTotalAlumnos(totalAlumnos);
+          resumenCurso.setTotalEvaluados(totalEvaluados);
+          resumenCurso.setTotalAprobados(totalAprobados);
+          resumenCurso.setTotalReprobados(totalReprobados);
+          resumenCurso.setPorcAlumnosEvaluados(
+              Utils.redondeo2Decimales((((float) totalEvaluados / (float) totalAlumnos) * 100f)));
+          resumenCurso.setPorcAlumnosAprobados(
+              Utils.redondeo2Decimales((((float) totalAprobados / (float) totalEvaluados) * 100f)));
+          resumenCurso.setPorcAlumnosReprobados(
+              Utils.redondeo2Decimales((((float) totalReprobados / (float) totalEvaluados) * 100f)));
+          lstCursos.add(resumenCurso);
+
+          totalColAlumnos = totalColAlumnos + totalAlumnos;
+          totalColEvaluados = totalColEvaluados + totalEvaluados;
+          totalColAprobados = totalColAprobados + totalAprobados;
+          totalColReprobados = totalColReprobados + totalReprobados;
+
         }
-        totalEvaluados++;
-        if (pruebaRendida.getNota() >= 4) {
-          totalAprobados++;
-        } else {
-          totalReprobados++;
-        }
 
-        generaDatosRangos(pruebaRendida, curso);
-        generaDatosGeneral(pruebaRendida);
+        resumenTotal = new OTResumenColegio();
+        R_Curso curso = new R_Curso.Builder().id(Long.MAX_VALUE).name("Total").build();
+        resumenTotal.setCurso(curso);
+        resumenTotal.setTotalAlumnos(totalColAlumnos);
+        resumenTotal.setTotalEvaluados(totalColEvaluados);
+        resumenTotal.setTotalAprobados(totalColAprobados);
+        resumenTotal.setTotalReprobados(totalColReprobados);
+        resumenTotal.setPorcAlumnosEvaluados(
+            (Utils.redondeo2Decimales((float) totalColEvaluados / (float) totalColAlumnos) * 100f));
+        resumenTotal.setPorcAlumnosAprobados(
+            Utils.redondeo2Decimales(((float) totalColAprobados / (float) totalColEvaluados) * 100f));
+        resumenTotal.setPorcAlumnosReprobados(
+            Utils.redondeo2Decimales(((float) totalColReprobados / (float) totalColEvaluados) * 100f));
+        lstCursos.add(resumenTotal);
+
+        updateMessage("Generando Resumen de Cursos");
+        generarDatosResumenCurso();
+        updateMessage("Generando Resumen PME");
+        generarDatosResumenPME();
+        updateMessage("Generando Resumen General");
+        generarDatosResumenGeneral();
+
+        return null;
       }
+    };
 
-      resumenCurso.setTotalAlumnos(totalAlumnos);
-      resumenCurso.setTotalEvaluados(totalEvaluados);
-      resumenCurso.setTotalAprobados(totalAprobados);
-      resumenCurso.setTotalReprobados(totalReprobados);
-      resumenCurso.setPorcAlumnosEvaluados(
-          Utils.redondeo2Decimales((((float) totalEvaluados / (float) totalAlumnos) * 100f)));
-      resumenCurso.setPorcAlumnosAprobados(
-          Utils.redondeo2Decimales((((float) totalAprobados / (float) totalEvaluados) * 100f)));
-      resumenCurso.setPorcAlumnosReprobados(
-          Utils.redondeo2Decimales((((float) totalReprobados / (float) totalEvaluados) * 100f)));
-      lstCursos.add(resumenCurso);
+    task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+      @Override
+      public void handle(WorkerStateEvent event) {
+        pForm.getDialogStage().hide();
+      }
+    });
+    task.setOnFailed(new EventHandler<WorkerStateEvent>() {
 
-      totalColAlumnos = totalColAlumnos + totalAlumnos;
-      totalColEvaluados = totalColEvaluados + totalEvaluados;
-      totalColAprobados = totalColAprobados + totalAprobados;
-      totalColReprobados = totalColReprobados + totalReprobados;
+      @Override
+      public void handle(WorkerStateEvent event) {
+        log.severe("Se ha producido el siguiente error:" + event.getEventType().toString());
+        pForm.getDialogStage().hide();
+      }
+    });
 
-    }
+    pForm.showWorkerProgress(task);
+    Executors.newSingleThreadExecutor().execute(task);
 
-    resumenTotal = new OTResumenColegio();
-    R_Curso curso = new R_Curso.Builder().id(Long.MAX_VALUE).name("Total").build();
-    resumenTotal.setCurso(curso);
-    resumenTotal.setTotalAlumnos(totalColAlumnos);
-    resumenTotal.setTotalEvaluados(totalColEvaluados);
-    resumenTotal.setTotalAprobados(totalColAprobados);
-    resumenTotal.setTotalReprobados(totalColReprobados);
-    resumenTotal.setPorcAlumnosEvaluados(
-        (Utils.redondeo2Decimales((float) totalColEvaluados / (float) totalColAlumnos) * 100f));
-    resumenTotal.setPorcAlumnosAprobados(
-        Utils.redondeo2Decimales(((float) totalColAprobados / (float) totalColEvaluados) * 100f));
-    resumenTotal.setPorcAlumnosReprobados(
-        Utils.redondeo2Decimales(((float) totalColReprobados / (float) totalColEvaluados) * 100f));
-    lstCursos.add(resumenTotal);
 
-    generarDatosResumenCurso();
-    generarDatosResumenPME();
-    generarDatosResumenGeneral();
   }
 
   @SuppressWarnings("unchecked")
@@ -410,10 +449,12 @@ public class ResumenColegioView extends AFormView implements EventHandler<Action
     row2.add("");
     row2.add("");
     row2.add("");
-    row2.add((Utils.redondeo2Decimales(
-        resumenTotal.getPorcAlumnosAprobados() + resumenTotal.getPorcAlumnosReprobados())) + "%");
-    row2.add((Utils.redondeo2Decimales(
-        resumenTotal.getPorcAlumnosAprobados() + resumenTotal.getPorcAlumnosReprobados())) + "%");
+    row2.add(
+        (Utils.redondeo2Decimales(resumenTotal.getPorcAlumnosAprobados() + resumenTotal.getPorcAlumnosReprobados()))
+            + "%");
+    row2.add(
+        (Utils.redondeo2Decimales(resumenTotal.getPorcAlumnosAprobados() + resumenTotal.getPorcAlumnosReprobados()))
+            + "%");
 
     float total = 0;
     for (Entry<Integer, R_EvaluacionEjetematico> ttEvaluacion : tituloEvaluacion.entrySet()) {
@@ -502,8 +543,7 @@ public class ResumenColegioView extends AFormView implements EventHandler<Action
     float porcentaje = (float) rendida.getBuenas() / (float) prueba.getNropreguntas() * 100f;
     R_RangoEvaluacion rango = EntityUtils.getRango(porcentaje, lstRangos);
 
-    log.info(String.format(";\"%s\";%f;%5.2f%%;\"%s\"", curso, rendida.getNota(), porcentaje,
-        rango.getName()));
+    log.info(String.format(";\"%s\";%f;%5.2f%%;\"%s\"", curso, rendida.getNota(), porcentaje, rango.getName()));
 
     if (pmeCursos.containsKey(curso)) {
       Map<R_RangoEvaluacion, OTRangoCurso> prangos = pmeCursos.get(curso);
@@ -536,12 +576,11 @@ public class ResumenColegioView extends AFormView implements EventHandler<Action
 
     TableColumn columna0 = new TableColumn("R_Curso");
     columna0.setStyle("-fx-alignment: CENTER-LEFT;");
-    columna0.setCellValueFactory(
-        new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
-          public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
-            return new SimpleStringProperty(param.getValue().get(0).toString());
-          }
-        });
+    columna0.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
+      public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
+        return new SimpleStringProperty(param.getValue().get(0).toString());
+      }
+    });
     columna0.setPrefWidth(ANCHO_COL);
     columna0.setCellFactory(param -> new TableCell() {
       @Override
@@ -562,12 +601,11 @@ public class ResumenColegioView extends AFormView implements EventHandler<Action
       final int col = indice;
       TableColumn columna = new TableColumn(titulo.getName());
       columna.setStyle(FX_ALIGNMENT_CENTER);
-      columna.setCellValueFactory(
-          new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
-            public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
-              return new SimpleStringProperty(param.getValue().get(col).toString());
-            }
-          });
+      columna.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
+        public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
+          return new SimpleStringProperty(param.getValue().get(col).toString());
+        }
+      });
 
       columna.setPrefWidth(ANCHO_COL);
       tblPME.getColumns().add(columna);
@@ -581,12 +619,11 @@ public class ResumenColegioView extends AFormView implements EventHandler<Action
   private void agregarColumnasTbl() {
     TableColumn columna0 = new TableColumn("");
     columna0.setStyle("-fx-alignment: CENTER-LEFT;");
-    columna0.setCellValueFactory(
-        new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
-          public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
-            return new SimpleStringProperty(param.getValue().get(0).toString());
-          }
-        });
+    columna0.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
+      public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
+        return new SimpleStringProperty(param.getValue().get(0).toString());
+      }
+    });
     columna0.setPrefWidth(ANCHO_COL);
     columna0.setCellFactory(new Callback<TableColumn, TableCell>() {
 
@@ -606,12 +643,11 @@ public class ResumenColegioView extends AFormView implements EventHandler<Action
 
     TableColumn columna1 = new TableColumn("Total Escuela");
     columna1.setStyle(FX_ALIGNMENT_CENTER);
-    columna1.setCellValueFactory(
-        new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
-          public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
-            return new SimpleStringProperty(param.getValue().get(1).toString());
-          }
-        });
+    columna1.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
+      public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
+        return new SimpleStringProperty(param.getValue().get(1).toString());
+      }
+    });
     columna1.setPrefWidth(ANCHO_COL);
     columna1.setCellFactory(new Callback<TableColumn, TableCell>() {
 
@@ -635,12 +671,11 @@ public class ResumenColegioView extends AFormView implements EventHandler<Action
 
     TableColumn columna3 = new TableColumn("Evaluados");
     columna3.setStyle(FX_ALIGNMENT_CENTER);
-    columna3.setCellValueFactory(
-        new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
-          public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
-            return new SimpleStringProperty(param.getValue().get(2).toString());
-          }
-        });
+    columna3.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
+      public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
+        return new SimpleStringProperty(param.getValue().get(2).toString());
+      }
+    });
     columna3.setPrefWidth(ANCHO_COL);
     columna3.setCellFactory(new Callback<TableColumn, TableCell>() {
 
@@ -663,12 +698,11 @@ public class ResumenColegioView extends AFormView implements EventHandler<Action
 
     TableColumn columna4 = new TableColumn("Aprobados");
     columna4.setStyle(FX_ALIGNMENT_CENTER);
-    columna4.setCellValueFactory(
-        new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
-          public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
-            return new SimpleStringProperty(param.getValue().get(3).toString());
-          }
-        });
+    columna4.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
+      public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
+        return new SimpleStringProperty(param.getValue().get(3).toString());
+      }
+    });
     columna4.setPrefWidth(ANCHO_COL);
     columna4.setCellFactory(new Callback<TableColumn, TableCell>() {
 
@@ -687,12 +721,11 @@ public class ResumenColegioView extends AFormView implements EventHandler<Action
 
     TableColumn columna5 = new TableColumn("Reprobados");
     columna5.setStyle(FX_ALIGNMENT_CENTER);
-    columna5.setCellValueFactory(
-        new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
-          public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
-            return new SimpleStringProperty(param.getValue().get(4).toString());
-          }
-        });
+    columna5.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
+      public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
+        return new SimpleStringProperty(param.getValue().get(4).toString());
+      }
+    });
     columna5.setPrefWidth(ANCHO_COL);
     columna5.setCellFactory(new Callback<TableColumn, TableCell>() {
 
@@ -723,12 +756,11 @@ public class ResumenColegioView extends AFormView implements EventHandler<Action
       final int column = indice;
       TableColumn columna = new TableColumn(titulo.getName());
       columna.setStyle(FX_ALIGNMENT_CENTER);
-      columna.setCellValueFactory(
-          new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
-            public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
-              return new SimpleStringProperty(param.getValue().get(column).toString());
-            }
-          });
+      columna.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
+        public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
+          return new SimpleStringProperty(param.getValue().get(column).toString());
+        }
+      });
 
       columna.setPrefWidth(ANCHO_COL);
       columna6.getColumns().add(columna);

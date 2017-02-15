@@ -177,7 +177,7 @@ public class EvaluacionPruebaView extends AFormView implements EventHandler<Acti
 
       resumeEjeTematico = (ResumenEjesTematicosView) show("/curso/fxml/ResumenEjesTematicos.fxml");
       resumeEjeTematico.setPrueba(prueba);
-      controller.findById(R_Asignatura.class, evaluacionPrueba.getAsignatura_id());
+      controller.findById(R_Asignatura.class, evaluacionPrueba.getAsignatura_id(), resumeEjeTematico);
       controller.findById(R_EvaluacionPrueba.class, evaluacionPrueba.getId(), resumeEjeTematico);
       controller.findAll(R_TipoAlumno.class, resumeEjeTematico);
     } else {
@@ -210,8 +210,8 @@ public class EvaluacionPruebaView extends AFormView implements EventHandler<Acti
     if (evaluacionPrueba != null) {
       resumeHabilidad = (ResumenHabilidadesView) show("/curso/fxml/ResumenHabilidades.fxml");
 
-      controller.findById(R_Prueba.class, evaluacionPrueba.getPrueba_id());
-      controller.findById(R_Asignatura.class, evaluacionPrueba.getAsignatura_id());
+      controller.findById(R_Prueba.class, evaluacionPrueba.getPrueba_id(), resumeHabilidad);
+      controller.findById(R_Asignatura.class, evaluacionPrueba.getAsignatura_id(), resumeHabilidad);
       controller.findById(R_EvaluacionPrueba.class, evaluacionPrueba.getId(), resumeHabilidad);
       controller.findAll(R_TipoAlumno.class, resumeHabilidad);
     } else {
@@ -226,15 +226,10 @@ public class EvaluacionPruebaView extends AFormView implements EventHandler<Acti
   private void handleResumenRespuesta() {
     evaluacionPrueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getEvaluacionPrueba();
     if (evaluacionPrueba != null) {
-      if (resumenRespuestas == null) {
-        resumenRespuestas = (ResumenRespuestaView) show("/curso/fxml/ResumenRespuestas.fxml");
-      } else {
-        show(resumenRespuestas);
-      }
-
+      resumenRespuestas = (ResumenRespuestaView) show("/curso/fxml/ResumenRespuestas.fxml");
       controller.findAll(R_TipoAlumno.class, resumenRespuestas);
-      controller.findById(R_Prueba.class, evaluacionPrueba.getPrueba_id());
-      controller.findById(R_Asignatura.class, evaluacionPrueba.getAsignatura_id());
+      controller.findById(R_Prueba.class, evaluacionPrueba.getPrueba_id(), resumenRespuestas);
+      controller.findById(R_Asignatura.class, evaluacionPrueba.getAsignatura_id(),resumenRespuestas);
       controller.findById(R_EvaluacionPrueba.class, evaluacionPrueba.getId(), resumenRespuestas);
 
     } else {
@@ -275,10 +270,10 @@ public class EvaluacionPruebaView extends AFormView implements EventHandler<Acti
     if (evaluacion != null) {
       resumenGeneralPME = (ResumenGeneralPMEView) show("/curso/fxml/ResumenGeneralPME.fxml");
       resumenGeneralPME.setPrueba(prueba);
-      controller.findById(R_EvaluacionPrueba.class, evaluacion.getId());
-      controller.findById(R_NivelEvaluacion.class, prueba.getNivelevaluacion_id());
-      controller.findAll(R_RangoEvaluacion.class);
-      controller.findAll(R_TipoAlumno.class);
+      controller.findById(R_EvaluacionPrueba.class, evaluacion.getId(), resumenGeneralPME);
+      controller.findById(R_NivelEvaluacion.class, prueba.getNivelevaluacion_id(), resumenGeneralPME);
+      controller.findAll(R_RangoEvaluacion.class, resumenGeneralPME);
+      controller.findAll(R_TipoAlumno.class, resumenGeneralPME);
     } else {
       final Alert alert = new Alert(AlertType.INFORMATION);
       alert.setTitle("Selección registro");

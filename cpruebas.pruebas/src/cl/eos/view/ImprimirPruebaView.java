@@ -88,7 +88,7 @@ public class ImprimirPruebaView extends AFormView {
             final Map<String, Object> parameters = new HashMap<String, Object>();
             parameters.put("tcursoId", prueba.getCurso_id());
             parameters.put("colegioId", colegio.getId());
-            controller.findByParam(R_TipoColegio.class, parameters);
+            controller.findByParam(R_TipoColegio.class, parameters, this);
             final boolean disable = cmbColegios.getSelectionModel().getSelectedItem() == null
                     || cmbCursos.getSelectionModel().getSelectedItem() == null || cmbProfesor.getSelectionModel().getSelectedItem() == null;
             mnuImprimir.setDisable(disable);
@@ -154,7 +154,7 @@ public class ImprimirPruebaView extends AFormView {
         if (entity instanceof R_Prueba) {
             prueba = (R_Prueba) entity;
             txtName.setText(prueba.getName());
-            controller.findById(R_Asignatura.class, prueba.getAsignatura_id());
+            controller.findById(R_Asignatura.class, prueba.getAsignatura_id(), this);
         } else if (entity instanceof R_Asignatura) {
             asignatura = (R_Asignatura) entity;
             txtAsignatura.setText(((R_Asignatura) entity).getName());

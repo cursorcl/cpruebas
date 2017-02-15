@@ -105,9 +105,9 @@ public abstract class AView implements IView {
   @Override
   public void setController(IController controller) {
     this.controller = controller;
-    if (!this.controller.getViews().contains(this)) {
-      controller.addView(this);
-    }
+//    if (!this.controller.getViews().contains(this)) {
+//      controller.addView(this);
+//    }
   }
 
   @Override
@@ -133,7 +133,8 @@ public abstract class AView implements IView {
       final Pane pane = (Pane) fxmlLoader.load(url.openStream());
       view = (IView) fxmlLoader.getController();
       view.setPanel(pane);
-      controller.addView(view);
+      view.setController(controller);
+      //controller.addView(view);
     } catch (final Exception e) {
       e.printStackTrace();
       AView.LOG.error(e);

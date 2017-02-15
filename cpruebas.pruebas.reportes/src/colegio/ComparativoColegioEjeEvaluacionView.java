@@ -5,11 +5,13 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 import java.util.stream.IntStream;
 
 import cl.eos.common.Constants;
 import cl.eos.imp.view.AFormView;
+import cl.eos.imp.view.ProgressForm;
 import cl.eos.persistence.util.Comparadores;
 import cl.eos.restful.tables.R_Alumno;
 import cl.eos.restful.tables.R_Asignatura;
@@ -24,10 +26,13 @@ import cl.eos.restful.tables.R_TipoAlumno;
 import cl.eos.util.ExcelSheetWriterObj;
 import cl.eos.util.MapBuilder;
 import cl.eos.view.ots.ejeevaluacion.OTAcumulador;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -42,8 +47,7 @@ import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.util.Callback;
 
-public class ComparativoColegioEjeEvaluacionView extends AFormView
-    implements EventHandler<ActionEvent> {
+public class ComparativoColegioEjeEvaluacionView extends AFormView implements EventHandler<ActionEvent> {
 
   Logger log = Logger.getLogger(ComparativoColegioEjeEvaluacionView.class.getName());
   private static final String ASIGNATURA_ID = "asignatura_id";
@@ -104,7 +108,7 @@ public class ComparativoColegioEjeEvaluacionView extends AFormView
       Map<String, Object> param = new HashMap<String, Object>();
       param.put("colegio_id", colegio.getId());
       lblTitulo.setText(colegio.getName());
-      controller.findByParam(R_Curso.class, param);
+      controller.findByParam(R_Curso.class, param, this);
       clearContent();
     }
   }
@@ -118,8 +122,7 @@ public class ComparativoColegioEjeEvaluacionView extends AFormView
   }
 
   private void handleReportes() {
-    if (!parameters.isEmpty() && parameters.containsKey(COLEGIO_ID)
-        && parameters.containsKey(ASIGNATURA_ID)) {
+    if (!parameters.isEmpty() && parameters.containsKey(COLEGIO_ID) && parameters.containsKey(ASIGNATURA_ID)) {
 
       controller.findByParam(R_EvaluacionPrueba.class, parameters, this);
     }
@@ -181,16 +184,15 @@ public class ComparativoColegioEjeEvaluacionView extends AFormView
       evaluacionesPrueba = FXCollections.observableArrayList();
       for (Object object : list) {
         R_EvaluacionPrueba evaluacion = (R_EvaluacionPrueba) object;
-        if(prueba_id ==null)
-        {
+        if (prueba_id == null) {
           prueba_id = evaluacion.getPrueba_id();
         }
-        
+
         evaluacionesPrueba.add(evaluacion);
       }
       // Respuestas esperadas de la prueba.
       Map<String, Object> params = MapBuilder.<String, Object>unordered().put("prueba_id", prueba_id).build();
-      controller.findByParam(R_RespuestasEsperadasPrueba.class, params);
+      controller.findByParam(R_RespuestasEsperadasPrueba.class, params, this);
       generarReporte();
     }
     if (entity instanceof R_RangoEvaluacion) {
@@ -220,53 +222,55 @@ public class ComparativoColegioEjeEvaluacionView extends AFormView
    * @param pCursoList
    */
   @SuppressWarnings({"rawtypes", "unchecked"})
-  private void llenarColumnas(ObservableList<R_Curso> pCursoList,
-      ObservableList<R_RangoEvaluacion> rangos) {
-    TableColumn tc = new TableColumn("EJES");
-    tc.setSortable(false);
-    tc.setStyle("-fx-alignment: CENTER-LEFT;");
-    tc.prefWidthProperty().set(250f);
-    tc.setCellValueFactory(
-        new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
+  private void llenarColumnas(ObservableList<R_Curso> pCursoList, ObservableList<R_RangoEvaluacion> rangos) {
+    Platform.runLater(new Runnable() {
+      @Override
+      public void run() {
+
+        TableColumn tc = new TableColumn("EJES");
+        tc.setSortable(false);
+        tc.setStyle("-fx-alignment: CENTER-LEFT;");
+        tc.prefWidthProperty().set(250f);
+        tc.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
           public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
             return new SimpleStringProperty(param.getValue().get(0).toString());
           }
         });
-    tblEjesCantidad.getColumns().clear();
-    tblEjesCantidad.getColumns().add(tc);
+        tblEjesCantidad.getColumns().clear();
+        tblEjesCantidad.getColumns().add(tc);
 
-    int indice = 1;
-    for (R_Curso curso : pCursoList) {
-      tc = new TableColumn(curso.getName());
-      tc.prefWidthProperty().set(50f);
-      tc.setStyle("-fx-alignment: CENTER;");
-      tc.setSortable(false);
-      tc.setCellValueFactory(
-          new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
+        int indice = 1;
+        for (R_Curso curso : pCursoList) {
+          tc = new TableColumn(curso.getName());
+          tc.prefWidthProperty().set(50f);
+          tc.setStyle("-fx-alignment: CENTER;");
+          tc.setSortable(false);
+          tc.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
             public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
               return new SimpleStringProperty(param.getValue().get(0).toString());
             }
           });
-      // Estoy agregando subcolumnas
-      for (R_RangoEvaluacion rng : rangos) {
-        final int lIdx = indice;
-        TableColumn stc = new TableColumn(rng.getAbreviacion());
-        stc.prefWidthProperty().set(50f);
-        stc.setStyle("-fx-alignment: CENTER;");
-        stc.setSortable(false);
-        stc.setCellValueFactory(
-            new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
+          // Estoy agregando subcolumnas
+          for (R_RangoEvaluacion rng : rangos) {
+            final int lIdx = indice;
+            TableColumn stc = new TableColumn(rng.getAbreviacion());
+            stc.prefWidthProperty().set(50f);
+            stc.setStyle("-fx-alignment: CENTER;");
+            stc.setSortable(false);
+            stc.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
               public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
                 return new SimpleStringProperty(param.getValue().get(lIdx).toString());
               }
             });
-        tc.getColumns().add(stc);
-        indice++;
+            tc.getColumns().add(stc);
+            indice++;
+          }
+
+          tblEjesCantidad.getColumns().add(tc);
+
+        }
       }
-
-      tblEjesCantidad.getColumns().add(tc);
-
-    }
+    });
   }
 
   /**
@@ -282,106 +286,149 @@ public class ComparativoColegioEjeEvaluacionView extends AFormView
       return;
     }
 
-    llenarColumnas(cursoList, rangoEvalList);
-    int nroCursos = cursoList.size();
-    int nroRangos = rangoEvalList.size();
-    Map<Long, List<OTAcumulador>> mapEjes = new HashMap<>();
+    ProgressForm pForm = new ProgressForm();
+    pForm.title("Procesando Cursos");
+    pForm.message("Esto tomará algunos segundos.");
 
-    /*
-     * Aqui verificamos el TIPO ALUMNO SELECCIONADO PARA EL REPORTE
-     */
-    long tipoAlumno = cmbTipoAlumno.getSelectionModel().getSelectedItem().getId();
 
-    // Todas las evaluaciones asociadas (Todos los cursos)
-    for (R_EvaluacionPrueba eval : evaluacionesPrueba) {
-      // Se esta revisando un colegio.
-      log.info("Procesando evaluación:" + eval.getName());
-      Map<String, Object> params = MapBuilder.<String, Object>unordered().put("evaluacionprueba_id", eval.getId()).build();
-      List<R_PruebaRendida> pruebasRendidas = controller.findByParamsSynchro(R_PruebaRendida.class, params);
-      // Estamos procesando un colegio/una prueba
-      
-      Long[] ids = pruebasRendidas.stream().map(p -> p.getAlumno_id()).distinct().toArray(n -> new Long[n]);
-      List<R_Alumno> alumnos = controller.findByAllIdSynchro(R_Alumno.class, ids);
-      for (R_PruebaRendida pruebaRendida : pruebasRendidas) {
-        log.info("Procesando prueba rendida:" + pruebaRendida.getName());
-        // Se procesa un alumno.
-        R_Alumno alumno = alumnos.stream().filter(a -> a.getId().equals(pruebaRendida.getAlumno_id())).findFirst().orElse(null);
-        
-        // Obtengo el index de la columna que tengo que llenar (mas 1
-        // por que la primera es de contenido
-        // index * nroRangos Ya que cada colegio tiene nroRangos columnas
-        // asociadas.
-        if (alumno == null) {
-          // Caso especial que indica que la prueba esta sin alumno.
-          continue;
-        }
 
-        if (tipoAlumno != Constants.PIE_ALL
-            && tipoAlumno != pruebaRendida.getTipoalumno_id()) {
-          // En este caso, no se considera este alumno para el
-          // cálculo.
-          continue;
-        }
+    Task<Void> task = new Task<Void>() {
+      @Override
+      protected Void call() throws Exception {
+        int percent = 0;
+        int total = evaluacionesPrueba.size();
 
-        Integer index = IntStream.range(0, cursoList.size())
-            .filter(i -> alumno.getCurso_id().equals(cursoList.get(i).getId()))
-            .findFirst().orElse(-1);
-        
-        
+        updateMessage("Estableciendo columnas de la tabla.");
+        llenarColumnas(cursoList, rangoEvalList);
 
-        if (index == -1) { // Caso especial que indica que el alumno no
-                           // es del colegio.
-          continue;
-        }
+        int nroCursos = cursoList.size();
+        int nroRangos = rangoEvalList.size();
+        Map<Long, List<OTAcumulador>> mapEjes = new HashMap<>();
 
-        String respuestas = pruebaRendida.getRespuestas();
-        if (respuestas == null || respuestas.isEmpty()) {
-          continue;
-        }
+        /*
+         * Aqui verificamos el TIPO ALUMNO SELECCIONADO PARA EL REPORTE
+         */
+        long tipoAlumno = cmbTipoAlumno.getSelectionModel().getSelectedItem().getId();
 
-        for (int n = 0; n < respEsperadas.size(); n++) {
-          // Sumando a ejes tematicos
-          Long eje = respEsperadas.get(n).getEjetematico_id();
-          if (!mapEjes.containsKey(eje)) {
-            List<OTAcumulador> lista = new ArrayList<OTAcumulador>(nroCursos);
-            for (int idx = 0; idx < nroCursos; idx++) {
-              lista.add(null);
+        // Todas las evaluaciones asociadas (Todos los cursos)
+        for (R_EvaluacionPrueba eval : evaluacionesPrueba) {
+          // Se esta revisando un colegio.
+          log.info("Procesando evaluación:" + eval.getName());
+          updateMessage(eval.getName());
+          updateProgress(++percent, total);
+
+          Map<String, Object> params =
+              MapBuilder.<String, Object>unordered().put("evaluacionprueba_id", eval.getId()).build();
+          List<R_PruebaRendida> pruebasRendidas = controller.findByParamsSynchro(R_PruebaRendida.class, params);
+          // Estamos procesando un colegio/una prueba
+
+          Long[] ids = pruebasRendidas.stream().map(p -> p.getAlumno_id()).distinct().toArray(size -> new Long[size]);
+          List<R_Alumno> alumnos = controller.findByAllIdSynchro(R_Alumno.class, ids);
+          int m = 0;
+          for (R_PruebaRendida pruebaRendida : pruebasRendidas) {
+            log.info("Procesando prueba rendida:" + pruebaRendida.getName());
+            updateMessage("Procesando prueba rendida:" + (++m));
+            // Se procesa un alumno.
+            R_Alumno alumno =
+                alumnos.stream().filter(a -> a.getId().equals(pruebaRendida.getAlumno_id())).findFirst().orElse(null);
+
+            // Obtengo el index de la columna que tengo que llenar (mas 1
+            // por que la primera es de contenido
+            // index * nroRangos Ya que cada colegio tiene nroRangos columnas
+            // asociadas.
+            if (alumno == null) {
+              // Caso especial que indica que la prueba esta sin alumno.
+              continue;
             }
-            mapEjes.put(eje, lista);
-          }
-          List<OTAcumulador> lstEjes = mapEjes.get(eje);
-          OTAcumulador otEjeEval = lstEjes.get(index); // Que columna
-                                                       // (colegio
-                                                       // es)
-          if (otEjeEval == null) {
-            otEjeEval = new OTAcumulador();
-            int[] nroPersonas = new int[nroRangos];
-            Arrays.fill(nroPersonas, 0);
-            otEjeEval.setNroPersonas(nroPersonas);
-            lstEjes.set(index, otEjeEval);
-          }
-        }
-        for (Long eje : mapEjes.keySet()) {
-          List<OTAcumulador> lstEjes = mapEjes.get(eje);
-          OTAcumulador otEjeEval = lstEjes.get(index);
-          float porcentaje = obtenerPorcentaje(respuestas, respEsperadas, eje);
 
-          for (int idx = 0; idx < nroRangos; idx++) {
-            R_RangoEvaluacion rango = rangoEvalList.get(idx);
-            if (rango.isInside(porcentaje)) {
-              otEjeEval.getNroPersonas()[idx] = otEjeEval.getNroPersonas()[idx] + 1;
-              break;
+            if (tipoAlumno != Constants.PIE_ALL && tipoAlumno != pruebaRendida.getTipoalumno_id()) {
+              // En este caso, no se considera este alumno para el
+              // cálculo.
+              continue;
             }
-          }
 
-          lstEjes.set(index, otEjeEval);
+            Integer index = IntStream.range(0, cursoList.size())
+                .filter(i -> alumno.getCurso_id().equals(cursoList.get(i).getId())).findFirst().orElse(-1);
+
+
+
+            if (index == -1) { // Caso especial que indica que el alumno no
+                               // es del colegio.
+              continue;
+            }
+
+            String respuestas = pruebaRendida.getRespuestas();
+            if (respuestas == null || respuestas.isEmpty()) {
+              continue;
+            }
+
+            for (int n = 0; n < respEsperadas.size(); n++) {
+              updateMessage("Procesando respuesta esperada:" + (n + 1));
+              // Sumando a ejes tematicos
+              Long eje = respEsperadas.get(n).getEjetematico_id();
+              if (!mapEjes.containsKey(eje)) {
+                List<OTAcumulador> lista = new ArrayList<OTAcumulador>(nroCursos);
+                for (int idx = 0; idx < nroCursos; idx++) {
+                  lista.add(null);
+                }
+                mapEjes.put(eje, lista);
+              }
+              List<OTAcumulador> lstEjes = mapEjes.get(eje);
+              OTAcumulador otEjeEval = lstEjes.get(index); // Que columna
+                                                           // (colegio
+                                                           // es)
+              if (otEjeEval == null) {
+                otEjeEval = new OTAcumulador();
+                int[] nroPersonas = new int[nroRangos];
+                Arrays.fill(nroPersonas, 0);
+                otEjeEval.setNroPersonas(nroPersonas);
+                lstEjes.set(index, otEjeEval);
+              }
+            }
+            for (Long eje : mapEjes.keySet()) {
+              List<OTAcumulador> lstEjes = mapEjes.get(eje);
+              OTAcumulador otEjeEval = lstEjes.get(index);
+              float porcentaje = obtenerPorcentaje(respuestas, respEsperadas, eje);
+
+              for (int idx = 0; idx < nroRangos; idx++) {
+                R_RangoEvaluacion rango = rangoEvalList.get(idx);
+                if (rango.isInside(porcentaje)) {
+                  otEjeEval.getNroPersonas()[idx] = otEjeEval.getNroPersonas()[idx] + 1;
+                  break;
+                }
+              }
+
+              lstEjes.set(index, otEjeEval);
+            }
+
+          }
         }
 
+        // Ahora se debe llenar las tablas.
+        updateMessage("Generando tabla de ejes temáticos");
+        generarTablaEjes(mapEjes);
+        return null;
       }
-    }
+    };
 
-    // Ahora se debe llenar las tablas.
-    generarTablaEjes(mapEjes);
+    task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+      @Override
+      public void handle(WorkerStateEvent event) {
+        pForm.getDialogStage().hide();
+      }
+    });
+    task.setOnFailed(new EventHandler<WorkerStateEvent>() {
+
+      @Override
+      public void handle(WorkerStateEvent event) {
+        log.severe("Se ha producido el siguiente error:" + event.getEventType().toString());
+        pForm.getDialogStage().hide();
+      }
+    });
+
+    pForm.showWorkerProgress(task);
+    Executors.newSingleThreadExecutor().execute(task);
+
   }
 
   /**
@@ -394,14 +441,14 @@ public class ComparativoColegioEjeEvaluacionView extends AFormView
   private void generarTablaEjes(Map<Long, List<OTAcumulador>> mapEjes) {
     ObservableList<String> row = null;
     ObservableList<ObservableList<String>> items = FXCollections.observableArrayList();
-    
+
     Long[] ids = mapEjes.keySet().toArray(new Long[mapEjes.keySet().size()]);
     List<R_Ejetematico> lstEjes = controller.findByAllIdSynchro(R_Ejetematico.class, ids);
     for (Long eje : mapEjes.keySet()) {
       row = FXCollections.observableArrayList();
       List<OTAcumulador> lst = mapEjes.get(eje);
       R_Ejetematico ejeTematico = lstEjes.stream().filter(e -> e.getId().equals(eje)).findFirst().orElse(null);
-      if(ejeTematico == null)
+      if (ejeTematico == null)
         continue;
       row.add(ejeTematico.getName());
       for (OTAcumulador otEje : lst) {
@@ -422,8 +469,7 @@ public class ComparativoColegioEjeEvaluacionView extends AFormView
 
   }
 
-  private float obtenerPorcentaje(String respuestas,
-      List<R_RespuestasEsperadasPrueba> respEsperadas, Long eje) {
+  private float obtenerPorcentaje(String respuestas, List<R_RespuestasEsperadasPrueba> respEsperadas, Long eje) {
     float nroBuenas = 0;
     float nroPreguntas = 0;
     for (int n = 0; n < respEsperadas.size(); n++) {

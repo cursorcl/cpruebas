@@ -422,7 +422,7 @@ public class EvaluarPruebaView extends AFormView {
                 final Map<String, Object> parameters = new HashMap<String, Object>();
                 parameters.put("tipocurso_id", tipoCurso.getId());
                 parameters.put("colegio_id", colegio.getId());
-                controller.findByParam(R_Curso.class, parameters);
+                controller.findByParam(R_Curso.class, parameters, this);
             }
         });
         cmbCursos.setOnAction(new EHandlerCmbCurso());
@@ -607,7 +607,7 @@ public class EvaluarPruebaView extends AFormView {
             rangos = controller.findByParamsSynchro(R_RangoEvaluacion.class, params);
             
             params = MapBuilder.<String, Object> unordered().put("prueba_id", prueba.getId()).put("curso_id", prueba.getCurso_id()).build();
-            controller.findByParam(R_EvaluacionPrueba.class, params);
+            controller.findByParam(R_EvaluacionPrueba.class, params, this);
             
             params = MapBuilder.<String, Object> unordered().put("prueba_id", prueba.getId()).build();
             lstFormas = controller.findByParamsSynchro(R_Formas.class, params);

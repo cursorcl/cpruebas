@@ -284,7 +284,7 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
     
     prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
     Map<String, Object> params = MapBuilder.<String, Object>unordered().put("prueba_id", prueba.getId()).build();
-    controller.findByParam(R_RespuestasEsperadasPrueba.class, params);
+    controller.findByParam(R_RespuestasEsperadasPrueba.class, params, view);
     controller.findAll(R_Asignatura.class, view);
     controller.findAll(R_TipoAlumno.class, view);
     controller.findAll(R_Colegio.class, view);
@@ -404,8 +404,8 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
             MapBuilder.<String, Object>unordered().put("prueba_id", pPrueba.getId()).build();
         controller.findByParam(R_EvaluacionPrueba.class, params);
 
-        controller.findById(R_Asignatura.class, pPrueba.getAsignatura_id());
-        controller.findByParam(R_RespuestasEsperadasPrueba.class, params);
+        controller.findById(R_Asignatura.class, pPrueba.getAsignatura_id(), comparativoComunal);
+        controller.findByParam(R_RespuestasEsperadasPrueba.class, params, comparativoComunal);
         controller.findAll(R_EvaluacionEjetematico.class, comparativoComunal);
         controller.findAll(R_TipoAlumno.class, comparativoComunal);
         controller.findAll(R_TipoColegio.class, comparativoComunal);
@@ -536,7 +536,7 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
     // Rangos para la evaluación
     Map<String, Object> params = MapBuilder.<String, Object>unordered()
         .put("nivelevaluacion_id", prueba.getNivelevaluacion_id()).build();
-    controller.findByParam(R_RangoEvaluacion.class, params);
+    controller.findByParam(R_RangoEvaluacion.class, params, resumenEjeEvaluacion);
 
 
     controller.findAll(R_Colegio.class, resumenEjeEvaluacion);
@@ -564,7 +564,7 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
     // Rangos para la evaluación
     Map<String, Object> params = MapBuilder.<String, Object>unordered()
         .put("nivelevaluacion_id", prueba.getNivelevaluacion_id()).build();
-    controller.findByParam(R_RangoEvaluacion.class, params);
+    controller.findByParam(R_RangoEvaluacion.class, params, resumenHabilidades);
     controller.findAll(R_Colegio.class, resumenHabilidades);
     controller.findAll(R_Asignatura.class, resumenHabilidades);
     controller.findAll(R_TipoAlumno.class, resumenHabilidades);
@@ -577,6 +577,7 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
     controller.findAll(R_Colegio.class, resHabEjeAlumno);
     controller.findAll(R_Asignatura.class, resHabEjeAlumno);
     controller.findAll(R_TipoAlumno.class, resHabEjeAlumno);
+    
   }
 
   private void handlerHabilidadEvaluacionXAlumnoXNivel() {
@@ -603,7 +604,7 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
         tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba().getNivelevaluacion_id();
     Map<String, Object> parameters =
         MapBuilder.<String, Object>unordered().put("nivelevaluacion_id", idNivelEval).build();
-    controller.findByParam(R_RangoEvaluacion.class, parameters);
+    controller.findByParam(R_RangoEvaluacion.class, parameters, nivel_comparativocolegiohabilidadesview);
 
     controller.findAll(R_Colegio.class, nivel_comparativocolegiohabilidadesview);
     controller.findAll(R_Asignatura.class, nivel_comparativocolegiohabilidadesview);

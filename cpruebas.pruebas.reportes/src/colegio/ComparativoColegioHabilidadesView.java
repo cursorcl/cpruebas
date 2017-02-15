@@ -103,7 +103,7 @@ public class ComparativoColegioHabilidadesView extends AFormView
       Map<String, Object> param = new HashMap<String, Object>();
       param.put("colegio_id", colegio.getId());
       lblTitulo.setText(colegio.getName());
-      controller.findByParam(R_Curso.class, param);
+      controller.findByParam(R_Curso.class, param, this);
       clearContent();
     }
   }

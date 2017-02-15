@@ -108,7 +108,7 @@ public class Nivel_ComparativoColegioEjeHabilidadView extends AFormView implemen
             Map<String, Object> param = new HashMap<String, Object>();
             param.put("colegioId", colegio.getId());
             lblTitulo.setText(colegio.getName());
-            controller.findByParam(R_Curso.class, param);
+            controller.findByParam(R_Curso.class, param, this);
             clearContent();
         }
     }
@@ -121,7 +121,7 @@ public class Nivel_ComparativoColegioEjeHabilidadView extends AFormView implemen
     }
     private void handleReportes() {
         if (!parameters.isEmpty() && parameters.containsKey(COLEGIO_ID) && parameters.containsKey(ASIGNATURA_ID)) {
-            controller.findByParam(R_EvaluacionPrueba.class, parameters);
+            controller.findByParam(R_EvaluacionPrueba.class, parameters, this);
         }
     }
     @FXML

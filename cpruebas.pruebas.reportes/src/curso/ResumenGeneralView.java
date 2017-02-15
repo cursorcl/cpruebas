@@ -254,7 +254,7 @@ public class ResumenGeneralView extends AFormView implements EventHandler<Action
       Map<String, Object> params = MapBuilder.<String, Object>unordered().put("curso_id", curso.getId()).build();
       lstAlumnos = controller.findByParamsSynchro(R_Alumno.class, params);
       params = MapBuilder.<String, Object>unordered().put("evaluacionprueba_id", evaluacionPrueba.getId()).build();
-      controller.findByParam(R_PruebaRendida.class, params);
+      controller.findByParam(R_PruebaRendida.class, params, this);
     }
 
   }
