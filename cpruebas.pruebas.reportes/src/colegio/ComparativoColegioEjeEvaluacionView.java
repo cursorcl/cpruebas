@@ -177,11 +177,20 @@ public class ComparativoColegioEjeEvaluacionView extends AFormView
       cmbTipoAlumno.setItems(tAlumnoList);
     }
     if (entity instanceof R_EvaluacionPrueba) {
+      Long prueba_id = null;
       evaluacionesPrueba = FXCollections.observableArrayList();
       for (Object object : list) {
         R_EvaluacionPrueba evaluacion = (R_EvaluacionPrueba) object;
+        if(prueba_id ==null)
+        {
+          prueba_id = evaluacion.getPrueba_id();
+        }
+        
         evaluacionesPrueba.add(evaluacion);
       }
+      // Respuestas esperadas de la prueba.
+      Map<String, Object> params = MapBuilder.<String, Object>unordered().put("prueba_id", prueba_id).build();
+      controller.findByParam(R_RespuestasEsperadasPrueba.class, params);
       generarReporte();
     }
     if (entity instanceof R_RangoEvaluacion) {
@@ -223,6 +232,7 @@ public class ComparativoColegioEjeEvaluacionView extends AFormView
             return new SimpleStringProperty(param.getValue().get(0).toString());
           }
         });
+    tblEjesCantidad.getColumns().clear();
     tblEjesCantidad.getColumns().add(tc);
 
     int indice = 1;
@@ -290,7 +300,7 @@ public class ComparativoColegioEjeEvaluacionView extends AFormView
       List<R_PruebaRendida> pruebasRendidas = controller.findByParamsSynchro(R_PruebaRendida.class, params);
       // Estamos procesando un colegio/una prueba
       
-      Long[] ids = pruebasRendidas.stream().map(p -> p.getAlumno_id()).toArray(n -> new Long[n]);
+      Long[] ids = pruebasRendidas.stream().map(p -> p.getAlumno_id()).distinct().toArray(n -> new Long[n]);
       List<R_Alumno> alumnos = controller.findByAllIdSynchro(R_Alumno.class, ids);
       for (R_PruebaRendida pruebaRendida : pruebasRendidas) {
         log.info("Procesando prueba rendida:" + pruebaRendida.getName());

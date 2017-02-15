@@ -366,7 +366,6 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
     final ComparativoColegioEjeHabilidadView resumenColegioEjeHabiliadad =
         (ComparativoColegioEjeHabilidadView) show(
             "/colegio/fxml/ComparativoColegioEjeHabilidad.fxml");
-    show(resumenColegioEjeHabiliadad);
     final R_Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
     resumenColegioEjeHabiliadad.setPrueba(prueba);
     Map<String, Object> params =
@@ -382,7 +381,6 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
     final Nivel_ComparativoColegioEjeHabilidadView resumenColegioEjeHabiliadad =
         (Nivel_ComparativoColegioEjeHabilidadView) show(
             "/colegio/nivel/fxml/Nivel_ComparativoColegioEjeHabilidad.fxml");
-    show(resumenColegioEjeHabiliadad);
     final R_Prueba pPrueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
     resumenColegioEjeHabiliadad.setPrueba(pPrueba);
     Map<String, Object> params =
@@ -477,7 +475,6 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
     final ComparativoColegioEjeHabilidadxCursoView resColegioHabEjeCurso =
         (ComparativoColegioEjeHabilidadxCursoView) show(
             "/colegio/fxml/ComparativoColegioEjeHabilidadxCurso.fxml");
-    show(resColegioHabEjeCurso);
     final R_Prueba pPrueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
     resColegioHabEjeCurso.setPrueba(pPrueba);
 
@@ -535,16 +532,11 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
     final ComparativoColegioEjeEvaluacionView resumenEjeEvaluacion =
         (ComparativoColegioEjeEvaluacionView) show(
             "/colegio/fxml/ComparativoColegioEjeEvaluacion.fxml");
-    show(resumenEjeEvaluacion);
     final R_Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
     // Rangos para la evaluación
     Map<String, Object> params = MapBuilder.<String, Object>unordered()
         .put("nivelevaluacion_id", prueba.getNivelevaluacion_id()).build();
     controller.findByParam(R_RangoEvaluacion.class, params);
-    // Respuestas esperadas de la prueba.
-    params = MapBuilder.<String, Object>unordered().put("prueba_id", prueba.getId()).build();
-    controller.findByParam(R_RespuestasEsperadasPrueba.class, params);
-
 
 
     controller.findAll(R_Colegio.class, resumenEjeEvaluacion);
@@ -568,7 +560,6 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
     final ComparativoColegioHabilidadesView resumenHabilidades =
         (ComparativoColegioHabilidadesView) show(
             "/colegio/fxml/ComparativoColegioHabilidades.fxml");
-    show(resumenHabilidades);
     final R_Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
     // Rangos para la evaluación
     Map<String, Object> params = MapBuilder.<String, Object>unordered()
@@ -583,7 +574,6 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
     final ResumenColegioXAlumnoEjeHabilidadView resHabEjeAlumno =
         (ResumenColegioXAlumnoEjeHabilidadView) show(
             "/colegio/fxml/ResumenColegioXAlumnoEjeHabilidad.fxml");
-    show(resHabEjeAlumno);
     controller.findAll(R_Colegio.class, resHabEjeAlumno);
     controller.findAll(R_Asignatura.class, resHabEjeAlumno);
     controller.findAll(R_TipoAlumno.class, resHabEjeAlumno);
@@ -600,7 +590,6 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
     R_Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
     resHabEjeAlumno.setPrueba(prueba);
     resHabEjeAlumno.setNivelEvaluacion(nivelEvaluacion);
-    show(resHabEjeAlumno);
     controller.findAll(R_Colegio.class, resHabEjeAlumno);
     controller.findAll(R_Asignatura.class, resHabEjeAlumno);
     controller.findAll(R_TipoAlumno.class, resHabEjeAlumno);
@@ -610,7 +599,6 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
     final Nivel_ComparativoColegioHabilidadesView nivel_comparativocolegiohabilidadesview =
         (Nivel_ComparativoColegioHabilidadesView) show(
             "/colegio/nivel/fxml/Nivel_ComparativoColegioHabilidades.fxml");
-    show(nivel_comparativocolegiohabilidadesview);
     Long idNivelEval =
         tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba().getNivelevaluacion_id();
     Map<String, Object> parameters =
@@ -639,7 +627,6 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
 
   private void handlerInforme() {
     final InformeView informe = (InformeView) showOver("/informe/informeView.fxml");
-    show(informe);
     controller.findAll(R_Colegio.class, informe);
     controller.findAll(R_Asignatura.class, informe);
     controller.findAll(R_TipoAlumno.class, informe);
@@ -658,7 +645,6 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
 
   private void handlerResumenColegios() {
     resumenColegio = (ResumenColegioView) show("/colegio/fxml/ResumenColegio.fxml");
-    show(resumenColegio);
     final R_Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
     resumenColegio.setPrueba(prueba);
     Map<String, Object> params = MapBuilder.<String, Object>unordered()
@@ -673,7 +659,6 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
   private void handlerResumenColegiosXNivel() {
     final Nivel_ResumenColegioView resumenColegio =
         (Nivel_ResumenColegioView) show("/colegio/nivel/fxml/Nivel_ResumenColegio.fxml");
-    show(resumenColegio);
     final R_Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
     resumenColegio.setPrueba(prueba);
 
