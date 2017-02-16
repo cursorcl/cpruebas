@@ -108,5 +108,6 @@ public interface IView {
      *            El titulo a establecer.
      */
     void setTitle(String title);
+    
 
 }

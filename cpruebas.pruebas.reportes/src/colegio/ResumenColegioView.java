@@ -52,7 +52,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Callback;
 
-public class ResumenColegioView extends AFormView implements EventHandler<ActionEvent> {
+public class ResumenColegioView extends AFormView implements EventHandler<ActionEvent>{
 
   private static final String FX_ALIGNMENT_CENTER = "-fx-alignment: CENTER;";
 
@@ -299,7 +299,6 @@ public class ResumenColegioView extends AFormView implements EventHandler<Action
     string.append(colegio);
     lblColegio.setText(string.toString());
 
-
     ProgressForm pForm = new ProgressForm();
     pForm.title("Procesando");
     pForm.message("Esto tomará algunos segundos.");
@@ -307,14 +306,16 @@ public class ResumenColegioView extends AFormView implements EventHandler<Action
     Task<Void> task = new Task<Void>() {
       @Override
       protected Void call() throws Exception {
+        int n = 0;
+        int total = list.size();
+        
         int totalColAlumnos = 0;
         int totalColEvaluados = 0;
         int totalColAprobados = 0;
         int totalColReprobados = 0;
         long tipoAlumno = cmbTipoAlumno.getSelectionModel().getSelectedItem().getId();
 
-        int n = 0;
-        int total = list.size();
+
 
         // Todas las evaluaciones asociadas (Todos los cursos)
         for (R_EvaluacionPrueba evaluacion : list) {
@@ -769,5 +770,4 @@ public class ResumenColegioView extends AFormView implements EventHandler<Action
     }
 
   }
-
 }

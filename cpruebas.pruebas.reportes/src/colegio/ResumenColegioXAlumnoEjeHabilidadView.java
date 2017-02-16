@@ -65,7 +65,7 @@ public class ResumenColegioXAlumnoEjeHabilidadView extends AFormView implements 
 	private ArrayList<CursoEjeHabilidad> lstCursoEjeHabilidad;
 
 	public ResumenColegioXAlumnoEjeHabilidadView() {
-		setTitle("Resumen R_Colegio/Ejes Temáticos/Habilidades x R_Alumno");
+		setTitle("Resumen Colegio/Ejes Temáticos/Habilidades x Alumno");
 	}
 
 	@SuppressWarnings("unchecked")

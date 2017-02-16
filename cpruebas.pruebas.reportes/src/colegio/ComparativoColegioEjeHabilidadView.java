@@ -6,10 +6,12 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
 import cl.eos.common.Constants;
 import cl.eos.imp.view.AFormView;
+import cl.eos.imp.view.ProgressForm;
 import cl.eos.ot.OTPreguntasEjes;
 import cl.eos.ot.OTPreguntasEvaluacion;
 import cl.eos.ot.OTPreguntasHabilidad;
@@ -30,10 +32,13 @@ import cl.eos.util.ExcelSheetWriterObj;
 import cl.eos.util.MapBuilder;
 import cl.eos.util.Pair;
 import cl.eos.util.Utils;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -49,8 +54,7 @@ import javafx.scene.control.TableView;
 import javafx.util.Callback;
 
 @SuppressWarnings("rawtypes")
-public class ComparativoColegioEjeHabilidadView extends AFormView
-    implements EventHandler<ActionEvent> {
+public class ComparativoColegioEjeHabilidadView extends AFormView implements EventHandler<ActionEvent> {
 
   private Logger log = Logger.getLogger(ComparativoColegioEjeHabilidadView.class.getName());
   private static final String ASIGNATURA_ID = "asignatura_id";
@@ -84,10 +88,10 @@ public class ComparativoColegioEjeHabilidadView extends AFormView
   private ObservableList<R_EvaluacionPrueba> evaluacionesPrueba;
   private ArrayList<OTPreguntasEvaluacion> lst;
   private R_Prueba prueba;
-  private ObservableList<R_RespuestasEsperadasPrueba> respEsperadas;
+  private List<R_RespuestasEsperadasPrueba> respEsperadas;
 
   public ComparativoColegioEjeHabilidadView() {
-    setTitle("Comparativo R_Colegio Ejes Temáticos y Habilidades");
+    setTitle("Comparativo Colegio Ejes Temáticos y Habilidades");
   }
 
   @SuppressWarnings("unchecked")
@@ -121,7 +125,7 @@ public class ComparativoColegioEjeHabilidadView extends AFormView
     if (colegio != null) {
       parameters.put(COLEGIO_ID, colegio.getId());
       Map<String, Object> param = new HashMap<String, Object>();
-      param.put("colegioId", colegio.getId());
+      param.put("colegio_id", colegio.getId());
       lblTitulo.setText(colegio.getName());
       controller.findByParam(R_Curso.class, param, this);
       clearContent();
@@ -137,8 +141,7 @@ public class ComparativoColegioEjeHabilidadView extends AFormView
   }
 
   private void handleReportes() {
-    if (!parameters.isEmpty() && parameters.containsKey(COLEGIO_ID)
-        && parameters.containsKey(ASIGNATURA_ID)) {
+    if (!parameters.isEmpty() && parameters.containsKey(COLEGIO_ID) && parameters.containsKey(ASIGNATURA_ID)) {
 
       controller.findByParam(R_EvaluacionPrueba.class, parameters, this);
     }
@@ -246,58 +249,60 @@ public class ComparativoColegioEjeHabilidadView extends AFormView
    */
   @SuppressWarnings({"unchecked"})
   private void llenarColumnas(ObservableList<R_Curso> pCursoList) {
-    TableColumn tc = new TableColumn("EJE / HABILIDAD");
-    tc.setSortable(false);
-    tc.setStyle("-fx-alignment: CENTER-LEFT;");
-    tc.prefWidthProperty().set(250f);
-    tc.setCellValueFactory(
-        new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
+    Platform.runLater(new Runnable() {
+
+      @Override
+      public void run() {
+        TableColumn tc = new TableColumn("EJE / HABILIDAD");
+        tc.setSortable(false);
+        tc.setStyle("-fx-alignment: CENTER-LEFT;");
+        tc.prefWidthProperty().set(250f);
+        tc.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
           public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
             return new SimpleStringProperty(param.getValue().get(0).toString());
           }
         });
-    tblEjeshabilidades.getColumns().add(tc);
+        tblEjeshabilidades.getColumns().add(tc);
 
-    tc = new TableColumn("EVALUACION");
-    tc.setStyle("-fx-alignment: CENTER-LEFT;");
-    tc.prefWidthProperty().set(250f);
-    tc.setSortable(false);
-    tc.setCellValueFactory(
-        new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
+        tc = new TableColumn("EVALUACION");
+        tc.setStyle("-fx-alignment: CENTER-LEFT;");
+        tc.prefWidthProperty().set(250f);
+        tc.setSortable(false);
+        tc.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
           public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
             return new SimpleStringProperty(param.getValue().get(0).toString());
           }
         });
-    tblEvaluacion.getColumns().add(tc);
+        tblEvaluacion.getColumns().add(tc);
 
-    int indice = 1;
-    for (R_Curso curso : pCursoList) {
-      final int idx = indice;
-      tc = new TableColumn(curso.getName());
-      tc.prefWidthProperty().set(50f);
-      tc.setStyle("-fx-alignment: CENTER;");
-      tc.setSortable(false);
-      tc.setCellValueFactory(
-          new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
+        int indice = 1;
+        for (R_Curso curso : pCursoList) {
+          final int idx = indice;
+          tc = new TableColumn(curso.getName());
+          tc.prefWidthProperty().set(50f);
+          tc.setStyle("-fx-alignment: CENTER;");
+          tc.setSortable(false);
+          tc.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
             public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
               return new SimpleStringProperty(param.getValue().get(idx).toString());
             }
           });
-      tblEjeshabilidades.getColumns().add(tc);
+          tblEjeshabilidades.getColumns().add(tc);
 
-      tc = new TableColumn(curso.getName());
-      tc.prefWidthProperty().set(50f);
-      tc.setStyle("-fx-alignment: CENTER;");
-      tc.setSortable(false);
-      tc.setCellValueFactory(
-          new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
+          tc = new TableColumn(curso.getName());
+          tc.prefWidthProperty().set(50f);
+          tc.setStyle("-fx-alignment: CENTER;");
+          tc.setSortable(false);
+          tc.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
             public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
               return new SimpleStringProperty(param.getValue().get(idx).toString());
             }
           });
-      tblEvaluacion.getColumns().add(tc);
-      indice++;
-    }
+          tblEvaluacion.getColumns().add(tc);
+          indice++;
+        }
+      }
+    });
   }
 
   /**
@@ -309,180 +314,229 @@ public class ComparativoColegioEjeHabilidadView extends AFormView
    */
   private void generarReporte() {
 
-    if (evaluacionesPrueba == null || evalEjeTematicoList == null) {
+    if (evaluacionesPrueba == null || evalEjeTematicoList == null || cursoList == null) {
       return;
     }
-    
-    List<R_Ejetematico> lstNEjes = null;
-    List<R_Habilidad> lstNHabs = null;
 
-    long tipoAlumno = cmbTipoAlumno.getSelectionModel().getSelectedItem().getId();
+    ProgressForm pForm = new ProgressForm();
+    pForm.title("Procesando...");
+    pForm.message("Esto tomará algunos segundos.");
 
-    llenarColumnas(cursoList);
-    int nroCursos = cursoList.size();
-    Map<Long, List<OTPreguntasEjes>> mapEjes = new HashMap<>();
-    Map<Long, List<OTPreguntasHabilidad>> mapHabilidades = new HashMap<>();
-    Map<R_EvaluacionEjetematico, List<OTPreguntasEvaluacion>> mapEvaluaciones = new HashMap<>();
+    Task<Void> task = new Task<Void>() {
 
-    for (R_EvaluacionEjetematico ejetem : evalEjeTematicoList) {
-      lst = new ArrayList<>(nroCursos);
-      for (int idx = 0; idx < nroCursos; idx++) {
-        OTPreguntasEvaluacion otEval = new OTPreguntasEvaluacion();
-        otEval.setEvaluacion(ejetem);
-        lst.add(idx, otEval);
-      }
-      mapEvaluaciones.put(ejetem, lst);
-    }
+      @Override
+      protected Void call() throws Exception {
 
-    int[] totalAlumnos = new int[nroCursos];
-    Arrays.fill(totalAlumnos, 0);
-    int[] alumnosEvaluados = new int[nroCursos];
-    Arrays.fill(alumnosEvaluados, 0);
 
-    // Todas las evaluaciones asociadas (Todos los cursos)
-    for (R_EvaluacionPrueba eval : evaluacionesPrueba) {
+        List<R_Ejetematico> lstNEjes = null;
+        List<R_Habilidad> lstNHabs = null;
 
-      // Se esta revisando un colegio.
+        long tipoAlumno = cmbTipoAlumno.getSelectionModel().getSelectedItem().getId();
+        updateMessage("Generando columnas de la tabla");
+        llenarColumnas(cursoList);
+        int nroCursos = cursoList.size();
+        Map<Long, List<OTPreguntasEjes>> mapEjes = new HashMap<>();
+        Map<Long, List<OTPreguntasHabilidad>> mapHabilidades = new HashMap<>();
+        Map<R_EvaluacionEjetematico, List<OTPreguntasEvaluacion>> mapEvaluaciones = new HashMap<>();
 
-      Map<String, Object> params =
-          MapBuilder.<String, Object>unordered().put("evaluacionprueba_id", eval.getId()).build();
-      List<R_PruebaRendida> pruebasRendidas =
-          controller.findByParamsSynchro(R_PruebaRendida.class, params);
-      // Estamos procesando un colegio/una prueba
-
-      // Obtengo el index de la columna que tengo que llenar (mas 1
-      // por que la primera es de
-      // contenido
-      R_Curso curso = cursoList.stream().filter(c -> c.getId().equals(eval.getCurso_id()))
-          .findFirst().orElse(null);
-      int index = cursoList.indexOf(curso);
-
-      if (index == -1) {
-        continue;
-      }
-      totalAlumnos[index] = 0;
-
-      // Obtengo los items a considerar en el caso que hayan items
-      // PIE.
-
-      params = MapBuilder.<String, Object>unordered().put("curso_id", eval.getCurso_id()).build();
-      List<R_Alumno> lstAlumnos = controller.findByParamsSynchro(R_Alumno.class, params);
-      for (R_Alumno alumno : lstAlumnos) {
-        if (tipoAlumno == Constants.PIE_ALL || alumno.getTipoalumno_id().equals(tipoAlumno)) {
-          // le quito 1 al total de items, ya que este alumno no es
-          // del grupo que sequiere representar en el reporte.
-          totalAlumnos[index] = totalAlumnos[index] + 1;
-        }
-      }
-
-      for (R_PruebaRendida pruebaRendida : pruebasRendidas) {
-        // Se procesa un alumno.
-        if (tipoAlumno != Constants.PIE_ALL
-            && !pruebaRendida.getTipoalumno_id().equals(tipoAlumno)) {
-          continue;
-        }
-
-        alumnosEvaluados[index] = alumnosEvaluados[index] + 1;
-
-        String respuestas = pruebaRendida.getRespuestas();
-        if (respuestas == null || respuestas.isEmpty()) {
-          continue;
-        }
-
-        // Obtener ejes y habilidades de esta prueba
-        for (int n = 0; n < respEsperadas.size(); n++) {
-          Long eje = respEsperadas.get(n).getEjetematico_id();
-          if (!mapEjes.containsKey(eje)) {
-            List<OTPreguntasEjes> lista = new ArrayList<>();
-            for (int idx = 0; idx < nroCursos; idx++) {
-              lista.add(null);
-            }
-            mapEjes.put(eje, lista);
-          }
-          Long hab = respEsperadas.get(n).getHabilidad_id();
-          if (!mapHabilidades.containsKey(hab)) {
-
-            List<OTPreguntasHabilidad> lista = new ArrayList<>();
-            for (int idx = 0; idx < nroCursos; idx++) {
-              lista.add(null);
-            }
-            mapHabilidades.put(hab, lista);
-          }
-        }
-        Long[] ids = mapEjes.keySet().toArray(new Long[mapEjes.keySet().size()]);
-        lstNEjes = controller.findByAllIdSynchro(R_Ejetematico.class, ids);
-        ids = mapEjes.keySet().toArray(new Long[mapHabilidades.keySet().size()]);
-        lstNHabs = controller.findByAllIdSynchro(R_Habilidad.class, ids);
-
-        for (Long eje : mapEjes.keySet()) {
-
-          R_Ejetematico nEje =
-              lstNEjes.stream().filter(e -> e.getId().equals(eje)).findFirst().orElse(null);
-          if (nEje == null)
-            continue;
-
-          List<OTPreguntasEjes> lstEjes = mapEjes.get(eje);
-          OTPreguntasEjes otEje = lstEjes.get(index); // Se obtiene el
-                                                      // asociado a la
-                                                      // columna.
-          if (otEje == null) {
-            otEje = new OTPreguntasEjes();
-            otEje.setEjeTematico(nEje);
-            lstEjes.set(index, otEje);
-          }
-          Pair<Integer, Integer> buenasTotal =
-              obtenerBuenasTotalesEjes(respuestas, respEsperadas, eje);
-
-          otEje.setBuenas(otEje.getBuenas() + buenasTotal.getFirst());
-          otEje.setTotal(otEje.getTotal() + buenasTotal.getSecond());
-          lstEjes.set(index, otEje);
-        }
-
-        for (Long hab : mapHabilidades.keySet()) {
-          R_Habilidad nHab = lstNHabs.stream().filter(h -> h.getId().equals(hab)).findFirst().orElse(null);
-          if(hab == null)
-            continue;
-          
-          List<OTPreguntasHabilidad> lstHabs = mapHabilidades.get(hab);
-
-          // Se obtiene el asociado a la columna.
-          OTPreguntasHabilidad otHabilidad = lstHabs.get(index);
-          if (otHabilidad == null) {
-            otHabilidad = new OTPreguntasHabilidad();
-            otHabilidad.setHabilidad(nHab);
-            lstHabs.set(index, otHabilidad);
-          }
-          Pair<Integer, Integer> buenasTotal =
-              obtenerBuenasTotalesHab(respuestas, respEsperadas, hab);
-          otHabilidad.setBuenas(otHabilidad.getBuenas() + buenasTotal.getFirst());
-          otHabilidad.setTotal(otHabilidad.getTotal() + buenasTotal.getSecond());
-          log.fine(
-              String.format("HAB: %s %d/%d  ACUM: %d/%d", nHab.getName(), buenasTotal.getFirst(),
-                  buenasTotal.getSecond(), otHabilidad.getBuenas(), otHabilidad.getTotal()));
-          lstHabs.set(index, otHabilidad);
-        }
-
+        updateMessage("Generando mapa de evaluaciones");
         for (R_EvaluacionEjetematico ejetem : evalEjeTematicoList) {
-          if (ejetem.isInside(pruebaRendida.getBuenas())) {
-            List<OTPreguntasEvaluacion> lstOt = mapEvaluaciones.get(ejetem);
-            OTPreguntasEvaluacion ot = lstOt.get(index);
-            ot.setAlumnos(ot.getAlumnos() + 1);
-            break;
+          lst = new ArrayList<>(nroCursos);
+          for (int idx = 0; idx < nroCursos; idx++) {
+            OTPreguntasEvaluacion otEval = new OTPreguntasEvaluacion();
+            otEval.setEvaluacion(ejetem);
+            lst.add(idx, otEval);
+          }
+          mapEvaluaciones.put(ejetem, lst);
+        }
+
+        int[] totalAlumnos = new int[nroCursos];
+        Arrays.fill(totalAlumnos, 0);
+        int[] alumnosEvaluados = new int[nroCursos];
+        Arrays.fill(alumnosEvaluados, 0);
+
+        updateTitle("Procesando evaluaciones");
+        int percent = 0;
+        int total = evaluacionesPrueba.size();
+
+
+
+        // Todas las evaluaciones asociadas (Todos los cursos)
+        for (R_EvaluacionPrueba eval : evaluacionesPrueba) {
+          R_Curso curso = cursoList.stream().filter(c -> c.getId().equals(eval.getCurso_id())).findFirst().orElse(null);
+
+          updateMessage("Procesando " + curso.getName());
+          updateProgress(++percent, total);
+
+          
+          
+          Map<String, Object> params =
+              MapBuilder.<String, Object>unordered().put("prueba_id", eval.getPrueba_id()).build();
+          respEsperadas = controller.findByParamsSynchro(R_RespuestasEsperadasPrueba.class, params);
+          // Obtener ejes y habilidades de esta prueba
+          for (int n = 0; n < respEsperadas.size(); n++) {
+            Long eje = respEsperadas.get(n).getEjetematico_id();
+            if (!mapEjes.containsKey(eje)) {
+              List<OTPreguntasEjes> lista = new ArrayList<>();
+              for (int idx = 0; idx < nroCursos; idx++) {
+                lista.add(null);
+              }
+              mapEjes.put(eje, lista);
+            }
+            Long hab = respEsperadas.get(n).getHabilidad_id();
+            if (!mapHabilidades.containsKey(hab)) {
+
+              List<OTPreguntasHabilidad> lista = new ArrayList<>();
+              for (int idx = 0; idx < nroCursos; idx++) {
+                lista.add(null);
+              }
+              mapHabilidades.put(hab, lista);
+            }
+          }
+          Long[] ids = mapEjes.keySet().toArray(new Long[mapEjes.keySet().size()]);
+          lstNEjes = controller.findByAllIdSynchro(R_Ejetematico.class, ids);
+          ids = mapHabilidades.keySet().toArray(new Long[mapHabilidades.keySet().size()]);
+          lstNHabs = controller.findByAllIdSynchro(R_Habilidad.class, ids);
+
+
+
+          // Se esta revisando un colegio.
+
+          params = MapBuilder.<String, Object>unordered().put("evaluacionprueba_id", eval.getId()).build();
+          List<R_PruebaRendida> pruebasRendidas = controller.findByParamsSynchro(R_PruebaRendida.class, params);
+          // Estamos procesando un colegio/una prueba
+
+          // Obtengo el index de la columna que tengo que llenar (mas 1
+          // por que la primera es de
+          // contenido
+
+          int index = cursoList.indexOf(curso);
+
+          if (index == -1) {
+            continue;
+          }
+          totalAlumnos[index] = 0;
+
+          // Obtengo los items a considerar en el caso que hayan items
+          // PIE.
+
+          params = MapBuilder.<String, Object>unordered().put("curso_id", eval.getCurso_id()).build();
+          List<R_Alumno> lstAlumnos = controller.findByParamsSynchro(R_Alumno.class, params);
+          for (R_Alumno alumno : lstAlumnos) {
+            if (tipoAlumno == Constants.PIE_ALL || alumno.getTipoalumno_id().equals(tipoAlumno)) {
+              // le quito 1 al total de items, ya que este alumno no es
+              // del grupo que sequiere representar en el reporte.
+              totalAlumnos[index] = totalAlumnos[index] + 1;
+            }
+          }
+
+          for (R_PruebaRendida pruebaRendida : pruebasRendidas) {
+            // Se procesa un alumno.
+            if (tipoAlumno != Constants.PIE_ALL && !pruebaRendida.getTipoalumno_id().equals(tipoAlumno)) {
+              continue;
+            }
+
+            alumnosEvaluados[index] = alumnosEvaluados[index] + 1;
+
+            String respuestas = pruebaRendida.getRespuestas();
+            if (respuestas == null || respuestas.isEmpty()) {
+              continue;
+            }
+
+
+
+            for (Long eje : mapEjes.keySet()) {
+
+              R_Ejetematico nEje = lstNEjes.stream().filter(e -> e.getId().equals(eje)).findFirst().orElse(null);
+              if (nEje == null)
+                continue;
+
+              List<OTPreguntasEjes> lstEjes = mapEjes.get(eje);
+              OTPreguntasEjes otEje = lstEjes.get(index); // Se obtiene el
+                                                          // asociado a la
+                                                          // columna.
+              if (otEje == null) {
+                otEje = new OTPreguntasEjes();
+                otEje.setEjeTematico(nEje);
+                lstEjes.set(index, otEje);
+              }
+              Pair<Integer, Integer> buenasTotal = obtenerBuenasTotalesEjes(respuestas, respEsperadas, eje);
+
+              otEje.setBuenas(otEje.getBuenas() + buenasTotal.getFirst());
+              otEje.setTotal(otEje.getTotal() + buenasTotal.getSecond());
+              lstEjes.set(index, otEje);
+            }
+
+            for (Long hab : mapHabilidades.keySet()) {
+              R_Habilidad nHab = lstNHabs.stream().filter(h -> h.getId().equals(hab)).findFirst().orElse(null);
+              if (hab == null)
+                continue;
+
+              List<OTPreguntasHabilidad> lstHabs = mapHabilidades.get(hab);
+
+              // Se obtiene el asociado a la columna.
+              OTPreguntasHabilidad otHabilidad = lstHabs.get(index);
+              if (otHabilidad == null) {
+                otHabilidad = new OTPreguntasHabilidad();
+                otHabilidad.setHabilidad(nHab);
+                lstHabs.set(index, otHabilidad);
+              }
+              Pair<Integer, Integer> buenasTotal = obtenerBuenasTotalesHab(respuestas, respEsperadas, hab);
+              otHabilidad.setBuenas(otHabilidad.getBuenas() + buenasTotal.getFirst());
+              otHabilidad.setTotal(otHabilidad.getTotal() + buenasTotal.getSecond());
+              log.fine(String.format("HAB: %s %d/%d  ACUM: %d/%d", nHab.getName(), buenasTotal.getFirst(),
+                  buenasTotal.getSecond(), otHabilidad.getBuenas(), otHabilidad.getTotal()));
+              lstHabs.set(index, otHabilidad);
+            }
+
+            for (R_EvaluacionEjetematico ejetem : evalEjeTematicoList) {
+              if (ejetem.isInside(pruebaRendida.getBuenas())) {
+                List<OTPreguntasEvaluacion> lstOt = mapEvaluaciones.get(ejetem);
+                OTPreguntasEvaluacion ot = lstOt.get(index);
+                ot.setAlumnos(ot.getAlumnos() + 1);
+                break;
+              }
+            }
           }
         }
-      }
-    }
 
-    // Ahora se debe llenar las tablas.
-    generarTablaEjesHabilidades(mapEjes, mapHabilidades, lstNEjes, lstNHabs);
-    generarTablaEvaluaciones(mapEvaluaciones, totalAlumnos, alumnosEvaluados);
+        updateTitle("Generando tablas");
+        updateMessage("Generando tablas de ejes y habilidades");
+        // Ahora se debe llenar las tablas.
+        generarTablaEjesHabilidades(mapEjes, mapHabilidades, lstNEjes, lstNHabs);
+        updateMessage("Generando tablas evaluaciones");
+        generarTablaEvaluaciones(mapEvaluaciones, totalAlumnos, alumnosEvaluados);
+
+        return null;
+      }
+
+    };
+
+    task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+      @Override
+      public void handle(WorkerStateEvent event) {
+        pForm.getDialogStage().hide();
+      }
+    });
+    task.setOnFailed(new EventHandler<WorkerStateEvent>() {
+
+      @Override
+      public void handle(WorkerStateEvent event) {
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.setTitle("Se ha producido un error");
+        alert.setHeaderText("Ha fallado la generación del reporte");
+        alert.setContentText(event.getSource().getMessage().toUpperCase());
+      }
+    });
+
+    pForm.showWorkerProgress(task);
+    Executors.newSingleThreadExecutor().execute(task);
 
   }
 
   @SuppressWarnings("unchecked")
-  private void generarTablaEvaluaciones(
-      Map<R_EvaluacionEjetematico, List<OTPreguntasEvaluacion>> mapEvaluaciones, int[] totalAlumnos,
-      int[] alumnosEvaluados) {
+  private void generarTablaEvaluaciones(Map<R_EvaluacionEjetematico, List<OTPreguntasEvaluacion>> mapEvaluaciones,
+      int[] totalAlumnos, int[] alumnosEvaluados) {
     ObservableList<String> row = null;
     ObservableList<ObservableList<String>> items = FXCollections.observableArrayList();
     Collections.sort(evalEjeTematicoList, Comparadores.comparaEvaluacionEjeTematico());
@@ -537,11 +591,11 @@ public class ComparativoColegioEjeHabilidadView extends AFormView
     ObservableList<ObservableList<String>> items = FXCollections.observableArrayList();
     int nroCols = 0;
     for (Long eje : mapEjes.keySet()) {
-      
+
       R_Ejetematico nEje = lstNEjes.stream().filter(e -> e.getId().equals(eje)).findFirst().orElse(null);
-      if(nEje == null)
+      if (nEje == null)
         continue;
-      
+
       row = FXCollections.observableArrayList();
       List<OTPreguntasEjes> lst = mapEjes.get(eje);
       nroCols = lst.size();
@@ -563,11 +617,11 @@ public class ComparativoColegioEjeHabilidadView extends AFormView
     items.add(row);
 
     for (Long hab : mapHabilidades.keySet()) {
-      
+
       R_Habilidad nHab = lstNHabs.stream().filter(e -> e.getId().equals(hab)).findFirst().orElse(null);
-      if(nHab == null)
+      if (nHab == null)
         continue;
-      
+
       row = FXCollections.observableArrayList();
       List<OTPreguntasHabilidad> lst = mapHabilidades.get(hab);
       row.add(nHab.getName());

@@ -26,7 +26,6 @@ import cl.eos.restful.tables.R_RespuestasEsperadasPrueba;
 import cl.eos.restful.tables.R_TipoAlumno;
 import cl.eos.util.ExcelSheetWriterObj;
 import cl.eos.util.MapBuilder;
-import cl.eos.util.Pair;
 import comparativo.colegio.eje.habilidad.x.curso.OTCursoRangos;
 import comparativo.colegio.eje.habilidad.x.curso.OTUnCursoUnEjeHabilidad;
 import javafx.application.Platform;
@@ -85,7 +84,7 @@ public class ComparativoColegioEjeHabilidadxCursoView extends AFormView
   private List<R_Ejetematico> listaEjesTematicos;
 
   public ComparativoColegioEjeHabilidadxCursoView() {
-    setTitle("Comparativo R_Colegio Ejes Temáticos y Habilidades");
+    setTitle("Comparativo Colegio Ejes Temáticos y Habilidades");
   }
 
   @SuppressWarnings("unchecked")
@@ -447,7 +446,7 @@ public class ComparativoColegioEjeHabilidadxCursoView extends AFormView
 
     List<Long> idsHabsTematicos = new ArrayList<>();
     for (R_EvaluacionPrueba evaluacion : listaEvaluacionesPrueba) {
-      List<R_RespuestasEsperadasPrueba> respEsperadas = mapRespEsperadas.get(evaluacion.getId());
+      List<R_RespuestasEsperadasPrueba> respEsperadas = mapRespEsperadas.get(evaluacion.getPrueba_id());
       // Obtengo lista de habilidades de la PRUEBA base de la EVALUACION.
       for (R_RespuestasEsperadasPrueba rEsperada : respEsperadas) {
 
@@ -465,7 +464,7 @@ public class ComparativoColegioEjeHabilidadxCursoView extends AFormView
     // COLEGIO de una ASIGNATURA.
     List<Long> idsEjesTematicos = new ArrayList<>();
     for (R_EvaluacionPrueba evaluacion : listaEvaluacionesPrueba) {
-      List<R_RespuestasEsperadasPrueba> respEsperadas = mapRespEsperadas.get(evaluacion.getId());
+      List<R_RespuestasEsperadasPrueba> respEsperadas = mapRespEsperadas.get(evaluacion.getPrueba_id());
       // Obtengo lista de ejes de la PRUEBA base de la EVALUACION.
       for (R_RespuestasEsperadasPrueba rEsperada : respEsperadas) {
         if (!idsEjesTematicos.contains(rEsperada.getEjetematico_id())) {
@@ -495,11 +494,49 @@ public class ComparativoColegioEjeHabilidadxCursoView extends AFormView
       @Override
       protected Boolean call() throws Exception {
         updateMessage("Generando reporte");
-        Pair<Map<IEntity, List<OTCursoRangos>>, Pair<List<R_Ejetematico>, List<R_Habilidad>>> resultado =
-            generarReporte();
-        Map<IEntity, List<OTCursoRangos>> reporte = resultado.getFirst();
-        List<R_Ejetematico> listaEjesTematicos = resultado.getSecond().getFirst();
-        List<R_Habilidad> listaHablidades = resultado.getSecond().getSecond();
+        
+        int nroCursos = listaEvaluacionesPrueba.size();
+
+        updateMessage("Obteniendo las respuestas esperadas");
+        mapRespEsperadas = makeRespEsperadas();
+        updateMessage("Obteniendo lista de ejes temáticos");
+        listaEjesTematicos = makeListEjesTematicos();
+        updateMessage("Obteniendo lista de habilidades");
+        listaHablidades = makeListHabilidades();
+        Map<IEntity, List<OTCursoRangos>> reporte = makeMapReporte(nroCursos);
+
+        // Va a tener los resulados finales
+        int nroCurso = 0;
+        updateTitle("Procesando evaluaciones");
+        for (R_EvaluacionPrueba evaluacion : listaEvaluacionesPrueba) {
+          updateMessage("Procesando las evaluaciones");
+          updateProgress(nroCursos, listaEvaluacionesPrueba.size());
+          
+          List<R_RespuestasEsperadasPrueba> respEsperadas =
+              mapRespEsperadas.get(evaluacion.getPrueba_id());
+          List<OTUnCursoUnEjeHabilidad> listaOTUnCurso = evaluarUnCurso(respEsperadas, evaluacion);
+
+          // Aqui cuento la cantida de items en los rangos
+          for (OTUnCursoUnEjeHabilidad ot : listaOTUnCurso) {
+            // Calcula cantidad de items en los rangos para un eje y un
+            // colegio
+            int[] alumXRango = ot.calculateAlumnosXRango(rangosEvaluacionPorcentaje);
+            R_Curso curso = listaCursos.stream().filter(c -> c.getId().equals(evaluacion.getCurso_id()))
+                .findFirst().orElse(null);
+
+            OTCursoRangos cursoRango = new OTCursoRangos(curso, alumXRango);
+            List<OTCursoRangos> listCursos = reporte.get(ot.getEjeHabilidad());
+            listCursos.set(nroCurso, cursoRango); // Establesco el la
+                                                  // cantidad de items
+                                                  // en un porcentaje para
+                                                  // el colegio
+          }
+
+          nroCurso++;
+          // Aqui va la siguiente evaluacion (CURSO)
+
+        }
+        
         updateMessage("Construyendo tabla");
         makeTable();
         updateMessage("Llenando valores en tabla");
@@ -526,56 +563,56 @@ public class ComparativoColegioEjeHabilidadxCursoView extends AFormView
     Executors.newSingleThreadExecutor().execute(task);
   }
 
-  /**
-   * Para ontener el resultado final se siguen los sieguientes pasos: <lu>
-   * <li>Obtener resumen de preguntas buenas de cada Eje/Hab x R_Alumno. </lu>
-   */
-  private Pair<Map<IEntity, List<OTCursoRangos>>, Pair<List<R_Ejetematico>, List<R_Habilidad>>> generarReporte() {
-
-
-    // Una iteracion por cada colegio asociado al colegio con una evaluacion
-    int nroCursos = listaEvaluacionesPrueba.size();
-
-    mapRespEsperadas = makeRespEsperadas();
-    listaEjesTematicos = makeListEjesTematicos();
-    listaHablidades = makeListHabilidades();
-    Map<IEntity, List<OTCursoRangos>> reporte = makeMapReporte(nroCursos);
-
-    // Va a tener los resulados finales
-    int nroCurso = 0;
-    for (R_EvaluacionPrueba evaluacion : listaEvaluacionesPrueba) {
-
-      List<R_RespuestasEsperadasPrueba> respEsperadas =
-          mapRespEsperadas.get(evaluacion.getPrueba_id());
-      List<OTUnCursoUnEjeHabilidad> listaOTUnCurso = evaluarUnCurso(respEsperadas, evaluacion);
-
-      // Aqui cuento la cantida de items en los rangos
-      for (OTUnCursoUnEjeHabilidad ot : listaOTUnCurso) {
-        // Calcula cantidad de items en los rangos para un eje y un
-        // colegio
-        int[] alumXRango = ot.calculateAlumnosXRango(rangosEvaluacionPorcentaje);
-        R_Curso curso = listaCursos.stream().filter(c -> c.getId().equals(evaluacion.getCurso_id()))
-            .findFirst().orElse(null);
-
-        OTCursoRangos cursoRango = new OTCursoRangos(curso, alumXRango);
-        List<OTCursoRangos> listCursos = reporte.get(ot.getEjeHabilidad());
-        listCursos.set(nroCurso, cursoRango); // Establesco el la
-                                              // cantidad de items
-                                              // en un porcentaje para
-                                              // el colegio
-      }
-
-      nroCurso++;
-      // Aqui va la siguiente evaluacion (CURSO)
-
-    }
-    // Tengo todos los resultados en el map (reporte)
-    // Ahora debo generar la tabla.
-    Pair<List<R_Ejetematico>, List<R_Habilidad>> listas =
-        new Pair<List<R_Ejetematico>, List<R_Habilidad>>(listaEjesTematicos, listaHablidades);
-    return new Pair<Map<IEntity, List<OTCursoRangos>>, Pair<List<R_Ejetematico>, List<R_Habilidad>>>(
-        reporte, listas);
-  }
+//  /**
+//   * Para ontener el resultado final se siguen los sieguientes pasos: <lu>
+//   * <li>Obtener resumen de preguntas buenas de cada Eje/Hab x R_Alumno. </lu>
+//   */
+//  private Pair<Map<IEntity, List<OTCursoRangos>>, Pair<List<R_Ejetematico>, List<R_Habilidad>>> generarReporte() {
+//
+//
+//    // Una iteracion por cada colegio asociado al colegio con una evaluacion
+//    int nroCursos = listaEvaluacionesPrueba.size();
+//
+//    mapRespEsperadas = makeRespEsperadas();
+//    listaEjesTematicos = makeListEjesTematicos();
+//    listaHablidades = makeListHabilidades();
+//    Map<IEntity, List<OTCursoRangos>> reporte = makeMapReporte(nroCursos);
+//
+//    // Va a tener los resulados finales
+//    int nroCurso = 0;
+//    for (R_EvaluacionPrueba evaluacion : listaEvaluacionesPrueba) {
+//
+//      List<R_RespuestasEsperadasPrueba> respEsperadas =
+//          mapRespEsperadas.get(evaluacion.getPrueba_id());
+//      List<OTUnCursoUnEjeHabilidad> listaOTUnCurso = evaluarUnCurso(respEsperadas, evaluacion);
+//
+//      // Aqui cuento la cantida de items en los rangos
+//      for (OTUnCursoUnEjeHabilidad ot : listaOTUnCurso) {
+//        // Calcula cantidad de items en los rangos para un eje y un
+//        // colegio
+//        int[] alumXRango = ot.calculateAlumnosXRango(rangosEvaluacionPorcentaje);
+//        R_Curso curso = listaCursos.stream().filter(c -> c.getId().equals(evaluacion.getCurso_id()))
+//            .findFirst().orElse(null);
+//
+//        OTCursoRangos cursoRango = new OTCursoRangos(curso, alumXRango);
+//        List<OTCursoRangos> listCursos = reporte.get(ot.getEjeHabilidad());
+//        listCursos.set(nroCurso, cursoRango); // Establesco el la
+//                                              // cantidad de items
+//                                              // en un porcentaje para
+//                                              // el colegio
+//      }
+//
+//      nroCurso++;
+//      // Aqui va la siguiente evaluacion (CURSO)
+//
+//    }
+//    // Tengo todos los resultados en el map (reporte)
+//    // Ahora debo generar la tabla.
+//    Pair<List<R_Ejetematico>, List<R_Habilidad>> listas =
+//        new Pair<List<R_Ejetematico>, List<R_Habilidad>>(listaEjesTematicos, listaHablidades);
+//    return new Pair<Map<IEntity, List<OTCursoRangos>>, Pair<List<R_Ejetematico>, List<R_Habilidad>>>(
+//        reporte, listas);
+//  }
 
   private Map<Long, List<R_RespuestasEsperadasPrueba>> makeRespEsperadas() {
     Map<Long, List<R_RespuestasEsperadasPrueba>> resps = new HashMap<>();
