@@ -578,19 +578,17 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
   }
 
   private void handlerHabilidadEvaluacionXAlumnoXNivel() {
-    final Nivel_ComparativoColegioEjeEvaluacionView resHabEjeAlumno =
+    final Nivel_ComparativoColegioEjeEvaluacionView resEjeAlumno =
         (Nivel_ComparativoColegioEjeEvaluacionView) show(
             "/colegio/nivel/fxml/Nivel_ComparativoColegioEjeEvaluacion.fxml");
     Long idNivelEval =
         tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba().getNivelevaluacion_id();
     R_NivelEvaluacion nivelEvaluacion =
         controller.findByIdSynchro(R_NivelEvaluacion.class, idNivelEval);
-    R_Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
-    resHabEjeAlumno.setPrueba(prueba);
-    resHabEjeAlumno.setNivelEvaluacion(nivelEvaluacion);
-    controller.findAll(R_Colegio.class, resHabEjeAlumno);
-    controller.findAll(R_Asignatura.class, resHabEjeAlumno);
-    controller.findAll(R_TipoAlumno.class, resHabEjeAlumno);
+    resEjeAlumno.setNivelEvaluacion(nivelEvaluacion);
+    controller.findAll(R_Colegio.class, resEjeAlumno);
+    controller.findAll(R_Asignatura.class, resEjeAlumno);
+    controller.findAll(R_TipoAlumno.class, resEjeAlumno);
   }
 
   private void handlerHabilidadEvaluacionXNivel() {
@@ -661,6 +659,7 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
     resumenColegio.setPrueba(prueba);
 
     controller.findAll(R_Colegio.class, resumenColegio);
+    controller.findAll(R_TipoCurso.class, resumenColegio);
     controller.findAll(R_Asignatura.class, resumenColegio);
     Map<String, Object> params = MapBuilder.<String, Object>unordered()
         .put("nivelevaluacion_id", prueba.getNivelevaluacion_id()).build();

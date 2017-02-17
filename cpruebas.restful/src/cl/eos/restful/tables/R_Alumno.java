@@ -145,6 +145,27 @@ public class R_Alumno extends AEntity {
     public final void setTipocurso_id(Long tipocurso_id) {
         this.tipocurso_id = tipocurso_id;
     }
+    
+    
+    
+    
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+      StringBuilder builder2 = new StringBuilder();
+      builder2.append(paterno.toUpperCase());
+      builder2.append(" ");
+      builder2.append(materno.toUpperCase());
+      builder2.append(" ");
+      builder2.append(name.toUpperCase());
+      return builder2.toString();
+    }
+
+
+
+
     public static class Builder {
         private Long id;
         private String paterno;
