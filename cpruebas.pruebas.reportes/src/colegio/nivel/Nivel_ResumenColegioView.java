@@ -285,7 +285,7 @@ public class Nivel_ResumenColegioView extends AFormView implements EventHandler<
   }
 
   private void generarReporteCursos(List<Object> list) {
-    if (list == null || list.isEmpty())
+    if (list == null || list.isEmpty() || lstTipoCurso == null)
       return;
 
     R_EvaluacionPrueba firstEvaluacion = (R_EvaluacionPrueba) list.get(0);
