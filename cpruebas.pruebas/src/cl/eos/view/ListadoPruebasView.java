@@ -489,16 +489,12 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
       final Nivel_ComparativoColegioEjeHabilidadxCursoView comparativoComunalHabilidad =
           (Nivel_ComparativoColegioEjeHabilidadxCursoView) show(
               "/colegio/nivel/fxml/Nivel_ComparativoColegioEjeHabilidadxCurso.fxml");
-      final R_Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
-      if (prueba != null) {
-        comparativoComunalHabilidad.setPrueba(prueba);
         // controller.findById(R_Curso.class, prueba.getCurso_id(), comparativoComunalHabilidad);
         controller.findAll(R_Colegio.class, comparativoComunalHabilidad);
         controller.findAll(R_Asignatura.class, comparativoComunalHabilidad);
         controller.findAll(R_EvaluacionEjetematico.class, comparativoComunalHabilidad);
         controller.findAll(R_TipoAlumno.class, comparativoComunalHabilidad);
         controller.findAll(R_TipoColegio.class, comparativoComunalHabilidad);
-      }
     }
   }
 
