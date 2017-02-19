@@ -162,8 +162,8 @@ public class XUtilEvaluations {
     return result;
   }
 
-  static Map<R_TipoCurso, List<XItemObjetivo>> evaluarColegioxNivel(List<R_PruebaRendida> pruebas,
-      List<R_RespuestasEsperadasPrueba> lstRespEsperadas, long tipoAlumno) {
+  static Map<R_TipoCurso, List<XItemObjetivo>> evaluarColegioxNivel(List<R_EvaluacionPrueba> evaluacionesPrueba,
+      List<R_PruebaRendida> pruebas, List<R_RespuestasEsperadasPrueba> lstRespEsperadas, long tipoAlumno) {
     final Map<R_TipoCurso, List<XItemObjetivo>> result = new HashMap<>();
 
     List<Long> lstIdAlumnos = pruebas.stream().map(p -> p.getAlumno_id()).collect(Collectors.toList());
@@ -201,7 +201,14 @@ public class XUtilEvaluations {
       List<R_PruebaRendida> pRendidas = mapCursos.get(tipoCurso);
       if (pRendidas != null && !pRendidas.isEmpty()) {
         log.fine("Tiene:" + pRendidas.size() + " pruebas rendidas.");
-        List<XItemObjetivo> r = XUtilEvaluations.evaluarCurso(pRendidas, lstRespEsperadas, tipoAlumno);
+        // Solo las respuestas esperadas del curso.
+        R_EvaluacionPrueba eval = evaluacionesPrueba.parallelStream()
+            .filter(e -> e.getId().equals(pRendidas.get(0).getEvaluacionprueba_id())).findFirst().orElse(null);
+        List<R_RespuestasEsperadasPrueba> lLstRespEsperadas = lstRespEsperadas.stream()
+            .filter(r -> r.getPrueba_id().equals(eval.getPrueba_id())).collect(Collectors.toList());
+
+
+        List<XItemObjetivo> r = XUtilEvaluations.evaluarCurso(pRendidas, lLstRespEsperadas, tipoAlumno);
         log.fine("Se obtienen:" + r.size() + " ItemObjectivo.");
         if (result.containsKey(tipoCurso)) {
           List<XItemObjetivo> lst = result.get(tipoCurso);

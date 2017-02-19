@@ -5,10 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 import cl.eos.common.Constants;
 import cl.eos.imp.view.AFormView;
+import cl.eos.imp.view.ProgressForm;
 import cl.eos.provider.persistence.PersistenceServiceFactory;
 import cl.eos.restful.tables.R_Asignatura;
 import cl.eos.restful.tables.R_Colegio;
@@ -24,6 +26,9 @@ import javafx.beans.property.ReadOnlyFloatWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -47,8 +52,7 @@ import ot.XUtilReportBuilder;
  */
 public class Nivel_PorObjetivosColegioView extends AFormView {
 
-  private static final String TITLE_FORMAT =
-      "Porcentaje de logro por objetivo colegio %s / asignatura %s";
+  private static final String TITLE_FORMAT = "Porcentaje de logro por objetivo colegio %s / asignatura %s";
   private static final String TITLE = "Porcentaje de logro por objetivo";
   private static final String ASIGNATURA_ID = "asignatura_id";
   private static final String COLEGIO_ID = "colegio_id";
@@ -87,162 +91,207 @@ public class Nivel_PorObjetivosColegioView extends AFormView {
    */
   private void generateReport() {
 
-    if (cmbAsignaturas.getItems() != null && cmbTipoAlumno.getItems() != null
-        && cmbTipoAlumno.getSelectionModel().getSelectedItem() != null && respEsperadas != null) {
-      long tipoAlumno = cmbTipoAlumno.getSelectionModel().getSelectedItem().getId();
-      
-      final List<R_PruebaRendida> pRendidas = new ArrayList<>();
-      for (R_EvaluacionPrueba evaluacionPrueba : evaluacionesPrueba) {
-        Map<String, Object> parameters = MapBuilder.<String, Object>unordered()
-            .put("evaluacionprueba_id", evaluacionPrueba.getId()).build();
-        pRendidas.addAll(controller.findByParamsSynchro(R_PruebaRendida.class, parameters));
-      }
-
-      if (pRendidas != null && !pRendidas.isEmpty()) {
-        final Pair<List<R_TipoCurso>, List<XItemTablaObjetivo>> reporte =
-            XUtilReportBuilder.reporteColegioxNivel(pRendidas, evaluacionesPrueba, respEsperadas, tipoAlumno);
-
-        List<R_TipoCurso> cursos = reporte.getFirst();
-
-        final ObservableList<XItemTablaObjetivo> itemsTable =
-            FXCollections.observableList(reporte.getSecond());
-        final Optional<XItemTablaObjetivo> opFirst = itemsTable.stream().findFirst();
-        if (!opFirst.isPresent())
-          return;
-
-        while (tblObjetivos.getColumns().size() > 3)
-          tblObjetivos.getColumns().remove(tblObjetivos.getColumns().size() - 1);
+    if (cmbAsignaturas.getItems() == null || cmbTipoAlumno.getItems() == null
+        || cmbTipoAlumno.getSelectionModel().getSelectedItem() == null) {
+      return;
+    }
 
 
-        for (int n = 0; n < cursos.size(); n++) {
-          final int idx = n;
-          TableColumn<XItemTablaObjetivo, String> headerColumn =
-              new TableColumn<>(cursos.get(n).getName());
-          headerColumn.setStyle("-fx-font-size:10;-fx-alignment: CENTER;");
 
-          final TableColumn<XItemTablaObjetivo, String> columnEjes =
-              new TableColumn<>("Ejes Asociados");
-          columnEjes.setStyle("-fx-font-size:10;-fx-alignment: CENTER-LEFT;");
-          columnEjes.setCellValueFactory(c -> {
-            if (c == null || c.getValue() == null || c.getValue().getItems() == null
-                || c.getValue().getItems().get(idx) == null)
-              return new ReadOnlyStringWrapper("");
-            final List<XItemObjetivo> lItems = c.getValue().getItems();
-            return new ReadOnlyStringWrapper(lItems.get(idx).getEjesAsociados());
-          });
-          columnEjes.setCellFactory(
-              new Callback<TableColumn<XItemTablaObjetivo, String>, TableCell<XItemTablaObjetivo, String>>() {
+    ProgressForm pForm = new ProgressForm();
+    pForm.title("Procesando");
+    pForm.message("Esto tomará algunos segundos.");
+
+    Task<Void> task = new Task<Void>() {
+      @Override
+      protected Void call() throws Exception {
+
+
+
+        long tipoAlumno = cmbTipoAlumno.getSelectionModel().getSelectedItem().getId();
+
+        final List<R_PruebaRendida> pRendidas = new ArrayList<>();
+        final Map<Long, List<R_RespuestasEsperadasPrueba>> mapRespEsperadas = new HashMap<>();
+        respEsperadas = new ArrayList<>();
+
+        updateMessage("Recopilando Pruebas Rendidas y Respuestas Esperadas");
+        for (R_EvaluacionPrueba evaluacionPrueba : evaluacionesPrueba) {
+          Map<String, Object> parameters =
+              MapBuilder.<String, Object>unordered().put("evaluacionprueba_id", evaluacionPrueba.getId()).build();
+          pRendidas.addAll(controller.findByParamsSynchro(R_PruebaRendida.class, parameters));
+          List<R_RespuestasEsperadasPrueba> respEsp = mapRespEsperadas.get(evaluacionPrueba.getPrueba_id());
+          if (respEsp == null) {
+
+            Map<String, Object> params =
+                MapBuilder.<String, Object>unordered().put("prueba_id", evaluacionPrueba.getPrueba_id()).build();
+            respEsp = controller.findByParamsSynchro(R_RespuestasEsperadasPrueba.class, params);
+            mapRespEsperadas.put(evaluacionPrueba.getPrueba_id(), respEsp);
+            respEsperadas.addAll(respEsp);
+          }
+        }
+
+        if (pRendidas != null && !pRendidas.isEmpty()) {
+          final Pair<List<R_TipoCurso>, List<XItemTablaObjetivo>> reporte =
+              XUtilReportBuilder.reporteColegioxNivel(pRendidas, evaluacionesPrueba, respEsperadas, tipoAlumno);
+
+          List<R_TipoCurso> cursos = reporte.getFirst();
+          int avance = 0;
+          int total = cursos.size();
+          
+          final ObservableList<XItemTablaObjetivo> itemsTable = FXCollections.observableList(reporte.getSecond());
+          final Optional<XItemTablaObjetivo> opFirst = itemsTable.stream().findFirst();
+          if (!opFirst.isPresent())
+            return null;
+
+          while (tblObjetivos.getColumns().size() > 3)
+            tblObjetivos.getColumns().remove(tblObjetivos.getColumns().size() - 1);
+
+
+          for (int n = 0; n < cursos.size(); n++) {
+            
+            updateMessage("Procesando curso:" + cursos.get(n).getName());
+            updateProgress(++avance, total);
+            
+            final int idx = n;
+            TableColumn<XItemTablaObjetivo, String> headerColumn = new TableColumn<>(cursos.get(n).getName());
+            headerColumn.setStyle("-fx-font-size:10;-fx-alignment: CENTER;");
+
+            final TableColumn<XItemTablaObjetivo, String> columnEjes = new TableColumn<>("Ejes Asociados");
+            columnEjes.setStyle("-fx-font-size:10;-fx-alignment: CENTER-LEFT;");
+            columnEjes.setCellValueFactory(c -> {
+              if (c == null || c.getValue() == null || c.getValue().getItems() == null
+                  || c.getValue().getItems().get(idx) == null)
+                return new ReadOnlyStringWrapper("");
+              final List<XItemObjetivo> lItems = c.getValue().getItems();
+              return new ReadOnlyStringWrapper(lItems.get(idx).getEjesAsociados());
+            });
+            columnEjes.setCellFactory(
+                new Callback<TableColumn<XItemTablaObjetivo, String>, TableCell<XItemTablaObjetivo, String>>() {
+
+                  @Override
+                  public TableCell<XItemTablaObjetivo, String> call(TableColumn<XItemTablaObjetivo, String> param) {
+                    TableCell<XItemTablaObjetivo, String> cell = new TableCell<>();
+                    Text text = new Text();
+                    cell.setGraphic(text);
+                    cell.setPrefHeight(Control.USE_COMPUTED_SIZE);
+                    text.wrappingWidthProperty().bind(cell.widthProperty());
+                    text.textProperty().bind(cell.itemProperty());
+                    return cell;
+                  }
+                });
+
+            final TableColumn<XItemTablaObjetivo, String> columnHabilidades =
+                new TableColumn<>("Habilidades Asociados");
+            columnHabilidades.setStyle("-fx-font-size:10;-fx-alignment: CENTER-LEFT;");
+            columnHabilidades.setCellValueFactory(c -> {
+              if (c == null || c.getValue() == null || c.getValue().getItems() == null
+                  || c.getValue().getItems().get(idx) == null)
+                return new ReadOnlyStringWrapper("");
+              final List<XItemObjetivo> lItems = c.getValue().getItems();
+              return new ReadOnlyStringWrapper(lItems.get(idx).getHabilidades());
+            });
+            columnHabilidades.setCellFactory(
+                new Callback<TableColumn<XItemTablaObjetivo, String>, TableCell<XItemTablaObjetivo, String>>() {
+
+                  @Override
+                  public TableCell<XItemTablaObjetivo, String> call(TableColumn<XItemTablaObjetivo, String> param) {
+                    TableCell<XItemTablaObjetivo, String> cell = new TableCell<>();
+                    Text text = new Text();
+                    cell.setGraphic(text);
+                    cell.setPrefHeight(Control.USE_COMPUTED_SIZE);
+                    text.wrappingWidthProperty().bind(cell.widthProperty());
+                    text.textProperty().bind(cell.itemProperty());
+                    return cell;
+                  }
+                });
+
+            final TableColumn<XItemTablaObjetivo, String> columnPreguntas = new TableColumn<>("Preguntas");
+            columnPreguntas.setCellFactory(
+                new Callback<TableColumn<XItemTablaObjetivo, String>, TableCell<XItemTablaObjetivo, String>>() {
+
+                  @Override
+                  public TableCell<XItemTablaObjetivo, String> call(TableColumn<XItemTablaObjetivo, String> param) {
+                    TableCell<XItemTablaObjetivo, String> cell = new TableCell<>();
+                    Text text = new Text();
+                    cell.setGraphic(text);
+                    cell.setPrefHeight(Control.USE_COMPUTED_SIZE);
+                    text.wrappingWidthProperty().bind(cell.widthProperty());
+                    text.textProperty().bind(cell.itemProperty());
+                    return cell;
+                  }
+                });
+            columnPreguntas.setStyle("-fx-font-size:10;-fx-alignment: CENTER-LEFT;");
+            columnPreguntas.setPrefWidth(100);
+            columnPreguntas.setMaxWidth(100);
+            columnPreguntas.setCellValueFactory(c -> {
+              if (c == null || c.getValue() == null || c.getValue().getItems() == null
+                  || c.getValue().getItems().get(idx) == null)
+                return new ReadOnlyStringWrapper("");
+              final List<XItemObjetivo> lItems = c.getValue().getItems();
+              return new ReadOnlyStringWrapper(lItems.get(idx).getPreguntas());
+            });
+
+            final TableColumn<XItemTablaObjetivo, Number> columnPercent = new TableColumn<>("% aprobación");
+            columnPercent.setStyle("-fx-font-size:10;-fx-alignment: CENTER;");
+            columnPercent.setCellValueFactory(c -> {
+              if (c == null || c.getValue() == null || c.getValue().getItems() == null
+                  || c.getValue().getItems().get(idx) == null)
+                return new ReadOnlyFloatWrapper(0f);
+              final List<XItemObjetivo> lItems = c.getValue().getItems();
+              return new ReadOnlyFloatWrapper(lItems.get(idx).getPorcentajeAprobacion());
+            });
+
+            columnPercent.setCellFactory(c -> {
+              return new TableCell<XItemTablaObjetivo, Number>() {
 
                 @Override
-                public TableCell<XItemTablaObjetivo, String> call(
-                    TableColumn<XItemTablaObjetivo, String> param) {
-                  TableCell<XItemTablaObjetivo, String> cell = new TableCell<>();
-                  Text text = new Text();
-                  cell.setGraphic(text);
-                  cell.setPrefHeight(Control.USE_COMPUTED_SIZE);
-                  text.wrappingWidthProperty().bind(cell.widthProperty());
-                  text.textProperty().bind(cell.itemProperty());
-                  return cell;
-                }
-              });
-
-          final TableColumn<XItemTablaObjetivo, String> columnHabilidades =
-              new TableColumn<>("Habilidades Asociados");
-          columnHabilidades.setStyle("-fx-font-size:10;-fx-alignment: CENTER-LEFT;");
-          columnHabilidades.setCellValueFactory(c -> {
-            if (c == null || c.getValue() == null || c.getValue().getItems() == null
-                || c.getValue().getItems().get(idx) == null)
-              return new ReadOnlyStringWrapper("");
-            final List<XItemObjetivo> lItems = c.getValue().getItems();
-            return new ReadOnlyStringWrapper(lItems.get(idx).getHabilidades());
-          });
-          columnHabilidades.setCellFactory(
-              new Callback<TableColumn<XItemTablaObjetivo, String>, TableCell<XItemTablaObjetivo, String>>() {
-
-                @Override
-                public TableCell<XItemTablaObjetivo, String> call(
-                    TableColumn<XItemTablaObjetivo, String> param) {
-                  TableCell<XItemTablaObjetivo, String> cell = new TableCell<>();
-                  Text text = new Text();
-                  cell.setGraphic(text);
-                  cell.setPrefHeight(Control.USE_COMPUTED_SIZE);
-                  text.wrappingWidthProperty().bind(cell.widthProperty());
-                  text.textProperty().bind(cell.itemProperty());
-                  return cell;
-                }
-              });
-
-          final TableColumn<XItemTablaObjetivo, String> columnPreguntas =
-              new TableColumn<>("Preguntas");
-          columnPreguntas.setCellFactory(
-              new Callback<TableColumn<XItemTablaObjetivo, String>, TableCell<XItemTablaObjetivo, String>>() {
-
-                @Override
-                public TableCell<XItemTablaObjetivo, String> call(
-                    TableColumn<XItemTablaObjetivo, String> param) {
-                  TableCell<XItemTablaObjetivo, String> cell = new TableCell<>();
-                  Text text = new Text();
-                  cell.setGraphic(text);
-                  cell.setPrefHeight(Control.USE_COMPUTED_SIZE);
-                  text.wrappingWidthProperty().bind(cell.widthProperty());
-                  text.textProperty().bind(cell.itemProperty());
-                  return cell;
-                }
-              });
-          columnPreguntas.setStyle("-fx-font-size:10;-fx-alignment: CENTER-LEFT;");
-          columnPreguntas.setPrefWidth(100);
-          columnPreguntas.setMaxWidth(100);
-          columnPreguntas.setCellValueFactory(c -> {
-            if (c == null || c.getValue() == null || c.getValue().getItems() == null
-                || c.getValue().getItems().get(idx) == null)
-              return new ReadOnlyStringWrapper("");
-            final List<XItemObjetivo> lItems = c.getValue().getItems();
-            return new ReadOnlyStringWrapper(lItems.get(idx).getPreguntas());
-          });
-
-          final TableColumn<XItemTablaObjetivo, Number> columnPercent =
-              new TableColumn<>("% aprobación");
-          columnPercent.setStyle("-fx-font-size:10;-fx-alignment: CENTER;");
-          columnPercent.setCellValueFactory(c -> {
-            if (c == null || c.getValue() == null || c.getValue().getItems() == null
-                || c.getValue().getItems().get(idx) == null)
-              return new ReadOnlyFloatWrapper(0f);
-            final List<XItemObjetivo> lItems = c.getValue().getItems();
-            return new ReadOnlyFloatWrapper(lItems.get(idx).getPorcentajeAprobacion());
-          });
-
-          columnPercent.setCellFactory(c -> {
-            return new TableCell<XItemTablaObjetivo, Number>() {
-
-              @Override
-              protected void updateItem(Number value, boolean empty) {
-                super.updateItem(value, empty);
-                if (value != null) {
-                  setText(String.format("%5.2f%%", value.doubleValue()));
-                  if (value.doubleValue() < 60) {
-                    setTextFill(Color.RED);
-                  } else {
-                    setTextFill(Color.BLUE);
+                protected void updateItem(Number value, boolean empty) {
+                  super.updateItem(value, empty);
+                  if (value != null) {
+                    setText(String.format("%5.2f%%", value.doubleValue()));
+                    if (value.doubleValue() < 60) {
+                      setTextFill(Color.RED);
+                    } else {
+                      setTextFill(Color.BLUE);
+                    }
                   }
                 }
-              }
 
-            };
-          });
-          headerColumn.getColumns().add(columnEjes);
-          headerColumn.getColumns().add(columnHabilidades);
-          headerColumn.getColumns().add(columnPreguntas);
-          headerColumn.getColumns().add(columnPercent);
-          tblObjetivos.getColumns().add(headerColumn);
+              };
+            });
+            headerColumn.getColumns().add(columnEjes);
+            headerColumn.getColumns().add(columnHabilidades);
+            headerColumn.getColumns().add(columnPreguntas);
+            headerColumn.getColumns().add(columnPercent);
+            tblObjetivos.getColumns().add(headerColumn);
+          }
+          tblObjetivos.setItems(itemsTable);
         }
-        tblObjetivos.setItems(itemsTable);
+        // Ahora se debe llenar las tablas.
+        return null;
       }
-    }
+    };
+
+    task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+      @Override
+      public void handle(WorkerStateEvent event) {
+        pForm.getDialogStage().hide();
+      }
+    });
+    task.setOnFailed(new EventHandler<WorkerStateEvent>() {
+
+      @Override
+      public void handle(WorkerStateEvent event) {
+        pForm.getDialogStage().hide();
+      }
+    });
+
+    pForm.showWorkerProgress(task);
+    Executors.newSingleThreadExecutor().execute(task);
   }
 
   private void inicializeTable() {
-    colObjetivos
-        .setCellValueFactory(new PropertyValueFactory<XItemTablaObjetivo, R_Objetivo>("objetivo"));
+    colObjetivos.setCellValueFactory(new PropertyValueFactory<XItemTablaObjetivo, R_Objetivo>("objetivo"));
   }
 
   @FXML
@@ -268,8 +317,7 @@ public class Nivel_PorObjetivosColegioView extends AFormView {
         R_Colegio colegio = cmbColegio.getSelectionModel().getSelectedItem();
         String strColegio = colegio != null ? colegio.getName() : "-";
 
-        setTitle(String.format(TITLE_FORMAT, strColegio,
-            cmbAsignaturas.getSelectionModel().getSelectedItem()));
+        setTitle(String.format(TITLE_FORMAT, strColegio, cmbAsignaturas.getSelectionModel().getSelectedItem()));
 
       }
     });
@@ -283,8 +331,7 @@ public class Nivel_PorObjetivosColegioView extends AFormView {
   }
 
   private void handlerReporte() {
-    if (!parameters.isEmpty() && parameters.containsKey(COLEGIO_ID)
-        && parameters.containsKey(ASIGNATURA_ID)) {
+    if (!parameters.isEmpty() && parameters.containsKey(COLEGIO_ID) && parameters.containsKey(ASIGNATURA_ID)) {
       controller.findByParam(R_EvaluacionPrueba.class, parameters, this);
     }
   }
@@ -294,22 +341,19 @@ public class Nivel_PorObjetivosColegioView extends AFormView {
     if (list != null && !list.isEmpty()) {
       final Object entity = list.get(0);
       if (entity instanceof R_TipoAlumno) {
-        final List<R_TipoAlumno> values =
-            list.stream().map(t -> (R_TipoAlumno) t).collect(Collectors.toList());
+        final List<R_TipoAlumno> values = list.stream().map(t -> (R_TipoAlumno) t).collect(Collectors.toList());
         final ObservableList<R_TipoAlumno> tAlumnoList = FXCollections.observableArrayList(values);
         cmbTipoAlumno.setItems(tAlumnoList);
       }
 
       if (entity instanceof R_Colegio) {
-        final List<R_Colegio> values =
-            list.stream().map(t -> (R_Colegio) t).collect(Collectors.toList());
+        final List<R_Colegio> values = list.stream().map(t -> (R_Colegio) t).collect(Collectors.toList());
         final ObservableList<R_Colegio> colegios = FXCollections.observableArrayList(values);
         cmbColegio.setItems(colegios);
       }
 
       if (entity instanceof R_Asignatura) {
-        final List<R_Asignatura> values =
-            list.stream().map(t -> (R_Asignatura) t).collect(Collectors.toList());
+        final List<R_Asignatura> values = list.stream().map(t -> (R_Asignatura) t).collect(Collectors.toList());
         final ObservableList<R_Asignatura> asginaturas = FXCollections.observableArrayList(values);
         cmbAsignaturas.setItems(asginaturas);
       }
@@ -320,12 +364,6 @@ public class Nivel_PorObjetivosColegioView extends AFormView {
           R_EvaluacionPrueba evaluacion = (R_EvaluacionPrueba) object;
           evaluacionesPrueba.add(evaluacion);
         }
-        generateReport();
-      }
-      
-      if(entity instanceof R_RespuestasEsperadasPrueba)
-      {
-        respEsperadas =  list.stream().map(i -> (R_RespuestasEsperadasPrueba)i).collect(Collectors.toList());
         generateReport();
       }
     }

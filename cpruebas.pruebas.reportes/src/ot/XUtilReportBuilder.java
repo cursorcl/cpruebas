@@ -21,7 +21,6 @@ public class XUtilReportBuilder {
 
 
 
-  private static R_Curso curso;
 
   public static Pair<List<R_TipoCurso>, List<XItemTablaObjetivo>> reporteColegioxNivel(List<R_PruebaRendida> pruebas,
       List<R_EvaluacionPrueba> evaluacionesPrueba, List<R_RespuestasEsperadasPrueba> respEsperadas, long tipoAlumno) {
@@ -30,7 +29,7 @@ public class XUtilReportBuilder {
         XUtilReportBuilder.buildFixedColumnsReport(evaluacionesPrueba, pruebas, respEsperadas);
 
     final Map<R_TipoCurso, List<XItemObjetivo>> eval =
-        XUtilEvaluations.evaluarColegioxNivel(pruebas, respEsperadas, tipoAlumno);
+        XUtilEvaluations.evaluarColegioxNivel(evaluacionesPrueba, pruebas, respEsperadas, tipoAlumno);
 
     // Obtengo los tipos de curso ordenados
     final List<R_TipoCurso> tipoCursosOrdenados =
