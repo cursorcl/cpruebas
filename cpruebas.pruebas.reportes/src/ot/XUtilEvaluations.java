@@ -25,70 +25,66 @@ import cl.eos.util.MapBuilder;
 public class XUtilEvaluations {
   private static final Logger log = Logger.getLogger(XUtilEvaluations.class.getName());
 
-  // static class GroupByTipoCurso implements Function<R_PruebaRendida, R_TipoCurso> {
-  // @Override
-  // public R_TipoCurso apply(R_PruebaRendida t) {
-  // return t.getAlumno().getCurso().getTipoCurso();
-  // }
-  // }
   /**
    * Evaluamos solo un alumno. Obtenemos la cantidad de buenas que tiene por cada objetivo asociado
    * a la prueba.
    *
    * @param pRendida La prueba del alumno,
    */
-  static List<XItemObjetivo> evaluarAlumno(R_PruebaRendida pRendida, List<R_RespuestasEsperadasPrueba> resEsperadas,
-      List<R_Ejetematico> lstEjes, List<R_Habilidad> lstHab, List<R_Objetivo> lstObj) {
-    String respuestas = pRendida.getRespuestas();
-    if (respuestas.length() < resEsperadas.size()) {
-      respuestas = Strings.padEnd(respuestas, resEsperadas.size(), 'O');
-    }
+  static List<XItemObjetivo> evaluarAlumno(final R_PruebaRendida pRendida,
+      final List<R_RespuestasEsperadasPrueba> resEsperadas, final List<R_Ejetematico> lstEjes,
+      final List<R_Habilidad> lstHab, final List<R_Objetivo> lstObj) {
 
-    final String[] strResps = respuestas.split("");
-    final Map<Long, List<R_RespuestasEsperadasPrueba>> byObjective =
-        resEsperadas.stream().collect(Collectors.groupingBy(R_RespuestasEsperadasPrueba::getObjetivo_id));
-
-
-    final List<XItemObjetivo> result = new ArrayList<>();
-    for (final Long key : byObjective.keySet()) {
-      final List<R_RespuestasEsperadasPrueba> resps = byObjective.get(key);
-      // Buscamos los objetivos
-      R_Objetivo objetivo = lstObj.parallelStream().filter(o -> o.getId().equals(key)).findFirst().orElse(null);
-      if (objetivo == null) {
-        continue;
-      }
-      final XItemObjetivo objxAlumno = new XItemObjetivo.Builder().objetivo(objetivo).build();
-      for (final R_RespuestasEsperadasPrueba re : resps) {
-
-        if ("+".equals(re.getRespuesta()) || strResps[re.getNumero() - 1].equalsIgnoreCase(re.getRespuesta())) {
-          objxAlumno.addBuena();
-        }
-        objxAlumno.addPregunta();
-        String value;
-
-        R_Ejetematico eje =
-            lstEjes.parallelStream().filter(e -> e.getId().equals(re.getEjetematico_id())).findFirst().orElse(null);
-        if (!objxAlumno.getEjesAsociados().contains(eje.getName())) {
-          value = objxAlumno.getEjesAsociados() + (objxAlumno.getEjesAsociados().isEmpty() ? "" : "\n")
-              + eje.getName().toUpperCase();
-          objxAlumno.setEjesAsociados(value);
+        String respuestas = pRendida.getRespuestas();
+        if (respuestas.length() < resEsperadas.size()) {
+          respuestas = Strings.padEnd(respuestas, resEsperadas.size(), 'O');
         }
 
-        R_Habilidad hab =
-            lstHab.parallelStream().filter(e -> e.getId().equals(re.getHabilidad_id())).findFirst().orElse(null);
-        if (!objxAlumno.getHabilidades().contains(hab.getName())) {
-          value = objxAlumno.getHabilidades() + (objxAlumno.getHabilidades().isEmpty() ? "" : "\n")
-              + hab.getName().toUpperCase();
-          objxAlumno.setHabilidades(value);
+        final String[] strResps = respuestas.split("");
+        final Map<Long, List<R_RespuestasEsperadasPrueba>> byObjective =
+            resEsperadas.stream().collect(Collectors.groupingBy(R_RespuestasEsperadasPrueba::getObjetivo_id));
+
+
+        final List<XItemObjetivo> result = new ArrayList<>();
+        for (final Long key : byObjective.keySet()) {
+          final List<R_RespuestasEsperadasPrueba> resps = byObjective.get(key);
+          // Buscamos los objetivos
+          R_Objetivo objetivo = lstObj.parallelStream().filter(o -> o.getId().equals(key)).findFirst().orElse(null);
+          if (objetivo == null) {
+            continue;
+          }
+          final XItemObjetivo objxAlumno = new XItemObjetivo.Builder().objetivo(objetivo).build();
+          for (final R_RespuestasEsperadasPrueba re : resps) {
+
+            if ("+".equals(re.getRespuesta()) || strResps[re.getNumero() - 1].equalsIgnoreCase(re.getRespuesta())) {
+              objxAlumno.addBuena();
+            }
+            objxAlumno.addPregunta();
+            String value;
+
+            R_Ejetematico eje =
+                lstEjes.parallelStream().filter(e -> e.getId().equals(re.getEjetematico_id())).findFirst().orElse(null);
+            if (!objxAlumno.getEjesAsociados().contains(eje.getName())) {
+              value = objxAlumno.getEjesAsociados() + (objxAlumno.getEjesAsociados().isEmpty() ? "" : "\n")
+                  + eje.getName().toUpperCase();
+              objxAlumno.setEjesAsociados(value);
+            }
+
+            R_Habilidad hab =
+                lstHab.parallelStream().filter(e -> e.getId().equals(re.getHabilidad_id())).findFirst().orElse(null);
+            if (!objxAlumno.getHabilidades().contains(hab.getName())) {
+              value = objxAlumno.getHabilidades() + (objxAlumno.getHabilidades().isEmpty() ? "" : "\n")
+                  + hab.getName().toUpperCase();
+              objxAlumno.setHabilidades(value);
+            }
+            if (!objxAlumno.getPreguntas().contains("" + re.getNumero())) {
+              value = objxAlumno.getPreguntas() + (objxAlumno.getPreguntas().isEmpty() ? "" : "-") + re.getNumero();
+              objxAlumno.setPreguntas(value);
+            }
+          }
+          result.add(objxAlumno);
         }
-        if (!objxAlumno.getPreguntas().contains("" + re.getNumero())) {
-          value = objxAlumno.getPreguntas() + (objxAlumno.getPreguntas().isEmpty() ? "" : "-") + re.getNumero();
-          objxAlumno.setPreguntas(value);
-        }
-      }
-      result.add(objxAlumno);
-    }
-    return result;
+        return result;
   }
 
 
