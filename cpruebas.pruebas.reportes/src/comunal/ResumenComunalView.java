@@ -43,7 +43,7 @@ import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.util.Callback;
 
-public class ResumenComunalViewView extends AFormView implements EventHandler<ActionEvent> {
+public class ResumenComunalView extends AFormView implements EventHandler<ActionEvent> {
 
   @FXML
   private Label lblTitulo;
@@ -67,11 +67,10 @@ public class ResumenComunalViewView extends AFormView implements EventHandler<Ac
   long tipoColegio = Constants.TIPO_COLEGIO_ALL;
 
   private boolean llegaEvaluacionEjeTematico;
-  private boolean llegaOnFound;
   private boolean llegaTipoAlumno = false;
   private List<R_Prueba> listaPruebas;
 
-  public ResumenComunalViewView() {
+  public ResumenComunalView() {
     setTitle("Resumen comunal");
   }
 
@@ -99,7 +98,7 @@ public class ResumenComunalViewView extends AFormView implements EventHandler<Ac
   }
 
   private void procesaDatosReporte() {
-    if (llegaEvaluacionEjeTematico && llegaOnFound && llegaTipoAlumno && llegaTipoColegio) {
+    if (llegaEvaluacionEjeTematico  && llegaTipoAlumno && llegaTipoColegio) {
       inicializarComponentes();
       llenarDatosTabla();
       creacionColumnasEvaluaciones(listaEvaluacionesTitulos);
@@ -155,8 +154,7 @@ public class ResumenComunalViewView extends AFormView implements EventHandler<Ac
 
     // Total informados
     for (R_Prueba prueba : listaPruebas) {
-      R_Curso lCurso = lstCursos.stream().filter(c -> c.getId().equals(prueba.getCurso_id())).findFirst().orElse(null);
-      R_TipoCurso lTipoCurso = lstTipoCurso.stream().filter(t -> t.getId().equals(lCurso.getTipocurso_id())).findFirst().orElse(null);
+      R_TipoCurso lTipoCurso = lstTipoCurso.stream().filter(t -> t.getId().equals(prueba.getCurso_id())).findFirst().orElse(null);
       String tipoCurso = lTipoCurso.getName();
       
       List<R_EvaluacionPrueba> listaEvaluaciones =listaEvaluacionesTitulos.stream().filter(e -> e.getPrueba_id().equals(prueba.getId())).collect(Collectors.toList());
@@ -214,7 +212,6 @@ public class ResumenComunalViewView extends AFormView implements EventHandler<Ac
   private List<R_EvaluacionPrueba> listaEvaluacionesTitulos = new LinkedList<R_EvaluacionPrueba>();
   private Map<R_EvaluacionEjetematico, HashMap<String, OTPreguntasEvaluacion>> mapEvaAlumnos;
   private boolean llegaTipoColegio;
-  private R_TipoCurso tipoCurso;
   private R_Asignatura asignatura;
   List<R_Curso> lstCursos = new ArrayList<>();
   List<R_TipoCurso> lstTipoCurso = new ArrayList<>();
@@ -224,15 +221,9 @@ public class ResumenComunalViewView extends AFormView implements EventHandler<Ac
     mapEvaAlumnos = new HashMap<R_EvaluacionEjetematico, HashMap<String, OTPreguntasEvaluacion>>();
 
     for (R_Prueba prueba : listaPruebas) {
-      R_Curso curso = lstCursos.stream().filter(c -> c.getId().equals(prueba.getCurso_id())).findFirst().orElse(null);
-      if (curso == null) {
-        curso = controller.findByIdSynchro(R_Curso.class, prueba.getCurso_id());
-        lstCursos.add(curso);
-      }
-      final Long idCurso = curso.getId();
-      R_TipoCurso tipoCurso = lstTipoCurso.stream().filter(p -> idCurso.equals(p.getId())).findFirst().orElse(null);
+      R_TipoCurso tipoCurso = lstTipoCurso.stream().filter(p -> prueba.getCurso_id().equals(p.getId())).findFirst().orElse(null);
       if (tipoCurso == null) {
-        tipoCurso = controller.findByIdSynchro(R_TipoCurso.class, curso.getTipocurso_id());
+        tipoCurso = controller.findByIdSynchro(R_TipoCurso.class, prueba.getCurso_id());
         lstTipoCurso.add(tipoCurso);
       }
 
@@ -332,7 +323,12 @@ public class ResumenComunalViewView extends AFormView implements EventHandler<Ac
       final int col = indice;
       
       R_Curso lCurso = lstCursos.stream().filter(c -> c.getId().equals(evaluacion.getCurso_id())).findFirst().orElse(null);
-      R_TipoCurso lTipoCurso = lstTipoCurso.stream().filter(t -> t.getId().equals(lCurso.getTipocurso_id())).findFirst().orElse(null);
+      if(lCurso == null)
+      {
+        lCurso = controller.findByIdSynchro(R_Curso.class, evaluacion.getCurso_id());
+      }
+      final R_Curso curso =  lCurso;
+      R_TipoCurso lTipoCurso = lstTipoCurso.stream().filter(t -> t.getId().equals(curso.getTipocurso_id())).findFirst().orElse(null);
       String tipoCurso = lTipoCurso.getName();
       
       if (!titulosColumnas.contains(tipoCurso)) {
@@ -391,11 +387,6 @@ public class ResumenComunalViewView extends AFormView implements EventHandler<Ac
           mEvaluaciones.put(eje.getId(), eje);
         }
       }
-      if (entity instanceof R_Prueba) {
-        llegaOnFound = true;
-        listaPruebas = list.stream().map(o -> (R_Prueba) o).collect(Collectors.toList());
-      }
-
       if (entity instanceof R_TipoAlumno) {
         ObservableList<R_TipoAlumno> tAlumnoList = FXCollections.observableArrayList();
         llegaTipoAlumno = true;
@@ -415,7 +406,6 @@ public class ResumenComunalViewView extends AFormView implements EventHandler<Ac
         R_TipoColegio tColegio = new R_TipoColegio.Builder().id(Constants.TIPO_COLEGIO_ALL).build();
         cmbTipoColegio.getSelectionModel().select(tColegio);
       }
-      procesaDatosReporte();
     }
   }
 
@@ -423,9 +413,7 @@ public class ResumenComunalViewView extends AFormView implements EventHandler<Ac
 
   @Override
   public void onFound(IEntity entity) {
-    if (entity instanceof R_TipoCurso) {
-      tipoCurso = (R_TipoCurso) entity;
-    } else if (entity instanceof R_Asignatura) {
+    if (entity instanceof R_Asignatura) {
       asignatura = (R_Asignatura) entity;
     }
   }
@@ -442,6 +430,20 @@ public class ResumenComunalViewView extends AFormView implements EventHandler<Ac
       procesaDatosReporte();
     }
 
+  }
+
+  /**
+   * @return the listaPruebas
+   */
+  public final List<R_Prueba> getListaPruebas() {
+    return listaPruebas;
+  }
+
+  /**
+   * @param listaPruebas the listaPruebas to set
+   */
+  public final void setListaPruebas(List<R_Prueba> listaPruebas) {
+    this.listaPruebas = listaPruebas;
   }
 
 }

@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 import cl.eos.common.Constants;
 import cl.eos.imp.view.AFormView;
 import cl.eos.imp.view.ProgressForm;
-import cl.eos.provider.persistence.PersistenceServiceFactory;
 import cl.eos.restful.tables.R_Asignatura;
 import cl.eos.restful.tables.R_Colegio;
 import cl.eos.restful.tables.R_EvaluacionPrueba;
@@ -132,9 +131,10 @@ public class Nivel_PorObjetivosColegioView extends AFormView {
         }
 
         if (pRendidas != null && !pRendidas.isEmpty()) {
+          updateMessage("Generando reporte....");
           final Pair<List<R_TipoCurso>, List<XItemTablaObjetivo>> reporte =
               XUtilReportBuilder.reporteColegioxNivel(pRendidas, evaluacionesPrueba, respEsperadas, tipoAlumno);
-
+          updateMessage("Reporte procesado.");
           List<R_TipoCurso> cursos = reporte.getFirst();
 
 
@@ -142,7 +142,7 @@ public class Nivel_PorObjetivosColegioView extends AFormView {
           final Optional<XItemTablaObjetivo> opFirst = itemsTable.stream().findFirst();
           if (!opFirst.isPresent())
             return null;
-
+          updateMessage("Generando representación en tabla.");
           while (tblObjetivos.getColumns().size() > 3)
             tblObjetivos.getColumns().remove(tblObjetivos.getColumns().size() - 1);
           Runnable r = new Runnable() {
