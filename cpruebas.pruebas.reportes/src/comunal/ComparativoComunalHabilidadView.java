@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import cl.eos.common.Constants;
 import cl.eos.imp.view.AFormView;
@@ -21,7 +22,6 @@ import cl.eos.restful.tables.R_Alumno;
 import cl.eos.restful.tables.R_Asignatura;
 import cl.eos.restful.tables.R_Colegio;
 import cl.eos.restful.tables.R_Curso;
-import cl.eos.restful.tables.R_Ejetematico;
 import cl.eos.restful.tables.R_EvaluacionEjetematico;
 import cl.eos.restful.tables.R_EvaluacionPrueba;
 import cl.eos.restful.tables.R_Habilidad;
@@ -94,6 +94,7 @@ public class ComparativoComunalHabilidadView extends AFormView
   private List<R_Colegio> lstColegios = new ArrayList<>();
   private R_Asignatura asignatura;
   private boolean llegaTipoColegio;
+  private List<R_Curso> lstCursos;
 
   public ComparativoComunalHabilidadView() {
 
@@ -124,6 +125,8 @@ public class ComparativoComunalHabilidadView extends AFormView
         tipoColegio = cmbTipoColegio.getSelectionModel().getSelectedItem().getId();
       }
     });
+    tblHabilidades.setId("double-line");
+    tblEvaluaciones.setId("double-line");
 
   }
 
@@ -139,9 +142,27 @@ public class ComparativoComunalHabilidadView extends AFormView
   public void onFound(IEntity entity) {
     if (entity instanceof R_Prueba) {
       prueba = (R_Prueba) entity;
+      
+      
+      Map<String, Object> params = MapBuilder.<String, Object>unordered().put("prueba_id", prueba.getId()).build();
+      listaEvaluaciones = controller.findByParamsSynchro(R_EvaluacionPrueba.class, params);
+      lstColegios =  controller.findAllSynchro(R_Colegio.class);
+      Long[] ids = listaEvaluaciones.stream().map(e ->  e.getCurso_id()).toArray(size -> new Long[size]);
+      lstCursos = controller.findByAllIdSynchro(R_Curso.class, ids);
+      for(R_EvaluacionPrueba eva : listaEvaluaciones)
+      {
+        R_Colegio colegio = lstColegios.stream().filter(c -> c.getId().equals(eva.getColegio_id())).findFirst().orElse(null);
+        R_Curso curso = lstCursos.stream().filter(c -> c.getId().equals(eva.getCurso_id())).findFirst().orElse(null);
+        final String colegioCurso =
+            String.format("%s\n%s", colegio.getName().toUpperCase(), curso.getName());
+        mapColegioCurso.put(eva.getId(), colegioCurso);
+      }
+      asignatura = controller.findByIdSynchro(R_Asignatura.class, prueba.getAsignatura_id());
+      
+      
+      respuestasEsperadas = controller.findByParamsSynchro(R_RespuestasEsperadasPrueba.class, params);
       llegaOnFound = true;
     }
-    procesaDatosReporte();
   }
 
   @Override
@@ -176,11 +197,10 @@ public class ComparativoComunalHabilidadView extends AFormView
         cmbTipoColegio.getSelectionModel().select(tColegio);
       }
     }
-    procesaDatosReporte();
   }
 
   private void procesaDatosReporte() {
-    if (llegaEvaluacionEjeTematico && llegaTipoAlumno && llegaOnFound && llegaTipoColegio) {
+    if (llegaEvaluacionEjeTematico && llegaTipoAlumno && llegaOnFound && llegaTipoColegio ) {
       llenarDatosTabla();
       desplegarDatosHabilidades();
       desplegarDatosEvaluaciones();
@@ -199,7 +219,7 @@ public class ComparativoComunalHabilidadView extends AFormView
       HashMap<String, OTPreguntasHabilidad> mapaColegios = null;
 
 
-      creacionColumnasEjesTematicos();
+      creacionColumnasHabilidades();
       creacionColumnasEvaluaciones();
 
       for (R_EvaluacionPrueba evaluacionPrueba : listaEvaluaciones) {
@@ -241,9 +261,14 @@ public class ComparativoComunalHabilidadView extends AFormView
               continue;
             }
 
-            final Long idHabilidad= respuestasEsperadasPrueba.getEjetematico_id();
+            final Long idHabilidad= respuestasEsperadasPrueba.getHabilidad_id();
             final Integer numeroPreg = respuestasEsperadasPrueba.getNumero();
             R_Habilidad habilidad = mapaHabilidad.keySet().stream().filter(e -> e.getId().equals(idHabilidad)).findFirst().orElse(null);
+            if(habilidad == null)
+            {
+              habilidad =  controller.findByIdSynchro(R_Habilidad.class, idHabilidad);
+              
+            }
             
             
             if (mapaHabilidad != null) {
@@ -408,10 +433,10 @@ public class ComparativoComunalHabilidadView extends AFormView
   }
 
   @SuppressWarnings({"rawtypes", "unchecked"})
-  private void creacionColumnasEjesTematicos() {
+  private void creacionColumnasHabilidades() {
     tblHabilidades.getColumns().clear();
 
-    TableColumn columna0 = new TableColumn("Eje Temático");
+    TableColumn columna0 = new TableColumn("Habilidades");
     columna0.setCellValueFactory(
         new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
           public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
@@ -419,7 +444,7 @@ public class ComparativoComunalHabilidadView extends AFormView
             return new SimpleStringProperty(param.getValue().get(0).toString());
           }
         });
-    columna0.setPrefWidth(100);
+    columna0.setPrefWidth(175);
     tblHabilidades.getColumns().add(columna0);
 
     titulosColumnas = new ArrayList<>();

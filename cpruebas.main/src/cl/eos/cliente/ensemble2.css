@@ -927,38 +927,28 @@
   -fx-background-color: 
        -fx-outer-border, 
        -fx-body-color;
-  -fx-background-insets: 0, 6;
-  -fx-background-radius: 10px, 10px;
+  -fx-background-insets: 0.0, 6.0;
+  -fx-background-radius: 10.0px, 10.0px;
   -fx-background-repeat: no-repeat;
   -fx-background-position: center;
 }
-/*
 .pagination{
         -fx-base:black;
     }
-    .pagination .toggle-button {
+.pagination .toggle-button {
         -fx-shape:"m74.63,72.21494l14.50002,-14.49994l14.49998,14.49994l-14.49998,14.50002l-14.50002,-14.50002z";
-        -fx-background-radius:3px;
+        -fx-background-radius:3.0px;
     }
-    .pagination .button{
-        -fx-padding: 8 10 8 10px;
-        -fx-background-radius:0px; 
+.pagination .button{
+        -fx-padding: 8.0 10.0 8.0 10.0px;
+        -fx-background-radius:0.0px; /* This is used for making the Arrow Button Curve*/
     }
-    .pagination .label {
+.pagination .label {
         -fx-text-fill:white;
     }
-*/
-.pagination{
-        -fx-base:black;
-    }
-    .pagination .toggle-button {
-        -fx-shape:"m74.63,72.21494l14.50002,-14.49994l14.49998,14.49994l-14.49998,14.50002l-14.50002,-14.50002z";
-        -fx-background-radius:3px;
-    }
-    .pagination .button{
-        -fx-padding: 8 10 8 10px;
-        -fx-background-radius:0px; /* This is used for making the Arrow Button Curve*/
-    }
-    .pagination .label {
-        -fx-text-fill:white;
-    }
+    
+#double-line .table-view .column-header {
+    -fx-text-fill: blue;
+    -fx-font-size: 8;
+    -fx-font-family: "Arial";
+}
