@@ -321,7 +321,7 @@ public class InformeEjesXCurso implements IInforme {
   }
 
   private List<R_PruebaRendida> obtenerPruebasRendidas(R_EvaluacionPrueba eval) {
-    Map<String, Object> params = MapBuilder.<String, Object>unordered().put("prueba_id", eval.getPrueba_id()).build();
+    Map<String, Object> params = MapBuilder.<String, Object>unordered().put("evaluacionprueba_id", eval.getId()).build();
     return PersistenceServiceFactory.getPersistenceService().findByParamsSynchro(R_PruebaRendida.class, params);
   }
 

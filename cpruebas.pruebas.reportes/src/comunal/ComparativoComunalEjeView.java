@@ -89,6 +89,9 @@ public class ComparativoComunalEjeView extends AFormView implements EventHandler
 
   private ArrayList<String> titulosColumnas;
   private R_Prueba prueba;
+  /**
+   * Asociación del Evaluación (ID) con el Colegio correspondiente.
+   */
   private Map<Long, String> mapColegioCurso = new HashMap<>();
   private List<R_Colegio> lstColegios = new ArrayList<>();
   private R_Asignatura asignatura;

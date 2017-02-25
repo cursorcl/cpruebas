@@ -9,9 +9,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.Executors;
 
 import cl.eos.common.Constants;
 import cl.eos.imp.view.AFormView;
+import cl.eos.imp.view.ProgressForm;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.ot.OTPreguntasEvaluacion;
 import cl.eos.ot.OTPreguntasHabilidad;
@@ -19,6 +21,7 @@ import cl.eos.persistence.util.Comparadores;
 import cl.eos.restful.tables.R_Alumno;
 import cl.eos.restful.tables.R_Asignatura;
 import cl.eos.restful.tables.R_Colegio;
+import cl.eos.restful.tables.R_Curso;
 import cl.eos.restful.tables.R_EvaluacionEjetematico;
 import cl.eos.restful.tables.R_EvaluacionPrueba;
 import cl.eos.restful.tables.R_Habilidad;
@@ -28,11 +31,15 @@ import cl.eos.restful.tables.R_RespuestasEsperadasPrueba;
 import cl.eos.restful.tables.R_TipoAlumno;
 import cl.eos.restful.tables.R_TipoColegio;
 import cl.eos.util.ExcelSheetWriterObj;
+import cl.eos.util.MapBuilder;
 import cl.eos.util.Utils;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -48,8 +55,7 @@ import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.util.Callback;
 
-public class Nivel_ComparativoComunalHabilidadView extends AFormView
-    implements EventHandler<ActionEvent> {
+public class Nivel_ComparativoComunalHabilidadView extends AFormView implements EventHandler<ActionEvent> {
 
   private NumberFormat formatter = new DecimalFormat("#0.00");
   @FXML
@@ -90,8 +96,11 @@ public class Nivel_ComparativoComunalHabilidadView extends AFormView
 
   private R_Asignatura asignatura;
   private boolean llegaAsignatura;
-  private boolean llegTipoCurso;
+  /**
+   * Asociación del Evaluación (ID) con el Colegio correspondiente.
+   */
   private Map<Long, R_Colegio> mapColegios = new HashMap<>();
+  private List<R_Colegio> lstColegios;
 
 
   @FXML
@@ -128,7 +137,8 @@ public class Nivel_ComparativoComunalHabilidadView extends AFormView
 
     columna0.setCellValueFactory(param -> new SimpleStringProperty(
         ((CellDataFeatures<ObservableList, String>) param).getValue().get(0).toString()));
-    columna0.setPrefWidth(100);
+    columna0.setPrefWidth(175);
+    columna0.setStyle("-fx-font-size:11px;");
     tblHabilidades.getColumns().add(columna0);
 
     titulosColumnas = new ArrayList<>();
@@ -136,10 +146,10 @@ public class Nivel_ComparativoComunalHabilidadView extends AFormView
     for (R_EvaluacionPrueba evaluacion : listaEvaluaciones) {
       // Columnas
       final int col = indice;
-      R_Colegio colegio = mapColegios.get(evaluacion.getColegio_id());
+      R_Colegio colegio = mapColegios.get(evaluacion.getId());
       if (colegio == null) {
         colegio = controller.findByIdSynchro(R_Colegio.class, evaluacion.getColegio_id());
-        mapColegios.put(evaluacion.getColegio_id(), colegio);
+        mapColegios.put(evaluacion.getId(), colegio);
       }
 
       titulosColumnas.add(colegio.getName().toUpperCase());
@@ -147,6 +157,7 @@ public class Nivel_ComparativoComunalHabilidadView extends AFormView
       columna.setCellValueFactory(param -> new SimpleStringProperty(
           ((CellDataFeatures<ObservableList, String>) param).getValue().get(col).toString()));
       columna.setPrefWidth(100);
+      columna.setStyle("-fx-alignment: CENTER-RIGHT;");
       tblHabilidades.getColumns().add(columna);
       indice++;
     }
@@ -158,13 +169,13 @@ public class Nivel_ComparativoComunalHabilidadView extends AFormView
     tblEvaluaciones.getColumns().clear();
 
     TableColumn columna0 = new TableColumn("");
-    columna0.setCellValueFactory(
-        new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
-          public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
-            return new SimpleStringProperty(param.getValue().get(0).toString());
-          }
-        });
+    columna0.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
+      public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
+        return new SimpleStringProperty(param.getValue().get(0).toString());
+      }
+    });
     columna0.setPrefWidth(100);
+    columna0.setStyle("-fx-font-size:11px;");
     tblEvaluaciones.getColumns().add(columna0);
 
     int indice = 1;
@@ -174,13 +185,13 @@ public class Nivel_ComparativoComunalHabilidadView extends AFormView
       final int col = indice;
       final String colegioCurso = evaluacion;
       TableColumn columna = new TableColumn(colegioCurso);
-      columna.setCellValueFactory(
-          new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
-            public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
-              return new SimpleStringProperty(param.getValue().get(col).toString());
-            }
-          });
+      columna.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
+        public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
+          return new SimpleStringProperty(param.getValue().get(col).toString());
+        }
+      });
       columna.setPrefWidth(100);
+      columna.setStyle("-fx-alignment: CENTER-RIGHT;");
       tblEvaluaciones.getColumns().add(columna);
       indice++;
     }
@@ -189,8 +200,7 @@ public class Nivel_ComparativoComunalHabilidadView extends AFormView
   private void desplegarDatosHabilidades() {
     ObservableList<ObservableList<String>> registros = FXCollections.observableArrayList();
 
-    for (Entry<R_Habilidad, HashMap<String, OTPreguntasHabilidad>> mapa : mapaHabilidad
-        .entrySet()) {
+    for (Entry<R_Habilidad, HashMap<String, OTPreguntasHabilidad>> mapa : mapaHabilidad.entrySet()) {
 
       ObservableList<String> row = FXCollections.observableArrayList();
 
@@ -211,7 +221,7 @@ public class Nivel_ComparativoComunalHabilidadView extends AFormView
     }
     tblHabilidades.setItems(registros);
   }
-  
+
   private void desplegarDatosEvaluaciones() {
 
     Map<String, Integer> totales = new HashMap<String, Integer>();
@@ -255,7 +265,7 @@ public class Nivel_ComparativoComunalHabilidadView extends AFormView
 
     tblEvaluaciones.setItems(registroseEva);
   }
-  
+
   private void generaDatosEvaluacion(R_PruebaRendida pruebaRendida, String colegioNivel) {
 
     HashMap<String, OTPreguntasEvaluacion> mapaOT = new HashMap<String, OTPreguntasEvaluacion>();
@@ -269,15 +279,13 @@ public class Nivel_ComparativoComunalHabilidadView extends AFormView
         if (evaluacion.containsKey(colegioNivel)) {
           OTPreguntasEvaluacion otPreguntas = evaluacion.get(colegioNivel);
 
-          if (pBuenas >= evaluacionAl.getNrorangomin()
-              && pBuenas <= evaluacionAl.getNrorangomax()) {
+          if (pBuenas >= evaluacionAl.getNrorangomin() && pBuenas <= evaluacionAl.getNrorangomax()) {
             otPreguntas.setAlumnos(otPreguntas.getAlumnos() + 1);
           }
         } else {
 
           OTPreguntasEvaluacion pregunta = new OTPreguntasEvaluacion();
-          if (pBuenas >= evaluacionAl.getNrorangomin()
-              && pBuenas <= evaluacionAl.getNrorangomax()) {
+          if (pBuenas >= evaluacionAl.getNrorangomin() && pBuenas <= evaluacionAl.getNrorangomax()) {
             pregunta.setAlumnos(1);
           } else {
             pregunta.setAlumnos(0);
@@ -320,7 +328,7 @@ public class Nivel_ComparativoComunalHabilidadView extends AFormView
       }
     }
   }
-  
+
 
   private void informarProblemas(String colegioTipoCurso, Long al, String respuesta) {
     final Alert alert = new Alert(AlertType.ERROR);
@@ -332,105 +340,144 @@ public class Nivel_ComparativoComunalHabilidadView extends AFormView
 
   }
 
-  
-  private void llenarDatosTabla() {
+
+  private void generarReporte() {
 
     if (llegaOnFound && llegaEvaluacionEjeTematico) {
       StringBuffer buffer = new StringBuffer();
       buffer.append(asignatura);
       lblTitulo.setText(buffer.toString());
 
-      mapaHabilidad = new HashMap<>();
-      mapEvaAlumnos = new HashMap<>();
-      HashMap<String, OTPreguntasHabilidad> mapaColegios = null;
+      ProgressForm pForm = new ProgressForm();
+      pForm.title("Procesando");
+      pForm.message("Esto tomará algunos segundos.");
 
-      creacionColumnasHabilidades();
-      creacionColumnasEvaluaciones();
+      Task<Void> task = new Task<Void>() {
+        @Override
+        protected Void call() throws Exception {
 
-      for (R_EvaluacionPrueba evaluacionPrueba : listaEvaluaciones) {
-        R_Colegio colegio = mapColegios.get(evaluacionPrueba.getColegio_id());
-        final String colegioNivel = colegio.getName();
+          mapaHabilidad = new HashMap<>();
+          mapEvaAlumnos = new HashMap<>();
+          HashMap<String, OTPreguntasHabilidad> mapaColegios = null;
 
-        final List<R_PruebaRendida> pruebasRendidas =
-            controller.findByParamsSynchro(R_PruebaRendida.class, null);
+          int total = listaEvaluaciones.size();
+          int n = 0;
+          for (R_EvaluacionPrueba evaluacionPrueba : listaEvaluaciones) {
 
-        for (R_PruebaRendida pruebaRendida : pruebasRendidas) {
+            updateMessage("Procesando:" + evaluacionPrueba.getName());
+            updateProgress(++n, total);
+
+            R_Colegio colegio = mapColegios.get(evaluacionPrueba.getId());
+            final String colegioNivel = colegio.getName();
 
 
-          if (tipoAlumno != Constants.PIE_ALL && tipoAlumno != pruebaRendida.getTipoalumno_id())
-            continue;
-          if (tipoColegio != Constants.TIPO_COLEGIO_ALL
-              && tipoColegio != colegio.getTipocolegio_id())
-            continue;
-
-          generaDatosEvaluacion(pruebaRendida, colegioNivel);
-
-          String respuesta = pruebaRendida.getRespuestas().toUpperCase();
-          
-          if (respuesta == null || respuesta.length() < prueba.getNropreguntas()) {
-            informarProblemas(colegioNivel, pruebaRendida.getAlumno_id(), respuesta);
-            continue;
-          }
-
-          char[] cRespuesta = respuesta.toUpperCase().toCharArray();
-
-          for (R_RespuestasEsperadasPrueba respuestasEsperadasPrueba : respuestasEsperadas) {
-            if (respuestasEsperadasPrueba.getAnulada()) {
+            Map<String, Object> params =
+                MapBuilder.<String, Object>unordered().put("evaluacionprueba_id", evaluacionPrueba.getId()).build();
+            final List<R_PruebaRendida> pruebasRendidas = controller.findByParamsSynchro(R_PruebaRendida.class, params);
+            if (pruebasRendidas == null)
               continue;
-            }
 
-            Long idHabilidad = respuestasEsperadasPrueba.getHabilidad_id();
-            R_Habilidad habilidad = mapaHabilidad.keySet().stream()
-                .filter(e -> e.getId().equals(idHabilidad)).findFirst().orElse(null);
-            
-            Integer numeroPreg = respuestasEsperadasPrueba.getNumero();
-            if (habilidad  != null) {
-              HashMap<String, OTPreguntasHabilidad> mapa = mapaHabilidad.get(habilidad);
+            for (R_PruebaRendida pruebaRendida : pruebasRendidas) {
 
-              if (mapa.containsKey(colegioNivel)) {
-                OTPreguntasHabilidad otPregunta = mapa.get(colegioNivel);
 
-                if (cRespuesta[numeroPreg - 1] == respuestasEsperadasPrueba.getRespuesta()
-                    .toCharArray()[0]) {
-                  otPregunta.setBuenas(otPregunta.getBuenas() + 1);
+              if (tipoAlumno != Constants.PIE_ALL && tipoAlumno != pruebaRendida.getTipoalumno_id())
+                continue;
+              if (tipoColegio != Constants.TIPO_COLEGIO_ALL && tipoColegio != colegio.getTipocolegio_id())
+                continue;
+
+              generaDatosEvaluacion(pruebaRendida, colegioNivel);
+
+              String respuesta = pruebaRendida.getRespuestas().toUpperCase();
+
+              if (respuesta == null || respuesta.length() < prueba.getNropreguntas()) {
+                informarProblemas(colegioNivel, pruebaRendida.getAlumno_id(), respuesta);
+                continue;
+              }
+
+              char[] cRespuesta = respuesta.toUpperCase().toCharArray();
+
+              for (R_RespuestasEsperadasPrueba respuestasEsperadasPrueba : respuestasEsperadas) {
+                if (respuestasEsperadasPrueba.getAnulada()) {
+                  continue;
                 }
-                otPregunta.setTotal(otPregunta.getTotal() + 1);
-              } else {
-                OTPreguntasHabilidad otPreguntas = new OTPreguntasHabilidad();
-                otPreguntas.setHabilidad(habilidad);
-                if (cRespuesta[numeroPreg - 1] == respuestasEsperadasPrueba.getRespuesta()
-                    .toCharArray()[0]) {
-                  otPreguntas.setBuenas(1);
+
+                Long idHabilidad = respuestasEsperadasPrueba.getHabilidad_id();
+                R_Habilidad habilidad =
+                    mapaHabilidad.keySet().stream().filter(e -> e.getId().equals(idHabilidad)).findFirst().orElse(null);
+
+                Integer numeroPreg = respuestasEsperadasPrueba.getNumero();
+                if (habilidad != null) {
+                  HashMap<String, OTPreguntasHabilidad> mapa = mapaHabilidad.get(habilidad);
+
+                  if (mapa.containsKey(colegioNivel)) {
+                    OTPreguntasHabilidad otPregunta = mapa.get(colegioNivel);
+
+                    if (cRespuesta[numeroPreg - 1] == respuestasEsperadasPrueba.getRespuesta().toCharArray()[0]) {
+                      otPregunta.setBuenas(otPregunta.getBuenas() + 1);
+                    }
+                    otPregunta.setTotal(otPregunta.getTotal() + 1);
+                  } else {
+                    OTPreguntasHabilidad otPreguntas = new OTPreguntasHabilidad();
+                    otPreguntas.setHabilidad(habilidad);
+                    if (cRespuesta[numeroPreg - 1] == respuestasEsperadasPrueba.getRespuesta().toCharArray()[0]) {
+                      otPreguntas.setBuenas(1);
+                    } else {
+                      otPreguntas.setBuenas(0);
+                    }
+                    otPreguntas.setTotal(1);
+
+                    mapa.put(colegioNivel, otPreguntas);
+                  }
                 } else {
-                  otPreguntas.setBuenas(0);
+                  habilidad = controller.findByIdSynchro(R_Habilidad.class, idHabilidad);
+                  OTPreguntasHabilidad otPreguntas = new OTPreguntasHabilidad();
+                  otPreguntas.setHabilidad(habilidad);
+                  if (cRespuesta[numeroPreg - 1] == respuestasEsperadasPrueba.getRespuesta().toCharArray()[0]) {
+                    otPreguntas.setBuenas(1);
+                  } else {
+                    otPreguntas.setBuenas(0);
+                  }
+                  otPreguntas.setTotal(1);
+
+                  mapaColegios = new HashMap<String, OTPreguntasHabilidad>();
+                  mapaColegios.put(colegioNivel, otPreguntas);
+                  mapaHabilidad.put(habilidad, mapaColegios);
                 }
-                otPreguntas.setTotal(1);
-
-                mapa.put(colegioNivel, otPreguntas);
               }
-            } else {
-              habilidad = controller.findByIdSynchro(R_Habilidad.class, idHabilidad);
-              OTPreguntasHabilidad otPreguntas = new OTPreguntasHabilidad();
-              otPreguntas.setHabilidad(habilidad);
-              if (cRespuesta[numeroPreg - 1] == respuestasEsperadasPrueba.getRespuesta()
-                  .toCharArray()[0]) {
-                otPreguntas.setBuenas(1);
-              } else {
-                otPreguntas.setBuenas(0);
-              }
-              otPreguntas.setTotal(1);
-
-              mapaColegios = new HashMap<String, OTPreguntasHabilidad>();
-              mapaColegios.put(colegioNivel, otPreguntas);
-              mapaHabilidad.put(habilidad, mapaColegios);
             }
           }
+          updateMessage("Desplegando datos....");
+          Runnable r = () -> {
+            creacionColumnasHabilidades();
+            creacionColumnasEvaluaciones();
+            desplegarDatosHabilidades();
+            desplegarDatosEvaluaciones();
+          };
+          Platform.runLater(r);
+          return null;
+
         }
-      }
+      };
+      task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+        @Override
+        public void handle(WorkerStateEvent event) {
+          pForm.getDialogStage().hide();
+        }
+      });
+      task.setOnFailed(new EventHandler<WorkerStateEvent>() {
+
+        @Override
+        public void handle(WorkerStateEvent event) {
+          pForm.getDialogStage().hide();
+        }
+      });
+
+      pForm.showWorkerProgress(task);
+      Executors.newSingleThreadExecutor().execute(task);
     }
   }
-  
-  
+
+
   @Override
   public void onDataArrived(List<Object> list) {
     if (list != null && !list.isEmpty()) {
@@ -468,6 +515,15 @@ public class Nivel_ComparativoComunalHabilidadView extends AFormView
         for (final Object iEntity : list) {
           listaEvaluaciones.add((R_EvaluacionPrueba) iEntity);
         }
+
+        lstColegios = controller.findAllSynchro(R_Colegio.class);
+        for (R_EvaluacionPrueba eva : listaEvaluaciones) {
+          R_Colegio colegio =
+              lstColegios.stream().filter(c -> c.getId().equals(eva.getColegio_id())).findFirst().orElse(null);
+          mapColegios.put(eva.getId(), colegio);
+        }
+
+
       }
       if (entity instanceof R_RespuestasEsperadasPrueba) {
         respuestasEsperadas = new ArrayList<>();
@@ -478,7 +534,7 @@ public class Nivel_ComparativoComunalHabilidadView extends AFormView
     }
     procesaDatosReporte();
   }
-  
+
   @Override
   public void onFound(IEntity entity) {
     if (entity instanceof R_Prueba) {
@@ -491,16 +547,15 @@ public class Nivel_ComparativoComunalHabilidadView extends AFormView
     }
     procesaDatosReporte();
   }
-  private void procesaDatosReporte() {
-    if (llegaEvaluacionEjeTematico && llegaTipoAlumno && llegaOnFound && llegaTipoColegio
-        && llegaAsignatura ) {
 
-      llenarDatosTabla();
-      desplegarDatosHabilidades();
-      desplegarDatosEvaluaciones();
+  private void procesaDatosReporte() {
+    if (llegaEvaluacionEjeTematico && llegaTipoAlumno && llegaOnFound && llegaTipoColegio && llegaAsignatura) {
+
+      generarReporte();
+
     }
   }
 
-  
+
 
 }

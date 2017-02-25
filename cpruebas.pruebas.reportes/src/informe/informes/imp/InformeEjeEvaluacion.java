@@ -243,7 +243,7 @@ public class InformeEjeEvaluacion implements IInforme {
     Map<Long, List<R_RespuestasEsperadasPrueba>> mapRespEsperadas = new HashMap<>();
     for (final R_EvaluacionPrueba eval : evaluacionesPrueba) {
       Map<String, Object> params =
-          MapBuilder.<String, Object>unordered().put("evaluacioneprueba_id", eval.getId()).build();
+          MapBuilder.<String, Object>unordered().put("evaluacionprueba_id", eval.getId()).build();
       final List<R_PruebaRendida> pruebasRendidas = PersistenceServiceFactory
           .getPersistenceService().findByParamsSynchro(R_PruebaRendida.class, params);
 
