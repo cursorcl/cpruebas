@@ -383,13 +383,14 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
         comparativoComunal.setPrueba(pPrueba);
 
         Map<String, Object> params = MapBuilder.<String, Object>unordered().put("prueba_id", pPrueba.getId()).build();
-        controller.findByParam(R_EvaluacionPrueba.class, params);
+        controller.findByParam(R_EvaluacionPrueba.class, params, comparativoComunal);
 
         controller.findById(R_Asignatura.class, pPrueba.getAsignatura_id(), comparativoComunal);
         controller.findByParam(R_RespuestasEsperadasPrueba.class, params, comparativoComunal);
         controller.findAll(R_EvaluacionEjetematico.class, comparativoComunal);
         controller.findAll(R_TipoAlumno.class, comparativoComunal);
         controller.findAll(R_TipoColegio.class, comparativoComunal);
+        
       }
     }
   }

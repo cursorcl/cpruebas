@@ -946,9 +946,10 @@
 .pagination .label {
         -fx-text-fill:white;
     }
-    
-#double-line .table-view .column-header {
+
+#double-line .table-view .column-header .label {
     -fx-text-fill: blue;
     -fx-font-size: 8;
     -fx-font-family: "Arial";
+    -fx-background-color: transparent;
 }

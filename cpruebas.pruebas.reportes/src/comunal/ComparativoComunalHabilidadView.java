@@ -9,11 +9,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.Executors;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 import cl.eos.common.Constants;
 import cl.eos.imp.view.AFormView;
+import cl.eos.imp.view.ProgressForm;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.ot.OTPreguntasEvaluacion;
 import cl.eos.ot.OTPreguntasHabilidad;
@@ -32,10 +33,13 @@ import cl.eos.restful.tables.R_TipoAlumno;
 import cl.eos.restful.tables.R_TipoColegio;
 import cl.eos.util.ExcelSheetWriterObj;
 import cl.eos.util.MapBuilder;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -51,8 +55,7 @@ import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.util.Callback;
 
-public class ComparativoComunalHabilidadView extends AFormView
-    implements EventHandler<ActionEvent> {
+public class ComparativoComunalHabilidadView extends AFormView implements EventHandler<ActionEvent> {
 
   private static Logger log = Logger.getLogger(ComparativoComunalHabilidadView.class.getName());
   private NumberFormat formatter = new DecimalFormat("#0.00");
@@ -142,24 +145,23 @@ public class ComparativoComunalHabilidadView extends AFormView
   public void onFound(IEntity entity) {
     if (entity instanceof R_Prueba) {
       prueba = (R_Prueba) entity;
-      
-      
+
+
       Map<String, Object> params = MapBuilder.<String, Object>unordered().put("prueba_id", prueba.getId()).build();
       listaEvaluaciones = controller.findByParamsSynchro(R_EvaluacionPrueba.class, params);
-      lstColegios =  controller.findAllSynchro(R_Colegio.class);
-      Long[] ids = listaEvaluaciones.stream().map(e ->  e.getCurso_id()).toArray(size -> new Long[size]);
+      lstColegios = controller.findAllSynchro(R_Colegio.class);
+      Long[] ids = listaEvaluaciones.stream().map(e -> e.getCurso_id()).toArray(size -> new Long[size]);
       lstCursos = controller.findByAllIdSynchro(R_Curso.class, ids);
-      for(R_EvaluacionPrueba eva : listaEvaluaciones)
-      {
-        R_Colegio colegio = lstColegios.stream().filter(c -> c.getId().equals(eva.getColegio_id())).findFirst().orElse(null);
+      for (R_EvaluacionPrueba eva : listaEvaluaciones) {
+        R_Colegio colegio =
+            lstColegios.stream().filter(c -> c.getId().equals(eva.getColegio_id())).findFirst().orElse(null);
         R_Curso curso = lstCursos.stream().filter(c -> c.getId().equals(eva.getCurso_id())).findFirst().orElse(null);
-        final String colegioCurso =
-            String.format("%s\n%s", colegio.getName().toUpperCase(), curso.getName());
+        final String colegioCurso = String.format("%s\n%s", colegio.getName().toUpperCase(), curso.getName());
         mapColegioCurso.put(eva.getId(), colegioCurso);
       }
       asignatura = controller.findByIdSynchro(R_Asignatura.class, prueba.getAsignatura_id());
-      
-      
+
+
       respuestasEsperadas = controller.findByParamsSynchro(R_RespuestasEsperadasPrueba.class, params);
       llegaOnFound = true;
     }
@@ -200,121 +202,148 @@ public class ComparativoComunalHabilidadView extends AFormView
   }
 
   private void procesaDatosReporte() {
-    if (llegaEvaluacionEjeTematico && llegaTipoAlumno && llegaOnFound && llegaTipoColegio ) {
-      llenarDatosTabla();
-      desplegarDatosHabilidades();
-      desplegarDatosEvaluaciones();
+    if (llegaEvaluacionEjeTematico && llegaTipoAlumno && llegaOnFound && llegaTipoColegio) {
+      generarReporte();
     }
   }
 
-  private void llenarDatosTabla() {
+  private void generarReporte() {
 
-    if (llegaOnFound && llegaEvaluacionEjeTematico) {
       StringBuffer buffer = new StringBuffer();
       buffer.append(asignatura);
       lblTitulo.setText(buffer.toString());
 
-      mapaHabilidad = new HashMap<>();
-      mapEvaAlumnos = new HashMap<>();
-      HashMap<String, OTPreguntasHabilidad> mapaColegios = null;
+      ProgressForm pForm = new ProgressForm();
+      pForm.title("Procesando");
+      pForm.message("Esto tomará algunos segundos.");
+
+      Task<Void> task = new Task<Void>() {
+        @Override
+        protected Void call() throws Exception {
 
 
-      creacionColumnasHabilidades();
-      creacionColumnasEvaluaciones();
+          mapaHabilidad = new HashMap<>();
+          mapEvaAlumnos = new HashMap<>();
+          HashMap<String, OTPreguntasHabilidad> mapaColegios = null;
 
-      for (R_EvaluacionPrueba evaluacionPrueba : listaEvaluaciones) {
-        String colegioCurso = mapColegioCurso.get(evaluacionPrueba.getId());
+          int total = listaEvaluaciones.size();
+          int n = 0;
+          for (R_EvaluacionPrueba evaluacionPrueba : listaEvaluaciones) {
+            updateMessage("Procesando:" + evaluacionPrueba.getName());
+            updateProgress(++n, total);
+            
+            String colegioCurso = mapColegioCurso.get(evaluacionPrueba.getId());
 
-        Map<String, Object> params = MapBuilder.<String, Object>unordered()
-            .put("evaluacionprueba_id", evaluacionPrueba.getId()).build();
-        final List<R_PruebaRendida> pruebasRendidas =
-            controller.findByParamsSynchro(R_PruebaRendida.class, params);
+            Map<String, Object> params =
+                MapBuilder.<String, Object>unordered().put("evaluacionprueba_id", evaluacionPrueba.getId()).build();
+            final List<R_PruebaRendida> pruebasRendidas = controller.findByParamsSynchro(R_PruebaRendida.class, params);
 
 
-        for (R_PruebaRendida pruebaRendida : pruebasRendidas) {
-          Long alumno = pruebaRendida.getAlumno_id();
-          if (tipoAlumno != Constants.PIE_ALL && tipoAlumno != pruebaRendida.getTipoalumno_id())
-            continue;
+            for (R_PruebaRendida pruebaRendida : pruebasRendidas) {
+              Long alumno = pruebaRendida.getAlumno_id();
+              if (tipoAlumno != Constants.PIE_ALL && tipoAlumno != pruebaRendida.getTipoalumno_id())
+                continue;
 
-          R_Colegio colegio =
-              lstColegios.stream().filter(c -> c.getId().equals(evaluacionPrueba.getColegio_id()))
+              R_Colegio colegio = lstColegios.stream().filter(c -> c.getId().equals(evaluacionPrueba.getColegio_id()))
                   .findFirst().orElse(null);
 
-          if (colegio == null || tipoColegio != Constants.TIPO_COLEGIO_ALL
-              && tipoColegio != colegio.getTipocolegio_id())
-            continue;
+              if (colegio == null
+                  || tipoColegio != Constants.TIPO_COLEGIO_ALL && tipoColegio != colegio.getTipocolegio_id())
+                continue;
 
 
-          generaDatosEvaluacion(pruebaRendida, colegioCurso);
+              generaDatosEvaluacion(pruebaRendida, colegioCurso);
 
-          String respuesta = pruebaRendida.getRespuestas().toUpperCase();
+              String respuesta = pruebaRendida.getRespuestas().toUpperCase();
 
-          if (respuesta == null || respuesta.length() < prueba.getNropreguntas()) {
-            informarProblemas(colegioCurso, alumno, respuesta);
-            continue;
-          }
+              if (respuesta == null || respuesta.length() < prueba.getNropreguntas()) {
+                informarProblemas(colegioCurso, alumno, respuesta);
+                continue;
+              }
 
-          char[] cRespuesta = respuesta.toUpperCase().toCharArray();
+              char[] cRespuesta = respuesta.toUpperCase().toCharArray();
 
-          for (R_RespuestasEsperadasPrueba respuestasEsperadasPrueba : respuestasEsperadas) {
-            if (respuestasEsperadasPrueba.getAnulada()) {
-              continue;
-            }
-
-            final Long idHabilidad= respuestasEsperadasPrueba.getHabilidad_id();
-            final Integer numeroPreg = respuestasEsperadasPrueba.getNumero();
-            R_Habilidad habilidad = mapaHabilidad.keySet().stream().filter(e -> e.getId().equals(idHabilidad)).findFirst().orElse(null);
-            if(habilidad == null)
-            {
-              habilidad =  controller.findByIdSynchro(R_Habilidad.class, idHabilidad);
-              
-            }
-            
-            
-            if (mapaHabilidad != null) {
-              HashMap<String, OTPreguntasHabilidad> mapa = mapaHabilidad.get(habilidad);
-
-              if (mapa.containsKey(colegioCurso)) {
-                OTPreguntasHabilidad otPregunta = mapa.get(colegioCurso);
-
-                if (cRespuesta[numeroPreg - 1] == respuestasEsperadasPrueba.getRespuesta()
-                    .toCharArray()[0]) {
-                  otPregunta.setBuenas(otPregunta.getBuenas() + 1);
+              for (R_RespuestasEsperadasPrueba respuestasEsperadasPrueba : respuestasEsperadas) {
+                if (respuestasEsperadasPrueba.getAnulada()) {
+                  continue;
                 }
-                otPregunta.setTotal(otPregunta.getTotal() + 1);
-              } else {
-                OTPreguntasHabilidad otPreguntas = new OTPreguntasHabilidad();
-                otPreguntas.setHabilidad(habilidad);
-                if (cRespuesta[numeroPreg - 1] == respuestasEsperadasPrueba.getRespuesta()
-                    .toCharArray()[0]) {
-                  otPreguntas.setBuenas(1);
+
+                final Long idHabilidad = respuestasEsperadasPrueba.getHabilidad_id();
+                final Integer numeroPreg = respuestasEsperadasPrueba.getNumero();
+                R_Habilidad habilidad =
+                    mapaHabilidad.keySet().stream().filter(e -> e.getId().equals(idHabilidad)).findFirst().orElse(null);
+
+
+                if (habilidad != null) {
+                  HashMap<String, OTPreguntasHabilidad> mapa = mapaHabilidad.get(habilidad);
+
+                  if (mapa.containsKey(colegioCurso)) {
+                    OTPreguntasHabilidad otPregunta = mapa.get(colegioCurso);
+
+                    if (cRespuesta[numeroPreg - 1] == respuestasEsperadasPrueba.getRespuesta().toCharArray()[0]) {
+                      otPregunta.setBuenas(otPregunta.getBuenas() + 1);
+                    }
+                    otPregunta.setTotal(otPregunta.getTotal() + 1);
+                  } else {
+                    OTPreguntasHabilidad otPreguntas = new OTPreguntasHabilidad();
+                    otPreguntas.setHabilidad(habilidad);
+                    if (cRespuesta[numeroPreg - 1] == respuestasEsperadasPrueba.getRespuesta().toCharArray()[0]) {
+                      otPreguntas.setBuenas(1);
+                    } else {
+                      otPreguntas.setBuenas(0);
+                    }
+                    otPreguntas.setTotal(1);
+
+                    mapa.put(colegioCurso, otPreguntas);
+                  }
                 } else {
-                  otPreguntas.setBuenas(0);
+                  habilidad = controller.findByIdSynchro(R_Habilidad.class, idHabilidad);
+                  OTPreguntasHabilidad otPreguntas = new OTPreguntasHabilidad();
+                  otPreguntas.setHabilidad(habilidad);
+                  if (cRespuesta[numeroPreg - 1] == respuestasEsperadasPrueba.getRespuesta().toCharArray()[0]) {
+                    otPreguntas.setBuenas(1);
+                  } else {
+                    otPreguntas.setBuenas(0);
+                  }
+                  otPreguntas.setTotal(1);
+
+                  mapaColegios = new HashMap<String, OTPreguntasHabilidad>();
+                  mapaColegios.put(colegioCurso, otPreguntas);
+                  mapaHabilidad.put(habilidad, mapaColegios);
                 }
-                otPreguntas.setTotal(1);
-
-                mapa.put(colegioCurso, otPreguntas);
               }
-            } else {
-              habilidad =  controller.findByIdSynchro(R_Habilidad.class, idHabilidad);
-              OTPreguntasHabilidad otPreguntas = new OTPreguntasHabilidad();
-              otPreguntas.setHabilidad(habilidad);
-              if (cRespuesta[numeroPreg - 1] == respuestasEsperadasPrueba.getRespuesta()
-                  .toCharArray()[0]) {
-                otPreguntas.setBuenas(1);
-              } else {
-                otPreguntas.setBuenas(0);
-              }
-              otPreguntas.setTotal(1);
-
-              mapaColegios = new HashMap<String, OTPreguntasHabilidad>();
-              mapaColegios.put(colegioCurso, otPreguntas);
-              mapaHabilidad.put(habilidad, mapaColegios);
             }
           }
+          updateMessage("Desplegando datos....");
+          Runnable r = () -> {
+            creacionColumnasHabilidades();
+            creacionColumnasEvaluaciones();
+            desplegarDatosHabilidades();
+            
+            desplegarDatosEvaluaciones();
+          };
+          Platform.runLater(r);
+          return null;
         }
-      }
-    }
+      };
+
+      task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+        @Override
+        public void handle(WorkerStateEvent event) {
+          pForm.getDialogStage().hide();
+        }
+      });
+      task.setOnFailed(new EventHandler<WorkerStateEvent>() {
+
+        @Override
+        public void handle(WorkerStateEvent event) {
+          log.severe("Se ha producido el siguiente error:" + event.getEventType().toString());
+          pForm.getDialogStage().hide();
+        }
+      });
+
+      pForm.showWorkerProgress(task);
+      Executors.newSingleThreadExecutor().execute(task);
   }
 
   private void generaDatosEvaluacion(R_PruebaRendida pruebaRendida, String colegioCurso) {
@@ -330,15 +359,13 @@ public class ComparativoComunalHabilidadView extends AFormView
         if (evaluacion.containsKey(colegioCurso)) {
           OTPreguntasEvaluacion otPreguntas = evaluacion.get(colegioCurso);
 
-          if (pBuenas >= evaluacionAl.getNrorangomin()
-              && pBuenas <= evaluacionAl.getNrorangomax()) {
+          if (pBuenas >= evaluacionAl.getNrorangomin() && pBuenas <= evaluacionAl.getNrorangomax()) {
             otPreguntas.setAlumnos(otPreguntas.getAlumnos() + 1);
           }
         } else {
 
           OTPreguntasEvaluacion pregunta = new OTPreguntasEvaluacion();
-          if (pBuenas >= evaluacionAl.getNrorangomin()
-              && pBuenas <= evaluacionAl.getNrorangomax()) {
+          if (pBuenas >= evaluacionAl.getNrorangomin() && pBuenas <= evaluacionAl.getNrorangomax()) {
             pregunta.setAlumnos(1);
           } else {
             pregunta.setAlumnos(0);
@@ -435,15 +462,16 @@ public class ComparativoComunalHabilidadView extends AFormView
   @SuppressWarnings({"rawtypes", "unchecked"})
   private void creacionColumnasHabilidades() {
     tblHabilidades.getColumns().clear();
+    tblHabilidades.setId("double-line");
 
     TableColumn columna0 = new TableColumn("Habilidades");
-    columna0.setCellValueFactory(
-        new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
-          public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
+    columna0.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
+      public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
 
-            return new SimpleStringProperty(param.getValue().get(0).toString());
-          }
-        });
+        return new SimpleStringProperty(param.getValue().get(0).toString());
+      }
+    });
+    columna0.setStyle("-fx-font-size:11px;");
     columna0.setPrefWidth(175);
     tblHabilidades.getColumns().add(columna0);
 
@@ -454,17 +482,16 @@ public class ComparativoComunalHabilidadView extends AFormView
       final int col = indice;
       R_Curso curso = controller.findByIdSynchro(R_Curso.class, evaluacion.getCurso_id());
       R_Colegio colegio = controller.findByIdSynchro(R_Colegio.class, evaluacion.getColegio_id());
-      final String colegioCurso =
-          String.format("%s\n%s", colegio.getName().toUpperCase(), curso.getName());
+      final String colegioCurso = String.format("%s\n%s", colegio.getName().toUpperCase(), curso.getName());
       titulosColumnas.add(colegioCurso);
       TableColumn columna = new TableColumn(colegioCurso);
-      columna.setCellValueFactory(
-          new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
-            public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
-              return new SimpleStringProperty(param.getValue().get(col).toString());
-            }
-          });
+      columna.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
+        public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
+          return new SimpleStringProperty(param.getValue().get(col).toString());
+        }
+      });
       columna.setPrefWidth(100);
+      columna.setStyle("-fx-alignment: CENTER-RIGHT;");
       tblHabilidades.getColumns().add(columna);
       indice++;
     }
@@ -475,13 +502,13 @@ public class ComparativoComunalHabilidadView extends AFormView
     tblEvaluaciones.getColumns().clear();
 
     TableColumn columna0 = new TableColumn("");
-    columna0.setCellValueFactory(
-        new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
-          public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
-            return new SimpleStringProperty(param.getValue().get(0).toString());
-          }
-        });
+    columna0.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
+      public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
+        return new SimpleStringProperty(param.getValue().get(0).toString());
+      }
+    });
     columna0.setPrefWidth(100);
+    columna0.setStyle("-fx-font-size:11px;");
     tblEvaluaciones.getColumns().add(columna0);
 
     int indice = 1;
@@ -491,13 +518,13 @@ public class ComparativoComunalHabilidadView extends AFormView
       final int col = indice;
       final String colegioCurso = evaluacion;
       TableColumn columna = new TableColumn(colegioCurso);
-      columna.setCellValueFactory(
-          new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
-            public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
-              return new SimpleStringProperty(param.getValue().get(col).toString());
-            }
-          });
+      columna.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
+        public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
+          return new SimpleStringProperty(param.getValue().get(col).toString());
+        }
+      });
       columna.setPrefWidth(100);
+      columna.setStyle("-fx-alignment: CENTER-RIGHT;");
       tblEvaluaciones.getColumns().add(columna);
       indice++;
     }
