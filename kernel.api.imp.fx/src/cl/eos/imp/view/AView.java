@@ -3,8 +3,7 @@ package cl.eos.imp.view;
 import java.awt.Dimension;
 import java.net.URL;
 import java.util.List;
-
-import org.apache.log4j.Logger;
+import java.util.logging.Logger;
 
 import cl.eos.interfaces.controller.IController;
 import cl.eos.interfaces.entity.IEntity;
@@ -14,7 +13,7 @@ import javafx.scene.layout.Pane;
 
 public abstract class AView implements IView {
 
-  static final Logger LOG = Logger.getLogger(AView.class);
+  static final Logger LOG = Logger.getLogger(AView.class.getName());
   private String title;
   protected IController controller;
   protected Object parent;
@@ -137,7 +136,7 @@ public abstract class AView implements IView {
       //controller.addView(view);
     } catch (final Exception e) {
       e.printStackTrace();
-      AView.LOG.error(e);
+      AView.LOG.severe(e.getMessage());
     }
     if (view != null) {
       WindowManager.getInstance().show(view);
@@ -160,7 +159,7 @@ public abstract class AView implements IView {
       controller.addView(view);
     } catch (final Exception e) {
       e.printStackTrace();
-      AView.LOG.error(e);
+      AView.LOG.severe(e.getMessage());
     }
     if (view != null) {
       WindowManager.getInstance().showOver(view);
