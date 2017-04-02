@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 
@@ -35,6 +36,7 @@ import javafx.stage.FileChooser;
 
 public class ImpresionPrueba {
 
+	private Logger log =  Logger.getLogger("Impresion Prueba");
     private static final int RUT_ROW = 74;
     private static final int[] RUT_COLS = { 57, 73, 91, 106, 121, 140, 156, 171, 191 };
     private static final int FORMA_ROW = 66;
@@ -327,6 +329,7 @@ public class ImpresionPrueba {
     }
 
     private void drawRut(String rut) {
+    	log.info("RUT=" + rut);
         final String strRut = rut.replace("-", "");
         final char[] chrRut = strRut.toCharArray();
         int idxCol = 0;

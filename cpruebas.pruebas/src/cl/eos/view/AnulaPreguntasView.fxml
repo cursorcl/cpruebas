@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.effect.*?>
-<?import javafx.scene.web.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.input.*?>
-<?import javafx.scene.shape.*?>
-<?import javafx.scene.control.*?>
-<?import java.lang.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.input.KeyCodeCombination?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="585.0" prefWidth="396.0" styleClass="sample-page" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.AnularPreguntasViewController">
+<AnchorPane prefHeight="537.0" prefWidth="452.0" styleClass="sample-page" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.AnularPreguntasViewController">
    <children>
       <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="489.0" prefWidth="392.0" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="0.0">
          <top>
@@ -32,31 +35,19 @@
          <center>
             <VBox prefHeight="464.0" prefWidth="1087.0" BorderPane.alignment="CENTER">
                <children>
-                  <TextArea editable="false" opacity="0.46" prefHeight="46.0" prefWidth="392.0" text="Marque las respuestas que desea anular.&#10;Luego seleccione menú grabar para registrar los resultados.">
-                     <effect>
-                        <Lighting>
-                           <bumpInput>
-                              <Shadow />
-                           </bumpInput>
-                           <light>
-                              <Light.Distant />
-                           </light>
-                        </Lighting>
-                     </effect>
-                  </TextArea>
                   <TableView fx:id="tblRegistroDefinePrueba" VBox.vgrow="ALWAYS">
                     <columns>
                       <TableColumn fx:id="preguntaCol" editable="false" prefWidth="42.0" resizable="false" sortable="false" text="#" />
-                      <TableColumn fx:id="respuestaCol" editable="false" prefWidth="74.0" resizable="false" sortable="false" text="Res" />
-                        <TableColumn fx:id="vfCol" editable="false" prefWidth="60.0" resizable="false" sortable="false" text="V/F" />
+                      <TableColumn fx:id="respuestaCol" editable="false" prefWidth="110.0" resizable="false" sortable="false" text="Res" />
+                        <TableColumn fx:id="vfCol" editable="false" prefWidth="99.0" resizable="false" sortable="false" text="V/F" />
                         <TableColumn fx:id="mentalCol" editable="false" prefWidth="84.0" resizable="false" sortable="false" text="Mental" />
-                        <TableColumn fx:id="anularCol" prefWidth="105.0" text="Anular" />
+                        <TableColumn fx:id="anularCol" prefWidth="90.0" text="Anular" />
                     </columns>
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>
                      <tooltip>
-                        <Tooltip autoHide="true" text="Marque las respuestas que desea anular.Luego seleccione menú grabar para registrar los resultados." width="75.0" wrapText="true" />
+                        <Tooltip autoHide="true" contentDisplay="CENTER" opacity="0.7" text="Marque las respuestas que desea anular.Luego seleccione menú grabar para registrar los resultados." textAlignment="CENTER" width="75.0" wrapText="true" />
                      </tooltip>
                   </TableView>
                </children>
