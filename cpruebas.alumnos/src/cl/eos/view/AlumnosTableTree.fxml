@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.input.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
@@ -17,7 +21,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="1261.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.AlumnosTableTreeView">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="1168.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.AlumnosTableTreeView">
 	<top>
 		<MenuBar BorderPane.alignment="CENTER">
 			<menus>
@@ -82,23 +86,28 @@
 							<center>
 								<AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                            <children>
-                              <TableView layoutX="175.0" layoutY="36.0" prefHeight="391.0" prefWidth="965.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <TableView fx:id="tblAlumnos" layoutX="175.0" layoutY="36.0" prefHeight="391.0" prefWidth="965.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                 <columns>
-                                  <TableColumn fx:id="colId" prefWidth="75.0" text="#" />
-                                  <TableColumn fx:id="colRut" prefWidth="104.0" text="RUT" />
-                                    <TableColumn fx:id="colPaterno" prefWidth="130.0" text="Paterno" />
-                                    <TableColumn fx:id="colMaterno" prefWidth="140.0" text="Materno" />
-                                    <TableColumn fx:id="colName" prefWidth="176.0" text="Nombres" />
-                                    <TableColumn fx:id="colTipoAlumno" prefWidth="114.0" text="Tipo Alumno" />
-                                    <TableColumn fx:id="colDireccion" prefWidth="208.0" text="Dirección" />
+                                  <TableColumn fx:id="colId" prefWidth="48.0" text="#" />
+                                  <TableColumn fx:id="colRut" prefWidth="114.0" text="RUT" />
+                                    <TableColumn fx:id="colPaterno" prefWidth="136.0" text="Paterno" />
+                                    <TableColumn fx:id="colMaterno" prefWidth="143.0" text="Materno" />
+                                    <TableColumn fx:id="colName" prefWidth="156.0" text="Nombres" />
+                                    <TableColumn fx:id="colTipoAlumno" prefWidth="89.0" text="Tipo Alumno" />
+                                    <TableColumn fx:id="colDireccion" prefWidth="199.0" text="Dirección" />
                                 </columns>
+                                 <contextMenu>
+                                    <ContextMenu>
+                                      <items>
+                                        <MenuItem fx:id="mnItemModificar" mnemonicParsing="false" text="Modificar" />
+                                          <MenuItem fx:id="mnItemEliminar" mnemonicParsing="false" text="Eliminar" />
+                                      </items>
+                                    </ContextMenu>
+                                 </contextMenu>
                               </TableView>
                            </children>
 								</AnchorPane>
 							</center>
-                     <bottom>
-                        <Pagination fx:id="pagination" prefHeight="52.0" prefWidth="965.0" BorderPane.alignment="CENTER" />
-                     </bottom>
                      <top>
                         <HBox alignment="CENTER" prefHeight="30.0" prefWidth="965.0" spacing="30.0" BorderPane.alignment="CENTER">
                            <children>

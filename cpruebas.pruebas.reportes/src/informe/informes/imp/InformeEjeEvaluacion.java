@@ -6,9 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-import org.apache.log4j.Logger;
 import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
@@ -45,7 +45,7 @@ public class InformeEjeEvaluacion implements IInforme {
   private static final String ASIGNATURA_ID = "asignatura_id";
   private static final String COLEGIO_ID = "colegio_id";
 
-  static Logger log = Logger.getLogger(InformeEjeEvaluacion.class);
+  static Logger log = Logger.getLogger(InformeEjeEvaluacion.class.getName());
   private R_TipoAlumno tipoAlumno;
   private Map<Long, List<OTAcumulador>> resultado;
   private List<R_RangoEvaluacion> rangos;

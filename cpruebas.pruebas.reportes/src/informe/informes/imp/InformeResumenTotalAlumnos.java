@@ -7,10 +7,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import org.apache.log4j.Logger;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
@@ -49,7 +49,7 @@ public class InformeResumenTotalAlumnos implements IInforme {
   final static String[] TABLE_HEAD = {"CURSOS", "TOTAL", "EVALUADOS", "APROBADOS", "REPROBADOS",
       "% EVALUADOS", "% APROBADOS", "% REPROBADOS"};
 
-  static Logger log = Logger.getLogger(InformeResumenTotalAlumnos.class);
+  static Logger log = Logger.getLogger(InformeResumenTotalAlumnos.class.getName());
   private R_TipoAlumno tipoAlumno;
   private R_Colegio colegio;
   private R_Asignatura asignatura;
@@ -213,7 +213,7 @@ public class InformeResumenTotalAlumnos implements IInforme {
             .filter(a -> a.getId().equals(pruebaRendida.getAlumno_id())).findFirst().orElse(null);
 
         if (alumno == null || alumno.getTipoalumno_id() == null) {
-          InformeResumenTotalAlumnos.log.error("R_Alumno NULO");
+          InformeResumenTotalAlumnos.log.severe("R_Alumno NULO");
           totalAlumnos--;
           continue;
         }

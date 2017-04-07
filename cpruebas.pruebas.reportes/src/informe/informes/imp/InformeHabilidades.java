@@ -5,11 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import org.apache.log4j.Logger;
 import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
@@ -44,7 +44,7 @@ import utils.WordUtil;
 public class InformeHabilidades implements IInforme {
   private static final String ASIGNATURA_ID = "idAsignatura";
   private static final String COLEGIO_ID = "idColegio";
-  static Logger log = Logger.getLogger(InformeHabilidades.class);
+  static Logger log = Logger.getLogger(InformeHabilidades.class.getName());
   private R_TipoAlumno tipoAlumno;
   private Map<R_Habilidad, List<OTAcumulador>> resultado;
   private Map<Long, List<R_RespuestasEsperadasPrueba>> mapRespEsperadas = new HashMap<>();

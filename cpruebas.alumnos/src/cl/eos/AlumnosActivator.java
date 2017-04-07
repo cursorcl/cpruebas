@@ -10,23 +10,24 @@ import javafx.fxml.FXMLLoader;
 
 public class AlumnosActivator extends AActivator {
 
-    static final Logger LOG = Logger.getLogger(AlumnosActivator.class.getName());
+  static final Logger LOG = Logger.getLogger(AlumnosActivator.class.getName());
 
-    public AlumnosActivator() {
+  public AlumnosActivator() {
 
-        controller = new AlumnosContoller();
+    controller = new AlumnosContoller();
 
-        final URL url = AlumnosActivator.class.getResource("/cl/eos/view/AlumnosTableTree.fxml");
-        final FXMLLoader fxmlLoader = new FXMLLoader();
-        try {
-            pane = fxmlLoader.load(url.openStream());
-            view = fxmlLoader.getController();
-            view.setPanel(pane);
-            controller.addView(view);
-        } catch (final IOException e) {
-            LOG.severe(e.getMessage());
-        }
-
+    final URL url = AlumnosActivator.class.getResource("/cl/eos/view/AlumnosTableTree.fxml");
+    final FXMLLoader fxmlLoader = new FXMLLoader();
+    try {
+      pane = fxmlLoader.load(url.openStream());
+      view = fxmlLoader.getController();
+      view.setPanel(pane);
+      controller.addView(view);
+    } catch (final IOException e) {
+      e.printStackTrace();
+      LOG.severe(e.getMessage());
     }
+
+  }
 
 }

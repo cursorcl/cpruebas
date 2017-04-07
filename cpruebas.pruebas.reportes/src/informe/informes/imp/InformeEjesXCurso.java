@@ -8,11 +8,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import org.apache.log4j.Logger;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
@@ -53,7 +53,7 @@ public class InformeEjesXCurso implements IInforme {
   private static final String ASIGNATURA_ID = "asignatura_id";
   private static final String COLEGIO_ID = "colegio_id";
 
-  static Logger log = Logger.getLogger(InformeEjesXCurso.class);
+  static Logger log = Logger.getLogger(InformeEjesXCurso.class.getName());
   private R_TipoAlumno tipoAlumno;
   private R_Colegio colegio;
   private R_Asignatura asignatura;

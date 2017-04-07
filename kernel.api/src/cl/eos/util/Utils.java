@@ -7,6 +7,7 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.util.Iterator;
+import java.util.logging.Logger;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
@@ -15,13 +16,12 @@ import javax.imageio.ImageReader;
 import javax.imageio.stream.FileImageInputStream;
 import javax.imageio.stream.ImageInputStream;
 
-import org.apache.log4j.Logger;
 
 public class Utils {
 
     private static final String LASTKEY = "lastkey";
     public static float MAX_PUNTAJE = 340f;
-    private static Logger log = Logger.getLogger(Utils.class);
+    private static Logger log = Logger.getLogger(Utils.class.getName());
 
     public static Float getCorrectas(String respuestas, String respEsperadas) {
         float correctas = 0;
@@ -53,7 +53,7 @@ public class Utils {
         } else if (customDir.mkdirs()) {
             // log.debug(customDir + " fue creado.");
         } else {
-            Utils.log.error(customDir + " no fue creado.");
+            Utils.log.severe(customDir + " no fue creado.");
             path = System.getProperty("user.home");
             customDir = new File(path);
         }

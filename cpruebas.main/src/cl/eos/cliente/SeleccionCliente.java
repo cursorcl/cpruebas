@@ -68,7 +68,10 @@ public class SeleccionCliente {
                 }
 
             });
-            btnCancel.setOnAction(event -> Platform.exit());
+            btnCancel.setOnAction(actionEvent -> {
+              Platform.exit();
+              System.exit(0);
+            });
         } catch (final JAXBException e) {
             e.printStackTrace();
         }
