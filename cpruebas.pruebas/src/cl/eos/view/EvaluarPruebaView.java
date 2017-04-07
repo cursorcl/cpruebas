@@ -236,22 +236,30 @@ public class EvaluarPruebaView extends AFormView {
     protected void evaluar(String respsAlumno, OTPruebaRendida otRendida) {
 
         final int nroPreguntas = respuestas.size();
-        final int nMax = Math.min(respsAlumno.length(), nroPreguntas);
 
         otRendida.setOmitidas(0);
         final int nroLast = Math.abs(respsAlumno.length() - nroPreguntas);
         if (nroLast > 0) {
             final char[] c = new char[nroLast];
             Arrays.fill(c, 'O');
-            otRendida.setOmitidas(nroLast);
+            //otRendida.setOmitidas(nroLast);
             final StringBuilder sBuilder = new StringBuilder(respsAlumno);
             sBuilder.append(c);
             respsAlumno = sBuilder.toString();
         }
         otRendida.setBuenas(0);
         otRendida.setMalas(0);
-        for (int n = 0; n < nMax; n++) {
+        int anuladas = 0;
+        final StringBuilder strResps = new StringBuilder(respsAlumno);
+        for (int n = 0; n < nroPreguntas; n++) {
             final RespuestasEsperadasPrueba resp = respuestas.get(n);
+            if(resp.isAnulada())
+            {
+            	resp.setRespuesta("*");
+                strResps.replace(n, n + 1, "*");
+            	anuladas++;
+            	continue;
+            }
             final String userResp = respsAlumno.substring(n, n + 1);
             String validResp = resp.getRespuesta();
             if (resp.getMental()) {
@@ -267,9 +275,9 @@ public class EvaluarPruebaView extends AFormView {
         }
         final float porcDificultad = prueba.getExigencia() == null ? 60f : prueba.getExigencia();
         final float notaMinima = 1.0f;
-        otRendida.setNota(Utils.getNota(nroPreguntas, porcDificultad, otRendida.getBuenas(), notaMinima));
+        otRendida.setNota(Utils.getNota(nroPreguntas - anuladas, porcDificultad, otRendida.getBuenas(), notaMinima));
 
-        final float total = otRendida.getBuenas() + otRendida.getMalas() + otRendida.getOmitidas();
+        final float total = nroPreguntas - anuladas;
         // float porcentaje = Utils.getPorcenta(otRendida.getNota());
         final float porcentaje = (float) otRendida.getBuenas() / total * 100f;
 
