@@ -88,7 +88,7 @@ public interface IPersistenceService {
      */
     void findByName(Class<? extends IEntity> entityClazz, String name, final IPersistenceListener listener);
 
-    List<Object> findSynchro(final String namedQuery, final Map<String, Object> parameters);
+    List<IEntity> findSynchro(final String namedQuery, final Map<String, Object> parameters);
 
     IEntity findSynchroById(Class<? extends IEntity> entityClazz, Long id);
 

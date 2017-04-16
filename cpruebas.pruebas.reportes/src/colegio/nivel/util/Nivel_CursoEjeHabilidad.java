@@ -3,6 +3,17 @@ package colegio.nivel.util;
 import java.util.ArrayList;
 import java.util.List;
 
+import cl.eos.common.Constants;
+import cl.eos.persistence.models.Alumno;
+import cl.eos.persistence.models.EjeTematico;
+import cl.eos.persistence.models.EvaluacionPrueba;
+import cl.eos.persistence.models.Habilidad;
+import cl.eos.persistence.models.PruebaRendida;
+import cl.eos.persistence.models.RespuestasEsperadasPrueba;
+import cl.eos.persistence.models.TipoAlumno;
+import cl.eos.util.Pair;
+import cl.eos.util.Utils;
+import cl.eos.view.ots.resumenxalumno.eje.habilidad.OTAlumnoResumen;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -15,17 +26,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.TextAlignment;
 import javafx.util.Callback;
-import cl.eos.common.Constants;
-import cl.eos.persistence.models.Alumno;
-import cl.eos.persistence.models.EjeTematico;
-import cl.eos.persistence.models.EvaluacionPrueba;
-import cl.eos.persistence.models.Habilidad;
-import cl.eos.persistence.models.PruebaRendida;
-import cl.eos.persistence.models.RespuestasEsperadasPrueba;
-import cl.eos.persistence.models.TipoAlumno;
-import cl.eos.util.Pair;
-import cl.eos.util.Utils;
-import cl.eos.view.ots.resumenxalumno.eje.habilidad.OTAlumnoResumen;
 
 public class Nivel_CursoEjeHabilidad {
 

@@ -346,9 +346,9 @@ public class PersistenceServiceMYSQL implements IPersistenceService {
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<Object> findSynchro(final String namedQuery, final Map<String, Object> parameters) {
+    public List<IEntity> findSynchro(final String namedQuery, final Map<String, Object> parameters) {
 
-        List<Object> lresults = null;
+        List<IEntity> lresults = null;
         final EntityManager eManager = eFactory.createEntityManager();
         eManager.getTransaction().begin();
 

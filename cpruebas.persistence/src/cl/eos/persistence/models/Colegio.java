@@ -43,8 +43,6 @@ public class Colegio extends AEntity {
                 return false;
         } else if (!id.equals(other.id))
             return false;
-        if (version != other.version)
-            return false;
         return true;
     }
 

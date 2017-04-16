@@ -95,6 +95,12 @@ public abstract class AModel implements IModel {
     public IEntity findSynchroById(Class<? extends IEntity> entityClazz, Long id) {
         return PersistenceServiceFactory.getPersistenceService().findSynchroById(entityClazz, id);
     }
+    
+    public List<IEntity> findSynchro(final String namedQuery, final Map<String, Object> parameters)
+    {
+    	 return PersistenceServiceFactory.getPersistenceService().findSynchro(namedQuery, parameters);
+    }
+    
 
     @Override
     public IEntity get(IEntity entity) {

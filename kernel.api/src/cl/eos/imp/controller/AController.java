@@ -182,6 +182,12 @@ public abstract class AController implements IController, IPersistenceListener {
     public IEntity findSynchroById(Class<? extends IEntity> entityClazz, Long id) {
         return model.findSynchroById(entityClazz, id);
     }
+    
+
+    @Override
+    public List<IEntity> findSynchro(String namedQuery, Map<String, Object> parameters) {
+        return model.findSynchro(namedQuery, parameters);
+    }
 
     @Override
     public IModel getModel() {

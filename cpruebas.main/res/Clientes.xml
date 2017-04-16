@@ -2,6 +2,14 @@
 <Clientes>
 	<Cliente>
 		<rut>-</rut>
+		<nombre>Asuncion</nombre>
+		<direccion>-</direccion>
+		<fono>-</fono>
+		<email>-</email>
+		<alias>asuncion</alias>
+	</Cliente>
+	<Cliente>
+		<rut>-</rut>
 		<nombre>Escuela Mariano Latorre</nombre>
 		<direccion>-</direccion>
 		<fono>-</fono>

@@ -82,7 +82,7 @@ public final class ExcelSheetWriterObj {
         cell.setCellStyle(ExcelSheetWriterObj.cStyle);
     }
 
-    private static void applySheetTitleStyle(Cell cell) {
+    public static void applySheetTitleStyle(Cell cell) {
         final Font font = cell.getSheet().getWorkbook().createFont();
         font.setFontHeightInPoints((short) ExcelSheetWriterObj.SHEET_NAME_LENGTH);
         font.setFontName("IMPACT");
@@ -297,7 +297,7 @@ public final class ExcelSheetWriterObj {
         }
     }
 
-    private static void crearDocExcel(final Workbook wbWork) {
+    public static void crearDocExcel(final Workbook wbWork) {
         final long time = Calendar.getInstance().getTimeInMillis();
         final String nombreDoc = "wb" + time + ".xls";
         final String path = Utils.getDefaultDirectory().toString() + File.separator + nombreDoc;

@@ -147,9 +147,9 @@ public class RestPersistenceServiceRESTFUL implements IPersistenceService {
     }
 
     @Override
-    public List<Object> findSynchro(final String namedQuery, final Map<String, Object> parameters) {
+    public List<IEntity> findSynchro(final String namedQuery, final Map<String, Object> parameters) {
 
-        List<Object> lresults = null;
+        List<IEntity> lresults = null;
         return lresults;
 
     }
