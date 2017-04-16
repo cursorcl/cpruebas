@@ -33,6 +33,7 @@ import colegio.ComparativoColegioEjeEvaluacionView;
 import colegio.ComparativoColegioEjeHabilidadView;
 import colegio.ComparativoColegioEjeHabilidadxCursoView;
 import colegio.ComparativoColegioHabilidadesView;
+import colegio.ComparativoColegioXPregunta;
 import colegio.PorObjetivosColegioView;
 import colegio.ResumenColegioView;
 import colegio.ResumenColegioXAlumnoEjeHabilidadView;
@@ -144,6 +145,9 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
   private MenuItem mnuXObjetivos;
   @FXML
   private MenuItem mnuXNivelObjetivos;
+  @FXML
+  private MenuItem mnuRespuestasAlumno;
+
   private EvaluacionPruebaView evaluacionPrueba;
   private AnularPreguntasViewController anularPregunta;
   private R_Prueba prueba;
@@ -180,6 +184,7 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
         mnuAnularPregunta.setDisable(true);
         mnuComparativoComunalEje.setDisable(true);
         mnuComparativoComunalHab.setDisable(true);
+        mnuRespuestasAlumno.setDisable(true);
       } else if (itemsSelec.size() == 1) {
         final OTPrueba prueba = itemsSelec.get(0);
         mnuCrear.setDisable(false);
@@ -190,6 +195,7 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
         mnuPopupEliminar.setDisable(false);
         mnuImprimirPrueba.setDisable(false);
         mnuAnularPregunta.setDisable(false);
+        mnuRespuestasAlumno.setDisable(false);
         final boolean estadoDefinida = prueba.getEstado().equals(Estado.DEFINIDA);
         final boolean estadoEvaluada = prueba.getEstado().equals(Estado.EVALUADA);
         final boolean estadoCreada = prueba.getEstado().equals(Estado.CREADA);
@@ -274,6 +280,8 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
       handlerXObjetivos();
     } else if (source == mnuXNivelObjetivos) {
       handlerXNivelObjetivos();
+    } else if (source == mnuRespuestasAlumno) {
+      handleRespuestasAlumno();
     }
   }
 
@@ -390,7 +398,7 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
         controller.findAll(R_EvaluacionEjetematico.class, comparativoComunal);
         controller.findAll(R_TipoAlumno.class, comparativoComunal);
         controller.findAll(R_TipoColegio.class, comparativoComunal);
-        
+
       }
     }
   }
@@ -678,6 +686,7 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
     mnuComparativoColegioEjeHabilXNivel.setOnAction(this);
     mnuXObjetivos.setOnAction(this);
     mnuXNivelObjetivos.setOnAction(this);
+    mnuRespuestasAlumno.setOnAction(this);
     accionClicTabla();
   }
 
@@ -750,5 +759,21 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
   @Override
   public boolean validate() {
     return true;
+  }
+
+  /**
+   * Llama a la HMI que presenta si las respuestas de cada pregunta está buena, mala u omitida.
+   */
+  private void handleRespuestasAlumno() {
+    final ComparativoColegioXPregunta view =
+        (ComparativoColegioXPregunta) show("/colegio/fxml/ComparativoColegioXPreguntaView.fxml");
+    prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
+    if (prueba == null)
+      return;
+
+    view.setPrueba(prueba);
+    Map<String, Object> params = MapBuilder.<String, Object>unordered().put("prueba_id", prueba.getId()).build();
+    controller.findByParam(R_RespuestasEsperadasPrueba.class, params, view);
+    controller.findByParam(R_EvaluacionPrueba.class, params, view);
   }
 }

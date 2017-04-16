@@ -19,7 +19,6 @@ import cl.eos.restful.tables.R_Curso;
 import cl.eos.restful.tables.R_Ejetematico;
 import cl.eos.restful.tables.R_EvaluacionPrueba;
 import cl.eos.restful.tables.R_NivelEvaluacion;
-import cl.eos.restful.tables.R_Prueba;
 import cl.eos.restful.tables.R_PruebaRendida;
 import cl.eos.restful.tables.R_RangoEvaluacion;
 import cl.eos.restful.tables.R_RespuestasEsperadasPrueba;
