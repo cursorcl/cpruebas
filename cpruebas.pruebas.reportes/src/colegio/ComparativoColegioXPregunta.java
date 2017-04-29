@@ -1,8 +1,9 @@
 package colegio;
 
-import java.util.Arrays;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -13,19 +14,24 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
+import cl.eos.common.Constants;
 import cl.eos.imp.view.AFormView;
+import cl.eos.imp.view.ProgressForm;
 import cl.eos.interfaces.entity.IEntity;
+import cl.eos.persistence.models.Asignatura;
+import cl.eos.persistence.models.Colegio;
 import cl.eos.persistence.models.EvaluacionPrueba;
-import cl.eos.persistence.models.Prueba;
 import cl.eos.persistence.models.PruebaRendida;
 import cl.eos.persistence.models.RespuestasEsperadasPrueba;
+import cl.eos.persistence.models.TipoAlumno;
 import cl.eos.util.ExcelSheetWriterObj;
 import cl.eos.util.MapBuilder;
-import colegio.util.OTColegioCurso;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -33,6 +39,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
@@ -55,13 +63,17 @@ public class ComparativoColegioXPregunta extends AFormView {
 	private BorderPane pnlContainer;
 
 	@FXML
-	private ComboBox<OTColegioCurso> cmbCurso;
+	private ComboBox<Colegio> cmbColegios;
+	@FXML
+	private ComboBox<Asignatura> cmbAsignatura;
 
+	@FXML
+	private ComboBox<TipoAlumno> cmbTipoAlumno;
 	@FXML
 	private Button btnProcesar;
 
 	@FXML
-	private TableView tblReporte;
+	TabPane tabPane;
 
 	@FXML
 	private MenuItem mnuExportActual;
@@ -69,38 +81,22 @@ public class ComparativoColegioXPregunta extends AFormView {
 	@FXML
 	private MenuItem mnuExportAll;
 
-	private List<OTColegioCurso> lstData;
-
-	private Prueba prueba;
-
 	private List<EvaluacionPrueba> lstEvaluaciones;
-
-	private List<PruebaRendida> lstPRendidas;
-
-	private List<RespuestasEsperadasPrueba> lstREsperadas;
 
 	@FXML
 	public void initialize() {
-		cmbCurso.setOnAction((event) -> {
-			btnProcesar.setDisable(cmbCurso.getValue() == null);
+		cmbColegios.setOnAction((event) -> {
+			btnProcesar.setDisable(isDisable());
 		});
-		btnProcesar.setOnAction((event) -> {
-			OTColegioCurso ot = cmbCurso.getValue();
-
-			EvaluacionPrueba evaluacion = lstEvaluaciones.stream().filter(e -> e.getCurso().equals(ot.getCurso())
-					&& e.getColegio().equals(ot.getColegio()) && e.getPrueba().equals(prueba)).findFirst().orElse(null);
-
-			if (evaluacion == null)
-				return;
-			Map<String, Object> params = MapBuilder.<String, Object>unordered().put("ideval", evaluacion.getId())
-					.build();
-			controller.find("PruebaRendidaByEval.findAll", params);
+		cmbAsignatura.setOnAction((event) -> {
+			btnProcesar.setDisable(isDisable());
 		});
 
-		mnuExportActual.setOnAction((event) -> {
-			tblReporte.setId(cmbCurso.getValue().toString());
-			ExcelSheetWriterObj.convertirDatosALibroDeExcel(tblReporte);
+		cmbTipoAlumno.setOnAction((event) -> {
+			btnProcesar.setDisable(isDisable());
 		});
+
+		btnProcesar.setOnAction((event) -> executeReport());
 
 		mnuExportAll.setOnAction((event) -> {
 			processAllCourses();
@@ -108,7 +104,10 @@ public class ComparativoColegioXPregunta extends AFormView {
 
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	private boolean isDisable() {
+		return cmbColegios.getValue() == null || cmbAsignatura.getValue() == null || cmbTipoAlumno.getValue() == null;
+	}
+
 	@Override
 	public void onDataArrived(List<Object> list) {
 		if (list == null || list.isEmpty()) {
@@ -120,140 +119,141 @@ public class ComparativoColegioXPregunta extends AFormView {
 			return;
 		}
 		final Object entity = list.get(0);
-		if (entity instanceof RespuestasEsperadasPrueba) {
-
-			lstREsperadas = list.stream().map(t -> (RespuestasEsperadasPrueba) t).collect(Collectors.toList());
-			tblReporte.getColumns().clear();
-			TableColumn col = new TableColumn();
-
-			Label columnTitle = new Label("Paterno");
-			col.setPrefWidth(120);
-			columnTitle.setWrapText(true);
-			columnTitle.setFont(FONT_TITLE);
-			columnTitle.setTextAlignment(TextAlignment.CENTER);
-			col.setGraphic(columnTitle);
-			col.setText(columnTitle.getText());
-			col.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
-				public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
-					return new SimpleStringProperty(param.getValue().get(0).toString());
-				}
-			});
-
-			tblReporte.getColumns().add(col);
-
-			col = new TableColumn<>();
-			columnTitle = new Label("Materno");
-			col.setPrefWidth(120);
-			columnTitle.setWrapText(true);
-			columnTitle.setFont(FONT_TITLE);
-			columnTitle.setTextAlignment(TextAlignment.CENTER);
-			col.setGraphic(columnTitle);
-			col.setText(columnTitle.getText());
-			tblReporte.getColumns().add(col);
-			col.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
-				public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
-					return new SimpleStringProperty(param.getValue().get(1).toString());
-				}
-			});
-
-			col = new TableColumn<>();
-			columnTitle = new Label("Nombre");
-			col.setPrefWidth(150);
-			columnTitle.setWrapText(true);
-			columnTitle.setFont(FONT_TITLE);
-			columnTitle.setTextAlignment(TextAlignment.CENTER);
-			col.setGraphic(columnTitle);
-			col.setText(columnTitle.getText());
-			col.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
-				public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
-					return new SimpleStringProperty(param.getValue().get(2).toString());
-				}
-			});
-
-			tblReporte.getColumns().add(col);
-
-			int idx = 3;
-			for (RespuestasEsperadasPrueba resp : lstREsperadas) {
-				final int index = idx++;
-				col = new TableColumn<>();
-				col.setPrefWidth(17);
-				columnTitle = new Label(resp.getName() + " " + resp.getRespuesta());
-				columnTitle.setPrefWidth(15);
-				columnTitle.setPrefHeight(50);
-				columnTitle.setWrapText(true);
-				columnTitle.setFont(FONT_TITLE);
-				columnTitle.setTextAlignment(TextAlignment.CENTER);
-				col.setGraphic(columnTitle);
-				col.setText(columnTitle.getText());
-				col.setCellValueFactory(
-						new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
-							public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
-								return new SimpleStringProperty(param.getValue().get(index).toString());
-							}
-						});
-				tblReporte.getColumns().add(col);
-			}
-		} else if (entity instanceof EvaluacionPrueba) {
-			lstEvaluaciones = list.stream().map(item -> (EvaluacionPrueba) item).collect(Collectors.toList());
-			List<OTColegioCurso> lstCmbValues = lstEvaluaciones.stream()
-					.map(e -> new OTColegioCurso(e.getColegio(), e.getCurso())).collect(Collectors.toList());
-			cmbCurso.setItems(FXCollections.observableArrayList(lstCmbValues));
-		} else if (entity instanceof PruebaRendida) {
-			lstPRendidas = list.stream().map(item -> (PruebaRendida) item).collect(Collectors.toList());
-			makeReport();
+		if (entity instanceof Asignatura) {
+			cmbAsignatura.setItems(FXCollections
+					.observableArrayList(list.stream().map(t -> (Asignatura) t).collect(Collectors.toList())));
 		}
-
-	}
-
-	@Override
-	public void onFound(IEntity entity) {
-		if (entity instanceof EvaluacionPrueba) {
-
-			EvaluacionPrueba e = (EvaluacionPrueba) entity;
-			cmbCurso.setItems(
-					FXCollections.observableArrayList(Arrays.asList(new OTColegioCurso(e.getColegio(), e.getCurso()))));
+		if (entity instanceof Colegio) {
+			cmbColegios.setItems(FXCollections
+					.observableArrayList(list.stream().map(t -> (Colegio) t).collect(Collectors.toList())));
+		}
+		if (entity instanceof TipoAlumno) {
+			cmbTipoAlumno.setItems(FXCollections
+					.observableArrayList(list.stream().map(t -> (TipoAlumno) t).collect(Collectors.toList())));
 		}
 	}
 
 	/**
 	 * Se procesa cada registro para presetarlo en las tablas.
+	 * 
+	 * @param tipoAlumno
 	 */
-	@SuppressWarnings("unchecked")
-	private void makeReport() {
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	private void makeReport(List<PruebaRendida> lstPRendidas, TipoAlumno tipoAlumno) {
 		ObservableList<ObservableList<String>> contenido = FXCollections.observableArrayList();
-		ObservableList<String> row = null;
-		for (PruebaRendida pr : lstPRendidas) {
-			row = FXCollections.observableArrayList();
-			row.add(pr.getAlumno().getPaterno());
-			row.add(pr.getAlumno().getMaterno());
-			row.add(pr.getAlumno().getName());
-			String[] respuesta = pr.getRespuestas().split("");
-			int n = 0;
-			for (RespuestasEsperadasPrueba resp : lstREsperadas) {
-				String value = evaluateResp(resp, respuesta[n++]);
-				row.add(value);
+
+		Platform.runLater(new Runnable() {
+
+			@Override
+			public void run() {
+				TableView tblReporte = new TableView();
+				makeColumns(tblReporte);
+				Tab tab = new Tab();
+				tab.setContent(tblReporte);
+				tabPane.getTabs().add(tab);
+				boolean columnsCreated = false;
+				for (PruebaRendida pr : lstPRendidas) {
+					if (!tipoAlumno.getId().equals(Constants.PIE_ALL)
+							&& !pr.getAlumno().getTipoAlumno().equals(tipoAlumno))
+						continue;
+					tab.setText(pr.getCurso());
+					ObservableList<String> row = FXCollections.observableArrayList();
+					row.add(pr.getAlumno().getPaterno());
+					row.add(pr.getAlumno().getMaterno());
+					row.add(pr.getAlumno().getName());
+					String[] respuesta = pr.getRespuestas().split("");
+					List<RespuestasEsperadasPrueba> respEsperadas = pr.getEvaluacionPrueba().getPrueba()
+							.getRespuestas();
+					if (!columnsCreated) {
+						addColumns(tblReporte, respEsperadas);
+						columnsCreated = true;
+					}
+					int n = 0;
+					for (RespuestasEsperadasPrueba resp : respEsperadas) {
+						String value = evaluateResp(resp, respuesta[n++]);
+						row.add(value);
+					}
+					contenido.add(row);
+				}
+				tblReporte.setItems(contenido);
 			}
-			contenido.add(row);
+		});
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	private void makeColumns(TableView tblReporte) {
+		TableColumn col = new TableColumn();
+
+		Label columnTitle = new Label("Paterno");
+		col.setPrefWidth(120);
+		columnTitle.setWrapText(true);
+		columnTitle.setFont(FONT_TITLE);
+		columnTitle.setTextAlignment(TextAlignment.CENTER);
+		col.setGraphic(columnTitle);
+		col.setText(columnTitle.getText());
+		col.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
+			public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
+				return new SimpleStringProperty(param.getValue().get(0).toString());
+			}
+		});
+
+		tblReporte.getColumns().add(col);
+
+		col = new TableColumn<>();
+		columnTitle = new Label("Materno");
+		col.setPrefWidth(120);
+		columnTitle.setWrapText(true);
+		columnTitle.setFont(FONT_TITLE);
+		columnTitle.setTextAlignment(TextAlignment.CENTER);
+		col.setGraphic(columnTitle);
+		col.setText(columnTitle.getText());
+		tblReporte.getColumns().add(col);
+		col.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
+			public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
+				return new SimpleStringProperty(param.getValue().get(1).toString());
+			}
+		});
+
+		col = new TableColumn<>();
+		columnTitle = new Label("Nombre");
+		col.setPrefWidth(150);
+		columnTitle.setWrapText(true);
+		columnTitle.setFont(FONT_TITLE);
+		columnTitle.setTextAlignment(TextAlignment.CENTER);
+		col.setGraphic(columnTitle);
+		col.setText(columnTitle.getText());
+		col.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
+			public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
+				return new SimpleStringProperty(param.getValue().get(2).toString());
+			}
+		});
+
+		tblReporte.getColumns().add(col);
+
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	private void addColumns(TableView tblReporte, List<RespuestasEsperadasPrueba> lstREsperadas) {
+		int idx = 3;
+		for (RespuestasEsperadasPrueba resp : lstREsperadas) {
+			final int index = idx++;
+			TableColumn col = new TableColumn<>();
+			col.setPrefWidth(17);
+			Label columnTitle = new Label(resp.getName() + " " + resp.getRespuesta());
+			columnTitle.setPrefWidth(15);
+			columnTitle.setPrefHeight(50);
+			columnTitle.setWrapText(true);
+			columnTitle.setFont(FONT_TITLE);
+			columnTitle.setTextAlignment(TextAlignment.CENTER);
+			col.setGraphic(columnTitle);
+			col.setText(columnTitle.getText());
+			col.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
+				public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
+					return new SimpleStringProperty(param.getValue().get(index).toString());
+				}
+			});
+			tblReporte.getColumns().add(col);
 		}
-		tblReporte.setItems(contenido);
-	}
-
-	public List<OTColegioCurso> getCmbData() {
-		return lstData;
-	}
-
-	public void setCmbData(List<OTColegioCurso> lstData) {
-		this.lstData = lstData;
-		cmbCurso.getItems().clear();
-		cmbCurso.setItems(FXCollections.observableArrayList(lstData));
-	}
-
-	public Prueba getPrueba() {
-		return prueba;
-	}
-
-	public void setPrueba(Prueba prueba) {
-		this.prueba = prueba;
 	}
 
 	/**
@@ -273,9 +273,9 @@ public class ComparativoColegioXPregunta extends AFormView {
 		} else if (respAlumno.equalsIgnoreCase("O")) {
 			returValue = "O";
 		} else if (respAlumno.equalsIgnoreCase(resp.getRespuesta())) {
-			returValue = "+";
+			returValue = "C";
 		} else {
-			returValue = "-";
+			returValue = "I";
 		}
 
 		return returValue;
@@ -291,19 +291,16 @@ public class ComparativoColegioXPregunta extends AFormView {
 	private void processAllCourses() {
 
 		final Workbook wbook = new HSSFWorkbook();
+		for (Tab tab : tabPane.getTabs()) {
 
-		lstEvaluaciones.forEach(evaluacion -> {
-			Map<String, Object> params = MapBuilder.<String, Object>unordered().put("ideval", evaluacion.getId())
-					.build();
-
+			TableView tblReporte = (TableView) tab.getContent();
 			// Creación ed la hoja
-			final Sheet sheet = wbook.createSheet(evaluacion.getColegio() + "-" + evaluacion.getCurso());
-
-			// El título de la hoja
+			final Sheet sheet = wbook.createSheet(tab.getText());
 			final Row header = sheet.createRow(0);
 			header.setHeightInPoints(sheet.getDefaultRowHeightInPoints());
+			// El título de la hoja
 			Cell cellHeader = header.createCell(0);
-			cellHeader.setCellValue(evaluacion.getColegio() + "-" + evaluacion.getCurso());
+			cellHeader.setCellValue(tab.getText());
 			ExcelSheetWriterObj.applySheetTitleStyle(cellHeader);
 			cellHeader.getCellStyle().setAlignment(CellStyle.ALIGN_LEFT);
 			header.setHeightInPoints(40);
@@ -319,37 +316,80 @@ public class ComparativoColegioXPregunta extends AFormView {
 				cell.setCellValue(col.getText());
 				cell.setCellStyle(style);
 			}
-
-			// Se colocan los valores a la tabla
-			List<IEntity> _lstPRendidas = controller.findSynchro("PruebaRendidaByEval.findAll", params);
-
+			ObservableList<ObservableList<String>> items = tblReporte.getItems();
 			int row = 2;
-			for (IEntity entity : _lstPRendidas) {
+			for (ObservableList<String> valuesRow : items) {
 				final Row fila = sheet.createRow(row++);
-				PruebaRendida pr = (PruebaRendida) entity;
-
-				Cell cell = fila.createCell(0);
-				cell.setCellValue(pr.getAlumno().getPaterno());
-
-				cell = fila.createCell(1);
-				cell.setCellValue(pr.getAlumno().getMaterno());
-
-				cell = fila.createCell(2);
-				cell.setCellValue(pr.getAlumno().getName());
-
-				String[] resps = pr.getRespuestas().split("");
-
-				for (int n = 0; n < resps.length; n++) {
-					String value = evaluateResp(lstREsperadas.get(n), resps[n]);
-					cell = fila.createCell(n + 3);
-					cell.setCellValue(value);
-					cell.getCellStyle().setAlignment(CellStyle.ALIGN_CENTER);
+				int n = 0;
+				for (String valueCol : valuesRow) {
+					Cell cell = fila.createCell(n++);
+					cell.setCellValue(valueCol);
+					if (n > 2) {
+						cell.getCellStyle().setAlignment(CellStyle.ALIGN_CENTER);
+					}
 				}
 			}
-
-		});
+		}
 		ExcelSheetWriterObj.crearDocExcel(wbook);
-
 	}
 
+	private void executeReport() {
+		final ProgressForm dlg = new ProgressForm();
+		dlg.title("Procesando pruebas");
+		dlg.message("Esto tomará algunos minutos.");
+
+		final Task<Boolean> task = new Task<Boolean>() {
+			@Override
+			protected Boolean call() throws Exception {
+				tabPane.getTabs().clear();
+				Colegio colegio = cmbColegios.getValue();
+				Asignatura asignatura = cmbAsignatura.getValue();
+				TipoAlumno tipoAlumno = cmbTipoAlumno.getValue();
+				Map<String, Object> params = MapBuilder.<String, Object>unordered().put("idColegio", colegio.getId())
+						.put("idAsignatura", asignatura.getId()).build();
+				List<IEntity> lstEntities = controller.findSynchro("EvaluacionPrueba.findEvaluacionByColegioAsig",
+						params);
+				if (lstEntities == null || lstEntities.isEmpty())
+					return Boolean.FALSE;
+				lstEvaluaciones = lstEntities.stream().map(e -> (EvaluacionPrueba) e).collect(Collectors.toList());
+
+				final int max = lstEvaluaciones.size();
+				int n = 1;
+
+				for (EvaluacionPrueba evaluacion : lstEvaluaciones) {
+					updateMessage("Procesado:" + evaluacion.toString());
+					updateProgress(n++, max);
+
+					params = MapBuilder.<String, Object>unordered().put("ideval", evaluacion.getId()).build();
+					List<IEntity> rendidas = controller.findSynchro("PruebaRendidaByEval.findAll", params);
+					if (rendidas == null || rendidas.isEmpty())
+						return Boolean.FALSE;
+					makeReport(rendidas.stream().map(r -> (PruebaRendida) r).collect(Collectors.toList()), tipoAlumno);
+				}
+				return Boolean.TRUE;
+			}
+		};
+		task.setOnFailed(event -> {
+			dlg.getDialogStage().hide();
+			final Runnable r = () -> {
+				final Alert info = new Alert(AlertType.ERROR);
+				info.setTitle("Proceso finalizado con error");
+				info.setHeaderText("Se ha producido un error al procesar el reporte.");
+				if (task.getException() instanceof IOException) {
+					task.getException().printStackTrace();
+					info.setContentText("No se ha podido procesar todos los reportes.");
+				} else {
+					task.getException().printStackTrace();
+					info.setContentText("Error desconocido");
+				}
+				info.show();
+			};
+			Platform.runLater(r);
+		});
+		task.setOnSucceeded(event -> {
+			dlg.getDialogStage().hide();
+		});
+		dlg.showWorkerProgress(task);
+		Executors.newSingleThreadExecutor().execute(task);
+	}
 }

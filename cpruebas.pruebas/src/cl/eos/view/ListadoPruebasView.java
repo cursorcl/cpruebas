@@ -302,10 +302,13 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
 		if (prueba == null)
 			return;
 
-		view.setPrueba(prueba);
-		Map<String, Object> params = MapBuilder.<String, Object>unordered().put("pruebaId", prueba.getId()).build();
-		controller.find("RespuestasEsperadasPrueba.findByPrueba", params, view);
-		controller.find("EvaluacionPrueba.findByPrueba", params, view);
+		//view.setPrueba(prueba);
+		controller.findAll(Asignatura.class);
+		controller.findAll(Colegio.class);
+		controller.findAll(TipoAlumno.class);
+//		Map<String, Object> params = MapBuilder.<String, Object>unordered().put("pruebaId", prueba.getId()).build();
+//		controller.find("RespuestasEsperadasPrueba.findByPrueba", params, view);
+//		controller.find("EvaluacionPrueba.findByPrueba", params, view);
 	}
 
 	private void handlerXNivelObjetivos() {
@@ -586,7 +589,7 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
 		if (tblListadoPruebas.getSelectionModel().getSelectedItem() != null) {
 			final Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
 			final Map<String, Object> parameters = new HashMap<String, Object>();
-			parameters.put("idPrueba", prueba.getId());
+			parameters.put("pruebaId", prueba.getId());
 			controller.find("EvaluacionPrueba.findByPrueba", parameters, evaluacionPrueba);
 		}
 	}

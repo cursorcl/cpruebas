@@ -618,7 +618,7 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
         if (tblListadoPruebas.getSelectionModel().getSelectedItem() != null) {
             final Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
             final Map<String, Object> parameters = new HashMap<String, Object>();
-            parameters.put("idPrueba", prueba.getId());
+            parameters.put("pruebaId", prueba.getId());
             controller.find("EvaluacionPrueba.findByPrueba", parameters, evaluacionPrueba);
         }
     }
