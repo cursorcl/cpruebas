@@ -771,9 +771,8 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
     if (prueba == null)
       return;
 
-    view.setPrueba(prueba);
-    Map<String, Object> params = MapBuilder.<String, Object>unordered().put("prueba_id", prueba.getId()).build();
-    controller.findByParam(R_RespuestasEsperadasPrueba.class, params, view);
-    controller.findByParam(R_EvaluacionPrueba.class, params, view);
+    controller.findAll(R_Asignatura.class, view);
+    controller.findAll(R_Colegio.class, view);
+    controller.findAll(R_TipoAlumno.class, view);
   }
 }
