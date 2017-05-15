@@ -4,10 +4,10 @@ import java.util.stream.IntStream;
 
 import cl.eos.interfaces.view.IView;
 import cl.eos.interfaces.view.IWindowManager;
-import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import jfxtras.labs.scene.control.BreadcrumbBar;
 import jfxtras.labs.scene.control.BreadcrumbItem;
 
@@ -23,7 +23,7 @@ public class WindowManager implements IWindowManager {
   }
 
   private Pane root;
-  private Group group;
+  private VBox group;
 
   private BreadcrumbBar breadCrum;
 
@@ -86,8 +86,8 @@ public class WindowManager implements IWindowManager {
 
   @Override
   public void setRoot(Object root) throws Exception {
-    if (root instanceof Group) {
-      group = (Group) root;
+    if (root instanceof VBox) {
+      group = (VBox) root;
     }
   }
 
@@ -101,7 +101,7 @@ public class WindowManager implements IWindowManager {
       w.setText(window.getTitle());
       w.setContent((Parent) window.getPanel());
       w.setVisible(true);
-
+      
       
       if(breadCrum.getHomeItem() != null && breadCrum.getHomeItem().getText().equals(window.getName()))
       {
@@ -129,6 +129,7 @@ public class WindowManager implements IWindowManager {
       }
 
       group.getChildren().setAll(w);
+      
     }
   }
 

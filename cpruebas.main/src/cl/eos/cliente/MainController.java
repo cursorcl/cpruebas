@@ -30,7 +30,6 @@ import cl.eos.util.ExcelSheetReaderx;
 import cl.eos.util.Utils;
 import cl.eos.velocidadlectora.VelocidadLectoraActivator;
 import javafx.fxml.FXML;
-import javafx.scene.Group;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
@@ -38,6 +37,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import jfxtras.labs.scene.control.BreadcrumbBar;
@@ -96,7 +96,7 @@ public class MainController {
     @FXML
     private AnchorPane pnlWindow;
     @FXML
-    private Group groupRoot;
+    private VBox groupRoot;
 
     private Stage stage;
     @FXML
@@ -106,7 +106,7 @@ public class MainController {
         super();
     }
 
-    public Group getGroup() {
+    public VBox getGroup() {
         return groupRoot;
     }
 
@@ -116,10 +116,10 @@ public class MainController {
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
     protected void importarExcel() {
-        final ButtonType bTypeAlumno = new ButtonType("R_Alumno");
-        final ButtonType bTypeColegio = new ButtonType("SColegio");
-        final ButtonType bTypeCurso = new ButtonType("SCurso");
-        final ButtonType bTypeProfesor = new ButtonType("SProfesor");
+        final ButtonType bTypeAlumno = new ButtonType("Alumnos");
+        final ButtonType bTypeColegio = new ButtonType("Colegios");
+        final ButtonType bTypeCurso = new ButtonType("Cursos");
+        final ButtonType bTypeProfesor = new ButtonType("Profesores");
         final ButtonType bTypeCancel = new ButtonType("Cancelar", ButtonData.CANCEL_CLOSE);
 
         Alert alert = new Alert(AlertType.INFORMATION);

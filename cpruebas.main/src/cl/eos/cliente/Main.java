@@ -3,9 +3,7 @@ package cl.eos.cliente;
 import java.io.File;
 import java.io.IOException;
 
-import cl.eos.Environment;
 import cl.eos.exceptions.CPruebasException;
-import cl.eos.provider.persistence.PersistenceServiceFactory;
 import cl.eos.util.Utils;
 import cl.sisdef.license.ProductKeyValidation;
 import cl.sisdef.license.UtilProductKey;
