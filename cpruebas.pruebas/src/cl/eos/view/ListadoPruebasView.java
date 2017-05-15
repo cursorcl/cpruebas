@@ -13,6 +13,7 @@ import cl.eos.interfaces.entity.IEntity;
 import cl.eos.restful.tables.R_Asignatura;
 import cl.eos.restful.tables.R_Colegio;
 import cl.eos.restful.tables.R_Ejetematico;
+import cl.eos.restful.tables.R_EstadoPruebaCliente;
 import cl.eos.restful.tables.R_EvaluacionEjetematico;
 import cl.eos.restful.tables.R_EvaluacionPrueba;
 import cl.eos.restful.tables.R_Habilidad;
@@ -326,8 +327,20 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
   private void handleModificar() {
     if (tblListadoPruebas.getSelectionModel().getSelectedItem() != null) {
       prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
+      
+      Map<String, Object> params = new HashMap<>();
+      params.put("prueba_id", prueba.getId());
+      List<R_EstadoPruebaCliente> lstEstadoPrueba = controller.findByParamsSynchro(R_EstadoPruebaCliente.class, params);
+      R_Prueba.Estado estadoPrueba =  R_Prueba.Estado.CREADA;
+      if(lstEstadoPrueba != null && !lstEstadoPrueba.isEmpty())
+      {
+        estadoPrueba = R_Prueba.Estado.getEstado(lstEstadoPrueba.get(0).getEstado_id().intValue());
+      }
+      
+      
+      
       if (prueba != null) {
-        if (Estado.getEstado(prueba.getEstado()).equals(Estado.EVALUADA)) {
+        if (estadoPrueba.equals(Estado.EVALUADA)) {
           final Alert info = new Alert(AlertType.INFORMATION);
           info.setTitle("No se puede modificar.");
           info.setHeaderText("La prueba ya se encuentra evaluada.");
@@ -722,6 +735,8 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
     if (lstAsignaturas == null || lstTipoCurso == null || pruebas == null) {
       return;
     }
+    List<R_EstadoPruebaCliente> lstEstadoPrueba = controller.findAllSynchro(R_EstadoPruebaCliente.class);
+
     Map<Long, R_Asignatura> mapAsignaturas =
         lstAsignaturas.stream().collect(Collectors.toMap(R_Asignatura::getId, Function.identity()));
     Map<Long, R_TipoCurso> mapTiposCurso =
@@ -729,6 +744,12 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
     for (final OTPrueba ot : pruebas) {
       ot.setAsignatura(mapAsignaturas.get(ot.getPrueba().getAsignatura_id()));
       ot.setCurso(mapTiposCurso.get(ot.getPrueba().getCurso_id()));
+      R_EstadoPruebaCliente estadoPrueba =
+          lstEstadoPrueba.stream().filter(l -> l.getPrueba_id().equals(ot.getId())).findFirst().orElse(null);
+      if (estadoPrueba == null)
+        continue;
+
+      ot.setEstado(R_Prueba.Estado.getEstado(estadoPrueba.getEstado_id().intValue()));
     }
     tblListadoPruebas.setItems(pruebas);
 

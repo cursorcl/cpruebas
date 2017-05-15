@@ -102,6 +102,7 @@ public class RestfulClient {
     HttpGet httpget = new HttpGet(url);
     httpget.addHeader("accept", "application/json");
     httpget.addHeader("Database", Environment.database);
+    httpget.addHeader("Cliente", Environment.client.toString());
     CloseableHttpResponse response = null;
     try {
       response = httpclient.execute(httpget);
@@ -138,6 +139,7 @@ public class RestfulClient {
       HttpGet httpget = new HttpGet(url);
       httpget.addHeader("accept", "application/json");
       httpget.addHeader("Database", Environment.database);
+      httpget.addHeader("Cliente", Environment.client.toString());
       URIBuilder uriBuilder = new URIBuilder(url);
       uriBuilder.addParameter("query", query);
       httpget.setURI(uriBuilder.build());
@@ -170,6 +172,7 @@ public class RestfulClient {
     HttpGet httpget = new HttpGet(url);
     httpget.addHeader("accept", "application/json");
     httpget.addHeader("Database", Environment.database);
+    httpget.addHeader("Cliente", Environment.client.toString());
     CloseableHttpResponse response = null;
     try {
       response = httpclient.execute(httpget);
@@ -208,6 +211,7 @@ public class RestfulClient {
       HttpGet httpget = new HttpGet(url);
       httpget.addHeader("accept", "application/json");
       httpget.addHeader("Database", Environment.database);
+      httpget.addHeader("Cliente", Environment.client.toString());
       URIBuilder uriBuilder = new URIBuilder(url);
       for (Entry<String, Object> entry : map.entrySet()) {
         uriBuilder.addParameter(entry.getKey(), entry.getValue().toString());
@@ -244,6 +248,7 @@ public class RestfulClient {
     HttpDelete httpdelete = new HttpDelete(url);
     httpdelete.addHeader("accept", "application/json");
     httpdelete.addHeader("Database", Environment.database);
+    httpdelete.addHeader("Cliente", Environment.client.toString());
     CloseableHttpResponse response = null;
     try {
       response = httpclient.execute(httpdelete);
@@ -275,6 +280,7 @@ public class RestfulClient {
       HttpDelete httpget = new HttpDelete(url);
       httpget.addHeader("accept", "application/json");
       httpget.addHeader("Database", Environment.database);
+      httpget.addHeader("Cliente", Environment.client.toString());
       URIBuilder uriBuilder = new URIBuilder(url);
       for (Entry<String, Object> entry : params.entrySet()) {
         uriBuilder.addParameter(entry.getKey(), entry.getValue().toString());
@@ -308,6 +314,7 @@ public class RestfulClient {
       HttpPost httppost = new HttpPost(url);
       httppost.addHeader("accept", "application/json");
       httppost.addHeader("Database", Environment.database);
+      httppost.addHeader("Cliente", Environment.client.toString());
       httppost.setEntity(postingString);
       
       response = httpclient.execute(httppost);
@@ -342,6 +349,7 @@ public class RestfulClient {
       HttpPut httpput = new HttpPut(url);
       httpput.addHeader("accept", "application/json");
       httpput.addHeader("Database", Environment.database);
+      httpput.addHeader("Cliente", Environment.client.toString());
       httpput.setEntity(postingString);
       
       response = httpclient.execute(httpput);
@@ -372,6 +380,7 @@ public class RestfulClient {
     HttpGet httpget = new HttpGet(url);
     httpget.addHeader("accept", "application/json");
     httpget.addHeader("Database", Environment.database);
+    httpget.addHeader("Cliente", Environment.client.toString());
     CloseableHttpResponse response = null;
     try {
       response = httpclient.execute(httpget);

@@ -65,8 +65,6 @@ public class R_Prueba extends AEntity {
   Long profesor_id;
   @SerializedName(value = "nivelevaluacion_id", alternate = {"NIVELEVALUACION_ID"})
   Long nivelevaluacion_id;
-  @SerializedName(value = "estado", alternate = {"ESTADO"})
-  int estado;
 
   /**
    * @return the id
@@ -264,19 +262,6 @@ public class R_Prueba extends AEntity {
     this.nivelevaluacion_id = nivelevaluacion_id;
   }
 
-  /**
-   * @return the estado
-   */
-  public final int getEstado() {
-    return estado;
-  }
-
-  /**
-   * @param estado the estado to set
-   */
-  public final void setEstado(int estado) {
-    this.estado = estado;
-  }
 
   public LocalDate getFechaLocal() {
     return LocalDate.ofEpochDay(this.fecha.longValue());
@@ -310,7 +295,6 @@ public class R_Prueba extends AEntity {
     private Long tipoprueba_id;
     private Long profesor_id;
     private Long nivelevaluacion_id;
-    private int estado;
 
     public Builder id(Long id) {
       this.id = id;
@@ -382,10 +366,6 @@ public class R_Prueba extends AEntity {
       return this;
     }
 
-    public Builder estado(int estado) {
-      this.estado = estado;
-      return this;
-    }
 
 
     public R_Prueba build() {
@@ -408,6 +388,5 @@ public class R_Prueba extends AEntity {
     this.tipoprueba_id = builder.tipoprueba_id;
     this.profesor_id = builder.profesor_id;
     this.nivelevaluacion_id = builder.nivelevaluacion_id;
-    this.estado = builder.estado;
   }
 }

@@ -1,0 +1,554 @@
+0    [pool-2-thread-1] DEBUG org.apache.http.client.protocol.RequestAddCookies  - CookieSpec selected: default
+9    [pool-2-thread-1] DEBUG org.apache.http.client.protocol.RequestAuthCache  - Auth cache not set in the context
+10   [pool-2-thread-1] DEBUG org.apache.http.impl.conn.PoolingHttpClientConnectionManager  - Connection request: [route: {}->http://www.aplicacionestest.cl:80][total kept alive: 0; route allocated: 0 of 2; total allocated: 0 of 20]
+22   [pool-2-thread-1] DEBUG org.apache.http.impl.conn.PoolingHttpClientConnectionManager  - Connection leased: [id: 0][route: {}->http://www.aplicacionestest.cl:80][total kept alive: 0; route allocated: 1 of 2; total allocated: 1 of 20]
+23   [pool-2-thread-1] DEBUG org.apache.http.impl.execchain.MainClientExec  - Opening connection {}->http://www.aplicacionestest.cl:80
+33   [pool-2-thread-1] DEBUG org.apache.http.impl.conn.DefaultHttpClientConnectionOperator  - Connecting to www.aplicacionestest.cl/186.64.117.30:80
+134  [pool-2-thread-1] DEBUG org.apache.http.impl.conn.DefaultHttpClientConnectionOperator  - Connection established 192.168.1.101:60313<->186.64.117.30:80
+134  [pool-2-thread-1] DEBUG org.apache.http.impl.execchain.MainClientExec  - Executing request GET /usuarios HTTP/1.1
+134  [pool-2-thread-1] DEBUG org.apache.http.impl.execchain.MainClientExec  - Target auth state: UNCHALLENGED
+135  [pool-2-thread-1] DEBUG org.apache.http.impl.execchain.MainClientExec  - Proxy auth state: UNCHALLENGED
+136  [pool-2-thread-1] DEBUG org.apache.http.headers  - http-outgoing-0 >> GET /usuarios HTTP/1.1
+136  [pool-2-thread-1] DEBUG org.apache.http.headers  - http-outgoing-0 >> accept: application/json
+136  [pool-2-thread-1] DEBUG org.apache.http.headers  - http-outgoing-0 >> Database: aplicac2_cliente
+136  [pool-2-thread-1] DEBUG org.apache.http.headers  - http-outgoing-0 >> Cliente: 0
+136  [pool-2-thread-1] DEBUG org.apache.http.headers  - http-outgoing-0 >> Host: www.aplicacionestest.cl
+136  [pool-2-thread-1] DEBUG org.apache.http.headers  - http-outgoing-0 >> Connection: Keep-Alive
+136  [pool-2-thread-1] DEBUG org.apache.http.headers  - http-outgoing-0 >> User-Agent: Apache-HttpClient/4.5.2 (Java/1.8.0_131)
+136  [pool-2-thread-1] DEBUG org.apache.http.headers  - http-outgoing-0 >> Accept-Encoding: gzip,deflate
+136  [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-0 >> "GET /usuarios HTTP/1.1[\r][\n]"
+136  [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-0 >> "accept: application/json[\r][\n]"
+136  [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-0 >> "Database: aplicac2_cliente[\r][\n]"
+136  [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-0 >> "Cliente: 0[\r][\n]"
+136  [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-0 >> "Host: www.aplicacionestest.cl[\r][\n]"
+136  [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-0 >> "Connection: Keep-Alive[\r][\n]"
+136  [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-0 >> "User-Agent: Apache-HttpClient/4.5.2 (Java/1.8.0_131)[\r][\n]"
+136  [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-0 >> "Accept-Encoding: gzip,deflate[\r][\n]"
+136  [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-0 >> "[\r][\n]"
+374  [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-0 << "HTTP/1.1 200 OK[\r][\n]"
+374  [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-0 << "Server: nginx[\r][\n]"
+374  [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-0 << "Date: Mon, 15 May 2017 00:58:29 GMT[\r][\n]"
+374  [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-0 << "Content-Type: application/json[\r][\n]"
+374  [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-0 << "Transfer-Encoding: chunked[\r][\n]"
+374  [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-0 << "Connection: keep-alive[\r][\n]"
+374  [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-0 << "X-Powered-By: PHP/7.0.18[\r][\n]"
+374  [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-0 << "X-Cache: HIT from Backend[\r][\n]"
+374  [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-0 << "[\r][\n]"
+374  [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-0 << "75[\r][\n]"
+374  [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-0 << "[0x9][0x9][0x9][0x9][{"id":"2","login":"cursor","name":"Eliecer Osorio","password":"f7286ed087b6246e7d24c8326d0329d5","cliente":"1"}][\r][\n]"
+376  [pool-2-thread-1] DEBUG org.apache.http.headers  - http-outgoing-0 << HTTP/1.1 200 OK
+376  [pool-2-thread-1] DEBUG org.apache.http.headers  - http-outgoing-0 << Server: nginx
+376  [pool-2-thread-1] DEBUG org.apache.http.headers  - http-outgoing-0 << Date: Mon, 15 May 2017 00:58:29 GMT
+376  [pool-2-thread-1] DEBUG org.apache.http.headers  - http-outgoing-0 << Content-Type: application/json
+376  [pool-2-thread-1] DEBUG org.apache.http.headers  - http-outgoing-0 << Transfer-Encoding: chunked
+376  [pool-2-thread-1] DEBUG org.apache.http.headers  - http-outgoing-0 << Connection: keep-alive
+376  [pool-2-thread-1] DEBUG org.apache.http.headers  - http-outgoing-0 << X-Powered-By: PHP/7.0.18
+376  [pool-2-thread-1] DEBUG org.apache.http.headers  - http-outgoing-0 << X-Cache: HIT from Backend
+381  [pool-2-thread-1] DEBUG org.apache.http.impl.execchain.MainClientExec  - Connection can be kept alive indefinitely
+3215 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-0 << "0[\r][\n]"
+3215 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-0 << "[\r][\n]"
+3215 [pool-2-thread-1] DEBUG org.apache.http.impl.conn.PoolingHttpClientConnectionManager  - Connection [id: 0][route: {}->http://www.aplicacionestest.cl:80] can be kept alive indefinitely
+3216 [pool-2-thread-1] DEBUG org.apache.http.impl.conn.PoolingHttpClientConnectionManager  - Connection released: [id: 0][route: {}->http://www.aplicacionestest.cl:80][total kept alive: 1; route allocated: 1 of 2; total allocated: 1 of 20]
+3229 [pool-2-thread-2] DEBUG org.apache.http.client.protocol.RequestAddCookies  - CookieSpec selected: default
+3229 [pool-2-thread-2] DEBUG org.apache.http.client.protocol.RequestAuthCache  - Auth cache not set in the context
+3229 [pool-2-thread-2] DEBUG org.apache.http.impl.conn.PoolingHttpClientConnectionManager  - Connection request: [route: {}->http://www.aplicacionestest.cl:80][total kept alive: 1; route allocated: 1 of 2; total allocated: 1 of 20]
+3230 [pool-2-thread-2] DEBUG org.apache.http.impl.conn.PoolingHttpClientConnectionManager  - Connection leased: [id: 0][route: {}->http://www.aplicacionestest.cl:80][total kept alive: 0; route allocated: 1 of 2; total allocated: 1 of 20]
+3230 [pool-2-thread-2] DEBUG org.apache.http.impl.execchain.MainClientExec  - Executing request GET /clientes HTTP/1.1
+3230 [pool-2-thread-2] DEBUG org.apache.http.impl.execchain.MainClientExec  - Target auth state: UNCHALLENGED
+3230 [pool-2-thread-2] DEBUG org.apache.http.impl.execchain.MainClientExec  - Proxy auth state: UNCHALLENGED
+3230 [pool-2-thread-2] DEBUG org.apache.http.headers  - http-outgoing-0 >> GET /clientes HTTP/1.1
+3230 [pool-2-thread-2] DEBUG org.apache.http.headers  - http-outgoing-0 >> accept: application/json
+3230 [pool-2-thread-2] DEBUG org.apache.http.headers  - http-outgoing-0 >> Database: aplicac2_cliente
+3230 [pool-2-thread-2] DEBUG org.apache.http.headers  - http-outgoing-0 >> Cliente: 0
+3230 [pool-2-thread-2] DEBUG org.apache.http.headers  - http-outgoing-0 >> Host: www.aplicacionestest.cl
+3230 [pool-2-thread-2] DEBUG org.apache.http.headers  - http-outgoing-0 >> Connection: Keep-Alive
+3230 [pool-2-thread-2] DEBUG org.apache.http.headers  - http-outgoing-0 >> User-Agent: Apache-HttpClient/4.5.2 (Java/1.8.0_131)
+3230 [pool-2-thread-2] DEBUG org.apache.http.headers  - http-outgoing-0 >> Accept-Encoding: gzip,deflate
+3230 [pool-2-thread-2] DEBUG org.apache.http.wire  - http-outgoing-0 >> "GET /clientes HTTP/1.1[\r][\n]"
+3230 [pool-2-thread-2] DEBUG org.apache.http.wire  - http-outgoing-0 >> "accept: application/json[\r][\n]"
+3230 [pool-2-thread-2] DEBUG org.apache.http.wire  - http-outgoing-0 >> "Database: aplicac2_cliente[\r][\n]"
+3230 [pool-2-thread-2] DEBUG org.apache.http.wire  - http-outgoing-0 >> "Cliente: 0[\r][\n]"
+3230 [pool-2-thread-2] DEBUG org.apache.http.wire  - http-outgoing-0 >> "Host: www.aplicacionestest.cl[\r][\n]"
+3230 [pool-2-thread-2] DEBUG org.apache.http.wire  - http-outgoing-0 >> "Connection: Keep-Alive[\r][\n]"
+3231 [pool-2-thread-2] DEBUG org.apache.http.wire  - http-outgoing-0 >> "User-Agent: Apache-HttpClient/4.5.2 (Java/1.8.0_131)[\r][\n]"
+3231 [pool-2-thread-2] DEBUG org.apache.http.wire  - http-outgoing-0 >> "Accept-Encoding: gzip,deflate[\r][\n]"
+3231 [pool-2-thread-2] DEBUG org.apache.http.wire  - http-outgoing-0 >> "[\r][\n]"
+3286 [pool-2-thread-2] DEBUG org.apache.http.wire  - http-outgoing-0 << "HTTP/1.1 200 OK[\r][\n]"
+3286 [pool-2-thread-2] DEBUG org.apache.http.wire  - http-outgoing-0 << "Server: nginx[\r][\n]"
+3286 [pool-2-thread-2] DEBUG org.apache.http.wire  - http-outgoing-0 << "Date: Mon, 15 May 2017 00:58:31 GMT[\r][\n]"
+3286 [pool-2-thread-2] DEBUG org.apache.http.wire  - http-outgoing-0 << "Content-Type: application/json[\r][\n]"
+3286 [pool-2-thread-2] DEBUG org.apache.http.wire  - http-outgoing-0 << "Transfer-Encoding: chunked[\r][\n]"
+3286 [pool-2-thread-2] DEBUG org.apache.http.wire  - http-outgoing-0 << "Connection: keep-alive[\r][\n]"
+3286 [pool-2-thread-2] DEBUG org.apache.http.wire  - http-outgoing-0 << "X-Powered-By: PHP/7.0.18[\r][\n]"
+3286 [pool-2-thread-2] DEBUG org.apache.http.wire  - http-outgoing-0 << "X-Cache: HIT from Backend[\r][\n]"
+3286 [pool-2-thread-2] DEBUG org.apache.http.wire  - http-outgoing-0 << "[\r][\n]"
+3286 [pool-2-thread-2] DEBUG org.apache.http.wire  - http-outgoing-0 << "c1[\r][\n]"
+3286 [pool-2-thread-2] DEBUG org.apache.http.wire  - http-outgoing-0 << "[0x9][0x9][0x9][0x9][{"ID":"1","NAME":"Cauquenes","rut":"--","direccion":"--","fono":"","email":"","activo":"0"},{"ID":"2","NAME":"Asunci\u00f3n","rut":"--","direccion":"--","fono":"","email":"","activo":"1"}][\r][\n]"
+3286 [pool-2-thread-2] DEBUG org.apache.http.headers  - http-outgoing-0 << HTTP/1.1 200 OK
+3286 [pool-2-thread-2] DEBUG org.apache.http.headers  - http-outgoing-0 << Server: nginx
+3286 [pool-2-thread-2] DEBUG org.apache.http.headers  - http-outgoing-0 << Date: Mon, 15 May 2017 00:58:31 GMT
+3286 [pool-2-thread-2] DEBUG org.apache.http.headers  - http-outgoing-0 << Content-Type: application/json
+3287 [pool-2-thread-2] DEBUG org.apache.http.headers  - http-outgoing-0 << Transfer-Encoding: chunked
+3287 [pool-2-thread-2] DEBUG org.apache.http.headers  - http-outgoing-0 << Connection: keep-alive
+3287 [pool-2-thread-2] DEBUG org.apache.http.headers  - http-outgoing-0 << X-Powered-By: PHP/7.0.18
+3287 [pool-2-thread-2] DEBUG org.apache.http.headers  - http-outgoing-0 << X-Cache: HIT from Backend
+3287 [pool-2-thread-2] DEBUG org.apache.http.impl.execchain.MainClientExec  - Connection can be kept alive indefinitely
+3287 [pool-2-thread-2] DEBUG org.apache.http.wire  - http-outgoing-0 << "0[\r][\n]"
+3287 [pool-2-thread-2] DEBUG org.apache.http.wire  - http-outgoing-0 << "[\r][\n]"
+3287 [pool-2-thread-2] DEBUG org.apache.http.impl.conn.PoolingHttpClientConnectionManager  - Connection [id: 0][route: {}->http://www.aplicacionestest.cl:80] can be kept alive indefinitely
+3287 [pool-2-thread-2] DEBUG org.apache.http.impl.conn.PoolingHttpClientConnectionManager  - Connection released: [id: 0][route: {}->http://www.aplicacionestest.cl:80][total kept alive: 1; route allocated: 1 of 2; total allocated: 1 of 20]
+10857 [pool-2-thread-3] DEBUG org.apache.http.client.protocol.RequestAddCookies  - CookieSpec selected: default
+10857 [pool-2-thread-3] DEBUG org.apache.http.client.protocol.RequestAuthCache  - Auth cache not set in the context
+10857 [pool-2-thread-3] DEBUG org.apache.http.impl.conn.PoolingHttpClientConnectionManager  - Connection request: [route: {}->http://www.aplicacionestest.cl:80][total kept alive: 1; route allocated: 1 of 2; total allocated: 1 of 20]
+10857 [pool-2-thread-3] DEBUG org.apache.http.wire  - http-outgoing-0 << "end of stream"
+10857 [pool-2-thread-3] DEBUG org.apache.http.impl.conn.DefaultManagedHttpClientConnection  - http-outgoing-0: Close connection
+10858 [pool-2-thread-3] DEBUG org.apache.http.impl.conn.PoolingHttpClientConnectionManager  - Connection leased: [id: 1][route: {}->http://www.aplicacionestest.cl:80][total kept alive: 0; route allocated: 1 of 2; total allocated: 1 of 20]
+10858 [pool-2-thread-3] DEBUG org.apache.http.impl.execchain.MainClientExec  - Opening connection {}->http://www.aplicacionestest.cl:80
+10858 [pool-2-thread-3] DEBUG org.apache.http.impl.conn.DefaultHttpClientConnectionOperator  - Connecting to www.aplicacionestest.cl/186.64.117.30:80
+10860 [pool-2-thread-1] DEBUG org.apache.http.client.protocol.RequestAddCookies  - CookieSpec selected: default
+10860 [pool-2-thread-1] DEBUG org.apache.http.client.protocol.RequestAuthCache  - Auth cache not set in the context
+10860 [pool-2-thread-1] DEBUG org.apache.http.impl.conn.PoolingHttpClientConnectionManager  - Connection request: [route: {}->http://www.aplicacionestest.cl:80][total kept alive: 0; route allocated: 1 of 2; total allocated: 1 of 20]
+10860 [pool-2-thread-1] DEBUG org.apache.http.impl.conn.PoolingHttpClientConnectionManager  - Connection leased: [id: 2][route: {}->http://www.aplicacionestest.cl:80][total kept alive: 0; route allocated: 2 of 2; total allocated: 2 of 20]
+10860 [pool-2-thread-1] DEBUG org.apache.http.impl.execchain.MainClientExec  - Opening connection {}->http://www.aplicacionestest.cl:80
+10861 [pool-2-thread-1] DEBUG org.apache.http.impl.conn.DefaultHttpClientConnectionOperator  - Connecting to www.aplicacionestest.cl/186.64.117.30:80
+10862 [pool-2-thread-2] DEBUG org.apache.http.client.protocol.RequestAddCookies  - CookieSpec selected: default
+10862 [pool-2-thread-2] DEBUG org.apache.http.client.protocol.RequestAuthCache  - Auth cache not set in the context
+10862 [pool-2-thread-2] DEBUG org.apache.http.impl.conn.PoolingHttpClientConnectionManager  - Connection request: [route: {}->http://www.aplicacionestest.cl:80][total kept alive: 0; route allocated: 2 of 2; total allocated: 2 of 20]
+10864 [pool-2-thread-4] DEBUG org.apache.http.client.protocol.RequestAddCookies  - CookieSpec selected: default
+10864 [pool-2-thread-4] DEBUG org.apache.http.client.protocol.RequestAuthCache  - Auth cache not set in the context
+10864 [pool-2-thread-4] DEBUG org.apache.http.impl.conn.PoolingHttpClientConnectionManager  - Connection request: [route: {}->http://www.aplicacionestest.cl:80][total kept alive: 0; route allocated: 2 of 2; total allocated: 2 of 20]
+10864 [pool-2-thread-5] DEBUG org.apache.http.client.protocol.RequestAddCookies  - CookieSpec selected: default
+10865 [pool-2-thread-5] DEBUG org.apache.http.client.protocol.RequestAuthCache  - Auth cache not set in the context
+10865 [pool-2-thread-5] DEBUG org.apache.http.impl.conn.PoolingHttpClientConnectionManager  - Connection request: [route: {}->http://www.aplicacionestest.cl:80][total kept alive: 0; route allocated: 2 of 2; total allocated: 2 of 20]
+10892 [pool-2-thread-3] DEBUG org.apache.http.impl.conn.DefaultHttpClientConnectionOperator  - Connection established 192.168.1.101:60334<->186.64.117.30:80
+10892 [pool-2-thread-3] DEBUG org.apache.http.impl.execchain.MainClientExec  - Executing request GET /tipoprueba HTTP/1.1
+10892 [pool-2-thread-3] DEBUG org.apache.http.impl.execchain.MainClientExec  - Target auth state: UNCHALLENGED
+10893 [pool-2-thread-3] DEBUG org.apache.http.impl.execchain.MainClientExec  - Proxy auth state: UNCHALLENGED
+10893 [pool-2-thread-1] DEBUG org.apache.http.impl.conn.DefaultHttpClientConnectionOperator  - Connection established 192.168.1.101:60335<->186.64.117.30:80
+10893 [pool-2-thread-3] DEBUG org.apache.http.headers  - http-outgoing-1 >> GET /tipoprueba HTTP/1.1
+10893 [pool-2-thread-1] DEBUG org.apache.http.impl.execchain.MainClientExec  - Executing request GET /asignatura HTTP/1.1
+10893 [pool-2-thread-3] DEBUG org.apache.http.headers  - http-outgoing-1 >> accept: application/json
+10893 [pool-2-thread-1] DEBUG org.apache.http.impl.execchain.MainClientExec  - Target auth state: UNCHALLENGED
+10893 [pool-2-thread-3] DEBUG org.apache.http.headers  - http-outgoing-1 >> Database: aplicac2_cliente
+10893 [pool-2-thread-1] DEBUG org.apache.http.impl.execchain.MainClientExec  - Proxy auth state: UNCHALLENGED
+10893 [pool-2-thread-3] DEBUG org.apache.http.headers  - http-outgoing-1 >> Cliente: 1
+10893 [pool-2-thread-3] DEBUG org.apache.http.headers  - http-outgoing-1 >> Host: www.aplicacionestest.cl
+10893 [pool-2-thread-3] DEBUG org.apache.http.headers  - http-outgoing-1 >> Connection: Keep-Alive
+10893 [pool-2-thread-3] DEBUG org.apache.http.headers  - http-outgoing-1 >> User-Agent: Apache-HttpClient/4.5.2 (Java/1.8.0_131)
+10893 [pool-2-thread-1] DEBUG org.apache.http.headers  - http-outgoing-2 >> GET /asignatura HTTP/1.1
+10893 [pool-2-thread-3] DEBUG org.apache.http.headers  - http-outgoing-1 >> Accept-Encoding: gzip,deflate
+10893 [pool-2-thread-1] DEBUG org.apache.http.headers  - http-outgoing-2 >> accept: application/json
+10893 [pool-2-thread-3] DEBUG org.apache.http.wire  - http-outgoing-1 >> "GET /tipoprueba HTTP/1.1[\r][\n]"
+10893 [pool-2-thread-1] DEBUG org.apache.http.headers  - http-outgoing-2 >> Database: aplicac2_cliente
+10893 [pool-2-thread-3] DEBUG org.apache.http.wire  - http-outgoing-1 >> "accept: application/json[\r][\n]"
+10893 [pool-2-thread-1] DEBUG org.apache.http.headers  - http-outgoing-2 >> Cliente: 1
+10893 [pool-2-thread-3] DEBUG org.apache.http.wire  - http-outgoing-1 >> "Database: aplicac2_cliente[\r][\n]"
+10893 [pool-2-thread-1] DEBUG org.apache.http.headers  - http-outgoing-2 >> Host: www.aplicacionestest.cl
+10893 [pool-2-thread-3] DEBUG org.apache.http.wire  - http-outgoing-1 >> "Cliente: 1[\r][\n]"
+10893 [pool-2-thread-1] DEBUG org.apache.http.headers  - http-outgoing-2 >> Connection: Keep-Alive
+10893 [pool-2-thread-3] DEBUG org.apache.http.wire  - http-outgoing-1 >> "Host: www.aplicacionestest.cl[\r][\n]"
+10893 [pool-2-thread-1] DEBUG org.apache.http.headers  - http-outgoing-2 >> User-Agent: Apache-HttpClient/4.5.2 (Java/1.8.0_131)
+10893 [pool-2-thread-3] DEBUG org.apache.http.wire  - http-outgoing-1 >> "Connection: Keep-Alive[\r][\n]"
+10893 [pool-2-thread-1] DEBUG org.apache.http.headers  - http-outgoing-2 >> Accept-Encoding: gzip,deflate
+10893 [pool-2-thread-3] DEBUG org.apache.http.wire  - http-outgoing-1 >> "User-Agent: Apache-HttpClient/4.5.2 (Java/1.8.0_131)[\r][\n]"
+10893 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-2 >> "GET /asignatura HTTP/1.1[\r][\n]"
+10893 [pool-2-thread-3] DEBUG org.apache.http.wire  - http-outgoing-1 >> "Accept-Encoding: gzip,deflate[\r][\n]"
+10893 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-2 >> "accept: application/json[\r][\n]"
+10893 [pool-2-thread-3] DEBUG org.apache.http.wire  - http-outgoing-1 >> "[\r][\n]"
+10893 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-2 >> "Database: aplicac2_cliente[\r][\n]"
+10893 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-2 >> "Cliente: 1[\r][\n]"
+10893 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-2 >> "Host: www.aplicacionestest.cl[\r][\n]"
+10893 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-2 >> "Connection: Keep-Alive[\r][\n]"
+10893 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-2 >> "User-Agent: Apache-HttpClient/4.5.2 (Java/1.8.0_131)[\r][\n]"
+10893 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-2 >> "Accept-Encoding: gzip,deflate[\r][\n]"
+10893 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-2 >> "[\r][\n]"
+11051 [pool-2-thread-3] DEBUG org.apache.http.wire  - http-outgoing-1 << "HTTP/1.1 200 OK[\r][\n]"
+11051 [pool-2-thread-3] DEBUG org.apache.http.wire  - http-outgoing-1 << "Server: nginx[\r][\n]"
+11051 [pool-2-thread-3] DEBUG org.apache.http.wire  - http-outgoing-1 << "Date: Mon, 15 May 2017 00:58:39 GMT[\r][\n]"
+11051 [pool-2-thread-3] DEBUG org.apache.http.wire  - http-outgoing-1 << "Content-Type: application/json[\r][\n]"
+11052 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-2 << "HTTP/1.1 200 OK[\r][\n]"
+11052 [pool-2-thread-3] DEBUG org.apache.http.wire  - http-outgoing-1 << "Transfer-Encoding: chunked[\r][\n]"
+11052 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-2 << "Server: nginx[\r][\n]"
+11053 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-2 << "Date: Mon, 15 May 2017 00:58:39 GMT[\r][\n]"
+11053 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-2 << "Content-Type: application/json[\r][\n]"
+11053 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-2 << "Transfer-Encoding: chunked[\r][\n]"
+11053 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-2 << "Connection: keep-alive[\r][\n]"
+11053 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-2 << "X-Powered-By: PHP/7.0.18[\r][\n]"
+11053 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-2 << "X-Cache: HIT from Backend[\r][\n]"
+11053 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-2 << "[\r][\n]"
+11053 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-2 << "b8[\r][\n]"
+11053 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-2 << "[0x9][0x9][0x9][0x9][{"ID":"4","NAME":"Ciencias Naturales"},{"ID":"3","NAME":"Historia, Geograf\u00eda y C. S."},{"ID":"1","NAME":"Lenguaje  y Comunicaci\u00f3n"},{"ID":"2","NAME":"Matem\u00e1ticas"}][\r][\n]"
+11053 [pool-2-thread-1] DEBUG org.apache.http.headers  - http-outgoing-2 << HTTP/1.1 200 OK
+11053 [pool-2-thread-1] DEBUG org.apache.http.headers  - http-outgoing-2 << Server: nginx
+11053 [pool-2-thread-1] DEBUG org.apache.http.headers  - http-outgoing-2 << Date: Mon, 15 May 2017 00:58:39 GMT
+11053 [pool-2-thread-1] DEBUG org.apache.http.headers  - http-outgoing-2 << Content-Type: application/json
+11053 [pool-2-thread-1] DEBUG org.apache.http.headers  - http-outgoing-2 << Transfer-Encoding: chunked
+11053 [pool-2-thread-1] DEBUG org.apache.http.headers  - http-outgoing-2 << Connection: keep-alive
+11053 [pool-2-thread-1] DEBUG org.apache.http.headers  - http-outgoing-2 << X-Powered-By: PHP/7.0.18
+11053 [pool-2-thread-1] DEBUG org.apache.http.headers  - http-outgoing-2 << X-Cache: HIT from Backend
+11053 [pool-2-thread-1] DEBUG org.apache.http.impl.execchain.MainClientExec  - Connection can be kept alive indefinitely
+11053 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-2 << "0[\r][\n]"
+11053 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-2 << "[\r][\n]"
+11053 [pool-2-thread-1] DEBUG org.apache.http.impl.conn.PoolingHttpClientConnectionManager  - Connection [id: 2][route: {}->http://www.aplicacionestest.cl:80] can be kept alive indefinitely
+11053 [pool-2-thread-1] DEBUG org.apache.http.impl.conn.PoolingHttpClientConnectionManager  - Connection released: [id: 2][route: {}->http://www.aplicacionestest.cl:80][total kept alive: 1; route allocated: 2 of 2; total allocated: 2 of 20]
+11052 [pool-2-thread-3] DEBUG org.apache.http.wire  - http-outgoing-1 << "Connection: keep-alive[\r][\n]"
+11054 [pool-2-thread-3] DEBUG org.apache.http.wire  - http-outgoing-1 << "X-Powered-By: PHP/7.0.18[\r][\n]"
+11054 [pool-2-thread-3] DEBUG org.apache.http.wire  - http-outgoing-1 << "X-Cache: HIT from Backend[\r][\n]"
+11054 [pool-2-thread-3] DEBUG org.apache.http.wire  - http-outgoing-1 << "[\r][\n]"
+11054 [pool-2-thread-3] DEBUG org.apache.http.wire  - http-outgoing-1 << "43[\r][\n]"
+11054 [pool-2-thread-3] DEBUG org.apache.http.wire  - http-outgoing-1 << "[0x9][0x9][0x9][0x9][{"ID":"1","NAME":"General"},{"ID":"9","NAME":"general_final"}][\r][\n]"
+11054 [pool-2-thread-3] DEBUG org.apache.http.headers  - http-outgoing-1 << HTTP/1.1 200 OK
+11054 [pool-2-thread-3] DEBUG org.apache.http.headers  - http-outgoing-1 << Server: nginx
+11054 [pool-2-thread-3] DEBUG org.apache.http.headers  - http-outgoing-1 << Date: Mon, 15 May 2017 00:58:39 GMT
+11054 [pool-2-thread-3] DEBUG org.apache.http.headers  - http-outgoing-1 << Content-Type: application/json
+11054 [pool-2-thread-3] DEBUG org.apache.http.headers  - http-outgoing-1 << Transfer-Encoding: chunked
+11054 [pool-2-thread-3] DEBUG org.apache.http.headers  - http-outgoing-1 << Connection: keep-alive
+11054 [pool-2-thread-3] DEBUG org.apache.http.headers  - http-outgoing-1 << X-Powered-By: PHP/7.0.18
+11054 [pool-2-thread-3] DEBUG org.apache.http.headers  - http-outgoing-1 << X-Cache: HIT from Backend
+11054 [pool-2-thread-3] DEBUG org.apache.http.impl.execchain.MainClientExec  - Connection can be kept alive indefinitely
+11054 [pool-2-thread-3] DEBUG org.apache.http.wire  - http-outgoing-1 << "0[\r][\n]"
+11054 [pool-2-thread-3] DEBUG org.apache.http.wire  - http-outgoing-1 << "[\r][\n]"
+11054 [pool-2-thread-3] DEBUG org.apache.http.impl.conn.PoolingHttpClientConnectionManager  - Connection [id: 1][route: {}->http://www.aplicacionestest.cl:80] can be kept alive indefinitely
+11054 [pool-2-thread-3] DEBUG org.apache.http.impl.conn.PoolingHttpClientConnectionManager  - Connection released: [id: 1][route: {}->http://www.aplicacionestest.cl:80][total kept alive: 2; route allocated: 2 of 2; total allocated: 2 of 20]
+11057 [pool-2-thread-2] DEBUG org.apache.http.impl.conn.PoolingHttpClientConnectionManager  - Connection leased: [id: 1][route: {}->http://www.aplicacionestest.cl:80][total kept alive: 1; route allocated: 2 of 2; total allocated: 2 of 20]
+11057 [pool-2-thread-2] DEBUG org.apache.http.impl.execchain.MainClientExec  - Executing request GET /nivelevaluacion HTTP/1.1
+11057 [pool-2-thread-2] DEBUG org.apache.http.impl.execchain.MainClientExec  - Target auth state: UNCHALLENGED
+11057 [pool-2-thread-2] DEBUG org.apache.http.impl.execchain.MainClientExec  - Proxy auth state: UNCHALLENGED
+11057 [pool-2-thread-1] DEBUG org.apache.http.client.protocol.RequestAddCookies  - CookieSpec selected: default
+11057 [pool-2-thread-1] DEBUG org.apache.http.client.protocol.RequestAuthCache  - Auth cache not set in the context
+11057 [pool-2-thread-1] DEBUG org.apache.http.impl.conn.PoolingHttpClientConnectionManager  - Connection request: [route: {}->http://www.aplicacionestest.cl:80][total kept alive: 1; route allocated: 2 of 2; total allocated: 2 of 20]
+11057 [pool-2-thread-1] DEBUG org.apache.http.impl.conn.PoolingHttpClientConnectionManager  - Connection leased: [id: 2][route: {}->http://www.aplicacionestest.cl:80][total kept alive: 0; route allocated: 2 of 2; total allocated: 2 of 20]
+11057 [pool-2-thread-1] DEBUG org.apache.http.impl.execchain.MainClientExec  - Executing request GET /prueba HTTP/1.1
+11057 [pool-2-thread-1] DEBUG org.apache.http.impl.execchain.MainClientExec  - Target auth state: UNCHALLENGED
+11057 [pool-2-thread-1] DEBUG org.apache.http.impl.execchain.MainClientExec  - Proxy auth state: UNCHALLENGED
+11057 [pool-2-thread-1] DEBUG org.apache.http.headers  - http-outgoing-2 >> GET /prueba HTTP/1.1
+11057 [pool-2-thread-1] DEBUG org.apache.http.headers  - http-outgoing-2 >> accept: application/json
+11057 [pool-2-thread-1] DEBUG org.apache.http.headers  - http-outgoing-2 >> Database: aplicac2_cliente
+11057 [pool-2-thread-1] DEBUG org.apache.http.headers  - http-outgoing-2 >> Cliente: 1
+11057 [pool-2-thread-1] DEBUG org.apache.http.headers  - http-outgoing-2 >> Host: www.aplicacionestest.cl
+11057 [pool-2-thread-1] DEBUG org.apache.http.headers  - http-outgoing-2 >> Connection: Keep-Alive
+11057 [pool-2-thread-1] DEBUG org.apache.http.headers  - http-outgoing-2 >> User-Agent: Apache-HttpClient/4.5.2 (Java/1.8.0_131)
+11057 [pool-2-thread-1] DEBUG org.apache.http.headers  - http-outgoing-2 >> Accept-Encoding: gzip,deflate
+11057 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-2 >> "GET /prueba HTTP/1.1[\r][\n]"
+11057 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-2 >> "accept: application/json[\r][\n]"
+11057 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-2 >> "Database: aplicac2_cliente[\r][\n]"
+11057 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-2 >> "Cliente: 1[\r][\n]"
+11057 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-2 >> "Host: www.aplicacionestest.cl[\r][\n]"
+11057 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-2 >> "Connection: Keep-Alive[\r][\n]"
+11058 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-2 >> "User-Agent: Apache-HttpClient/4.5.2 (Java/1.8.0_131)[\r][\n]"
+11058 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-2 >> "Accept-Encoding: gzip,deflate[\r][\n]"
+11058 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-2 >> "[\r][\n]"
+11058 [pool-2-thread-2] DEBUG org.apache.http.headers  - http-outgoing-1 >> GET /nivelevaluacion HTTP/1.1
+11058 [pool-2-thread-2] DEBUG org.apache.http.headers  - http-outgoing-1 >> accept: application/json
+11058 [pool-2-thread-2] DEBUG org.apache.http.headers  - http-outgoing-1 >> Database: aplicac2_cliente
+11058 [pool-2-thread-2] DEBUG org.apache.http.headers  - http-outgoing-1 >> Cliente: 1
+11058 [pool-2-thread-2] DEBUG org.apache.http.headers  - http-outgoing-1 >> Host: www.aplicacionestest.cl
+11058 [pool-2-thread-2] DEBUG org.apache.http.headers  - http-outgoing-1 >> Connection: Keep-Alive
+11058 [pool-2-thread-2] DEBUG org.apache.http.headers  - http-outgoing-1 >> User-Agent: Apache-HttpClient/4.5.2 (Java/1.8.0_131)
+11058 [pool-2-thread-2] DEBUG org.apache.http.headers  - http-outgoing-1 >> Accept-Encoding: gzip,deflate
+11058 [pool-2-thread-2] DEBUG org.apache.http.wire  - http-outgoing-1 >> "GET /nivelevaluacion HTTP/1.1[\r][\n]"
+11058 [pool-2-thread-2] DEBUG org.apache.http.wire  - http-outgoing-1 >> "accept: application/json[\r][\n]"
+11058 [pool-2-thread-2] DEBUG org.apache.http.wire  - http-outgoing-1 >> "Database: aplicac2_cliente[\r][\n]"
+11061 [pool-2-thread-2] DEBUG org.apache.http.wire  - http-outgoing-1 >> "Cliente: 1[\r][\n]"
+11061 [pool-2-thread-2] DEBUG org.apache.http.wire  - http-outgoing-1 >> "Host: www.aplicacionestest.cl[\r][\n]"
+11061 [pool-2-thread-2] DEBUG org.apache.http.wire  - http-outgoing-1 >> "Connection: Keep-Alive[\r][\n]"
+11061 [pool-2-thread-2] DEBUG org.apache.http.wire  - http-outgoing-1 >> "User-Agent: Apache-HttpClient/4.5.2 (Java/1.8.0_131)[\r][\n]"
+11061 [pool-2-thread-2] DEBUG org.apache.http.wire  - http-outgoing-1 >> "Accept-Encoding: gzip,deflate[\r][\n]"
+11062 [pool-2-thread-2] DEBUG org.apache.http.wire  - http-outgoing-1 >> "[\r][\n]"
+11102 [pool-2-thread-2] DEBUG org.apache.http.wire  - http-outgoing-1 << "HTTP/1.1 200 OK[\r][\n]"
+11102 [pool-2-thread-2] DEBUG org.apache.http.wire  - http-outgoing-1 << "Server: nginx[\r][\n]"
+11102 [pool-2-thread-2] DEBUG org.apache.http.wire  - http-outgoing-1 << "Date: Mon, 15 May 2017 00:58:39 GMT[\r][\n]"
+11102 [pool-2-thread-2] DEBUG org.apache.http.wire  - http-outgoing-1 << "Content-Type: application/json[\r][\n]"
+11102 [pool-2-thread-2] DEBUG org.apache.http.wire  - http-outgoing-1 << "Transfer-Encoding: chunked[\r][\n]"
+11102 [pool-2-thread-2] DEBUG org.apache.http.wire  - http-outgoing-1 << "Connection: keep-alive[\r][\n]"
+11102 [pool-2-thread-2] DEBUG org.apache.http.wire  - http-outgoing-1 << "X-Powered-By: PHP/7.0.18[\r][\n]"
+11102 [pool-2-thread-2] DEBUG org.apache.http.wire  - http-outgoing-1 << "X-Cache: HIT from Backend[\r][\n]"
+11102 [pool-2-thread-2] DEBUG org.apache.http.wire  - http-outgoing-1 << "[\r][\n]"
+11102 [pool-2-thread-2] DEBUG org.apache.http.wire  - http-outgoing-1 << "4c[\r][\n]"
+11102 [pool-2-thread-2] DEBUG org.apache.http.wire  - http-outgoing-1 << "[0x9][0x9][0x9][0x9][{"ID":"1","NAME":"Bajo\/Medio Bajo\/Medio Alto\/Alto","NRORANGOS":"4"}][\r][\n]"
+11102 [pool-2-thread-2] DEBUG org.apache.http.headers  - http-outgoing-1 << HTTP/1.1 200 OK
+11102 [pool-2-thread-2] DEBUG org.apache.http.headers  - http-outgoing-1 << Server: nginx
+11102 [pool-2-thread-2] DEBUG org.apache.http.headers  - http-outgoing-1 << Date: Mon, 15 May 2017 00:58:39 GMT
+11102 [pool-2-thread-2] DEBUG org.apache.http.headers  - http-outgoing-1 << Content-Type: application/json
+11102 [pool-2-thread-2] DEBUG org.apache.http.headers  - http-outgoing-1 << Transfer-Encoding: chunked
+11102 [pool-2-thread-2] DEBUG org.apache.http.headers  - http-outgoing-1 << Connection: keep-alive
+11102 [pool-2-thread-2] DEBUG org.apache.http.headers  - http-outgoing-1 << X-Powered-By: PHP/7.0.18
+11102 [pool-2-thread-2] DEBUG org.apache.http.headers  - http-outgoing-1 << X-Cache: HIT from Backend
+11102 [pool-2-thread-2] DEBUG org.apache.http.impl.execchain.MainClientExec  - Connection can be kept alive indefinitely
+11102 [pool-2-thread-2] DEBUG org.apache.http.wire  - http-outgoing-1 << "0[\r][\n]"
+11102 [pool-2-thread-2] DEBUG org.apache.http.wire  - http-outgoing-1 << "[\r][\n]"
+11103 [pool-2-thread-2] DEBUG org.apache.http.impl.conn.PoolingHttpClientConnectionManager  - Connection [id: 1][route: {}->http://www.aplicacionestest.cl:80] can be kept alive indefinitely
+11103 [pool-2-thread-2] DEBUG org.apache.http.impl.conn.PoolingHttpClientConnectionManager  - Connection released: [id: 1][route: {}->http://www.aplicacionestest.cl:80][total kept alive: 1; route allocated: 2 of 2; total allocated: 2 of 20]
+11103 [pool-2-thread-5] DEBUG org.apache.http.impl.conn.PoolingHttpClientConnectionManager  - Connection leased: [id: 1][route: {}->http://www.aplicacionestest.cl:80][total kept alive: 0; route allocated: 2 of 2; total allocated: 2 of 20]
+11103 [pool-2-thread-5] DEBUG org.apache.http.impl.execchain.MainClientExec  - Executing request GET /tipocurso HTTP/1.1
+11103 [pool-2-thread-5] DEBUG org.apache.http.impl.execchain.MainClientExec  - Target auth state: UNCHALLENGED
+11103 [pool-2-thread-5] DEBUG org.apache.http.impl.execchain.MainClientExec  - Proxy auth state: UNCHALLENGED
+11103 [pool-2-thread-5] DEBUG org.apache.http.headers  - http-outgoing-1 >> GET /tipocurso HTTP/1.1
+11103 [pool-2-thread-5] DEBUG org.apache.http.headers  - http-outgoing-1 >> accept: application/json
+11103 [pool-2-thread-5] DEBUG org.apache.http.headers  - http-outgoing-1 >> Database: aplicac2_cliente
+11103 [pool-2-thread-5] DEBUG org.apache.http.headers  - http-outgoing-1 >> Cliente: 1
+11103 [pool-2-thread-5] DEBUG org.apache.http.headers  - http-outgoing-1 >> Host: www.aplicacionestest.cl
+11103 [pool-2-thread-5] DEBUG org.apache.http.headers  - http-outgoing-1 >> Connection: Keep-Alive
+11103 [pool-2-thread-5] DEBUG org.apache.http.headers  - http-outgoing-1 >> User-Agent: Apache-HttpClient/4.5.2 (Java/1.8.0_131)
+11103 [pool-2-thread-5] DEBUG org.apache.http.headers  - http-outgoing-1 >> Accept-Encoding: gzip,deflate
+11103 [pool-2-thread-5] DEBUG org.apache.http.wire  - http-outgoing-1 >> "GET /tipocurso HTTP/1.1[\r][\n]"
+11103 [pool-2-thread-5] DEBUG org.apache.http.wire  - http-outgoing-1 >> "accept: application/json[\r][\n]"
+11103 [pool-2-thread-5] DEBUG org.apache.http.wire  - http-outgoing-1 >> "Database: aplicac2_cliente[\r][\n]"
+11103 [pool-2-thread-5] DEBUG org.apache.http.wire  - http-outgoing-1 >> "Cliente: 1[\r][\n]"
+11103 [pool-2-thread-5] DEBUG org.apache.http.wire  - http-outgoing-1 >> "Host: www.aplicacionestest.cl[\r][\n]"
+11103 [pool-2-thread-5] DEBUG org.apache.http.wire  - http-outgoing-1 >> "Connection: Keep-Alive[\r][\n]"
+11103 [pool-2-thread-5] DEBUG org.apache.http.wire  - http-outgoing-1 >> "User-Agent: Apache-HttpClient/4.5.2 (Java/1.8.0_131)[\r][\n]"
+11103 [pool-2-thread-5] DEBUG org.apache.http.wire  - http-outgoing-1 >> "Accept-Encoding: gzip,deflate[\r][\n]"
+11103 [pool-2-thread-5] DEBUG org.apache.http.wire  - http-outgoing-1 >> "[\r][\n]"
+11106 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-2 << "HTTP/1.1 200 OK[\r][\n]"
+11107 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-2 << "Server: nginx[\r][\n]"
+11107 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-2 << "Date: Mon, 15 May 2017 00:58:39 GMT[\r][\n]"
+11107 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-2 << "Content-Type: application/json[\r][\n]"
+11107 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-2 << "Transfer-Encoding: chunked[\r][\n]"
+11107 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-2 << "Connection: keep-alive[\r][\n]"
+11107 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-2 << "X-Powered-By: PHP/7.0.18[\r][\n]"
+11107 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-2 << "X-Cache: HIT from Backend[\r][\n]"
+11107 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-2 << "[\r][\n]"
+11107 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-2 << "1fbc[\r][\n]"
+11107 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-2 << "[0x9][0x9][0x9][0x9][{"ID":"412","EXIGENCIA":"60","ALTERNATIVAS":"5","FECHA":"17071","PUNTAJEBASE":"1","NROFORMAS":"1","RESPONSES":"ABAADDEDADECEEAEDBCCBCDCECDDADEDDAACAEADDCAEDCCABDBDDDBBCAEBBCEEEBEACEEBCAEDBDEA","NROPREGUNTAS":"80","NAME":"psu lenguaje","ASIGNATURA_ID":"1","TIPOCURSO_ID":"12","TIPOPRUEBA_ID":"9","PROFESOR_ID":"6","NIVELEVALUACION_ID":"1"},{"ID":"413","EXIGENCIA":"60","ALTERNATIVAS":"5","FECHA":"17086","PUNTAJEBASE":"1","NROFORMAS":"1","RESPONSES":"VVVVVVVVV","NROPREGUNTAS":"9","NAME":"prekinder_ciencias","ASIGNATURA_ID":"4","TIPOCURSO_ID":"13","TIPOPRUEBA_ID":"9","PROFESOR_ID":"6","NIVELEVALUACION_ID":"1"},{"ID":"414","EXIGENCIA":"60","ALTERNATIVAS":"3","FECHA":"17086","PUNTAJEBASE":"1","NROFORMAS":"1","RESPONSES":"VVVVVVVVVVV","NROPREGUNTAS":"11","NAME":"prekinder_matematica","ASIGNATURA_ID":"2","TIPOCURSO_ID":"13","TIPOPRUEBA_ID":"9","PROFESOR_ID":"6","NIVELEVALUACION_ID":"1"},{"ID":"415","EXIGENCIA":"60","ALTERNATIVAS":"3","FECHA":"17086","PUNTAJEBASE":"1","NROFORMAS":"1","RESPONSES":"VVVVVVVV","NROPREGUNTAS":"8","NAME":"prekinder_lenguaje","ASIGNATURA_ID":"1","TIPOCURSO_ID":"13","TIPOPRUEBA_ID":"9","PROFESOR_ID":"6","NIVELEVALUACION_ID":"1"},{"ID":"416","EXIGENCIA":"60","ALTERNATIVAS":"3","FECHA":"17086","PUNTAJEBASE":"1","NROFORMAS":"1","RESPONSES":"VVVVVVVVV","NROPREGUNTAS":"9","NAME":"kinder_matematica","ASIGNATURA_ID":"2","TIPOCURSO_ID":"14","TIPOPRUEBA_ID":"9","PROFESOR_ID":"6","NIVELEVALUACION_ID":"1"},{"ID":"417","EXIGENCIA":"60","ALTERNATIVAS":"3","FECHA":"17086","PUNTAJEBASE":"1","NROFORMAS":"1","RESPONSES":"VVVVVVVVV","NROPREGUNTAS":"9","NAME":"kinder_lenguaje","ASIGNATURA_ID":"1","TIPOCURSO_ID":"14","TIPOPRUEBA_ID":"9","PROFESOR_ID":"6","NIVELEVALUACION_ID":"1"},{"ID":"419","EXIGENCIA":"60","ALTERNATIVAS":"3","FECHA":"17086","PUNTAJEBASE":"1","NROFORMAS":"1","RESPONSES":"VVVVVVVVV","NROPREGUNTAS":"9","NAME":"kinder_ciencias","ASIGNATURA_ID":"4","TIPOCURSO_ID":"14","TIPOPRUEBA_ID":"9","PROFESOR_ID":"6","NIVELEVALUACION_ID":"1"},{"ID":"420","EXIGENCIA":"60","ALTERNATIVAS":"3","FECHA":"17086","PUNTAJEBASE":"1","NROFORMAS":"1","RESPONSES":"CACCCBCABACBBCACCABC","NROPREGUNTAS":"20","NAME":"1b_matematica","ASIGNATURA_ID":"2","TIPOCURSO_ID":"1","TIPOPRUEBA_ID":"9","PROFESOR_ID":"6","NIVELEVALUACION_ID":"1"},{"ID":"421","EXIGENCIA":"60","ALTERNATIVAS":"3","FECHA":"17086","PUNTAJEBASE":"1","NROFORMAS":"1","RESPONSES":"ACBCCABCAABCAABABAAC","NROPREGUNTAS":"20","NAME":"2b_matematica","ASIGNATURA_ID":"2","TIPOCURSO_ID":"2","TIPOPRUEBA_ID":"9","PROFESOR_ID":"6","NIVELEVALUACION_ID":"1"},{"ID":"422","EXIGENCIA":"60","ALTERNATIVAS":"3","FECHA":"17086","PUNTAJEBASE":"1","NROFORMAS":"1","RESPONSES":"CBCBACBBABCACBAACABB","NROPREGUNTAS":"20","NAME":"3b_matematica","ASIGNATURA_ID":"2","TIPOCURSO_ID":"3","TIPOPRUEBA_ID":"9","PROFESOR_ID":"6","NIVELEVALUACION_ID":"1"},{"ID":"423","EXIGENCIA":"60","ALTERNATIVAS":"3","FECHA":"17086","PUNTAJEBASE":"1","NROFORMAS":"1","RESPONSES":"ACCBBBAABCCABBCCCCAC","NROPREGUNTAS":"20","NAME":"4b_matematica","ASIGNATURA_ID":"2","TIPOCURSO_ID":"4","TIPOPRUEBA_ID":"9","PROFESOR_ID":"6","NIVELEVALUACION_ID":"1"},{"ID":"424","EXIGENCIA":"60","ALTERNATIVAS":"4","FECHA":"17086","PUNTAJEBASE":"1","NROFORMAS":"1","RESPONSES":"CBCCACBBCDDADAACACCABACBB","NROPREGUNTAS":"25","NAME":"5b_matematica","ASIGNATURA_ID":"2","TIPOCURSO_ID":"5","TIPOPRUEBA_ID":"9","PROFESOR_ID":"6","NIVELEVALUACION_ID":"1"},{"ID":"425","EXIGENCIA":"60","ALTERNATIVAS":"4","FECHA":"17086","PUNTAJEBASE":"1","NROFORMAS":"1","RESPONSES":"CBCCBDBBADBBBBCDBADCCABBB","NROPREGUNTAS":"25","NAME":"6B_MATEMATICA","ASIGNATURA_ID":"2","TIPOCURSO_ID":"6","TIPOPRUEBA_ID":"9","PROFESOR_ID":"6","NIVELEVALUACION_ID":"1"},{"ID":"426","EXIGENCIA":"60","ALTERNATIVAS":"4","FECHA":"17086","PUNTAJEBASE":"1","NROFORMAS":"1","RESPONSES":"DCDDCCBCBCDDDCACCDCADACAD","NROPREGUNTAS":"25","NAME":"7B_MATEMATICA","ASIGNATURA_ID":"2","TIPOCURSO_ID":"7","TIPOPRUEBA_ID":"9","PROFESOR_ID":"6","NIVELEVALUACION_ID":"1"},{"ID":"427","EXIGENCIA":"60","ALTERNATIVAS":"4","FECHA":"17086","PUNTAJEBASE":"1","NROFORMAS":"1","RESPONSES":"BABABACDABCDDCCDCBCDCADDC","NROPREGUNTAS":"25","NAME":"8B_MATEMATICA","ASIGNATURA_ID":"2","TIPOCURSO_ID":"8","TIPOPRUEBA_ID":"9","PROFESOR_ID":"6","NIVELEVALUACION_ID":"1"},{"ID":"428","EXIGENCIA":"60","ALTERNATIVAS":"4","FECHA":"17086","PUNTAJEBASE":"1","NROFORMAS":"1","RESPONSES":"DACDADDCDDBCABBBABCDBABDA","NROPREGUNTAS":"25","NAME":"1M_MATEMATICA","ASIGNATURA_ID":"2","TIPOCURSO_ID":"9","TIPOPRUEBA_ID":"9","PROFESOR_ID":"6","NIVELEVALUACION_ID":"1"},{"ID":"429","EXIGENCIA":"60","ALTERNATIVAS":"4","FECHA":"17087","PUNTAJEBASE":"1","NROFORMAS":"1","RESPONSES":"DCDDCCBDDCDACBDABDCACBABB","NROPREGUNTAS":"25","NAME":"2M_MATEMATICA","ASIGNATURA_ID":"2","TIPOCURSO_ID":"10","TIPOPRUEBA_ID":"9","PROFESOR_ID":"6","NIVELEVALUACION_ID":"1"},{"ID":"430","EXIGENCIA":"60","ALTERNATIVAS":"4","FECHA":"17087","PUNTAJEBASE":"1","NROFORMAS":"1","RESPONSES":"BAADACBCDCCBCCDCDCBDBACBB","NROPREGUNTAS":"25","NAME":"3_MATEMATICA","ASIGNATURA_ID":"2","TIPOCURSO_ID":"11","TIPOPRUEBA_ID":"9","PROFESOR_ID":"6","NIVELEVALUACION_ID":"1"},{"ID":"431","EXIGENCIA":"60","ALTERNATIVAS":"5","FECHA":"17087","PUNTAJEBASE":"1","NROFORMAS":"1","RESPONSES":"CCCCEDACCCABBEDAECEBAAEAAEBBEADCCCBABBECCBADDBCBCBCBBBAADCDDACCDEDBBDDCCBDADDCBD","NROPREGUNTAS":"80","NAME":"4_MATEMATICA","ASIGNATURA_ID":"2","TIPOCURSO_ID":"12","TIPOPRUEBA_ID":"9","PROFESOR_ID":"6","NIVELEVALUACION_ID":"1"},{"ID":"432","EXIGENCIA":"60","ALTERNATIVAS":"3","FECHA":"17087","PUNTAJEBASE":"1","NROFORMAS":"1","RESPONSES":"VVVVVVCBCCABBBBACCBB","NROPREGUNTAS":"20","NAME":"1B_LENGUAJE","ASIGNATURA_ID":"1","TIPOCURSO_ID":"1","TIPOPRUEBA_ID":"9","PROFESOR_ID":"6","NIVELEVALUACION_ID":"1"},{"ID":"434","EXIGENCIA":"60","ALTERNATIVAS":"3","FECHA":"17087","PUNTAJEBASE":"1","NROFORMAS":"1","RESPONSES":"VVVVABACABBBCCABCAAC","NROPREGUNTAS":"20","NAME":"3_LENGUAJE","ASIGNATURA_ID":"1","TIPOCURSO_ID":"3","TIPOPRUEBA_ID":"9","PROFESOR_ID":"6","NIVELEVALUACION_ID":"1"},{"ID":"435","EXIGENCIA":"60","ALTERNATIVAS":"3","FECHA":"17087","PUNTAJEBASE":"1","NROFORMAS":"1","RESPONSES":"VVVABCABCBCACABBCCAA","NROPREGUNTAS":"20","NAME":"4_LENGUAJE","ASIGNATURA_ID":"1","TIPOCURSO_ID":"4","TIPOPRUEBA_ID":"9","PROFESOR_ID":"6","NIVELEVALUACION_ID":"1"},{"ID":"436","EXIGENCIA":"60","ALTERNATIVAS":"4","FECHA":"17088","PUNTAJEBASE":"1","NROFORMAS":"1","RESPONSES":"BCACDAABDACDBCBACABCABBDA","NROPREGUNTAS":"25","NAME":"5_LENGUAJE","ASIGNATURA_ID":"1","TIPOCURSO_ID":"5","TIPOPRUEBA_ID":"9","PROFESOR_ID":"6","NIVELEVALUACION_ID":"1"},{"ID":"437","EXIGENCIA":"60","ALTERNATIVAS":"4","FECHA":"17088","PUNTAJEBASE":"1","NROFORMAS":"1","RESPONSES":"BDBDCDDCAAABABABCADACBBCB","NROPREGUNTAS":"25","NAME":"6_LENGUAJE","ASIGNATURA_ID":"1","TIPOCURSO_ID":"6","TIPOPRUEBA_ID":"9","PROFESOR_ID":"6","NIVELEVALUACION_ID":"1"},{"ID":"438","EXIGENCIA":"60","ALTERNATIVAS":"4","FECHA":"17088","PUNTAJEBASE":"1","NROFORMAS":"1","RESPONSES":"ACBBBAABCCACCBDABADCDBCBB","NROPREGUNTAS":"25","NAME":"7_LENGUAJE","ASIGNATURA_ID":"1","TIPOCURSO_ID":"7","TIPOPRUEBA_ID":"9","PROFESOR_ID":"6","NIVELEVALUACION_ID":"1"},{"ID":"439","EXIGENCIA":"60","ALTERNATIVAS":"5","FECHA":"17089","PUNTAJEBASE":"1","NROFORMAS":"1","RESPONSES":"CCDDEAEBECDCADCDEDDDDAEBBCADEDBEECCDAECCDDBEBDEBCCACECBAECCECCCDDBBDEECDDDDDEABC","NROPREGUNTAS":"80","NAME":"4M_CIENCIAS","ASIGNATURA_ID":"4","TIPOCURSO_ID":"12","TIPOPRUEBA_ID":"9","PROFESOR_ID":"6","NIVELEVALUACION_ID":"1"},{"ID":"440","EXIGENCIA":"60","ALTERNATIVAS":"5","FECHA":"17089","PUNTAJEBASE":"1","NROFORMAS":"1","RESPONSES":"CEBDDBCCEDCDBCDBDBABDCBBDCBEACEEDCEEEDDDBDDCBCACCCCCEEDEBAACAABECEEEEDDAEEEEAEEB","NROPREGUNTAS":"80","NAME":"4_HISTORIA","ASIGNATURA_ID":"3","TIPOCURSO_ID":"12","TIPOPRUEBA_ID":"9","PROFESOR_ID":"6","NIVELEVALUACION_ID":"1"},{"ID":"441","EXIGENCIA":"60","ALTERNATIVAS":"4","FECHA":"17089","PUNTAJEBASE":"1","NROFORMAS":"1","RESPONSES":"CABDDABDDACBDADBBDCACCCBA","NROPREGUNTAS":"25","NAME":"8_LENGUAJE","ASIGNATURA_ID":"1","TIPOCURSO"
+11107 [pool-2-thread-1] DEBUG org.apache.http.headers  - http-outgoing-2 << HTTP/1.1 200 OK
+11107 [pool-2-thread-1] DEBUG org.apache.http.headers  - http-outgoing-2 << Server: nginx
+11107 [pool-2-thread-1] DEBUG org.apache.http.headers  - http-outgoing-2 << Date: Mon, 15 May 2017 00:58:39 GMT
+11107 [pool-2-thread-1] DEBUG org.apache.http.headers  - http-outgoing-2 << Content-Type: application/json
+11107 [pool-2-thread-1] DEBUG org.apache.http.headers  - http-outgoing-2 << Transfer-Encoding: chunked
+11107 [pool-2-thread-1] DEBUG org.apache.http.headers  - http-outgoing-2 << Connection: keep-alive
+11107 [pool-2-thread-1] DEBUG org.apache.http.headers  - http-outgoing-2 << X-Powered-By: PHP/7.0.18
+11107 [pool-2-thread-1] DEBUG org.apache.http.headers  - http-outgoing-2 << X-Cache: HIT from Backend
+11108 [pool-2-thread-1] DEBUG org.apache.http.impl.execchain.MainClientExec  - Connection can be kept alive indefinitely
+11108 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-2 << "_ID":"8","TIPOPRUEBA_ID":"9","PROFESOR_ID":"6","NIVELEVALUACION_ID":"1"},{"ID":"442","EXIGENCIA":"60","ALTERNATIVAS":"4","FECHA":"17089","PUNTAJEB[\r][\n]"
+11108 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-2 << "1c31[\r][\n]"
+11108 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-2 << "ASE":"1","NROFORMAS":"1","RESPONSES":"DCBBABCBBADCBADABCDCCADDC","NROPREGUNTAS":"25","NAME":"1m_lenguaje","ASIGNATURA_ID":"1","TIPOCURSO_ID":"9","TIPOPRUEBA_ID":"9","PROFESOR_ID":"6","NIVELEVALUACION_ID":"1"},{"ID":"443","EXIGENCIA":"60","ALTERNATIVAS":"4","FECHA":"17089","PUNTAJEBASE":"1","NROFORMAS":"1","RESPONSES":"BCDACBBDBBCCDDBBBAAACACBB","NROPREGUNTAS":"25","NAME":"2M_LENGUAJE","ASIGNATURA_ID":"1","TIPOCURSO_ID":"10","TIPOPRUEBA_ID":"9","PROFESOR_ID":"6","NIVELEVALUACION_ID":"1"},{"ID":"444","EXIGENCIA":"60","ALTERNATIVAS":"4","FECHA":"17089","PUNTAJEBASE":"1","NROFORMAS":"1","RESPONSES":"DADDACBBDCACDABADDBDDADBD","NROPREGUNTAS":"25","NAME":"3M_LENGUAJE","ASIGNATURA_ID":"1","TIPOCURSO_ID":"11","TIPOPRUEBA_ID":"9","PROFESOR_ID":"6","NIVELEVALUACION_ID":"1"},{"ID":"445","EXIGENCIA":"60","ALTERNATIVAS":"3","FECHA":"17089","PUNTAJEBASE":"1","NROFORMAS":"1","RESPONSES":"BCBAABCBBBBCBAABBABB","NROPREGUNTAS":"20","NAME":"1b_historia","ASIGNATURA_ID":"3","TIPOCURSO_ID":"1","TIPOPRUEBA_ID":"9","PROFESOR_ID":"6","NIVELEVALUACION_ID":"1"},{"ID":"446","EXIGENCIA":"60","ALTERNATIVAS":"3","FECHA":"17091","PUNTAJEBASE":"1","NROFORMAS":"1","RESPONSES":"BBAACBCABBBABAACABCA","NROPREGUNTAS":"20","NAME":"2B_HISTORIA","ASIGNATURA_ID":"3","TIPOCURSO_ID":"2","TIPOPRUEBA_ID":"9","PROFESOR_ID":"6","NIVELEVALUACION_ID":"1"},{"ID":"447","EXIGENCIA":"60","ALTERNATIVAS":"3","FECHA":"17091","PUNTAJEBASE":"1","NROFORMAS":"1","RESPONSES":"CCCCCBCCCABCCCCBBCCB","NROPREGUNTAS":"20","NAME":"3B_HISTORIA","ASIGNATURA_ID":"3","TIPOCURSO_ID":"3","TIPOPRUEBA_ID":"9","PROFESOR_ID":"6","NIVELEVALUACION_ID":"1"},{"ID":"448","EXIGENCIA":"60","ALTERNATIVAS":"3","FECHA":"17091","PUNTAJEBASE":"1","NROFORMAS":"1","RESPONSES":"AABCCBABACBAAACCBBBC","NROPREGUNTAS":"20","NAME":"4B_HISTORIA","ASIGNATURA_ID":"3","TIPOCURSO_ID":"4","TIPOPRUEBA_ID":"9","PROFESOR_ID":"6","NIVELEVALUACION_ID":"1"},{"ID":"449","EXIGENCIA":"60","ALTERNATIVAS":"4","FECHA":"17091","PUNTAJEBASE":"1","NROFORMAS":"1","RESPONSES":"CABBDDAAABCCDADBCBACBAADB","NROPREGUNTAS":"25","NAME":"5B_HISTORIA","ASIGNATURA_ID":"3","TIPOCURSO_ID":"5","TIPOPRUEBA_ID":"9","PROFESOR_ID":"6","NIVELEVALUACION_ID":"1"},{"ID":"450","EXIGENCIA":"60","ALTERNATIVAS":"4","FECHA":"17091","PUNTAJEBASE":"1","NROFORMAS":"1","RESPONSES":"ABCDDADDBBAACBBCCBCCABAAC","NROPREGUNTAS":"25","NAME":"6_BASICO","ASIGNATURA_ID":"3","TIPOCURSO_ID":"6","TIPOPRUEBA_ID":"9","PROFESOR_ID":"6","NIVELEVALUACION_ID":"1"},{"ID":"451","EXIGENCIA":"60","ALTERNATIVAS":"4","FECHA":"17091","PUNTAJEBASE":"1","NROFORMAS":"1","RESPONSES":"ACBADADBCBDCCACDAABCBBDBD","NROPREGUNTAS":"25","NAME":"7B_HISTORIA","ASIGNATURA_ID":"3","TIPOCURSO_ID":"7","TIPOPRUEBA_ID":"9","PROFESOR_ID":"6","NIVELEVALUACION_ID":"1"},{"ID":"452","EXIGENCIA":"60","ALTERNATIVAS":"4","FECHA":"17091","PUNTAJEBASE":"1","NROFORMAS":"1","RESPONSES":"DABDBCDDCBCAAACABCCCBDAAB","NROPREGUNTAS":"25","NAME":"8B_HISTORIA","ASIGNATURA_ID":"3","TIPOCURSO_ID":"8","TIPOPRUEBA_ID":"9","PROFESOR_ID":"6","NIVELEVALUACION_ID":"1"},{"ID":"453","EXIGENCIA":"60","ALTERNATIVAS":"4","FECHA":"17091","PUNTAJEBASE":"1","NROFORMAS":"1","RESPONSES":"CCABCBDCAABDCDDBCDBDBADCC","NROPREGUNTAS":"25","NAME":"1M_HISTORIA","ASIGNATURA_ID":"3","TIPOCURSO_ID":"9","TIPOPRUEBA_ID":"9","PROFESOR_ID":"6","NIVELEVALUACION_ID":"1"},{"ID":"454","EXIGENCIA":"60","ALTERNATIVAS":"4","FECHA":"17091","PUNTAJEBASE":"1","NROFORMAS":"1","RESPONSES":"DDCDDBBCBBDDACBDBACCDADBD","NROPREGUNTAS":"25","NAME":"2M_HISTORIA","ASIGNATURA_ID":"3","TIPOCURSO_ID":"10","TIPOPRUEBA_ID":"9","PROFESOR_ID":"6","NIVELEVALUACION_ID":"1"},{"ID":"455","EXIGENCIA":"60","ALTERNATIVAS":"4","FECHA":"17091","PUNTAJEBASE":"1","NROFORMAS":"1","RESPONSES":"DDDDACAABCDCDDBBCDCCCDDBA","NROPREGUNTAS":"25","NAME":"3m_HISTORIA","ASIGNATURA_ID":"3","TIPOCURSO_ID":"11","TIPOPRUEBA_ID":"9","PROFESOR_ID":"6","NIVELEVALUACION_ID":"1"},{"ID":"456","EXIGENCIA":"60","ALTERNATIVAS":"3","FECHA":"17091","PUNTAJEBASE":"1","NROFORMAS":"1","RESPONSES":"BBACCCBABBCCBBABBACB","NROPREGUNTAS":"20","NAME":"1B_CIENCIAS","ASIGNATURA_ID":"4","TIPOCURSO_ID":"1","TIPOPRUEBA_ID":"9","PROFESOR_ID":"6","NIVELEVALUACION_ID":"1"},{"ID":"457","EXIGENCIA":"60","ALTERNATIVAS":"3","FECHA":"17091","PUNTAJEBASE":"1","NROFORMAS":"1","RESPONSES":"ABCCCABCBABBCCABABBC","NROPREGUNTAS":"20","NAME":"2B_CIENCIAS","ASIGNATURA_ID":"4","TIPOCURSO_ID":"2","TIPOPRUEBA_ID":"9","PROFESOR_ID":"6","NIVELEVALUACION_ID":"1"},{"ID":"458","EXIGENCIA":"60","ALTERNATIVAS":"3","FECHA":"17091","PUNTAJEBASE":"1","NROFORMAS":"1","RESPONSES":"BBAACCCBABABBABAACAB","NROPREGUNTAS":"20","NAME":"3B_CIENCIAS","ASIGNATURA_ID":"4","TIPOCURSO_ID":"3","TIPOPRUEBA_ID":"9","PROFESOR_ID":"6","NIVELEVALUACION_ID":"1"},{"ID":"460","EXIGENCIA":"60","ALTERNATIVAS":"3","FECHA":"17091","PUNTAJEBASE":"1","NROFORMAS":"1","RESPONSES":"CABAACCABABCCBBCAABB","NROPREGUNTAS":"20","NAME":"4B_CIENCIAS","ASIGNATURA_ID":"4","TIPOCURSO_ID":"4","TIPOPRUEBA_ID":"9","PROFESOR_ID":"6","NIVELEVALUACION_ID":"1"},{"ID":"461","EXIGENCIA":"60","ALTERNATIVAS":"4","FECHA":"17091","PUNTAJEBASE":"1","NROFORMAS":"1","RESPONSES":"CBADACADABACBDBDCCCACDADD","NROPREGUNTAS":"25","NAME":"5B_CIENCIAS","ASIGNATURA_ID":"4","TIPOCURSO_ID":"5","TIPOPRUEBA_ID":"9","PROFESOR_ID":"6","NIVELEVALUACION_ID":"1"},{"ID":"462","EXIGENCIA":"60","ALTERNATIVAS":"4","FECHA":"17091","PUNTAJEBASE":"1","NROFORMAS":"1","RESPONSES":"CDBBDBACACCBCADCCBDADBCBA","NROPREGUNTAS":"25","NAME":"6B_CIENCIAS","ASIGNATURA_ID":"4","TIPOCURSO_ID":"6","TIPOPRUEBA_ID":"9","PROFESOR_ID":"6","NIVELEVALUACION_ID":"1"},{"ID":"463","EXIGENCIA":"60","ALTERNATIVAS":"4","FECHA":"17091","PUNTAJEBASE":"1","NROFORMAS":"1","RESPONSES":"AACDDBADBCDDDDBBCDAABCADA","NROPREGUNTAS":"25","NAME":"7B_CIENCIAS","ASIGNATURA_ID":"4","TIPOCURSO_ID":"7","TIPOPRUEBA_ID":"9","PROFESOR_ID":"6","NIVELEVALUACION_ID":"1"},{"ID":"464","EXIGENCIA":"
+11128 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-2 << ""60","ALTERNATIVAS":"4","FECHA":"17091","PUNTAJEBASE":"1","NROFORMAS":"1","RESPONSES":"DAAAADBCABBDABABBCAABBBBD","NROPREGUNTAS":"25","NAME":"8B_CIENCIAS","ASIGNATURA_ID":"4","TIPOCURSO_ID":"8","TIPOPRUEBA_ID":"9","PROFESOR_ID":"6","NIVELEVALUACION_ID":"1"},{"ID":"465","EXIGENCIA":"60","ALTERNATIVAS":"4","FECHA":"17091","PUNTAJEBASE":"1","NROFORMAS":"1","RESPONSES":"BCCDACCCDAADBACBBACBDDCAD","NROPREGUNTAS":"25","NAME":"1M_CIENCIAS","ASIGNATURA_ID":"4","TIPOCURSO_ID":"9","TIPOPRUEBA_ID":"9","PROFESOR_ID":"6","NIVELEVALUACION_ID":"1"},{"ID":"466","EXIGENCIA":"60","ALTERNATIVAS":"4","FECHA":"17091","PUNTAJEBASE":"1","NROFORMAS":"1","RESPONSES":"DDBABDCCDBCACADDAABDBDCCA","NROPREGUNTAS":"25","NAME":"2M_CIENCIAS","ASIGNATURA_ID":"4","TIPOCURSO_ID":"10","TIPOPRUEBA_ID":"9","PROFESOR_ID":"6","NIVELEVALUACION_ID":"1"},{"ID":"467","EXIGENCIA":"60","ALTERNATIVAS":"4","FECHA":"17091","PUNTAJEBASE":"1","NROFORMAS":"1","RESPONSES":"CDDCBDDDCDACABACADBDACDBA","NROPREGUNTAS":"25","NAME":"3M_CIENCIAS","ASIGNATURA_ID":"4","TIPOCURSO_ID":"11","TIPOPRUEBA_ID":"9","PROFESOR_ID":"6","NIVELEVALUACION_ID":"1"},{"ID":"468","EXIGENCIA":"60","ALTERNATIVAS":"3","FECHA":"17095","PUNTAJEBASE":"1","NROFORMAS":"1","RESPONSES":"VVVVBACAAACBBABCAACC","NROPREGUNTAS":"20","NAME":"2B_LENGUAJE","ASIGNATURA_ID":"1","TIPOCURSO_ID":"2","TIPOPRUEBA_ID":"9","PROFESOR_ID":"6","NIVELEVALUACION_ID":"1"}]"
+11128 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-2 << "[\r][\n]"
+11128 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-2 << "0[\r][\n]"
+11128 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-2 << "[\r][\n]"
+11128 [pool-2-thread-1] DEBUG org.apache.http.impl.conn.PoolingHttpClientConnectionManager  - Connection [id: 2][route: {}->http://www.aplicacionestest.cl:80] can be kept alive indefinitely
+11128 [pool-2-thread-1] DEBUG org.apache.http.impl.conn.PoolingHttpClientConnectionManager  - Connection released: [id: 2][route: {}->http://www.aplicacionestest.cl:80][total kept alive: 0; route allocated: 2 of 2; total allocated: 2 of 20]
+11128 [pool-2-thread-4] DEBUG org.apache.http.impl.conn.PoolingHttpClientConnectionManager  - Connection leased: [id: 2][route: {}->http://www.aplicacionestest.cl:80][total kept alive: 0; route allocated: 2 of 2; total allocated: 2 of 20]
+11129 [pool-2-thread-4] DEBUG org.apache.http.impl.execchain.MainClientExec  - Executing request GET /profesor HTTP/1.1
+11129 [pool-2-thread-4] DEBUG org.apache.http.impl.execchain.MainClientExec  - Target auth state: UNCHALLENGED
+11130 [pool-2-thread-4] DEBUG org.apache.http.impl.execchain.MainClientExec  - Proxy auth state: UNCHALLENGED
+11135 [pool-2-thread-4] DEBUG org.apache.http.headers  - http-outgoing-2 >> GET /profesor HTTP/1.1
+11135 [pool-2-thread-4] DEBUG org.apache.http.headers  - http-outgoing-2 >> accept: application/json
+11135 [pool-2-thread-4] DEBUG org.apache.http.headers  - http-outgoing-2 >> Database: aplicac2_cliente
+11135 [pool-2-thread-4] DEBUG org.apache.http.headers  - http-outgoing-2 >> Cliente: 1
+11135 [pool-2-thread-4] DEBUG org.apache.http.headers  - http-outgoing-2 >> Host: www.aplicacionestest.cl
+11135 [pool-2-thread-4] DEBUG org.apache.http.headers  - http-outgoing-2 >> Connection: Keep-Alive
+11135 [pool-2-thread-4] DEBUG org.apache.http.headers  - http-outgoing-2 >> User-Agent: Apache-HttpClient/4.5.2 (Java/1.8.0_131)
+11135 [pool-2-thread-4] DEBUG org.apache.http.headers  - http-outgoing-2 >> Accept-Encoding: gzip,deflate
+11135 [pool-2-thread-4] DEBUG org.apache.http.wire  - http-outgoing-2 >> "GET /profesor HTTP/1.1[\r][\n]"
+11135 [pool-2-thread-4] DEBUG org.apache.http.wire  - http-outgoing-2 >> "accept: application/json[\r][\n]"
+11135 [pool-2-thread-4] DEBUG org.apache.http.wire  - http-outgoing-2 >> "Database: aplicac2_cliente[\r][\n]"
+11135 [pool-2-thread-4] DEBUG org.apache.http.wire  - http-outgoing-2 >> "Cliente: 1[\r][\n]"
+11135 [pool-2-thread-4] DEBUG org.apache.http.wire  - http-outgoing-2 >> "Host: www.aplicacionestest.cl[\r][\n]"
+11135 [pool-2-thread-4] DEBUG org.apache.http.wire  - http-outgoing-2 >> "Connection: Keep-Alive[\r][\n]"
+11135 [pool-2-thread-4] DEBUG org.apache.http.wire  - http-outgoing-2 >> "User-Agent: Apache-HttpClient/4.5.2 (Java/1.8.0_131)[\r][\n]"
+11135 [pool-2-thread-4] DEBUG org.apache.http.wire  - http-outgoing-2 >> "Accept-Encoding: gzip,deflate[\r][\n]"
+11135 [pool-2-thread-4] DEBUG org.apache.http.wire  - http-outgoing-2 >> "[\r][\n]"
+11152 [pool-2-thread-5] DEBUG org.apache.http.wire  - http-outgoing-1 << "HTTP/1.1 200 OK[\r][\n]"
+11152 [pool-2-thread-5] DEBUG org.apache.http.wire  - http-outgoing-1 << "Server: nginx[\r][\n]"
+11152 [pool-2-thread-5] DEBUG org.apache.http.wire  - http-outgoing-1 << "Date: Mon, 15 May 2017 00:58:39 GMT[\r][\n]"
+11152 [pool-2-thread-5] DEBUG org.apache.http.wire  - http-outgoing-1 << "Content-Type: application/json[\r][\n]"
+11152 [pool-2-thread-5] DEBUG org.apache.http.wire  - http-outgoing-1 << "Transfer-Encoding: chunked[\r][\n]"
+11152 [pool-2-thread-5] DEBUG org.apache.http.wire  - http-outgoing-1 << "Connection: keep-alive[\r][\n]"
+11152 [pool-2-thread-5] DEBUG org.apache.http.wire  - http-outgoing-1 << "X-Powered-By: PHP/7.0.18[\r][\n]"
+11152 [pool-2-thread-5] DEBUG org.apache.http.wire  - http-outgoing-1 << "X-Cache: HIT from Backend[\r][\n]"
+11152 [pool-2-thread-5] DEBUG org.apache.http.wire  - http-outgoing-1 << "[\r][\n]"
+11152 [pool-2-thread-5] DEBUG org.apache.http.wire  - http-outgoing-1 << "232[\r][\n]"
+11152 [pool-2-thread-5] DEBUG org.apache.http.wire  - http-outgoing-1 << "[0x9][0x9][0x9][0x9][{"ID":"0","NAME":"SIN TIPO CURSO"},{"ID":"1","NAME":"Primero B\u00e1sico"},{"ID":"2","NAME":"Segundo B\u00e1sico"},{"ID":"3","NAME":"Tercero B\u00e1sico"},{"ID":"4","NAME":"Cuarto B\u00e1sico"},{"ID":"5","NAME":"Quinto B\u00e1sico"},{"ID":"6","NAME":"Sexto B\u00e1sico"},{"ID":"7","NAME":"S\u00e9ptimo B\u00e1sico"},{"ID":"8","NAME":"Octavo B\u00e1sico"},{"ID":"9","NAME":"Primero Medio"},{"ID":"10","NAME":"Segundo Medio"},{"ID":"11","NAME":"Tercero Medio"},{"ID":"12","NAME":"Cuarto Medio"},{"ID":"13","NAME":"Prekinder"},{"ID":"14","NAME":"K\u00ednder"}][\r][\n]"
+11152 [pool-2-thread-5] DEBUG org.apache.http.headers  - http-outgoing-1 << HTTP/1.1 200 OK
+11152 [pool-2-thread-5] DEBUG org.apache.http.headers  - http-outgoing-1 << Server: nginx
+11152 [pool-2-thread-5] DEBUG org.apache.http.headers  - http-outgoing-1 << Date: Mon, 15 May 2017 00:58:39 GMT
+11152 [pool-2-thread-5] DEBUG org.apache.http.headers  - http-outgoing-1 << Content-Type: application/json
+11152 [pool-2-thread-5] DEBUG org.apache.http.headers  - http-outgoing-1 << Transfer-Encoding: chunked
+11152 [pool-2-thread-5] DEBUG org.apache.http.headers  - http-outgoing-1 << Connection: keep-alive
+11152 [pool-2-thread-5] DEBUG org.apache.http.headers  - http-outgoing-1 << X-Powered-By: PHP/7.0.18
+11152 [pool-2-thread-5] DEBUG org.apache.http.headers  - http-outgoing-1 << X-Cache: HIT from Backend
+11152 [pool-2-thread-5] DEBUG org.apache.http.impl.execchain.MainClientExec  - Connection can be kept alive indefinitely
+11152 [pool-2-thread-5] DEBUG org.apache.http.wire  - http-outgoing-1 << "0[\r][\n]"
+11152 [pool-2-thread-5] DEBUG org.apache.http.wire  - http-outgoing-1 << "[\r][\n]"
+11152 [pool-2-thread-5] DEBUG org.apache.http.impl.conn.PoolingHttpClientConnectionManager  - Connection [id: 1][route: {}->http://www.aplicacionestest.cl:80] can be kept alive indefinitely
+11152 [pool-2-thread-5] DEBUG org.apache.http.impl.conn.PoolingHttpClientConnectionManager  - Connection released: [id: 1][route: {}->http://www.aplicacionestest.cl:80][total kept alive: 1; route allocated: 2 of 2; total allocated: 2 of 20]
+11184 [pool-2-thread-4] DEBUG org.apache.http.wire  - http-outgoing-2 << "HTTP/1.1 200 OK[\r][\n]"
+11184 [pool-2-thread-4] DEBUG org.apache.http.wire  - http-outgoing-2 << "Server: nginx[\r][\n]"
+11184 [pool-2-thread-4] DEBUG org.apache.http.wire  - http-outgoing-2 << "Date: Mon, 15 May 2017 00:58:39 GMT[\r][\n]"
+11184 [pool-2-thread-4] DEBUG org.apache.http.wire  - http-outgoing-2 << "Content-Type: application/json[\r][\n]"
+11184 [pool-2-thread-4] DEBUG org.apache.http.wire  - http-outgoing-2 << "Transfer-Encoding: chunked[\r][\n]"
+11184 [pool-2-thread-4] DEBUG org.apache.http.wire  - http-outgoing-2 << "Connection: keep-alive[\r][\n]"
+11184 [pool-2-thread-4] DEBUG org.apache.http.wire  - http-outgoing-2 << "X-Powered-By: PHP/7.0.18[\r][\n]"
+11184 [pool-2-thread-4] DEBUG org.apache.http.wire  - http-outgoing-2 << "X-Cache: HIT from Backend[\r][\n]"
+11184 [pool-2-thread-4] DEBUG org.apache.http.wire  - http-outgoing-2 << "[\r][\n]"
+11184 [pool-2-thread-4] DEBUG org.apache.http.wire  - http-outgoing-2 << "64[\r][\n]"
+11184 [pool-2-thread-4] DEBUG org.apache.http.wire  - http-outgoing-2 << "[0x9][0x9][0x9][0x9][{"ID":"6","NAME":"LTDA.","PATERNO":"PEREKE","RUT":"76196994-3","MATERNO":"TROY","VERSION":"1"}][\r][\n]"
+11184 [pool-2-thread-4] DEBUG org.apache.http.headers  - http-outgoing-2 << HTTP/1.1 200 OK
+11184 [pool-2-thread-4] DEBUG org.apache.http.headers  - http-outgoing-2 << Server: nginx
+11184 [pool-2-thread-4] DEBUG org.apache.http.headers  - http-outgoing-2 << Date: Mon, 15 May 2017 00:58:39 GMT
+11184 [pool-2-thread-4] DEBUG org.apache.http.headers  - http-outgoing-2 << Content-Type: application/json
+11184 [pool-2-thread-4] DEBUG org.apache.http.headers  - http-outgoing-2 << Transfer-Encoding: chunked
+11184 [pool-2-thread-4] DEBUG org.apache.http.headers  - http-outgoing-2 << Connection: keep-alive
+11184 [pool-2-thread-4] DEBUG org.apache.http.headers  - http-outgoing-2 << X-Powered-By: PHP/7.0.18
+11184 [pool-2-thread-4] DEBUG org.apache.http.headers  - http-outgoing-2 << X-Cache: HIT from Backend
+11184 [pool-2-thread-4] DEBUG org.apache.http.impl.execchain.MainClientExec  - Connection can be kept alive indefinitely
+11184 [pool-2-thread-4] DEBUG org.apache.http.wire  - http-outgoing-2 << "0[\r][\n]"
+11184 [pool-2-thread-4] DEBUG org.apache.http.wire  - http-outgoing-2 << "[\r][\n]"
+11184 [pool-2-thread-4] DEBUG org.apache.http.impl.conn.PoolingHttpClientConnectionManager  - Connection [id: 2][route: {}->http://www.aplicacionestest.cl:80] can be kept alive indefinitely
+11184 [pool-2-thread-4] DEBUG org.apache.http.impl.conn.PoolingHttpClientConnectionManager  - Connection released: [id: 2][route: {}->http://www.aplicacionestest.cl:80][total kept alive: 2; route allocated: 2 of 2; total allocated: 2 of 20]
+11699 [pool-2-thread-3] DEBUG org.apache.http.client.protocol.RequestAddCookies  - CookieSpec selected: default
+11699 [pool-2-thread-3] DEBUG org.apache.http.client.protocol.RequestAuthCache  - Auth cache not set in the context
+11699 [pool-2-thread-3] DEBUG org.apache.http.impl.conn.PoolingHttpClientConnectionManager  - Connection request: [route: {}->http://www.aplicacionestest.cl:80][total kept alive: 2; route allocated: 2 of 2; total allocated: 2 of 20]
+11700 [pool-2-thread-3] DEBUG org.apache.http.impl.conn.PoolingHttpClientConnectionManager  - Connection leased: [id: 2][route: {}->http://www.aplicacionestest.cl:80][total kept alive: 1; route allocated: 2 of 2; total allocated: 2 of 20]
+11700 [pool-2-thread-3] DEBUG org.apache.http.impl.execchain.MainClientExec  - Executing request GET /estadopruebacliente HTTP/1.1
+11700 [pool-2-thread-3] DEBUG org.apache.http.impl.execchain.MainClientExec  - Target auth state: UNCHALLENGED
+11700 [pool-2-thread-3] DEBUG org.apache.http.impl.execchain.MainClientExec  - Proxy auth state: UNCHALLENGED
+11700 [pool-2-thread-3] DEBUG org.apache.http.headers  - http-outgoing-2 >> GET /estadopruebacliente HTTP/1.1
+11700 [pool-2-thread-3] DEBUG org.apache.http.headers  - http-outgoing-2 >> accept: application/json
+11700 [pool-2-thread-3] DEBUG org.apache.http.headers  - http-outgoing-2 >> Database: aplicac2_cliente
+11700 [pool-2-thread-3] DEBUG org.apache.http.headers  - http-outgoing-2 >> Cliente: 1
+11700 [pool-2-thread-3] DEBUG org.apache.http.headers  - http-outgoing-2 >> Host: www.aplicacionestest.cl
+11700 [pool-2-thread-3] DEBUG org.apache.http.headers  - http-outgoing-2 >> Connection: Keep-Alive
+11700 [pool-2-thread-3] DEBUG org.apache.http.headers  - http-outgoing-2 >> User-Agent: Apache-HttpClient/4.5.2 (Java/1.8.0_131)
+11700 [pool-2-thread-3] DEBUG org.apache.http.headers  - http-outgoing-2 >> Accept-Encoding: gzip,deflate
+11700 [pool-2-thread-3] DEBUG org.apache.http.wire  - http-outgoing-2 >> "GET /estadopruebacliente HTTP/1.1[\r][\n]"
+11700 [pool-2-thread-3] DEBUG org.apache.http.wire  - http-outgoing-2 >> "accept: application/json[\r][\n]"
+11700 [pool-2-thread-3] DEBUG org.apache.http.wire  - http-outgoing-2 >> "Database: aplicac2_cliente[\r][\n]"
+11700 [pool-2-thread-3] DEBUG org.apache.http.wire  - http-outgoing-2 >> "Cliente: 1[\r][\n]"
+11700 [pool-2-thread-3] DEBUG org.apache.http.wire  - http-outgoing-2 >> "Host: www.aplicacionestest.cl[\r][\n]"
+11700 [pool-2-thread-3] DEBUG org.apache.http.wire  - http-outgoing-2 >> "Connection: Keep-Alive[\r][\n]"
+11700 [pool-2-thread-3] DEBUG org.apache.http.wire  - http-outgoing-2 >> "User-Agent: Apache-HttpClient/4.5.2 (Java/1.8.0_131)[\r][\n]"
+11700 [pool-2-thread-3] DEBUG org.apache.http.wire  - http-outgoing-2 >> "Accept-Encoding: gzip,deflate[\r][\n]"
+11700 [pool-2-thread-3] DEBUG org.apache.http.wire  - http-outgoing-2 >> "[\r][\n]"
+11749 [pool-2-thread-3] DEBUG org.apache.http.wire  - http-outgoing-2 << "HTTP/1.1 200 OK[\r][\n]"
+11749 [pool-2-thread-3] DEBUG org.apache.http.wire  - http-outgoing-2 << "Server: nginx[\r][\n]"
+11749 [pool-2-thread-3] DEBUG org.apache.http.wire  - http-outgoing-2 << "Date: Mon, 15 May 2017 00:58:40 GMT[\r][\n]"
+11749 [pool-2-thread-3] DEBUG org.apache.http.wire  - http-outgoing-2 << "Content-Type: application/json[\r][\n]"
+11749 [pool-2-thread-3] DEBUG org.apache.http.wire  - http-outgoing-2 << "Transfer-Encoding: chunked[\r][\n]"
+11749 [pool-2-thread-3] DEBUG org.apache.http.wire  - http-outgoing-2 << "Connection: keep-alive[\r][\n]"
+11749 [pool-2-thread-3] DEBUG org.apache.http.wire  - http-outgoing-2 << "X-Powered-By: PHP/7.0.18[\r][\n]"
+11749 [pool-2-thread-3] DEBUG org.apache.http.wire  - http-outgoing-2 << "X-Cache: HIT from Backend[\r][\n]"
+11749 [pool-2-thread-3] DEBUG org.apache.http.wire  - http-outgoing-2 << "[\r][\n]"
+11749 [pool-2-thread-3] DEBUG org.apache.http.wire  - http-outgoing-2 << "b33[\r][\n]"
+11749 [pool-2-thread-3] DEBUG org.apache.http.wire  - http-outgoing-2 << "[0x9][0x9][0x9][0x9][{"prueba_id":"412","cliente_id":"1","estado_id":"2"},{"prueba_id":"413","cliente_id":"1","estado_id":"2"},{"prueba_id":"414","cliente_id":"1","estado_id":"2"},{"prueba_id":"415","cliente_id":"1","estado_id":"2"},{"prueba_id":"416","cliente_id":"1","estado_id":"1"},{"prueba_id":"417","cliente_id":"1","estado_id":"2"},{"prueba_id":"419","cliente_id":"1","estado_id":"2"},{"prueba_id":"420","cliente_id":"1","estado_id":"2"},{"prueba_id":"421","cliente_id":"1","estado_id":"2"},{"prueba_id":"422","cliente_id":"1","estado_id":"2"},{"prueba_id":"423","cliente_id":"1","estado_id":"2"},{"prueba_id":"424","cliente_id":"1","estado_id":"2"},{"prueba_id":"425","cliente_id":"1","estado_id":"2"},{"prueba_id":"426","cliente_id":"1","estado_id":"2"},{"prueba_id":"427","cliente_id":"1","estado_id":"2"},{"prueba_id":"428","cliente_id":"1","estado_id":"2"},{"prueba_id":"429","cliente_id":"1","estado_id":"2"},{"prueba_id":"430","cliente_id":"1","estado_id":"2"},{"prueba_id":"431","cliente_id":"1","estado_id":"2"},{"prueba_id":"432","cliente_id":"1","estado_id":"2"},{"prueba_id":"434","cliente_id":"1","estado_id":"2"},{"prueba_id":"435","cliente_id":"1","estado_id":"2"},{"prueba_id":"436","cliente_id":"1","estado_id":"2"},{"prueba_id":"437","cliente_id":"1","estado_id":"2"},{"prueba_id":"438","cliente_id":"1","estado_id":"2"},{"prueba_id":"439","cliente_id":"1","estado_id":"2"},{"prueba_id":"440","cliente_id":"1","estado_id":"2"},{"prueba_id":"441","cliente_id":"1","estado_id":"2"},{"prueba_id":"442","cliente_id":"1","estado_id":"2"},{"prueba_id":"443","cliente_id":"1","estado_id":"2"},{"prueba_id":"444","cliente_id":"1","estado_id":"2"},{"prueba_id":"445","cliente_id":"1","estado_id":"2"},{"prueba_id":"446","cliente_id":"1","estado_id":"2"},{"prueba_id":"447","cliente_id":"1","estado_id":"2"},{"prueba_id":"448","cliente_id":"1","estado_id":"2"},{"prueba_id":"449","cliente_id":"1","estado_id":"2"},{"prueba_id":"450","cliente_id":"1","estado_id":"2"},{"prueba_id":"451","cliente_id":"1","estado_id":"2"},{"prueba_id":"452","cliente_id":"1","estado_id":"2"},{"prueba_id":"453","cliente_id":"1","estado_id":"2"},{"prueba_id":"454","cliente_id":"1","estado_id":"2"},{"prueba_id":"455","cliente_id":"1","estado_id":"2"},{"prueba_id":"456","cliente_id":"1","estado_id":"2"},{"prueba_id":"457","cliente_id":"1","estado_id":"2"},{"prueba_id":"458","cliente_id":"1","estado_id":"2"},{"prueba_id":"460","cliente_id":"1","estado_id":"2"},{"prueba_id":"461","cliente_id":"1","estado_id":"2"},{"prueba_id":"462","cliente_id":"1","estado_id":"2"},{"prueba_id":"463","cliente_id":"1","estado_id":"2"},{"prueba_id":"464","cliente_id":"1","estado_id":"2"},{"prueba_id":"465","cliente_id":"1","estado_id":"2"},{"prueba_id":"466","cliente_id":"1","estado_id":"2"},{"prueba_id":"467","cliente_id":"1","estado_id":"2"},{"prueba_id":"468","cliente_id":"1","estado_id":"2"}][\r][\n]"
+11749 [pool-2-thread-3] DEBUG org.apache.http.headers  - http-outgoing-2 << HTTP/1.1 200 OK
+11749 [pool-2-thread-3] DEBUG org.apache.http.headers  - http-outgoing-2 << Server: nginx
+11749 [pool-2-thread-3] DEBUG org.apache.http.headers  - http-outgoing-2 << Date: Mon, 15 May 2017 00:58:40 GMT
+11749 [pool-2-thread-3] DEBUG org.apache.http.headers  - http-outgoing-2 << Content-Type: application/json
+11749 [pool-2-thread-3] DEBUG org.apache.http.headers  - http-outgoing-2 << Transfer-Encoding: chunked
+11749 [pool-2-thread-3] DEBUG org.apache.http.headers  - http-outgoing-2 << Connection: keep-alive
+11749 [pool-2-thread-3] DEBUG org.apache.http.headers  - http-outgoing-2 << X-Powered-By: PHP/7.0.18
+11749 [pool-2-thread-3] DEBUG org.apache.http.headers  - http-outgoing-2 << X-Cache: HIT from Backend
+11749 [pool-2-thread-3] DEBUG org.apache.http.impl.execchain.MainClientExec  - Connection can be kept alive indefinitely
+11749 [pool-2-thread-3] DEBUG org.apache.http.wire  - http-outgoing-2 << "0[\r][\n]"
+11749 [pool-2-thread-3] DEBUG org.apache.http.wire  - http-outgoing-2 << "[\r][\n]"
+11750 [pool-2-thread-3] DEBUG org.apache.http.impl.conn.PoolingHttpClientConnectionManager  - Connection [id: 2][route: {}->http://www.aplicacionestest.cl:80] can be kept alive indefinitely
+11750 [pool-2-thread-3] DEBUG org.apache.http.impl.conn.PoolingHttpClientConnectionManager  - Connection released: [id: 2][route: {}->http://www.aplicacionestest.cl:80][total kept alive: 2; route allocated: 2 of 2; total allocated: 2 of 20]
+26682 [pool-2-thread-2] DEBUG org.apache.http.client.protocol.RequestAddCookies  - CookieSpec selected: default
+26683 [pool-2-thread-2] DEBUG org.apache.http.client.protocol.RequestAuthCache  - Auth cache not set in the context
+26683 [pool-2-thread-2] DEBUG org.apache.http.impl.conn.PoolingHttpClientConnectionManager  - Connection request: [route: {}->http://www.aplicacionestest.cl:80][total kept alive: 2; route allocated: 2 of 2; total allocated: 2 of 20]
+26683 [pool-2-thread-2] DEBUG org.apache.http.wire  - http-outgoing-2 << "end of stream"
+26683 [pool-2-thread-2] DEBUG org.apache.http.impl.conn.DefaultManagedHttpClientConnection  - http-outgoing-2: Close connection
+26683 [pool-2-thread-1] DEBUG org.apache.http.client.protocol.RequestAddCookies  - CookieSpec selected: default
+26683 [pool-2-thread-1] DEBUG org.apache.http.client.protocol.RequestAuthCache  - Auth cache not set in the context
+26683 [pool-2-thread-2] DEBUG org.apache.http.wire  - http-outgoing-1 << "end of stream"
+26683 [pool-2-thread-2] DEBUG org.apache.http.impl.conn.DefaultManagedHttpClientConnection  - http-outgoing-1: Close connection
+26683 [pool-2-thread-2] DEBUG org.apache.http.impl.conn.PoolingHttpClientConnectionManager  - Connection leased: [id: 3][route: {}->http://www.aplicacionestest.cl:80][total kept alive: 0; route allocated: 1 of 2; total allocated: 1 of 20]
+26683 [pool-2-thread-1] DEBUG org.apache.http.impl.conn.PoolingHttpClientConnectionManager  - Connection request: [route: {}->http://www.aplicacionestest.cl:80][total kept alive: 0; route allocated: 1 of 2; total allocated: 1 of 20]
+26683 [pool-2-thread-2] DEBUG org.apache.http.impl.execchain.MainClientExec  - Opening connection {}->http://www.aplicacionestest.cl:80
+26683 [pool-2-thread-1] DEBUG org.apache.http.impl.conn.PoolingHttpClientConnectionManager  - Connection leased: [id: 4][route: {}->http://www.aplicacionestest.cl:80][total kept alive: 0; route allocated: 2 of 2; total allocated: 2 of 20]
+26683 [pool-2-thread-1] DEBUG org.apache.http.impl.execchain.MainClientExec  - Opening connection {}->http://www.aplicacionestest.cl:80
+26683 [pool-2-thread-2] DEBUG org.apache.http.impl.conn.DefaultHttpClientConnectionOperator  - Connecting to www.aplicacionestest.cl/186.64.117.30:80
+26683 [pool-2-thread-1] DEBUG org.apache.http.impl.conn.DefaultHttpClientConnectionOperator  - Connecting to www.aplicacionestest.cl/186.64.117.30:80
+26711 [pool-2-thread-2] DEBUG org.apache.http.impl.conn.DefaultHttpClientConnectionOperator  - Connection established 192.168.1.101:60348<->186.64.117.30:80
+26711 [pool-2-thread-2] DEBUG org.apache.http.impl.execchain.MainClientExec  - Executing request GET /colegio HTTP/1.1
+26711 [pool-2-thread-2] DEBUG org.apache.http.impl.execchain.MainClientExec  - Target auth state: UNCHALLENGED
+26711 [pool-2-thread-2] DEBUG org.apache.http.impl.execchain.MainClientExec  - Proxy auth state: UNCHALLENGED
+26711 [pool-2-thread-2] DEBUG org.apache.http.headers  - http-outgoing-3 >> GET /colegio HTTP/1.1
+26711 [pool-2-thread-1] DEBUG org.apache.http.impl.conn.DefaultHttpClientConnectionOperator  - Connection established 192.168.1.101:60349<->186.64.117.30:80
+26711 [pool-2-thread-2] DEBUG org.apache.http.headers  - http-outgoing-3 >> accept: application/json
+26711 [pool-2-thread-1] DEBUG org.apache.http.impl.execchain.MainClientExec  - Executing request GET /tipocolegio HTTP/1.1
+26711 [pool-2-thread-2] DEBUG org.apache.http.headers  - http-outgoing-3 >> Database: aplicac2_cliente
+26711 [pool-2-thread-2] DEBUG org.apache.http.headers  - http-outgoing-3 >> Cliente: 1
+26711 [pool-2-thread-2] DEBUG org.apache.http.headers  - http-outgoing-3 >> Host: www.aplicacionestest.cl
+26711 [pool-2-thread-2] DEBUG org.apache.http.headers  - http-outgoing-3 >> Connection: Keep-Alive
+26711 [pool-2-thread-1] DEBUG org.apache.http.impl.execchain.MainClientExec  - Target auth state: UNCHALLENGED
+26711 [pool-2-thread-2] DEBUG org.apache.http.headers  - http-outgoing-3 >> User-Agent: Apache-HttpClient/4.5.2 (Java/1.8.0_131)
+26711 [pool-2-thread-2] DEBUG org.apache.http.headers  - http-outgoing-3 >> Accept-Encoding: gzip,deflate
+26711 [pool-2-thread-1] DEBUG org.apache.http.impl.execchain.MainClientExec  - Proxy auth state: UNCHALLENGED
+26711 [pool-2-thread-2] DEBUG org.apache.http.wire  - http-outgoing-3 >> "GET /colegio HTTP/1.1[\r][\n]"
+26711 [pool-2-thread-2] DEBUG org.apache.http.wire  - http-outgoing-3 >> "accept: application/json[\r][\n]"
+26711 [pool-2-thread-2] DEBUG org.apache.http.wire  - http-outgoing-3 >> "Database: aplicac2_cliente[\r][\n]"
+26711 [pool-2-thread-2] DEBUG org.apache.http.wire  - http-outgoing-3 >> "Cliente: 1[\r][\n]"
+26711 [pool-2-thread-2] DEBUG org.apache.http.wire  - http-outgoing-3 >> "Host: www.aplicacionestest.cl[\r][\n]"
+26711 [pool-2-thread-2] DEBUG org.apache.http.wire  - http-outgoing-3 >> "Connection: Keep-Alive[\r][\n]"
+26711 [pool-2-thread-2] DEBUG org.apache.http.wire  - http-outgoing-3 >> "User-Agent: Apache-HttpClient/4.5.2 (Java/1.8.0_131)[\r][\n]"
+26711 [pool-2-thread-2] DEBUG org.apache.http.wire  - http-outgoing-3 >> "Accept-Encoding: gzip,deflate[\r][\n]"
+26711 [pool-2-thread-2] DEBUG org.apache.http.wire  - http-outgoing-3 >> "[\r][\n]"
+26711 [pool-2-thread-1] DEBUG org.apache.http.headers  - http-outgoing-4 >> GET /tipocolegio HTTP/1.1
+26711 [pool-2-thread-1] DEBUG org.apache.http.headers  - http-outgoing-4 >> accept: application/json
+26711 [pool-2-thread-1] DEBUG org.apache.http.headers  - http-outgoing-4 >> Database: aplicac2_cliente
+26711 [pool-2-thread-1] DEBUG org.apache.http.headers  - http-outgoing-4 >> Cliente: 1
+26711 [pool-2-thread-1] DEBUG org.apache.http.headers  - http-outgoing-4 >> Host: www.aplicacionestest.cl
+26711 [pool-2-thread-1] DEBUG org.apache.http.headers  - http-outgoing-4 >> Connection: Keep-Alive
+26711 [pool-2-thread-1] DEBUG org.apache.http.headers  - http-outgoing-4 >> User-Agent: Apache-HttpClient/4.5.2 (Java/1.8.0_131)
+26711 [pool-2-thread-1] DEBUG org.apache.http.headers  - http-outgoing-4 >> Accept-Encoding: gzip,deflate
+26711 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-4 >> "GET /tipocolegio HTTP/1.1[\r][\n]"
+26711 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-4 >> "accept: application/json[\r][\n]"
+26711 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-4 >> "Database: aplicac2_cliente[\r][\n]"
+26711 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-4 >> "Cliente: 1[\r][\n]"
+26711 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-4 >> "Host: www.aplicacionestest.cl[\r][\n]"
+26711 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-4 >> "Connection: Keep-Alive[\r][\n]"
+26711 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-4 >> "User-Agent: Apache-HttpClient/4.5.2 (Java/1.8.0_131)[\r][\n]"
+26711 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-4 >> "Accept-Encoding: gzip,deflate[\r][\n]"
+26711 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-4 >> "[\r][\n]"
+26850 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-4 << "HTTP/1.1 200 OK[\r][\n]"
+26850 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-4 << "Server: nginx[\r][\n]"
+26850 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-4 << "Date: Mon, 15 May 2017 00:58:55 GMT[\r][\n]"
+26850 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-4 << "Content-Type: application/json[\r][\n]"
+26850 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-4 << "Transfer-Encoding: chunked[\r][\n]"
+26850 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-4 << "Connection: keep-alive[\r][\n]"
+26850 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-4 << "X-Powered-By: PHP/7.0.18[\r][\n]"
+26850 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-4 << "X-Cache: HIT from Backend[\r][\n]"
+26850 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-4 << "[\r][\n]"
+26850 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-4 << "57[\r][\n]"
+26850 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-4 << "[0x9][0x9][0x9][0x9][{"id":"0","name":"SIN TIPO"},{"id":"1","name":"RURAL"},{"id":"2","name":"URBANO"}][\r][\n]"
+26850 [pool-2-thread-1] DEBUG org.apache.http.headers  - http-outgoing-4 << HTTP/1.1 200 OK
+26850 [pool-2-thread-1] DEBUG org.apache.http.headers  - http-outgoing-4 << Server: nginx
+26850 [pool-2-thread-1] DEBUG org.apache.http.headers  - http-outgoing-4 << Date: Mon, 15 May 2017 00:58:55 GMT
+26850 [pool-2-thread-1] DEBUG org.apache.http.headers  - http-outgoing-4 << Content-Type: application/json
+26850 [pool-2-thread-1] DEBUG org.apache.http.headers  - http-outgoing-4 << Transfer-Encoding: chunked
+26850 [pool-2-thread-1] DEBUG org.apache.http.headers  - http-outgoing-4 << Connection: keep-alive
+26850 [pool-2-thread-1] DEBUG org.apache.http.headers  - http-outgoing-4 << X-Powered-By: PHP/7.0.18
+26850 [pool-2-thread-1] DEBUG org.apache.http.headers  - http-outgoing-4 << X-Cache: HIT from Backend
+26850 [pool-2-thread-1] DEBUG org.apache.http.impl.execchain.MainClientExec  - Connection can be kept alive indefinitely
+26850 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-4 << "0[\r][\n]"
+26850 [pool-2-thread-1] DEBUG org.apache.http.wire  - http-outgoing-4 << "[\r][\n]"
+26850 [pool-2-thread-1] DEBUG org.apache.http.impl.conn.PoolingHttpClientConnectionManager  - Connection [id: 4][route: {}->http://www.aplicacionestest.cl:80] can be kept alive indefinitely
+26850 [pool-2-thread-1] DEBUG org.apache.http.impl.conn.PoolingHttpClientConnectionManager  - Connection released: [id: 4][route: {}->http://www.aplicacionestest.cl:80][total kept alive: 1; route allocated: 2 of 2; total allocated: 2 of 20]
+26855 [pool-2-thread-2] DEBUG org.apache.http.wire  - http-outgoing-3 << "HTTP/1.1 200 OK[\r][\n]"
+26855 [pool-2-thread-2] DEBUG org.apache.http.wire  - http-outgoing-3 << "Server: nginx[\r][\n]"
+26855 [pool-2-thread-2] DEBUG org.apache.http.wire  - http-outgoing-3 << "Date: Mon, 15 May 2017 00:58:55 GMT[\r][\n]"
+26855 [pool-2-thread-2] DEBUG org.apache.http.wire  - http-outgoing-3 << "Content-Type: application/json[\r][\n]"
+26855 [pool-2-thread-2] DEBUG org.apache.http.wire  - http-outgoing-3 << "Transfer-Encoding: chunked[\r][\n]"
+26855 [pool-2-thread-2] DEBUG org.apache.http.wire  - http-outgoing-3 << "Connection: keep-alive[\r][\n]"
+26855 [pool-2-thread-2] DEBUG org.apache.http.wire  - http-outgoing-3 << "X-Powered-By: PHP/7.0.18[\r][\n]"
+26855 [pool-2-thread-2] DEBUG org.apache.http.wire  - http-outgoing-3 << "X-Cache: HIT from Backend[\r][\n]"
+26855 [pool-2-thread-2] DEBUG org.apache.http.wire  - http-outgoing-3 << "[\r][\n]"
+26855 [pool-2-thread-2] DEBUG org.apache.http.wire  - http-outgoing-3 << "1266[\r][\n]"
+26855 [pool-2-thread-2] DEBUG org.apache.http.wire  - http-outgoing-3 << "[0x9][0x9][0x9][0x9][{"ID":"1","NAME":"ESCUELA CHORRILLOS","DIRECCION":"","TIPOCOLEGIO_ID":"1","VERSION":"1","CIUDAD":"CAUQUENES","CLIENTE_ID":"1"},{"ID":"2","NAME":"ESCUELA GUSTAVO ILUF\u00cd","DIRECCION":"","TIPOCOLEGIO_ID":"1","VERSION":"1","CIUDAD":"CAUQUENES","CLIENTE_ID":"1"},{"ID":"3","NAME":"ESCUELA LA CAPILLA DE PIL\u00c9N ALTO","DIRECCION":"","TIPOCOLEGIO_ID":"1","VERSION":"1","CIUDAD":"CAUQUENES","CLIENTE_ID":"1"},{"ID":"4","NAME":"ESCUELA MAR\u00cdA RUIZ MART\u00cdNEZ","DIRECCION":"","TIPOCOLEGIO_ID":"1","VERSION":"1","CIUDAD":"CAUQUENES","CLIENTE_ID":"1"},{"ID":"16","NAME":"ESCUELA PADRE HURTADO","DIRECCION":"","TIPOCOLEGIO_ID":"1","VERSION":"1","CIUDAD":"CAUQUENES","CLIENTE_ID":"1"},{"ID":"17","NAME":"ESCUELA PURISIMA CONCEPCION DE POCILLAS","DIRECCION":"","TIPOCOLEGIO_ID":"1","VERSION":"1","CIUDAD":"CAUQUENES","CLIENTE_ID":"1"},{"ID":"18","NAME":"ESCUELA RINC\u00d3N DE PIL\u00c9N","DIRECCION":"","TIPOCOLEGIO_ID":"1","VERSION":"1","CIUDAD":"CAUQUENES","CLIENTE_ID":"1"},{"ID":"20","NAME":"ESCUELA AN\u00cdBAL PINTO","DIRECCION":"","TIPOCOLEGIO_ID":"2","VERSION":"1","CIUDAD":"CAUQUENES","CLIENTE_ID":"1"},{"ID":"21","NAME":"LICEO ANTONIO VARAS","DIRECCION":"","TIPOCOLEGIO_ID":"2","VERSION":"1","CIUDAD":"CAUQUENES","CLIENTE_ID":"1"},{"ID":"22","NAME":"ESCUELA INDEPENDENCIA","DIRECCION":"","TIPOCOLEGIO_ID":"2","VERSION":"1","CIUDAD":"CAUQUENES","CLIENTE_ID":"1"},{"ID":"24","NAME":"LICEO POLIT\u00c9CNICO PEDRO AGUIRRE CERDA","DIRECCION":"","TIPOCOLEGIO_ID":"2","VERSION":"1","CIUDAD":"CAUQUENES","CLIENTE_ID":"1"},{"ID":"25","NAME":"ESCUELA BLANCO ENCALADA","DIRECCION":"","TIPOCOLEGIO_ID":"2","VERSION":"1","CIUDAD":"CAUQUENES","CLIENTE_ID":"1"},{"ID":"27","NAME":"ESCUELA PORONGO","DIRECCION":"","TIPOCOLEGIO_ID":"2","VERSION":"1","CIUDAD":"CAUQUENES","CLIENTE_ID":"1"},{"ID":"28","NAME":"ESCUELA EL TROZO","DIRECCION":"","TIPOCOLEGIO_ID":"1","VERSION":"2","CIUDAD":"CAUQUENES","CLIENTE_ID":"1"},{"ID":"29","NAME":"ESCUELA CABRER\u00cdA","DIRECCION":"","TIPOCOLEGIO_ID":"1","VERSION":"1","CIUDAD":"CAUQUENES","CLIENTE_ID":"1"},{"ID":"31","NAME":"ESCUELA LOS CONQUISTADORES","DIRECCION":"","TIPOCOLEGIO_ID":"2","VERSION":"1","CIUDAD":"CAUQUENES","CLIENTE_ID":"1"},{"ID":"32","NAME":"ESCUELA ADOLFO QUIROZ","DIRECCION":"","TIPOCOLEGIO_ID":"2","VERSION":"1","CIUDAD":"CAUQUENES","CLIENTE_ID":"1"},{"ID":"33","NAME":"ESCUELA CLORINDO ALVEAR","DIRECCION":"","TIPOCOLEGIO_ID":"2","VERSION":"1","CIUDAD":"CAUQUENES","CLIENTE_ID":"1"},{"ID":"34","NAME":"ESCUELA OCTAVIO PALMA","DIRECCION":"","TIPOCOLEGIO_ID":"2","VERSION":"1","CIUDAD":"CAUQUENES","CLIENTE_ID":"1"},{"ID":"35","NAME":"ESCUELA IV\u00c1N DE LA CUADRA","DIRECCION":"","TIPOCOLEGIO_ID":"1","VERSION":"1","CIUDAD":"CAUQUENES","CLIENTE_ID":"1"},{"ID":"37","NAME":"ESCUELA CARLOS RODR\u00cdGUEZ","DIRECCION":"","TIPOCOLEGIO_ID":"1","VERSION":"2","CIUDAD":"CAUQUENES","CLIENTE_ID":"1"},{"ID":"38","NAME":"ESCUELA JAVIERA CARRERA","DIRECCION":"","TIPOCOLEGIO_ID":"1","VERSION":"1","CIUDAD":"CAUQUENES","CLIENTE_ID":"1"},{"ID":"39","NAME":"ESCUELA PEDRO DE VALDIVIA","DIRECCION":"","TIPOCOLEGIO_ID":"1","VERSION":"2","CIUDAD":"CAUQUENES","CLIENTE_ID":"1"},{"ID":"40","NAME":"ESCUELA PEDERNALES","DIRECCION":"","TIPOCOLEGIO_ID":"1","VERSION":"2","CIUDAD":"CAUQUENES","CLIENTE_ID":"1"},{"ID":"41","NAME":"ESCUELA MAR\u00cdA GONZ\u00c1LEZ VERA","DIRECCION":"","TIPOCOLEGIO_ID":"1","VERSION":"2","CIUDAD":"CAUQUENES","CLIENTE_ID":"1"},{"ID":"42","NAME":"ESCUELA ESTER URRUTIA DE RUIZ","DIRECCION":"","TIPOCOLEGIO_ID":"2","VERSION":"1","CIUDAD":"CAUQUENES","CLIENTE_ID":"1"},{"ID":"43","NAME":"ESCUELA LA PATAGUA","DIRECCION":"","TIPOCOLEGIO_ID":"1","VERSION":"2","CIUDAD":"CAUQUENES","CLIENTE_ID":"1"},{"ID":"44","NAME":"LICEO BICENTENARIO","DIRECCION":"","TIPOCOLEGIO_ID":"2","VERSION":"2","CIUDAD":"CAUQUENES","CLIENTE_ID":"1"},{"ID":"47","NAME":"ESCUELA BARRIO ESTACI\u00d3N","DIRECCION":"","TIPOCOLEGIO_ID":"2","VERSION":"1","CIUDAD":"CAUQUENES","CLIENTE_ID":"1"},{"ID":"48","NAME":"ESCUELA ROSITA OHIGGINS","DIRECCION":"","TIPOCOLEGIO_ID":"2","VERSION":"2","CIUDAD":"CAUQUENES","CLIENTE_ID":"1"},{"ID":"51","NAME":"LICEO CLAUDINA URRUTIA","DIRECCION":"","TIPOCOLEGIO_ID":"2","VERSION":"2","CIUDAD":"CAUQUENES","CLIENTE_ID":"1"},{"ID":"52","NAME":"ESCUELA MIXTA ATENEA","DIRECCION":"--","TIPOCOLEGIO_ID":"1","VERSION":"2","CIUDAD":"CAUQUENES","CLIENTE_ID":"1"},{"ID":"56","NAME":"ESCUELA SILVESTRE PAIVA","DIRECCION":"","TIPOCOLEGIO_ID":"1","VERSION":"3","CIUDAD":"CAUQUENES","CLIENTE_ID":"1"},{"ID":"63","NAME":"ESCUELA MARIANO LATORRE","DIRECCION":"--","TIPOCOLEGIO_ID":"2","VERSION":"1","CIUDAD":"CAUQUENES","CLIENTE_ID":"1"},{"ID":"10037","NAME":"NNNN","DIRECCION":"NNNNN","TIPOCOLEGIO_ID":"1","VERSION":"1","CIUDAD":null,"CLIENTE_ID":"1"}][\r][\n]"
+26856 [pool-2-thread-2] DEBUG org.apache.http.headers  - http-outgoing-3 << HTTP/1.1 200 OK
+26856 [pool-2-thread-2] DEBUG org.apache.http.headers  - http-outgoing-3 << Server: nginx
+26856 [pool-2-thread-2] DEBUG org.apache.http.headers  - http-outgoing-3 << Date: Mon, 15 May 2017 00:58:55 GMT
+26856 [pool-2-thread-2] DEBUG org.apache.http.headers  - http-outgoing-3 << Content-Type: application/json
+26856 [pool-2-thread-2] DEBUG org.apache.http.headers  - http-outgoing-3 << Transfer-Encoding: chunked
+26856 [pool-2-thread-2] DEBUG org.apache.http.headers  - http-outgoing-3 << Connection: keep-alive
+26856 [pool-2-thread-2] DEBUG org.apache.http.headers  - http-outgoing-3 << X-Powered-By: PHP/7.0.18
+26856 [pool-2-thread-2] DEBUG org.apache.http.headers  - http-outgoing-3 << X-Cache: HIT from Backend
+26856 [pool-2-thread-2] DEBUG org.apache.http.impl.execchain.MainClientExec  - Connection can be kept alive indefinitely
+26856 [pool-2-thread-2] DEBUG org.apache.http.wire  - http-outgoing-3 << "0[\r][\n]"
+26856 [pool-2-thread-2] DEBUG org.apache.http.wire  - http-outgoing-3 << "[\r][\n]"
+26856 [pool-2-thread-2] DEBUG org.apache.http.impl.conn.PoolingHttpClientConnectionManager  - Connection [id: 3][route: {}->http://www.aplicacionestest.cl:80] can be kept alive indefinitely
+26856 [pool-2-thread-2] DEBUG org.apache.http.impl.conn.PoolingHttpClientConnectionManager  - Connection released: [id: 3][route: {}->http://www.aplicacionestest.cl:80][total kept alive: 2; route allocated: 2 of 2; total allocated: 2 of 20]

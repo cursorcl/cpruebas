@@ -12,8 +12,6 @@ public class AlumnosContoller extends AController {
     public void initialize() {
         model = new AlumnosModel();
         
-        
-//        model.findAll(R_Alumno.class, this);
         model.findAll(R_Colegio.class, this);
         model.findAll(R_Curso.class, this);
         model.findAll(R_TipoAlumno.class, this);

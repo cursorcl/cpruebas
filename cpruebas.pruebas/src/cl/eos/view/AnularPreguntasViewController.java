@@ -14,6 +14,7 @@ import cl.eos.imp.view.WindowManager;
 import cl.eos.interfaces.IActivator;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.persistence.util.Comparadores;
+import cl.eos.restful.tables.R_EstadoPruebaCliente;
 import cl.eos.restful.tables.R_EvaluacionPrueba;
 import cl.eos.restful.tables.R_Prueba;
 import cl.eos.restful.tables.R_Prueba.Estado;
@@ -110,6 +111,14 @@ public class AnularPreguntasViewController extends AFormView {
             Map<String, Object> params = new HashMap<>();
             params.put("prueba_id", prueba.getId());
             respuestas = controller.findByParamsSynchro(R_RespuestasEsperadasPrueba.class, params);
+            
+            List<R_EstadoPruebaCliente> lstEstadoPrueba = controller.findByParamsSynchro(R_EstadoPruebaCliente.class, params);
+            R_Prueba.Estado estadoPrueba =  R_Prueba.Estado.CREADA;
+            if(lstEstadoPrueba != null && !lstEstadoPrueba.isEmpty())
+            {
+              estadoPrueba = R_Prueba.Estado.getEstado(lstEstadoPrueba.get(0).getEstado_id().intValue());
+            }
+            
             setTitle("Anular Pregunta: " + prueba.getName());
             if (respuestas != null && !respuestas.isEmpty()) {
                 final StringBuffer resps = new StringBuffer();
@@ -149,7 +158,7 @@ public class AnularPreguntasViewController extends AFormView {
                 }
             }
             tblRegistroDefinePrueba.setItems(registros);
-            final boolean editable = !R_Prueba.Estado.getEstado(prueba.getEstado()).equals(Estado.EVALUADA);
+            final boolean editable = !estadoPrueba.equals(Estado.EVALUADA);
             preguntaCol.setEditable(editable);
             respuestaCol.setEditable(editable);
             vfCol.setEditable(editable);

@@ -39,11 +39,11 @@ public class OTPrueba {
     }
 
     public OTPrueba(R_Prueba prueba) {
-        this(prueba, null, null);
+        this(prueba, null, null, R_Prueba.Estado.CREADA);
     }
 
     
-    public OTPrueba(R_Prueba prueba, R_Asignatura asignatura, R_TipoCurso tipoCurso) {
+    public OTPrueba(R_Prueba prueba, R_Asignatura asignatura, R_TipoCurso tipoCurso, R_Prueba.Estado pEstado) {
         this.prueba = prueba;
         id.set(prueba.getId());
         fecha.set(prueba.getFecha());
@@ -58,7 +58,7 @@ public class OTPrueba {
         puntajeBase.set(prueba.getPuntajebase());
         exigencia.set(prueba.getExigencia());
         fechaLocal.set(LocalDate.ofEpochDay(fecha.longValue()));
-        estado.set(Estado.getEstado(prueba.getEstado()));
+        estado.set(pEstado);
     }
 
     public final SimpleIntegerProperty alternativasProperty() {
