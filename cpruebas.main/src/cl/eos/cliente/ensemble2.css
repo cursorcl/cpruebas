@@ -897,8 +897,8 @@
 
 #windows-title
 {
-	-fx-background-color: rgba(0.0,0.0,0.0,0.6);
-    -fx-border-color: rgba(0.0,0.0,0.0,0.6);
+	-fx-background-color: rgba(0.0,0.0,0.0,1);
+    -fx-border-color: rgba(0.0,0.0,0.0,1);
 
 }
 .menu-bar{

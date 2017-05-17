@@ -37,7 +37,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import jfxtras.labs.scene.control.BreadcrumbBar;
@@ -96,7 +96,7 @@ public class MainController {
     @FXML
     private AnchorPane pnlWindow;
     @FXML
-    private VBox groupRoot;
+    private StackPane groupRoot;
 
     private Stage stage;
     @FXML
@@ -106,7 +106,7 @@ public class MainController {
         super();
     }
 
-    public VBox getGroup() {
+    public StackPane getGroup() {
         return groupRoot;
     }
 
@@ -182,6 +182,7 @@ public class MainController {
             WindowManager.getInstance().setBreadcrumbBar(breadCrumb);
             final IActivator activator = new ListadoPruebasActivator();
             WindowManager.getInstance().setHomeView(activator.getView());
+            
 
         } catch (final Exception e) {
             e.printStackTrace();

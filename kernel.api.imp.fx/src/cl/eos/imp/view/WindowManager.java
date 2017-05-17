@@ -7,7 +7,7 @@ import cl.eos.interfaces.view.IWindowManager;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.StackPane;
 import jfxtras.labs.scene.control.BreadcrumbBar;
 import jfxtras.labs.scene.control.BreadcrumbItem;
 
@@ -23,7 +23,7 @@ public class WindowManager implements IWindowManager {
   }
 
   private Pane root;
-  private VBox group;
+  private StackPane group;
 
   private BreadcrumbBar breadCrum;
 
@@ -67,7 +67,14 @@ public class WindowManager implements IWindowManager {
     breadCrum.setOnItemAction(event -> {
       final BreadcrumbItem item = (BreadcrumbItem) event.getSource();
       final Node node = item.getContent();
-      group.getChildren().setAll(node);
+      while (group.getChildren().size() > 1) {
+        group.getChildren().remove(1);
+      }
+      
+      if (node != null && !breadCrum.getHomeItem().getText().equals(item.getText())) {
+        group.getChildren().add(node);
+      }
+
     });
   }
 
@@ -81,13 +88,14 @@ public class WindowManager implements IWindowManager {
       w.setContent((Parent) window.getPanel());
       w.setVisible(true);
       breadCrum.addHome(w);
+      group.getChildren().add(w);
     }
   }
 
   @Override
   public void setRoot(Object root) throws Exception {
-    if (root instanceof VBox) {
-      group = (VBox) root;
+    if (root instanceof StackPane) {
+      group = (StackPane) root;
     }
   }
 
@@ -101,35 +109,38 @@ public class WindowManager implements IWindowManager {
       w.setText(window.getTitle());
       w.setContent((Parent) window.getPanel());
       w.setVisible(true);
-      
-      
-      if(breadCrum.getHomeItem() != null && breadCrum.getHomeItem().getText().equals(window.getName()))
-      {
+
+
+      if (breadCrum.getHomeItem() != null && breadCrum.getHomeItem().getText().equals(window.getName())) {
         while (breadCrum.itemsProperty().getSize() >= 0) {
           breadCrum.removeItem(breadCrum.itemsProperty().getSize() - 1);
         }
         group.getChildren().setAll(w);
         return;
       }
-      
-      BreadcrumbItem item = breadCrum.itemsProperty().stream()
-          .filter(bi -> ((BreadcrumbItem) bi).getText().equals(window.getName())).findFirst()
-          .orElse(null);
 
-      
+      BreadcrumbItem item = breadCrum.itemsProperty().stream()
+          .filter(bi -> ((BreadcrumbItem) bi).getText().equals(window.getName())).findFirst().orElse(null);
+
+      while (group.getChildren().size() > 1) {
+        group.getChildren().remove(1);
+      }
       if (item != null) {
         int n = IntStream.range(0, breadCrum.itemsProperty().getSize() - 1)
-            .filter(i -> window.getTitle().equals(breadCrum.itemsProperty().get(i).getText()))
-            .findFirst().orElse(-1);
+            .filter(i -> window.getTitle().equals(breadCrum.itemsProperty().get(i).getText())).findFirst().orElse(-1);
         while (breadCrum.itemsProperty().getSize() > n + 1) {
           breadCrum.removeItem(breadCrum.itemsProperty().getSize() - 1);
         }
+
+        if (n > 0) {
+          group.getChildren().add(w);
+        }
       } else {
         breadCrum.addItem(window.getTitle(), w);
+        group.getChildren().add(w);
       }
 
-      group.getChildren().setAll(w);
-      
+
     }
   }
 
@@ -158,7 +169,9 @@ public class WindowManager implements IWindowManager {
       } else {
         breadCrum.addItem(window.getTitle(), w);
       }
-
+      while (group.getChildren().size() > 1) {
+        group.getChildren().remove(1);
+      }
       group.getChildren().add(w);
     }
   }
@@ -170,7 +183,6 @@ public class WindowManager implements IWindowManager {
     group.requestLayout();
 
   }
-
 
 
 }
