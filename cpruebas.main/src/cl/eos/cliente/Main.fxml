@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.effect.InnerShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -18,7 +20,7 @@
 <?import javafx.scene.text.Text?>
 <?import jfxtras.labs.scene.control.BreadcrumbBar?>
 
-<StackPane id="ModalDimmer" depthTest="DISABLE" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="740.0" prefWidth="1124.0" style="-fx-border-color: #71747C; -fx-border-width: 2;" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.cliente.MainController">
+<StackPane id="ModalDimmer" depthTest="DISABLE" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="740.0" prefWidth="1124.0" style="-fx-border-color: #71747C; -fx-border-width: 4;" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.cliente.MainController">
 	<children>
 		<BorderPane prefHeight="200.0" prefWidth="200.0">
 			<top>
@@ -26,28 +28,48 @@
 					<children>
 						<AnchorPane id="windows-title" fx:id="pnlWindow" prefHeight="62.0" prefWidth="1024.0">
 							<children>
-								<HBox prefHeight="100.0" prefWidth="1020.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+								<HBox alignment="CENTER" prefHeight="100.0" prefWidth="1020.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 									<children>
-										<ImageView fitHeight="60.0" fitWidth="347.0">
+										<ImageView fitHeight="60.0" fitWidth="347.0" opacity="0.88" HBox.hgrow="ALWAYS">
 											<image>
 												<Image url="@images/logo128.png" />
 											</image>
+                                 <HBox.margin>
+                                    <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
+                                 </HBox.margin>
+                                 <cursor>
+                                    <Cursor fx:constant="NONE" />
+                                 </cursor>
 										</ImageView>
-                              <Text fill="WHITE" stroke="#4eab06" strokeType="OUTSIDE" text="V. 3.0" HBox.hgrow="ALWAYS">
+                              <Text blendMode="SRC_ATOP" fill="WHITE" opacity="0.9" stroke="#4eab06" strokeLineCap="ROUND" strokeLineJoin="BEVEL" strokeMiterLimit="20.0" strokeType="INSIDE" text="V. 3.0" HBox.hgrow="ALWAYS">
                                  <font>
-                                    <Font name="Calibri" size="34.0" />
+                                    <Font name="Calibri" size="18.0" />
                                  </font>
+                                 <HBox.margin>
+                                    <Insets left="15.0" />
+                                 </HBox.margin>
+                                 <effect>
+                                    <DropShadow />
+                                 </effect>
                               </Text>
 										<AnchorPane id="SearchBox" prefHeight="63.0" prefWidth="577.0" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <VBox alignment="TOP_RIGHT" layoutX="78.0" layoutY="-51.0" prefHeight="149.0" prefWidth="604.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <VBox alignment="TOP_RIGHT" layoutX="47.0" layoutY="-51.0" prefHeight="62.0" prefWidth="688.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <children>
-                                          <Text fx:id="txtCliente" fill="#acffc9" stroke="#00ff04" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeType="OUTSIDE" text="Cauquenes" textAlignment="RIGHT">
+                                          <Text fx:id="txtCliente" fill="#e8e8e8" fontSmoothingType="LCD" stroke="#fbfffb" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeType="OUTSIDE" text="Cauquenes" textAlignment="RIGHT">
                                              <font>
-                                                <Font name="Broadway" size="51.0" />
+                                                <Font name="Broadway" size="24.0" />
                                              </font>
                                              <VBox.margin>
-                                                <Insets right="15.0" />
+                                                <Insets right="20.0" />
+                                             </VBox.margin>
+                                          </Text>
+                                          <Text fx:id="txtUsuario" fill="WHITE" fontSmoothingType="LCD" stroke="#fafcfa" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeType="INSIDE" text="Cauquenes" textAlignment="RIGHT">
+                                             <font>
+                                                <Font name="Book Antiqua" size="13.0" />
+                                             </font>
+                                             <VBox.margin>
+                                                <Insets right="20.0" />
                                              </VBox.margin>
                                           </Text>
                                        </children>

@@ -735,6 +735,7 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
     if (lstAsignaturas == null || lstTipoCurso == null || pruebas == null) {
       return;
     }
+    tblListadoPruebas.getItems().clear();
     List<R_EstadoPruebaCliente> lstEstadoPrueba = controller.findAllSynchro(R_EstadoPruebaCliente.class);
 
     Map<Long, R_Asignatura> mapAsignaturas =
@@ -751,7 +752,10 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
 
       ot.setEstado(R_Prueba.Estado.getEstado(estadoPrueba.getEstado_id().intValue()));
     }
+    
     tblListadoPruebas.setItems(pruebas);
+    tblListadoPruebas.refresh();
+    
 
   }
 

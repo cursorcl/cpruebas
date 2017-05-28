@@ -48,44 +48,46 @@ import cl.eos.interfaces.entity.IEntity;
  *
  */
 public class RestfulClient {
-//  private static final String URL = "http://localhost/tpruebas/%s";
-//  private static final String URL_CONEXION = "http://localhost/tpruebas/connection";
-  private static final String URL = "http://www.aplicacionestest.cl/%s";
-  private static final String URL_CONEXION = "http://www.aplicacionestest.cl/connection";
-  private static final String BY_ID = URL + "/%d";
-  
-  
+
+
+  private static String URL = "%s/%s";
+  private static String URL_CONEXION = "%s/connection";
+  private static String BY_ID = "%s/%s/%d";
+
+
+
   static final TypeAdapter<Boolean> booleanAsIntAdapter = new TypeAdapter<Boolean>() {
-    @Override public void write(JsonWriter out, Boolean value) throws IOException {
+    @Override
+    public void write(JsonWriter out, Boolean value) throws IOException {
       if (value == null) {
         out.nullValue();
       } else {
         out.value(value);
       }
     }
-    @Override public Boolean read(JsonReader in) throws IOException {
+
+    @Override
+    public Boolean read(JsonReader in) throws IOException {
       JsonToken peek = in.peek();
       switch (peek) {
-      case BOOLEAN:
-        return in.nextBoolean();
-      case NULL:
-        in.nextNull();
-        return null;
-      case NUMBER:
-        return in.nextInt() != 0;
-      case STRING:
-        return Boolean.parseBoolean(in.nextString());
-      default:
-        throw new IllegalStateException("Expected BOOLEAN or NUMBER but was " + peek);
+        case BOOLEAN:
+          return in.nextBoolean();
+        case NULL:
+          in.nextNull();
+          return null;
+        case NUMBER:
+          return in.nextInt() != 0;
+        case STRING:
+          return Boolean.parseBoolean(in.nextString());
+        default:
+          throw new IllegalStateException("Expected BOOLEAN or NUMBER but was " + peek);
       }
     }
   };
-  
-  private static final Gson gson =  new GsonBuilder()
-      .registerTypeAdapter(Boolean.class, booleanAsIntAdapter)
-      .registerTypeAdapter(boolean.class, booleanAsIntAdapter)
-      .create();
-  
+
+  private static final Gson gson = new GsonBuilder().registerTypeAdapter(Boolean.class, booleanAsIntAdapter)
+      .registerTypeAdapter(boolean.class, booleanAsIntAdapter).create();
+
   private static final CloseableHttpClient httpclient = HttpClients.createDefault();
 
   /**
@@ -98,7 +100,7 @@ public class RestfulClient {
   public static <T> List<T> get(Class<T> clazz, Long id) {
     List<T> result = new ArrayList<>();
     String table = getTablName(clazz);
-    String url = String.format(BY_ID, table, id);
+    String url = getByID(table, id);
     HttpGet httpget = new HttpGet(url);
     httpget.addHeader("accept", "application/json");
     httpget.addHeader("Database", Environment.database);
@@ -120,8 +122,7 @@ public class RestfulClient {
       }
     } catch (IOException e) {
       e.printStackTrace();
-    }
-    finally {
+    } finally {
       try {
         response.close();
       } catch (IOException e) {
@@ -133,7 +134,7 @@ public class RestfulClient {
 
   public static <T> List<T> getByQuery(Class<T> clazz, String query) {
     List<T> result = null;
-    String url = String.format(URL, getTablName(clazz));
+    String url = getURL(getTablName(clazz));
     CloseableHttpResponse response = null;
     try {
       HttpGet httpget = new HttpGet(url);
@@ -155,8 +156,7 @@ public class RestfulClient {
       e.printStackTrace();
     } catch (URISyntaxException e) {
       e.printStackTrace();
-    }
-    finally {
+    } finally {
       try {
         response.close();
       } catch (IOException e) {
@@ -168,7 +168,7 @@ public class RestfulClient {
 
   public static <T> List<T> get(Class<T> clazz) {
     List<T> result = new ArrayList<>();
-    String url = String.format(URL, getTablName(clazz));
+    String url = getURL(getTablName(clazz));
     HttpGet httpget = new HttpGet(url);
     httpget.addHeader("accept", "application/json");
     httpget.addHeader("Database", Environment.database);
@@ -192,8 +192,7 @@ public class RestfulClient {
       JOptionPane.showMessageDialog(null, "Comuníquese con el administrador del servicio de red.",
           "Error en conexión al servicio de red.", JOptionPane.ERROR_MESSAGE);
       e.printStackTrace();
-    }
-    finally {
+    } finally {
       try {
         response.close();
       } catch (IOException e) {
@@ -205,7 +204,7 @@ public class RestfulClient {
 
   public static <T> List<T> getByParameters(Class<T> clazz, Map<String, Object> map) {
     List<T> result = null;
-    String url = String.format(URL, getTablName(clazz));
+    String url = getURL(getTablName(clazz));
     CloseableHttpResponse response = null;
     try {
       HttpGet httpget = new HttpGet(url);
@@ -217,7 +216,7 @@ public class RestfulClient {
         uriBuilder.addParameter(entry.getKey(), entry.getValue().toString());
       }
       httpget.setURI(uriBuilder.build());
-      
+
       response = httpclient.execute(httpget);
       if (response.getStatusLine().getStatusCode() != 200)
         return null;
@@ -231,8 +230,7 @@ public class RestfulClient {
       e.printStackTrace();
     } catch (URISyntaxException e) {
       e.printStackTrace();
-    }
-    finally {
+    } finally {
       try {
         response.close();
       } catch (IOException e) {
@@ -261,8 +259,7 @@ public class RestfulClient {
       }
     } catch (IOException e) {
       e.printStackTrace();
-    }
-    finally {
+    } finally {
       try {
         response.close();
       } catch (IOException e) {
@@ -274,7 +271,7 @@ public class RestfulClient {
 
 
   public static void deleteByParams(Class<? extends IEntity> clazz, Map<String, Object> params) {
-    String url = String.format(URL, getTablName(clazz));
+    String url = getURL(getTablName(clazz));
     CloseableHttpResponse response = null;
     try {
       HttpDelete httpget = new HttpDelete(url);
@@ -286,7 +283,7 @@ public class RestfulClient {
         uriBuilder.addParameter(entry.getKey(), entry.getValue().toString());
       }
       httpget.setURI(uriBuilder.build());
-      
+
       response = httpclient.execute(httpget);
       if (response.getStatusLine().getStatusCode() != 200)
         return;
@@ -294,8 +291,7 @@ public class RestfulClient {
       e.printStackTrace();
     } catch (URISyntaxException e) {
       e.printStackTrace();
-    }
-    finally {
+    } finally {
       try {
         response.close();
       } catch (IOException e) {
@@ -303,10 +299,10 @@ public class RestfulClient {
       }
     }
   }
-  
-  
+
+
   public static <T> boolean post(T element) {
-    String url = String.format(URL, getTablName(element.getClass()));
+    String url = getURL(getTablName(element.getClass()));
     StringEntity postingString;
     CloseableHttpResponse response = null;
     try {
@@ -316,7 +312,7 @@ public class RestfulClient {
       httppost.addHeader("Database", Environment.database);
       httppost.addHeader("Cliente", Environment.client.toString());
       httppost.setEntity(postingString);
-      
+
       response = httpclient.execute(httppost);
       if (response.getStatusLine().getStatusCode() != 200)
         return false;
@@ -329,8 +325,7 @@ public class RestfulClient {
     } catch (IOException e) {
       e.printStackTrace();
       return false;
-    }
-    finally {
+    } finally {
       try {
         response.close();
       } catch (IOException e) {
@@ -351,7 +346,7 @@ public class RestfulClient {
       httpput.addHeader("Database", Environment.database);
       httpput.addHeader("Cliente", Environment.client.toString());
       httpput.setEntity(postingString);
-      
+
       response = httpclient.execute(httpput);
       if (response.getStatusLine().getStatusCode() != 200)
         return false;
@@ -364,8 +359,7 @@ public class RestfulClient {
     } catch (IOException e) {
       e.printStackTrace();
       return false;
-    }
-    finally {
+    } finally {
       try {
         response.close();
       } catch (IOException e) {
@@ -376,7 +370,7 @@ public class RestfulClient {
   }
 
   public static boolean existService() {
-    String url = URL_CONEXION;
+    String url = getUrlConnectio();
     HttpGet httpget = new HttpGet(url);
     httpget.addHeader("accept", "application/json");
     httpget.addHeader("Database", Environment.database);
@@ -386,10 +380,11 @@ public class RestfulClient {
       response = httpclient.execute(httpget);
       int status = response.getStatusLine().getStatusCode();
       if (status != 200) {
-        JOptionPane.showMessageDialog(null,
-            "El servidor retorna código de estado:" + status + ".\n["
-                + response.getStatusLine().getReasonPhrase() + "]",
-            "Error en conexión al servicio.", JOptionPane.ERROR_MESSAGE);
+        JOptionPane
+            .showMessageDialog(
+                null, "El servidor retorna código de estado:" + status + ".\n["
+                    + response.getStatusLine().getReasonPhrase() + "]",
+                "Error en conexión al servicio.", JOptionPane.ERROR_MESSAGE);
         return false;
       }
       HttpEntity entity = response.getEntity();
@@ -407,15 +402,14 @@ public class RestfulClient {
           "Error en conexión al servicio.", JOptionPane.ERROR_MESSAGE);
       return false;
     } catch (JsonSyntaxException ex) {
-      JOptionPane.showMessageDialog(null, "Excepción:" + ex.getMessage(),
-          "Base de datos no activa.", JOptionPane.ERROR_MESSAGE);
+      JOptionPane.showMessageDialog(null, "Excepción:" + ex.getMessage(), "Base de datos no activa.",
+          JOptionPane.ERROR_MESSAGE);
       return false;
     } catch (Exception ex) {
-      JOptionPane.showMessageDialog(null, "Excepción:" + ex.getMessage(),
-          "Se ha producido una excepción.", JOptionPane.ERROR_MESSAGE);
+      JOptionPane.showMessageDialog(null, "Excepción:" + ex.getMessage(), "Se ha producido una excepción.",
+          JOptionPane.ERROR_MESSAGE);
       return false;
-    }
-    finally {
+    } finally {
       try {
         response.close();
       } catch (IOException e) {
@@ -424,6 +418,7 @@ public class RestfulClient {
     }
     return true;
   }
+
 
   private static String getTablName(Class<?> clazz) {
     return clazz.getSimpleName().substring(2).toLowerCase();
@@ -453,6 +448,19 @@ public class RestfulClient {
     }
 
     // implement equals method too! (as per javadoc)
+  }
+
+
+  private static String getURL(String table) {
+    return String.format(URL, Environment.server, table);
+  }
+
+  private static String getByID(String table, Long id) {
+    return String.format(BY_ID, Environment.server, table, id);
+  }
+  
+  private static String getUrlConnectio() {
+    return String.format(URL_CONEXION, Environment.server);
   }
 
 }

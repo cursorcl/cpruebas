@@ -1,7 +1,11 @@
 package cl.eos.cliente;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.List;
+import java.util.prefs.Preferences;
 
 import cl.eos.Environment;
 import cl.eos.provider.persistence.PersistenceServiceFactory;
@@ -45,18 +49,39 @@ public class SeleccionCliente {
   @FXML
   private TextField txtUser;
   @FXML
+  private TextField txtServer;
+  @FXML
   private PasswordField txtPassword;
 
   private Stage primaryStage;
   private List<R_Usuarios> usuarios;
   private List<R_Clientes> lstClientes;
+  private R_Usuarios user;
+  private R_Clientes cliente;
 
   @FXML
   void initialize() {
-    Environment.database = "aplicac2_cliente";
+
+    Preferences prefs = Preferences.userRoot().node(Environment.KEY);
+    Environment.database = prefs.get("Database", "aplicac2_cliente");
+    Environment.server = prefs.get("Server", Environment.server);
+    Environment.client = prefs.getLong("Cliente", Environment.client);
+
+
     usuarios = PersistenceServiceFactory.getPersistenceService().findAllSynchro(R_Usuarios.class);
     lstClientes = PersistenceServiceFactory.getPersistenceService().findAllSynchro(R_Clientes.class);
+    cliente = lstClientes.stream().filter(c -> c.getId().equals(Environment.client)).findAny().orElse(null);
     cmbClientes.setItems(FXCollections.observableArrayList(lstClientes));
+    cmbClientes.getSelectionModel().select(cliente);
+
+    txtServer.setText(Environment.server);
+
+    txtServer.textProperty().addListener(new ChangeListener<String>() {
+      @Override
+      public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+        btnAccept.setDisable(validateEnableButton());
+      }
+    });
 
     txtUser.textProperty().addListener(new ChangeListener<String>() {
       @Override
@@ -79,12 +104,22 @@ public class SeleccionCliente {
     });
     btnAccept.setDisable(true);
     btnAccept.setOnAction(event -> {
-      final R_Clientes cliente = cmbClientes.getSelectionModel().getSelectedItem();
 
-      R_Usuarios user = usuarios.stream().filter(u -> u.getLogin().equals(txtUser.getText())).findFirst().orElse(null);
+      if (!isValidURL(txtServer.getText())) {
+        showErrorServer();
+      }
+
+      cliente = cmbClientes.getSelectionModel().getSelectedItem();
+      user = usuarios.stream().filter(u -> u.getLogin().equals(txtUser.getText())).findFirst().orElse(null);
       String password = Utils.getMD5Hex(txtPassword.getText());
       if (user.getPassword().equals(password)) {
         Environment.client = cliente.getId();
+        Environment.server = txtServer.getText();
+
+        prefs.put("Database", Environment.database);
+        prefs.put("Server", Environment.server);
+        prefs.putLong("Cliente", Environment.client);
+
         showApplication();
       } else {
         showError();
@@ -107,8 +142,28 @@ public class SeleccionCliente {
   protected boolean validateEnableButton() {
 
     return txtPassword.getText().isEmpty() || txtUser.getText().isEmpty()
-        || (cmbClientes.getSelectionModel().getSelectedItem() == null);
+        || (cmbClientes.getSelectionModel().getSelectedItem() == null || txtServer.getText().isEmpty());
   }
+
+  public boolean isValidURL(String url) {
+
+    URL u = null;
+
+    try {
+      u = new URL(url);
+    } catch (MalformedURLException e) {
+      return false;
+    }
+
+    try {
+      u.toURI();
+    } catch (URISyntaxException e) {
+      return false;
+    }
+
+    return true;
+  }
+
 
   public void setStage(Stage primaryStage) {
     this.primaryStage = primaryStage;
@@ -123,11 +178,22 @@ public class SeleccionCliente {
     alert.showAndWait();
   }
 
+  private void showErrorServer() {
+    final Alert alert = new Alert(AlertType.ERROR);
+    alert.setTitle("Dirección inválida.");
+    alert.setHeaderText("La dirección del servidor es incorrecta. ");
+    alert.setContentText("Debe ingresar una dirección de servidor correcta.");
+    alert.showAndWait();
+  }
+
   private void showApplication() {
     try {
       final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Main.fxml"));
       final StackPane root = (StackPane) fxmlLoader.load();
       final MainController controller = (MainController) fxmlLoader.getController();
+      controller.setCliente(cliente);
+      controller.setUsuario(user);
+      controller.setClientes(lstClientes);
       controller.setStage(primaryStage);
 
       root.setOnMousePressed(event -> {
