@@ -1,6 +1,7 @@
 package colegio;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executors;
@@ -13,6 +14,7 @@ import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.jfree.util.Log;
 
 import cl.eos.common.Constants;
 import cl.eos.imp.view.AFormView;
@@ -83,8 +85,11 @@ public class ComparativoColegioXPregunta extends AFormView {
 
 	private List<EvaluacionPrueba> lstEvaluaciones;
 
+	private List<PruebaRendida> pruebasError;
+
 	@FXML
 	public void initialize() {
+		setTitle("Respuestas x Alumno");
 		cmbColegios.setOnAction((event) -> {
 			btnProcesar.setDisable(isDisable());
 		});
@@ -169,9 +174,20 @@ public class ComparativoColegioXPregunta extends AFormView {
 						columnsCreated = true;
 					}
 					int n = 0;
-					for (RespuestasEsperadasPrueba resp : respEsperadas) {
-						String value = evaluateResp(resp, respuesta[n++]);
-						row.add(value);
+					if (respEsperadas.size() > respuesta.length) {
+						pruebasError.add(pr);
+						Log.error("La catidad de respuestas esperadas es mayor que las respuesas!!!");
+						for (RespuestasEsperadasPrueba resp : respEsperadas) {
+							if (n < respuesta.length - 1) {
+								String value = evaluateResp(resp, respuesta[n++]);
+								row.add(value);
+							}
+						}
+					} else {
+						for (RespuestasEsperadasPrueba resp : respEsperadas) {
+							String value = evaluateResp(resp, respuesta[n++]);
+							row.add(value);
+						}
 					}
 					contenido.add(row);
 				}
@@ -341,7 +357,14 @@ public class ComparativoColegioXPregunta extends AFormView {
 		final Task<Boolean> task = new Task<Boolean>() {
 			@Override
 			protected Boolean call() throws Exception {
-				tabPane.getTabs().clear();
+				Platform.runLater(new Runnable() {
+					@Override
+					public void run() {
+						tabPane.getTabs().clear();
+					}
+				});
+
+				pruebasError = new ArrayList<>();
 				Colegio colegio = cmbColegios.getValue();
 				Asignatura asignatura = cmbAsignatura.getValue();
 				TipoAlumno tipoAlumno = cmbTipoAlumno.getValue();
@@ -388,6 +411,22 @@ public class ComparativoColegioXPregunta extends AFormView {
 		});
 		task.setOnSucceeded(event -> {
 			dlg.getDialogStage().hide();
+
+			if (pruebasError != null && pruebasError.size() > 0) {
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle("Problemas con los siguientes alumnos.");
+				alert.setHeaderText(
+						"Alumnos tienen menos respuestas que las esperadas.\nReporte ha omitido dichos alumnos.");
+				StringBuffer buff = new StringBuffer();
+				for (PruebaRendida pr : pruebasError) {
+					buff.append(String.format("%s %s Respuestas:%d/%d\n", pr.getAlumno(),
+							pr.getAlumno().getCurso(), pr.getRespuestas().length(),
+							pr.getEvaluacionPrueba().getPrueba().getResponses().length()));
+				}
+				alert.setContentText(buff.toString());
+				alert.showAndWait();
+
+			}
 		});
 		dlg.showWorkerProgress(task);
 		Executors.newSingleThreadExecutor().execute(task);
