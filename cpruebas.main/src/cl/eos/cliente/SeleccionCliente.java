@@ -64,7 +64,7 @@ public class SeleccionCliente {
 
     Preferences prefs = Preferences.userRoot().node(Environment.KEY);
     Environment.database = prefs.get("Database", "aplicac2_cliente");
-    Environment.server = prefs.get("Server", Environment.server);
+    Environment.server = "http://" + prefs.get("Server", Environment.server);
     Environment.client = prefs.getLong("Cliente", Environment.client);
 
 
@@ -117,7 +117,7 @@ public class SeleccionCliente {
         Environment.server = txtServer.getText();
 
         prefs.put("Database", Environment.database);
-        prefs.put("Server", Environment.server);
+        prefs.put("Server", Environment.server.contains("http") ? Environment.server.substring(7) : Environment.server);
         prefs.putLong("Cliente", Environment.client);
 
         showApplication();

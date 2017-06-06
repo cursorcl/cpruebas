@@ -18,6 +18,7 @@ import cl.eos.restful.tables.R_EvaluacionEjetematico;
 import cl.eos.restful.tables.R_EvaluacionPrueba;
 import cl.eos.restful.tables.R_Habilidad;
 import cl.eos.restful.tables.R_NivelEvaluacion;
+import cl.eos.restful.tables.R_Objetivo;
 import cl.eos.restful.tables.R_Profesor;
 import cl.eos.restful.tables.R_Prueba;
 import cl.eos.restful.tables.R_Prueba.Estado;
@@ -148,6 +149,8 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
   private MenuItem mnuXNivelObjetivos;
   @FXML
   private MenuItem mnuRespuestasAlumno;
+  @FXML
+  private MenuItem mnuDefinirPrueba;
 
   private EvaluacionPruebaView evaluacionPrueba;
   private AnularPreguntasViewController anularPregunta;
@@ -162,6 +165,9 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
   private ObservableList<R_Asignatura> lstAsignaturas;
   private ObservableList<R_TipoCurso> lstTipoCurso;
   private ObservableList<OTPrueba> pruebas;
+
+  private DefinePruebaViewController definePrueba;
+
 
   public ListadoPruebasView() {
     super();
@@ -201,23 +207,23 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
         final boolean estadoEvaluada = prueba.getEstado().equals(Estado.EVALUADA);
         final boolean estadoCreada = prueba.getEstado().equals(Estado.CREADA);
         if (estadoDefinida) {
-          mnuEvaluarPrueba.setDisable(!estadoDefinida);
-          mnuListaEvaluaciones.setDisable(estadoDefinida);
-          mnuResumenComunal.setDisable(estadoDefinida);
-          mnuComparativoComunalEje.setDisable(estadoDefinida);
-          mnuComparativoComunalHab.setDisable(estadoDefinida);
+          mnuEvaluarPrueba.setDisable(false);
+          mnuListaEvaluaciones.setDisable(false);
+          mnuResumenComunal.setDisable(false);
+          mnuComparativoComunalEje.setDisable(false);
+          mnuComparativoComunalHab.setDisable(false);
         } else if (estadoEvaluada) {
-          mnuEvaluarPrueba.setDisable(!estadoEvaluada);
-          mnuListaEvaluaciones.setDisable(!estadoEvaluada);
-          mnuResumenComunal.setDisable(!estadoEvaluada);
-          mnuComparativoComunalEje.setDisable(!estadoEvaluada);
-          mnuComparativoComunalHab.setDisable(!estadoEvaluada);
+          mnuEvaluarPrueba.setDisable(false);
+          mnuListaEvaluaciones.setDisable(false);
+          mnuResumenComunal.setDisable(false);
+          mnuComparativoComunalEje.setDisable(false);
+          mnuComparativoComunalHab.setDisable(false);
         } else if (estadoCreada) {
-          mnuEvaluarPrueba.setDisable(estadoCreada);
-          mnuListaEvaluaciones.setDisable(estadoCreada);
-          mnuResumenComunal.setDisable(estadoCreada);
-          mnuComparativoComunalEje.setDisable(estadoCreada);
-          mnuComparativoComunalHab.setDisable(estadoCreada);
+          mnuEvaluarPrueba.setDisable(true);
+          mnuListaEvaluaciones.setDisable(true);
+          mnuResumenComunal.setDisable(true);
+          mnuComparativoComunalEje.setDisable(true);
+          mnuComparativoComunalHab.setDisable(true);
           mnuAnularPregunta.setDisable(true);
         }
         mnuModificar.setDisable(!estadoCreada);
@@ -283,6 +289,8 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
       handlerXNivelObjetivos();
     } else if (source == mnuRespuestasAlumno) {
       handleRespuestasAlumno();
+    } else if (source == mnuDefinirPrueba) {
+      handlerDefinirPrueba();
     }
   }
 
@@ -327,18 +335,17 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
   private void handleModificar() {
     if (tblListadoPruebas.getSelectionModel().getSelectedItem() != null) {
       prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
-      
+
       Map<String, Object> params = new HashMap<>();
       params.put("prueba_id", prueba.getId());
       List<R_EstadoPruebaCliente> lstEstadoPrueba = controller.findByParamsSynchro(R_EstadoPruebaCliente.class, params);
-      R_Prueba.Estado estadoPrueba =  R_Prueba.Estado.CREADA;
-      if(lstEstadoPrueba != null && !lstEstadoPrueba.isEmpty())
-      {
+      R_Prueba.Estado estadoPrueba = R_Prueba.Estado.CREADA;
+      if (lstEstadoPrueba != null && !lstEstadoPrueba.isEmpty()) {
         estadoPrueba = R_Prueba.Estado.getEstado(lstEstadoPrueba.get(0).getEstado_id().intValue());
       }
-      
-      
-      
+
+
+
       if (prueba != null) {
         if (estadoPrueba.equals(Estado.EVALUADA)) {
           final Alert info = new Alert(AlertType.INFORMATION);
@@ -700,6 +707,7 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
     mnuXObjetivos.setOnAction(this);
     mnuXNivelObjetivos.setOnAction(this);
     mnuRespuestasAlumno.setOnAction(this);
+    mnuDefinirPrueba.setOnAction(this);
     accionClicTabla();
   }
 
@@ -752,10 +760,10 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
 
       ot.setEstado(R_Prueba.Estado.getEstado(estadoPrueba.getEstado_id().intValue()));
     }
-    
+
     tblListadoPruebas.setItems(pruebas);
     tblListadoPruebas.refresh();
-    
+
 
   }
 
@@ -799,5 +807,29 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
     controller.findAll(R_Asignatura.class, view);
     controller.findAll(R_Colegio.class, view);
     controller.findAll(R_TipoAlumno.class, view);
+  }
+
+
+  private void handlerDefinirPrueba() {
+    if (tblListadoPruebas.getSelectionModel().getSelectedItem() != null) {
+      R_Prueba prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
+
+      // if (!prueba.getEstado().equals(Estado.EVALUADA)) {
+      definePrueba = (DefinePruebaViewController) show("/cl/eos/view/DefinePruebaView.fxml");
+
+      if (prueba != null) {
+        controller.findById(R_Prueba.class, prueba.getId(), definePrueba);
+        Map<String, Object> parameters = new HashMap<String, Object>();
+        parameters.put("asignatura_id", prueba.getAsignatura_id());
+        controller.findByParam(R_Ejetematico.class, parameters, definePrueba);
+        controller.findAll(R_Habilidad.class, definePrueba);
+
+        final Map<String, Object> param = new HashMap<String, Object>();
+        param.put("tipocurso_id", prueba.getCurso_id());
+        param.put("asignatura_id", prueba.getAsignatura_id());
+        controller.findByParam(R_Objetivo.class, param, definePrueba);
+
+      }
+    }
   }
 }

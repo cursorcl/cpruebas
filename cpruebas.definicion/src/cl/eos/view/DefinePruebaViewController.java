@@ -90,11 +90,10 @@ public class DefinePruebaViewController extends AFormView {
   private R_Prueba prueba;
   private ObservableList<RegistroDefinePrueba> registros;
   private StyleChangingRowFactory<RegistroDefinePrueba> rowFactory;
-  private List<R_RespuestasEsperadasPrueba> respuestas;
   private List<R_Formas> formas;
 
   public DefinePruebaViewController() {
-    setTitle("Definir R_Prueba");
+    setTitle("Definir Prueba");
   }
 
   private void actualizaLabelCuenta(int nro) {
@@ -349,14 +348,14 @@ public class DefinePruebaViewController extends AFormView {
         editing.setValidValues(respsValidas);
         return editing;
       });
-      respuestas = controller.findByParamsSynchro(R_RespuestasEsperadasPrueba.class, params);
+      List<R_RespuestasEsperadasPrueba> lrespuestas = controller.findByParamsSynchro(R_RespuestasEsperadasPrueba.class, params);
       txtRespuestas.setText("");
-      if (respuestas != null && !respuestas.isEmpty()) {
+      if (lrespuestas != null && !lrespuestas.isEmpty()) {
         final StringBuffer resps = new StringBuffer();
         final List<R_RespuestasEsperadasPrueba> respuestas = new ArrayList<R_RespuestasEsperadasPrueba>();
         final int nroPreguntas = prueba.getNropreguntas();
-        final int oldNroPreguntas = respuestas.size();
-        for (final R_RespuestasEsperadasPrueba respuesta : respuestas) {
+        final int oldNroPreguntas = lrespuestas.size();
+        for (final R_RespuestasEsperadasPrueba respuesta : lrespuestas) {
           respuestas.add(respuesta);
         }
         if (nroPreguntas > oldNroPreguntas) {

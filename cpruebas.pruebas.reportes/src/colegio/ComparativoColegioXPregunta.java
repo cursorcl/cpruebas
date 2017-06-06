@@ -1,6 +1,7 @@
 package colegio;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executors;
@@ -83,6 +84,25 @@ public class ComparativoColegioXPregunta extends AFormView {
   private MenuItem mnuExportAll;
 
   private List<R_EvaluacionPrueba> lstEvaluaciones;
+  private List<ItemError> pruebasError;
+
+  private class ItemError {
+    R_Alumno alumno;
+    R_Curso curso;
+    int respuestas;
+    int respuestasEsperadas;
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+      return String.format("%s %s Respuestas:%d/%d\n", alumno, curso, respuestas, respuestasEsperadas);
+    }
+
+  }
 
   @FXML
   public void initialize() {
@@ -180,9 +200,24 @@ public class ComparativoColegioXPregunta extends AFormView {
             columnsCreated = true;
           }
           int n = 0;
-          for (R_RespuestasEsperadasPrueba resp : respEsperadas) {
-            String value = evaluateResp(resp, respuesta[n++]);
-            row.add(value);
+          if (respEsperadas.size() > respuesta.length) {
+            ItemError item = new ItemError();
+            item.alumno = alumno;
+            item.curso = curso;
+            item.respuestas = respuesta.length;
+            item.respuestasEsperadas = respEsperadas.size();
+            pruebasError.add(item);
+            for (R_RespuestasEsperadasPrueba resp : respEsperadas) {
+              if (n < respuesta.length - 1) {
+                String value = evaluateResp(resp, respuesta[n++]);
+                row.add(value);
+              }
+            }
+          } else {
+            for (R_RespuestasEsperadasPrueba resp : respEsperadas) {
+              String value = evaluateResp(resp, respuesta[n++]);
+              row.add(value);
+            }
           }
           contenido.add(row);
         }
@@ -357,7 +392,7 @@ public class ComparativoColegioXPregunta extends AFormView {
             tabPane.getTabs().clear();
           }
         });
-
+        pruebasError = new ArrayList<>();
         R_Colegio colegio = cmbColegios.getValue();
         R_Asignatura asignatura = cmbAsignatura.getValue();
         Long tipoAlumno = cmbTipoAlumno.getValue().getId();
@@ -409,6 +444,19 @@ public class ComparativoColegioXPregunta extends AFormView {
     });
     task.setOnSucceeded(event -> {
       dlg.getDialogStage().hide();
+      if (pruebasError != null && pruebasError.size() > 0) {
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.setTitle("Problemas con los siguientes alumnos.");
+        alert.setHeaderText("Alumnos tienen menos respuestas que las esperadas.\nReporte ha omitido dichos alumnos.");
+        StringBuffer buff = new StringBuffer();
+        for (ItemError item : pruebasError) {
+          buff.append(item.toString());
+        }
+        alert.setContentText(buff.toString());
+        alert.showAndWait();
+
+      }
+
     });
     dlg.showWorkerProgress(task);
     Executors.newSingleThreadExecutor().execute(task);

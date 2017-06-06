@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.input.*?>
-<?import javafx.scene.layout.*?>
 <?import javafx.scene.control.ContextMenu?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
@@ -17,7 +13,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="519.0" prefWidth="1112.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.ListadoPruebasView">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="519.0" prefWidth="1112.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.ListadoPruebasView">
 	<top>
 		<VBox prefHeight="24.0" prefWidth="1087.0">
 			<children>
@@ -36,6 +32,11 @@
 										<KeyCodeCombination alt="UP" code="E" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
 									</accelerator>
 								</MenuItem>
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem fx:id="mnuDefinirPrueba" mnemonicParsing="false" text="Definir" />
+                        <MenuItem fx:id="mnuEvaluarPrueba" mnemonicParsing="false" text="Evaluar" />
+                        <MenuItem fx:id="mnuAnularPregunta" mnemonicParsing="false" text="Anular Preguntas" />
+                        <MenuItem fx:id="mnuListaEvaluaciones" mnemonicParsing="false" text="Ver Evaluaciones" />
 								<SeparatorMenuItem mnemonicParsing="false" />
 								<MenuItem fx:id="mnuExportar" mnemonicParsing="false" text="Exportar Pruebas" />
 								<MenuItem fx:id="mnuImportar" mnemonicParsing="false" text="Importar Pruebas" />
