@@ -7,9 +7,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import cl.eos.Environment;
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.persistence.util.Comparadores;
+import cl.eos.restful.tables.R_Clientes;
 import cl.eos.restful.tables.R_Ejetematico;
 import cl.eos.restful.tables.R_EstadoPruebaCliente;
 import cl.eos.restful.tables.R_Formas;
@@ -119,6 +121,23 @@ public class DefinePruebaViewController extends AFormView {
         formas.set(n++, lforma);
       }
     }
+    List<R_Clientes> clientes = controller.findAllSynchro(R_Clientes.class);
+    Map<String, Object> params = new HashMap<>();
+    params.put("prueba_id", prueba.getId());
+    for (R_Clientes cliente : clientes) {
+      params.put("cliente_id", cliente.getId());
+      List<R_EstadoPruebaCliente> estados = controller.findByParamsSynchro(R_EstadoPruebaCliente.class, params);
+      if (estados != null && !estados.isEmpty()) {
+        R_EstadoPruebaCliente estado = estados.get(0);
+        if (estado.getEstado_id() < (long) R_Prueba.Estado.DEFINIDA.getId())
+          controller.deleteByParams(R_EstadoPruebaCliente.class, params);
+      }
+
+      R_EstadoPruebaCliente eCliente = new R_EstadoPruebaCliente.Builder().cliente_id(cliente.getId())
+          .prueba_id(prueba.getId()).estado_id((long) R_Prueba.Estado.DEFINIDA.getId()).build();
+      controller.save(eCliente);
+    }
+
   }
 
   protected void ejecutarAccionListo() {
@@ -334,11 +353,11 @@ public class DefinePruebaViewController extends AFormView {
       prueba = (R_Prueba) entity;
       Map<String, Object> params = MapBuilder.<String, Object>unordered().put("prueba_id", prueba.getId()).build();
       formas = controller.findByParamsSynchro(R_Formas.class, params);
-
-      List<R_EstadoPruebaCliente> lstEstadoPrueba = controller.findByParamsSynchro(R_EstadoPruebaCliente.class, params);
+      Map<String, Object> pParams = MapBuilder.<String, Object>unordered().put("prueba_id", prueba.getId()).put("cliente_id", Environment.client).build();
+      List<R_EstadoPruebaCliente> lstEstadoPrueba = controller.findByParamsSynchro(R_EstadoPruebaCliente.class, pParams);
       Estado estadoPrueba = R_Prueba.Estado.CREADA;
       if (lstEstadoPrueba != null && !lstEstadoPrueba.isEmpty()) {
-        estadoPrueba = R_Prueba.Estado.getEstado(lstEstadoPrueba.get(0).getId().intValue());
+        estadoPrueba = R_Prueba.Estado.getEstado(lstEstadoPrueba.get(0).getEstado_id().intValue());
       }
 
 
@@ -348,7 +367,8 @@ public class DefinePruebaViewController extends AFormView {
         editing.setValidValues(respsValidas);
         return editing;
       });
-      List<R_RespuestasEsperadasPrueba> lrespuestas = controller.findByParamsSynchro(R_RespuestasEsperadasPrueba.class, params);
+      List<R_RespuestasEsperadasPrueba> lrespuestas =
+          controller.findByParamsSynchro(R_RespuestasEsperadasPrueba.class, params);
       txtRespuestas.setText("");
       if (lrespuestas != null && !lrespuestas.isEmpty()) {
         final StringBuffer resps = new StringBuffer();

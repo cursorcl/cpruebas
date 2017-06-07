@@ -759,10 +759,9 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
         continue;
 
       ot.setEstado(R_Prueba.Estado.getEstado(estadoPrueba.getEstado_id().intValue()));
+      tblListadoPruebas.getItems().add(ot);
+      tblListadoPruebas.refresh();
     }
-
-    tblListadoPruebas.setItems(pruebas);
-    tblListadoPruebas.refresh();
 
 
   }
