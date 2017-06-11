@@ -104,7 +104,6 @@ public class MenuGrabarListener implements EventHandler<ActionEvent> {
 
 
       prueba = (R_Prueba) defPrueba.save(prueba);
-
       defPrueba.save(respuesta);
       defPrueba.save(pregunta);
 

@@ -32,11 +32,6 @@
 										<KeyCodeCombination alt="UP" code="E" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
 									</accelerator>
 								</MenuItem>
-                        <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem fx:id="mnuDefinirPrueba" mnemonicParsing="false" text="Definir" />
-                        <MenuItem fx:id="mnuEvaluarPrueba" mnemonicParsing="false" text="Evaluar" />
-                        <MenuItem fx:id="mnuAnularPregunta" mnemonicParsing="false" text="Anular Preguntas" />
-                        <MenuItem fx:id="mnuListaEvaluaciones" mnemonicParsing="false" text="Ver Evaluaciones" />
 								<SeparatorMenuItem mnemonicParsing="false" />
 								<MenuItem fx:id="mnuExportar" mnemonicParsing="false" text="Exportar Pruebas" />
 								<MenuItem fx:id="mnuImportar" mnemonicParsing="false" text="Importar Pruebas" />
@@ -88,6 +83,7 @@
 														<MenuItem fx:id="mnuPopupModificar" mnemonicParsing="false" text="Modificar Prueba" />
 														<MenuItem fx:id="mnuPopupEliminar" mnemonicParsing="false" text="Eliminar Prueba" />
 														<SeparatorMenuItem />
+                                          <MenuItem fx:id="mnuDefinirPrueba" mnemonicParsing="false" text="Definir" />
 														<MenuItem fx:id="mnuEvaluarPrueba" mnemonicParsing="false" text="Evaluar Prueba" />
 														<MenuItem fx:id="mnuAnularPregunta" mnemonicParsing="false" text="Anular Pregunta" />
 													</items>

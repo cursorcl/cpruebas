@@ -242,7 +242,7 @@ public class RestfulClient {
 
   public static <T> List<T> delete(Class<T> clazz, Long id) {
     List<T> result = null;
-    String url = String.format(BY_ID, getTablName(clazz), id);
+    String url = getByID(getTablName(clazz), id);
     HttpDelete httpdelete = new HttpDelete(url);
     httpdelete.addHeader("accept", "application/json");
     httpdelete.addHeader("Database", Environment.database);
@@ -336,7 +336,7 @@ public class RestfulClient {
   }
 
   public static <T> boolean put(T element, Long id) {
-    String url = String.format(BY_ID, getTablName(element.getClass()), id);
+    String url = getByID(getTablName(element.getClass()), id);
     StringEntity postingString;
     CloseableHttpResponse response = null;
     try {

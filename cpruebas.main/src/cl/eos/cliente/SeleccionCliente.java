@@ -63,7 +63,7 @@ public class SeleccionCliente {
   void initialize() {
 
     Preferences prefs = Preferences.userRoot().node(Environment.KEY);
-    Environment.database = prefs.get("Database", "aplicac2_cliente");
+    Environment.database = prefs.get("Database", "aplicac2_cpruebas");
     Environment.server = "http://" + prefs.get("Server", Environment.server);
     Environment.client = prefs.getLong("Cliente", Environment.client);
 
