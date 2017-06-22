@@ -91,9 +91,10 @@ public class MenuGrabarListener implements EventHandler<ActionEvent> {
       final boolean isMental = item.rightAnswer.equals("M");
       final boolean isTrueFalse = "VF".contains(item.rightAnswer.toUpperCase());
 
+      
       R_RespuestasEsperadasPrueba respuesta = new R_RespuestasEsperadasPrueba.Builder().id(Utils.getLastIndex())
-          .anulada(false).ejetematico_id(item.thematic.getId()).habilidad_id(item.ability.getId()).mental(isMental)
-          .name(itemName).numero(item.nro).objetivo_id(item.objetive.getId()).respuesta(item.rightAnswer)
+          .anulada(false).ejetematico_id(item.thematic == null ? -1 : item.thematic.getId()).habilidad_id(item.ability == null ? -1 :  item.ability.getId()).mental(isMental)
+          .name(itemName).numero(item.nro).objetivo_id(item.objetive  == null ? -1 :  item.objetive.getId()).respuesta(item.rightAnswer)
           .verdaderofalso(isTrueFalse).prueba_id(prueba.getId()).build();
 
       R_Preguntas pregunta = new R_Preguntas.Builder().id(Utils.getLastIndex()).name(item.question).numero(item.nro)
@@ -103,7 +104,7 @@ public class MenuGrabarListener implements EventHandler<ActionEvent> {
       final List<R_Alternativas> lstAlternativas = processAlteratives(item, respuesta);
 
 
-      prueba = (R_Prueba) defPrueba.save(prueba);
+      defPrueba.prueba = (R_Prueba) defPrueba.save(prueba);
       defPrueba.save(respuesta);
       defPrueba.save(pregunta);
 
