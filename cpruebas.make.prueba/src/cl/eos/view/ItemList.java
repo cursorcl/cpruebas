@@ -12,7 +12,11 @@ import javafx.scene.image.Image;
 
 public class ItemList {
   public ItemList() {
-    rightAnswer = "A";
+    alternatives = Stream.generate(String::new).limit(5).collect(Collectors.toList());
+    rightAnswer="A";
+    images = new ArrayList<>(5);
+    for (int n = 0; n < 5; n++)
+      images.add(null);
   }
 
   

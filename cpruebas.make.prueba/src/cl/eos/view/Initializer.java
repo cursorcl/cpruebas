@@ -1,6 +1,5 @@
 package cl.eos.view;
 
-import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.math.BigDecimal;
@@ -14,7 +13,6 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import javax.imageio.ImageIO;
 import javax.xml.bind.DatatypeConverter;
 
 import cl.eos.restful.tables.R_Alternativas;
@@ -476,18 +474,22 @@ public class Initializer {
             : lstAlternativas.stream().map(a -> a.getTexto()).collect(Collectors.toList());
 
 
-        List<Image> iImages = null;
+        List<Image> iImages = new ArrayList<>();
         if (lstImagenes != null && !lstImagenes.isEmpty()) {
           for (R_Imagenes img : lstImagenes) {
-            if (iImages == null)
-              iImages = new ArrayList<>();
-
             String base64 = img.getImage();
             byte[] bytes = DatatypeConverter.parseBase64Binary(base64);
             ByteArrayInputStream bin = new ByteArrayInputStream(bytes);
             Image im = new Image(bin);
             iImages.add(im);
           }
+          if (lstImagenes.size() < 5)
+            for (int m = lstImagenes.size(); m <= lstImagenes.size(); m++)
+              iImages.add(null);
+        } else {
+          int imgLen = iImages.size() == 0 ? 5 : iImages.size();
+          for (int m = 0; m < imgLen; m++)
+            iImages.add(null);
         }
         String pregunta = "";
         if (lstPreguntas != null && lstPreguntas.size() > (n - 1)) {

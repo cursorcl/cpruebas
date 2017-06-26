@@ -174,20 +174,20 @@ public class MenuGrabarListener implements EventHandler<ActionEvent> {
         // TODO notificar que la imagen será recortada a 512x512
         scaledImg = Scalr.resize(scaledImg, Method.ULTRA_QUALITY, Mode.AUTOMATIC, 512, 512, Scalr.OP_ANTIALIAS);
       }
-      
+
       ByteArrayOutputStream output = new ByteArrayOutputStream();
       try {
         ImageIO.write(scaledImg, "jpg", output);
         String s = DatatypeConverter.printBase64Binary(output.toByteArray());
         if (lstImages == null)
           lstImages = new ArrayList<>();
-        final R_Imagenes image =
-            new R_Imagenes.Builder().numero(item.nro).name("img-"  + n).image(s).respuesta_id(respuesta.getId()).build();
+        final R_Imagenes image = new R_Imagenes.Builder().numero(n + 1).name("img-" + (n + 1)).image(s)
+            .respuesta_id(respuesta.getId()).build();
         lstImages.add(image);
 
       } catch (IOException e) {
         e.printStackTrace();
-        //TODO notificar que falló la imagen
+        // TODO notificar que falló la imagen
       }
     }
     return lstImages;
