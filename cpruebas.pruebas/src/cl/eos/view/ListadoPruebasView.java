@@ -5,10 +5,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Executors;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import cl.eos.imp.view.AFormView;
+import cl.eos.imp.view.ProgressForm;
+import cl.eos.imp.view.WindowManager;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.restful.tables.R_Asignatura;
 import cl.eos.restful.tables.R_Colegio;
@@ -53,6 +56,8 @@ import comunal.nivel.Nivel_ComparativoComunalHabilidadView;
 import informe.InformeView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -743,25 +748,59 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
     if (lstAsignaturas == null || lstTipoCurso == null || pruebas == null) {
       return;
     }
-    tblListadoPruebas.getItems().clear();
-    List<R_EstadoPruebaCliente> lstEstadoPrueba = controller.findAllSynchro(R_EstadoPruebaCliente.class);
+    final ProgressForm dlg = new ProgressForm();
+    dlg.title("Procesando pruebas");
+    dlg.message("Esto tomará algunos segundos...");
 
-    Map<Long, R_Asignatura> mapAsignaturas =
-        lstAsignaturas.stream().collect(Collectors.toMap(R_Asignatura::getId, Function.identity()));
-    Map<Long, R_TipoCurso> mapTiposCurso =
-        lstTipoCurso.stream().collect(Collectors.toMap(R_TipoCurso::getId, Function.identity()));
-    for (final OTPrueba ot : pruebas) {
-      ot.setAsignatura(mapAsignaturas.get(ot.getPrueba().getAsignatura_id()));
-      ot.setCurso(mapTiposCurso.get(ot.getPrueba().getCurso_id()));
-      R_EstadoPruebaCliente estadoPrueba =
-          lstEstadoPrueba.stream().filter(l -> l.getPrueba_id().equals(ot.getId())).findFirst().orElse(null);
-      if (estadoPrueba == null)
-        continue;
+    final Task<Void> task = new Task<Void>() {
+      @Override
+      protected Void call() throws InterruptedException {
+        updateMessage("Cargando pruebas . . .");
+        updateProgress(0, pruebas.size());
 
-      ot.setEstado(R_Prueba.Estado.getEstado(estadoPrueba.getEstado_id().intValue()));
-      tblListadoPruebas.getItems().add(ot);
-      tblListadoPruebas.refresh();
-    }
+        tblListadoPruebas.getItems().clear();
+        List<R_EstadoPruebaCliente> lstEstadoPrueba = controller.findAllSynchro(R_EstadoPruebaCliente.class);
+
+        Map<Long, R_Asignatura> mapAsignaturas =
+            lstAsignaturas.stream().collect(Collectors.toMap(R_Asignatura::getId, Function.identity()));
+        Map<Long, R_TipoCurso> mapTiposCurso =
+            lstTipoCurso.stream().collect(Collectors.toMap(R_TipoCurso::getId, Function.identity()));
+        int n = 1;
+        for (final OTPrueba ot : pruebas) {
+
+          ot.setAsignatura(mapAsignaturas.get(ot.getPrueba().getAsignatura_id()));
+          ot.setCurso(mapTiposCurso.get(ot.getPrueba().getCurso_id()));
+          R_EstadoPruebaCliente estadoPrueba =
+              lstEstadoPrueba.stream().filter(l -> l.getPrueba_id().equals(ot.getId())).findFirst().orElse(null);
+          if (estadoPrueba == null)
+            continue;
+
+          updateMessage("Cargando prueba:" + ot.getName());
+          updateProgress(n++, pruebas.size());
+
+          ot.setEstado(R_Prueba.Estado.getEstado(estadoPrueba.getEstado_id().intValue()));
+          tblListadoPruebas.getItems().add(ot);
+        }
+        tblListadoPruebas.refresh();
+
+        return null;
+      }
+    };
+
+    task.setOnSucceeded((WorkerStateEvent t1) -> {
+      dlg.getDialogStage().hide();
+      WindowManager.getInstance().hide(ListadoPruebasView.this);
+    });
+    task.setOnFailed((WorkerStateEvent t2) -> {
+      dlg.getDialogStage().hide();
+
+
+      throw new RuntimeException(task.getException());
+    });
+
+    dlg.showWorkerProgress(task);
+    Executors.newSingleThreadExecutor().execute(task);
+
 
 
   }

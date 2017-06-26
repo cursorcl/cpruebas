@@ -1,13 +1,8 @@
 package cl.eos.view;
 
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -193,25 +188,5 @@ public class MenuGrabarListener implements EventHandler<ActionEvent> {
     return lstImages;
 
   }
-
-  public static void main(String[] args) throws MalformedURLException, IOException, URISyntaxException {
-    URL url = MenuGrabarListener.class.getResource("/IMG_4.jpg");
-
-    BufferedImage image = ImageIO.read(url);
-    ByteArrayOutputStream output = new ByteArrayOutputStream();
-    ImageIO.write(image, "jpg", output);
-    String s = DatatypeConverter.printBase64Binary(output.toByteArray());
-    System.out.println(s.length());
-    System.out.println(s);
-    ByteArrayOutputStream output2 = new ByteArrayOutputStream();
-
-    byte[] bytes = DatatypeConverter.parseBase64Binary(s);
-    ByteArrayInputStream bin = new ByteArrayInputStream(bytes);
-    BufferedImage img = ImageIO.read(bin);
-
-    File f = new File("IMG_7.jpg");
-    ImageIO.write(img, "jpg", f);
-  }
-
 
 }

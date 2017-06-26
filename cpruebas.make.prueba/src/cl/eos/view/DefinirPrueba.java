@@ -16,16 +16,19 @@ import cl.eos.restful.tables.R_Prueba;
 import cl.eos.restful.tables.R_TipoCurso;
 import cl.eos.restful.tables.R_TipoPrueba;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import jfxtras.labs.scene.control.BigDecimalField;
 
@@ -120,10 +123,17 @@ public class DefinirPrueba extends AFormView {
   ImageView img4;
   @FXML
   ImageView img5;
+  
+  @FXML 
+  StackPane stkPane;
 
   ToggleGroup group;
 
   R_Prueba prueba;
+
+  private ProgressIndicator pi;
+
+  private VBox box;
 
   public DefinirPrueba() {
     prueba = null;
@@ -152,6 +162,7 @@ public class DefinirPrueba extends AFormView {
   public final void setPrueba(R_Prueba prueba) {
     this.prueba = prueba;
     if (DataProcessor.isFinishedDataProcess() && prueba != null) {
+      
       Initializer.setPrueba(prueba, this);
     }
   }
@@ -160,6 +171,14 @@ public class DefinirPrueba extends AFormView {
   @Override
   public void onDataArrived(List<Object> list) {
 
+    if(pi == null)
+    {
+      pi = new ProgressIndicator();
+      box = new VBox(pi);
+      box.setAlignment(Pos.CENTER);
+      stkPane.setDisable(true);
+      stkPane.getChildren().add(box);
+    }
     DataProcessor.process(list, this);
     if (list != null && !list.isEmpty()) {
       final Object entity = list.get(0);
@@ -169,6 +188,14 @@ public class DefinirPrueba extends AFormView {
           Initializer.setPrueba(prueba, this);
         }
       }
+    }
+    
+    if(DataProcessor.isFinishedDataProcess())
+    {
+      stkPane.setDisable(false);
+      stkPane.getChildren().remove(box);
+      pi = null;
+
     }
   }
 
