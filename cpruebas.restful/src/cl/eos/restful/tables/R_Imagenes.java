@@ -14,6 +14,8 @@ public class R_Imagenes  extends AEntity{
     Integer numero;
     @SerializedName(value = "respuesta_id", alternate = {"RESPUESTA_ID"})
     Long respuesta_id;
+    @SerializedName(value = "image", alternate = {"IMAGE"})
+    String image;
 
     /**
      * @return the id
@@ -71,11 +73,26 @@ public class R_Imagenes  extends AEntity{
         this.respuesta_id = respuesta_id;
     }
 
+    /**
+     * @return the image
+     */
+    public final String getImage() {
+      return image;
+    }
+
+    /**
+     * @param image the image to set
+     */
+    public final void setImage(String image) {
+      this.image = image;
+    }
+
     public static class Builder {
         private Long id;
         private String name;
         private Integer numero;
         private Long respuesta_id;
+        private String image;
 
         public Builder id(Long id) {
             this.id = id;
@@ -97,6 +114,12 @@ public class R_Imagenes  extends AEntity{
             this.respuesta_id = respuesta_id;
             return this;
         }
+        
+        public Builder image (String image)
+        {
+          this.image =  image;
+          return this;
+        }
 
         public R_Imagenes build() {
             return new R_Imagenes(this);
@@ -108,5 +131,6 @@ public class R_Imagenes  extends AEntity{
         this.name = builder.name;
         this.numero = builder.numero;
         this.respuesta_id = builder.respuesta_id;
+        this.image =  builder.image;
     }
 }

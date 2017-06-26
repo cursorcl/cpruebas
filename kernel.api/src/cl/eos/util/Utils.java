@@ -18,6 +18,8 @@ import javax.imageio.ImageReader;
 import javax.imageio.stream.FileImageInputStream;
 import javax.imageio.stream.ImageInputStream;
 
+import cl.eos.Environment;
+
 
 public class Utils {
 
@@ -227,7 +229,7 @@ public class Utils {
   }
 
   public static long getLastIndex() {
-    Preferences p = Preferences.userRoot();
+    Preferences p = Preferences.userRoot().node(Environment.KEY);
     long result = p.getLong(LASTKEY, 10000);
     p.putLong(LASTKEY, ++result);
     try {

@@ -1,15 +1,21 @@
 package cl.eos.view;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.text.Normalizer;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
+
+import javax.imageio.ImageIO;
+import javax.xml.bind.DatatypeConverter;
 
 import cl.eos.restful.tables.R_Alternativas;
 import cl.eos.restful.tables.R_Asignatura;
@@ -193,7 +199,7 @@ public class Initializer {
             .put("tipocurso_id", defPrueba.cmbCurso.getSelectionModel().getSelectedItem().getId()).build();
         List<R_Objetivo> objetivos = defPrueba.getController().findByParamsSynchro(R_Objetivo.class, params);
         defPrueba.cmbObjetivos.setItems(FXCollections.observableArrayList(objetivos));
-        
+
       }
     }
   }
@@ -390,9 +396,9 @@ public class Initializer {
 
 
   public static void setPrueba(R_Prueba prueba, DefinirPrueba defPrueba) {
-    
-    
-    
+
+
+
     defPrueba.txtNombre.setDisable(true);
     defPrueba.spnPjeBase.setDisable(true);
     defPrueba.spnNroAlternativas.setDisable(true);
@@ -417,7 +423,7 @@ public class Initializer {
     final R_Profesor profesor = defPrueba.cmbProfesor.getItems().stream()
         .filter(v -> v.getId().equals(prueba.getProfesor_id())).findFirst().orElse(null);
     defPrueba.cmbProfesor.getSelectionModel().select(profesor);
-    //processSelection(defPrueba);
+    // processSelection(defPrueba);
     // Tipo de prueba
     final R_TipoPrueba tipoPrueba = defPrueba.cmbTipoPrueba.getItems().stream()
         .filter(v -> v.getId().equals(prueba.getTipoprueba_id())).findFirst().orElse(null);
@@ -469,7 +475,20 @@ public class Initializer {
         List<String> sAlternativas = lstAlternativas == null ? null
             : lstAlternativas.stream().map(a -> a.getTexto()).collect(Collectors.toList());
 
-        List<Image> iImages = lstImagenes.stream().map(i -> new Image(i.getName())).collect(Collectors.toList());
+
+        List<Image> iImages = null;
+        if (lstImagenes != null && !lstImagenes.isEmpty()) {
+          for (R_Imagenes img : lstImagenes) {
+            if (iImages == null)
+              iImages = new ArrayList<>();
+
+            String base64 = img.getImage();
+            byte[] bytes = DatatypeConverter.parseBase64Binary(base64);
+            ByteArrayInputStream bin = new ByteArrayInputStream(bytes);
+            Image im = new Image(bin);
+            iImages.add(im);
+          }
+        }
         String pregunta = "";
         if (lstPreguntas != null && lstPreguntas.size() > (n - 1)) {
           pregunta = lstPreguntas.get(n - 1).getName();

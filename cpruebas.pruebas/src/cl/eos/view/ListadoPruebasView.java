@@ -226,8 +226,8 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
           mnuComparativoComunalHab.setDisable(true);
           mnuAnularPregunta.setDisable(true);
         }
-        mnuModificar.setDisable(!estadoCreada);
-        mnuPopupModificar.setDisable(!estadoCreada);
+        mnuModificar.setDisable(estadoEvaluada);
+        mnuPopupModificar.setDisable(estadoEvaluada);
       }
     });
   }

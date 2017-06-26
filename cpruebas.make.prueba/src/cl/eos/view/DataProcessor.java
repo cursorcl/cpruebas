@@ -17,6 +17,7 @@ public class DataProcessor {
   private static boolean bTipoPrueba = false, bProfesor = false, bTipoCurso = false, bAsignatura = false,
       bNivelEvaluacion = false, bHabilidad = false;
 
+
   public static void process(List<Object> list, DefinirPrueba defPrueba) {
     if (list != null && !list.isEmpty()) {
       final Object entity = list.get(0);
@@ -143,6 +144,15 @@ public class DataProcessor {
 
   public static boolean isFinishedDataProcess() {
     return bTipoPrueba && bProfesor && bTipoCurso && bAsignatura && bNivelEvaluacion && bHabilidad;
+  }
+
+  public static void reset() {
+    bTipoPrueba = false;
+    bProfesor = false;
+    bTipoCurso = false;
+    bAsignatura = false;
+    bNivelEvaluacion = false;
+    bHabilidad = false;
   }
 
   public static void save() {

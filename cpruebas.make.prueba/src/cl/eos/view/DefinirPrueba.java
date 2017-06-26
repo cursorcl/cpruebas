@@ -133,6 +133,7 @@ public class DefinirPrueba extends AFormView {
   @FXML
   void initialize() {
     setTitle("Creación de Pruebas");
+    DataProcessor.reset();
     Initializer.initialize(this);
 
   }
@@ -168,8 +169,6 @@ public class DefinirPrueba extends AFormView {
           Initializer.setPrueba(prueba, this);
         }
       }
-
-
     }
   }
 

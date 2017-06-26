@@ -1,13 +1,19 @@
 package cl.eos.view;
 
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
+import javax.xml.bind.DatatypeConverter;
 
 import org.imgscalr.Scalr;
 import org.imgscalr.Scalr.Method;
@@ -30,8 +36,6 @@ public class MenuGrabarListener implements EventHandler<ActionEvent> {
 
   DefinirPrueba defPrueba;
   private String name;
-  private Object idAsignatura;
-  private Object idCurso;
   private int nroAlternativas;
 
   public MenuGrabarListener(DefinirPrueba defPrueba) {
@@ -46,8 +50,6 @@ public class MenuGrabarListener implements EventHandler<ActionEvent> {
       return;
     boolean isNew = false;
     name = defPrueba.txtNombre.getText();
-    idAsignatura = defPrueba.cmbAsignatura.getValue().getId();
-    idCurso = defPrueba.cmbAsignatura.getValue().getId();
     nroAlternativas = defPrueba.spnNroAlternativas.getNumber().intValue();
 
     R_Prueba prueba = defPrueba.prueba;
@@ -91,10 +93,11 @@ public class MenuGrabarListener implements EventHandler<ActionEvent> {
       final boolean isMental = item.rightAnswer.equals("M");
       final boolean isTrueFalse = "VF".contains(item.rightAnswer.toUpperCase());
 
-      
+
       R_RespuestasEsperadasPrueba respuesta = new R_RespuestasEsperadasPrueba.Builder().id(Utils.getLastIndex())
-          .anulada(false).ejetematico_id(item.thematic == null ? -1 : item.thematic.getId()).habilidad_id(item.ability == null ? -1 :  item.ability.getId()).mental(isMental)
-          .name(itemName).numero(item.nro).objetivo_id(item.objetive  == null ? -1 :  item.objetive.getId()).respuesta(item.rightAnswer)
+          .anulada(false).ejetematico_id(item.thematic == null ? -1 : item.thematic.getId())
+          .habilidad_id(item.ability == null ? -1 : item.ability.getId()).mental(isMental).name(itemName)
+          .numero(item.nro).objetivo_id(item.objetive == null ? -1 : item.objetive.getId()).respuesta(item.rightAnswer)
           .verdaderofalso(isTrueFalse).prueba_id(prueba.getId()).build();
 
       R_Preguntas pregunta = new R_Preguntas.Builder().id(Utils.getLastIndex()).name(item.question).numero(item.nro)
@@ -117,7 +120,7 @@ public class MenuGrabarListener implements EventHandler<ActionEvent> {
         lstAlternativas.set(n, alt);
       }
 
-      
+
       if (lstImages != null && !lstImages.isEmpty()) {
         for (int n = 0; n < lstImages.size(); n++) {
           R_Imagenes img = lstImages.get(n);
@@ -146,9 +149,10 @@ public class MenuGrabarListener implements EventHandler<ActionEvent> {
     for (int n = 0; n < nroAlternativas; n++) {
       if (lstAlternatives == null)
         lstAlternatives = new ArrayList<>();
-      final String altName = String.format("%d_%d", item.nro, n + 1);
+      final String altName = "";
       final String text =
-          item.alternatives.get(n) == null || item.alternatives.get(n).isEmpty() ? altName : item.alternatives.get(n);
+          item.alternatives == null || item.alternatives.get(n) == null || item.alternatives.get(n).isEmpty() ? altName
+              : item.alternatives.get(n);
       final R_Alternativas alternative =
           new R_Alternativas.Builder().name(altName).numero(n).texto(text).respuesta_id(respuesta.getId()).build();
       lstAlternatives.add(alternative);
@@ -157,37 +161,57 @@ public class MenuGrabarListener implements EventHandler<ActionEvent> {
   }
 
   private List<R_Imagenes> processImages(ItemList item, R_RespuestasEsperadasPrueba respuesta) {
+    if (item == null || item.images == null)
+      return null;
     List<R_Imagenes> lstImages = null;
     for (int n = 0; n < item.images.size(); n++) {
       if (item.images.get(n) == null)
         break;
       final Image img = item.images.get(n);
-      final BufferedImage bimg = SwingFXUtils.fromFXImage(img, null);
-      final BufferedImage scaledImg =
-          Scalr.resize(bimg, Method.ULTRA_QUALITY, Mode.AUTOMATIC, 512, 512, Scalr.OP_ANTIALIAS);
+      BufferedImage scaledImg = SwingFXUtils.fromFXImage(img, null);
 
-      final String dirName = Utils.getDefaultDirectory() + "/images/." + name;
-      final File theDir = new File(dirName);
-      if (!theDir.exists())
-        theDir.mkdirs();
-
-      if (theDir.exists()) {
-        final String fName = String.format("%02d_%02d_%02d_%02d.png", idAsignatura, idCurso, item.nro, n);
-        final String fileName = String.format("%s/%s", dirName, fName);
-
-        try {
-          ImageIO.write(scaledImg, "png", new File(fileName));
-        } catch (final IOException e) {
-          e.printStackTrace();
-        }
+      if (scaledImg.getWidth() > 512 || scaledImg.getHeight() > 512) {
+        // TODO notificar que la imagen será recortada a 512x512
+        scaledImg = Scalr.resize(scaledImg, Method.ULTRA_QUALITY, Mode.AUTOMATIC, 512, 512, Scalr.OP_ANTIALIAS);
+      }
+      
+      ByteArrayOutputStream output = new ByteArrayOutputStream();
+      try {
+        ImageIO.write(scaledImg, "jpg", output);
+        String s = DatatypeConverter.printBase64Binary(output.toByteArray());
         if (lstImages == null)
           lstImages = new ArrayList<>();
         final R_Imagenes image =
-            new R_Imagenes.Builder().numero(item.nro).name(fName).respuesta_id(respuesta.getId()).build();
+            new R_Imagenes.Builder().numero(item.nro).name("img-"  + n).image(s).respuesta_id(respuesta.getId()).build();
         lstImages.add(image);
+
+      } catch (IOException e) {
+        e.printStackTrace();
+        //TODO notificar que falló la imagen
       }
     }
     return lstImages;
+
   }
+
+  public static void main(String[] args) throws MalformedURLException, IOException, URISyntaxException {
+    URL url = MenuGrabarListener.class.getResource("/IMG_4.jpg");
+
+    BufferedImage image = ImageIO.read(url);
+    ByteArrayOutputStream output = new ByteArrayOutputStream();
+    ImageIO.write(image, "jpg", output);
+    String s = DatatypeConverter.printBase64Binary(output.toByteArray());
+    System.out.println(s.length());
+    System.out.println(s);
+    ByteArrayOutputStream output2 = new ByteArrayOutputStream();
+
+    byte[] bytes = DatatypeConverter.parseBase64Binary(s);
+    ByteArrayInputStream bin = new ByteArrayInputStream(bytes);
+    BufferedImage img = ImageIO.read(bin);
+
+    File f = new File("IMG_7.jpg");
+    ImageIO.write(img, "jpg", f);
+  }
+
 
 }
