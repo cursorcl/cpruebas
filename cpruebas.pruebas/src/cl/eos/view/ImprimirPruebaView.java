@@ -86,9 +86,8 @@ public class ImprimirPruebaView extends AFormView {
             final R_Colegio colegio = cmbColegios.getSelectionModel().getSelectedItem();
             cmbCursos.getItems().clear();
             final Map<String, Object> parameters = new HashMap<String, Object>();
-            parameters.put("tcursoId", prueba.getCurso_id());
-            parameters.put("colegioId", colegio.getId());
-            controller.findByParam(R_TipoColegio.class, parameters, this);
+            parameters.put("colegio_id", colegio.getId());
+            controller.findByParam(R_Curso.class, parameters, this);
             final boolean disable = cmbColegios.getSelectionModel().getSelectedItem() == null
                     || cmbCursos.getSelectionModel().getSelectedItem() == null || cmbProfesor.getSelectionModel().getSelectedItem() == null;
             mnuImprimir.setDisable(disable);
@@ -143,8 +142,11 @@ public class ImprimirPruebaView extends AFormView {
                 final ObservableList<R_Profesor> oList = FXCollections.observableArrayList();
                 for (final Object iEntity : list) {
                     oList.add((R_Profesor) iEntity);
+                    
                 }
                 cmbProfesor.setItems(oList);
+                if(oList != null && oList.size() > 0)
+                  cmbProfesor.getSelectionModel().select(0);
                 cmbCursos.setDisable(false);
             }
         }

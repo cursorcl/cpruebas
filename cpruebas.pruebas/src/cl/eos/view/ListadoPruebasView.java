@@ -615,11 +615,15 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
       final R_Prueba pPrueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
       if (pPrueba != null) {
         final Map<String, Object> parameters = new HashMap<>();
-        parameters.put("idAsignatura", pPrueba.getAsignatura_id());
+        parameters.put("asignatura_id", pPrueba.getAsignatura_id());
+        controller.findById(R_Asignatura.class, pPrueba.getAsignatura_id(), imprimirPrueba);
         controller.findByParam(R_Ejetematico.class, parameters, imprimirPrueba);
         controller.findAll(R_Habilidad.class, imprimirPrueba);
         controller.findAll(R_Profesor.class, imprimirPrueba);
         controller.findAll(R_Colegio.class, imprimirPrueba);
+        parameters.clear();
+        parameters.put("id", pPrueba.getId());
+        controller.findById(R_Prueba.class, pPrueba.getId(), imprimirPrueba);
       }
     }
   }
