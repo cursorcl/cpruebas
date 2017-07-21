@@ -1,6 +1,8 @@
 package cl.eos.view;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.logging.Logger;
 
 import cl.eos.restful.tables.R_Asignatura;
 import cl.eos.restful.tables.R_Ejetematico;
@@ -14,8 +16,20 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class DataProcessor {
+  
+  private static final Logger log =  Logger.getLogger(DataProcessor.class.getName());
   private static boolean bTipoPrueba = false, bProfesor = false, bTipoCurso = false, bAsignatura = false,
       bNivelEvaluacion = false, bHabilidad = false;
+
+  /**
+   * Comparador por toString, que en la práctica corresponde al nombre.
+   */
+  private static Comparator<Object> comparator = new Comparator<Object>() {
+    @Override
+    public int compare(Object o1, Object o2) {
+      return o1.toString().compareTo(o2.toString());
+    }
+  };
 
 
   public static void process(List<Object> list, DefinirPrueba defPrueba) {
@@ -34,6 +48,7 @@ public class DataProcessor {
 
   private static void processAsignatura(Object entity, DefinirPrueba defPrueba, List<Object> list) {
     if (entity instanceof R_Asignatura) {
+      log.info("processAsignatura");
       final ObservableList<R_Asignatura> asignaturas = FXCollections.observableArrayList();
       for (final Object lEntity : list) {
         asignaturas.add((R_Asignatura) lEntity);
@@ -48,6 +63,10 @@ public class DataProcessor {
 
   private static void processEjeTematico(Object entity, DefinirPrueba defPrueba, List<Object> list) {
     if (entity instanceof R_Ejetematico) {
+
+      log.info("processEjeTematico");
+      
+      list.sort(comparator);
       final ObservableList<R_Ejetematico> ejesTematicos = FXCollections.observableArrayList();
       for (final Object lEntity : list) {
         ejesTematicos.add((R_Ejetematico) lEntity);
@@ -60,6 +79,8 @@ public class DataProcessor {
 
   private static void processHabilidad(Object entity, DefinirPrueba defPrueba, List<Object> list) {
     if (entity instanceof R_Habilidad) {
+      log.info("processHabilidad");
+      list.sort(comparator);
       final ObservableList<R_Habilidad> habilidades = FXCollections.observableArrayList();
       for (final Object lEntity : list) {
         habilidades.add((R_Habilidad) lEntity);
@@ -74,6 +95,7 @@ public class DataProcessor {
 
   private static void processNivelEvaluacion(Object entity, DefinirPrueba defPrueba, List<Object> list) {
     if (entity instanceof R_NivelEvaluacion) {
+      log.info("processNivelEvaluacion");
       final ObservableList<R_NivelEvaluacion> nivelEvaluacion = FXCollections.observableArrayList();
       for (final Object lEntity : list) {
         nivelEvaluacion.add((R_NivelEvaluacion) lEntity);
@@ -88,6 +110,8 @@ public class DataProcessor {
 
   private static void processObjetivo(Object entity, DefinirPrueba defPrueba, List<Object> list) {
     if (entity instanceof R_Objetivo) {
+      log.info("processObjetivo");
+      list.sort(comparator);
       final ObservableList<R_Objetivo> objetivos = FXCollections.observableArrayList();
       for (final Object lEntity : list) {
         objetivos.add((R_Objetivo) lEntity);
@@ -100,6 +124,7 @@ public class DataProcessor {
 
   private static void processProfesor(Object entity, DefinirPrueba defPrueba, List<Object> list) {
     if (entity instanceof R_Profesor) {
+      log.info("processProfesor");
       final ObservableList<R_Profesor> profesores = FXCollections.observableArrayList();
       for (final Object lEntity : list) {
         profesores.add((R_Profesor) lEntity);
@@ -114,6 +139,7 @@ public class DataProcessor {
 
   private static void processTipoCurso(Object entity, DefinirPrueba defPrueba, List<Object> list) {
     if (entity instanceof R_TipoCurso) {
+      log.info("processTipoCurso");
       final ObservableList<R_TipoCurso> cursos = FXCollections.observableArrayList();
       for (final Object lEntity : list) {
         cursos.add((R_TipoCurso) lEntity);
@@ -129,6 +155,7 @@ public class DataProcessor {
   private static void processTipoPrueba(Object entity, DefinirPrueba defPrueba, List<Object> list) {
     if (entity instanceof R_TipoPrueba) {
 
+      log.info("processTipoPrueba");
       final ObservableList<R_TipoPrueba> tipoPruebas = FXCollections.observableArrayList();
       for (final Object lEntity : list) {
         tipoPruebas.add((R_TipoPrueba) lEntity);

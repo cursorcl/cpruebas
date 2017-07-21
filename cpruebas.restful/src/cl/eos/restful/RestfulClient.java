@@ -301,7 +301,9 @@ public class RestfulClient {
   }
 
 
-  public static <T> boolean post(T element) {
+  public static <T> Long post(T element) {
+
+    Long result = -1L;
     String url = getURL(getTablName(element.getClass()));
     StringEntity postingString;
     CloseableHttpResponse response = null;
@@ -315,16 +317,21 @@ public class RestfulClient {
 
       response = httpclient.execute(httppost);
       if (response.getStatusLine().getStatusCode() != 200)
-        return false;
+        return -1L;
+      HttpEntity entity = response.getEntity();
+      if (entity != null) {
+        String apiOutput = EntityUtils.toString(entity);
+        result = gson.fromJson(apiOutput, Long.class);
+      }
     } catch (UnsupportedEncodingException e1) {
       e1.printStackTrace();
-      return false;
+      return -1L;
     } catch (ClientProtocolException e) {
       e.printStackTrace();
-      return false;
+      return -1L;
     } catch (IOException e) {
       e.printStackTrace();
-      return false;
+      return -1L;
     } finally {
       try {
         response.close();
@@ -332,7 +339,7 @@ public class RestfulClient {
         e.printStackTrace();
       }
     }
-    return true;
+    return result;
   }
 
   public static <T> boolean put(T element, Long id) {
@@ -458,7 +465,7 @@ public class RestfulClient {
   private static String getByID(String table, Long id) {
     return String.format(BY_ID, Environment.server, table, id);
   }
-  
+
   private static String getUrlConnectio() {
     return String.format(URL_CONEXION, Environment.server);
   }

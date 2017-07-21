@@ -1,7 +1,5 @@
 package cl.eos.persistence;
 
-import javax.persistence.Version;
-
 import cl.eos.interfaces.entity.IEntity;
 
 public abstract class AEntity implements IEntity {

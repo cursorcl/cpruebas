@@ -32,7 +32,6 @@ import cl.eos.restful.tables.R_Formas;
 import cl.eos.restful.tables.R_Profesor;
 import cl.eos.restful.tables.R_Prueba;
 import cl.eos.restful.tables.R_RespuestasEsperadasPrueba;
-import cl.eos.restful.tables.R_TipoColegio;
 import cl.eos.util.Utils;
 import cl.eos.view.ots.OTImprimirPrueba;
 import javafx.collections.FXCollections;

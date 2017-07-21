@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +16,7 @@ import org.imgscalr.Scalr.Method;
 import org.imgscalr.Scalr.Mode;
 
 import cl.eos.restful.tables.R_Alternativas;
+import cl.eos.restful.tables.R_Formas;
 import cl.eos.restful.tables.R_Imagenes;
 import cl.eos.restful.tables.R_Preguntas;
 import cl.eos.restful.tables.R_Prueba;
@@ -82,12 +84,14 @@ public class MenuGrabarListener implements EventHandler<ActionEvent> {
       defPrueba.getController().deleteByParams(R_Alternativas.class, params);
       defPrueba.getController().deleteByParams(R_Imagenes.class, params);
     }
+    defPrueba.prueba = (R_Prueba) defPrueba.save(prueba);
+    
     for (final ItemList item : items) {
       final String itemName = String.format("%d", item.nro);
 
       final boolean isMental = item.rightAnswer.equals("M");
       final boolean isTrueFalse = "VF".contains(item.rightAnswer.toUpperCase());
-
+      
 
       R_RespuestasEsperadasPrueba respuesta = new R_RespuestasEsperadasPrueba.Builder().id(Utils.getLastIndex())
           .anulada(false).ejetematico_id(item.thematic == null ? -1 : item.thematic.getId())
@@ -95,17 +99,16 @@ public class MenuGrabarListener implements EventHandler<ActionEvent> {
           .numero(item.nro).objetivo_id(item.objetive == null ? -1 : item.objetive.getId()).respuesta(item.rightAnswer)
           .verdaderofalso(isTrueFalse).prueba_id(prueba.getId()).build();
 
+      respuesta = (R_RespuestasEsperadasPrueba) defPrueba.save(respuesta);
+      
       R_Preguntas pregunta = new R_Preguntas.Builder().id(Utils.getLastIndex()).name(item.question).numero(item.nro)
           .prueba_id(prueba.getId()).build();
 
+      pregunta = (R_Preguntas) defPrueba.save(pregunta);
+      
       final List<R_Imagenes> lstImages = processImages(item, respuesta);
       final List<R_Alternativas> lstAlternativas = processAlteratives(item, respuesta);
-
-
-      defPrueba.prueba = (R_Prueba) defPrueba.save(prueba);
-      defPrueba.save(respuesta);
-      defPrueba.save(pregunta);
-
+      final List<R_Formas> lstFormas = getFormasPrueba();
 
       for (int n = 0; n < lstAlternativas.size(); n++) {
         R_Alternativas alt = lstAlternativas.get(n);
@@ -123,6 +126,12 @@ public class MenuGrabarListener implements EventHandler<ActionEvent> {
           img.setRespuesta_id(respuesta.getId());
           img = (R_Imagenes) defPrueba.save(img);
           lstImages.set(n, img);
+        }
+      }
+
+      if (lstFormas != null && !lstFormas.isEmpty()) {
+        for (R_Formas forma : lstFormas) {
+          defPrueba.save(forma);
         }
       }
 
@@ -182,11 +191,43 @@ public class MenuGrabarListener implements EventHandler<ActionEvent> {
 
       } catch (IOException e) {
         e.printStackTrace();
-        // TODO notificar que falló la imagen
       }
     }
     return lstImages;
 
+  }
+
+
+  private List<R_Formas> getFormasPrueba() {
+
+    Map<String, Object> params =
+        MapBuilder.<String, Object>unordered().put("prueba_id", defPrueba.prueba.getId()).build();
+
+    defPrueba.deleteByParams(R_Formas.class, params);
+    List<R_Formas> formas = new ArrayList<>();
+    int nroFormas = defPrueba.prueba.getNroformas().intValue();
+
+
+    int nroPreguntas = defPrueba.prueba.getNropreguntas();
+    List<Integer> numeros = new ArrayList<Integer>();
+
+    for (int n = 1; n <= nroPreguntas; n++) {
+      numeros.add(new Integer(n));
+    }
+    for (int n = 0; n < nroFormas; n++) {
+      String orden = new String();
+      for (int idx = 0; idx < numeros.size(); idx++) {
+        if (idx > 0) {
+          orden += ",";
+        }
+        orden += numeros.get(idx).toString();
+      }
+      R_Formas forma = new R_Formas.Builder().forma(n + 1).name("Forma " + (n + 1)).orden(orden)
+          .prueba_id(defPrueba.prueba.getId()).id(Utils.getLastIndex()).build();
+      formas.add(forma);
+      Collections.shuffle(numeros);
+    }
+    return formas;
   }
 
 }

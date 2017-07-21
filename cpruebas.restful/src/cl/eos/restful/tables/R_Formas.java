@@ -121,10 +121,6 @@ public class R_Formas  extends AEntity{
             return this;
         }
 
-        public Builder version(Integer version) {
-            return this;
-        }
-
         public R_Formas build() {
             return new R_Formas(this);
         }

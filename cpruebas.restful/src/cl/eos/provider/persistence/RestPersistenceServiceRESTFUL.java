@@ -51,11 +51,10 @@ public class RestPersistenceServiceRESTFUL implements IPersistenceService {
 
   @SuppressWarnings("unchecked")
   @Override
-  public <T extends IEntity> void findAll(final Class<T> entityClazz,
-      final IPersistenceListener listener) {
+  public <T extends IEntity> void findAll(final Class<T> entityClazz, final IPersistenceListener listener) {
 
-//    List<? extends IEntity> result = RestfulClient.get(entityClazz);
-//    listener.onFindAllFinished((List<Object>) result);
+    // List<? extends IEntity> result = RestfulClient.get(entityClazz);
+    // listener.onFindAllFinished((List<Object>) result);
 
 
     Runnable r = () -> {
@@ -73,8 +72,7 @@ public class RestPersistenceServiceRESTFUL implements IPersistenceService {
   }
 
   @Override
-  public <T extends IEntity> void findAll(Class<T> entityClazz, IPersistenceListener listener,
-      int offset, int items) {
+  public <T extends IEntity> void findAll(Class<T> entityClazz, IPersistenceListener listener, int offset, int items) {
     Runnable r = () -> {
       List<T> result = RestfulClient.get(entityClazz);
 
@@ -243,28 +241,24 @@ public class RestPersistenceServiceRESTFUL implements IPersistenceService {
 
 
   @Override
-  public <T extends IEntity> List<T> findByParamsSynchro(Class<T> entityClazz,
-      Map<String, Object> params) {
+  public <T extends IEntity> List<T> findByParamsSynchro(Class<T> entityClazz, Map<String, Object> params) {
     return RestfulClient.getByParameters(entityClazz, params);
   }
 
   @Override
-  public void insert(final String entity, final List<Object> list,
-      final IPersistenceListener listener) {
+  public void insert(final String entity, final List<Object> list, final IPersistenceListener listener) {
 
     final ProgressForm dlg = new ProgressForm();
     dlg.title("Importando datos");
     dlg.message("Esto tomará algunos minutos.");
 
-    final Task<Pair<String, Pair<Integer, List<String>>>> task =
-        new Task<Pair<String, Pair<Integer, List<String>>>>() {
-          @Override
-          protected Pair<String, Pair<Integer, List<String>>> call() {
-            final Pair<String, Pair<Integer, List<String>>> pair =
-                new Pair<String, Pair<Integer, List<String>>>();
-            return pair;
-          }
-        };
+    final Task<Pair<String, Pair<Integer, List<String>>>> task = new Task<Pair<String, Pair<Integer, List<String>>>>() {
+      @Override
+      protected Pair<String, Pair<Integer, List<String>>> call() {
+        final Pair<String, Pair<Integer, List<String>>> pair = new Pair<String, Pair<Integer, List<String>>>();
+        return pair;
+      }
+    };
 
     task.setOnSucceeded(arg0 -> {
       final Pair<String, Pair<Integer, List<String>>> pair = task.getValue();
@@ -275,8 +269,8 @@ public class RestPersistenceServiceRESTFUL implements IPersistenceService {
           final Alert alert1 = new Alert(AlertType.INFORMATION);
           alert1.setTitle("Importación desde excel");
           alert1.setHeaderText("Ha finalizado proceso de importación.");
-          alert1.setContentText(" Se han importado [" + pair.getSecond().getFirst()
-              + "] registros de [" + pair.getFirst() + "]");
+          alert1.setContentText(
+              " Se han importado [" + pair.getSecond().getFirst() + "] registros de [" + pair.getFirst() + "]");
           alert1.show();
         } else {
           final StringBuffer error = new StringBuffer();
@@ -292,11 +286,9 @@ public class RestPersistenceServiceRESTFUL implements IPersistenceService {
             alert2.show();
 
             final FileChooser fileChooser = new FileChooser();
-            fileChooser
-                .setInitialFileName("import_" + entity + "_" + System.currentTimeMillis() + ".log");
+            fileChooser.setInitialFileName("import_" + entity + "_" + System.currentTimeMillis() + ".log");
             fileChooser.setInitialDirectory(Utils.getDefaultDirectory());
-            final FileChooser.ExtensionFilter extFilter =
-                new FileChooser.ExtensionFilter("Archivo de log", "*.log");
+            final FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Archivo de log", "*.log");
             fileChooser.getExtensionFilters().add(extFilter);
             final File file = fileChooser.showSaveDialog(null);
             if (file != null) {
@@ -325,7 +317,10 @@ public class RestPersistenceServiceRESTFUL implements IPersistenceService {
 
   @Override
   public IEntity save(IEntity entity) {
-    RestfulClient.post(entity);
+    Long id = RestfulClient.post(entity);
+      if (id == -1)
+        return null;
+      entity.setId(id);
     return entity;
   }
 

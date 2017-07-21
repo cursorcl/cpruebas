@@ -10,7 +10,7 @@ public abstract class AFormView extends AView implements IFormView {
     @Override
     public void delete(IEntity otObject) {
         if (controller != null && validate()) {
-            controller.save(otObject);
+            controller.delete(otObject);
         }
     }
 

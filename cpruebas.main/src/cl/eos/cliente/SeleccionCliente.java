@@ -58,10 +58,12 @@ public class SeleccionCliente {
   private List<R_Clientes> lstClientes;
   private R_Usuarios user;
   private R_Clientes cliente;
+  private int trying;
 
   @FXML
   void initialize() {
 
+    trying = 0;
     Preferences prefs = Preferences.userRoot().node(Environment.KEY);
     Environment.database = prefs.get("Database", "aplicac2_cpruebas");
     Environment.server = "http://" + prefs.get("Server", Environment.server);
@@ -107,12 +109,15 @@ public class SeleccionCliente {
 
       if (!isValidURL(txtServer.getText())) {
         showErrorServer();
+        txtServer.selectAll();
+        txtServer.requestFocus();
       }
 
       cliente = cmbClientes.getSelectionModel().getSelectedItem();
       user = usuarios.stream().filter(u -> u.getLogin().equals(txtUser.getText())).findFirst().orElse(null);
+
       String password = Utils.getMD5Hex(txtPassword.getText());
-      if (user.getPassword().equals(password)) {
+      if (user != null && user.getPassword().equals(password)) {
         Environment.client = cliente.getId();
         Environment.server = txtServer.getText();
 
@@ -122,8 +127,17 @@ public class SeleccionCliente {
 
         showApplication();
       } else {
-        showError();
-        exit();
+        if (user == null) {
+          showErrorUser();
+          txtUser.selectAll();
+          txtUser.requestFocus();
+        } else {
+          showErrorPassword();
+          txtPassword.selectAll();
+          txtPassword.requestFocus();
+        }
+        if (trying++ == 3)
+          exit();
       }
 
 
@@ -170,13 +184,22 @@ public class SeleccionCliente {
 
   }
 
-  private void showError() {
+  private void showErrorUser() {
     final Alert alert = new Alert(AlertType.ERROR);
     alert.setTitle("Usuario inválido.");
-    alert.setHeaderText("El usuario y / o clave son incorrectas. ");
+    alert.setHeaderText("El usuario no existe en el sistema. ");
     alert.setContentText("Debe ingresar un usuario registrado en el sistema.");
     alert.showAndWait();
   }
+
+  private void showErrorPassword() {
+    final Alert alert = new Alert(AlertType.ERROR);
+    alert.setTitle("Clave inválida.");
+    alert.setHeaderText("La clave es incorrecta. ");
+    alert.setContentText("Debe ingresar la clave que se encuentra registrada en el sistema.");
+    alert.showAndWait();
+  }
+
 
   private void showErrorServer() {
     final Alert alert = new Alert(AlertType.ERROR);

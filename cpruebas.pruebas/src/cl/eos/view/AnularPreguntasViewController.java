@@ -68,9 +68,10 @@ public class AnularPreguntasViewController extends AFormView {
                 
                 for (final R_PruebaRendida pruebaRendida : pruebasRendidas) {
                     pruebaRendida.reEvaluate(prueba, respuestas, rangos);
+                    save(pruebaRendida);
                 }
             }
-            save(prueba);
+            //save(prueba);
         }
     }
     @FXML
