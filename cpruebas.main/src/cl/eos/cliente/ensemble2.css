@@ -855,12 +855,12 @@
 	   -fx-background-color: green,linear-gradient(to bottom, derive(green,60.0%) 5.0%,derive(green,90.0%) 40.0%);
 }
 .radio-button .radio {
-    -fx-border-width: 1.0px;
+    -fx-border-width: 2.0px;
     -fx-border-color: #000;
     -fx-background-color: white;
     -fx-background-image: null;
     -fx-border-radius: 15.0px;
-    -fx-padding: 4.0px;
+    -fx-padding: 2.0px;
 }
 .radio-button .radio:selected {
     -fx-background-color: white;
@@ -880,7 +880,7 @@
 }
 .radio-button .dot {
     -fx-background-radius: 15.0px;
-    -fx-padding: 8.0px;
+    -fx-padding: 4.0px;
 }
 
 .priorityLow { 

@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 
 import cl.eos.imp.view.AFormView;
 import cl.eos.restful.tables.R_Asignatura;
+import cl.eos.restful.tables.R_Clientes;
 import cl.eos.restful.tables.R_Ejetematico;
 import cl.eos.restful.tables.R_Habilidad;
 import cl.eos.restful.tables.R_NivelEvaluacion;
@@ -15,6 +16,7 @@ import cl.eos.restful.tables.R_Profesor;
 import cl.eos.restful.tables.R_Prueba;
 import cl.eos.restful.tables.R_TipoCurso;
 import cl.eos.restful.tables.R_TipoPrueba;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.ComboBox;
@@ -134,6 +136,8 @@ public class DefinirPrueba extends AFormView {
   private ProgressIndicator pi;
 
   private VBox box;
+  
+  ObservableList<R_Clientes> clientes;
 
   public DefinirPrueba() {
     prueba = null;
@@ -200,11 +204,18 @@ public class DefinirPrueba extends AFormView {
   }
 
   /**
-   * Se validan todos los datos necesatios para que se pueda grabar.
+   * @return the clientes
    */
-  @Override
-  public boolean validate() {
-    return super.validate();
+  public final ObservableList<R_Clientes> getClientes() {
+    return clientes;
+  }
+
+
+  /**
+   * @param clientes the clientes to set
+   */
+  public final void setClientes(ObservableList<R_Clientes> clientes) {
+    this.clientes = clientes;
   }
 
 

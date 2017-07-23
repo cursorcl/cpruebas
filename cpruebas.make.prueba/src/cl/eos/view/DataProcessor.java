@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import cl.eos.restful.tables.R_Asignatura;
+import cl.eos.restful.tables.R_Clientes;
 import cl.eos.restful.tables.R_Ejetematico;
 import cl.eos.restful.tables.R_Habilidad;
 import cl.eos.restful.tables.R_NivelEvaluacion;
@@ -19,7 +20,7 @@ public class DataProcessor {
   
   private static final Logger log =  Logger.getLogger(DataProcessor.class.getName());
   private static boolean bTipoPrueba = false, bProfesor = false, bTipoCurso = false, bAsignatura = false,
-      bNivelEvaluacion = false, bHabilidad = false;
+      bNivelEvaluacion = false, bHabilidad = false, bClientes = false;
 
   /**
    * Comparador por toString, que en la práctica corresponde al nombre.
@@ -43,7 +44,21 @@ public class DataProcessor {
       DataProcessor.processHabilidad(entity, defPrueba, list);
       DataProcessor.processEjeTematico(entity, defPrueba, list);
       DataProcessor.processObjetivo(entity, defPrueba, list);
+      DataProcessor.processCliente(entity, defPrueba, list);
     }
+  }
+
+  private static void processCliente(Object entity, DefinirPrueba defPrueba, List<Object> list) {
+    if (entity instanceof R_Clientes) {
+      log.info("processClientes");
+      final ObservableList<R_Clientes> clientes = FXCollections.observableArrayList();
+      for (final Object lEntity : list) {
+        clientes.add((R_Clientes) lEntity);
+      }
+      defPrueba.setClientes(clientes);
+      bClientes = true;
+    }
+    
   }
 
   private static void processAsignatura(Object entity, DefinirPrueba defPrueba, List<Object> list) {
@@ -170,7 +185,7 @@ public class DataProcessor {
   }
 
   public static boolean isFinishedDataProcess() {
-    return bTipoPrueba && bProfesor && bTipoCurso && bAsignatura && bNivelEvaluacion && bHabilidad;
+    return bTipoPrueba && bProfesor && bTipoCurso && bAsignatura && bNivelEvaluacion && bHabilidad && bClientes;
   }
 
   public static void reset() {
@@ -180,6 +195,7 @@ public class DataProcessor {
     bAsignatura = false;
     bNivelEvaluacion = false;
     bHabilidad = false;
+    bClientes = false;
   }
 
   public static void save() {

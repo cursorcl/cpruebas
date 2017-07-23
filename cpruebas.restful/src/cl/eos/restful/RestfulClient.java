@@ -24,6 +24,7 @@ import org.apache.http.conn.HttpHostConnectException;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 
 import com.google.gson.Gson;
@@ -308,8 +309,9 @@ public class RestfulClient {
     StringEntity postingString;
     CloseableHttpResponse response = null;
     try {
-      postingString = new StringEntity(gson.toJson(element));
+      postingString = new StringEntity(gson.toJson(element), HTTP.UTF_8);
       HttpPost httppost = new HttpPost(url);
+      
       httppost.addHeader("accept", "application/json");
       httppost.addHeader("Database", Environment.database);
       httppost.addHeader("Cliente", Environment.client.toString());
@@ -322,6 +324,8 @@ public class RestfulClient {
       if (entity != null) {
         String apiOutput = EntityUtils.toString(entity);
         result = gson.fromJson(apiOutput, Long.class);
+        if(result == null)
+          result = -1L;
       }
     } catch (UnsupportedEncodingException e1) {
       e1.printStackTrace();

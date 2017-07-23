@@ -9,6 +9,7 @@ import java.util.concurrent.Executors;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import cl.eos.Environment;
 import cl.eos.imp.view.AFormView;
 import cl.eos.imp.view.ProgressForm;
 import cl.eos.imp.view.WindowManager;
@@ -172,6 +173,9 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
   private ObservableList<OTPrueba> pruebas;
 
   private DefinePruebaViewController definePrueba;
+  private Map<Long, R_Asignatura> mapAsignaturas;
+  private Map<Long, R_TipoCurso> mapTiposCurso;
+  private List<R_EstadoPruebaCliente> lstEstadoPrueba;
 
 
   public ListadoPruebasView() {
@@ -728,23 +732,33 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
         pruebas = FXCollections.observableArrayList();
         for (final Object lEntity : list) {
           R_Prueba pPrueba = (R_Prueba) lEntity;
-          pruebas.add(new OTPrueba(pPrueba));
+          OTPrueba ot = new OTPrueba(pPrueba);
+
+          pruebas.add(ot);
         }
+        lstEstadoPrueba = controller.findAllSynchro(R_EstadoPruebaCliente.class);
         assignValues();
       } else if (entity instanceof R_Asignatura) {
         lstAsignaturas = FXCollections.observableArrayList();
         for (final Object lEntity : list) {
           lstAsignaturas.add((R_Asignatura) lEntity);
         }
+        mapAsignaturas = lstAsignaturas.stream().collect(Collectors.toMap(R_Asignatura::getId, Function.identity()));
+
         assignValues();
       } else if (entity instanceof R_TipoCurso) {
         lstTipoCurso = FXCollections.observableArrayList();
         for (final Object lEntity : list) {
           lstTipoCurso.add((R_TipoCurso) lEntity);
         }
+        mapTiposCurso = lstTipoCurso.stream().collect(Collectors.toMap(R_TipoCurso::getId, Function.identity()));
+
         assignValues();
       }
     }
+
+
+
   }
 
   private void assignValues() {
@@ -763,26 +777,13 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
         updateProgress(0, pruebas.size());
 
         tblListadoPruebas.getItems().clear();
-        List<R_EstadoPruebaCliente> lstEstadoPrueba = controller.findAllSynchro(R_EstadoPruebaCliente.class);
 
-        Map<Long, R_Asignatura> mapAsignaturas =
-            lstAsignaturas.stream().collect(Collectors.toMap(R_Asignatura::getId, Function.identity()));
-        Map<Long, R_TipoCurso> mapTiposCurso =
-            lstTipoCurso.stream().collect(Collectors.toMap(R_TipoCurso::getId, Function.identity()));
         int n = 1;
         for (final OTPrueba ot : pruebas) {
 
-          ot.setAsignatura(mapAsignaturas.get(ot.getPrueba().getAsignatura_id()));
-          ot.setCurso(mapTiposCurso.get(ot.getPrueba().getCurso_id()));
-          R_EstadoPruebaCliente estadoPrueba =
-              lstEstadoPrueba.stream().filter(l -> l.getPrueba_id().equals(ot.getId())).findFirst().orElse(null);
-          if (estadoPrueba == null)
-            continue;
-
+          asignValue(ot);
           updateMessage("Cargando prueba:" + ot.getName());
           updateProgress(n++, pruebas.size());
-
-          ot.setEstado(R_Prueba.Estado.getEstado(estadoPrueba.getEstado_id().intValue()));
           tblListadoPruebas.getItems().add(ot);
         }
         tblListadoPruebas.refresh();
@@ -804,9 +805,24 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
 
     dlg.showWorkerProgress(task);
     Executors.newSingleThreadExecutor().execute(task);
+  }
+
+  protected void asignValue(OTPrueba ot) {
+    ot.setAsignatura(mapAsignaturas.get(ot.getPrueba().getAsignatura_id()));
+    ot.setCurso(mapTiposCurso.get(ot.getPrueba().getCurso_id()));
+    R_EstadoPruebaCliente estadoPrueba =
+        lstEstadoPrueba.stream().filter(l -> l.getPrueba_id().equals(ot.getId())).findFirst().orElse(null);
+    if (estadoPrueba == null)
+      ot.setEstado(R_Prueba.Estado.CREADA);
+    else
+      ot.setEstado(R_Prueba.Estado.getEstado(estadoPrueba.getEstado_id().intValue()));
 
 
-
+    Map<String, Object> parameters = MapBuilder.<String, Object>unordered().put("prueba_id", ot.getPrueba().getId())
+        .put("cliente_id", Environment.client).build();
+    List<R_EvaluacionPrueba> lstEvaluacionPrueba = controller.findByParamsSynchro(R_EvaluacionPrueba.class, parameters);
+    if (lstEvaluacionPrueba != null && lstEvaluacionPrueba.size() > 0)
+      ot.setEstado(R_Prueba.Estado.EVALUADA);
   }
 
   @Override
@@ -821,6 +837,7 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
   public void onSaved(IEntity otObject) {
     if (otObject instanceof R_Prueba) {
       final OTPrueba ot = new OTPrueba((R_Prueba) otObject);
+      asignValue(ot);
       final int indice = tblListadoPruebas.getItems().lastIndexOf(ot);
       if (indice != -1) {
         tblListadoPruebas.getItems().set(indice, ot);

@@ -133,8 +133,8 @@ public class DefinePruebaViewController extends AFormView {
           controller.deleteByParams(R_EstadoPruebaCliente.class, params);
       }
 
-      R_EstadoPruebaCliente eCliente = new R_EstadoPruebaCliente.Builder().cliente_id(cliente.getId())
-          .prueba_id(prueba.getId()).estado_id((long) R_Prueba.Estado.DEFINIDA.getId()).build();
+      R_EstadoPruebaCliente eCliente = new R_EstadoPruebaCliente.Builder().prueba_id(prueba.getId())
+          .estado_id((long) R_Prueba.Estado.DEFINIDA.getId()).build();
       controller.save(eCliente);
     }
 
@@ -353,8 +353,10 @@ public class DefinePruebaViewController extends AFormView {
       prueba = (R_Prueba) entity;
       Map<String, Object> params = MapBuilder.<String, Object>unordered().put("prueba_id", prueba.getId()).build();
       formas = controller.findByParamsSynchro(R_Formas.class, params);
-      Map<String, Object> pParams = MapBuilder.<String, Object>unordered().put("prueba_id", prueba.getId()).put("cliente_id", Environment.client).build();
-      List<R_EstadoPruebaCliente> lstEstadoPrueba = controller.findByParamsSynchro(R_EstadoPruebaCliente.class, pParams);
+      Map<String, Object> pParams = MapBuilder.<String, Object>unordered().put("prueba_id", prueba.getId())
+          .put("cliente_id", Environment.client).build();
+      List<R_EstadoPruebaCliente> lstEstadoPrueba =
+          controller.findByParamsSynchro(R_EstadoPruebaCliente.class, pParams);
       Estado estadoPrueba = R_Prueba.Estado.CREADA;
       if (lstEstadoPrueba != null && !lstEstadoPrueba.isEmpty()) {
         estadoPrueba = R_Prueba.Estado.getEstado(lstEstadoPrueba.get(0).getEstado_id().intValue());

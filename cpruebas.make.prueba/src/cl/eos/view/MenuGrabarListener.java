@@ -16,10 +16,12 @@ import org.imgscalr.Scalr.Method;
 import org.imgscalr.Scalr.Mode;
 
 import cl.eos.restful.tables.R_Alternativas;
+import cl.eos.restful.tables.R_EstadoPruebaCliente;
 import cl.eos.restful.tables.R_Formas;
 import cl.eos.restful.tables.R_Imagenes;
 import cl.eos.restful.tables.R_Preguntas;
 import cl.eos.restful.tables.R_Prueba;
+import cl.eos.restful.tables.R_Prueba.Estado;
 import cl.eos.restful.tables.R_RespuestasEsperadasPrueba;
 import cl.eos.util.MapBuilder;
 import cl.eos.util.Utils;
@@ -50,9 +52,16 @@ public class MenuGrabarListener implements EventHandler<ActionEvent> {
     nroAlternativas = defPrueba.spnNroAlternativas.getNumber().intValue();
 
     R_Prueba prueba = defPrueba.prueba;
+    R_EstadoPruebaCliente estadoprueba = null;
     if (defPrueba.prueba == null) {
       isNew = true;
       prueba = new R_Prueba.Builder().id(Utils.getLastIndex()).build();
+      estadoprueba = new R_EstadoPruebaCliente.Builder().estado_id((long) Estado.CREADA.getId()).prueba_id(-1L).build();
+
+    } else {
+      Map<String, Object> params =
+          MapBuilder.<String, Object>unordered().put("prueba_id", defPrueba.getPrueba().getId()).build();
+      estadoprueba = (R_EstadoPruebaCliente) defPrueba.findSynchroByParams(R_EstadoPruebaCliente.class, params);
     }
 
     prueba.setAsignatura_id(defPrueba.cmbAsignatura.getValue().getId());
@@ -85,40 +94,50 @@ public class MenuGrabarListener implements EventHandler<ActionEvent> {
       defPrueba.getController().deleteByParams(R_Imagenes.class, params);
     }
     defPrueba.prueba = (R_Prueba) defPrueba.save(prueba);
-    
+
+    estadoprueba.setPrueba_id(defPrueba.prueba.getId());
+
+    boolean hasRespuestaEsperada = false;
+
     for (final ItemList item : items) {
       final String itemName = String.format("%d", item.nro);
 
       final boolean isMental = item.rightAnswer.equals("M");
       final boolean isTrueFalse = "VF".contains(item.rightAnswer.toUpperCase());
-      
 
+      // Almacenando la respuesta esperadade la preguta
       R_RespuestasEsperadasPrueba respuesta = new R_RespuestasEsperadasPrueba.Builder().id(Utils.getLastIndex())
           .anulada(false).ejetematico_id(item.thematic == null ? -1 : item.thematic.getId())
           .habilidad_id(item.ability == null ? -1 : item.ability.getId()).mental(isMental).name(itemName)
           .numero(item.nro).objetivo_id(item.objetive == null ? -1 : item.objetive.getId()).respuesta(item.rightAnswer)
           .verdaderofalso(isTrueFalse).prueba_id(prueba.getId()).build();
-
       respuesta = (R_RespuestasEsperadasPrueba) defPrueba.save(respuesta);
-      
+      hasRespuestaEsperada = true;
+
+
+      // Si la pregunta es vacía, no tiene sentido almacenar el resto.
+      if (item.question == null || item.question.isEmpty())
+        continue;
+
+      // Almancenando la pregunta
       R_Preguntas pregunta = new R_Preguntas.Builder().id(Utils.getLastIndex()).name(item.question).numero(item.nro)
           .prueba_id(prueba.getId()).build();
-
       pregunta = (R_Preguntas) defPrueba.save(pregunta);
-      
+
       final List<R_Imagenes> lstImages = processImages(item, respuesta);
       final List<R_Alternativas> lstAlternativas = processAlteratives(item, respuesta);
-      final List<R_Formas> lstFormas = getFormasPrueba();
 
-      for (int n = 0; n < lstAlternativas.size(); n++) {
-        R_Alternativas alt = lstAlternativas.get(n);
-        alt.setId(Utils.getLastIndex());
-        alt.setRespuesta_id(respuesta.getId());
-        alt = (R_Alternativas) defPrueba.save(alt);
-        lstAlternativas.set(n, alt);
+      // Almacenando las alterntivas de la pregunta
+      if (lstAlternativas != null && !lstAlternativas.isEmpty()) {
+        for (int n = 0; n < lstAlternativas.size(); n++) {
+          R_Alternativas alt = lstAlternativas.get(n);
+          alt.setId(Utils.getLastIndex());
+          alt.setRespuesta_id(respuesta.getId());
+          alt = (R_Alternativas) defPrueba.save(alt);
+          lstAlternativas.set(n, alt);
+        }
       }
-
-
+      // Almacenando las imágenes de la pregunta
       if (lstImages != null && !lstImages.isEmpty()) {
         for (int n = 0; n < lstImages.size(); n++) {
           R_Imagenes img = lstImages.get(n);
@@ -128,14 +147,24 @@ public class MenuGrabarListener implements EventHandler<ActionEvent> {
           lstImages.set(n, img);
         }
       }
-
-      if (lstFormas != null && !lstFormas.isEmpty()) {
-        for (R_Formas forma : lstFormas) {
-          defPrueba.save(forma);
-        }
-      }
-
     }
+    final List<R_Formas> lstFormas = getFormasPrueba();
+    if (lstFormas != null && !lstFormas.isEmpty()) {
+      for (R_Formas forma : lstFormas) {
+        defPrueba.save(forma);
+      }
+    }
+    long estado = estadoprueba.getEstado_id();
+    if (Estado.EVALUADA.getId() != estado) {
+
+      if (hasRespuestaEsperada)
+        estadoprueba.setEstado_id(Estado.DEFINIDA.getId());
+      else
+        estadoprueba.setEstado_id(Estado.CREADA.getId());
+
+      defPrueba.save(estadoprueba);
+    }
+
   }
 
   /**

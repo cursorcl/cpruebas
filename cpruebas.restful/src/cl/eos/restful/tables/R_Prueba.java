@@ -12,16 +12,16 @@ public class R_Prueba extends AEntity {
   public enum Estado {
     CREADA(0), DEFINIDA(1), EVALUADA(2);
 
-    private int id;
+    private long id;
 
-    private Estado(int id) {
+    private Estado(long id) {
       this.id = id;
     }
 
     /**
      * @return the id
      */
-    public final int getId() {
+    public final long getId() {
       return id;
     }
 

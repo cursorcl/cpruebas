@@ -16,7 +16,6 @@ public abstract class AController implements IController, IPersistenceListener {
   protected List<IView> views;
   protected IEntity selectedEntity;
   protected IModel model;
-  private boolean initialized = false;
 
   public AController() {
     if (model != null) {
@@ -35,11 +34,11 @@ public abstract class AController implements IController, IPersistenceListener {
         view.setController(this);
       }
     }
-    if(!initialized)
-    {
-      initialize();
-      initialized = true;
-    }
+    // if(!initialized)
+    // {
+    // initialize();
+    // initialized = true;
+    // }
   }
 
   @Override
@@ -66,7 +65,7 @@ public abstract class AController implements IController, IPersistenceListener {
       entity.remove(0);
     }
   }
-  
+
   public <T extends IEntity> void deleteByParams(Class<T> entity, Map<String, Object> params) {
     model.deleteByParams(entity, params);
   }
@@ -91,14 +90,12 @@ public abstract class AController implements IController, IPersistenceListener {
 
 
   @Override
-  public <T extends IEntity> void findByAllId(Class<T> entityClazz, Long[] objects,
-      IPersistenceListener listener) {
+  public <T extends IEntity> void findByAllId(Class<T> entityClazz, Long[] objects, IPersistenceListener listener) {
     model.findByAllId(entityClazz, objects, listener);
   }
 
   @Override
-  public <T extends IEntity> void findByAllId(Class<T> entityClazz, Long[] objects,
-      final IView... pView) {
+  public <T extends IEntity> void findByAllId(Class<T> entityClazz, Long[] objects, final IView... pView) {
     model.findByAllId(entityClazz, objects, new PersistenceListenerAdapter() {
       @Override
       public void onFindAllFinished(List<Object> list) {
@@ -111,8 +108,7 @@ public abstract class AController implements IController, IPersistenceListener {
 
 
   @Override
-  public <T extends IEntity> void findById(Class<T> entityClazz, Long id,
-      IPersistenceListener listener) {
+  public <T extends IEntity> void findById(Class<T> entityClazz, Long id, IPersistenceListener listener) {
     model.findById(entityClazz, id, listener);
   }
 
@@ -129,14 +125,12 @@ public abstract class AController implements IController, IPersistenceListener {
   }
 
   @Override
-  public <T extends IEntity> void findByName(Class<T> entityClazz, String name,
-      IPersistenceListener listener) {
+  public <T extends IEntity> void findByName(Class<T> entityClazz, String name, IPersistenceListener listener) {
     model.findByName(entityClazz, name, listener);
   }
 
   @Override
-  public <T extends IEntity> void findByName(Class<T> entityClazz, String name,
-      final IView... pView) {
+  public <T extends IEntity> void findByName(Class<T> entityClazz, String name, final IView... pView) {
     model.findByName(entityClazz, name, new PersistenceListenerAdapter() {
       @Override
       public void onFound(IEntity entity) {
@@ -148,12 +142,10 @@ public abstract class AController implements IController, IPersistenceListener {
   }
 
   @Override
-  public <T extends IEntity> void findAll(Class<T> entityClazz, IPersistenceListener listener,
-      int offset, int items) {}
+  public <T extends IEntity> void findAll(Class<T> entityClazz, IPersistenceListener listener, int offset, int items) {}
 
   @Override
-  public <T extends IEntity> void findAll(Class<T> entityClazz, int offset, int items,
-      IView... view) {}
+  public <T extends IEntity> void findAll(Class<T> entityClazz, int offset, int items, IView... view) {}
 
   /*
    * (non-Javadoc)
@@ -174,8 +166,7 @@ public abstract class AController implements IController, IPersistenceListener {
    * cl.eos.interfaces.view.IView[])
    */
   @Override
-  public <T extends IEntity> void findByParam(Class<T> entityClazz, Map<String, Object> params,
-      IView... pView) {
+  public <T extends IEntity> void findByParam(Class<T> entityClazz, Map<String, Object> params, IView... pView) {
     model.findByParams(entityClazz, params, new PersistenceListenerAdapter() {
       @Override
       public void onFindFinished(List<Object> list) {
@@ -197,8 +188,7 @@ public abstract class AController implements IController, IPersistenceListener {
   }
 
   @Override
-  public <T extends IEntity> List<T> findAllSynchro(final Class<T> entityClazz, int offset,
-      int items) {
+  public <T extends IEntity> List<T> findAllSynchro(final Class<T> entityClazz, int offset, int items) {
     return model.findAllSynchro(entityClazz, offset, items);
   }
 
@@ -218,8 +208,7 @@ public abstract class AController implements IController, IPersistenceListener {
   }
 
   @Override
-  public <T extends IEntity> List<T> findByParamsSynchro(Class<T> entityClazz,
-      Map<String, Object> params) {
+  public <T extends IEntity> List<T> findByParamsSynchro(Class<T> entityClazz, Map<String, Object> params) {
     return model.findByParamsSynchro(entityClazz, params);
   }
 
@@ -327,10 +316,14 @@ public abstract class AController implements IController, IPersistenceListener {
       } else {
         result = model.save(entity);
       }
-      notifySaved(result);
+      if (result == null)
+        onError("No se pudo grabar la entidad:" + entity.toString());
+      else
+        notifySaved(result);
     }
     return result;
   }
+
 
   @Override
   public void select(IEntity otObject) {

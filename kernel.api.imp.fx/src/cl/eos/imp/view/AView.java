@@ -104,9 +104,9 @@ public abstract class AView implements IView {
   @Override
   public void setController(IController controller) {
     this.controller = controller;
-//    if (!this.controller.getViews().contains(this)) {
-//      controller.addView(this);
-//    }
+    if (!this.controller.getViews().contains(this)) {
+      controller.addView(this);
+    }
   }
 
   @Override

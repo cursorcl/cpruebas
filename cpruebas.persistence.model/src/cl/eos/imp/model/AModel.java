@@ -133,7 +133,7 @@ public abstract class AModel implements IModel {
         final IEntity result = PersistenceServiceFactory.getPersistenceService().save(entity);
         final int idx = entities.indexOf(result);
         if (idx != -1) entities.remove(idx);
-        entities.add(entity);
+        if(result != null) entities.add(entity);
         return result;
     }
     @Override
