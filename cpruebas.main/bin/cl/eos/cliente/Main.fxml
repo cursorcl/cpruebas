@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.effect.InnerShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.input.KeyCodeCombination?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+<?import jfxtras.labs.scene.control.BreadcrumbBar?>
+
+<StackPane id="ModalDimmer" depthTest="DISABLE" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="740.0" prefWidth="1124.0" style="-fx-border-color: #71747C; -fx-border-width: 4;" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.cliente.MainController">
+	<children>
+		<BorderPane prefHeight="200.0" prefWidth="200.0">
+			<top>
+				<VBox>
+					<children>
+						<AnchorPane id="windows-title" fx:id="pnlWindow" prefHeight="62.0" prefWidth="1024.0">
+							<children>
+								<HBox alignment="CENTER" prefHeight="100.0" prefWidth="1020.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+									<children>
+										<ImageView fitHeight="60.0" fitWidth="347.0" opacity="0.88" HBox.hgrow="ALWAYS">
+											<image>
+												<Image url="@images/logo128.png" />
+											</image>
+                                 <HBox.margin>
+                                    <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
+                                 </HBox.margin>
+                                 <cursor>
+                                    <Cursor fx:constant="NONE" />
+                                 </cursor>
+										</ImageView>
+                              <Text blendMode="SRC_ATOP" fill="WHITE" opacity="0.9" stroke="#4eab06" strokeLineCap="ROUND" strokeLineJoin="BEVEL" strokeMiterLimit="20.0" strokeType="INSIDE" text="V. 3.0" HBox.hgrow="ALWAYS">
+                                 <font>
+                                    <Font name="Calibri" size="18.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets left="15.0" />
+                                 </HBox.margin>
+                                 <effect>
+                                    <DropShadow />
+                                 </effect>
+                              </Text>
+										<AnchorPane id="SearchBox" prefHeight="63.0" prefWidth="577.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <VBox alignment="TOP_RIGHT" layoutX="47.0" layoutY="-51.0" prefHeight="62.0" prefWidth="688.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <children>
+                                          <Text fx:id="txtCliente" fill="#e8e8e8" fontSmoothingType="LCD" stroke="#fbfffb" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeType="OUTSIDE" text="Cauquenes" textAlignment="RIGHT">
+                                             <font>
+                                                <Font name="Broadway" size="24.0" />
+                                             </font>
+                                             <VBox.margin>
+                                                <Insets right="20.0" />
+                                             </VBox.margin>
+                                          </Text>
+                                          <Text fx:id="txtUsuario" fill="WHITE" fontSmoothingType="LCD" stroke="#fafcfa" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeType="INSIDE" text="Cauquenes" textAlignment="RIGHT">
+                                             <font>
+                                                <Font name="Book Antiqua" size="13.0" />
+                                             </font>
+                                             <VBox.margin>
+                                                <Insets right="20.0" />
+                                             </VBox.margin>
+                                          </Text>
+                                       </children>
+                                    </VBox>
+                                 </children></AnchorPane>
+									</children>
+								</HBox>
+							</children>
+						</AnchorPane>
+						<MenuBar id="mnuPrincipal">
+							<menus>
+								<Menu mnemonicParsing="false" text="Administrador">
+									<items>
+										<MenuItem id="mnuColegios" fx:id="mnuColegios" mnemonicParsing="false" text="Colegios">
+											<accelerator>
+												<KeyCodeCombination alt="UP" code="C" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+											</accelerator>
+										</MenuItem>
+										<MenuItem id="mnuCursos" fx:id="mnuCursos" mnemonicParsing="false" text="Cursos">
+											<accelerator>
+												<KeyCodeCombination alt="UP" code="U" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+											</accelerator>
+										</MenuItem>
+										<MenuItem id="mnuAsignaturas" fx:id="mnuAsignaturas" mnemonicParsing="false" text="Asignaturas">
+											<accelerator>
+												<KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+											</accelerator>
+										</MenuItem>
+										<MenuItem id="mnuProfesores" fx:id="mnuProfesores" mnemonicParsing="false" text="Profesores">
+											<accelerator>
+												<KeyCodeCombination alt="UP" code="P" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+											</accelerator>
+										</MenuItem>
+										<MenuItem id="mnuAlumno" fx:id="mnuAlumno" mnemonicParsing="false" text="Alumnos">
+											<accelerator>
+												<KeyCodeCombination alt="UP" code="A" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+											</accelerator>
+										</MenuItem>
+										<MenuItem id="mnuEjesTematicos" fx:id="mnuEjesTematicos" mnemonicParsing="false" text="Ejes Temáticos">
+											<accelerator>
+												<KeyCodeCombination alt="UP" code="E" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+											</accelerator>
+										</MenuItem>
+										<MenuItem id="mnuHabilidades" fx:id="mnuHabilidades" mnemonicParsing="false" text="Habilidades">
+											<accelerator>
+												<KeyCodeCombination alt="UP" code="H" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+											</accelerator>
+										</MenuItem>
+										<MenuItem fx:id="mnuObjetivos" mnemonicParsing="false" text="Objetivos">
+											<accelerator>
+												<KeyCodeCombination alt="UP" code="O" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+											</accelerator>
+										</MenuItem>
+										<MenuItem fx:id="mnuTipoPrueba" mnemonicParsing="false" text="Tipo prueba">
+											<accelerator>
+												<KeyCodeCombination alt="UP" code="T" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+											</accelerator>
+										</MenuItem>
+										<MenuItem fx:id="mnuNivelEvaluacion" mnemonicParsing="false" text="Nivel evaluación" visible="false">
+											<accelerator>
+												<KeyCodeCombination alt="UP" code="N" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+											</accelerator>
+										</MenuItem>
+										<SeparatorMenuItem mnemonicParsing="false" />
+										<MenuItem fx:id="mnuEvaluaciones" mnemonicParsing="false" text="Evaluaciones">
+											<accelerator>
+												<KeyCodeCombination alt="UP" code="V" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+											</accelerator>
+										</MenuItem>
+										<MenuItem fx:id="mnuNivelEvaluaciones" mnemonicParsing="false" text="Nivel Evaluaciones">
+											<accelerator>
+												<KeyCodeCombination alt="UP" code="N" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+											</accelerator>
+										</MenuItem>
+										<SeparatorMenuItem mnemonicParsing="false" />
+										<MenuItem fx:id="mnuVelocidadLectora" mnemonicParsing="false" text="Velocidad Lectora" />
+										<MenuItem fx:id="mnuCalidadLectora" mnemonicParsing="false" text="Calidad Lectora" />
+										<MenuItem fx:id="mnuComprensionLectora" mnemonicParsing="false" text="Comprensión Lectora" />
+										<MenuItem fx:id="mnuRangoLectores" mnemonicParsing="false" text="Rangos Lectores" />
+										<SeparatorMenuItem mnemonicParsing="false" />
+										<MenuItem fx:id="mnuImportar" mnemonicParsing="false" text="Importar" />
+									</items>
+								</Menu>
+								<Menu mnemonicParsing="false" text="Ayuda">
+									<items>
+										<MenuItem mnemonicParsing="false" text="About" />
+									</items>
+								</Menu>
+							</menus>
+						</MenuBar>
+					</children>
+				</VBox>
+			</top>
+			<center>
+						<BorderPane id="page-area" prefHeight="573.0" prefWidth="608.0">
+							<top>
+								<VBox alignment="TOP_CENTER" BorderPane.alignment="CENTER">
+									<children>
+      										<BreadcrumbBar fx:id="breadCrumb" prefWidth="711.0">
+      											<effect>
+      												<InnerShadow />
+      											</effect>
+      										</BreadcrumbBar>
+									</children>
+								</VBox>
+							</top>
+               <center>
+                  <StackPane fx:id="groupRoot" alignment="TOP_LEFT" />
+               </center>
+						</BorderPane>
+			</center>
+		</BorderPane>
+	</children>
+</StackPane>
