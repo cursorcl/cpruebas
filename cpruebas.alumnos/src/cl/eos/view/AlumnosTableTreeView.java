@@ -263,6 +263,7 @@ public class AlumnosTableTreeView extends AFormView implements EventHandler<Acti
     colPaterno.setCellValueFactory(new PropertyValueFactory<OTAlumno, String>("paterno"));
     colMaterno.setCellValueFactory(new PropertyValueFactory<OTAlumno, String>("materno"));
     colTipoAlumno.setCellValueFactory(new PropertyValueFactory<OTAlumno, String>("tipoAlumno"));
+    colDireccion.setCellValueFactory(new PropertyValueFactory<OTAlumno, String>("direccion"));
   }
 
   @FXML
@@ -361,8 +362,9 @@ public class AlumnosTableTreeView extends AFormView implements EventHandler<Acti
   @Override
   public void onSaved(IEntity otObject) {
     R_Alumno alumno = (R_Alumno) otObject;
-    Long idColegio = cmbSelectColegio.getSelectionModel().getSelectedItem().getId();
-    Long idCurso = cmbSelectCurso.getSelectionModel().getSelectedItem().getId();
+    
+    Long idColegio = cmbColegio.getSelectionModel().getSelectedItem().getId();
+    Long idCurso = cmbCurso.getSelectionModel().getSelectedItem().getId();
 
     if (alumno.getColegio_id().equals(idColegio) && alumno.getCurso_id().equals(idCurso)) {
       final OTAlumno otAlumno = new OTAlumno(alumno);

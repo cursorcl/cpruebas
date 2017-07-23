@@ -19,7 +19,6 @@ public class ListadoPruebasActivator extends AActivator {
             view = fxmlLoader.getController();
             view.setPanel(pane);
             controller.addView(view);
-            controller.initialize();
         } catch (final IOException e) {
             e.printStackTrace();
         }

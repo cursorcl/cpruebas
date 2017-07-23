@@ -16,6 +16,7 @@ public abstract class AController implements IController, IPersistenceListener {
   protected List<IView> views;
   protected IEntity selectedEntity;
   protected IModel model;
+  private boolean initialized;
 
   public AController() {
     if (model != null) {
@@ -34,11 +35,10 @@ public abstract class AController implements IController, IPersistenceListener {
         view.setController(this);
       }
     }
-    // if(!initialized)
-    // {
-    // initialize();
-    // initialized = true;
-    // }
+    if (!initialized) {
+      initialize();
+      initialized = true;
+    }
   }
 
   @Override

@@ -8,10 +8,7 @@ import cl.eos.interfaces.entity.IEntity;
 import cl.eos.ot.OTTipoPrueba;
 import cl.eos.restful.tables.R_TipoPrueba;
 import cl.eos.util.ExcelSheetWriterObj;
-import cl.eos.util.SystemConstants;
 import cl.eos.util.Utils;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -190,14 +187,6 @@ public class TipoPruebaView extends AFormView implements EventHandler<ActionEven
         mnuEliminar.setDisable(true);
         mnItemEliminar.setDisable(true);
         mnItemModificar.setDisable(true);
-        pagination.currentPageIndexProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-//                int fromIndex = Math.min(oldValue.intValue(),  newValue.intValue()) * SystemConstants.ROWS_FOR_PAGE ;
-//                int toIndex = Math.max(oldValue.intValue(),  newValue.intValue()) * SystemConstants.ROWS_FOR_PAGE ;
-                controller.findAll(R_TipoPrueba.class, TipoPruebaView.this);
-            }
-        });
     }
 
     private void limpiarControles() {

@@ -21,6 +21,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SelectionMode;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -84,7 +85,9 @@ public class ColegiosView extends AFormView implements EventHandler<ActionEvent>
     @FXML
     private Label lblError;
     @FXML
-    private TableColumn<R_Colegio, String> colTipoColegio;
+    private TableColumn<R_Colegio, Long> colTipoColegio;
+    
+    protected ObservableList<R_TipoColegio> lstTipoColegio;
 
     public ColegiosView() {
         setTitle("Colegios");
@@ -108,22 +111,6 @@ public class ColegiosView extends AFormView implements EventHandler<ActionEvent>
             }
         });
     }
-
-    // private void accionButtonImagen() {
-    // FileChooser fileChooser = new FileChooser();
-    // File file = fileChooser.showOpenDialog(null);
-    // if (file != null) {
-    // Dimension dim = Utils.getImageDim(file.getPath());
-    // if (dim.getHeight() <= 256 && dim.getWidth() <= 256) {
-    // try {
-    // URL url = file.toURI().toURL();
-    // imgColegio.setImage(new Image(url.toString()));
-    // } catch (MalformedURLException e) {
-    // e.printStackTrace();
-    // }
-    // }
-    // }
-    // }
 
     private void accionEliminar() {
         final ObservableList<R_Colegio> otSeleccionados = tblColegio.getSelectionModel().getSelectedItems();
@@ -207,7 +194,7 @@ public class ColegiosView extends AFormView implements EventHandler<ActionEvent>
         colNombre.setCellValueFactory(new PropertyValueFactory<R_Colegio, String>("name"));
         colDireccion.setCellValueFactory(new PropertyValueFactory<R_Colegio, String>("direccion"));
 
-        colTipoColegio.setCellValueFactory(new PropertyValueFactory<R_Colegio, String>("tipo"));
+        colTipoColegio.setCellValueFactory(new PropertyValueFactory<R_Colegio, Long>("tipocolegio_id"));
     }
 
     @FXML
@@ -249,11 +236,36 @@ public class ColegiosView extends AFormView implements EventHandler<ActionEvent>
                 }
                 tblColegio.setItems(oList);
             } else if (entity instanceof R_TipoColegio) {
-                final ObservableList<R_TipoColegio> value = FXCollections.observableArrayList();
+                lstTipoColegio = FXCollections.observableArrayList();
                 for (final Object iEntity : list) {
-                    value.add((R_TipoColegio) iEntity);
+                    lstTipoColegio.add((R_TipoColegio) iEntity);
                 }
-                cmbTipoColegio.setItems(value);
+                cmbTipoColegio.setItems(lstTipoColegio);
+                final  ObservableList<R_TipoColegio> lst = lstTipoColegio;
+                colTipoColegio.setCellFactory(column -> {
+                  return new TableCell<R_Colegio, Long>() {
+                      @Override
+                      protected void updateItem(Long item, boolean empty) {
+                          super.updateItem(item, empty);
+                          setStyle("");
+                          if (item == null || empty) {
+                              setText(null);
+                              
+                          } else {
+                              // Format date.
+                              if(lst != null)
+                              {
+                                setText(null);
+                                R_TipoColegio tipo = lst.stream().filter(t -> t.getId().equals(item)).findAny().orElse(null);
+                                if(tipo != null)
+                                {
+                                  setText(tipo.getName());
+                                }
+                              }
+                          }
+                      }
+                  };
+              });
             }
         }
     }

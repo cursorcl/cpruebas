@@ -1,6 +1,7 @@
 package cl.eos.ot;
 
 import cl.eos.restful.tables.R_Colegio;
+import cl.eos.restful.tables.R_TipoColegio;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -11,19 +12,19 @@ public class OTColegio {
     private final SimpleLongProperty id = new SimpleLongProperty();
     private final SimpleStringProperty name = new SimpleStringProperty();
     private final SimpleStringProperty direccion = new SimpleStringProperty();
-    private final ObjectProperty<Long> tipo = new SimpleObjectProperty<Long>();
+    private final ObjectProperty<R_TipoColegio> tipo = new SimpleObjectProperty<>();
 
     private R_Colegio colegio;
 
     public OTColegio() {
     }
 
-    public OTColegio(R_Colegio colegio) {
+    public OTColegio(R_Colegio colegio, R_TipoColegio tipoColegio) {
         this.colegio = colegio;
         id.set(colegio.getId());
         name.set(colegio.getName());
         direccion.set(colegio.getDireccion());
-        tipo.set(colegio.getTipocolegio_id());
+        tipo.set(tipoColegio);
 
     }
 
@@ -64,7 +65,7 @@ public class OTColegio {
         return nameProperty().get();
     }
 
-    public final Long getTipo() {
+    public final R_TipoColegio getTipo() {
         return tipoProperty().getValue();
     }
 
@@ -100,11 +101,11 @@ public class OTColegio {
         nameProperty().set(name);
     }
 
-    public final void setTipo(final Long tipoColegio) {
+    public final void setTipo(final R_TipoColegio tipoColegio) {
         tipoProperty().set(tipoColegio);
     }
 
-    public final ObjectProperty<Long> tipoProperty() {
+    public final ObjectProperty<R_TipoColegio> tipoProperty() {
         return tipo;
     }
 
