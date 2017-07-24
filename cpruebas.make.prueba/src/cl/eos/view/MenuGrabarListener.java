@@ -42,6 +42,7 @@ public class MenuGrabarListener implements EventHandler<ActionEvent> {
 
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public void handle(ActionEvent event) {
 
@@ -52,16 +53,19 @@ public class MenuGrabarListener implements EventHandler<ActionEvent> {
     nroAlternativas = defPrueba.spnNroAlternativas.getNumber().intValue();
 
     R_Prueba prueba = defPrueba.prueba;
-    R_EstadoPruebaCliente estadoprueba = null;
+    R_EstadoPruebaCliente estadoprueba =
+        new R_EstadoPruebaCliente.Builder().estado_id((long) Estado.CREADA.getId()).prueba_id(-1L).build();
     if (defPrueba.prueba == null) {
       isNew = true;
       prueba = new R_Prueba.Builder().id(Utils.getLastIndex()).build();
-      estadoprueba = new R_EstadoPruebaCliente.Builder().estado_id((long) Estado.CREADA.getId()).prueba_id(-1L).build();
-
     } else {
       Map<String, Object> params =
           MapBuilder.<String, Object>unordered().put("prueba_id", defPrueba.getPrueba().getId()).build();
-      estadoprueba = (R_EstadoPruebaCliente) defPrueba.findSynchroByParams(R_EstadoPruebaCliente.class, params);
+      List<R_EstadoPruebaCliente> lst =
+          (List<R_EstadoPruebaCliente>) defPrueba.findSynchroByParams(R_EstadoPruebaCliente.class, params);
+      if (lst != null && lst.size() > 0)
+        estadoprueba = lst.get(0);
+
     }
 
     prueba.setAsignatura_id(defPrueba.cmbAsignatura.getValue().getId());

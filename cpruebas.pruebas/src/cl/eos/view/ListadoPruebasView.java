@@ -15,6 +15,7 @@ import cl.eos.imp.view.ProgressForm;
 import cl.eos.imp.view.WindowManager;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.restful.tables.R_Asignatura;
+import cl.eos.restful.tables.R_Clientes;
 import cl.eos.restful.tables.R_Colegio;
 import cl.eos.restful.tables.R_Ejetematico;
 import cl.eos.restful.tables.R_EstadoPruebaCliente;
@@ -327,6 +328,7 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
     controller.findAll(R_TipoPrueba.class, definicion);
     controller.findAll(R_NivelEvaluacion.class, definicion);
     controller.findAll(R_Habilidad.class, definicion);
+    controller.findAll(R_Clientes.class, definicion);
   }
 
   private void handleEliminar() {
@@ -352,9 +354,6 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
       if (lstEstadoPrueba != null && !lstEstadoPrueba.isEmpty()) {
         estadoPrueba = R_Prueba.Estado.getEstado(lstEstadoPrueba.get(0).getEstado_id().intValue());
       }
-
-
-
       if (prueba != null) {
         if (estadoPrueba.equals(Estado.EVALUADA)) {
           final Alert info = new Alert(AlertType.INFORMATION);
@@ -736,7 +735,6 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
 
           pruebas.add(ot);
         }
-        lstEstadoPrueba = controller.findAllSynchro(R_EstadoPruebaCliente.class);
         assignValues();
       } else if (entity instanceof R_Asignatura) {
         lstAsignaturas = FXCollections.observableArrayList();
@@ -755,6 +753,8 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
 
         assignValues();
       }
+    
+      
     }
 
 
@@ -763,7 +763,7 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
 
   private void assignValues() {
 
-    if (lstAsignaturas == null || lstTipoCurso == null || pruebas == null) {
+    if (lstAsignaturas == null || lstTipoCurso == null || pruebas == null ) {
       return;
     }
     final ProgressForm dlg = new ProgressForm();
@@ -777,7 +777,7 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
         updateProgress(0, pruebas.size());
 
         tblListadoPruebas.getItems().clear();
-
+        lstEstadoPrueba = controller.findAllSynchro(R_EstadoPruebaCliente.class);
         int n = 1;
         for (final OTPrueba ot : pruebas) {
 
@@ -810,6 +810,7 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
   protected void asignValue(OTPrueba ot) {
     ot.setAsignatura(mapAsignaturas.get(ot.getPrueba().getAsignatura_id()));
     ot.setCurso(mapTiposCurso.get(ot.getPrueba().getCurso_id()));
+    
     R_EstadoPruebaCliente estadoPrueba =
         lstEstadoPrueba.stream().filter(l -> l.getPrueba_id().equals(ot.getId())).findFirst().orElse(null);
     if (estadoPrueba == null)
@@ -837,6 +838,7 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
   public void onSaved(IEntity otObject) {
     if (otObject instanceof R_Prueba) {
       final OTPrueba ot = new OTPrueba((R_Prueba) otObject);
+      lstEstadoPrueba = controller.findAllSynchro(R_EstadoPruebaCliente.class);
       asignValue(ot);
       final int indice = tblListadoPruebas.getItems().lastIndexOf(ot);
       if (indice != -1) {
