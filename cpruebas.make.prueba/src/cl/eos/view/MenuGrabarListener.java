@@ -165,7 +165,7 @@ public class MenuGrabarListener implements EventHandler<ActionEvent> {
         estadoprueba.setEstado_id(Estado.DEFINIDA.getId());
       else
         estadoprueba.setEstado_id(Estado.CREADA.getId());
-
+      estadoprueba.setPrueba_id(defPrueba.getPrueba().getId());
       defPrueba.save(estadoprueba);
     }
 

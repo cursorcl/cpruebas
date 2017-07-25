@@ -753,8 +753,8 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
 
         assignValues();
       }
-    
-      
+
+
     }
 
 
@@ -763,7 +763,7 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
 
   private void assignValues() {
 
-    if (lstAsignaturas == null || lstTipoCurso == null || pruebas == null ) {
+    if (lstAsignaturas == null || lstTipoCurso == null || pruebas == null) {
       return;
     }
     final ProgressForm dlg = new ProgressForm();
@@ -810,7 +810,7 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
   protected void asignValue(OTPrueba ot) {
     ot.setAsignatura(mapAsignaturas.get(ot.getPrueba().getAsignatura_id()));
     ot.setCurso(mapTiposCurso.get(ot.getPrueba().getCurso_id()));
-    
+
     R_EstadoPruebaCliente estadoPrueba =
         lstEstadoPrueba.stream().filter(l -> l.getPrueba_id().equals(ot.getId())).findFirst().orElse(null);
     if (estadoPrueba == null)
@@ -847,6 +847,19 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
         tblListadoPruebas.getItems().add(ot);
       }
       prueba = null;
+    }
+    if (otObject instanceof R_EstadoPruebaCliente) {
+      R_EstadoPruebaCliente estado = (R_EstadoPruebaCliente) otObject;
+      OTPrueba ot = tblListadoPruebas.getItems().parallelStream()
+          .filter(t -> t.getPrueba().getId().equals(estado.getPrueba_id())).findFirst().orElse(null);
+      if (ot != null) {
+        Estado vEstado = R_Prueba.Estado.getEstado(estado.getEstado_id().intValue());
+        ot.setEstado(vEstado);
+        final int indice = tblListadoPruebas.getItems().lastIndexOf(ot);
+        if (indice != -1)
+          tblListadoPruebas.getItems().set(indice, ot);
+
+      }
     }
   }
 
