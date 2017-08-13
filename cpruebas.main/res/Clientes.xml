@@ -10,29 +10,14 @@
 	</Cliente>
 	<Cliente>
 		<rut>-</rut>
-		<nombre>Escuela Mariano Latorre</nombre>
-		<direccion>-</direccion>
-		<fono>-</fono>
-		<email>-</email>
-		<alias>colegio_pruebas</alias>
-	</Cliente>
-	<Cliente>
-		<rut>-</rut>
-		<nombre>Municipalidad Cauquenes</nombre>
+		<nombre>Cauquenes</nombre>
 		<direccion>-</direccion>
 		<fono>-</fono>
 		<alias>multi_cpruebas</alias>
 	</Cliente>
 	<Cliente>
 		<rut>-</rut>
-		<nombre>Municipalidad Vallenar</nombre>
-		<direccion>-</direccion>
-		<fono>-</fono>
-		<alias>vallenar_pruebas</alias>
-	</Cliente>
-	<Cliente>
-		<rut>-</rut>
-		<nombre>Colegio Balmaceda</nombre>
+		<nombre>Balmaceda</nombre>
 		<direccion>-</direccion>
 		<fono>-</fono>
 		<alias>balmaceda_cpruebas</alias>
@@ -44,12 +29,4 @@
 		<fono>-</fono>
 		<alias>cpruebas</alias>
 	</Cliente>
-	<Cliente>
-		<rut>-</rut>
-		<nombre>CPruebas2</nombre>
-		<direccion>-</direccion>
-		<fono>-</fono>
-		<alias>cpruebas2</alias>
-	</Cliente>	
-			
 </Clientes>

@@ -55,6 +55,10 @@ public class XUtilReportBuilder {
     static List<XItemTablaObjetivo> buildFixedColumnsReport(List<PruebaRendida> pRendidas) {
         final List<XItemTablaObjetivo> objetivos = new ArrayList<>();
 
+        for(PruebaRendida p : pRendidas )
+        {
+        	System.out.println(p.getAlumno() + " " + p.getCurso() + " "  + p.getObjCurso());
+        }
         final Map<Curso, List<PruebaRendida>> mapCursos = pRendidas.stream()
                 .collect(Collectors.groupingBy(PruebaRendida::getObjCurso));
 
