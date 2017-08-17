@@ -91,13 +91,16 @@ public class InformeXObjetivos_Nivel implements IInforme {
         int idx = 0;
         for (TipoCurso tipoCurso : tipoCursos) {
 
+        	List<XItemTablaObjetivo> lstObjetivos = resultado.stream().filter(i -> i.getObjetivo().getTipoCurso().equals(tipoCurso)).collect(Collectors.toList());
+        	if(lstObjetivos == null || lstObjetivos.isEmpty())
+        		continue;
             paragraph = document.createParagraph();
             paragraph.setStyle("Normal");
             run = paragraph.createRun();
             run.addCarriageReturn();
 
             final int nroColumnas = 5;
-            final int nroRows = resultado.size() + 2;
+            final int nroRows = lstObjetivos.size() + 2;
             final XWPFTable table = document.createTable(nroRows, nroColumnas);
             WordUtil.setTableFormat(table, 2, 0);
 
@@ -118,7 +121,7 @@ public class InformeXObjetivos_Nivel implements IInforme {
             tRowHeader2.getCell(c + 3).setText("% Aprobación");
             
             int r = 2;
-            for (XItemTablaObjetivo item : resultado) {
+            for (XItemTablaObjetivo item : lstObjetivos) {
                 XWPFTableRow tRow = table.getRow(r);
                 tRow.getCell(0).setText(item.getObjetivo().getName());
 
