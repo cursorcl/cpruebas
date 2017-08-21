@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import cl.eos.AlumnosActivator;
 import cl.eos.AsignaturasActivator;
+import cl.eos.ClientesActivator;
 import cl.eos.ColegiosActivator;
 import cl.eos.CursosActivator;
 import cl.eos.EjesTematicosActivator;
@@ -36,6 +37,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.AnchorPane;
@@ -86,7 +88,8 @@ public class MainController {
     private MenuItem mnuNivelEvaluaciones;
     @FXML
     private MenuItem mnuObjetivos;
-
+    @FXML
+    private MenuItem mnuClientes;
     @FXML
     private MenuItem mnuVelocidadLectora;
     @FXML
@@ -95,6 +98,8 @@ public class MainController {
     private MenuItem mnuComprensionLectora;
     @FXML
     private MenuItem mnuRangoLectores;
+    
+    private Label txtCliente;
 
     @FXML
     private BreadcrumbBar breadCrumb;
@@ -191,6 +196,11 @@ public class MainController {
         } catch (final Exception e) {
             e.printStackTrace();
         }
+        mnuClientes.setOnAction(arg0 -> {
+            final IActivator activator = new ClientesActivator();
+            WindowManager.getInstance().show(activator.getView());
+        });
+        
         mnuAlumno.setOnAction(arg0 -> {
             final IActivator activator = new AlumnosActivator();
             WindowManager.getInstance().show(activator.getView());

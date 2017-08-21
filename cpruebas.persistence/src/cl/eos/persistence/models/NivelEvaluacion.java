@@ -11,10 +11,14 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import cl.eos.persistence.AEntity;
 
 @Entity(name = "nivelevaluacion")
+@Table( name = "nivelevaluacion",
+schema="cpruebas_comun")
+
 @NamedQueries({ @NamedQuery(name = "NivelEvaluacion.findAll", query = "SELECT e FROM nivelevaluacion e") })
 public class NivelEvaluacion extends AEntity {
 

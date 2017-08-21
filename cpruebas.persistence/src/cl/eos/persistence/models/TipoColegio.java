@@ -11,10 +11,14 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import cl.eos.persistence.AEntity;
 
 @Entity(name = "tipocolegio")
+@Table( name = "tipocolegio",
+schema="cpruebas_comun")
+
 @NamedQueries({ @NamedQuery(name = "TipoColegio.findAll", query = "SELECT e FROM tipocolegio e order by e.name") })
 
 public class TipoColegio extends AEntity {
