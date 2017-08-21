@@ -6,10 +6,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 
 import cl.eos.persistence.AEntity;
 
 @Entity(name = "evaluacionejetematico")
+@Table( name = "evaluacionejetematico",
+schema="cpruebas_comun")
+
 @NamedQueries({ @NamedQuery(name = "EvaluacionEjeTematico.findAll", query = "SELECT e FROM evaluacionejetematico e") })
 public class EvaluacionEjeTematico extends AEntity {
 

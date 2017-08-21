@@ -6,10 +6,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 
 import cl.eos.persistence.AEntity;
 
 @Entity(name = "habilidad")
+@Table( name = "habilidad",
+schema="cpruebas_comun")
+
 @NamedQueries({ @NamedQuery(name = "Habilidad.findAll", query = "SELECT e FROM habilidad e order by e.name") })
 public class Habilidad extends AEntity {
     private static final long serialVersionUID = 1L;

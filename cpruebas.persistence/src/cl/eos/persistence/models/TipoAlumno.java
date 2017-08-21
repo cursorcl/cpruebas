@@ -6,10 +6,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 
 import cl.eos.persistence.AEntity;
 
 @Entity(name = "tipoalumno")
+@Table( name = "tipoalumno",
+schema="cpruebas_comun")
+
 @NamedQueries({ @NamedQuery(name = "TipoAlumno.findAll", query = "SELECT e FROM tipoalumno e order by e.id") })
 public class TipoAlumno extends AEntity {
 

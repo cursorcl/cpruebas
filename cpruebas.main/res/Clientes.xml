@@ -6,27 +6,20 @@
 		<direccion>-</direccion>
 		<fono>-</fono>
 		<email>-</email>
-		<alias>asuncion</alias>
+		<alias>cpr_asuncion</alias>
 	</Cliente>
 	<Cliente>
 		<rut>-</rut>
 		<nombre>Cauquenes</nombre>
 		<direccion>-</direccion>
 		<fono>-</fono>
-		<alias>multi_cpruebas</alias>
+		<alias>cpr_cauquenes</alias>
 	</Cliente>
 	<Cliente>
 		<rut>-</rut>
 		<nombre>Balmaceda</nombre>
 		<direccion>-</direccion>
 		<fono>-</fono>
-		<alias>balmaceda_cpruebas</alias>
+		<alias>cpr_balmaceda</alias>
 	</Cliente>		
-	<Cliente>
-		<rut>-</rut>
-		<nombre>CPruebas</nombre>
-		<direccion>-</direccion>
-		<fono>-</fono>
-		<alias>cpruebas</alias>
-	</Cliente>
 </Clientes>

@@ -8,10 +8,14 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 
 import cl.eos.persistence.AEntity;
 
 @Entity(name = "objetivo")
+@Table( name = "objetivo",
+schema="cpruebas_comun")
+
 @NamedQueries({ @NamedQuery(name = "Objetivo.findAll", query = "SELECT e FROM objetivo e order by e.name"),
         @NamedQuery(name = "Objetivo.findByTipoCurso", query = "SELECT e FROM objetivo e where e.tipoCurso.id = :tipoCursoId order by e.name "),
         @NamedQuery(name = "Objetivo.findByTipoCursoAsignatura", query = "SELECT e FROM objetivo e where e.tipoCurso.id = :tipoCursoId and e.asignatura.id = :asignaturaId order by e.name ") })

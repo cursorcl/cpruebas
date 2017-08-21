@@ -7,10 +7,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 
 import cl.eos.persistence.AEntity;
 
 @Entity(name = "tipoprueba")
+@Table( name = "tipoprueba",
+schema="cpruebas_comun")
+
 @NamedQueries({ @NamedQuery(name = "TipoPrueba.findAll", query = "SELECT e FROM tipoprueba e order by e.name") })
 public class TipoPrueba extends AEntity {
 

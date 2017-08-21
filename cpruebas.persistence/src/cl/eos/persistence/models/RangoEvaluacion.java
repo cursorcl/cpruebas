@@ -7,11 +7,15 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 import javax.persistence.Version;
 
 import cl.eos.persistence.AEntity;
 
 @Entity(name = "rangoevaluacion")
+@Table( name = "rangoevaluacion",
+schema="cpruebas_comun")
+
 @NamedQueries({ @NamedQuery(name = "RangoEvaluacion.findAll", query = "SELECT e FROM rangoevaluacion e") })
 public class RangoEvaluacion extends AEntity {
 
