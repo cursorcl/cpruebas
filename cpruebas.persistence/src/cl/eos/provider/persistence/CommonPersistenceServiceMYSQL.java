@@ -24,7 +24,6 @@ import javax.persistence.RollbackException;
 import org.eclipse.persistence.config.HintValues;
 import org.eclipse.persistence.config.QueryHints;
 
-import cl.eos.Environment;
 import cl.eos.imp.view.ProgressForm;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.interfaces.entity.IPersistenceListener;
@@ -44,9 +43,9 @@ import javafx.stage.FileChooser;
  *
  * @author cursor
  */
-public class PersistenceServiceMYSQL implements IPersistenceService {
+public class CommonPersistenceServiceMYSQL implements IPersistenceService {
 
-	static final Logger LOG = Logger.getLogger(PersistenceServiceMYSQL.class.getName());
+	static final Logger LOG = Logger.getLogger(CommonPersistenceServiceMYSQL.class.getName());
 	private final static String NAME_COMUN = "_comun";
 
 	@PersistenceContext(unitName = "_comun")
@@ -57,20 +56,20 @@ public class PersistenceServiceMYSQL implements IPersistenceService {
 	/**
 	 * Constructor de la clase.
 	 */
-	public PersistenceServiceMYSQL() {
+	public CommonPersistenceServiceMYSQL() {
 
 		final Properties props = new Properties();
 
 		props.put("javax.persistence.jdbc.user", "eosorio");
 		props.put("javax.persistence.jdbc.password", "_l2j1rs2");
 		props.put("javax.persistence.jdbc.url",
-				String.format("jdbc:mysql://170.239.86.231:3306/%s", Environment.database));
+				String.format("jdbc:mysql://170.239.86.231:3306/cpruebas_comun"));
 		props.put("javax.persistence.jdbc.driver", "com.mysql.jdbc.Driver");
 		props.put("eclipselink.allow-zero-id", "true");
 		props.put("eclipselink.query-results-cache", "false");
 		props.put("eclipselink.cache.shared.default", "false");
 
-		eFactoryComun = Persistence.createEntityManagerFactory(PersistenceServiceMYSQL.NAME_COMUN, props);
+		eFactoryComun = Persistence.createEntityManagerFactory(CommonPersistenceServiceMYSQL.NAME_COMUN, props);
 		eFactoryComun.getCache().evictAll();
 	}
 
@@ -96,7 +95,7 @@ public class PersistenceServiceMYSQL implements IPersistenceService {
 			res = query.executeUpdate();
 			eManager.getTransaction().commit();
 		} catch (final Exception e) {
-			PersistenceServiceMYSQL.LOG.severe("Error en el executeUpdate de:" + namedQuery + " / " + e.getMessage());
+			CommonPersistenceServiceMYSQL.LOG.severe("Error en el executeUpdate de:" + namedQuery + " / " + e.getMessage());
 			eManager.getTransaction().rollback();
 
 		}
@@ -129,7 +128,7 @@ public class PersistenceServiceMYSQL implements IPersistenceService {
 						eManager.getTransaction().commit();
 					} catch (final Exception e) {
 						eManager.getTransaction().rollback();
-						PersistenceServiceMYSQL.LOG
+						CommonPersistenceServiceMYSQL.LOG
 								.severe("Error en el find del namedQuery:" + namedQuery + " / " + e.getMessage());
 					}
 
@@ -166,7 +165,7 @@ public class PersistenceServiceMYSQL implements IPersistenceService {
 						eManager.getTransaction().commit();
 					} catch (final Exception e) {
 						eManager.getTransaction().rollback();
-						PersistenceServiceMYSQL.LOG.severe(
+						CommonPersistenceServiceMYSQL.LOG.severe(
 								"Error en el findAll de la entidad:" + entityClazz.getName() + " / " + e.getMessage());
 					}
 				}
@@ -231,7 +230,7 @@ public class PersistenceServiceMYSQL implements IPersistenceService {
 						lresult = query.setLockMode(LockModeType.PESSIMISTIC_WRITE).getResultList();
 					} catch (final Exception e) {
 						eManager.getTransaction().rollback();
-						PersistenceServiceMYSQL.LOG.severe("Error en el findByAllId de la entidad:"
+						CommonPersistenceServiceMYSQL.LOG.severe("Error en el findByAllId de la entidad:"
 								+ entityClazz.getName() + " / " + e.getMessage());
 					}
 				}
@@ -266,7 +265,7 @@ public class PersistenceServiceMYSQL implements IPersistenceService {
 						eManager.getTransaction().commit();
 					} catch (final Exception e) {
 						eManager.getTransaction().rollback();
-						PersistenceServiceMYSQL.LOG.severe(
+						CommonPersistenceServiceMYSQL.LOG.severe(
 								"Error en el findById de la entidad:" + entityClazz.getName() + " / " + e.getMessage());
 					}
 
@@ -301,7 +300,7 @@ public class PersistenceServiceMYSQL implements IPersistenceService {
 						eManager.getTransaction().commit();
 					} catch (final Exception e) {
 						eManager.getTransaction().rollback();
-						PersistenceServiceMYSQL.LOG.severe("Error en el findByName de la entidad:"
+						CommonPersistenceServiceMYSQL.LOG.severe("Error en el findByName de la entidad:"
 								+ entityClazz.getName() + " / " + e.getMessage());
 					}
 
@@ -339,7 +338,7 @@ public class PersistenceServiceMYSQL implements IPersistenceService {
 				eManager.getTransaction().commit();
 			} catch (final Exception e) {
 				eManager.getTransaction().rollback();
-				PersistenceServiceMYSQL.LOG
+				CommonPersistenceServiceMYSQL.LOG
 						.severe("Error en el find del namedQuery:" + namedQuery + " / " + e.getMessage());
 			}
 
@@ -367,7 +366,7 @@ public class PersistenceServiceMYSQL implements IPersistenceService {
 				eManager.getTransaction().commit();
 			} catch (final Exception e) {
 				eManager.getTransaction().rollback();
-				PersistenceServiceMYSQL.LOG
+				CommonPersistenceServiceMYSQL.LOG
 						.severe("Error en el findById de la entidad:" + entityClazz.getName() + " / " + e.getMessage());
 			}
 
@@ -547,7 +546,7 @@ public class PersistenceServiceMYSQL implements IPersistenceService {
 			eManager.close();
 		} catch (final RollbackException exception) {
 			mEntity = null;
-			PersistenceServiceMYSQL.LOG.severe(exception.getMessage());
+			CommonPersistenceServiceMYSQL.LOG.severe(exception.getMessage());
 		}
 		return mEntity;
 	}

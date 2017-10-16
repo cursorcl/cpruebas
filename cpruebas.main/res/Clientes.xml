@@ -21,5 +21,13 @@
 		<direccion>-</direccion>
 		<fono>-</fono>
 		<alias>cpr_balmaceda</alias>
-	</Cliente>		
+	</Cliente>
+	
+	<Cliente>
+		<rut>-</rut>
+		<nombre>Simce</nombre>
+		<direccion>-</direccion>
+		<fono>-</fono>
+		<alias>cpr_simce</alias>
+	</Cliente>			
 </Clientes>

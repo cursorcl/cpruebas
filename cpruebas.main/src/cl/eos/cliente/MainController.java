@@ -11,6 +11,7 @@ import cl.eos.ClientesActivator;
 import cl.eos.ColegiosActivator;
 import cl.eos.CursosActivator;
 import cl.eos.EjesTematicosActivator;
+import cl.eos.Environment;
 import cl.eos.EvaluacionEjeTematicoActivator;
 import cl.eos.HabilidadesActivator;
 import cl.eos.NivelEvaluacionActivator;
@@ -25,6 +26,7 @@ import cl.eos.exception.ExceptionBD;
 import cl.eos.imp.view.WindowButtons;
 import cl.eos.imp.view.WindowManager;
 import cl.eos.interfaces.IActivator;
+import cl.eos.persistence.models.Clientes;
 import cl.eos.provider.persistence.PersistenceServiceFactory;
 import cl.eos.rangoslectura.RangosLecturaActivator;
 import cl.eos.util.ExcelSheetReader;
@@ -98,7 +100,7 @@ public class MainController {
     private MenuItem mnuComprensionLectora;
     @FXML
     private MenuItem mnuRangoLectores;
-    
+    @FXML
     private Label txtCliente;
 
     @FXML
@@ -282,6 +284,7 @@ public class MainController {
             final IActivator activator = new ListadoPruebasActivator();
             WindowManager.getInstance().show(activator.getView());
         });
+        txtCliente.setText(Environment.client);
     }
 
     public void setStage(Stage stage) {

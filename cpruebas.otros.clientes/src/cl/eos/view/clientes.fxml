@@ -13,9 +13,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="479.0" prefWidth="1196.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.ClientesView">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="479.0" prefWidth="1178.0" styleClass="sample-page" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.view.ClientesView">
    <left>
-      <AnchorPane prefHeight="400.0" prefWidth="248.0" BorderPane.alignment="CENTER">
+      <AnchorPane prefHeight="454.0" prefWidth="235.0" BorderPane.alignment="CENTER">
          <children>
             <TextField fx:id="txtRut" layoutX="10.0" layoutY="36.0" prefHeight="25.0" prefWidth="193.0" promptText="Rut" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" />
             <TextField fx:id="txtNombre" layoutX="10.0" layoutY="82.0" prefHeight="25.0" prefWidth="191.0" promptText="Nombre" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" />
@@ -36,21 +36,21 @@
       </AnchorPane>
    </left>
    <center>
-      <TableView fx:id="tblClientes" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <TableView fx:id="tblClientes" prefHeight="454.0" prefWidth="903.0" BorderPane.alignment="CENTER">
         <columns>
           <TableColumn fx:id="colRut" prefWidth="86.0" text="RUT" />
-          <TableColumn fx:id="colNombre" prefWidth="194.0" text="NOMBRE" />
-            <TableColumn fx:id="colContacto" prefWidth="199.0" text="CONTACTO" />
-            <TableColumn fx:id="colDireccion" prefWidth="203.0" text="DIRECCION" />
-            <TableColumn fx:id="colFono" prefWidth="101.0" text="TELEFONO" />
-            <TableColumn fx:id="colEmail" prefWidth="87.0" text="E-MAIL" />
-            <TableColumn fx:id="colFantasia" prefWidth="75.0" text="FANTASIA" />
+          <TableColumn fx:id="colNombre" prefWidth="176.0" text="NOMBRE" />
+            <TableColumn fx:id="colContacto" prefWidth="179.0" text="CONTACTO" />
+            <TableColumn fx:id="colDireccion" prefWidth="216.0" text="DIRECCION" />
+            <TableColumn fx:id="colFono" prefWidth="115.0" text="TELEFONO" />
+            <TableColumn fx:id="colEmail" prefWidth="76.0" text="E-MAIL" />
+            <TableColumn fx:id="colFantasia" prefWidth="97.0" text="FANTASIA" />
         </columns>
          <contextMenu>
             <ContextMenu>
               <items>
                 <MenuItem fx:id="mnuItemEditar" mnemonicParsing="false" text="Modificar" />
-                  <MenuItem fx:id="mnuEliminar" mnemonicParsing="false" text="Eliminar" />
+                  <MenuItem fx:id="mnuItemEliminar" mnemonicParsing="false" text="Eliminar" />
               </items>
             </ContextMenu>
          </contextMenu>
@@ -61,10 +61,11 @@
         <menus>
           <Menu mnemonicParsing="false" text="Archivo">
             <items>
-              <MenuItem mnemonicParsing="false" text="Grabar">
+              <MenuItem fx:id="mnuGrabar" mnemonicParsing="false" text="Grabar">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="G" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator></MenuItem>
+                  <MenuItem fx:id="mnuEliminar" mnemonicParsing="false" text="Eliminar" />
             </items>
           </Menu>
         </menus>

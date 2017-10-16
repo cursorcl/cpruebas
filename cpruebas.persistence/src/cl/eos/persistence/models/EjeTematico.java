@@ -11,8 +11,7 @@ import javax.persistence.Table;
 import cl.eos.persistence.AEntity;
 
 @Entity(name = "ejetematico")
-@Table( name = "ejetematico",
-schema="cpruebas_comun")
+@Table( name = "ejetematico",schema="cpruebas_comun")
 
 @NamedQueries({ @NamedQuery(name = "EjeTematico.findAll", query = "SELECT e FROM ejetematico e order by e.name"),
         @NamedQuery(name = "EjeTematico.findByAsigntura", query = "Select e FROM ejetematico e WHERE e.asignatura.id = :idAsignatura") })
