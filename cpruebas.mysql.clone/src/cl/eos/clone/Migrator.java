@@ -115,35 +115,79 @@ public class Migrator {
 
 	}
 
-	public static void main(String[] args) {
+	/**
+	 * Obtiene la lista de bases de datos del proyecto.
+	 * 
+	 * Corresponden al proyecto las bases de datos cpr_....
+	 * 
+	 * @return Lista de String con los nombres de bases de datos.
+	 */
+	public static List<String> databases()
+	{
+		List<String> databases =  new ArrayList<>();
+		
+		
 		try {
-
 			List<String> largs = new ArrayList<String>();
-
-			String exec = Migrator.class.getResource("/res/clone.bat").getFile();
+			String exec = Migrator.class.getResource("/res/databases.bat").getFile();
 			File directory = new File(Migrator.class.getResource("/res/").getFile());
-
 			largs.add(exec);
-			largs.add(args[0]);
+			
 			ProcessBuilder mySQLPorcessBuilder = new ProcessBuilder(largs);
 
 			mySQLPorcessBuilder.directory(directory);
 			mySQLPorcessBuilder.redirectErrorStream(true);
-			final Process procObject = mySQLPorcessBuilder.start();
 
+			final Process procObject = mySQLPorcessBuilder.start();
 			String cmdOutput = null;
 			final BufferedReader cmdStreamReader = new BufferedReader(
 					new InputStreamReader(procObject.getInputStream()));
 
 			while ((cmdOutput = cmdStreamReader.readLine()) != null) {
-				System.out.println(cmdOutput);
+				databases.add(cmdOutput);
 			}
 			procObject.waitFor();
 
-		} catch (final IOException e) {
+		
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (final Throwable th) {
-			th.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+
+		return databases;
+	}
+	public static void main(String[] args) {
+			try {
+				List<String> largs = new ArrayList<String>();
+				String exec = Migrator.class.getResource("/res/databases.bat").getFile();
+				File directory = new File(Migrator.class.getResource("/res/").getFile());
+				largs.add(exec);
+				
+				ProcessBuilder mySQLPorcessBuilder = new ProcessBuilder(largs);
+
+				mySQLPorcessBuilder.directory(directory);
+				mySQLPorcessBuilder.redirectErrorStream(true);
+
+				final Process procObject = mySQLPorcessBuilder.start();
+				String cmdOutput = null;
+				final BufferedReader cmdStreamReader = new BufferedReader(
+						new InputStreamReader(procObject.getInputStream()));
+
+				while ((cmdOutput = cmdStreamReader.readLine()) != null) {
+					System.out.println(cmdOutput);
+				}
+				procObject.waitFor();
+
+			
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	}
 }

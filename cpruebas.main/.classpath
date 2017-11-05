@@ -35,5 +35,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.persistence.model"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.persistence.factory"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.otros.clientes"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.mysql.clone"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

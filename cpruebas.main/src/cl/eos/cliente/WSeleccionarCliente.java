@@ -43,6 +43,7 @@ public class WSeleccionarCliente extends Application {
         try {
             WSeleccionarCliente.processProductAuthentication(WSeleccionarCliente.PRODUCT_ID);
             Application.setUserAgentStylesheet(Application.STYLESHEET_MODENA);
+            
             final FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ClientSelection.fxml"));
             final BorderPane root = (BorderPane) fxmlLoader.load();
             final SeleccionCliente controller = (SeleccionCliente) fxmlLoader.getController();

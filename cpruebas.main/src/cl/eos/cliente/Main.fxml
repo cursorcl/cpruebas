@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.Group?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.effect.Bloom?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.effect.Light.Distant?>
+<?import javafx.scene.effect.Lighting?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.input.KeyCodeCombination?>
@@ -26,12 +31,19 @@
                <children>
                   <AnchorPane id="windows-title" fx:id="pnlWindow" prefHeight="62.0" prefWidth="1024.0">
                      <children>
-                        <HBox prefHeight="100.0" prefWidth="1020.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <HBox prefHeight="100.0" prefWidth="1020.0" style="-fx-border-width: 0;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <ImageView fitHeight="60.0" fitWidth="347.0">
                                  <image>
                                     <Image url="@images/logo128.png" />
                                  </image>
+                                 <effect>
+                                    <Lighting bumpInput="$null" diffuseConstant="2.0" specularConstant="0.88" specularExponent="39.07">
+                                       <light>
+                                          <Light.Distant />
+                                       </light>
+                                    </Lighting>
+                                 </effect>
                               </ImageView>
                               <Label alignment="CENTER" text="V. 3.1" textAlignment="CENTER" textFill="WHITE">
                                  <font>
@@ -40,15 +52,28 @@
                                  <HBox.margin>
                                     <Insets top="25.0" />
                                  </HBox.margin>
+                                 <effect>
+                                    <DropShadow />
+                                 </effect>
                               </Label>
-                              <AnchorPane id="SearchBox" prefHeight="62.0" prefWidth="191.0" HBox.hgrow="ALWAYS">
+                              <AnchorPane prefHeight="62.0" prefWidth="191.0" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Label fx:id="txtCliente" alignment="CENTER" contentDisplay="CENTER" layoutX="254.0" layoutY="6.0" prefHeight="26.0" prefWidth="308.0" text="Cliente" textFill="#a40808" AnchorPane.rightAnchor="42.0">
+                                    <Label fx:id="txtCliente" alignment="TOP_RIGHT" contentDisplay="CENTER" layoutX="254.0" layoutY="6.0" prefHeight="26.0" prefWidth="308.0" text="Cliente" textFill="WHITE" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="10.0">
                                        <font>
-                                          <Font name="Consolas Bold Italic" size="22.0" />
+                                          <Font name="Consolas Bold Italic" size="32.0" />
                                        </font>
+                                       <effect>
+                                          <Bloom>
+                                             <input>
+                                                <DropShadow />
+                                             </input>
+                                          </Bloom>
+                                       </effect>
                                     </Label>
-                                 </children></AnchorPane>
+                                 </children>
+                                 <cursor>
+                                    <Cursor fx:constant="DEFAULT" />
+                                 </cursor></AnchorPane>
                            </children>
                         </HBox>
                      </children>

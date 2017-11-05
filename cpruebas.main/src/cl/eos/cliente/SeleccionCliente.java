@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import cl.eos.Environment;
+import cl.eos.clone.Migrator;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.interfaces.entity.IPersistenceListener;
 import cl.eos.persistence.models.Clientes;
@@ -47,6 +48,7 @@ public class SeleccionCliente {
 	@FXML
 	void initialize() {
 
+		List<String> databases = Migrator.databases();
 		PersistenceServiceFactory.getCommonPersistenceService().findAll(Clientes.class, new IPersistenceListener() {
 
 			@Override
@@ -63,11 +65,33 @@ public class SeleccionCliente {
 			public void onFindAllFinished(List<Object> list) {
 				if (list == null)
 					return;
+				StringBuffer buffer =  null;
 				if (list == null || list.isEmpty() || !(list.get(0) instanceof Clientes)) {
 					return;
 				}
 				for (Object obj : list) {
-					lstClientes.add((Clientes) obj);
+					cliente = (Clientes) obj;
+					if (databases.contains("cpr_" + cliente.getNombrefantasia().toLowerCase())) {
+						lstClientes.add(cliente);
+					} else {
+						if(buffer == null)
+						{
+							buffer = new StringBuffer();
+							buffer.append("Estos clientes no tienen su base de datos:");
+						}
+						buffer.append(cliente.getName());
+						buffer.append(",");
+					}
+				}
+				if(buffer != null)
+				{
+					buffer.replace(buffer.length() - 1, buffer.length(), ".");
+					
+					final Alert alert = new Alert(AlertType.ERROR);
+					alert.setTitle("Inconsistencia Clientes.");
+					alert.setHeaderText("Cliente sin base de datos. ");
+					alert.setContentText(buffer.toString());
+					alert.showAndWait();
 				}
 				cmbClientes.setItems(lstClientes);
 			}
@@ -79,7 +103,7 @@ public class SeleccionCliente {
 		});
 		btnAccept.setOnAction(event -> {
 			cliente = cmbClientes.getSelectionModel().getSelectedItem();
-			
+
 			if (cliente != null) {
 				Environment.database = "cpr_" + cliente.getNombrefantasia();
 				Environment.client = cliente.getName();

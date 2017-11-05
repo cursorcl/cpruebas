@@ -26,7 +26,6 @@ import cl.eos.exception.ExceptionBD;
 import cl.eos.imp.view.WindowButtons;
 import cl.eos.imp.view.WindowManager;
 import cl.eos.interfaces.IActivator;
-import cl.eos.persistence.models.Clientes;
 import cl.eos.provider.persistence.PersistenceServiceFactory;
 import cl.eos.rangoslectura.RangosLecturaActivator;
 import cl.eos.util.ExcelSheetReader;

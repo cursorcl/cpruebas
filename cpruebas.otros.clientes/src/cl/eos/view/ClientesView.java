@@ -115,6 +115,7 @@ public class ClientesView extends AFormView {
 			tblClientes.setItems(pruebas);
 		}
 		mnuGrabar.setOnAction(e -> grabar());
+		btnGrabar.setOnAction(e -> grabar());
 		mnuItemEditar.setOnAction(e -> editar());
 		mnuEliminar.setOnAction(e -> eliminar());
 		mnuItemEliminar.setOnAction(e -> eliminar());
@@ -176,7 +177,7 @@ public class ClientesView extends AFormView {
 					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		if (Migrator.createClient(getName()) != 0) {
+		if (Migrator.createClient(name) != 0) {
 			JOptionPane.showMessageDialog(null, "No se ha podido crear la base de datos",
 					"Error al crear base de datos", JOptionPane.ERROR_MESSAGE);
 			return;
