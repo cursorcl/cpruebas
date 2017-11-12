@@ -54,7 +54,7 @@ public interface IModel {
      *            A quien se le notifica del termino de la ejecucion.
      */
     void findAll(Class<? extends IEntity> entityClazz, IPersistenceListener listener);
-
+    
     void findByAllId(Class<? extends IEntity> entityClazz, Object[] id);
 
     void findByAllId(Class<? extends IEntity> entityClazz, Object[] id, IPersistenceListener listener);
@@ -70,7 +70,7 @@ public interface IModel {
     IEntity findSynchroById(Class<? extends IEntity> entityClazz, Long id);
     
     List<IEntity> findSynchro(final String namedQuery, final Map<String, Object> parameters);
-
+    
     /**
      * Realiza la busqueda del elemento que tiene el mismo identificador de
      * entity en la persistencia.
@@ -125,4 +125,8 @@ public interface IModel {
      *            El elemento a ser grabado.
      */
     IEntity update(IEntity entity);
+    
+    
+    
+    void findAll(Class<? extends IEntity> entityClazz, IPersistenceListener listener, int begin, int last);
 }

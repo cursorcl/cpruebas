@@ -553,7 +553,47 @@ public class PersistenceServiceMYSQL implements IPersistenceService {
 	}
 
 
-	
+	@Override
+	public void findAll(Class<? extends IEntity> entityClazz, IPersistenceListener listener, int begin, int last) {
+
+		final Task<List<Object>> task = new Task<List<Object>>() {
+			@SuppressWarnings("unchecked")
+			@Override
+			protected List<Object> call() throws Exception {
+				List<Object> lresults = null;
+				final String findAll = entityClazz.getSimpleName() + ".findAll";
+
+				final EntityManager eManager = eFactoryComun.createEntityManager();
+				eManager.getTransaction().begin();
+				final Query query = eManager.createNamedQuery(findAll);
+				
+				final int nroRegs = last - begin + 1;
+				if (nroRegs > 0) {
+					query.setFirstResult(begin);
+					query.setMaxResults(nroRegs);
+				}
+
+				if (query != null) {
+					query.setHint(QueryHints.CACHE_STORE_MODE, HintValues.TRUE);
+					query.setLockMode(LockModeType.PESSIMISTIC_WRITE);
+					try {
+						lresults = query.getResultList();
+						eManager.getTransaction().commit();
+					} catch (final Exception e) {
+						eManager.getTransaction().rollback();
+						CommonPersistenceServiceMYSQL.LOG.severe(
+								"Error en el findAll de la entidad:" + entityClazz.getName() + " / " + e.getMessage());
+					}
+				}
+
+				eManager.close();
+				return lresults;
+			}
+		};
+		task.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED, t -> listener.onFindAllFinished(task.getValue()));
+		new Thread(task).start();
+		
+	}
 	
 
 }

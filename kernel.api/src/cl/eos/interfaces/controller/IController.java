@@ -62,8 +62,8 @@ public interface IController {
 
     IEntity findSynchroById(Class<? extends IEntity> entityClazz, Long id);
     
-    List<IEntity> findSynchro(String namedQuery, Map<String, Object> parameters);
-
+    List<? extends IEntity> findSynchro(String namedQuery, Map<String, Object> parameters);
+    
     /**
      * Obtiene el modelo.
      * 

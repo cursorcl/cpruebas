@@ -244,5 +244,12 @@ public class RestPersistenceServiceRESTFUL implements IPersistenceService {
         RestfulClient.put(entity, entity.getId());
         return entity;
     }
+    
+    
+	@Override
+	public void findAll(Class<? extends IEntity> entityClazz, IPersistenceListener listener, int begin, int last) {
+
+		
+	}
 
 }

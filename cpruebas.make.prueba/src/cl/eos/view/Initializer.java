@@ -1,14 +1,33 @@
 package cl.eos.view;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.text.Normalizer;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
+import javax.xml.bind.DatatypeConverter;
+
+import cl.eos.persistence.models.Alternativas;
+import cl.eos.persistence.models.EjeTematico;
+import cl.eos.persistence.models.Habilidad;
+import cl.eos.persistence.models.Imagenes;
+import cl.eos.persistence.models.Objetivo;
+import cl.eos.persistence.models.Preguntas;
+import cl.eos.persistence.models.Prueba;
+import cl.eos.persistence.models.RespuestasEsperadasPrueba;
+import cl.eos.util.MapBuilder;
 import javafx.beans.value.ChangeListener;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
@@ -44,23 +63,6 @@ public class Initializer {
             defPrueba.spnForma.setNumber(new BigDecimal(1));
             defPrueba.spnExigencia.setNumber(new BigDecimal(60));
             defPrueba.fecFeha.setValue(LocalDate.now());
-        } else {
-            // Prueba prueba = defPrueba.prueba;
-            // defPrueba.cmbAsignatura.;
-            // defPrueba.cmbProfesor;
-            // defPrueba.spnExigencia;
-            // defPrueba.spnPjeBase;
-            // defPrueba.cmbNivelEvaluacion;
-            // defPrueba.cmbTipoPrueba;
-            // defPrueba.cmbCurso;
-            // defPrueba.txtNombre;
-            // defPrueba.spnNroAlternativas;
-            // defPrueba.spnNroPreguntas;
-            // defPrueba.spnForma;
-            // defPrueba.fecFeha;
-            //
-            // ListView<ItemList> lstPreguntas;
-
         }
 
     }
@@ -84,7 +86,6 @@ public class Initializer {
 
         defPrueba.group = new ToggleGroup();
         defPrueba.chkOpcionA.setToggleGroup(defPrueba.group);
-        defPrueba.chkOpcionA.setSelected(true);
         defPrueba.chkOpcionC.setToggleGroup(defPrueba.group);
         defPrueba.chkOpcionB.setToggleGroup(defPrueba.group);
         defPrueba.chkOpcionE.setToggleGroup(defPrueba.group);
@@ -92,6 +93,7 @@ public class Initializer {
         defPrueba.chkOpcionF.setToggleGroup(defPrueba.group);
         defPrueba.chkOpcionV.setToggleGroup(defPrueba.group);
         defPrueba.chkOpcionMental.setToggleGroup(defPrueba.group);
+        defPrueba.chkOpcionA.setSelected(true);
 
         defPrueba.spnExigencia.setMinValue(new BigDecimal(0));
         defPrueba.spnExigencia.setMaxValue(new BigDecimal(80));
@@ -232,6 +234,7 @@ public class Initializer {
     }
 
     private static void initializeInteraction(DefinirPrueba defPrueba) {
+    	
         defPrueba.txtPregunta.textProperty().addListener((observable, oldValue, newValue) -> {
             if (Initializer.selected == null)
                 return;
@@ -297,7 +300,7 @@ public class Initializer {
                 .addListener((observable, oldValue, newValue) -> {
                     if (Initializer.selected == null)
                         return;
-                    Initializer.selected.ability = newValue;
+                    Initializer.selected.hability = newValue;
                 });
         defPrueba.cmbObjetivos.getSelectionModel().selectedItemProperty()
                 .addListener((observable, oldValue, newValue) -> {
@@ -364,7 +367,7 @@ public class Initializer {
                     Initializer.selected = newValue;
                     defPrueba.txtPregunta.setText(Initializer.selected.question);
                     defPrueba.cmbEjesTematicos.getSelectionModel().select(Initializer.selected.thematic);
-                    defPrueba.cmbHabilidades.getSelectionModel().select(Initializer.selected.ability);
+                    defPrueba.cmbHabilidades.getSelectionModel().select(Initializer.selected.hability);
                     defPrueba.cmbObjetivos.getSelectionModel().select(Initializer.selected.objetive);
                     if (Initializer.selected.alternatives != null && !Initializer.selected.alternatives.isEmpty()) {
                         for (int n1 = 0; n1 < Initializer.selected.alternatives.size(); n1++)
@@ -374,9 +377,12 @@ public class Initializer {
                         for (int n2 = 0; n2 < Initializer.selected.alternatives.size(); n2++)
                             Initializer.images[n2].setImage(Initializer.selected.images.get(n2));
                     }
-                    final String ranswer = Initializer.selected.rightAnswer;
+                    String ranswer = Initializer.selected.rightAnswer;
                     if (ranswer == null || ranswer.isEmpty())
-                        return;
+                    {
+                    	Initializer.selected.rightAnswer = "A";
+                    }
+                    ranswer = Initializer.selected.rightAnswer;
                     defPrueba.chkOpcionA.setSelected(ranswer.equals("A"));
                     defPrueba.chkOpcionB.setSelected(ranswer.equals("B"));
                     defPrueba.chkOpcionC.setSelected(ranswer.equals("C"));
@@ -387,5 +393,105 @@ public class Initializer {
                     defPrueba.chkOpcionMental.setSelected(ranswer.equals("M"));
 
                 });
+        defPrueba.lstPreguntas.getSelectionModel().select(0);
+        
     }
+    
+    
+    @SuppressWarnings("unchecked")
+	public static void setPrueba(DefinirPrueba defPrueba, Prueba prueba)
+    {
+    	
+        defPrueba.txtNombre.setDisable(true);
+        defPrueba.spnPjeBase.setDisable(true);
+        defPrueba.spnNroAlternativas.setDisable(true);
+        defPrueba.spnForma.setDisable(true);
+        defPrueba.fecFeha.setDisable(true);
+        defPrueba.cmbAsignatura.setDisable(true);
+
+        Integer nroAlternativas = prueba.getAlternativas();
+        nroAlternativas = nroAlternativas == null || nroAlternativas < 3 ? 3 : nroAlternativas;
+        final Integer nroPreguntas = prueba.getNroPreguntas();
+
+
+        // Asignatura
+        defPrueba.cmbAsignatura.getSelectionModel().select(prueba.getAsignatura());
+        // Curso
+        defPrueba.cmbCurso.getSelectionModel().select(prueba.getCurso());
+        // Profesor
+        defPrueba.cmbProfesor.getSelectionModel().select(prueba.getProfesor());
+        // Tipo de prueba
+        defPrueba.cmbTipoPrueba.getSelectionModel().select(prueba.getTipoPrueba());
+        // Nivel de evaluación
+        defPrueba.cmbNivelEvaluacion.getSelectionModel().select(prueba.getNivelEvaluacion());
+
+        defPrueba.txtNombre.setText(prueba.getName());
+        defPrueba.spnExigencia.setNumber(new BigDecimal(prueba.getExigencia()));
+        defPrueba.spnPjeBase.setNumber(new BigDecimal(prueba.getPuntajeBase()));
+        defPrueba.spnNroAlternativas.setNumber(new BigDecimal(nroAlternativas));
+        defPrueba.spnNroPreguntas.setNumber(new BigDecimal(nroPreguntas));
+        defPrueba.spnForma.setNumber(new BigDecimal(prueba.getNroFormas()));
+        defPrueba.fecFeha.setValue(prueba.getFechaLocal());
+
+
+
+        // Se obtienen las Preguntas, respuestas esperadas, alternativas, imágenes, eje temático,
+        // habilidad y objetivo por cada una
+
+
+
+        Map<String, Object> params = MapBuilder.<String, Object>unordered().put("idPrueba", prueba.getId()).build();
+
+        final List<RespuestasEsperadasPrueba> lstRespEsperadas = prueba.getRespuestas();
+        final List<Preguntas> lstPreguntas = (List<Preguntas>) defPrueba.getController().findSynchro("Preguntas.findByPrueba", params);
+
+        final ObservableList<ItemList> olstPreguntas = FXCollections.observableArrayList(Stream.generate(ItemList::new)
+            .limit(defPrueba.spnNroPreguntas.getNumber().intValue()).collect(Collectors.toList()));
+
+        if (lstRespEsperadas == null || lstRespEsperadas.isEmpty()) {
+          IntStream.range(0, nroPreguntas).forEach(idx -> olstPreguntas.get(idx).nro = idx + 1);
+          defPrueba.lstPreguntas.setItems(olstPreguntas);
+        } else {
+          lstRespEsperadas.forEach(resp -> {
+        	  
+            List<Alternativas> lstAlternativas =resp.getAlternativas();
+            List<Imagenes> lstImagenes = resp.getImagenes();
+            EjeTematico eje = resp.getEjeTematico();
+            Habilidad hab = resp.getHabilidad();
+            Objetivo obj = resp.getObjetivo();
+
+            int n = resp.getNumero();
+            List<String> sAlternativas = lstAlternativas == null ? null
+                : lstAlternativas.stream().map(a -> a.getTexto()).collect(Collectors.toList());
+
+
+            List<Image> iImages = new ArrayList<>();
+            if (lstImagenes != null && !lstImagenes.isEmpty()) {
+              for (Imagenes img : lstImagenes) {
+                String base64 = img.getImage();
+                byte[] bytes = DatatypeConverter.parseBase64Binary(base64);
+                ByteArrayInputStream bin = new ByteArrayInputStream(bytes);
+                Image im = new Image(bin);
+                iImages.add(im);
+              }
+              if (lstImagenes.size() < 5)
+                for (int m = lstImagenes.size(); m <= lstImagenes.size(); m++)
+                  iImages.add(null);
+            } else {
+              int imgLen = iImages.size() == 0 ? 5 : iImages.size();
+              for (int m = 0; m < imgLen; m++)
+                iImages.add(null);
+            }
+            String pregunta = "";
+            if (lstPreguntas != null && lstPreguntas.size() > (n - 1)) {
+              pregunta = lstPreguntas.get(n - 1).getName();
+            }
+            ItemList item = new ItemList.Builder().hability(hab).alternatives(sAlternativas).images(iImages).objetive(obj)
+                .question(pregunta).thematic(eje).rightAnswer(resp.getRespuesta()).build(n);
+            olstPreguntas.set(n - 1, item);
+            defPrueba.lstPreguntas.setItems(olstPreguntas);
+          });
+        }
+    }
+    
 }

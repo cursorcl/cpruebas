@@ -62,8 +62,7 @@ public class CommonPersistenceServiceMYSQL implements IPersistenceService {
 
 		props.put("javax.persistence.jdbc.user", "eosorio");
 		props.put("javax.persistence.jdbc.password", "_l2j1rs2");
-		props.put("javax.persistence.jdbc.url",
-				String.format("jdbc:mysql://170.239.86.231:3306/cpruebas_comun"));
+		props.put("javax.persistence.jdbc.url", String.format("jdbc:mysql://170.239.86.231:3306/cpruebas_comun"));
 		props.put("javax.persistence.jdbc.driver", "com.mysql.jdbc.Driver");
 		props.put("eclipselink.allow-zero-id", "true");
 		props.put("eclipselink.query-results-cache", "false");
@@ -72,7 +71,6 @@ public class CommonPersistenceServiceMYSQL implements IPersistenceService {
 		eFactoryComun = Persistence.createEntityManagerFactory(CommonPersistenceServiceMYSQL.NAME_COMUN, props);
 		eFactoryComun.getCache().evictAll();
 	}
-
 
 	@Override
 	public void disconnect() {
@@ -95,7 +93,8 @@ public class CommonPersistenceServiceMYSQL implements IPersistenceService {
 			res = query.executeUpdate();
 			eManager.getTransaction().commit();
 		} catch (final Exception e) {
-			CommonPersistenceServiceMYSQL.LOG.severe("Error en el executeUpdate de:" + namedQuery + " / " + e.getMessage());
+			CommonPersistenceServiceMYSQL.LOG
+					.severe("Error en el executeUpdate de:" + namedQuery + " / " + e.getMessage());
 			eManager.getTransaction().rollback();
 
 		}
@@ -503,7 +502,7 @@ public class CommonPersistenceServiceMYSQL implements IPersistenceService {
 	@Override
 	public IEntity save(IEntity entity) {
 		final EntityManager eManager = eFactoryComun.createEntityManager();
-		if(eManager == null)
+		if (eManager == null)
 			return null;
 		eManager.getTransaction().begin();
 		final IEntity eMerged = eManager.merge(entity);
@@ -517,7 +516,7 @@ public class CommonPersistenceServiceMYSQL implements IPersistenceService {
 	public IEntity update(IEntity entity) {
 
 		final EntityManager eManager = eFactoryComun.createEntityManager();
-		if(eManager == null)
+		if (eManager == null)
 			return null;
 
 		eManager.getTransaction().begin();
@@ -528,15 +527,15 @@ public class CommonPersistenceServiceMYSQL implements IPersistenceService {
 		eManager.close();
 		return mEntity;
 	}
-	
+
 	@Override
 	public IEntity delete(IEntity entity) {
 		IEntity mEntity = null;
 		try {
 			final EntityManager eManager = eFactoryComun.createEntityManager();
-			if(eManager == null)
+			if (eManager == null)
 				return null;
-			
+
 			eManager.getTransaction().begin();
 			mEntity = eManager.merge(entity);
 			eManager.lock(mEntity, LockModeType.PESSIMISTIC_WRITE);
@@ -551,8 +550,46 @@ public class CommonPersistenceServiceMYSQL implements IPersistenceService {
 		return mEntity;
 	}
 
+	@Override
+	public void findAll(Class<? extends IEntity> entityClazz, IPersistenceListener listener, int begin, int last) {
 
-	
-	
+		final Task<List<Object>> task = new Task<List<Object>>() {
+			@SuppressWarnings("unchecked")
+			@Override
+			protected List<Object> call() throws Exception {
+				List<Object> lresults = null;
+				final String findAll = entityClazz.getSimpleName() + ".findAll";
+
+				final EntityManager eManager = eFactoryComun.createEntityManager();
+				eManager.getTransaction().begin();
+				final Query query = eManager.createNamedQuery(findAll);
+
+				final int nroRegs = last - begin + 1;
+				if (nroRegs > 0) {
+					query.setFirstResult(begin);
+					query.setMaxResults(nroRegs);
+				}
+
+				if (query != null) {
+					query.setHint(QueryHints.CACHE_STORE_MODE, HintValues.TRUE);
+					query.setLockMode(LockModeType.PESSIMISTIC_WRITE);
+					try {
+						lresults = query.getResultList();
+						eManager.getTransaction().commit();
+					} catch (final Exception e) {
+						eManager.getTransaction().rollback();
+						CommonPersistenceServiceMYSQL.LOG.severe(
+								"Error en el findAll de la entidad:" + entityClazz.getName() + " / " + e.getMessage());
+					}
+				}
+
+				eManager.close();
+				return lresults;
+			}
+		};
+		task.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED, t -> listener.onFindAllFinished(task.getValue()));
+		new Thread(task).start();
+
+	}
 
 }

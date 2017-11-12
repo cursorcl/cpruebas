@@ -299,6 +299,9 @@ public class EvaluarPruebaView extends AFormView {
                 evalPrueba.setPrueba(prueba);
                 evalPrueba.setName(s);
             }
+            if(evalPrueba.getId() == null)
+            	evalPrueba = (EvaluacionPrueba) save(evalPrueba);
+            
             final List<PruebaRendida> lstPruebasRendidas = new ArrayList<>();
             for (final OTPruebaRendida otPRendida : tblListadoPruebas.getItems()) {
                 if (otPRendida.isRindioPrueba() && otPRendida.getRespuestas() != null
@@ -315,6 +318,7 @@ public class EvaluarPruebaView extends AFormView {
                     }
                 }
             }
+
             evalPrueba.setPruebasRendidas(lstPruebasRendidas);
             evalPrueba = (EvaluacionPrueba) save(evalPrueba);
             mnuGrabar.setDisable(true);

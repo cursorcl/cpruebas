@@ -137,9 +137,19 @@ public class DefinirPrueba extends AFormView {
 
     }
 
+    
     @Override
     public void onDataArrived(List<Object> list) {
         DataProcessor.process(list, this);
     }
+
+	public Prueba getPrueba() {
+		return prueba;
+	}
+
+	public void setPrueba(Prueba prueba) {
+		this.prueba = prueba;
+		
+	}
 
 }

@@ -101,6 +101,12 @@ public abstract class AModel implements IModel {
     	 return PersistenceServiceFactory.getPersistenceService().findSynchro(namedQuery, parameters);
     }
     
+    
+    public void findAll(Class<? extends IEntity> entityClazz, IPersistenceListener listener, int begin, int last)
+    {
+    	PersistenceServiceFactory.getPersistenceService().findAll(entityClazz, listener, begin, last);
+    }
+    
 
     @Override
     public IEntity get(IEntity entity) {

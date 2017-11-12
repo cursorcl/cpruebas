@@ -17,7 +17,6 @@ import cl.eos.persistence.models.NivelEvaluacion;
 import cl.eos.persistence.models.Profesor;
 import cl.eos.persistence.models.Prueba;
 import cl.eos.persistence.models.Prueba.Estado;
-import cl.eos.util.MapBuilder;
 import cl.eos.persistence.models.RangoEvaluacion;
 import cl.eos.persistence.models.TipoAlumno;
 import cl.eos.persistence.models.TipoColegio;
@@ -301,14 +300,9 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
 		prueba = tblListadoPruebas.getSelectionModel().getSelectedItem().getPrueba();
 		if (prueba == null)
 			return;
-
-		//view.setPrueba(prueba);
 		controller.findAll(Asignatura.class);
 		controller.findAll(Colegio.class);
 		controller.findAll(TipoAlumno.class);
-//		Map<String, Object> params = MapBuilder.<String, Object>unordered().put("pruebaId", prueba.getId()).build();
-//		controller.find("RespuestasEsperadasPrueba.findByPrueba", params, view);
-//		controller.find("EvaluacionPrueba.findByPrueba", params, view);
 	}
 
 	private void handlerXNivelObjetivos() {
@@ -358,6 +352,17 @@ public class ListadoPruebasView extends AFormView implements EventHandler<Action
 			if (prueba != null) {
 				if (!prueba.getEstado().equals(Estado.EVALUADA)) {
 					// TODO debo llamar la nueva creación de prueba con datos.
+
+					final DefinirPrueba definicion = (DefinirPrueba) show("/cl/eos/view/definir_prueba.fxml");
+					definicion.setPrueba(prueba);
+					controller.findAll(TipoCurso.class, definicion);
+					controller.findAll(Profesor.class, definicion);
+					controller.findAll(Asignatura.class, definicion);
+					controller.findAll(TipoPrueba.class, definicion);
+					controller.findAll(NivelEvaluacion.class, definicion);
+					controller.findAll(Curso.class, definicion);
+					controller.findAll(Habilidad.class, definicion);
+
 				} else {
 					final Alert info = new Alert(AlertType.INFORMATION);
 					info.setTitle("No se puede modificar.");

@@ -19,7 +19,6 @@ import org.jfree.util.Log;
 import cl.eos.common.Constants;
 import cl.eos.imp.view.AFormView;
 import cl.eos.imp.view.ProgressForm;
-import cl.eos.interfaces.entity.IEntity;
 import cl.eos.persistence.models.Asignatura;
 import cl.eos.persistence.models.Colegio;
 import cl.eos.persistence.models.EvaluacionPrueba;
@@ -355,6 +354,7 @@ public class ComparativoColegioXPregunta extends AFormView {
 		dlg.message("Esto tomará algunos minutos.");
 
 		final Task<Boolean> task = new Task<Boolean>() {
+			@SuppressWarnings("unchecked")
 			@Override
 			protected Boolean call() throws Exception {
 				Platform.runLater(new Runnable() {
@@ -370,7 +370,7 @@ public class ComparativoColegioXPregunta extends AFormView {
 				TipoAlumno tipoAlumno = cmbTipoAlumno.getValue();
 				Map<String, Object> params = MapBuilder.<String, Object>unordered().put("idColegio", colegio.getId())
 						.put("idAsignatura", asignatura.getId()).build();
-				List<IEntity> lstEntities = controller.findSynchro("EvaluacionPrueba.findEvaluacionByColegioAsig",
+				List<EvaluacionPrueba> lstEntities = (List<EvaluacionPrueba>) controller.findSynchro("EvaluacionPrueba.findEvaluacionByColegioAsig",
 						params);
 				if (lstEntities == null || lstEntities.isEmpty())
 					return Boolean.FALSE;
@@ -384,7 +384,7 @@ public class ComparativoColegioXPregunta extends AFormView {
 					updateProgress(n++, max);
 
 					params = MapBuilder.<String, Object>unordered().put("ideval", evaluacion.getId()).build();
-					List<IEntity> rendidas = controller.findSynchro("PruebaRendidaByEval.findAll", params);
+					List<PruebaRendida> rendidas = (List<PruebaRendida>) controller.findSynchro("PruebaRendidaByEval.findAll", params);
 					if (rendidas == null || rendidas.isEmpty())
 						return Boolean.FALSE;
 					makeReport(rendidas.stream().map(r -> (PruebaRendida) r).collect(Collectors.toList()), tipoAlumno);

@@ -14,14 +14,14 @@ public class ItemList {
     public static class Builder {
         private String question;
         private EjeTematico thematic;
-        private Habilidad ability;
+        private Habilidad hability;
         private Objetivo objetive;
         private List<String> alternatives;
         private List<Image> images;
         private String rightAnswer;
 
-        public Builder ability(Habilidad ability) {
-            this.ability = ability;
+        public Builder hability(Habilidad hability) {
+            this.hability = hability;
             return this;
         }
 
@@ -34,7 +34,7 @@ public class ItemList {
             final ItemList itemList = new ItemList(nro);
             itemList.question = question;
             itemList.thematic = thematic;
-            itemList.ability = ability;
+            itemList.hability = hability;
             itemList.objetive = objetive;
             itemList.alternatives = alternatives;
             itemList.images = images;
@@ -71,13 +71,21 @@ public class ItemList {
     int nro = 0;
     String question;
     EjeTematico thematic;
-    Habilidad ability;
+    Habilidad hability;
     Objetivo objetive;
     List<String> alternatives;
     List<Image> images;
 
     String rightAnswer;
 
+    public ItemList() {
+        this.nro = 1;
+        alternatives = Stream.generate(String::new).limit(5).collect(Collectors.toList());
+        images = new ArrayList<>(5);
+        for (int n = 0; n < 5; n++)
+            images.add(null);
+    }
+    
     public ItemList(int nro) {
         this.nro = nro;
         alternatives = Stream.generate(String::new).limit(5).collect(Collectors.toList());

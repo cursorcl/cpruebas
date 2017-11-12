@@ -44,8 +44,11 @@ public interface IFormView extends IView {
 
     void findByName(Class<? extends IEntity> entityClazz, String name, IPersistenceListener listener);
 
+    
+    
     IEntity findSynchroById(Class<? extends IEntity> entityClazz, Long id);
 
+    List<? extends IEntity> findSynchro(String namedQuery, Map<String, Object> parameters);
     /**
      * Metodo que se usa para enviar a grabar una entidad.
      * 

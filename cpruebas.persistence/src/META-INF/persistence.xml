@@ -31,6 +31,7 @@
 		<class>cl.eos.persistence.models.EvaluacionPrueba</class>
 		<class>cl.eos.persistence.models.Formas</class>
 		<class>cl.eos.persistence.models.Imagenes</class>
+		<class>cl.eos.persistence.models.Preguntas</class>
 		<class>cl.eos.persistence.models.Prueba</class>
 		<class>cl.eos.persistence.models.PruebaRendida</class>
 		<class>cl.eos.persistence.models.RespuestasEsperadasPrueba</class>

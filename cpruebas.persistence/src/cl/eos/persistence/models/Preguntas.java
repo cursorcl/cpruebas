@@ -12,35 +12,27 @@ import javax.persistence.NamedQuery;
 
 import cl.eos.persistence.AEntity;
 
-@Entity(name = "imagenes")
+@Entity(name = "preguntas")
 @NamedQueries({
-        @NamedQuery(name = "Imagenes.findAll", query = "SELECT i FROM imagenes i order by i.respuesta.prueba.id, i.numero "),
-        @NamedQuery(name = "Imagenes.findByPrueba", query = "SELECT i FROM imagenes i where i.respuesta.prueba.id = :idPrueba") })
-public class Imagenes extends AEntity {
+        @NamedQuery(name = "Preguntas.findAll", query = "SELECT a FROM alternativas a order by a.respuesta.prueba.id, a.numero"),
+        @NamedQuery(name = "Preguntas.findByPrueba", query = "SELECT a FROM alternativas a where a.respuesta.prueba.id = :idPrueba") })
+public class Preguntas extends AEntity {
 
-    public static class Builder {
+	public static class Builder {
         private Long id;
         private String name;
         private int numero;
         private RespuestasEsperadasPrueba respuesta;
-        String image;
-        private boolean eliminada;
-        private int version;
+        private Prueba prueba;
 
-        public Imagenes build() {
-            final Imagenes imagenes = new Imagenes();
-            imagenes.id = id;
-            imagenes.name = name;
-            imagenes.numero = numero;
-            imagenes.respuesta = respuesta;
-            imagenes.eliminada = eliminada;
-            imagenes.version = version;
-            return imagenes;
-        }
-
-        public Builder eliminada(boolean eliminada) {
-            this.eliminada = eliminada;
-            return this;
+        public Preguntas build() {
+            final Preguntas pregunta = new Preguntas();
+            pregunta.id = id;
+            pregunta.name = name;
+            pregunta.numero = numero;
+            pregunta.respuestaEsperada = respuesta;
+            pregunta.prueba = prueba;
+            return pregunta;
         }
 
         public Builder id(Long id) {
@@ -63,18 +55,11 @@ public class Imagenes extends AEntity {
             return this;
         }
 
-        public Builder version(int version) {
-            this.version = version;
+        public Builder prueba(Prueba prueba) {
+            this.prueba = prueba;
             return this;
         }
 
-		public String getImage() {
-			return image;
-		}
-
-		public void setImage(String image) {
-			this.image = image;
-		}
     }
 
     private static final long serialVersionUID = 1L;
@@ -82,16 +67,14 @@ public class Imagenes extends AEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-
     private int numero;
+    
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    private RespuestasEsperadasPrueba respuesta;
+    private RespuestasEsperadasPrueba respuestaEsperada;
 
-    @javax.persistence.Transient
-    public boolean eliminada;
-    
-    String image;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private Prueba prueba;
 
     @Override
     public Long getId() {
@@ -107,9 +90,10 @@ public class Imagenes extends AEntity {
         return numero;
     }
 
-    public RespuestasEsperadasPrueba getRespuesta() {
-        return respuesta;
+    public RespuestasEsperadasPrueba getRespuestaEsperada() {
+        return respuestaEsperada;
     }
+
 
     @Override
     public void setId(Long id) {
@@ -123,22 +107,25 @@ public class Imagenes extends AEntity {
 
     public void setNumero(int numero) {
         this.numero = numero;
+        name = String.format("%d", numero);
     }
 
-    public void setRespuesta(RespuestasEsperadasPrueba respuesta) {
-        this.respuesta = respuesta;
+    public void setRespuestaEsperada(RespuestasEsperadasPrueba respuesta) {
+        this.respuestaEsperada = respuesta;
     }
 
-    @Override
+    public Prueba getPrueba() {
+		return prueba;
+	}
+
+	public void setPrueba(Prueba prueba) {
+		this.prueba = prueba;
+	}
+
+	@Override
     public boolean validate() {
         return true;
     }
-
-	public String getImage() {
-		return image;
-	}
-
-	public void setImage(String image) {
-		this.image = image;
-	}
+    
+    
 }

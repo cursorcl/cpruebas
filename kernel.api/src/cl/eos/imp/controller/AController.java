@@ -185,10 +185,10 @@ public abstract class AController implements IController, IPersistenceListener {
     
 
     @Override
-    public List<IEntity> findSynchro(String namedQuery, Map<String, Object> parameters) {
+    public List<? extends IEntity> findSynchro(String namedQuery, Map<String, Object> parameters) {
         return model.findSynchro(namedQuery, parameters);
     }
-
+    
     @Override
     public IModel getModel() {
         return model;

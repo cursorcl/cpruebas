@@ -46,6 +46,8 @@ public interface IPersistenceService {
      *            A quien se notifica del resultado.
      */
     void findAll(Class<? extends IEntity> entityClazz, final IPersistenceListener listener);
+    
+    
 
     /**
      * Busca todos los registros asociados al entity mencionado. La busqueda es
@@ -97,4 +99,8 @@ public interface IPersistenceService {
     IEntity save(IEntity entity);
 
     IEntity update(IEntity entity);
+    
+    
+    
+    void findAll(Class<? extends IEntity> entityClazz, final IPersistenceListener listener, int begin, int last);
 }

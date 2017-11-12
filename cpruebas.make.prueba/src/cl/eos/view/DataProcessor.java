@@ -18,14 +18,6 @@ public class DataProcessor {
     public static void process(List<Object> list, DefinirPrueba defPrueba) {
         if (list != null && !list.isEmpty()) {
             final Object entity = list.get(0);
-            // if (entity instanceof Prueba) {
-            // ObservableList<OTPrueba> pruebas =
-            // FXCollections.observableArrayList();
-            // for (Object lEntity : list) {
-            // pruebas.add(new OTPrueba((Prueba) lEntity));
-            // }
-            // tblListadoPruebas.setItems(pruebas);
-            // }
             DataProcessor.processTipoPrueba(entity, defPrueba, list);
             DataProcessor.processProfesor(entity, defPrueba, list);
             DataProcessor.processTipoCurso(entity, defPrueba, list);
