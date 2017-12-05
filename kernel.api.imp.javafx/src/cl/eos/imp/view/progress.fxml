@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.effect.Reflection?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="138.0" prefWidth="367.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.imp.view.Progress">
+   <children>
+      <Label fx:id="message" layoutX="15.0" layoutY="29.0" prefHeight="17.0" prefWidth="338.0" text="titulo" textFill="#2b13c9" AnchorPane.bottomAnchor="92.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="29.0">
+         <cursor>
+            <Cursor fx:constant="DEFAULT" />
+         </cursor>
+      </Label>
+      <ProgressBar fx:id="progressbar" layoutX="24.0" layoutY="69.0" prefHeight="32.0" prefWidth="319.0" progress="0.0" AnchorPane.bottomAnchor="37.0" AnchorPane.leftAnchor="24.0" AnchorPane.rightAnchor="24.0" AnchorPane.topAnchor="69.0">
+         <effect>
+            <Reflection />
+         </effect>
+      </ProgressBar>
+   </children>
+</AnchorPane>
