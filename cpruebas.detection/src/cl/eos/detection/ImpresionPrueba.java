@@ -37,11 +37,11 @@ import cl.eos.util.Utils;
 public class ImpresionPrueba {
 
 	private static final int RUT_ROW = 74;
-	private static final int[] RUT_COLS = { 57, 73, 91, 106, 121, 140, 156,
-			171, 191 };
+	private static final int[] RUT_COLS = { 46, 60, 74, 92, 107, 122, 141, 157,
+			172, 192 };
 	private static final int FORMA_ROW = 66;
 	private static final int[] FORMA_COLS = { 229, 244, 259 };
-	private static final Point RUT_POINT = new Point(40, 88);
+	private static final Point RUT_POINT = new Point(37, 88);
 
 	private static final Point FECHA_POINT = new Point(383, 69);
 	private static final Point COLEGIO_POINT = new Point(356, 93);
@@ -55,7 +55,7 @@ public class ImpresionPrueba {
 	private final int FIRST_COL = 55;
 	private final int GROUP_SIZE = 5;
 
-	private final int CIRCLE_WIDTH = 10;
+	private final int CIRCLE_WIDTH = 9;
 	private final int STEP_ROW = (CIRCLE_WIDTH + CIRCLE_WIDTH / 3);
 	private final int STEP_COL = CIRCLE_WIDTH / 2;
 
@@ -184,7 +184,7 @@ public class ImpresionPrueba {
 		String strRut = rut.replace("-", "");
 		char[] chrRut = strRut.toCharArray();
 		int idxCol = 0;
-		if (chrRut.length < 9) {
+		if (chrRut.length < 10) {
 			idxCol = 1;
 		}
 		for (char ch : chrRut) {

@@ -21,10 +21,9 @@ import javax.persistence.Persistence;
 import javax.persistence.Query;
 import javax.persistence.RollbackException;
 
-import org.controlsfx.dialog.Dialogs;
-
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.interfaces.entity.IPersistenceListener;
+import cl.eos.interfaces.view.FXDialogs;
 import cl.eos.persistence.IPersistenceService;
 import cl.eos.persistence.models.Prueba;
 import cl.eos.util.Pair;
@@ -350,17 +349,11 @@ public class PersistenceService implements IPersistenceService {
 					public void run() {
 
 						if (errores.isEmpty()) {
-							Dialogs.create()
-									.owner(null)
-									.title("Importación desde excel")
-									.masthead("")
-									.message(
-											"Ha finalizado proceso de importación de ["
-													+ pair.getSecond()
-															.getFirst()
-													+ "] registros para tabla ["
-													+ pair.getFirst() + "]")
-									.showInformation();
+							FXDialogs.showInformation("Importación desde excel", "Ha finalizado proceso de importación de ["
+									+ pair.getSecond()
+									.getFirst()
+							+ "] registros para tabla ["
+							+ pair.getFirst() + "]");
 						} else {
 							final StringBuffer error = new StringBuffer();
 							for (String str : errores) {
@@ -368,14 +361,7 @@ public class PersistenceService implements IPersistenceService {
 								error.append("\n");
 							}
 							try {
-								Dialogs.create()
-										.owner(null)
-										.title("Error de importación desde excel")
-										.masthead(
-												"Se ha presentado algunos problemas")
-										.message(
-												"Se grabará el archivo de log.")
-										.showError();
+								FXDialogs.showError("Error de importación desde Excel", "Se grabará en el archivo de log.");
 
 								FileChooser fileChooser = new FileChooser();
 								fileChooser.setInitialFileName("import_"
@@ -404,11 +390,7 @@ public class PersistenceService implements IPersistenceService {
 				Platform.runLater(r);
 			}
 		});
-		final Dialogs dlg = Dialogs.create();
-		dlg.title("Importando datos");
-		dlg.masthead(null);
-		dlg.message("Esto tomará algunos minutos.");
-		dlg.showWorkerProgress(task);
+		FXDialogs.showProgressIndicator("Importando datos", "Esto tomará algunos minutos.", task);
 		Executors.newSingleThreadExecutor().execute(task);
 
 	}

@@ -99,7 +99,7 @@
 										</MenuBar>
                               <AnchorPane prefHeight="200.0" prefWidth="200.0">
                                  <children>
-                                    <BreadcrumbBar fx:id="breadCrumb" layoutY="2.0" prefWidth="711.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                    <!-- <BreadcrumbBar fx:id="breadCrumb" layoutY="2.0" prefWidth="711.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />-->
                                  </children>
                               </AnchorPane>
 									</children>

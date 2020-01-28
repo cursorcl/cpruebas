@@ -5,6 +5,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import cl.eos.imp.view.AFormView;
+import cl.eos.interfaces.entity.IEntity;
+import cl.eos.interfaces.view.FXDialogs;
+import cl.eos.ot.OTAlumno;
+import cl.eos.persistence.models.Alumno;
+import cl.eos.persistence.models.Colegio;
+import cl.eos.persistence.models.Curso;
+import cl.eos.util.ExcelSheetWriterObj;
+import cl.eos.util.Utils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -22,17 +31,6 @@ import javafx.scene.control.TreeTableView;
 import javafx.scene.control.cell.TreeItemPropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-
-import org.controlsfx.dialog.Dialogs;
-
-import cl.eos.imp.view.AFormView;
-import cl.eos.interfaces.entity.IEntity;
-import cl.eos.ot.OTAlumno;
-import cl.eos.persistence.models.Alumno;
-import cl.eos.persistence.models.Colegio;
-import cl.eos.persistence.models.Curso;
-import cl.eos.util.ExcelSheetWriterObj;
-import cl.eos.util.Utils;
 
 public class AlumnosTableTreeView extends AFormView implements EventHandler<ActionEvent> {
 
@@ -185,8 +183,7 @@ public class AlumnosTableTreeView extends AFormView implements EventHandler<Acti
         tblAlumnos.getSelectionModel().getSelectedItems();
 
     if (otSeleccionados.size() == 0) {
-      Dialogs.create().owner(null).title("Selección registro").masthead(this.getName())
-          .message("Debe seleccionar registro a procesar").showInformation();
+    	FXDialogs.showInformation("Selección registro", "Debe seleccionar registro a procesar");
     } else {
 
       if (otSeleccionados != null && !otSeleccionados.isEmpty()) {

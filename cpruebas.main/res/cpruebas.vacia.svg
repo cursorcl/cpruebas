@@ -14,11 +14,11 @@
    height="990"
    id="svg4456"
    version="1.1"
-   inkscape:version="0.48.2 r9819"
+   inkscape:version="0.92.4 (f8dce91, 2019-08-02)"
    sodipodi:docname="cpruebas.vacia.svg"
-   inkscape:export-filename="O:\cpruebas\cpruebas.main\res\cpruebas.vacia.png"
-   inkscape:export-xdpi="72"
-   inkscape:export-ydpi="72">
+   inkscape:export-filename="O:\cpruebas\cpruebas.main\res\cpruebas.vacia_1.png"
+   inkscape:export-xdpi="76.800003"
+   inkscape:export-ydpi="76.800003">
   <defs
      id="defs4458">
     <inkscape:perspective
@@ -37,15 +37,15 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.1435242"
-     inkscape:cx="75.551437"
-     inkscape:cy="373.88281"
-     inkscape:current-layer="text3229"
+     inkscape:cx="199.77417"
+     inkscape:cy="653.71948"
+     inkscape:current-layer="layer1"
      id="namedview4460"
      showgrid="false"
      inkscape:window-width="1920"
-     inkscape:window-height="1057"
-     inkscape:window-x="-8"
-     inkscape:window-y="-8"
+     inkscape:window-height="1043"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
      inkscape:window-maximized="1"
      units="px" />
   <metadata
@@ -485,11 +485,6 @@
        id="rect3577-0-8-8-3-7"
        d="M 438.42882,100.60741 620.37271,100.60741 620.37271,119.29594 438.42882,119.29594 z"
        style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:0.17739782;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dashoffset:0.56999999"
-       inkscape:connector-curvature="0" />
-    <path
-       id="rect8194"
-       d="M 45.208652,103.10479 266.66655,103.10479 266.66655,283.04289 45.208652,283.04289 z"
-       style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:0.18313128;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dashoffset:0.56999999"
        inkscape:connector-curvature="0" />
     <g
        id="text8198"
@@ -1297,26 +1292,26 @@
        inkscape:connector-curvature="0" />
     <text
        xml:space="preserve"
-       style="font-size:16px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:ERS v2 Infrastructures Stage 1;-inkscape-font-specification:'ERS v2 Infrastructures Stage 01,'"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'ERS v2 Infrastructures Stage 1';-inkscape-font-specification:'ERS v2 Infrastructures Stage 01,';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
        x="127.42574"
        y="70.451691"
-       id="text3318"
-       sodipodi:linespacing="125%"><tspan
+       id="text3318"><tspan
          sodipodi:role="line"
          id="tspan3320"
          x="127.42574"
-         y="70.451691">R.U.N.</tspan></text>
+         y="70.451691"
+         style="font-size:16px;line-height:1.25">R.U.N.</tspan></text>
     <text
        xml:space="preserve"
-       style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:Arial;-inkscape-font-specification:Arial;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
        x="370.02478"
        y="177.5612"
-       id="text3382"
-       sodipodi:linespacing="125%"><tspan
+       id="text3382"><tspan
          sodipodi:role="line"
          id="tspan3384"
          x="370.02478"
-         y="177.5612">Apellidos</tspan></text>
+         y="177.5612"
+         style="font-size:12px;line-height:1.25">Apellidos</tspan></text>
     <image
        y="14.657537"
        x="630.34033"
@@ -1325,5 +1320,10 @@
        height="104.48475"
        width="111.49502"
        style="stroke-width:0;stroke-miterlimit:4;stroke-dasharray:none;opacity:0.52212389" />
+    <path
+       id="rect3030-4-3"
+       d="m 53.515366,77.588794 h 16.32241 v 16.32241 h -16.32241 z"
+       style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:0.17759234;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dashoffset:0.56999999;stroke-opacity:1"
+       inkscape:connector-curvature="0" />
   </g>
 </svg>

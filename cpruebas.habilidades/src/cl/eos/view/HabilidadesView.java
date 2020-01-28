@@ -17,10 +17,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 
-import org.controlsfx.dialog.Dialogs;
 
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
+import cl.eos.interfaces.view.FXDialogs;
 import cl.eos.ot.OTHabilidad;
 import cl.eos.persistence.models.Habilidad;
 import cl.eos.util.ExcelSheetWriterObj;
@@ -145,10 +145,7 @@ public class HabilidadesView extends AFormView implements
 		ObservableList<OTHabilidad> otSeleccionados = tblHabilidades
 				.getSelectionModel().getSelectedItems();
 		if (otSeleccionados.size() == 0) {
-			Dialogs.create().owner(null).title("Selección registro")
-					.masthead(this.getName())
-					.message("Debe seleccionar registro a procesar")
-					.showInformation();
+			FXDialogs.showInformation("Selección registro", "Debe seleccionar registro a procesar");
 		} else {
 
 			if (otSeleccionados != null && !otSeleccionados.isEmpty()) {

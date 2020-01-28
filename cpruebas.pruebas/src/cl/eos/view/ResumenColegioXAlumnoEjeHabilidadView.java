@@ -23,9 +23,9 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.TableView;
 
 import org.apache.log4j.Logger;
-import org.controlsfx.dialog.Dialogs;
 
 import cl.eos.imp.view.AFormView;
+import cl.eos.interfaces.view.FXDialogs;
 import cl.eos.persistence.models.Asignatura;
 import cl.eos.persistence.models.Colegio;
 import cl.eos.persistence.models.Curso;
@@ -171,10 +171,7 @@ public class ResumenColegioXAlumnoEjeHabilidadView extends AFormView implements
 				generarReporte();
 			}
 		} else if (list != null && list.isEmpty()) {
-			Dialogs.create().owner(null).title("No hay registros.")
-					.masthead(null)
-					.message("No se ha encontrado registros para la consulta.")
-					.showInformation();
+			FXDialogs.showInformation("No hay registros.", "No se ha encontrado registros para la consulta.");
 		}
 	}
 
@@ -237,11 +234,8 @@ public class ResumenColegioXAlumnoEjeHabilidadView extends AFormView implements
 				log.error(event.getEventType().toString());
 			}
 		});
-		final Dialogs dlg = Dialogs.create();
-		dlg.title("Procesando Cursos");
-		dlg.masthead(null);
-		dlg.message("Esto tomará algunos segundos.");
-		dlg.showWorkerProgress(task);
+		FXDialogs.showProgressIndicator("Procesando Cursos", "Esto tomará algunos segundos", task);
+		
 		Executors.newSingleThreadExecutor().execute(task);
 	}
 

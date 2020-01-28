@@ -27,10 +27,10 @@ import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.util.Callback;
 
-import org.controlsfx.dialog.Dialogs;
 
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
+import cl.eos.interfaces.view.FXDialogs;
 import cl.eos.persistence.models.Asignatura;
 import cl.eos.persistence.models.Colegio;
 import cl.eos.persistence.models.Curso;
@@ -183,10 +183,7 @@ public class ComparativoColegioEjeHabilidadxCursoView extends AFormView
 				tareaGenerarReporte();
 			}
 		} else if (list != null && list.isEmpty()) {
-			Dialogs.create().owner(null).title("No hay registros.")
-					.masthead(null)
-					.message("No se ha encontrado registros para la consulta.")
-					.showInformation();
+			FXDialogs.showInformation("No hay registros.", "No se ha encontrado registros para la consulta.");
 		}
 	}
 
@@ -480,11 +477,7 @@ public class ComparativoColegioEjeHabilidadxCursoView extends AFormView
 			public void handle(WorkerStateEvent event) {
 			}
 		});
-		final Dialogs dlg = Dialogs.create();
-		dlg.title("Generando reporte");
-		dlg.masthead(null);
-		dlg.message("Esto tomará algunos segundos.");
-		dlg.showWorkerProgress(task);
+		FXDialogs.showProgressIndicator("Generando reporte", "Esto tomará algunos segundos.", task);
 		Executors.newSingleThreadExecutor().execute(task);
 	}
 

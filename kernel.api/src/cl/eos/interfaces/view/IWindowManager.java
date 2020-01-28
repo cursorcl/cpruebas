@@ -11,9 +11,9 @@ public interface IWindowManager {
   Object getRoot();
 
   void setRoot(final Object root) throws Exception;
-
-  Object getBreadcrumbBar();
-  void setBreadcrumbBar(Object breadCrumb);
+//
+//  Object getBreadcrumbBar();
+//  void setBreadcrumbBar(Object breadCrumb);
   /**
    * Agrega una ventana al visualizador
    * 

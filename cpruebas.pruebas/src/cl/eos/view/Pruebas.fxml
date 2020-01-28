@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.input.*?>
-<?import jfxtras.labs.scene.control.*?>
 <?import javafx.scene.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
@@ -108,44 +107,44 @@
                         <Tooltip text="Fecha de la prueba" />
                      </tooltip>
                   </DatePicker>
-                  <BigDecimalField fx:id="bigDecimalForma" disable="true" layoutX="153.0" layoutY="286.0" prefHeight="27.0" prefWidth="115.0" promptText="Forma" AnchorPane.leftAnchor="153.0" AnchorPane.rightAnchor="12.0">
+                  <Spinner fx:id="bigDecimalForma" disable="true" layoutX="153.0" layoutY="286.0" prefHeight="27.0" prefWidth="115.0" promptText="Forma" AnchorPane.leftAnchor="153.0" AnchorPane.rightAnchor="12.0">
                      <VBox.margin>
                         <Insets bottom="5.0" left="10.0" right="10.0" />
                      </VBox.margin>
                      <tooltip>
                         <Tooltip text="Número de la Forma" />
                      </tooltip>
-                  </BigDecimalField>
-                  <BigDecimalField fx:id="bigDecimalNroPreguntas" layoutX="10.0" layoutY="342.0" prefHeight="27.0" prefWidth="133.0" promptText="Nro. Preguntas" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="141.0">
+                  </Spinner>
+                  <Spinner fx:id="bigDecimalNroPreguntas" layoutX="10.0" layoutY="342.0" prefHeight="27.0" prefWidth="133.0" promptText="Nro. Preguntas" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="141.0">
                      <VBox.margin>
                         <Insets bottom="5.0" left="10.0" right="10.0" />
                      </VBox.margin>
                      <tooltip>
                         <Tooltip text="Número de Preguntas" />
                      </tooltip>
-                  </BigDecimalField>
-                  <BigDecimalField fx:id="bigDecimaNroAlternativas" layoutX="153.0" layoutY="342.0" prefHeight="27.0" prefWidth="119.0" promptText="Nro. Alterativas" AnchorPane.leftAnchor="153.0" AnchorPane.rightAnchor="12.0">
+                  </Spinner>
+                  <Spinner fx:id="bigDecimaNroAlternativas" layoutX="153.0" layoutY="342.0" prefHeight="27.0" prefWidth="119.0" promptText="Nro. Alterativas" AnchorPane.leftAnchor="153.0" AnchorPane.rightAnchor="12.0">
                      <VBox.margin>
                         <Insets bottom="5.0" left="10.0" right="10.0" />
                      </VBox.margin>
                      <tooltip>
                         <Tooltip text="Número de Alternativas" />
                      </tooltip>
-                  </BigDecimalField>
-                  <BigDecimalField fx:id="bigDecimalPuntajePregunta" layoutX="11.0" layoutY="386.0" prefHeight="27.0" prefWidth="130.0" promptText="Puntaje pregunta" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="142.0">
+                  </Spinner>
+                  <Spinner fx:id="bigDecimalPuntajePregunta" layoutX="11.0" layoutY="386.0" prefHeight="27.0" prefWidth="130.0" promptText="Puntaje pregunta" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="142.0">
                      <VBox.margin>
                         <Insets bottom="5.0" left="10.0" right="10.0" />
                      </VBox.margin>
                      <tooltip>
                         <Tooltip text="Puntaje base de cada pregunta" />
                      </tooltip>
-                  </BigDecimalField>
+                  </Spinner>
                   <Label fx:id="lblError" layoutX="10.0" layoutY="10.0" textAlignment="CENTER" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
                      <VBox.margin>
                         <Insets bottom="5.0" left="10.0" right="5.0" top="10.0" />
                      </VBox.margin>
                   </Label>
-                  <BigDecimalField fx:id="bigDecimalExigencia" layoutX="153.0" layoutY="386.0" prefHeight="27.0" prefWidth="116.0" promptText="\% Exigencia" AnchorPane.leftAnchor="153.0" AnchorPane.rightAnchor="12.0" />
+                  <Spinner fx:id="bigDecimalExigencia" layoutX="153.0" layoutY="386.0" prefHeight="27.0" prefWidth="116.0" promptText="\% Exigencia" AnchorPane.leftAnchor="153.0" AnchorPane.rightAnchor="12.0" />
                   <ComboBox fx:id="cmbNivelEvaluacion" layoutX="10.0" layoutY="430.0" prefHeight="25.0" prefWidth="223.0" promptText="Nivel de Evaluación" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" />
                   <Label layoutX="14.0" layoutY="27.0" text="Nombre Prueba" />
                   <Label layoutX="14.0" layoutY="76.0" text="Tipo Prueba" />

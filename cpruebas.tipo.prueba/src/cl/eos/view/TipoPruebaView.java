@@ -17,10 +17,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 
-import org.controlsfx.dialog.Dialogs;
 
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
+import cl.eos.interfaces.view.FXDialogs;
 import cl.eos.ot.OTTipoPrueba;
 import cl.eos.persistence.models.TipoPrueba;
 import cl.eos.util.ExcelSheetWriterObj;
@@ -114,10 +114,7 @@ public class TipoPruebaView extends AFormView implements
 		ObservableList<OTTipoPrueba> otSeleccionados = tblTipoPrueba
 				.getSelectionModel().getSelectedItems();
 		if (otSeleccionados.size() == 0) {
-			Dialogs.create().owner(null).title("Selección registro")
-					.masthead(this.getName())
-					.message("Debe seleccionar registro a procesar")
-					.showInformation();
+			FXDialogs.showInformation("Selección registro.", "Debe seleccionar registro a procesar.");			
 		} else {
 
 			if (otSeleccionados != null && !otSeleccionados.isEmpty()) {

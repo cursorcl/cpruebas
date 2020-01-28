@@ -6,6 +6,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cl.eos.imp.view.AFormView;
+import cl.eos.interfaces.view.FXDialogs;
+import cl.eos.ot.OTPreguntasEvaluacion;
+import cl.eos.persistence.models.Asignatura;
+import cl.eos.persistence.models.Colegio;
+import cl.eos.persistence.models.Curso;
+import cl.eos.persistence.models.EvaluacionPrueba;
+import cl.eos.persistence.models.Habilidad;
+import cl.eos.persistence.models.PruebaRendida;
+import cl.eos.persistence.models.RangoEvaluacion;
+import cl.eos.persistence.models.RespuestasEsperadasPrueba;
+import cl.eos.persistence.util.Comparadores;
+import cl.eos.util.ExcelSheetWriterObj;
+import cl.eos.view.ots.ejeevaluacion.OTAcumulador;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -21,28 +35,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.util.Callback;
-
-import org.controlsfx.dialog.Dialogs;
-
-import cl.eos.imp.view.AFormView;
-import cl.eos.ot.OTPreguntasEjes;
-import cl.eos.ot.OTPreguntasEvaluacion;
-import cl.eos.ot.OTPreguntasHabilidad;
-import cl.eos.persistence.models.Asignatura;
-import cl.eos.persistence.models.Colegio;
-import cl.eos.persistence.models.Curso;
-import cl.eos.persistence.models.EjeTematico;
-import cl.eos.persistence.models.EvaluacionEjeTematico;
-import cl.eos.persistence.models.EvaluacionPrueba;
-import cl.eos.persistence.models.Habilidad;
-import cl.eos.persistence.models.PruebaRendida;
-import cl.eos.persistence.models.RangoEvaluacion;
-import cl.eos.persistence.models.RespuestasEsperadasPrueba;
-import cl.eos.persistence.util.Comparadores;
-import cl.eos.util.ExcelSheetWriterObj;
-import cl.eos.util.Pair;
-import cl.eos.util.Utils;
-import cl.eos.view.ots.ejeevaluacion.OTAcumulador;
 
 public class ComparativoColegioHabilidadesView extends AFormView implements
 		EventHandler<ActionEvent> {
@@ -186,10 +178,7 @@ public class ComparativoColegioHabilidadesView extends AFormView implements
 				generarReporte();
 			}
 		} else if (list != null && list.isEmpty()) {
-			Dialogs.create().owner(null).title("No hay registros.")
-					.masthead(null)
-					.message("No se ha encontrado registros para la consulta.")
-					.showInformation();
+			FXDialogs.showInformation("No hay registros.", "No se ha encontrado registros para la consulta.");
 		}
 	}
 

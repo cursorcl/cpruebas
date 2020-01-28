@@ -9,6 +9,21 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.log4j.Logger;
+
+import cl.eos.imp.view.AFormView;
+import cl.eos.interfaces.entity.IEntity;
+import cl.eos.interfaces.view.FXDialogs;
+import cl.eos.ot.OTPreguntasEjes;
+import cl.eos.ot.OTPreguntasEvaluacion;
+import cl.eos.persistence.models.Alumno;
+import cl.eos.persistence.models.EjeTematico;
+import cl.eos.persistence.models.EvaluacionEjeTematico;
+import cl.eos.persistence.models.EvaluacionPrueba;
+import cl.eos.persistence.models.Prueba;
+import cl.eos.persistence.models.PruebaRendida;
+import cl.eos.persistence.models.RespuestasEsperadasPrueba;
+import cl.eos.util.ExcelSheetWriterObj;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -23,22 +38,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.util.Callback;
-
-import org.apache.log4j.Logger;
-import org.controlsfx.dialog.Dialogs;
-
-import cl.eos.imp.view.AFormView;
-import cl.eos.interfaces.entity.IEntity;
-import cl.eos.ot.OTPreguntasEjes;
-import cl.eos.ot.OTPreguntasEvaluacion;
-import cl.eos.persistence.models.Alumno;
-import cl.eos.persistence.models.EjeTematico;
-import cl.eos.persistence.models.EvaluacionEjeTematico;
-import cl.eos.persistence.models.EvaluacionPrueba;
-import cl.eos.persistence.models.Prueba;
-import cl.eos.persistence.models.PruebaRendida;
-import cl.eos.persistence.models.RespuestasEsperadasPrueba;
-import cl.eos.util.ExcelSheetWriterObj;
 
 
 public class ComparativoComunalEjeView extends AFormView implements
@@ -231,13 +230,8 @@ public class ComparativoComunalEjeView extends AFormView implements
 
 	private void informarProblemas(String colegioCurso, Alumno al,
 			String respuesta) {
-		Dialogs info = Dialogs.create();
-		info.title("Alumno con respuestas incompletas.");
-		info.masthead(String.format("%s/%s", colegioCurso, al.toString()));
-		info.message(String
+		FXDialogs.showError("Alumno con respuestas incompletas", String
 				.format("La respuesta [%s] es incompleta", respuesta));
-		info.owner(null);
-		info.showError();
 
 	}
 

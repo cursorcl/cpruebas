@@ -3,8 +3,13 @@ package cl.eos;
 import java.io.File;
 import java.io.IOException;
 
-import org.controlsfx.dialog.Dialogs;
-
+import cl.eos.exceptions.CPruebasException;
+import cl.eos.interfaces.view.FXDialogs;
+import cl.eos.util.Utils;
+import cl.sisdef.license.ProductKeyValidation;
+import cl.sisdef.license.UtilProductKey;
+import cl.sisdef.license.impl.PropertyFileProductKeyStorage;
+import cl.sisdef.license.impl.WMICSerialProvider;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -14,12 +19,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import cl.eos.exceptions.CPruebasException;
-import cl.eos.util.Utils;
-import cl.sisdef.license.ProductKeyValidation;
-import cl.sisdef.license.UtilProductKey;
-import cl.sisdef.license.impl.PropertyFileProductKeyStorage;
-import cl.sisdef.license.impl.WMICSerialProvider;
 
 public class Main extends Application {
 	protected double xOffset;
@@ -72,17 +71,15 @@ public class Main extends Application {
 			}
 
 		} catch (CPruebasException e) {
-			Dialogs.create().owner(null).title("Producto no validado.")
-			.masthead("Debe solicitar código de activación.")
-			.message("Solicitar código de activación al correo curso.cl@gmail.com.").showError();
+			FXDialogs.showError("Debe solicitar código de activación.", "Solicitar código de activación al correo curso.cl@gmail.com.");
 
 		}
 	}
 
+	
 	public static void main(String[] args) {
 		launch(args);
 	}
-	
 	
     /**
     *

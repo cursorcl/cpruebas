@@ -8,16 +8,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import javafx.collections.ObservableList;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TreeTableColumn;
-import javafx.scene.control.TreeTableView;
-
 import javax.swing.ImageIcon;
 
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.Cell;
@@ -28,7 +21,13 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
-import org.controlsfx.dialog.Dialogs;
+
+import cl.eos.interfaces.view.FXDialogs;
+import javafx.collections.ObservableList;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TreeTableColumn;
+import javafx.scene.control.TreeTableView;
 
 /**
  * Clase que permite exportar a excel datos asociados a las tablas.
@@ -93,19 +92,14 @@ public final class ExcelSheetWriterObj {
 			fileOut = new FileOutputStream(path);
 			wbWork.write(fileOut);
 		} catch (IOException e) {
-			Dialogs.create().owner(null).title("Problemas al grabar")
-					.masthead("No se pudo grabar archivo")
-					.message("Nombre:" + path).showError();
+			FXDialogs.showError("No se pudo grabar archivo", "Nombre:" + path);
 		}
 
 		finally {
 			try {
 				fileOut.close();
 			} catch (final IOException e) {
-				Dialogs.create().owner(null)
-						.title("Problemas al cerrar archivo")
-						.masthead("No se pudo cerrar archivo")
-						.message("Nombre:" + path).showError();
+				FXDialogs.showError("No se pudo cerrar archivo", "Nombre:" + path);
 			}
 		}
 		mostrarDocumentoExcel(path);

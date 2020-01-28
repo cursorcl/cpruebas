@@ -1,36 +1,14 @@
 package cl.eos.view;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.fxml.FXML;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.SelectionMode;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.StackPane;
-import jfxtras.labs.scene.control.BigDecimalField;
-
-import org.controlsfx.dialog.Dialogs;
-
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
+import cl.eos.interfaces.view.FXDialogs;
 import cl.eos.persistence.models.Asignatura;
 // github.com/cursorcl/cpruebas
 import cl.eos.persistence.models.Colegio;
@@ -45,6 +23,26 @@ import cl.eos.persistence.models.TipoCurso;
 import cl.eos.persistence.models.TipoPrueba;
 import cl.eos.view.editablecells.PruebaCellFactory;
 import cl.eos.view.ots.OTPrueba;
+import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.fxml.FXML;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.SelectionMode;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 
 public class PruebasView extends AFormView implements EventHandler<ActionEvent> {
 
@@ -81,15 +79,15 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 	@FXML
 	private ComboBox<Asignatura> cmbAsignatura;
 	@FXML
-	private BigDecimalField bigDecimalForma;
+	private Spinner<Integer> bigDecimalForma;
 	@FXML
-	private BigDecimalField bigDecimaNroAlternativas;
+	private Spinner<Integer> bigDecimaNroAlternativas;
 	@FXML
-	private BigDecimalField bigDecimalNroPreguntas;
+	private Spinner<Integer> bigDecimalNroPreguntas;
 	@FXML
-	private BigDecimalField bigDecimalPuntajePregunta;
+	private Spinner<Integer> bigDecimalPuntajePregunta;
 	@FXML
-	private BigDecimalField bigDecimalExigencia;
+	private Spinner<Integer> bigDecimalExigencia;
 	@FXML
 	private ComboBox<NivelEvaluacion> cmbNivelEvaluacion;
 	@FXML
@@ -184,31 +182,28 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 						"estado"));
 
 		estadoCol.setCellFactory(new PruebaCellFactory());
+		
+		// Value factory.
+		SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 5, 1);
+		bigDecimalForma.setValueFactory(valueFactory);
+		
 
-		bigDecimalForma.setMinValue(new BigDecimal(1));
-		bigDecimalForma.setMaxValue(new BigDecimal(5));
-		bigDecimalForma.setStepwidth(new BigDecimal(1));
-		bigDecimalForma.setNumber(new BigDecimal(1));
+		valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(3, 5, 5);
+		bigDecimaNroAlternativas.setValueFactory(valueFactory);
 
-		bigDecimaNroAlternativas.setMinValue(new BigDecimal(3));
-		bigDecimaNroAlternativas.setMaxValue(new BigDecimal(5));
-		bigDecimaNroAlternativas.setStepwidth(new BigDecimal(1));
-		bigDecimaNroAlternativas.setNumber(new BigDecimal(5));
+		
+		valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(5, 90, 30);
+		bigDecimalNroPreguntas.setValueFactory(valueFactory);
+		
 
-		bigDecimalNroPreguntas.setMinValue(new BigDecimal(5));
-		bigDecimalNroPreguntas.setMaxValue(new BigDecimal(90));
-		bigDecimalNroPreguntas.setStepwidth(new BigDecimal(5));
-		bigDecimalNroPreguntas.setNumber(new BigDecimal(30));
+		valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 3, 1);
+		bigDecimalPuntajePregunta.setValueFactory(valueFactory);
 
-		bigDecimalPuntajePregunta.setMinValue(new BigDecimal(1));
-		bigDecimalPuntajePregunta.setMaxValue(new BigDecimal(3));
-		bigDecimalPuntajePregunta.setStepwidth(new BigDecimal(1));
-		bigDecimalPuntajePregunta.setNumber(new BigDecimal(1));
+		
+		valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(40, 80, 60);
+		bigDecimalExigencia.setValueFactory(valueFactory);
+		
 
-		bigDecimalExigencia.setMinValue(new BigDecimal(40));
-		bigDecimalExigencia.setMaxValue(new BigDecimal(80));
-		bigDecimalExigencia.setStepwidth(new BigDecimal(10));
-		bigDecimalExigencia.setNumber(new BigDecimal(60));
 
 		dpFecha.setValue(LocalDate.now());
 		mnuGrabar.setOnAction(this);
@@ -332,23 +327,23 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 			valid = false;
 			txtName.getStyleClass().add("bad");
 		}
-		if (bigDecimalForma.getNumber() == null) {
+		if (bigDecimalForma.getValue() == null) {
 			valid = false;
 			bigDecimalForma.getStyleClass().add("bad");
 		}
-		if (bigDecimaNroAlternativas.getNumber() == null) {
+		if (bigDecimaNroAlternativas.getValue() == null) {
 			valid = false;
 			bigDecimaNroAlternativas.getStyleClass().add("bad");
 		}
-		if (bigDecimalNroPreguntas.getNumber() == null) {
+		if (bigDecimalNroPreguntas.getValue() == null) {
 			valid = false;
 			bigDecimalNroPreguntas.getStyleClass().add("bad");
 		}
-		if (bigDecimalPuntajePregunta.getNumber() == null) {
+		if (bigDecimalPuntajePregunta.getValue() == null) {
 			valid = false;
 			bigDecimalPuntajePregunta.getStyleClass().add("bad");
 		}
-		if (bigDecimalExigencia.getNumber() == null) {
+		if (bigDecimalExigencia.getValue() == null) {
 			valid = false;
 			bigDecimalExigencia.getStyleClass().add("bad");
 		}
@@ -364,6 +359,8 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 		}
 		return valid;
 	}
+	
+	
 
 	private void removeAllStyles() {
 		removeAllStyle(lblError);
@@ -643,23 +640,19 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 			if (prueba == null) {
 				prueba = new Prueba();
 			}
-			prueba.setAlternativas(bigDecimaNroAlternativas.getNumber()
-					.intValue());
+			prueba.setAlternativas(bigDecimaNroAlternativas.getValue());
 			prueba.setAsignatura(cmbAsignatura.getValue());
 			prueba.setCurso(cmbCurso.getValue());
 			prueba.setFecha(dpFecha.getValue().toEpochDay());
-			prueba.setNroFormas(bigDecimalForma.getNumber().intValue());
+			prueba.setNroFormas(bigDecimalForma.getValue());
 			prueba.setName(txtName.getText());
 			prueba.setNivelEvaluacion(cmbNivelEvaluacion.getValue());
 			prueba.setProfesor(cmbProfesor.getValue());
-			prueba.setPuntajeBase(bigDecimalPuntajePregunta.getNumber()
-					.intValue());
-			prueba.setNroPreguntas(bigDecimalNroPreguntas.getNumber()
-					.intValue());
-			prueba.setAlternativas(bigDecimaNroAlternativas.getNumber()
-					.intValue());
+			prueba.setPuntajeBase(bigDecimalPuntajePregunta.getValue());
+			prueba.setNroPreguntas(bigDecimalNroPreguntas.getValue());
+			prueba.setAlternativas(bigDecimaNroAlternativas.getValue());
 			prueba.setTipoPrueba(cmbTipoPrueba.getValue());
-			prueba.setExigencia(bigDecimalExigencia.getNumber().intValue());
+			prueba.setExigencia(bigDecimalExigencia.getValue());
 
 			save(prueba);
 		}
@@ -673,33 +666,21 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 			if (prueba != null) {
 				if (!prueba.getEstado().equals(Estado.EVALUADA)) {
 
-					bigDecimaNroAlternativas.setNumber(new BigDecimal(prueba
-							.getAlternativas()));
-					cmbAsignatura.getSelectionModel().select(
-							prueba.getAsignatura());
+					bigDecimaNroAlternativas.getValueFactory().setValue(prueba.getAlternativas());
+					cmbAsignatura.getSelectionModel().select(prueba.getAsignatura());
 					cmbCurso.getSelectionModel().select(prueba.getCurso());
 					dpFecha.setValue(prueba.getFechaLocal());
-					bigDecimalForma.setNumber(new BigDecimal(prueba
-							.getNroFormas()));
+					bigDecimalForma.getValueFactory().setValue(prueba.getNroFormas());
 					txtName.setText(prueba.getName());
-					cmbNivelEvaluacion.getSelectionModel().select(
-							prueba.getNivelEvaluacion());
-					cmbProfesor.getSelectionModel()
-							.select(prueba.getProfesor());
-					bigDecimalPuntajePregunta.setNumber(new BigDecimal(prueba
-							.getPuntajeBase()));
-					bigDecimalNroPreguntas.setNumber(new BigDecimal(prueba
-							.getNroPreguntas()));
+					cmbNivelEvaluacion.getSelectionModel().select(prueba.getNivelEvaluacion());
+					cmbProfesor.getSelectionModel().select(prueba.getProfesor());
+					bigDecimalPuntajePregunta.getValueFactory().setValue(prueba.getPuntajeBase());
+					bigDecimalNroPreguntas.getValueFactory().setValue(prueba.getNroPreguntas());
 					cmbTipoPrueba.getSelectionModel().select(
 							prueba.getTipoPrueba());
-					prueba.setExigencia(bigDecimalExigencia.getNumber()
-							.intValue());
+					prueba.setExigencia(bigDecimalExigencia.getValue());
 				} else {
-					Dialogs.create().owner(null)
-							.title("No se puede modificar.")
-							.masthead("La prueba ya se encuentra evaluada.")
-							.message("No se podrá modificar.")
-							.showInformation();
+					FXDialogs.showInformation("La prueba ya se encuentra evaluada.", "No se podrá modificar.");
 				}
 			}
 		}
@@ -720,10 +701,10 @@ public class PruebasView extends AFormView implements EventHandler<ActionEvent> 
 		cmbCurso.getSelectionModel().clearSelection();
 		cmbAsignatura.getSelectionModel().clearSelection();
 		cmbNivelEvaluacion.getSelectionModel().clearSelection();
-		bigDecimalForma.setNumber(new BigDecimal(1));
-		bigDecimaNroAlternativas.setNumber(new BigDecimal(3));
-		bigDecimalNroPreguntas.setNumber(new BigDecimal(5));
-		bigDecimalPuntajePregunta.setNumber(new BigDecimal(1));
+		bigDecimalForma.getValueFactory().setValue(1);
+		bigDecimaNroAlternativas.getValueFactory().setValue(3);
+		bigDecimalNroPreguntas.getValueFactory().setValue(5);
+		bigDecimalPuntajePregunta.getValueFactory().setValue(1);
 		dpFecha.setValue(LocalDate.now());
 		txtName.setText(null);
 	}

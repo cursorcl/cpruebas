@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="con" path="org.eclipse.fx.ide.jdt.core.JAVAFX_CONTAINER"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/kernel.space"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.alumnos"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/kernel.api.imp.fx"/>
@@ -14,18 +12,17 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.habilidades"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.profesores"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.pruebas"/>
-	<classpathentry kind="lib" path="../jars/jfxtras-agenda.jar"/>
-	<classpathentry kind="lib" path="../jars/jfxtras-common.jar"/>
-	<classpathentry kind="lib" path="../jars/jfxtras-controls.jar"/>
-	<classpathentry kind="lib" path="../jars/jfxtras-fxml-8.0.jar"/>
-	<classpathentry kind="lib" path="../jars/jfxtras-labs-8.0.jar"/>
-	<classpathentry kind="lib" path="../jars/jfxtras-window.jar"/>
-	<classpathentry kind="lib" path="../jars/controlsfx-8.0.6_20.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.persistence"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.tipo.prueba"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.nivel.evaluacion"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="lib" path="../jars/lib.util.license.jar"/>
 	<classpathentry kind="lib" path="../jars/lib.util.java.jar"/>
-	<classpathentry kind="lib" path="O:/cpruebas/jars/log4j.jar"/>
+	<classpathentry kind="lib" path="/home/cursor/dev/cpruebas/jars/log4j.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JAVAFX13"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

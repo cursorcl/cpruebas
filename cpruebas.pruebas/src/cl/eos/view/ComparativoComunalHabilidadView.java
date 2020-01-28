@@ -25,10 +25,10 @@ import javafx.scene.control.TableView;
 import javafx.util.Callback;
 
 import org.apache.log4j.Logger;
-import org.controlsfx.dialog.Dialogs;
 
 import cl.eos.imp.view.AFormView;
 import cl.eos.interfaces.entity.IEntity;
+import cl.eos.interfaces.view.FXDialogs;
 import cl.eos.ot.OTPreguntasEvaluacion;
 import cl.eos.ot.OTPreguntasHabilidad;
 import cl.eos.persistence.models.Alumno;
@@ -439,13 +439,9 @@ public class ComparativoComunalHabilidadView extends AFormView implements
 
 	private void informarProblemas(String colegioCurso, Alumno al,
 			String respuesta) {
-		Dialogs info = Dialogs.create();
-		info.title("Alumno con respuestas incompletas.");
-		info.masthead(String.format("%s/%s", colegioCurso, al.toString()));
-		info.message(String
+		
+		FXDialogs.showError("Alumno con respuestas incompletas", String
 				.format("La respuesta [%s] es incompleta", respuesta));
-		info.owner(null);
-		info.showError();
 
 	}
 }

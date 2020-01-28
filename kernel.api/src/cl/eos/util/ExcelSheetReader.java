@@ -11,7 +11,8 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
-import org.controlsfx.dialog.Dialogs;
+
+import cl.eos.interfaces.view.FXDialogs;
 
 public class ExcelSheetReader {
 
@@ -69,15 +70,10 @@ public class ExcelSheetReader {
             }
           }
           if (cellTempList.size() != contColumnas) {
-            Dialogs
-                .create()
-                .owner(null)
-                .title("Importación desde excel")
-                .masthead("")
-                .message(
-                    "Archivo " + fileNameLocal.getName() + " incompleto. \n" + "Se esperan "
-                        + contColumnas + " columna(s), llegaron " + cellTempList.size()
-                        + " columna(s).").showInformation();
+            
+            FXDialogs.showInformation("Importación desde excel", "Archivo " + fileNameLocal.getName() + " incompleto. \n" + "Se esperan "
+                    + contColumnas + " columna(s), llegaron " + cellTempList.size()
+                    + " columna(s).");
             break;
           } else {
             cellDataList.add(cellTempList);
@@ -85,8 +81,7 @@ public class ExcelSheetReader {
         }
       }
     } catch (Exception e) {
-      Dialogs.create().owner(null).title("Error en la importación desde excel").masthead("")
-          .showException(e);
+      FXDialogs.showException("Error","Error en la importación desde excel", e);
     }
 
     /**

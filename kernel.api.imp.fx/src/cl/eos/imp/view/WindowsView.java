@@ -2,21 +2,17 @@ package cl.eos.imp.view;
 
 
 import cl.eos.interfaces.view.IView;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import jfxtras.labs.scene.control.MiniIconButton;
 
 public class WindowsView extends BorderPane {
 
 	private Label windowTitle;
 	private AnchorPane topPane;
-	private MiniIconButton miniButton;
 	private IView view;
 
 	public WindowsView() {
@@ -27,14 +23,11 @@ public class WindowsView extends BorderPane {
 		if (topPane == null) {
 			topPane = new AnchorPane();
 			topPane.setId("ModalDimmer");
-//			AnchorPane.setRightAnchor(getMiniButton(), 1.0);
-//			AnchorPane.setTopAnchor(getMiniButton(), 1.0);
 
 			AnchorPane.setRightAnchor(getLabel(), 20.0);
 			AnchorPane.setTopAnchor(getLabel(), 4.0);
 			AnchorPane.setLeftAnchor(getLabel(), 4.0);
 			AnchorPane.setBottomAnchor(getLabel(), 8.0);
-//			topPane.getChildren().addAll(getLabel(), getMiniButton());
             topPane.getChildren().addAll(getLabel());
 		}
 		return topPane;
