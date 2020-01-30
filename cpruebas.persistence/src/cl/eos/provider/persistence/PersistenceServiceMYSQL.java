@@ -61,10 +61,10 @@ public class PersistenceServiceMYSQL implements IPersistenceService {
 
 		final Properties props = new Properties();
 
-		props.put("javax.persistence.jdbc.user", "eosorio");
-		props.put("javax.persistence.jdbc.password", "_l2j1rs2");
+		props.put("javax.persistence.jdbc.user", "root");
+		props.put("javax.persistence.jdbc.password", "R23n3c31r_");
 		props.put("javax.persistence.jdbc.url",
-				String.format("jdbc:mysql://170.239.86.231:3306/%s", Environment.database));
+				String.format("jdbc:mysql://localhost:3306/%s", Environment.database));
 		props.put("javax.persistence.jdbc.driver", "com.mysql.jdbc.Driver");
 		props.put("eclipselink.allow-zero-id", "true");
 		props.put("eclipselink.query-results-cache", "false");

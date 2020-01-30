@@ -38,10 +38,11 @@ public class ImpresionPrueba {
 
 	private Logger log =  Logger.getLogger("Impresion Prueba");
     private static final int RUT_ROW = 74;
-    private static final int[] RUT_COLS = { 57, 73, 91, 106, 121, 140, 156, 171, 191 };
-    private static final int FORMA_ROW = 66;
-    private static final int[] FORMA_COLS = { 229, 244, 259 };
-    private static final Point RUT_POINT = new Point(40, 88);
+    private static final int[] RUT_COLS = { 43, 60, 76, 94, 109, 124, 143, 159, 174, 194 };
+    private static final int FORMA_ROW = 67;
+    private static final int[] FORMA_COLS = { 232, 247, 262 };
+    private static final Point RUT_POINT = new Point(220, 88);
+    private static final Point LOGO_POINT = new Point(500, 50);
 
     private static final Point FECHA_POINT = new Point(383, 69);
     private static final Point COLEGIO_POINT = new Point(356, 93);
@@ -119,7 +120,7 @@ public class ImpresionPrueba {
     public ImpresionPrueba() {
 
     }
-
+    
     private void addImageToPdf(BufferedImage image, PDDocument doc) {
         try {
             final PDPage page = new PDPage();
@@ -333,8 +334,11 @@ public class ImpresionPrueba {
         final String strRut = rut.replace("-", "");
         final char[] chrRut = strRut.toCharArray();
         int idxCol = 0;
-        if (chrRut.length < 9) {
+        if (chrRut.length < 10) {
             idxCol = 1;
+        }
+        if (chrRut.length < 9) {
+            idxCol = 2;
         }
         for (final char ch : chrRut) {
             final String str = String.valueOf(ch).toUpperCase();
@@ -384,6 +388,7 @@ public class ImpresionPrueba {
         colAlternativas = 5;
         try {
 
+        	final BufferedImage imageLogo = ImageIO.read(new File("res/logo.png"));
             final BufferedImage imageEmpty = ImageIO.read(new File("res/cpruebas.vacia.png"));
             image = new BufferedImage(imageEmpty.getWidth(), imageEmpty.getHeight(), imageEmpty.getType());
             g2 = (Graphics2D) image.getGraphics();
@@ -406,6 +411,7 @@ public class ImpresionPrueba {
                 g2.setColor(Color.WHITE);
                 g2.fillRect(0, 0, imageEmpty.getWidth(), imageEmpty.getHeight());
                 g2.drawImage(imageEmpty, 0, 0, null);
+                g2.drawImage(imageLogo, LOGO_POINT.x, LOGO_POINT.y, null);
                 g2.setColor(Color.BLACK);
                 g2.setFont(LETTERS_FONT);
                 row = FIRST_ROW;
@@ -417,6 +423,7 @@ public class ImpresionPrueba {
                 drawHeader(prueba, alumno, profesor, fecha);
                 final BufferedImage image = drawAlternativas(forma);
                 addImageToPdf(image, doc);
+                
             }
             final String fileName = String.format("%s-%s-%s-%s", fecha.toString(), prueba.getName(), colegio.getName(),
                     curso.getName());

@@ -16,32 +16,32 @@
 	<classpathentry kind="lib" path="../jars/pdfbox-1.8.7.jar"/>
 	<classpathentry kind="lib" path="../jars/MarvinFramework/marvin_1.5.1.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.pruebas.reportes"/>
-	<classpathentry kind="lib" path="O:/cpruebas/jars/boofcv/BoofCV-android-0.18.jar"/>
-	<classpathentry kind="lib" path="O:/cpruebas/jars/boofcv/BoofCV-calibration-0.18.jar"/>
-	<classpathentry kind="lib" path="O:/cpruebas/jars/boofcv/BoofCV-feature-0.18.jar"/>
-	<classpathentry kind="lib" path="O:/cpruebas/jars/boofcv/BoofCV-geo-0.18.jar"/>
-	<classpathentry kind="lib" path="O:/cpruebas/jars/boofcv/BoofCV-io-0.18.jar"/>
-	<classpathentry kind="lib" path="O:/cpruebas/jars/boofcv/BoofCV-ip-0.18.jar"/>
-	<classpathentry kind="lib" path="O:/cpruebas/jars/boofcv/BoofCV-openkinect-0.18.jar"/>
-	<classpathentry kind="lib" path="O:/cpruebas/jars/boofcv/BoofCV-recognition-0.18.jar"/>
-	<classpathentry kind="lib" path="O:/cpruebas/jars/boofcv/BoofCV-sfm-0.18.jar"/>
-	<classpathentry kind="lib" path="O:/cpruebas/jars/boofcv/BoofCV-visualize-0.18.jar"/>
-	<classpathentry kind="lib" path="O:/cpruebas/jars/boofcv/BoofCV-WebcamCapture-0.18.jar"/>
-	<classpathentry kind="lib" path="O:/cpruebas/jars/boofcv/BoofCV-xuggler-0.18.jar"/>
-	<classpathentry kind="lib" path="O:/cpruebas/jars/boofcv/core-0.26.jar"/>
-	<classpathentry kind="lib" path="O:/cpruebas/jars/boofcv/ddogleg-0.6.jar"/>
-	<classpathentry kind="lib" path="O:/cpruebas/jars/boofcv/georegression-0.7.jar"/>
-	<classpathentry kind="lib" path="O:/cpruebas/jars/boofcv/xmlpull-1.1.3.1.jar"/>
-	<classpathentry kind="lib" path="O:/cpruebas/jars/boofcv/xpp3_min-1.1.4c.jar"/>
-	<classpathentry kind="lib" path="O:/cpruebas/jars/boofcv/xstream-1.4.7.jar"/>
-	<classpathentry kind="lib" path="O:/cpruebas/jars/controlsfx-8.0.6_20.jar"/>
-	<classpathentry kind="lib" path="O:/cpruebas/jars/log4j.jar"/>
+	<classpathentry kind="lib" path="../jars/boofcv/BoofCV-android-0.18.jar"/>
+	<classpathentry kind="lib" path="../jars/boofcv/BoofCV-calibration-0.18.jar"/>
+	<classpathentry kind="lib" path="../jars/boofcv/BoofCV-feature-0.18.jar"/>
+	<classpathentry kind="lib" path="../jars/boofcv/BoofCV-geo-0.18.jar"/>
+	<classpathentry kind="lib" path="../jars/boofcv/BoofCV-io-0.18.jar"/>
+	<classpathentry kind="lib" path="../jars/boofcv/BoofCV-ip-0.18.jar"/>
+	<classpathentry kind="lib" path="../jars/boofcv/BoofCV-openkinect-0.18.jar"/>
+	<classpathentry kind="lib" path="../jars/boofcv/BoofCV-recognition-0.18.jar"/>
+	<classpathentry kind="lib" path="../jars/boofcv/BoofCV-sfm-0.18.jar"/>
+	<classpathentry kind="lib" path="../jars/boofcv/BoofCV-visualize-0.18.jar"/>
+	<classpathentry kind="lib" path="../jars/boofcv/BoofCV-WebcamCapture-0.18.jar"/>
+	<classpathentry kind="lib" path="../jars/boofcv/BoofCV-xuggler-0.18.jar"/>
+	<classpathentry kind="lib" path="../jars/boofcv/core-0.26.jar"/>
+	<classpathentry kind="lib" path="../jars/boofcv/ddogleg-0.6.jar"/>
+	<classpathentry kind="lib" path="../jars/boofcv/georegression-0.7.jar"/>
+	<classpathentry kind="lib" path="../jars/boofcv/xmlpull-1.1.3.1.jar"/>
+	<classpathentry kind="lib" path="../jars/boofcv/xpp3_min-1.1.4c.jar"/>
+	<classpathentry kind="lib" path="../jars/boofcv/xstream-1.4.7.jar"/>
+	<classpathentry kind="lib" path="../jars/controlsfx-8.0.6_20.jar"/>
+	<classpathentry kind="lib" path="../jars/log4j.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.data"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.definicion"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.make.prueba"/>
-	<classpathentry kind="lib" path="O:/cpruebas_multiuser_local/cpruebas/jars/gson-2.8.0.jar" sourcepath="O:/cpruebas_multiuser/cpruebas/jars/gson-2.8.0-sources.jar">
+	<classpathentry kind="lib" path="../jars/gson-2.8.0.jar" sourcepath="../jars/gson-2.8.0-sources.jar">
 		<attributes>
-			<attribute name="javadoc_location" value="jar:file:/O:/cpruebas_multiuser/cpruebas/jars/gson-2.8.0-javadoc.jar!/"/>
+			<attribute name="javadoc_location" value="jar:file:/../jars/gson-2.8.0-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.restful"/>

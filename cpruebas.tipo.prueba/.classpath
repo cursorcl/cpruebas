@@ -6,7 +6,7 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/kernel.api"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.persistence"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/kernel.api.imp.fx"/>
-	<classpathentry kind="lib" path="O:/cpruebas_multiuser/cpruebas/jars/controlsfx-8.40.10.jar"/>
+	<classpathentry kind="lib" path="../jars/controlsfx-8.40.10.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.persistence.api"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.persistence.model"/>
 	<classpathentry kind="output" path="bin"/>

@@ -129,6 +129,9 @@ public class Migrator {
 		
 		try {
 			List<String> largs = new ArrayList<String>();
+			String sSistemaOperativo = System.getProperty("os.name");
+			
+			
 			String exec = Migrator.class.getResource("/res/databases.bat").getFile();
 			File directory = new File(Migrator.class.getResource("/res/").getFile());
 			largs.add(exec);
@@ -161,6 +164,7 @@ public class Migrator {
 	}
 	public static void main(String[] args) {
 			try {
+				
 				List<String> largs = new ArrayList<String>();
 				String exec = Migrator.class.getResource("/res/databases.bat").getFile();
 				File directory = new File(Migrator.class.getResource("/res/").getFile());
@@ -190,4 +194,5 @@ public class Migrator {
 				e.printStackTrace();
 			}
 	}
+	
 }

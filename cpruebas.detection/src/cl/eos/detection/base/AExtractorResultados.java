@@ -85,18 +85,6 @@ public abstract class AExtractorResultados implements IExtractorResultados {
     protected static String RUT[] = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "K" };
     // Inicio rectangulo.
     public static int XRUTREF = 53;
-    // Son las diferencias del inicio del círculo con inicio rectángulo
-    // public static int[] CIRCLE_X_RUT_DIFF = { 203 - XRUTREF, 270 - XRUTREF,
-    // 345 - XRUTREF, 408 - XRUTREF, 471 - XRUTREF, 550 - XRUTREF,
-    // 617 - XRUTREF, 680 - XRUTREF, 764 - XRUTREF };
-
-    /*
-     * //Inicio rectangulo. public static int XRUTREF = 145; // Son las
-     * diferencias del inicio del círculo con inicio rectángulo public static
-     * int[] CIRCLE_X_RUT_DIFF = {286 - XRUTREF, 348 - XRUTREF, 418 - XRUTREF,
-     * 477 - XRUTREF, 536 - XRUTREF, 611 - XRUTREF, 675 - XRUTREF, 736 -
-     * XRUTREF, 816 - XRUTREF};
-     */
 
     // Son las diferencias del inicio del círculo con inicio rectángulo
     public static int[] CIRCLE_X_RUT_DIFF = { 0, 64, 135, 196, 256, 332, 397, 456, 536 };
@@ -129,7 +117,7 @@ public abstract class AExtractorResultados implements IExtractorResultados {
         {
             try {
                 limage = ImageIO.read(
-                        new File("C:\\Users\\eosorio\\Documents\\CPruebas\\pruebas\\K20150630210309843_0010.jpg"));
+                        new File("/home/cursor/Documents/CPruebas/scan 4.jpg"));
                 final ImageFloat32 input = ConvertBufferedImage.convertFromSingle(limage, null, ImageFloat32.class);
                 final ImageUInt8 binary = new ImageUInt8(input.width, input.height);
                 double threshold = 185;
@@ -153,7 +141,7 @@ public abstract class AExtractorResultados implements IExtractorResultados {
 
     public static void writeIMG(BufferedImage image, String name) {
         final String debug = System.getProperty("DEBUG");
-        if (debug != null && "TRUE".equals(debug)) {
+        if (debug != null && "TRUE".equalsIgnoreCase(debug)) {
             try {
                 ImageIO.write(image, "png", new File(Utils.getDefaultDirectory() + "/" + name + ".png"));
             } catch (final IOException e) {
@@ -215,7 +203,7 @@ public abstract class AExtractorResultados implements IExtractorResultados {
         final int h = Math.min(3200, limage.getHeight());
         int w = 160;
         List<Contour> contours = null;
-        while (w < 200) {
+        while (w < 230) {
             final BufferedImage image = limage.getSubimage(0, 0, w, h);
             AExtractorResultados.writeIMG(image, "subimage_contours");
             final ImageFloat32 input = ConvertBufferedImage.convertFromSingle(image, null, ImageFloat32.class);
@@ -233,7 +221,7 @@ public abstract class AExtractorResultados implements IExtractorResultados {
             AExtractorResultados.writeIMG(bImage, "contornos_contours");
 
             contours = BinaryImageOps.contour(filtered, ConnectRule.EIGHT, label);
-            if (contours != null && !contours.isEmpty()) {
+            if (contours != null && contours.size() == 6 ) {
                 break;
             }
             w = w + 60;
@@ -446,9 +434,15 @@ public abstract class AExtractorResultados implements IExtractorResultados {
         final StringBuffer strRut = new StringBuffer("");
         int y = pRefRut.y;
 
-        final BufferedImage firstRut = image.getSubimage(x + 145, y - 2, 66, 48);
+        final BufferedImage firstRut = image.getSubimage(x + 100, y - 2, 62, 45);
+        AExtractorResultados.writeIMG(firstRut, "FIRST_RUT");
         final Point pointFirstRut = getPointReferenciaRut(firstRut);
-        x = pRefRut.x + 145 + pointFirstRut.x;
+        
+        final BufferedImage nrut = image.getSubimage(x + 100 , y - 2, x + 600, 545);
+        AExtractorResultados.writeIMG(nrut, "RUT");
+        
+        
+        x = pRefRut.x + 100 + pointFirstRut.x;
         y = y + pointFirstRut.y + 2;
         BufferedImage sectorRut = image.getSubimage(x, y, x + 600, 545);
         sectorRut = preprocesarImagenRut(sectorRut);
