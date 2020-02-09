@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.InvalidPropertiesFormatException;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -50,7 +51,7 @@ public class PersistenceServiceMYSQL implements IPersistenceService {
 	private final static String NAME_COMUN = "_comun";
 
 	@PersistenceContext(unitName = "_comun")
-	private final EntityManagerFactory eFactoryComun;
+	private EntityManagerFactory eFactoryComun;
 
 	private final Lock _mutex = new ReentrantLock(true);
 
@@ -58,9 +59,38 @@ public class PersistenceServiceMYSQL implements IPersistenceService {
 	 * Constructor de la clase.
 	 */
 	public PersistenceServiceMYSQL() {
+		
+		final Properties connProps = new Properties();
+		try {
+			connProps.load(PersistenceServiceMYSQL.class.getResourceAsStream("/res/connection.properties"));
+			
+			
+			final Properties props = new Properties();
+			props.put("javax.persistence.jdbc.user", connProps.getOrDefault("javax.persistence.jdbc.user", "root"));
+			props.put("javax.persistence.jdbc.password", connProps.getOrDefault("javax.persistence.jdbc.password", "R23n3c31r_"));
+			props.put("javax.persistence.jdbc.url", connProps.getOrDefault("javax.persistence.jdbc.url", "jdbc:mysql://localhost:3306/") +  Environment.database);
+			props.put("javax.persistence.jdbc.driver", "com.mysql.jdbc.Driver");
+			props.put("eclipselink.allow-zero-id", "true");
+			props.put("eclipselink.query-results-cache", "false");
+			props.put("eclipselink.cache.shared.default", "false");
 
+			eFactoryComun = Persistence.createEntityManagerFactory(PersistenceServiceMYSQL.NAME_COMUN, props);
+			eFactoryComun.getCache().evictAll();
+
+			
+			
+		} catch (InvalidPropertiesFormatException e) {
+			defautlValues();
+		} catch (IOException e) {
+			defautlValues();
+		}
+		
+
+	}
+
+	private void defautlValues() 
+	{
 		final Properties props = new Properties();
-
 		props.put("javax.persistence.jdbc.user", "root");
 		props.put("javax.persistence.jdbc.password", "R23n3c31r_");
 		props.put("javax.persistence.jdbc.url",
@@ -73,7 +103,6 @@ public class PersistenceServiceMYSQL implements IPersistenceService {
 		eFactoryComun = Persistence.createEntityManagerFactory(PersistenceServiceMYSQL.NAME_COMUN, props);
 		eFactoryComun.getCache().evictAll();
 	}
-
 
 	@Override
 	public void disconnect() {

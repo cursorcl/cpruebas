@@ -45,7 +45,7 @@
                                     </Lighting>
                                  </effect>
                               </ImageView>
-                              <Label alignment="CENTER" text="V. 3.1" textAlignment="CENTER" textFill="WHITE">
+                              <Label alignment="CENTER" text="V. 4.0" textAlignment="CENTER" textFill="WHITE">
                                  <font>
                                     <Font name="System Bold" size="26.0" />
                                  </font>

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.InvalidPropertiesFormatException;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -24,6 +25,7 @@ import javax.persistence.RollbackException;
 import org.eclipse.persistence.config.HintValues;
 import org.eclipse.persistence.config.QueryHints;
 
+import cl.eos.Environment;
 import cl.eos.imp.view.ProgressForm;
 import cl.eos.interfaces.entity.IEntity;
 import cl.eos.interfaces.entity.IPersistenceListener;
@@ -49,7 +51,7 @@ public class CommonPersistenceServiceMYSQL implements IPersistenceService {
 	private final static String NAME_COMUN = "_comun";
 
 	@PersistenceContext(unitName = "_comun")
-	private final EntityManagerFactory eFactoryComun;
+	private  EntityManagerFactory eFactoryComun;
 
 	private final Lock _mutex = new ReentrantLock(true);
 
@@ -58,11 +60,41 @@ public class CommonPersistenceServiceMYSQL implements IPersistenceService {
 	 */
 	public CommonPersistenceServiceMYSQL() {
 
-		final Properties props = new Properties();
+		final Properties connProps = new Properties();
+		try {
+			connProps.load(PersistenceServiceMYSQL.class.getResourceAsStream("/res/connection.properties"));
+			
+			
+			final Properties props = new Properties();
+			props.put("javax.persistence.jdbc.user", connProps.getOrDefault("javax.persistence.jdbc.user", "root"));
+			props.put("javax.persistence.jdbc.password", connProps.getOrDefault("javax.persistence.jdbc.password", "R23n3c31r_"));
+			props.put("javax.persistence.jdbc.url", connProps.getOrDefault("javax.persistence.jdbc.url", "jdbc:mysql://localhost:3306/") +  "cpruebas_comun");
+			props.put("javax.persistence.jdbc.driver", "com.mysql.jdbc.Driver");
+			props.put("eclipselink.allow-zero-id", "true");
+			props.put("eclipselink.query-results-cache", "false");
+			props.put("eclipselink.cache.shared.default", "false");
 
+			eFactoryComun = Persistence.createEntityManagerFactory(CommonPersistenceServiceMYSQL.NAME_COMUN, props);
+			eFactoryComun.getCache().evictAll();
+
+			
+			
+		} catch (InvalidPropertiesFormatException e) {
+			defautlValues();
+		} catch (IOException e) {
+			defautlValues();
+		}
+		
+	}
+
+	
+	private void defautlValues() 
+	{
+		final Properties props = new Properties();
 		props.put("javax.persistence.jdbc.user", "root");
 		props.put("javax.persistence.jdbc.password", "R23n3c31r_");
-		props.put("javax.persistence.jdbc.url", String.format("jdbc:mysql://localhost:3306/cpruebas_comun"));
+		props.put("javax.persistence.jdbc.url",
+				String.format("jdbc:mysql://localhost:3306/%s", Environment.database));
 		props.put("javax.persistence.jdbc.driver", "com.mysql.jdbc.Driver");
 		props.put("eclipselink.allow-zero-id", "true");
 		props.put("eclipselink.query-results-cache", "false");
@@ -71,7 +103,7 @@ public class CommonPersistenceServiceMYSQL implements IPersistenceService {
 		eFactoryComun = Persistence.createEntityManagerFactory(CommonPersistenceServiceMYSQL.NAME_COMUN, props);
 		eFactoryComun.getCache().evictAll();
 	}
-
+	
 	@Override
 	public void disconnect() {
 		if (eFactoryComun != null && eFactoryComun.isOpen()) {

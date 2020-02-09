@@ -77,15 +77,15 @@ public class SeleccionCliente {
 						if(buffer == null)
 						{
 							buffer = new StringBuffer();
-							buffer.append("Estos clientes no tienen su base de datos:");
+							buffer.append("Estos clientes no tienen su base de datos: ");
 						}
 						buffer.append(cliente.getName());
-						buffer.append(",");
+						buffer.append(", ");
 					}
 				}
 				if(buffer != null)
 				{
-					buffer.replace(buffer.length() - 1, buffer.length(), ".");
+					buffer.replace(buffer.length() - 2, buffer.length(), ".");
 					
 					final Alert alert = new Alert(AlertType.ERROR);
 					alert.setTitle("Inconsistencia Clientes.");
