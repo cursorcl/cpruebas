@@ -76,7 +76,11 @@ public class EvaluarPruebaView extends AFormView {
                 final List<EvaluacionPrueba> listEvaluaciones = prueba.getEvaluaciones();
                 if (listEvaluaciones != null && !listEvaluaciones.isEmpty()) {
                     for (final EvaluacionPrueba evaluacion : listEvaluaciones) {
-                        if (evaluacion.getColegio().equals(colegio) && evaluacion.getCurso().equals(curso)) {
+                    	System.out.println(evaluacion);
+                    	System.out.println(evaluacion.getColegio());
+                    	System.out.println(evaluacion.getCurso());
+                    	
+                        if ((evaluacion.getColegio() != null && evaluacion.getColegio().equals(colegio)) && (evaluacion.getCurso() != null && evaluacion.getCurso().equals(curso))) {
                             evalPrueba = evaluacion;
                             evalPrueba.getPruebasRendidas().isEmpty();
                             break;

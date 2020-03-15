@@ -12,6 +12,7 @@ import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.FileImageInputStream;
 import javax.imageio.stream.ImageInputStream;
+import javax.swing.filechooser.FileSystemView;
 
 import org.apache.log4j.Logger;
 
@@ -42,7 +43,8 @@ public class Utils {
      * @return
      */
     public static File getDefaultDirectory() {
-        String path = System.getProperty("user.home") + File.separator + "Documents";
+//        String path = System.getProperty("user.home") + File.separator + "Documents";
+        String path = FileSystemView.getFileSystemView().getDefaultDirectory().getPath();
         path += File.separator + "CPruebas";
         File customDir = new File(path);
         if (customDir.exists()) {
