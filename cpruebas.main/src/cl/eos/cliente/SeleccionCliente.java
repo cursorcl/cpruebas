@@ -31,7 +31,7 @@ public class SeleccionCliente {
 	static final int HEIGHT = 740;
 	double xOffset;
 	double yOffset;
-	final ObservableList<Clientes> lstClientes = FXCollections.observableArrayList();
+	final   ObservableList<Clientes> lstClientes = FXCollections.observableArrayList();
 
 	@FXML
 	private Button btnAccept;
