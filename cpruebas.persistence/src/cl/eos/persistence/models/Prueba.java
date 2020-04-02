@@ -19,7 +19,7 @@ import cl.eos.persistence.AEntity;
 
 @Entity(name = "prueba")
 @NamedQueries({ @NamedQuery(name = "Prueba.findAll", query = "SELECT e FROM prueba e"),
-	@NamedQuery(name = "Prueba.findByAsignaturaCurso", query = "SELECT p FROM prueba p where p.asignatura.id = :idAsignatura and p.curso.id = :idColegio")})
+	@NamedQuery(name = "Prueba.findPruebaByAsignaturaCurso", query = "SELECT p FROM prueba p where p.asignatura.id = :idAsignatura and p.curso.id = :idTipoCurso")})
 public class Prueba extends AEntity {
 
 	public enum Estado {

@@ -1,4 +1,4 @@
-package cl.eos.external.files;
+package cl.eos.external.files.excel;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -19,6 +19,8 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import cl.eos.external.files.utils.EmptySheet;
+import cl.eos.external.files.utils.InvalidSheetFormat;
 import cl.eos.util.Utils;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -48,7 +50,7 @@ import javafx.scene.control.Alert.AlertType;
  * @author eosorio
  *
  */
-public class TestsImporter {
+public class ExcelExamsReader {
 
 	/** Esta clase representa al registro leido **/
 	static class Register {
@@ -97,7 +99,7 @@ public class TestsImporter {
 
 		
 		File f = new File("c:\\tmp\\multi_1A.xlsx");
-		TestsImporter importer = new TestsImporter();
+		ExcelExamsReader importer = new ExcelExamsReader();
 		Results results = importer.readExcelFile(f);
 		if (results != null)
 			for (Register reg : results.results)

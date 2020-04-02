@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane styleClass="sample-page" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cl.eos.external.files.PruebasExternasViewController">
+   <center>
+      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="511.0" prefWidth="773.0">
+         <children>
+            <VBox layoutX="314.0" layoutY="93.0" prefHeight="511.0" prefWidth="773.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <HBox alignment="CENTER_LEFT" prefHeight="57.0" prefWidth="763.0" spacing="5.0">
+                     <children>
+                        <Label text="Archivo">
+                           <HBox.margin>
+                              <Insets left="5.0" />
+                           </HBox.margin>
+                        </Label>
+                        <TextField id="txtFileToProcess" fx:id="txtFile" editable="false" prefHeight="25.0" prefWidth="296.0" promptText="Archivo a Procesar" HBox.hgrow="ALWAYS" />
+                        <ButtonBar prefHeight="40.0" prefWidth="168.0">
+                          <buttons>
+                            <Button id="btnFindFile" fx:id="btnSearchFile" minWidth="43.0" mnemonicParsing="false" prefHeight="25.0" text="..." />
+                              <Button id="btnProcess" fx:id="btnProcess" minWidth="43.0" mnemonicParsing="false" prefHeight="25.0" text="Procesar">
+                                 <padding>
+                                    <Insets right="5.0" />
+                                 </padding>
+                              </Button>
+                          </buttons>
+                           <HBox.margin>
+                              <Insets right="5.0" />
+                           </HBox.margin>
+                        </ButtonBar>
+                     </children>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox prefHeight="19.0" prefWidth="773.0">
+                     <children>
+                        <Separator disable="true" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                           <HBox.margin>
+                              <Insets top="5.0" />
+                           </HBox.margin>
+                        </Separator>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="63.0" prefWidth="773.0">
+                     <children>
+                        <ProgressBar id="progressBar" fx:id="progressBar" mouseTransparent="true" prefHeight="29.0" prefWidth="529.0" progress="0.32" HBox.hgrow="ALWAYS" />
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                     <children>
+                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <Label prefHeight="27.0" prefWidth="566.0" text="Procesados Corerctos" textAlignment="CENTER" VBox.vgrow="ALWAYS">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Label>
+                                    <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                                       <content>
+                                          <TableView id="tblRightValues" fx:id="tblGoodValues" prefHeight="279.0" prefWidth="566.0">
+                                            <columns>
+                                              <TableColumn id="columnRut" fx:id="columnRut" prefWidth="135.0" text="Rut" />
+                                              <TableColumn id="columnCurso" fx:id="columnCurso" prefWidth="83.0" text="Curso" />
+                                                <TableColumn id="columnAsignatura" fx:id="columnAsignatura" prefWidth="122.0" text="Asignatura" />
+                                                <TableColumn id="columnRespuesta" fx:id="columnRespuesta" prefWidth="137.0" text="Respuesta" />
+                                                <TableColumn id="columnNota" fx:id="columnNota" prefWidth="78.0" text="Nota" />
+                                            </columns>
+                                          </TableView>
+                                       </content>
+                                    </ScrollPane>
+                                 </children>
+                                 <HBox.margin>
+                                    <Insets left="5.0" />
+                                 </HBox.margin>
+                              </VBox>
+                              <VBox prefHeight="309.0" prefWidth="190.0">
+                                 <children>
+                                    <Label prefHeight="17.0" prefWidth="286.0" text="Incorrectos" textAlignment="CENTER">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Label>
+                                    <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="259.0" prefWidth="279.0" VBox.vgrow="ALWAYS">
+                                       <content>
+                                          <ListView id="lstBadValues" fx:id="lstBadValues" prefHeight="279.0" prefWidth="183.0" />
+                                       </content>
+                                    </ScrollPane>
+                                 </children>
+                                 <HBox.margin>
+                                    <Insets right="5.0" />
+                                 </HBox.margin>
+                              </VBox>
+                           </children>
+                        </HBox>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_RIGHT" prefHeight="63.0" prefWidth="773.0">
+                     <children>
+                        <ButtonBar prefHeight="40.0" prefWidth="200.0">
+                          <buttons>
+                              <Button id="btnCancel" fx:id="btnCancel" mnemonicParsing="false" text="Cancelar" />
+                            <Button id="btnClose" fx:id="btnClose" mnemonicParsing="false" text="Cerrar" />
+                          </buttons>
+                           <HBox.margin>
+                              <Insets right="5.0" />
+                           </HBox.margin>
+                        </ButtonBar>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+      </AnchorPane>
+   </center>
+</BorderPane>

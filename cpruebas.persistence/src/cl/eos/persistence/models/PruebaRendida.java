@@ -22,7 +22,9 @@ import cl.eos.util.Utils;
  */
 @Entity(name = "pruebarendida")
 @NamedQueries({ @NamedQuery(name = "PruebaRendida.findAll", query = "SELECT e FROM pruebarendida e"),
-				@NamedQuery(name = "PruebaRendidaByEval.findAll", query = "SELECT e FROM pruebarendida e where e.evaluacionPrueba.id = :ideval")})
+				@NamedQuery(name = "PruebaRendidaByEval.findAll", query = "SELECT e FROM pruebarendida e where e.evaluacionPrueba.id = :ideval"),
+				@NamedQuery(name = "PruebaRendida.findAlumnoEvaluacion", query = "SELECT e FROM pruebarendida e where e.alumno.id = :idAlumno and e.evaluacionPrueba.id = :idEvaluacion")
+				})
 public class PruebaRendida extends AEntity {
 
     private static final long serialVersionUID = 1L;

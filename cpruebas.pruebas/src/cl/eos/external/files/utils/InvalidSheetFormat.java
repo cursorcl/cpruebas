@@ -1,4 +1,4 @@
-package cl.eos.external.files;
+package cl.eos.external.files.utils;
 
 /**
  * Excepción que se gatilla cuando una hoja del archivo que se ha entregado

@@ -23,6 +23,7 @@ import cl.eos.activator.ListadoPruebasActivator;
 import cl.eos.calidadlectora.CalidadLectoraActivator;
 import cl.eos.comprensionlectora.ComprensionLectoraActivator;
 import cl.eos.exception.ExceptionBD;
+import cl.eos.external.files.PruebasExternasActivator;
 import cl.eos.imp.view.WindowButtons;
 import cl.eos.imp.view.WindowManager;
 import cl.eos.interfaces.IActivator;
@@ -53,6 +54,8 @@ public class MainController {
     private MenuContainer mnuPrincipal;
     @FXML
     private MenuItem mnuListarPruebasPlus;
+    @FXML
+    private MenuItem mnuImportarPruebas;
     @FXML
     private Menu mnuAdministrar;
     @FXML
@@ -281,6 +284,11 @@ public class MainController {
         });
         mnuListarPruebasPlus.setOnAction(event -> {
             final IActivator activator = new ListadoPruebasActivator();
+            WindowManager.getInstance().show(activator.getView());
+        });
+        
+        mnuImportarPruebas.setOnAction(event ->  {
+            final IActivator activator = new PruebasExternasActivator();
             WindowManager.getInstance().show(activator.getView());
         });
         txtCliente.setText(Environment.client);
