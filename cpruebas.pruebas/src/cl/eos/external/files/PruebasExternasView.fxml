@@ -58,11 +58,18 @@
                         </Separator>
                      </children>
                   </HBox>
+                  <VBox>
+                  <HBox alignment="CENTER" prefHeight="63.0" prefWidth="773.0">
+                     <children>
+                        <TextField id="txtProgress" fx:id="txtProgress" editable="false" prefHeight="29.0" prefWidth="672.0" />
+                     </children>
+                  </HBox>                  
                   <HBox alignment="CENTER" prefHeight="63.0" prefWidth="773.0">
                      <children>
                         <ProgressBar id="progressBar" fx:id="progressBar" mouseTransparent="true" prefHeight="29.0" prefWidth="529.0" progress="0.32" HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
+                  </VBox>
                   <HBox prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                      <children>
                         <HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0" HBox.hgrow="ALWAYS">

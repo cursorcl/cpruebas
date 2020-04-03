@@ -191,6 +191,12 @@ public class EvaluadorPruebas {
 
 	/**
 	 * Realiza la evaluación de las respuestas de un alumno.
+	 * 
+	 * Tiene una pequeña diferencia con la evaluación original
+	 * 
+	 * <li>La original para las preguntas V y F considera B=V y D=F.</li>
+	 * <li>La actual para las preguntas V y F considera A=V y B=F.</li>
+	 * 
 	 * @param prueba La prueba que tiene las respuestas esperadas.
 	 * @param alumno Alumno a ser evaluado.
 	 * @param respuestas Respuestas del a
@@ -237,10 +243,12 @@ public class EvaluadorPruebas {
 						malas++;
 					}
 				} else if (rEsperada.getVerdaderoFalso()) {
-					if ("B".equalsIgnoreCase(letter)) {
+					// Ya que se hizo VF con AB.
+					// Se hace cambio porque en el excel viene así.
+					if ("A".equalsIgnoreCase(letter)) {
 						strResps.replace(n, n + 1, "V");
 						letter = "V";
-					} else if ("D".equalsIgnoreCase(letter)) {
+					} else if ("B".equalsIgnoreCase(letter)) {
 						strResps.replace(n, n + 1, "F");
 						letter = "F";
 					}

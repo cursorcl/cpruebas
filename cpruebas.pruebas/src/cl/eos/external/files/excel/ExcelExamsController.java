@@ -1,18 +1,20 @@
 package cl.eos.external.files.excel;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
 import cl.eos.external.files.EvaluadorPruebas;
-import cl.eos.external.files.excel.ExcelExamsReader.Register;
-import cl.eos.external.files.excel.ExcelExamsReader.Results;
+import cl.eos.external.files.utils.Register;
+import cl.eos.external.files.utils.Results;
 import cl.eos.persistence.models.Alumno;
 import cl.eos.persistence.models.Asignatura;
 import cl.eos.persistence.models.Curso;
 import cl.eos.persistence.models.EvaluacionPrueba;
 import cl.eos.persistence.models.Prueba;
 import cl.eos.persistence.models.PruebaRendida;
+import javafx.concurrent.Task;
 
 /**
  * Esta clase coordina todas las acciones relacionadas con el procesamiento de
@@ -30,13 +32,15 @@ public class ExcelExamsController {
 	ExcelExamsReader reader = new ExcelExamsReader();
 	EvaluadorPruebas evaluador = new EvaluadorPruebas();
 
-	public void process(File exams) {
+	public Task<Results> process(File exams) {
 		Results results = reader.readExcelFile(exams);
 		boolean nextStep = showBadResults(results);
 		if (nextStep) {
-			process(results.results);
+			return process(results.results);
 		}
+		return null;
 	}
+	
 
 	/**
 	 * Procesa la lista de elementos que vienen en la lista.
@@ -48,51 +52,62 @@ public class ExcelExamsController {
 	 * 
 	 * @param results Lista de registro de alumnos con sus respuestas.
 	 */
-	private void process(List<Register> results) {
+	private Task<Results> process(List<Register> results) {
 
-		Curso ultimoCurso = null;
-		Asignatura ultimaAsignatura = null;
+		Task<Results> task = new Task<Results>() {
+			public Results call() {
 
-		Prueba prueba = null;
-		EvaluacionPrueba evaluacion = null;
+				List<Register> goodResults = new ArrayList<>();
+				List<Register> badResults = new ArrayList<>();
 
-		for (Register register : results) {
-			 log.info("Procesando registro:" + register.toString());
-			Asignatura asignatura = evaluador.getAsignatura(register.idAsignatura);
-			Curso curso = evaluador.getCurso(register.idCurso);
-			if (curso == null || asignatura == null) {
+				Curso ultimoCurso = null;
+				Asignatura ultimaAsignatura = null;
+				Prueba prueba = null;
+				EvaluacionPrueba evaluacion = null;
 
-			} else {
-				// Cuando cambia la asignatura o el curso debo obtener la evaluación
-				// correspondiente.
-				if (!(curso.equals(ultimoCurso) && asignatura.equals(ultimaAsignatura))) {
-					ultimoCurso = curso;
-					ultimaAsignatura = asignatura;
-					// Tengo que obtner los valores de la prueba y evaluación.
-					prueba = evaluador.getPrueba(asignatura, curso);
-					evaluacion = evaluador.getEvaluacionPrueba(prueba, curso);
+				int n = 0;
+				int max = results.size();
+				
+				for (Register register : results) {
+					updateMessage(register.toString());
+					
+					updateProgress(++n, max);
+					
+					Asignatura asignatura = evaluador.getAsignatura(register.getIdAsignatura());
+					Curso curso = evaluador.getCurso(register.getIdCurso());
+					if (curso == null || asignatura == null) {
+						badResults.add(register);
+						updateMessage("Cancelled");
+					} else {
+						// Cuando cambia la asignatura o el curso debo obtener la evaluación
+						// correspondiente.
+						if (!(curso.equals(ultimoCurso) && asignatura.equals(ultimaAsignatura))) {
+							ultimoCurso = curso;
+							ultimaAsignatura = asignatura;
+							// Tengo que obtner los valores de la prueba y evaluación.
+							prueba = evaluador.getPrueba(asignatura, curso);
+							evaluacion = evaluador.getEvaluacionPrueba(prueba, curso);
+						}
+
+						Alumno alumno = curso.getAlumnos().stream()
+								.filter(a -> a.getRut().equalsIgnoreCase(register.getRut())).findFirst().orElse(null);
+						if (alumno == null) {
+							badResults.add(register);
+						} else {
+
+							PruebaRendida pruebaRendida = evaluador.generarPruebaRendida(prueba, alumno,
+									register.getRespuestas());
+							pruebaRendida.setEvaluacionPrueba(evaluacion);
+							pruebaRendida = (PruebaRendida) evaluador.savePruebaRendida(pruebaRendida);
+							register.setNota(pruebaRendida.getNota());
+							goodResults.add(register);
+						}
+					}
 				}
-
-				Alumno alumno = curso.getAlumnos().stream().filter(a -> a.getRut().equalsIgnoreCase(register.rut))
-						.findFirst().orElse(null);
-				if (alumno == null) {
-					registerError(register);
-				} else {
-					
-					
-					PruebaRendida pruebaRendida = evaluador.generarPruebaRendida(prueba, alumno, register.respuestas);
-					pruebaRendida.setEvaluacionPrueba(evaluacion);
-
-					// Debo ver si existe una evaluación y recuperarla y cambiarla.
-					
-					// Aquí debo guardar la prueba.
-					
-					pruebaRendida = (PruebaRendida) evaluador.savePruebaRendida(pruebaRendida);
-				}
+				return new Results(goodResults, badResults);
 			}
-
-		}
-
+		};
+		return task;
 	}
 
 	/**
