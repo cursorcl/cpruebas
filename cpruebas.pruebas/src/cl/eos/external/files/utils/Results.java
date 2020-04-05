@@ -11,10 +11,10 @@ import java.util.List;
  *
  */
 public class  Results {
-	public List<Register> results;
-	public List<Register> badResults;
+	public List<RegisterForView> results;
+	public List<RegisterForView> badResults;
 
-	public Results(List<Register> results, List<Register> badResults) {
+	public Results(List<RegisterForView> results, List<RegisterForView> badResults) {
 		this.results = results;
 		this.badResults = badResults;
 

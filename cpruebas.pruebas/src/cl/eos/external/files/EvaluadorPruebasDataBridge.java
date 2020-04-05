@@ -29,14 +29,14 @@ import cl.eos.util.Utils;
  * @author eosorio
  *
  */
-public class EvaluadorPruebas {
+public class EvaluadorPruebasDataBridge {
 
-	private static Logger log = Logger.getLogger(EvaluadorPruebas.class.getName());
+	private static Logger log = Logger.getLogger(EvaluadorPruebasDataBridge.class.getName());
 	protected IController controller;
 
 	protected Profesor profesor = null;
-	protected Colegio colegio = null;
 
+	protected Map<Long, Colegio> colegios = new HashMap<>();
 	protected Map<Long, Curso> cursos = new HashMap<>();
 	protected Map<KeyExams, Prueba> pruebas = new HashMap<>();
 	protected Map<KeyEvaluation, EvaluacionPrueba> evaluaciones = new HashMap<>();
@@ -44,10 +44,7 @@ public class EvaluadorPruebas {
 	protected Map<Long, Asignatura> asignaturas = new HashMap<>();
 	protected Map<Long, TipoCurso> tiposCurso = new HashMap<>();
 
-	
-	
-
-	public EvaluadorPruebas() {
+	public EvaluadorPruebasDataBridge() {
 		this.controller = new PruebasExternasController();
 	}
 
@@ -80,13 +77,11 @@ public class EvaluadorPruebas {
 	 * 
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
-	public Colegio getColegio() {
+	public Colegio getColegio(Long idColegio) {
+		Colegio colegio = colegios.get(idColegio);
 		if (colegio == null) {
-			List<Colegio> colegios = (List<Colegio>) controller.findSynchro("Colegio.findAll", null);
-			if (!(colegios == null || colegios.isEmpty()))
-				colegio = colegios.get(0);
-
+			colegio = (Colegio) controller.findSynchroById(Colegio.class, idColegio);
+			colegios.put(idColegio, colegio);
 		}
 		return colegio;
 	}
@@ -133,60 +128,55 @@ public class EvaluadorPruebas {
 		return prueba;
 	}
 
-
 	/**
-	 * Obtiene las evaluación prueba para la combinación Prueba Curso sino existe, se crea..
+	 * Obtiene las evaluación prueba para la combinación Prueba Curso sino existe,
+	 * se crea..
 	 * 
 	 * @param prueba La prueba a la que se le busca la evaluación.
-	 * @param curso El curso al que se le buscan la evaluación.
+	 * @param curso  El curso al que se le buscan la evaluación.
 	 * @return Evaluación asociada a la prueba.
 	 */
 	@SuppressWarnings("unchecked")
-	public EvaluacionPrueba getEvaluacionPrueba(Prueba prueba, Curso curso)
-	{
-		
+	public EvaluacionPrueba getEvaluacionPrueba(Prueba prueba, Curso curso) {
+
 		KeyEvaluation key = new KeyEvaluation(prueba, curso);
 		EvaluacionPrueba evalPrueba = evaluaciones.get(key);
-		
-		if(evalPrueba != null)
+
+		if (evalPrueba != null)
 			return evalPrueba;
-		
+
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("pruebaId", prueba.getId());
 		parameters.put("cursoId", curso.getId());
-		List<EvaluacionPrueba> evaluacionPrueba = (List<EvaluacionPrueba>) controller.findSynchro("EvaluacionPrueba.findByPruebaCurso", parameters);
-		
-		if(evaluacionPrueba == null || evaluacionPrueba.isEmpty())
-		{
-			
+		List<EvaluacionPrueba> evaluacionPrueba = (List<EvaluacionPrueba>) controller
+				.findSynchro("EvaluacionPrueba.findByPruebaCurso", parameters);
+
+		if (evaluacionPrueba == null || evaluacionPrueba.isEmpty()) {
+
 			// No la tiene, por tanto creamos una evaluación.
-	        evalPrueba = new EvaluacionPrueba();
-	        evalPrueba.setName(prueba.getAsignatura().getName() + " " + curso.getName());
-	        evalPrueba.setColegio(getColegio());
-	        evalPrueba.setCurso(curso);
-	        evalPrueba.setPrueba(prueba);
-	        evalPrueba.setProfesor(getProfesor());
-	        evalPrueba.setFecha(Instant.now().toEpochMilli());
-	        
-	        message(String.format("Creando nueva evaluación para el curso %s prueba %d.", curso.getName(), prueba.getId()));
-	        evalPrueba = (EvaluacionPrueba) controller.save(evalPrueba);
-	        log.info("Creada evaluación:" + evalPrueba.getId() + " " + evalPrueba.getName());
+			evalPrueba = new EvaluacionPrueba();
+			evalPrueba.setName(prueba.getAsignatura().getName() + " " + curso.getName());
+			evalPrueba.setColegio(curso.getColegio());
+			evalPrueba.setCurso(curso);
+			evalPrueba.setPrueba(prueba);
+			evalPrueba.setProfesor(getProfesor());
+			evalPrueba.setFecha(Instant.now().toEpochMilli());
+
+			message(String.format("Creando nueva evaluación para el curso %s prueba %d.", curso.getName(),
+					prueba.getId()));
+			evalPrueba = (EvaluacionPrueba) controller.save(evalPrueba);
+			log.info("Creada evaluación:" + evalPrueba.getId() + " " + evalPrueba.getName());
+		} else {
+			evalPrueba = evaluacionPrueba.get(0);
+			evalPrueba.getPruebasRendidas().isEmpty();
 		}
-		else
-		{
-	        evalPrueba = evaluacionPrueba.get(0);
-            evalPrueba.getPruebasRendidas().isEmpty();
-        }
 		evaluaciones.put(key, evalPrueba);
 		return evalPrueba;
-    }
+	}
 
-	
-    
-	
 	private void message(String string) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/**
@@ -197,8 +187,8 @@ public class EvaluadorPruebas {
 	 * <li>La original para las preguntas V y F considera B=V y D=F.</li>
 	 * <li>La actual para las preguntas V y F considera A=V y B=F.</li>
 	 * 
-	 * @param prueba La prueba que tiene las respuestas esperadas.
-	 * @param alumno Alumno a ser evaluado.
+	 * @param prueba     La prueba que tiene las respuestas esperadas.
+	 * @param alumno     Alumno a ser evaluado.
 	 * @param respuestas Respuestas del a
 	 * @return
 	 */
@@ -294,14 +284,13 @@ public class EvaluadorPruebas {
 	 * @return La prueba con su identidicador.
 	 */
 	@SuppressWarnings("unchecked")
-	public PruebaRendida savePruebaRendida(PruebaRendida pRendida)
-	{
+	public PruebaRendida savePruebaRendida(PruebaRendida pRendida) {
 		Map<String, Object> parameters = new HashMap<>();
 		parameters.put("idAlumno", pRendida.getAlumno().getId());
 		parameters.put("idEvaluacion", pRendida.getEvaluacionPrueba().getId());
-		List<PruebaRendida> pRendidas = (List<PruebaRendida>) controller.findSynchro("PruebaRendida.findAlumnoEvaluacion", parameters);
-		if(pRendidas != null && !pRendidas.isEmpty())
-		{
+		List<PruebaRendida> pRendidas = (List<PruebaRendida>) controller
+				.findSynchro("PruebaRendida.findAlumnoEvaluacion", parameters);
+		if (pRendidas != null && !pRendidas.isEmpty()) {
 			PruebaRendida oldPRendida = pRendidas.get(0);
 			oldPRendida.setBuenas(pRendida.getBuenas());
 			oldPRendida.setMalas(pRendida.getMalas());
@@ -309,15 +298,14 @@ public class EvaluadorPruebas {
 			oldPRendida.setOmitidas(pRendida.getOmitidas());
 			oldPRendida.setRango(pRendida.getRango());
 			oldPRendida.setRespuestas(pRendida.getRespuestas());
-			
+
 			return (PruebaRendida) save(oldPRendida);
 		}
 		return (PruebaRendida) save(pRendida);
 	}
-	
-	public IEntity save(IEntity entity)
-	{
-		
+
+	public IEntity save(IEntity entity) {
+
 		return controller.save(entity);
 	}
 }

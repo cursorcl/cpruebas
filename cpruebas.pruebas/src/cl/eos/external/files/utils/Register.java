@@ -6,16 +6,18 @@ import javafx.beans.property.SimpleStringProperty;
 
 public class Register {
 
+	public SimpleLongProperty nRow = new SimpleLongProperty();
 	public SimpleLongProperty idColegio = new SimpleLongProperty();
 	public SimpleLongProperty idCurso = new SimpleLongProperty();
 	public SimpleLongProperty idAsignatura = new SimpleLongProperty();
 	public SimpleStringProperty rut = new SimpleStringProperty();
 	public SimpleStringProperty respuestas = new SimpleStringProperty();
 	public SimpleFloatProperty nota = new SimpleFloatProperty(0f);
+	
 
 	@Override
 	public String toString() {
-		return String.format("%d/%d/%d/%s/%s/%%3.1f", idColegio.get(), idCurso.get(), idAsignatura.get(), rut.get(), respuestas.get(), nota.get());
+		return String.format("%d/%d/%d/%s/%s/%3.1f", idColegio.get(), idCurso.get(), idAsignatura.get(), rut.get(), respuestas.get(), nota.get());
 	}
 
 	public final SimpleLongProperty idColegioProperty() {
@@ -89,5 +91,20 @@ public class Register {
 	public final void setNota(final float nota) {
 		this.notaProperty().set(nota);
 	}
+
+	public final SimpleLongProperty nRowProperty() {
+		return this.nRow;
+	}
+	
+
+	public final long getNRow() {
+		return this.nRowProperty().get();
+	}
+	
+
+	public final void setNRow(final long nRow) {
+		this.nRowProperty().set(nRow);
+	}
+	
 
 }

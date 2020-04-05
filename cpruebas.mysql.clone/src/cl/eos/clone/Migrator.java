@@ -9,8 +9,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.print.DocFlavor.URL;
-
 public class Migrator {
 
 	public static int createClient(String name) {
@@ -129,18 +127,15 @@ public class Migrator {
 	public static List<String> databases()
 	{
 		List<String> databases =  new ArrayList<>();
-		System.out.println("databases");
 		
 		try {
 			List<String> largs = new ArrayList<String>();
 			
 			
 			String exec = Migrator.class.getResource("/res/databases.bat").getFile();
-			System.out.println(System.getProperty("user.dir") + " " + exec);
 			File directory = new File(Migrator.class.getResource("/res/").getFile() + "/");
 			try {
 				File fexec = Paths.get(Migrator.class.getResource("/res/databases.bat").toURI()).toFile();
-				System.out.println(fexec.getAbsolutePath());
 				exec = fexec.getAbsolutePath();
 				directory = fexec.getParentFile();
 			} catch (URISyntaxException e) {
