@@ -1,6 +1,7 @@
 package cl.eos.external.files;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -160,7 +161,7 @@ public class EvaluadorPruebasDataBridge {
 			evalPrueba.setCurso(curso);
 			evalPrueba.setPrueba(prueba);
 			evalPrueba.setProfesor(getProfesor());
-			evalPrueba.setFecha(Instant.now().toEpochMilli());
+			evalPrueba.setFecha(LocalDate.now().toEpochDay());
 
 			message(String.format("Creando nueva evaluación para el curso %s prueba %d.", curso.getName(),
 					prueba.getId()));
