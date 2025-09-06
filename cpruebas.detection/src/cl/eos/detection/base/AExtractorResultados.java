@@ -109,59 +109,6 @@ public abstract class AExtractorResultados implements IExtractorResultados {
         return (pairSource, pairTarget) -> pairSource.getFirst().compareTo(pairTarget.getFirst());
     }
 
-    public static void main(String[] args) {
-
-//        BufferedImage limage = null;
-//        final ExtractorResultadosPrueba extractor = ExtractorResultadosPrueba.getInstance();
-//
-//        {
-//            try {
-//                limage = ImageIO.read(
-//                        new File("/home/cursor/Documents/CPruebas/scan 4.jpg"));
-//                final ImageFloat32 input = ConvertBufferedImage.convertFromSingle(limage, null, ImageFloat32.class);
-//                final ImageUInt8 binary = new ImageUInt8(input.width, input.height);
-//                double threshold = 185;
-//                threshold = GThresholdImageOps.computeOtsu(input, 0, 256);
-//                ThresholdImageOps.threshold(input, binary, (float) threshold, false); // 170,180
-//                ImageUInt8 output = BinaryImageOps.erode4(binary, 3, null); // 2,4
-//                output = BinaryImageOps.dilate4(output, 7, null); // 7,9
-//                output = BinaryImageOps.erode4(output, 2, null);
-//                output = BinaryImageOps.dilate4(output, 5, null); // 5
-//                output = BinaryImageOps.erode4(output, 3, null);
-//                final BufferedImage bImage = VisualizeBinaryData.renderBinary(output, null);
-//
-//                AExtractorResultados.writeIMG(bImage, "ejemplo");
-//                extractor.process(limage, 35);
-//
-//            } catch (final IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
-        BufferedImage image = null;
-        try {
-			image = ImageIO.read(
-			        new File("/home/cursor/CPruebas/RUT.png"));
-			
-	        final ImageFloat32 input = ConvertBufferedImage.convertFromSingle(image, null, ImageFloat32.class);
-	        final ImageUInt8 binary = new ImageUInt8(input.width, input.height);
-	        double threshold = 185;
-	        threshold = GThresholdImageOps.computeOtsu(input, 0, 256);
-	        ThresholdImageOps.threshold(input, binary, (float) threshold, false); // 170,180
-	        ImageUInt8 output = BinaryImageOps.erode4(binary, 1, null); // 2,4
-	        output = BinaryImageOps.dilate4(output, 7, null); // 7,9
-	        output = BinaryImageOps.erode4(output, 2, null);
-	        output = BinaryImageOps.dilate4(output, 5, null); // 5
-	        output = BinaryImageOps.erode4(output, 4, null);
-	        final BufferedImage bImage = VisualizeBinaryData.renderBinary(output, null);
-	        AExtractorResultados.writeIMG(bImage, "ejemplo");			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-        
-    }
-
     public static void writeIMG(BufferedImage image, String name) {
         final String debug = System.getProperty("DEBUG");
         if (debug != null && "TRUE".equalsIgnoreCase(debug)) {
@@ -462,15 +409,15 @@ public abstract class AExtractorResultados implements IExtractorResultados {
         AExtractorResultados.writeIMG(firstRut, "FIRST_RUT");
         final Point pointFirstRut = getPointReferenciaRut(firstRut);
         
-        //final BufferedImage nrut = image.getSubimage(x + 100 , y - 2, x + 600, 545);
-        final BufferedImage nrut = image.getSubimage(x + 90 , y - 2, x + 500, 500);
+        final BufferedImage nrut = image.getSubimage(x + 100 , y - 2, x + 600, 545);
+        //final BufferedImage nrut = image.getSubimage(x + 90 , y - 2, x + 500, 500);
         AExtractorResultados.writeIMG(nrut, "RUT");
         
         
         x = pRefRut.x + 100 + pointFirstRut.x;
-        y = y + pointFirstRut.y + 2;
-//        BufferedImage sectorRut = image.getSubimage(x, y, x + 600, 545);
-        BufferedImage sectorRut = image.getSubimage(x, y, x + 500, 500);
+        y = y + (pointFirstRut.y - 2);
+        BufferedImage sectorRut = image.getSubimage(x, y, x + 600, 545);
+//        BufferedImage sectorRut = image.getSubimage(x, y, x + 500, 500);
         sectorRut = preprocesarImagenRut(sectorRut);
         AExtractorResultados.writeIMG(sectorRut, "SECTOR_RUT");
         final List<Contour> contours = getContoursFullImage(sectorRut);
@@ -482,12 +429,12 @@ public abstract class AExtractorResultados implements IExtractorResultados {
             y = pRefRut.y;
             final int start = minMax.getFirst().intValue();
             final int width = minMax.getSecond().intValue() - minMax.getFirst().intValue();
-            final BufferedImage rut = sectorRut.getSubimage(start, 0, width, 500);
-//            final BufferedImage rut = sectorRut.getSubimage(start, 0, width, 545);
+//            final BufferedImage rut = sectorRut.getSubimage(start, 0, width, 500);
+            final BufferedImage rut = sectorRut.getSubimage(start, 0, width, 545);
 
             AExtractorResultados.writeIMG(rut, "RUT_" + nRut);
             nRut++;
-            final Pair<Integer, Pair<Double, Double>> result = recognizerRut.recognize(rut, 0.40);
+            final Pair<Integer, Pair<Double, Double>> result = recognizerRut.recognize(rut, 0.5);
             final int idx = result.getFirst();
             if (idx != -1) {
                 strRut.append(AExtractorResultados.RUT[idx]);

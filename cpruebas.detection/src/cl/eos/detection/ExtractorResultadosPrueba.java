@@ -4,11 +4,12 @@ import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
-
 
 import cl.cursor.card.RecognizerFactory;
 import cl.eos.detection.base.AExtractorResultados;
@@ -130,4 +131,30 @@ public class ExtractorResultadosPrueba extends AExtractorResultados {
         return valid;
     }
 
+    public static void main(String[] args) {
+    	ExtractorResultadosPrueba extractor =  new ExtractorResultadosPrueba();
+    	List<String> archivos = new ArrayList<>();//{"C:\\dev\\cpruebas\\lvega\\scan3.jpg","C:\\dev\\cpruebas\\lvega\\scan4.jpg","C:\\dev\\cpruebas\\lvega\\scan5.jpg","C:\\dev\\cpruebas\\lvega\\scan6.jpg"};
+    	if(args !=null && args.length > 1)
+    	{	
+    		for(int n = 1; n < args.length; n++)
+    		{
+    			archivos.add(args[n]);
+    		}
+    	}
+    	
+    	BufferedImage limage = null;
+
+        try {
+        	
+        	for(String fname  : archivos)
+        	{
+	        	File f = new File(fname);
+	            limage = ImageIO.read(f);
+	            extractor.process(limage, 25);
+        	}
+        } catch (final IOException e) {
+            e.printStackTrace();
+        }
+    	
+	}
 }

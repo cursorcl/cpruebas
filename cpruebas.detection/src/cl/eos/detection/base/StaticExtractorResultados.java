@@ -253,7 +253,7 @@ public class StaticExtractorResultados {
             final BufferedImage rut = image.getSubimage(x + element - 2, y - 2, 51, 555);
 
             try {
-                ImageIO.write(rut, "png", new File("/res/ruts/RUT_" + StaticExtractorResultados.nRut % 9 + ".png"));
+                ImageIO.write(rut, "png", new File("c:\\tmp\\lvega\\RUT_" + StaticExtractorResultados.nRut % 9 + ".png"));
                 StaticExtractorResultados.nRut++;
             } catch (final IOException e) {
                 e.printStackTrace();
@@ -266,23 +266,21 @@ public class StaticExtractorResultados {
     public static void main(String[] args) {
 
         BufferedImage limage = null;
-        final int n = 8;
-        // for (n = 0; n < 37; n++)
-        {
-            try {
-                limage = ImageIO.read(new File(String.format("/res/5A_CN_Independencia/prueba%02d.JPG", n)));
-                limage = StaticExtractorResultados.rectificarImagen(limage);
-                final Point[] pointsReference = StaticExtractorResultados.obtenerPuntosReferencia(limage);
-                final Point pRefRut = pointsReference[0];
-                StaticExtractorResultados.getRut(pRefRut, limage);
-                final Point[] pRefRespuestas = Arrays.copyOfRange(pointsReference, 1, pointsReference.length);
-                limage = StaticExtractorResultados.preprocesarImagen(limage);
-                StaticExtractorResultados.getRespuestas(pRefRespuestas, limage, 35);
 
-                StaticExtractorResultados.getContours(limage);
-            } catch (final IOException e) {
-                e.printStackTrace();
-            }
+        try {
+        	File f = new File("C:\\tmp\\lvega\\scan4.jpg");
+            limage = ImageIO.read(f);
+            limage = StaticExtractorResultados.rectificarImagen(limage);
+            final Point[] pointsReference = StaticExtractorResultados.obtenerPuntosReferencia(limage);
+            final Point pRefRut = pointsReference[0];
+            StaticExtractorResultados.getRut(pRefRut, limage);
+            final Point[] pRefRespuestas = Arrays.copyOfRange(pointsReference, 1, pointsReference.length);
+            limage = StaticExtractorResultados.preprocesarImagen(limage);
+            StaticExtractorResultados.getRespuestas(pRefRespuestas, limage, 35);
+
+            StaticExtractorResultados.getContours(limage);
+        } catch (final IOException e) {
+            e.printStackTrace();
         }
     }
 

@@ -47,10 +47,10 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.restful"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.persistence.api"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/cpruebas.persistence.model"/>
-	<classpathentry kind="lib" path="C:/dev/cpruebas/jars/poi-3.14-20160307.jar"/>
-	<classpathentry kind="lib" path="C:/dev/cpruebas/jars/poi-ooxml-3.14-20160307.jar"/>
-	<classpathentry kind="lib" path="C:/dev/cpruebas/jars/poi-ooxml-schemas-3.14-20160307.jar"/>
-	<classpathentry kind="lib" path="C:/dev/cpruebas/jars/poi-scratchpad-3.14-20160307.jar"/>
-	<classpathentry kind="lib" path="C:/dev/cpruebas/jars/xmlbeans-2.6.0.jar"/>
+	<classpathentry kind="lib" path="D:/dev/SP EOS/CPRUEBAS/jars/poi-3.14-20160307.jar"/>
+	<classpathentry kind="lib" path="D:/dev/SP EOS/CPRUEBAS/jars/poi-ooxml-3.14-20160307.jar"/>
+	<classpathentry kind="lib" path="D:/dev/SP EOS/CPRUEBAS/jars/poi-ooxml-schemas-3.14-20160307.jar"/>
+	<classpathentry kind="lib" path="D:/dev/SP EOS/CPRUEBAS/jars/poi-scratchpad-3.14-20160307.jar"/>
+	<classpathentry kind="lib" path="D:/dev/SP EOS/CPRUEBAS/jars/xmlbeans-2.6.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

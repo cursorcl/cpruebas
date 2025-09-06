@@ -1,1 +1,1 @@
-mysql --defaults-extra-file=credentials.cnf -se "show databases like 'cpr\_%%'"
+mysql --defaults-extra-file=credentials.cnf --ssl-mode=DISABLED -se "show databases like 'cpr\_%%'"
