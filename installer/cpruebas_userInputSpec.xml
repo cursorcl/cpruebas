@@ -1,0 +1,17 @@
+<userInput>
+    <panel order="0">
+        <field bold="true" size="2" txt="Datos Configuración" type="title"/>
+        <field type="text" variable="ipMysql">
+            <description align="left" txt="Dónde se encuentra instalada la BD."/>
+            <spec set="localhost" size="20" txt="Servidor Base de Datos"/>
+        </field>
+        <field align="left" type="password" variable="bdPassword">
+            <spec>
+                <pwd set="" size="25" txt="Clave Administrador Base de Datos"/>
+                <pwd set="" size="25" txt="Repita Clave"/>
+            </spec>
+            <validator
+                class="com.izforge.izpack.util.PasswordEqualityValidator" txt="Both passwords must match."/>
+        </field>
+    </panel>
+</userInput>

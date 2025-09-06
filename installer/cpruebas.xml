@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="iso-8859-1" standalone="yes"?>
+<installation version="5.0">
+    <info>
+        <appname>CPruebas</appname>
+        <appversion>4.0.0</appversion>
+        <authors>
+            <author email="cursor.cl@gmail.com" name="Eliecer Osorio Verdugo"/>
+        </authors>
+        <uninstaller name="Uninstaller.jar" write="yes"/>
+        <javaversion>1.8</javaversion>
+        <requiresjdk>yes</requiresjdk>
+        <writeinstallationinformation>yes</writeinstallationinformation>
+        <pack200/>
+        <run-privileged condition="izpack.windowsinstall.vista|izpack.windowsinstall.7"/>
+    </info>
+    <guiprefs height="480" resizable="no" width="640">
+        <modifier key="useFlags" value="yes"/>
+        <modifier key="langDisplayType" value="default"/>
+        <modifier key="useHeadingPanel" value="yes"/>
+        <modifier key="headingImageOnLeft" value="no"/>
+        <modifier key="headingFontSize" value="2"/>
+        <modifier key="headingBackgroundColor" value="-13395457"/>
+        <modifier key="headingForegroundColor" value="-1"/>
+        <modifier key="headingPanelCounter" value="text"/>
+        <modifier key="headingPanelCounterPos" value="inNavigationPanel"/>
+    </guiprefs>
+    <locale>
+        <langpack iso3="spa"/>
+    </locale>
+    <resources>
+        <res id="shortcutSpec.xml" src="cpruebas_shortcutSpec.xml"/>
+        <res id="Unix_shortcutSpec.xml" src="cpruebas_Unix_shortcutSpec.xml"/>
+        <res id="Sistema" src="C:\dev\cpruebas\installer\logo.png"/>
+        <res id="installer.langsel.img" src="C:\dev\cpruebas\installer\logo.png"/>
+        <res id="Installer.image" src="C:\dev\cpruebas\installer\logo64.png"/>
+        <res id="Heading.image" src="C:\dev\cpruebas\installer\logo32.png"/>
+        <res id="userInputSpec.xml" src="cpruebas_userInputSpec.xml"/>
+    </resources>
+    <panels>
+        <panel id="hello" classname="CheckedHelloPanel"/>
+        <panel id="images" classname="ImgPacksPanel"/>
+        <panel id="target" classname="TargetPanel"/>
+        <panel id="install" classname="InstallPanel"/>
+        <panel id="userinput" classname="UserInputPanel"/>
+        <panel id="shorcut" classname="ShortcutPanel"/>
+        <panel id="finish" classname="SimpleFinishPanel"/>
+    </panels>
+    <variables>
+        <variable name="DesktopShortcutCheckboxEnabled" value="true"/>
+    </variables>
+    <packs>
+        <pack name="Sistema" packImgId="Sistema" preselected="yes" required="yes">
+            <description>Aplicación completa</description>
+            <file override="update"
+                src="C:\dev\cpruebas\installer\cpruebas.jar" targetdir="$INSTALL_PATH/"/>
+            <file override="update" src="C:\dev\cpruebas\installer\res" targetdir="$INSTALL_PATH/"/>
+        </pack>
+    </packs>
+    <native name="ShellLink.dll" type="izpack"/>
+    <native name="ShellLink_x64.dll" type="izpack"/>
+</installation>

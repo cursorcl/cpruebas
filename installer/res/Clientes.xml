@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Clientes>
+	<Cliente>
+		<rut>-</rut>
+		<nombre>Asuncion</nombre>
+		<direccion>-</direccion>
+		<fono>-</fono>
+		<email>-</email>
+		<alias>cpr_asuncion</alias>
+	</Cliente>
+	<Cliente>
+		<rut>-</rut>
+		<nombre>Cauquenes</nombre>
+		<direccion>-</direccion>
+		<fono>-</fono>
+		<alias>cpr_cauquenes</alias>
+	</Cliente>
+	<Cliente>
+		<rut>-</rut>
+		<nombre>Balmaceda</nombre>
+		<direccion>-</direccion>
+		<fono>-</fono>
+		<alias>cpr_balmaceda</alias>
+	</Cliente>
+	
+	<Cliente>
+		<rut>-</rut>
+		<nombre>Simce</nombre>
+		<direccion>-</direccion>
+		<fono>-</fono>
+		<alias>cpr_simce</alias>
+	</Cliente>			
+</Clientes>

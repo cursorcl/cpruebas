@@ -1,4 +1,3 @@
 *.eclipse.buildship.core.prefs
 bin
 *.class
-installer
