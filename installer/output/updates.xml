@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <updateDescriptor baseUrl="">
-  <entry targetMediaFileId="89" updatableVersionMin="" updatableVersionMax="" fileName="CPruebas_windows-x64_4_0_0.exe" newVersion="4.0.0" newMediaFileId="89" fileSize="38544896" bundledJre="" archive="false">
+  <entry targetMediaFileId="89" updatableVersionMin="" updatableVersionMax="" fileName="CPruebas_windows-x64_4_0_0.exe" newVersion="4.0.0" newMediaFileId="89" fileSize="93968384" bundledJre="windows-amd64-1.8.0_202" archive="false">
     <comment language="es" />
   </entry>
 </updateDescriptor>
